@@ -25,7 +25,7 @@ namespace RMOL {
     }
     /** Getter for the standard deviation value. */
     double getStandardDeviation() const {
-      return _mean;
+      return _standardDeviation;
     }
     /** Getter for the variance value. */
     double getVariance() const;
