@@ -1,29 +1,29 @@
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
-#include "FldDemand.hpp"
+#include "Demand.hpp"
 
 namespace RMOL {
 
   // //////////////////////////////////////////////////////////////////////
-  FldDemand::FldDemand () :
+  Demand::Demand () :
     _params (FldDistributionParameters()), _averageYield (0.0) {
   }
 
   // //////////////////////////////////////////////////////////////////////
-  FldDemand::FldDemand (const FldDemand& iDemand) :
+  Demand::Demand (const Demand& iDemand) :
     _params (iDemand.getParameters()),
     _averageYield (iDemand.getAverageYield()) {
   }
 
   // //////////////////////////////////////////////////////////////////////
-  FldDemand::FldDemand (const FldDistributionParameters& iParams,
+  Demand::Demand (const FldDistributionParameters& iParams,
                         const double iAverageYield) :
     _params (iParams), _averageYield (iAverageYield) {
   }
 
   // //////////////////////////////////////////////////////////////////////
-  FldDemand::~FldDemand() {
+  Demand::~Demand() {
   }
   
 }

@@ -9,13 +9,15 @@
 
 namespace RMOL {
 
-  /** Class holding the demand parameters: mean and standard deviation */
-  class FldDemand {
+  /** Class modelling the demand. It holds:
+      - Demand parameters: mean and standard deviation.
+      - Yield range: upper yield and average yield. */
+  class Demand {
   public:
     /** Constructors. */
-    FldDemand ();
-    FldDemand (const FldDemand&);
-    FldDemand (const FldDistributionParameters&, const double iAverageYield);
+    Demand ();
+    Demand (const Demand&);
+    Demand (const FldDistributionParameters&, const double iAverageYield);
 
     // Getters
     /** Getter for the demand distribution parmaters (i.e., mean and
@@ -29,7 +31,7 @@ namespace RMOL {
     }
     
     /** Destructors. */
-    virtual ~FldDemand();
+    virtual ~Demand();
     
   private:
     /** Average yield (average revenue per unit of demand). */
@@ -39,4 +41,4 @@ namespace RMOL {
     FldDistributionParameters _params;
   };
 }
-#endif
+#endif // __RMOL_DEMAND_HPP
