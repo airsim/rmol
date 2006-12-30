@@ -28,7 +28,7 @@ namespace RMOL {
     // Getters
     /** Getter for the parameters for the Gaussian distribution (i.e.,
         mean and standard deviation). */
-    FldDistributionParameters getDistributionParameters() const {
+    const FldDistributionParameters& getDistributionParameters() const {
       return _params;
     }
     

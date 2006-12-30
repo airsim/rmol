@@ -6,6 +6,7 @@
 // //////////////////////////////////////////////////////////////////////
 // STL
 #include <list>
+#include <vector>
 
 namespace RMOL {
 
@@ -18,7 +19,7 @@ namespace RMOL {
       <br>
       <br>Note that a STL::list is used here, in place of a STL::vector,
       as the rich features of the STL::vector are not useful here. */
-  typedef std::list<double> PartialSumList_T;
+  typedef std::vector<double> PartialSumList_T;
   
   /** Define a list of N partial sum "vectors", hence representing
       the partial sums derived by a simulation run. Each partial sum vector

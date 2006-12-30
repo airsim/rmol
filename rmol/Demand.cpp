@@ -7,23 +7,56 @@ namespace RMOL {
 
   // //////////////////////////////////////////////////////////////////////
   Demand::Demand () :
-    _params (FldDistributionParameters()), _averageYield (0.0) {
+    _distributionParameters (FldDistributionParameters()), 
+    _yieldRange (FldYieldRange()) {
   }
 
   // //////////////////////////////////////////////////////////////////////
   Demand::Demand (const Demand& iDemand) :
-    _params (iDemand.getParameters()),
-    _averageYield (iDemand.getAverageYield()) {
+    _distributionParameters (iDemand.getDistributionParameters()),
+    _yieldRange (iDemand.getYieldRange()) {
   }
 
   // //////////////////////////////////////////////////////////////////////
-  Demand::Demand (const FldDistributionParameters& iParams,
-                        const double iAverageYield) :
-    _params (iParams), _averageYield (iAverageYield) {
+  Demand::Demand (const FldDistributionParameters& iDistributionParameters,
+		  const FldYieldRange& iYieldRange) :
+    _distributionParameters (iDistributionParameters),
+    _yieldRange (iYieldRange) {
   }
 
   // //////////////////////////////////////////////////////////////////////
   Demand::~Demand() {
   }
   
+
+  // //////////////////////////////////////////////////////////////////////
+  double Demand::getUpperYield() const {
+    return _yieldRange.getUpperYield();
+  }
+
+  // //////////////////////////////////////////////////////////////////////
+  double Demand::getAverageYield() const {
+    return _yieldRange.getAverageYield();
+  }
+
+  // //////////////////////////////////////////////////////////////////////
+  double Demand::getLowerYield() {
+    return _yieldRange.getLowerYield();
+  }
+
+  // //////////////////////////////////////////////////////////////////////
+  double Demand::getMean() const {
+    return _distributionParameters.getMean();
+  }
+
+  // //////////////////////////////////////////////////////////////////////
+  double Demand::getStandardDeviation() const {
+    return _distributionParameters.getStandardDeviation();
+  }
+
+  // //////////////////////////////////////////////////////////////////////
+  double Demand::getVariance() const {
+    return _distributionParameters.getVariance();
+  }
+
 }

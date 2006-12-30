@@ -6,6 +6,7 @@
 // //////////////////////////////////////////////////////////////////////
 // RMOL
 #include "FldDistributionParameters.hpp"
+#include "FldYieldRange.hpp"
 
 namespace RMOL {
 
@@ -17,28 +18,41 @@ namespace RMOL {
     /** Constructors. */
     Demand ();
     Demand (const Demand&);
-    Demand (const FldDistributionParameters&, const double iAverageYield);
+    Demand (const FldDistributionParameters&, const FldYieldRange&);
 
     // Getters
     /** Getter for the demand distribution parmaters (i.e., mean and
         standard deviation). */
-    FldDistributionParameters getParameters() const {
-      return _params;
+    const FldDistributionParameters& getDistributionParameters() const {
+      return _distributionParameters;
     }
     /** Getter for the average yield per unit of demand. */
-    double getAverageYield() const {
-      return _averageYield;
+    const FldYieldRange& getYieldRange() const {
+      return _yieldRange;
     }
+    /** Getter for the upper yield of the range. */
+    double getUpperYield() const;
+    /** Getter for the average yield of the range. */
+    double getAverageYield() const;
+    /** Getter for the lower yield of the range. */
+    double getLowerYield();
+    /** Getter for the mean value. */
+    double getMean() const;
+    /** Getter for the standard deviation value. */
+    double getStandardDeviation() const;
+    /** Getter for the variance value. */
+    double getVariance() const;
     
     /** Destructors. */
     virtual ~Demand();
     
   private:
-    /** Average yield (average revenue per unit of demand). */
-    double _averageYield;
+    /** Yield range, i.e., upper and lower yields, as well as average yield
+	(average revenue per unit of demand). */
+    FldYieldRange _yieldRange;
 
     /** Distribution parameters (i.e., mean and standard deviation). */
-    FldDistributionParameters _params;
+    FldDistributionParameters _distributionParameters;
   };
 }
 #endif // __RMOL_DEMAND_HPP

@@ -1,28 +1,29 @@
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
+// RMOL
 #include "DemandGeneratorList.hpp"
 
 namespace RMOL {
 
   // //////////////////////////////////////////////////////////////////////
   DemandGeneratorList::DemandGeneratorList () {
-    const ParameterList_T aParameterList;
-    init (aParameterList);
+    const DistributionParameterList_T aDistributionParameterList;
+    init (aDistributionParameterList);
   }
   
   // //////////////////////////////////////////////////////////////////////
   DemandGeneratorList::
   DemandGeneratorList (const DemandGeneratorList& iDemandGeneratorList) {
     // TODO: copy the distribution parameters of the input generator list
-    const ParameterList_T aParameterList;
-    init (aParameterList);
+    const DistributionParameterList_T aDistributionParameterList;
+    init (aDistributionParameterList);
   }
   
   // //////////////////////////////////////////////////////////////////////
   DemandGeneratorList::
-  DemandGeneratorList (const ParameterList_T& iParameterList) {
-    init (iParameterList);
+  DemandGeneratorList (const DistributionParameterList_T& iDistributionParameterList) {
+    init (iDistributionParameterList);
   }
   
   // //////////////////////////////////////////////////////////////////////
@@ -30,10 +31,11 @@ namespace RMOL {
   }
   
   // //////////////////////////////////////////////////////////////////////
-  void DemandGeneratorList::init (const ParameterList_T& iParameterList) {
+  void DemandGeneratorList::init (const DistributionParameterList_T& iDistributionParameterList) {
 
-    for (ParameterList_T::const_iterator itParams = iParameterList.begin();
-         itParams != iParameterList.end(); itParams++) {
+    DistributionParameterList_T::const_iterator itParams = 
+      iDistributionParameterList.begin();
+    for ( ; itParams != iDistributionParameterList.end(); itParams++) {
       const FldDistributionParameters& aParams = *itParams;
       const double aMean = aParams.getMean();
       const double aStandardDeviation = aParams.getStandardDeviation();
@@ -48,7 +50,7 @@ namespace RMOL {
   void DemandGeneratorList::
   generateVariateList (VariateList_T& ioVariateList) const {
 
-    // Iterate on the (number of) buckets
+    // Iterate on the (number of) classes/buckets, n
     DemandGeneratorList_T::const_iterator itGenerator =
       _demandGeneratorList.begin();
     for ( ; itGenerator != _demandGeneratorList.end(); itGenerator++) {

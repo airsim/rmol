@@ -8,7 +8,7 @@
 #include <list>
 // RMOL
 #include "VariateList.hpp"
-#include "ParameterList.hpp"
+#include "DistributionParameterList.hpp"
 #include "Gaussian.hpp"
 
 namespace RMOL {
@@ -24,7 +24,7 @@ namespace RMOL {
     DemandGeneratorList ();
     DemandGeneratorList (const DemandGeneratorList&);
     /** List of distribution parameters (mean, standard deviation). */
-    DemandGeneratorList (const ParameterList_T&);
+    DemandGeneratorList (const DistributionParameterList_T&);
     
     /** Destructors. */
     virtual ~DemandGeneratorList();
@@ -36,7 +36,7 @@ namespace RMOL {
     DemandGeneratorList_T _demandGeneratorList;
 
     /** Initialise the Random Genrators. */
-    void init (const ParameterList_T&);
+    void init (const DistributionParameterList_T&);
     
   };
 }

@@ -69,7 +69,8 @@ LD_FLAGS =
 
 ###
 # Dynamic library building
-RMOL_SRC = 	FldYieldRange.cpp FldDistributionParameters.cpp FldDemand.cpp \
+RMOL_SRC = 	FldYieldRange.cpp FldDistributionParameters.cpp \
+			Demand.cpp \
 			Bucket.cpp \
 			Emsr.cpp \
 			Gaussian.cpp \
@@ -77,11 +78,14 @@ RMOL_SRC = 	FldYieldRange.cpp FldDistributionParameters.cpp FldDemand.cpp \
 			MCUtils.cpp
 RMOL_OBJ = $(RMOL_SRC:%.cpp=$(OBJ_PATH)/%.o)
 RMOL_HEAD = $(RMOL_SRC:%.cpp=%.hpp) \
-			VariateList.hpp ParameterList.hpp PartialSumList.hpp
+			VariateList.hpp \
+			DistributionParameterList.hpp \
+			PartialSumList.hpp \
+			BucketList.hpp
 FULL_INSTALL_HEAD = $(RMOL_HEAD:%=$(INSTALL_HEADDIR)/%)
 
 # Generated Library name
-RMOL_VERSION = 0.02
+RMOL_VERSION = 0.05
 RMOL_LIB_SHORT = $(RMOL_LIB_NAME)
 RMOL_LIB_WOV = lib$(RMOL_LIB_SHORT)$(LIB_SUFFIX)
 RMOL_LIB = $(RMOL_LIB_WOV).$(RMOL_VERSION)

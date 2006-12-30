@@ -1,6 +1,8 @@
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
+// RMOL
+#include "VariateList.hpp"
 #include "MCUtils.hpp"
 
 namespace RMOL {
@@ -37,33 +39,41 @@ namespace RMOL {
   }
 
   // //////////////////////////////////////////////////////////////////////
-  void MCUtils::calculatePartialSum (const VariateList_T& iRandomVariatesDraw,
-                                     PartialSumList_T& ioPartialSumList) {
-    /** Calculate the partial sums:
-        S(j,k) = d(1,k) + d(2,k) + ... + d(j,k),
-        for j=1 to n-1 and the current k.
-        Note that n-1 corresponds to the size of the parameter list,
-        i.e., n corresponds to the number of classes/buckets. */
-    // Iterate on the number of classes/buckets (from 1 to n-1)
-    RMOL::PartialSumList_T::iterator itPartialSum = ioPartialSumList.begin();
-    for (short j=1; itPartialSum != ioPartialSumList.end();
-         itPartialSum++, j++) {
-      // Retrieve the partial sum S(j,k)
-      double& sjk = *itPartialSum;
+  void MCUtils::
+  calculatePartialSum (const short k, const VariateList_T& iRandomVariatesDraw,
+		       DemandSimulationPartialSum_T& ioDemandSimulationPartialSumList) {
 
-      /** Iterate on the number of demand variates summing up in the
-          partial sum:
-          S(j,k) = Sum [d(i,k)], for i=1 to j, and the current j and k. */
-      RMOL::VariateList_T::const_iterator itVariate =
-        iRandomVariatesDraw.begin();
-      for (short i=1; i <= j; itVariate++, i++) {
-        // Retrieve d(i,k)
-        const double dik = *itVariate;
+    /** 
+	Calculate the partial sums:
+	S(j,k) = d(1,k) + d(2,k) + ... + d(j,k), for a given k, and j=1 to n-1.
+	Note that n-1 corresponds to the size of the parameter list,
+	i.e., n corresponds to the number of classes/buckets.
+    */
 
-        // Add-up d(i,k) to s(j,k)
-        sjk += dik;
+    // Iterate on the number of classes/buckets, n, from 1 to n-1.
+    DemandSimulationPartialSum_T::iterator itDrawPartialSumVector =
+      ioDemandSimulationPartialSumList.begin();
+    VariateList_T::const_iterator itVariate= iRandomVariatesDraw.begin();
+    for (short j=1; itVariate != iRandomVariatesDraw.end(); 
+	 itVariate++, itDrawPartialSumVector++, j++) {
+      const double djk = *itVariate;
+      
+      /** Calculate/update the partial sums: S(j,k) += d(j,k)
+	  for a given j (between 1 and n-1) and a given k (from 1 to K).
+	  Eventually, at the end of the loop:
+	  S(j,k) = d(1,k) + d(2,k) + ... + d(j,k),
+	  Note that n-1 corresponds to the size of the parameter list,
+	  i.e., n corresponds to the number of classes/buckets.
+      */
+      if (j >= k) {
+	PartialSumList_T& aPartialSumVector = *itDrawPartialSumVector;
+	// Retrieve the partial sum S(j,k)
+	double& sjk = aPartialSumVector.at (k);
+
+	// Add-up d(j,k) to S(j,k)
+	sjk += djk;
       }
     }
   }
-  
+
 }
