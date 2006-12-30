@@ -1,5 +1,5 @@
-#ifndef __RMOL_PARAMETERLIST_HPP
-#define __RMOL_PARAMETERLIST_HPP
+#ifndef __RMOL_DISTRIBUTIONPARAMETERLIST_HPP
+#define __RMOL_DISTRIBUTIONPARAMETERLIST_HPP
 
 // //////////////////////////////////////////////////////////////////////
 // Import section
@@ -13,7 +13,7 @@ namespace RMOL {
 
   /** Define the set of parameters, each of one wrapping a pair of
       distribution parameters (i.e., mean and standard deviation). */
-  typedef std::list<FldDistributionParameters> ParameterList_T;
+  typedef std::list<FldDistributionParameters> DistributionParameterList_T;
   
 }
-#endif // __RMOL_PARAMETERLIST_HPP
+#endif // __RMOL_DISTRIBUTIONPARAMETERLIST_HPP
