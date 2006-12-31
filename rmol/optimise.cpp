@@ -34,6 +34,9 @@ int main (int argc, char* argv[]) {
   }
 
   // STEP 0.
+  // Cabin Capacity
+  const double cabinCapacity = 100;
+
   // List of demand distribution parameters (mean and standard deviation)
   RMOL::DistributionParameterList_T aDistributionParameterList;
   RMOL::BucketList_T aBucketList;
@@ -59,141 +62,142 @@ int main (int argc, char* argv[]) {
   RMOL::Bucket aBucket3 (aYieldRange3);
   aBucketList.push_back (aBucket3);
   
-  // Number of classes/buckets
-  const short nbOfClasses = aDistributionParameterList.size();
+  // Number of classes/buckets: n
+  const short nbOfClasses = aBucketList.size();
   
-  // Display head of CSV file (for reporting purposes)
-  std::cout << "Event; ";
-  for (short i=1; i <= nbOfClasses; i++) {
-    std::cout << "Class " << i << "; ";
-  }
-  std::cout << std::endl;
-  
-  // Initialise the Demand Random Generator
-  const RMOL::DemandGeneratorList aDemandGeneratorList (aDistributionParameterList);
-
-
-  // STEP 1.
   /** 
-      Preparation of the Demand Simulation run.
-      Demand:                d(j,k), for j=1 to n-1 and k=1 to K.
-      Partial Sum of demand: S(j,k), for j=1 to n-1 and k=1 to K.
+      Initialise the partial sum vector representing the last step within
+      the algorithm below.
+      <br>At the beginning of the algorithm, the partial sums need to be
+      null. Then, the generated demand (variates) will be added 
+      incrementally.
   */
+  RMOL::PartialSumList_T previousPartialSumList;
+  for (short k=1 ; k <= K; k++) {
+    previousPartialSumList.push_back (0.0);
+  }
 
-  // Demand collection structure: d(j,k)
-  RMOL::DemandSimulation_T aDemandSimulation;
-  RMOL::MCUtils::initialiseDemandSimulation (K, aDemandSimulation);
-
-  // Partial sum (of demand) collection structure: S(j,k)
-  RMOL::DemandSimulationPartialSum_T aDemandSimulationPartialSumList;
-  RMOL::MCUtils::initialisePartialSums (nbOfClasses, K,
-                                        aDemandSimulationPartialSumList);
-  
-  // STEP 2.
   /** 
-      Generate and store K random demand vectors/lists d(j,k), for j=1 to n-1.
-      Calculate and store n-1 partial sum vectors S(j,k), for k=1 to K.
+      Iterate on the classes/buckets, from 1 to n-1.
+      Note that n-1 corresponds to the size of the parameter list,
+      i.e., n corresponds to the number of classes/buckets.
+  */
+  int Kj = K;
+  int lj = 0;
+  RMOL::BucketList_T::iterator itBucket = aBucketList.begin();
+  RMOL::BucketList_T::iterator itNextBucket = aBucketList.begin();
+  itNextBucket++;
+  for (short j=1 ; j <= nbOfClasses - 1; itBucket++, itNextBucket++, j++) {
+    /** Retrieve Bucket(j) (current) and Bucket(j+1) (next). */
+    RMOL::Bucket& currentBucket = *itBucket;
+    const RMOL::Bucket& nextBucket = *itNextBucket;
 
-      Note that that step may be further split in three successive loops
-      (iterating each time on k), to give some more flexibility. 
-      However, it would imply looping three times on K, which can be heavy 
-      when K is big (10,000 for example).
-   */
-
-  // Iterate on the number of random draws, K.
-  RMOL::DemandSimulation_T::iterator itDraw = aDemandSimulation.begin();
-  for (short k=1 ; itDraw != aDemandSimulation.end(); itDraw++, k++) {
-    RMOL::VariateList_T& aRandomVariatesDraw = *itDraw;
-    
-    /** Randomly generate the demand variates:
-        d(j,k), for j=1 to n-1 and the current k.
-        Note that n-1 corresponds to the size of the parameter list,
-        i.e., n corresponds to the number of classes/buckets.
+    // STEP 1.
+    /** 
+	Initialise the random generator with the distribution parameters of
+	the demand for the current class/bucket, j.
     */
-    aDemandGeneratorList.generateVariateList (aRandomVariatesDraw);
+    const RMOL::FldDistributionParameters& aDistribParams = 
+      currentBucket.getDistributionParameters();
+    const RMOL::Gaussian gaussianDemandGenerator (aDistribParams);
 
-    // Display
-    std::cout << k << "; ";
-    RMOL::VariateList_T::const_iterator itVariate= aRandomVariatesDraw.begin();
-    for ( ; itVariate != aRandomVariatesDraw.end(); itVariate++) {
-      const double djk = *itVariate;
-      std::cout << djk << "; ";
+    /** DEBUG
+    std::cout << "[" << j << "]: " << Kj << " values with N ( " 
+	      << aDistribParams.getMean() << ", "
+	      << aDistribParams.getStandardDeviation() << ")." << std::endl;
+    */
+
+    /**
+       Iterate on the random draws: generate random variates, d(j,k)
+       for the current class/bucket demand, j, and for k=1 to Kj.
+    */
+    RMOL::VariateList_T aVariateList;
+    RMOL::PartialSumList_T currentPartialSumList;
+    for (int k=1; k <= Kj; k++) {
+      const double djk = gaussianDemandGenerator.generateVariate();
+      aVariateList.push_back (djk);
+
+      /** 
+	  Calculate the partial sums:
+	  <br>
+	  S(j,k) = d(1,k) + d(2,k) + ... + d(j,k), for a given k and j=1 to n-1
+	  Note that n-1 corresponds to the size of the parameter list,
+	  i.e., n corresponds to the number of classes/buckets.
+	  <br>
+	  Hence: S(j,k) = S'(j-1, l+k) + d(j,k). 
+      */
+      const double spjm1lpk = previousPartialSumList.at (lj + k - 1);
+      const double sjk = spjm1lpk + djk;
+      currentPartialSumList.push_back (sjk);
+
+      /* DEBUG
+      std::cout << "d(" << j << ", " << k << "); " << djk 
+		<< "; S'(" << j-1 << ", " << lj+k << "); " << spjm1lpk
+		<< "; S(" << j << ", " << k << "); " << sjk << std::endl;
+      */
     }
-    std::cout << std::endl;
 
-    /** 
-	Calculate the partial sums:
-	S(j,k) = d(1,k) + d(2,k) + ... + d(j,k), for a given k, and j=1 to n-1.
-	Note that n-1 corresponds to the size of the parameter list,
-	i.e., n corresponds to the number of classes/buckets.
+    // STEP 2.
+    /**
+       Sort the partial sum vectors S(j,k) on k, for the current j.
+       The STL implements the introsort algorithm, which has a worst case
+       complexity of O (N log N): http://www.sgi.com/tech/stl/sort.html
     */
-    RMOL::MCUtils::calculatePartialSum (k, aRandomVariatesDraw,
-					aDemandSimulationPartialSumList);
+    std::sort (currentPartialSumList.begin(), currentPartialSumList.end());
 
-  }
+    /** Retrieve the prices for Bucket(j) and Bucket(j+1). */
+    const double pj = currentBucket.getAverageYield();
+    const double pj1 = nextBucket.getAverageYield();
 
-  // STEP 3.
-  /**
-     Sort the partial sum vectors S(j,k) on k for each given j.
-  */
-  RMOL::DemandSimulationPartialSum_T::iterator itPartialSumVector = 
-    aDemandSimulationPartialSumList.begin();
-  RMOL::BucketList_T::iterator itjBucket = aBucketList.begin();
-  RMOL::BucketList_T::iterator itjp1Bucket = aBucketList.begin();
-  if (itjp1Bucket != aBucketList.end()) {
-    itjp1Bucket++;
-  }
-  for ( ; itPartialSumVector != aDemandSimulationPartialSumList.end(); 
-	itPartialSumVector++, itjBucket++, itjp1Bucket++) {
-    RMOL::PartialSumList_T& aPartialSumVector = *itPartialSumVector;
-
-    /** 
-	The STL implements the introsort algorithm, which has a worst case
-	complexity of O (N log N): http://www.sgi.com/tech/stl/sort.html
-    */
-    std::sort (aPartialSumVector.begin(), aPartialSumVector.end());
-
-    /** Retrieve Bucket(j) and Bucket(j+1). */
-    RMOL::Bucket& jBucket = *itjBucket;
-    const RMOL::Bucket& jp1Bucket = *itjp1Bucket;
-
-    const double pj = jBucket.getAverageYield();
-    const double pj1 = jp1Bucket.getAverageYield();
-
-    // DEBUG
-    // std::cout << "p(j) = " << pj << ", p(j+1) = " << pj1 << std::endl;
+    /** Consistency check: the yield/price of a higher class/bucket 
+	(with the j index lower) must be higher. */
+    assert (pj > pj1);
 
     /** 
 	The optimal index is defined as:
-	l = floor [p(j+1)/p(j) . K]
+	lj = floor {[p(j)-p(j+1)]/p(j) . K}
     */
-    const double ldouble = std::floor (K * pj1 / pj);
-    const short l = static_cast<short> (ldouble);
-    assert (l >= 1 && l < K);
+    const double ljdouble = std::floor (Kj * (pj - pj1) / pj);
+    lj = static_cast<int> (ljdouble);
 
-    // DEBUG
-    // std::cout << "ldouble = " << ldouble << ", l = " << l << std::endl;
+    /** DEBUG
+    std::cout << "p(j+1)/p(j) = " << pj1 / pj << ", lj = " << lj 
+	      << ", Kj = " << Kj << " => " << Kj - lj << " points above y(j)" 
+	      << std::endl;
+    */
+
+    /** Consistency check. */
+    assert (lj >= 1 && lj < Kj);
+
+    // Update Kj for the next loop
+    Kj = Kj - lj;
 
     /** 
 	The optimal protection is defined as:
-	y(j) = 1/2 [S(j,l) + S(j, l+1)]
+	y(j) = 1/2 [S(j,lj) + S(j, lj+1)]
     */
-    const double sjl = aPartialSumVector.at (l);
-    const double sjlp1 = aPartialSumVector.at (l+1);
+    const double sjl = currentPartialSumList.at (lj - 1);
+    const double sjlp1 = currentPartialSumList.at (lj + 1 - 1);
     const double yj = (sjl + sjlp1) / 2;
 
-    // DEBUG
-    // std::cout << "S(j,l) = " << sjl << ", S(j,l+1) = " << sjlp1 << std::endl;
+    /** DEBUG
+    std::cout << "S(j,l) = " << sjl << ", S(j,l+1) = " << sjlp1 
+	      << ", y(j) = " << yj << std::endl;
+    */
 
     // Set the protection for Bucket(j) (j ranging from 1 to n-1)
-    jBucket.setProtection (yj);
+    currentBucket.setProtection (yj);
+
+    /** S'(j,k) = S(j,k). */
+    previousPartialSumList = currentPartialSumList;
   }
-  
+
   // Set the protection of Bucket(n) to be equal to the capacity:
-  // jBucket.setProtection (cabinCapacity);
+  RMOL::Bucket& currentBucket = *itBucket;
+  currentBucket.setProtection (cabinCapacity);
   
   // Display
-  RMOL::BucketList_T::iterator itBucket = aBucketList.begin();
+  itBucket = aBucketList.begin();
   for (short j=1; itBucket != aBucketList.end(); itBucket++, j++) {
     const RMOL::Bucket& jBucket = *itBucket;
 

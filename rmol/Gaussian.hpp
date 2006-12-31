@@ -17,10 +17,9 @@ namespace RMOL {
     /** Constructors. */
     Gaussian ();
     Gaussian (const Gaussian&);
-
     /** Constructor with mean and standard deviation of
         the Gaussian Distribution. */
-    Gaussian (const double iMean, const double iStandardDeviation);
+    Gaussian (const FldDistributionParameters&);
 
     /** Destructors. */
     virtual ~Gaussian();

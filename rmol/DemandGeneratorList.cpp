@@ -31,16 +31,15 @@ namespace RMOL {
   }
   
   // //////////////////////////////////////////////////////////////////////
-  void DemandGeneratorList::init (const DistributionParameterList_T& iDistributionParameterList) {
+  void DemandGeneratorList::
+  init (const DistributionParameterList_T& iDistributionParameterList) {
 
     DistributionParameterList_T::const_iterator itParams = 
       iDistributionParameterList.begin();
     for ( ; itParams != iDistributionParameterList.end(); itParams++) {
       const FldDistributionParameters& aParams = *itParams;
-      const double aMean = aParams.getMean();
-      const double aStandardDeviation = aParams.getStandardDeviation();
       
-      const Gaussian gaussianGenerator (aMean, aStandardDeviation);
+      const Gaussian gaussianGenerator (aParams);
       
       _demandGeneratorList.push_back (gaussianGenerator);
     }

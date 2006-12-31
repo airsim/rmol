@@ -85,7 +85,7 @@ RMOL_HEAD = $(RMOL_SRC:%.cpp=%.hpp) \
 FULL_INSTALL_HEAD = $(RMOL_HEAD:%=$(INSTALL_HEADDIR)/%)
 
 # Generated Library name
-RMOL_VERSION = 0.05
+RMOL_VERSION = 0.06
 RMOL_LIB_SHORT = $(RMOL_LIB_NAME)
 RMOL_LIB_WOV = lib$(RMOL_LIB_SHORT)$(LIB_SUFFIX)
 RMOL_LIB = $(RMOL_LIB_WOV).$(RMOL_VERSION)
@@ -169,7 +169,7 @@ $(FULL_BIN_NAME): install $(TEST_MAIN_OBJ)
 ###
 # Cleaning the object, library and executable files and directories
 clean:
-	@$(RM) *~ $(TAR_BALL)
+	@$(RM) *~ core.* $(TAR_BALL)
 	@$(RMR) $(OBJ_PATH) $(LIB_PATH) $(BIN_PATH)
 
 tar: clean

@@ -25,9 +25,10 @@ namespace RMOL {
   }
 
   // //////////////////////////////////////////////////////////////////////
-  Gaussian::Gaussian (const double iMean, const double iStandardDeviation) :
+  Gaussian::Gaussian (const FldDistributionParameters& iParams) :
     _rngTypePtr (gsl_rng_default), _rngPtr (NULL),
-    _params (FldDistributionParameters (iMean, iStandardDeviation)) {
+    _params (FldDistributionParameters (iParams.getMean(), 
+					iParams.getStandardDeviation())) {
     initRandomGenerator();
   }
   

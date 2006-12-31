@@ -66,6 +66,8 @@ namespace RMOL {
     double getBookingLimit() const {
       return _bookingLimit;
     }
+    /** Getter for the distribution parameters of the demand. */
+    const FldDistributionParameters& getDistributionParameters() const;
     /** Getter for the upper yield. */
     const double getUpperYield() const;
     /** Getter for the average yield. */
