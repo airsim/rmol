@@ -4,7 +4,7 @@
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
-#include "PartialSumList.hpp"
+#include "BucketList.hpp"
 
 namespace RMOL {
 
@@ -13,29 +13,20 @@ namespace RMOL {
   public:
     
     /** 
-	Preparation of the demand simulation "vectors" (one per draw).
+	Calculate the optimal protections for the set of buckets/classes
+	given in input, and update those buckets accordingly.
+	<br>The Monte Carlo Integration algorithm (see The Theory and 
+	Practice of Revenue Management, by Kalyan T. Talluri and 
+	Garret J. van Ryzin, Kluwer Academic Publishers, for the details) 
+	is used. Hence, K is the number of random draws to perform.
+	100 is a minimum for K, as statistics must be drawn from those
+	random generations.
+	<br>The cabin capacity is used to a double to allow for some
+	overbooking.
      */
-    static void initialiseDemandSimulation (const double iNbOfDraws,
-                                            DemandSimulation_T&);
-    
-    /** 
-	Preparation of the partial sums of demand (for all the classes).
-        Initialse with 0 values, so that the lists/vectors have
-        the correct size.
-    */
-    static void initialisePartialSums (const double iNbOfClasses,
-                                       const double iNbOfDraws,
-                                       DemandSimulationPartialSum_T&);
-
-    /** 
-	Calculate the partial sums:
-	S(j,k) = d(1,k) + d(2,k) + ... + d(j,k), for a given k, and j=1 to n-1.
-	Note that n-1 corresponds to the size of the parameter list,
-	i.e., n corresponds to the number of classes/buckets.
-    */
-    static void calculatePartialSum (const short k, const VariateList_T&, 
-				     DemandSimulationPartialSum_T&);
-
+    static void optimialOptimisationByMCIntegration (const int K, 
+						     const double iCabCapacity,
+						     BucketList_T&);
   };
 }
 #endif
