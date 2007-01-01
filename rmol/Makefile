@@ -70,12 +70,16 @@ LD_FLAGS =
 ###
 # Dynamic library building
 RMOL_SRC = 	FldYieldRange.cpp FldDistributionParameters.cpp \
-			Demand.cpp \
-			Bucket.cpp \
-			Emsr.cpp \
-			Gaussian.cpp \
-			DemandGeneratorList.cpp \
-			MCUtils.cpp
+		FacSupervisor.cpp \
+		FacAbstract.cpp FacPartialSumHolder.cpp FacBucketHolder.cpp \
+		BomAbstract.cpp \
+		Demand.cpp \
+		Bucket.cpp BucketHolder.cpp \
+		Emsr.cpp \
+		Gaussian.cpp \
+		DemandGeneratorList.cpp \
+		PartialSumHolder.cpp \
+		MCUtils.cpp
 RMOL_OBJ = $(RMOL_SRC:%.cpp=$(OBJ_PATH)/%.o)
 RMOL_HEAD = $(RMOL_SRC:%.cpp=%.hpp) \
 			VariateList.hpp \

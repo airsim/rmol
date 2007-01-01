@@ -12,8 +12,10 @@ namespace RMOL {
   
   // //////////////////////////////////////////////////////////////////////
   Bucket::Bucket (const Bucket& iBucket) :
-    _yieldRange (iBucket.getYieldRange()), _demand (iBucket.getDemand()), 
-    _protection (0.0), _bookingLimit (0.0) {
+    _yieldRange (iBucket.getYieldRange()), 
+    _demand (iBucket.getDemand()), 
+    _protection (iBucket.getProtection()), 
+    _bookingLimit (iBucket.getBookingLimit()) {
   }
 
   // //////////////////////////////////////////////////////////////////////

@@ -7,7 +7,7 @@
 #include <iostream>
 #include <cmath>
 // RMOL
-#include "PartialSumList.hpp"
+#include "FacPartialSumHolder.hpp"
 #include "VariateList.hpp"
 #include "Gaussian.hpp"
 #include "MCUtils.hpp"
@@ -18,9 +18,9 @@ namespace RMOL {
   void MCUtils::
   optimialOptimisationByMCIntegration (const int K, 
 				       const double iCabinCapacity,
-				       BucketList_T& ioBucketList) {
+				       BucketHolder& ioBucketHolder) {
     // Number of classes/buckets: n
-    const short nbOfClasses = ioBucketList.size();
+    const short nbOfClasses = ioBucketHolder.getSize();
 
     /** 
 	Initialise the partial sum vector representing the last step within
@@ -29,9 +29,11 @@ namespace RMOL {
 	null. Then, the generated demand (variates) will be added 
 	incrementally.
     */
-    PartialSumList_T previousPartialSumList;
+    PartialSumHolder* previousPartialSumList_ptr = 
+      &(FacPartialSumHolder::instance().create (K));
+
     for (int k=1 ; k <= K; k++) {
-      previousPartialSumList.push_back (0.0);
+      previousPartialSumList_ptr->addPartialSum (0.0);
     }
 
     /** 
@@ -41,13 +43,13 @@ namespace RMOL {
     */
     int Kj = K;
     int lj = 0;
-    BucketList_T::iterator itBucket = ioBucketList.begin();
-    BucketList_T::iterator itNextBucket = ioBucketList.begin();
-    itNextBucket++;
-    for (short j=1 ; j <= nbOfClasses - 1; itBucket++, itNextBucket++, j++) {
+    ioBucketHolder.begin();
+    for (short j=1 ; j <= nbOfClasses - 1; j++, ioBucketHolder.iterate()) {
       /** Retrieve Bucket(j) (current) and Bucket(j+1) (next). */
-      Bucket& currentBucket = *itBucket;
-      const Bucket& nextBucket = *itNextBucket;
+      // Bucket& currentBucket = *itBucket;
+      // const Bucket& nextBucket = *itNextBucket;
+      Bucket& currentBucket = ioBucketHolder.getCurrentBucket();
+      const Bucket& nextBucket = ioBucketHolder.getNextBucket();
 
       // STEP 1.
       /** 
@@ -69,7 +71,8 @@ namespace RMOL {
 	 for the current class/bucket demand, j, and for k=1 to Kj.
       */
       VariateList_T aVariateList;
-      PartialSumList_T currentPartialSumList;
+      PartialSumHolder* currentPartialSumList_ptr = 
+	&(FacPartialSumHolder::instance().create (Kj));
       for (int k=1; k <= Kj; k++) {
 	const double djk = gaussianDemandGenerator.generateVariate();
 	aVariateList.push_back (djk);
@@ -83,9 +86,10 @@ namespace RMOL {
 	    <br>
 	    Hence: S(j,k) = S'(j-1, l+k) + d(j,k). 
 	*/
-	const double spjm1lpk = previousPartialSumList.at (lj + k - 1);
+	const double spjm1lpk = 
+	  previousPartialSumList_ptr->getPartialSum (lj + k - 1);
 	const double sjk = spjm1lpk + djk;
-	currentPartialSumList.push_back (sjk);
+	currentPartialSumList_ptr->addPartialSum (sjk);
 
 	/* DEBUG
 	   std::cout << "d(" << j << ", " << k << "); " << djk 
@@ -97,10 +101,8 @@ namespace RMOL {
       // STEP 2.
       /**
 	 Sort the partial sum vectors S(j,k) on k, for the current j.
-	 The STL implements the introsort algorithm, which has a worst case
-	 complexity of O (N log N): http://www.sgi.com/tech/stl/sort.html
       */
-      std::sort (currentPartialSumList.begin(), currentPartialSumList.end());
+      currentPartialSumList_ptr->sort ();
 
       /** Retrieve the prices for Bucket(j) and Bucket(j+1). */
       const double pj = currentBucket.getAverageYield();
@@ -133,8 +135,9 @@ namespace RMOL {
 	  The optimal protection is defined as:
 	  y(j) = 1/2 [S(j,lj) + S(j, lj+1)]
       */
-      const double sjl = currentPartialSumList.at (lj - 1);
-      const double sjlp1 = currentPartialSumList.at (lj + 1 - 1);
+      const double sjl = currentPartialSumList_ptr->getPartialSum (lj - 1);
+      const double sjlp1 = 
+	currentPartialSumList_ptr->getPartialSum (lj + 1 - 1);
       const double yj = (sjl + sjlp1) / 2;
 
       /** DEBUG
@@ -146,11 +149,11 @@ namespace RMOL {
       currentBucket.setProtection (yj);
 
       /** S'(j,k) = S(j,k). */
-      previousPartialSumList = currentPartialSumList;
+      previousPartialSumList_ptr = currentPartialSumList_ptr;
     }
 
     // Set the protection of Bucket(n) to be equal to the capacity:
-    Bucket& currentBucket = *itBucket;
+    Bucket& currentBucket = ioBucketHolder.getCurrentBucket();
     currentBucket.setProtection (iCabinCapacity);
   }
 

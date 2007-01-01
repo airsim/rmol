@@ -4,7 +4,9 @@
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
+// RMOL
 #include "BucketList.hpp"
+#include "BucketHolder.hpp"
 
 namespace RMOL {
 
@@ -26,7 +28,7 @@ namespace RMOL {
      */
     static void optimialOptimisationByMCIntegration (const int K, 
 						     const double iCabCapacity,
-						     BucketList_T&);
+						     BucketHolder&);
   };
 }
 #endif
