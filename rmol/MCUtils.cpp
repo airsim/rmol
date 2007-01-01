@@ -41,15 +41,19 @@ namespace RMOL {
 	Note that n-1 corresponds to the size of the parameter list,
 	i.e., n corresponds to the number of classes/buckets.
     */
+    // Set the booking limit of Bucket(1) to be equal to the capacity
+    ioBucketHolder.begin();
+    Bucket& firstBucket = ioBucketHolder.getCurrentBucket();
+    firstBucket.setBookingLimit (iCabinCapacity);
+
     int Kj = K;
     int lj = 0;
-    ioBucketHolder.begin();
     for (short j=1 ; j <= nbOfClasses - 1; j++, ioBucketHolder.iterate()) {
       /** Retrieve Bucket(j) (current) and Bucket(j+1) (next). */
       // Bucket& currentBucket = *itBucket;
       // const Bucket& nextBucket = *itNextBucket;
       Bucket& currentBucket = ioBucketHolder.getCurrentBucket();
-      const Bucket& nextBucket = ioBucketHolder.getNextBucket();
+      Bucket& nextBucket = ioBucketHolder.getNextBucket();
 
       // STEP 1.
       /** 
@@ -148,11 +152,15 @@ namespace RMOL {
       // Set the protection for Bucket(j) (j ranging from 1 to n-1)
       currentBucket.setProtection (yj);
 
+      // Set the booking limit for Bucket(j+1) (j ranging from 1 to n-1)
+      const double yjm1 = currentBucket.getProtection();
+      nextBucket.setBookingLimit (iCabinCapacity - yjm1);
+
       /** S'(j,k) = S(j,k). */
       previousPartialSumList_ptr = currentPartialSumList_ptr;
     }
 
-    // Set the protection of Bucket(n) to be equal to the capacity:
+    // Set the protection of Bucket(n) to be equal to the capacity
     Bucket& currentBucket = ioBucketHolder.getCurrentBucket();
     currentBucket.setProtection (iCabinCapacity);
   }

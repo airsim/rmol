@@ -36,7 +36,10 @@ namespace RMOL {
       const Bucket& currentBucket = *itBucket;
       
       const double yj = currentBucket.getProtection();
-      ioOut << "Protection[" << j << "] = " << yj << std::endl;
+      const double bj = currentBucket.getBookingLimit();
+      ioOut << "Protection[" << j << "] = " << yj 
+	    << ", BookingLimit[" << j << "] = " << bj 
+	    << std::endl;
     }
 
     return ioOut;
@@ -53,7 +56,7 @@ namespace RMOL {
   }
 
   // //////////////////////////////////////////////////////////////////////
-  const Bucket& BucketHolder::getNextBucket () const {
+  Bucket& BucketHolder::getNextBucket () {
     return *_itNextBucket;
   }
 

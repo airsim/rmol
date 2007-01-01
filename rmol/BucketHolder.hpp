@@ -44,7 +44,7 @@ namespace RMOL {
     Bucket& getCurrentBucket ();
 
     /** Get the next element (bucket/class). */
-    const Bucket& getNextBucket () const;
+    Bucket& getNextBucket ();
 
     /** Add an element (bucket/class). */
     void addBucket (const Bucket& iBucket);
@@ -76,7 +76,7 @@ namespace RMOL {
 
     /** Iterator for the current bucket/class. */
     BucketList_T::iterator _itCurrentBucket;
-    BucketList_T::const_iterator _itNextBucket;
+    BucketList_T::iterator _itNextBucket;
   };
 }
 #endif // __RMOL_BUCKETHOLDER_HPP
