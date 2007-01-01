@@ -22,7 +22,8 @@ SHLD = gcc $(COMP_FLAG)
 LD = g++ $(COMP_FLAG)
 RM = rm -f
 RMR = rm -rf
-CP = cp
+CP = cp -f
+MV = mv -f
 LN = ln -s
 MKDIR = mkdir -p
 TAR_ZIP = tar zcf
@@ -118,6 +119,12 @@ FULL_BIN_NAME = $(BIN_PATH)/$(TEST_MAIN)
 ###
 # Tar-ball
 TAR_BALL = $(RMOL_LIB_NAME)_$(RMOL_VERSION).tgz
+TAR_CONTENT = INSTALL Makefile *.hpp *.cpp
+# Warning: the following directory (TAR_TMPROOTDIR) will be removed by
+# 	  the clean target (by typing 'make clean' or 'make tar', for instance)
+TAR_TMPROOTDIR = tmp
+TAR_VERSIONED_DIR = $(RMOL_LIB_NAME)-$(RMOL_VERSION)
+TAR_TMPDIR = $(TAR_TMPROOTDIR)/$(TAR_VERSIONED_DIR)
 
 ###
 # Targets
@@ -174,10 +181,14 @@ $(FULL_BIN_NAME): install $(TEST_MAIN_OBJ)
 # Cleaning the object, library and executable files and directories
 clean:
 	@$(RM) *~ core.* $(TAR_BALL)
-	@$(RMR) $(OBJ_PATH) $(LIB_PATH) $(BIN_PATH)
+	@$(RMR) $(OBJ_PATH) $(LIB_PATH) $(BIN_PATH) $(TAR_TMPROOTDIR)
 
 tar: clean
-	@$(TAR_ZIP) $(TAR_BALL) INSTALL Makefile *.hpp *.cpp \
-	$(TEST_MAIN_SRC)
+	@$(RMR) $(TAR_TMPDIR)
+	@$(MKDIR) $(TAR_TMPDIR)
+	@$(CP) $(TAR_CONTENT) $(TAR_TMPDIR)
+	@cd $(TAR_TMPROOTDIR); \
+	$(TAR_ZIP) $(TAR_BALL) $(TAR_VERSIONED_DIR); cd $(ROOT_DIR)
+	@$(MV) $(TAR_TMPROOTDIR)/$(TAR_BALL) .
 
 install: $(FULL_INSTALL_HEAD) $(FULL_INSTALL_LIB)
