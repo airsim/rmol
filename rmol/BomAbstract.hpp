@@ -6,6 +6,7 @@
 // //////////////////////////////////////////////////////////////////////
 // STL
 #include <iostream>
+#include <sstream>
 
 namespace RMOL {
 
@@ -19,7 +20,7 @@ namespace RMOL {
     /** Dump a Business Object into an output stream.
         @param ostream& the output stream
         @return ostream& the output stream. */
-    virtual std::ostream& toStream (std::ostream& ioOut) const {}
+    virtual void toStream (std::ostream& ioOut) const {}
 
   protected:
     /** Protected Default Constructor to ensure this class is abtract. */
@@ -27,6 +28,32 @@ namespace RMOL {
   };
 }
 
-std::ostream& operator<<(std::ostream& ioOut, const RMOL::BomAbstract& iBom);
+/**
+   Piece of code given by Nicolai M. Josuttis, Section 13.12.1 "Implementing
+   Output Operators" (p653) of his book "The C++ Standard Library: A Tutorial
+   and Reference", published by Addison-Wesley.
+ */
+template <class charT, class traits>
+inline
+std::basic_ostream<charT, traits>&
+operator<< (std::basic_ostream<charT, traits>& ioOut,
+            const RMOL::BomAbstract& iBom) {
+  /**
+     string stream:
+      - with same format
+      - without special field width
+   */
+  std::basic_ostringstream<charT,traits> ostr;
+  ostr.copyfmt (ioOut);
+  ostr.width (0);
+
+  // Fill string stream
+  iBom.toStream (ostr);
+
+  // Print string stream
+  ioOut << ostr.str();
+
+  return ioOut;
+}
 
 #endif // __RMOL_BOMABSTRACT_HPP

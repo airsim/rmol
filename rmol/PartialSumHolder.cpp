@@ -23,8 +23,7 @@ namespace RMOL {
   }
 
   // //////////////////////////////////////////////////////////////////////
-  std::ostream& PartialSumHolder::toStream (std::ostream& ioOut) const {
-    return ioOut;
+  void PartialSumHolder::toStream (std::ostream& ioOut) const {
   }
 
   // //////////////////////////////////////////////////////////////////////

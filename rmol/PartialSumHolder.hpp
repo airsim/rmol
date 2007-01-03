@@ -38,7 +38,7 @@ namespace RMOL {
     /** Dump a Business Object into an output stream.
         @param ostream& the output stream
         @return ostream& the output stream. */
-    std::ostream& toStream (std::ostream& ioOut) const;
+    void toStream (std::ostream& ioOut) const;
 
   private:
     /** Constructors. */

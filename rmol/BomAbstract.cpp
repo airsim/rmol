@@ -7,8 +7,3 @@
 namespace RMOL {
 
 }
-
-// //////////////////////////////////////////////////////////////////////
-std::ostream& operator<<(std::ostream& ioOut, const RMOL::BomAbstract& iBom) {
-  return iBom.toStream (ioOut);
-}

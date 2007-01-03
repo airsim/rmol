@@ -28,7 +28,7 @@ namespace RMOL {
   }
 
   // //////////////////////////////////////////////////////////////////////
-  std::ostream& BucketHolder::toStream (std::ostream& ioOut) const {
+  void BucketHolder::toStream (std::ostream& ioOut) const {
     ioOut << "Cabin capacity: " << _cabinCapacity << std::endl;
 
     BucketList_T::const_iterator itBucket = _bucketList.begin();
@@ -42,7 +42,6 @@ namespace RMOL {
 	    << std::endl;
     }
 
-    return ioOut;
   }
 
   // //////////////////////////////////////////////////////////////////////
