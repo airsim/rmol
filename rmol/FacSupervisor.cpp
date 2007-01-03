@@ -32,9 +32,9 @@ namespace RMOL {
 
   // //////////////////////////////////////////////////////////////////////
   void FacSupervisor::clean() {
-    for (FactoryPool_T::iterator itFactory = _pool.begin();
+    for (FactoryPool_T::const_iterator itFactory = _pool.begin();
 	 itFactory != _pool.end(); itFactory++) {
-      FacAbstract* currentFactory_ptr = *itFactory;
+      const FacAbstract* currentFactory_ptr = *itFactory;
       assert (currentFactory_ptr != NULL);
 
       delete (currentFactory_ptr); currentFactory_ptr = NULL;
@@ -46,6 +46,9 @@ namespace RMOL {
 
   // //////////////////////////////////////////////////////////////////////
   void FacSupervisor::cleanFactory () {
+	if (_instance != NULL) {
+		_instance->clean();
+	}
     delete (_instance); _instance = NULL;
   }
 
