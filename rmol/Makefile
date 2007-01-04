@@ -80,7 +80,8 @@ RMOL_SRC = 	FldYieldRange.cpp FldDistributionParameters.cpp \
 		Gaussian.cpp \
 		DemandGeneratorList.cpp \
 		PartialSumHolder.cpp \
-		MCUtils.cpp
+		MCUtils.cpp \
+		FileMgr.cpp
 RMOL_OBJ = $(RMOL_SRC:%.cpp=$(OBJ_PATH)/%.o)
 RMOL_HEAD = $(RMOL_SRC:%.cpp=%.hpp) \
 			VariateList.hpp \
@@ -90,7 +91,7 @@ RMOL_HEAD = $(RMOL_SRC:%.cpp=%.hpp) \
 FULL_INSTALL_HEAD = $(RMOL_HEAD:%=$(INSTALL_HEADDIR)/%)
 
 # Generated Library name
-RMOL_VERSION = 0.07
+RMOL_VERSION = 0.08
 RMOL_LIB_SHORT = $(RMOL_LIB_NAME)
 RMOL_LIB_WOV = lib$(RMOL_LIB_SHORT)$(LIB_SUFFIX)
 RMOL_LIB = $(RMOL_LIB_WOV).$(RMOL_VERSION)

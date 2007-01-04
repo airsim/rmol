@@ -45,6 +45,20 @@ namespace RMOL {
       return _lowerYield;
     }
     
+    // Setters
+    /** Setter for the upper yield of the range. */
+    void setUpperYield (const double iUpperYield) {
+      _upperYield = iUpperYield;
+    }
+    /** Setter for the average yield of the range. */
+    void setAverageYield (const double iAverageYield) {
+      _averageYield = iAverageYield;
+    }
+    /** Setter for the lower yield of the range. */
+    void setLowerYield (const double iLowerYield) {
+      _lowerYield = iLowerYield;
+    }
+    
   private:
     /** Upper yield. */
     double _upperYield;

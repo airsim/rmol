@@ -30,6 +30,16 @@ namespace RMOL {
     /** Getter for the variance value. */
     double getVariance() const;
     
+    // Setters
+    /** Setter for the mean value. */
+    void setMean (const double iMean) {
+      _mean = iMean;
+    }
+    /** Setter for the standard deviation value. */
+    void setStandardDeviation (const double iStandardDeviation) {
+      _standardDeviation = iStandardDeviation;
+    }
+    
     /** Destructors. */
     virtual ~FldDistributionParameters();
     
