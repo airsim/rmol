@@ -7,33 +7,39 @@ namespace RMOL {
 
   // //////////////////////////////////////////////////////////////////////
   Bucket::Bucket () : _yieldRange (), _demand (), 
-		      _protection (0.0), _bookingLimit (0.0) {
+                      _protection (0.0), _cumulatedProtection (0.0),
+                      _bookingLimit (0.0), _cumulatedBookingLimit (0.0) {
   }
   
   // //////////////////////////////////////////////////////////////////////
   Bucket::Bucket (const Bucket& iBucket) :
     _yieldRange (iBucket.getYieldRange()), 
     _demand (iBucket.getDemand()), 
-    _protection (iBucket.getProtection()), 
-    _bookingLimit (iBucket.getBookingLimit()) {
+    _protection (iBucket.getProtection()),
+    _cumulatedProtection (iBucket.getCumulatedProtection()),
+    _bookingLimit (iBucket.getBookingLimit()),
+    _cumulatedBookingLimit (iBucket.getCumulatedBookingLimit()) {
   }
 
   // //////////////////////////////////////////////////////////////////////
   Bucket::Bucket (const FldYieldRange& iYieldRange) :
     _yieldRange (iYieldRange), _demand (), 
-    _protection (0.0), _bookingLimit (0.0) {
+    _protection (0.0), _cumulatedProtection (0.0),
+    _bookingLimit (0.0), _cumulatedBookingLimit (0.0) {
   }
   
   // //////////////////////////////////////////////////////////////////////
   Bucket::Bucket (const FldYieldRange& iYieldRange, const Demand& iDemand) :
     _yieldRange (iYieldRange), _demand (iDemand), 
-    _protection (0.0), _bookingLimit (0.0) {
+    _protection (0.0), _cumulatedProtection (0.0),
+    _bookingLimit (0.0), _cumulatedBookingLimit (0.0) {
   }
     
   // //////////////////////////////////////////////////////////////////////
   Bucket::Bucket (const Demand& iDemand) :
     _yieldRange (iDemand.getYieldRange()), _demand (iDemand), 
-    _protection (0.0), _bookingLimit (0.0) {
+    _protection (0.0), _cumulatedProtection (0.0),
+    _bookingLimit (0.0), _cumulatedBookingLimit (0.0) {
   }
 
   // //////////////////////////////////////////////////////////////////////

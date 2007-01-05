@@ -62,6 +62,14 @@ namespace RMOL {
     double getProtection() const {
       return _protection;
     }
+    /** Getter for the cumulated protection. */
+    double getCumulatedProtection() const {
+      return _cumulatedProtection;
+    }
+    /** Getter for the booking limit. */
+    double getCumulatedBookingLimit() const {
+      return _cumulatedBookingLimit;
+    }
     /** Getter for the booking limit. */
     double getBookingLimit() const {
       return _bookingLimit;
@@ -84,9 +92,17 @@ namespace RMOL {
     void setProtection (const double iProtection) {
       _protection = iProtection;
     }
+    /** Setter for the cumulated protection. */
+    void setCumulatedProtection (const double iProtection) {
+      _cumulatedProtection = iProtection;
+    }
     /** Setter for the booking limit. */
     void setBookingLimit (const double iBookingLimit) {
       _bookingLimit = iBookingLimit;
+    }
+    /** Setter for the cumulated booking limit. */
+    void setCumulatedBookingLimit (const double iBookingLimit) {
+      _cumulatedBookingLimit = iBookingLimit;
     }
 
     /** Destructors. */
@@ -102,8 +118,14 @@ namespace RMOL {
     /** Protection. */
     double _protection;
 
+    /** Cumulated Protection. */
+    double _cumulatedProtection;
+
     /** Booking limit. */
     double _bookingLimit;
+
+    /** Cumulated Booking limit. */
+    double _cumulatedBookingLimit;
   };
 }
 #endif

@@ -24,9 +24,21 @@ namespace RMOL {
     /** Destructor. */
     ~BucketHolder();
 
-    /** Get the associated cabin capacity. */
+    /** Get the cabin capacity. */
     const double getCabinCapacity () const {
       return _cabinCapacity;
+    }
+    /** Get the total mean demand. */
+    const double getTotalMeanDemand () const {
+      return _totalMeanDemand;
+    }
+    /** Get the demand factor. */
+    const double getDemandFactor () const {
+      return _demandFactor;
+    }
+    /** Get the optimal revenue. */
+    const double getOptimalRevenue () const {
+      return _optimalRevenue;
     }
 
     /** Get the size of list of buckets/classes. */
@@ -58,8 +70,11 @@ namespace RMOL {
 	increment both internal iterators on Buckets. */
     void iterate ();
 
-    /** Calculate the optimal revenue (from the prices and protections). */
-    void calculateOptimalRevenue ();
+    /** Re-calculate the following values for the buckets/classes:
+        - the optimal revenue (from the prices and protections);
+        - the protections;
+        - the booking limits and cumulated booking limits. */
+    void recalculate ();
 
   private:
     /** Constructor.
@@ -81,9 +96,25 @@ namespace RMOL {
     BucketList_T::iterator _itCurrentBucket;
     BucketList_T::iterator _itNextBucket;
 
+    /** Total mean demand. */
+    double _totalMeanDemand;
+
+    /** Demand factor: ratio between total mean demand and capacity. */
+    double _demandFactor;
+
     /** Optimal revenue, defined as the sum, for each bucket/class,
         of the price times the protection. */
     double _optimalRevenue;
+
+  protected:
+    /** Re-calculate the protections and booking limits
+        (from cumulated protections). */
+    void calculateProtectionAndBookingLimits ();
+    
+    /** Re-calculate the total mean demand and optimal revenue
+        (from the demand, prices and protections). */
+    void calculateMeanDemandAndOptimalRevenue ();
+
   };
 }
 #endif // __RMOL_BUCKETHOLDER_HPP

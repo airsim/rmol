@@ -34,7 +34,6 @@ namespace RMOL {
     while (inputFile.getline (buffer, sizeof (buffer), ';')) {
       std::istringstream iStringStr (buffer);
 
-
       if (i == 1) {
         hasAllPArams = true;
       }
@@ -72,9 +71,11 @@ namespace RMOL {
       std::cerr << "Problem when reading input file \"" << iInputFileName
                 << "\"" << std::endl;
     } else {
+      if (i == 2) {
         const Demand aDemand (aDistribParams, aYieldRange);
         Bucket aBucket (aYieldRange);
         ioBucketHolder.addBucket (aBucket);
+      }
     }
 
   }
