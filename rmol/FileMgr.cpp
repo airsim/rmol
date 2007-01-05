@@ -40,14 +40,19 @@ namespace RMOL {
       }
       
       if (iStringStr >> dval) {
-        std::cout << "value[" << i << "] = '" << dval << "'" << std::endl;
         if (i == 1) {
           aYieldRange.setUpperYield (dval);
           aYieldRange.setAverageYield (dval);
+          // std::cout << "Yield[" << i << "] = '" << dval << "'" << std::endl;
+
         } else if (i == 2) {
           aDistribParams.setMean (dval);
+          // std::cout << "Mean[" << i << "] = '" << dval << "'" << std::endl;
+
         } else if (i == 3) {
           aDistribParams.setStandardDeviation (dval);
+          //std::cout << "stdDev[" << i << "] = '" << dval << "'" << std::endl;
+          i = 0;
         }
         i++;
           
@@ -55,7 +60,7 @@ namespace RMOL {
         hasAllPArams = false;
       }
 
-      if (hasAllPArams) {
+      if (hasAllPArams && i == 1) {
         const Demand aDemand (aDistribParams, aYieldRange);
         Bucket aBucket (aYieldRange, aDemand);
         ioBucketHolder.addBucket (aBucket);
@@ -66,7 +71,12 @@ namespace RMOL {
     if (!inputFile.eof()) {
       std::cerr << "Problem when reading input file \"" << iInputFileName
                 << "\"" << std::endl;
+    } else {
+        const Demand aDemand (aDistribParams, aYieldRange);
+        Bucket aBucket (aYieldRange);
+        ioBucketHolder.addBucket (aBucket);
     }
+
   }
   
 }

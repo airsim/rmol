@@ -10,6 +10,8 @@
 
 // M A I N
 int main (int argc, char* argv[]) {
+  try {
+    
   // Number of random draws to be generated (best if greater than 100)
   int K = 100000;
   // Cabin Capacity (it must be greater then 100 here)
@@ -41,7 +43,7 @@ int main (int argc, char* argv[]) {
   if (hasInputFile) {
     // Read the input file
     RMOL::FileMgr::readAndProcessInputFile (inputFileName, aBucketHolder);
-    
+
   } else {
     // No input file has been provided. So, process a sample.
   
@@ -77,6 +79,14 @@ int main (int argc, char* argv[]) {
 
   // Clean operations
   RMOL::FacSupervisor::cleanFactory();
+
+  } catch (const std::exception& stde) {
+    std::cerr << "Standard exception: " << stde.what() << std::endl;
+    return -1;
+    
+  } catch (...) {
+    return -1;
+  }
   
   return 0;	
 }

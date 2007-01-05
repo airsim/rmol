@@ -58,6 +58,9 @@ namespace RMOL {
 	increment both internal iterators on Buckets. */
     void iterate ();
 
+    /** Calculate the optimal revenue (from the prices and protections). */
+    void calculateOptimalRevenue ();
+
   private:
     /** Constructor.
 	<br>Protected to force the use of the Factory. */
@@ -77,6 +80,10 @@ namespace RMOL {
     /** Iterator for the current bucket/class. */
     BucketList_T::iterator _itCurrentBucket;
     BucketList_T::iterator _itNextBucket;
+
+    /** Optimal revenue, defined as the sum, for each bucket/class,
+        of the price times the protection. */
+    double _optimalRevenue;
   };
 }
 #endif // __RMOL_BUCKETHOLDER_HPP

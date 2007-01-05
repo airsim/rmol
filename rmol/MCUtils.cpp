@@ -163,6 +163,9 @@ namespace RMOL {
     // Set the protection of Bucket(n) to be equal to the capacity
     Bucket& currentBucket = ioBucketHolder.getCurrentBucket();
     currentBucket.setProtection (iCabinCapacity);
+
+    // Re-calculate the optimal revenue
+    ioBucketHolder.calculateOptimalRevenue ();
   }
 
 }

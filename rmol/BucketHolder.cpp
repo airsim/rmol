@@ -3,6 +3,7 @@
 // //////////////////////////////////////////////////////////////////////
 // STL
 #include <iostream>
+#include <iomanip>
 // RMOL
 #include "BucketHolder.hpp"
 
@@ -29,18 +30,25 @@ namespace RMOL {
 
   // //////////////////////////////////////////////////////////////////////
   void BucketHolder::toStream (std::ostream& ioOut) const {
-    ioOut << "Cabin capacity: " << _cabinCapacity << std::endl;
+    // Generate a CSV (Comma Separated Values) output
+    ioOut << "Class; Mean; Std Dev; Protection; Bkg Limit; " << std::endl;
 
     BucketList_T::const_iterator itBucket = _bucketList.begin();
     for (short j=1; itBucket != _bucketList.end(); itBucket++, j++) {
       const Bucket& currentBucket = *itBucket;
       
+      const double pj = currentBucket.getUpperYield();
+      const double mj = currentBucket.getMean();
+      const double sj = currentBucket.getStandardDeviation();
       const double yj = currentBucket.getProtection();
       const double bj = currentBucket.getBookingLimit();
-      ioOut << "Protection[" << j << "] = " << yj 
-	    << ", BookingLimit[" << j << "] = " << bj 
-	    << std::endl;
+      ioOut << j << "; " << std::fixed << std::setprecision (2)
+            << pj << "; " << mj << "; " << sj << "; " << yj << "; " << bj
+            << std::endl;
     }
+
+    ioOut << "Note: Cabin Capacity = " << _cabinCapacity
+          << "; Optimal Revenue = " << _optimalRevenue << std::endl;
 
   }
 
@@ -83,4 +91,19 @@ namespace RMOL {
     }
   }
 
+  // //////////////////////////////////////////////////////////////////////
+  void BucketHolder::calculateOptimalRevenue () {
+    _optimalRevenue = 0.0;
+
+    for (BucketList_T::const_iterator itBucket = _bucketList.begin();
+         itBucket != _bucketList.end(); itBucket++) {
+      const Bucket& currentBucket = *itBucket;
+      
+      const double currentPrice = currentBucket.getAverageYield();
+      const double currentProtection = currentBucket.getProtection();
+      const double bucketOptimalRevenue = currentPrice * currentProtection;
+      _optimalRevenue += bucketOptimalRevenue;
+    }
+  }
+  
 }

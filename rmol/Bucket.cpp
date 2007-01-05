@@ -46,6 +46,16 @@ namespace RMOL {
   }
 
   // //////////////////////////////////////////////////////////////////////
+  const double Bucket::getMean() const {
+    return _demand.getMean();
+  }
+
+  // //////////////////////////////////////////////////////////////////////
+  const double Bucket::getStandardDeviation() const {
+    return _demand.getStandardDeviation();
+  }
+
+  // //////////////////////////////////////////////////////////////////////
   const double Bucket::getUpperYield() const {
     return _yieldRange.getUpperYield();
   }

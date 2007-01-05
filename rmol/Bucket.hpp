@@ -68,6 +68,10 @@ namespace RMOL {
     }
     /** Getter for the distribution parameters of the demand. */
     const FldDistributionParameters& getDistributionParameters() const;
+    /** Getter for the demand mean. */
+    const double getMean() const;
+    /** Getter for the demand standard deviation. */
+    const double getStandardDeviation() const;
     /** Getter for the upper yield. */
     const double getUpperYield() const;
     /** Getter for the average yield. */
