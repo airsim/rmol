@@ -17,11 +17,12 @@ namely "librmol.so", against which you can then link your own
 programs. An example (C++) program is also delivered, namely "optimise",
 which uses that library.
 
-For the installation, you will need to overwritte the target
+For the installation, you will need to overwrite the target
 installation directory (INSTALL_ROOTDIR variable). Then, just type
-"make install".  Of course, if the install directory is only writeable
+"make install". Of course, if the install directory is only writeable
 by root (which is the case for /usr/local), you will need to be root
 when typing "make install".
 
-If you want to develop using the extended-GSL API, you will need to
-include the header file (namely "gsl_statext.h").
+A few CSV sample files are provided, so that you can practice with them.
+For example, if you type "testLib.sh 10000 200 sample1.csv", you'll get
+the optimal protections and revenue for the sample1.csv configuration.
