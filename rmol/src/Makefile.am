@@ -1,4 +1,3 @@
-SUBDIRS = basic bom command factory field test
+SUBDIRS = basic field bom factory command service test
 
-LDADD = basic/libbas.la bom/libbom.la command/libcmd.la factory/libfac.la \
-	field/libfld.la
+LDADD = basic/libbas.la field/libfld.la bom/libbom.la factory/libfac.la command/libcmd.la service/libsvc.la
