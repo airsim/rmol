@@ -13,6 +13,6 @@ INCLUDES = -I$(top_srcdir)
 lib_LTLIBRARIES = librmol-1.1.la
 librmol_1_1_la_SOURCES = $(svc_h_sources) $(svc_cc_sources)
 librmol_1_1_la_LIBADD = basic/libbas.la field/libfld.la bom/libbom.la \
-						factory/libfac.la command/libcmd.la
+						factory/libfac.la command/libcmd.la $(GSL_LIBS)
 librmol_1_1_la_LDFLAGS = -version-info $(RMOL_LIBRARY_VERSION) \
 						-release $(RMOL_RELEASE)

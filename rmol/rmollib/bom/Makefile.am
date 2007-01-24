@@ -12,7 +12,7 @@ bom_cc_sources = BomAbstract.cpp Bucket.cpp BucketHolder.cpp \
 library_includedir=$(includedir)/$(RMOL_LIBRARY_NAME)-$(RMOL_API_VERSION)/$(RMOL_LIBRARY_NAME)/bom
 library_include_HEADERS = $(bom_h_sources)
 
-INCLUDES = -I$(top_srcdir)
+INCLUDES = -I$(top_srcdir) $(GSL_CFLAGS)
 
 noinst_LTLIBRARIES= libbom.la
 libbom_la_SOURCES= $(bom_h_sources) $(bom_cc_sources) 

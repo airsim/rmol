@@ -71,6 +71,15 @@ dnl AC_SUBST(DEPS_CFLAGS)
 dnl AC_SUBST(DEPS_LIBS)
 
 dnl -----------------------------------------------
+dnl Support for the GSL (GNU Scientific Library)
+dnl -----------------------------------------------
+GSL_CFLAGS=`gsl-config --cflags`
+GSL_LIBS=`gsl-config --libs`
+AC_SUBST(GSL_CFLAGS)
+AC_SUBST(GSL_LIBS)
+
+
+dnl -----------------------------------------------
 dnl Generates Makefile's, configuration files and scripts
 dnl -----------------------------------------------
 
