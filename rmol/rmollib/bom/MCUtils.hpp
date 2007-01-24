@@ -5,8 +5,8 @@
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // RMOL
-#include "BucketList.hpp"
-#include "BucketHolder.hpp"
+#include <rmollib/bom/BucketList.hpp>
+#include <rmollib/bom/BucketHolder.hpp>
 
 namespace RMOL {
 

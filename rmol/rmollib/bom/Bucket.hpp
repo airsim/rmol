@@ -5,8 +5,8 @@
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // RMOL
-#include "FldYieldRange.hpp"
-#include "Demand.hpp"
+#include <rmollib/field/FldYieldRange.hpp>
+#include <rmollib/bom/Demand.hpp>
 
 namespace RMOL {
 

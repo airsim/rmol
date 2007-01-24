@@ -6,7 +6,7 @@
 // Chapter 19)
 #include <gsl/gsl_randist.h>
 // RMOL
-#include "Gaussian.hpp"
+#include <rmollib/bom/Gaussian.hpp>
 
 namespace RMOL {
 

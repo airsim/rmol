@@ -7,7 +7,7 @@
 // STL
 #include <list>
 // RMOL
-#include "FldDistributionParameters.hpp"
+#include <rmollib/field/FldDistributionParameters.hpp>
 
 namespace RMOL {
 

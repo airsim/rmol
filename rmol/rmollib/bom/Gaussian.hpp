@@ -7,7 +7,7 @@
 // GSL Random Number Generation (GSL Reference Manual, version 1.7, Chapter 17)
 #include <gsl/gsl_rng.h>
 // RMOL
-#include "FldDistributionParameters.hpp"
+#include <rmollib/field/FldDistributionParameters.hpp>
 
 namespace RMOL {
 

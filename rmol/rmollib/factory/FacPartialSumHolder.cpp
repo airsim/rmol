@@ -4,8 +4,8 @@
 // C
 #include <assert.h>
 // RMOL
-#include "FacSupervisor.hpp"
-#include "FacPartialSumHolder.hpp"
+#include <rmollib/factory/FacSupervisor.hpp>
+#include <rmollib/factory/FacPartialSumHolder.hpp>
 
 namespace RMOL {
 

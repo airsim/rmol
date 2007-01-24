@@ -5,8 +5,8 @@
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // RMOL
-#include "FacAbstract.hpp"
-#include "PartialSumHolder.hpp"
+#include <rmollib/factory/FacAbstract.hpp>
+#include <rmollib/bom/PartialSumHolder.hpp>
 
 namespace RMOL {
 

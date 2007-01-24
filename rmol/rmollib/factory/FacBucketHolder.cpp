@@ -4,8 +4,8 @@
 // C
 #include <assert.h>
 // RMOL
-#include "FacSupervisor.hpp"
-#include "FacBucketHolder.hpp"
+#include <rmollib/factory/FacSupervisor.hpp>
+#include <rmollib/factory/FacBucketHolder.hpp>
 
 namespace RMOL {
 

@@ -1,12 +1,12 @@
-#ifndef __RMOL_DEMAND_HPP
-#define __RMOL_DEMAND_HPP
+#ifndef __RMOL_BOM_DEMAND_HPP
+#define __RMOL_BOM_DEMAND_HPP
 
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // RMOL
-#include "FldDistributionParameters.hpp"
-#include "FldYieldRange.hpp"
+#include <rmollib/field/FldDistributionParameters.hpp>
+#include <rmollib/field/FldYieldRange.hpp>
 
 namespace RMOL {
 
@@ -48,11 +48,11 @@ namespace RMOL {
     
   private:
     /** Yield range, i.e., upper and lower yields, as well as average yield
-	(average revenue per unit of demand). */
+        (average revenue per unit of demand). */
     FldYieldRange _yieldRange;
 
     /** Distribution parameters (i.e., mean and standard deviation). */
     FldDistributionParameters _distributionParameters;
   };
 }
-#endif // __RMOL_DEMAND_HPP
+#endif // __RMOL_BOM_DEMAND_HPP

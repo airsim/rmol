@@ -1,10 +1,10 @@
 ## top directory
 
 #Build in these directories:
-SUBDIRS= src
+SUBDIRS = $(RMOL_LIBRARY_NAME)
 
 #Distribute these directories:
-DIST_SUBDIRS = src/service
+DIST_SUBDIRS = $(RMOL_LIBRARY_NAME)
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = rmollib-1.1.pc

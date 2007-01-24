@@ -3,7 +3,7 @@ dnl --------------------------------
 dnl Initialization macros.
 dnl --------------------------------
 
-AC_INIT(src/test/optimise.cpp)
+AC_INIT(rmollib/RMOL_Service.hpp)
 AM_CONFIG_HEADER(config.h)
 
 dnl -----------------------------------------------
@@ -69,8 +69,8 @@ dnl -----------------------------------------------
 dnl Generates Makefile's, configuration files and scripts
 dnl -----------------------------------------------
 
-AC_OUTPUT(Makefile rmollib-1.1.pc src/Makefile \
-          src/basic/Makefile src/field/Makefile src/bom/Makefile \
-          src/factory/Makefile src/command/Makefile src/service/Makefile \
-          src/test/Makefile)
+AC_OUTPUT(Makefile rmollib-1.1.pc rmollib/Makefile \
+          rmollib/basic/Makefile rmollib/field/Makefile rmollib/bom/Makefile \
+          rmollib/factory/Makefile rmollib/command/Makefile \
+          test/Makefile)
 

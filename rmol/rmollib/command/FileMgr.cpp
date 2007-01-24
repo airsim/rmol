@@ -7,8 +7,8 @@
 #include <sstream>
 #include <fstream>
 // RMOL
-#include "BucketHolder.hpp"
-#include "FileMgr.hpp"
+#include <rmollib/bom/BucketHolder.hpp>
+#include <rmollib/command/FileMgr.hpp>
 
 namespace RMOL {
 

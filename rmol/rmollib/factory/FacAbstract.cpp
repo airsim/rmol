@@ -4,8 +4,8 @@
 // C
 #include <assert.h>
 // RMOL
-#include "BomAbstract.hpp"
-#include "FacAbstract.hpp"
+#include <rmollib/bom/BomAbstract.hpp>
+#include <rmollib/factory/FacAbstract.hpp>
 
 namespace RMOL {
   

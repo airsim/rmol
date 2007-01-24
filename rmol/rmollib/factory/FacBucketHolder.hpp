@@ -5,8 +5,8 @@
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // RMOL
-#include "FacAbstract.hpp"
-#include "BucketHolder.hpp"
+#include <rmollib/factory/FacAbstract.hpp>
+#include <rmollib/bom/BucketHolder.hpp>
 
 namespace RMOL {
 

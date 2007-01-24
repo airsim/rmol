@@ -2,7 +2,7 @@
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // RMOL
-#include "DemandGeneratorList.hpp"
+#include <rmollib/bom/DemandGeneratorList.hpp>
 
 namespace RMOL {
 

@@ -7,9 +7,9 @@
 // STL
 #include <list>
 // RMOL
-#include "VariateList.hpp"
-#include "DistributionParameterList.hpp"
-#include "Gaussian.hpp"
+#include <rmollib/bom/VariateList.hpp>
+#include <rmollib/bom/DistributionParameterList.hpp>
+#include <rmollib/bom/Gaussian.hpp>
 
 namespace RMOL {
 
