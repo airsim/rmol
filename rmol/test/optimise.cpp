@@ -2,10 +2,7 @@
 #include <iostream>
 #include <sstream>
 // RMOL
-#include <rmol/FacSupervisor.hpp>
-#include <rmol/FacBucketHolder.hpp>
-#include <rmol/MCUtils.hpp>
-#include <rmol/FileMgr.hpp>
+#include <rmollib/RMOL_Service.hpp>
 
 
 // M A I N

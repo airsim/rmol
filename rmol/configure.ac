@@ -10,6 +10,7 @@ dnl -----------------------------------------------
 dnl Package name and version number (user defined)
 dnl -----------------------------------------------
 
+PACKAGE_NAME=rmol
 RMOL_LIBRARY_NAME=rmollib
 
 #release versioning
@@ -65,11 +66,15 @@ AM_SANITY_CHECK
 
 AC_LANG_CPLUSPLUS
 
+dnl PKG_CHECK_MODULES(DEPS, gsl-1.7 >= 1.7)
+dnl AC_SUBST(DEPS_CFLAGS)
+dnl AC_SUBST(DEPS_LIBS)
+
 dnl -----------------------------------------------
 dnl Generates Makefile's, configuration files and scripts
 dnl -----------------------------------------------
 
-AC_OUTPUT(Makefile rmollib-1.1.pc rmollib/Makefile \
+AC_OUTPUT(Makefile rmol-config rmollib-1.1.pc rmollib/Makefile \
           rmollib/basic/Makefile rmollib/field/Makefile rmollib/bom/Makefile \
           rmollib/factory/Makefile rmollib/command/Makefile \
           test/Makefile)

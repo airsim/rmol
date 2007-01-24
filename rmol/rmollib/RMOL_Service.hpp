@@ -4,6 +4,10 @@
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
+#include <rmollib/factory/FacSupervisor.hpp>
+#include <rmollib/factory/FacBucketHolder.hpp>
+#include <rmollib/bom/MCUtils.hpp>
+#include <rmollib/command/FileMgr.hpp>
 
 
 namespace RMOL {
