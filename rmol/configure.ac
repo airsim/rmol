@@ -73,6 +73,10 @@ dnl AC_SUBST(DEPS_LIBS)
 dnl -----------------------------------------------
 dnl Support for the GSL (GNU Scientific Library)
 dnl -----------------------------------------------
+dnl AC_CHECK_LIB(m,main)
+dnl AC_CHECK_LIB(gslcblas,main)
+dnl AC_CHECK_LIB(gsl,main)
+
 GSL_CFLAGS=`gsl-config --cflags`
 GSL_LIBS=`gsl-config --libs`
 AC_SUBST(GSL_CFLAGS)
