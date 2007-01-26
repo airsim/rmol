@@ -1,8 +1,10 @@
 #!/bin/sh
 
-INSTALL_DIR=`make print_INSTALL_ROOTDIR_value`
-TST_PROG=`make print_FULL_BIN_NAME_value`
-RMOL_LIB=`make print_RMOL_LIB_value`
+INSTALL_DIR=`grep "^prefix =" ../Makefile | cut -d"=" -d" " -f3`
+TST_PROG=./optimise
+RMOL_API_VERSION=`grep "^RMOL_API_VERSION =" ../Makefile | cut -d"=" -d" " -f3`
+RMOL_LIBRARY_NAME=`grep "^RMOL_LIBRARY_NAME =" ../Makefile | cut -d"=" -d" " -f3`
+RMOL_LIB=lib${RMOL_LIBRARY_NAME}-${RMOL_API_VERSION}.so
 
 if [ ! -x ${TST_PROG} ];
 then
