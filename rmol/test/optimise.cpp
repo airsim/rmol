@@ -2,7 +2,7 @@
 #include <iostream>
 #include <sstream>
 // RMOL
-#include <rmollib/RMOL_Service.hpp>
+#include <rmol/RMOL_Service.hpp>
 
 
 // M A I N
