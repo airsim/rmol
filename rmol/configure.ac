@@ -133,6 +133,27 @@ AC_SUBST(CXXFLAGS_OPT)
 # -----------------------------------------------
 # Support for the GSL (GNU Scientific Library)
 # -----------------------------------------------
+# Provide --with-gsl
+GSL_CONFIG=gsl-config
+AC_ARG_WITH(gsl,
+	[ --with-gsl=PATH		Use GSL library in PATH],
+	[ case $withval in
+	    yes) AC_PATH_PROG(GSL_CONFIG, gsl-config, false) ;;
+		/*) if test -d "$withval" && test -x "$withval/bin/gsl-config"; then
+		      GSL_CONFIG=$withval/bin/gsl-config
+			elif test -x "$withval"; then
+			  GSL_CONFIG=$withval
+			fi
+
+			if ${GSL_CONFIG} --version >/dev/null 2>&1; then :; else
+			  AC_MSG_ERROR([Did not find gsl-config script at ${GSL_CONFIG}])
+			fi
+        ;;
+		*) AC_MSG_ERROR([*** GSL is required ***]) ;;
+	  esac
+    ]
+)
+
 # PKG_CHECK_MODULES(DEPS, gsl-1.7 >= 1.7)
 # AC_SUBST(DEPS_CFLAGS)
 # AC_SUBST(DEPS_LIBS)
@@ -140,8 +161,8 @@ AC_SUBST(CXXFLAGS_OPT)
 # AC_CHECK_LIB(m,main)
 # AC_CHECK_LIB(gslcblas,main)
 # AC_CHECK_LIB(gsl,main)
-GSL_CFLAGS=`gsl-config --cflags`
-GSL_LIBS=`gsl-config --libs`
+GSL_CFLAGS=`${GSL_CONFIG} --cflags`
+GSL_LIBS=`${GSL_CONFIG} --libs`
 AC_SUBST(GSL_CFLAGS)
 AC_SUBST(GSL_LIBS)
 
@@ -169,42 +190,7 @@ test "x$diff_ok" != xyes && enable_tests=no
 test "x$sed_ok" != xyes && enable_tests=no
 AM_CONDITIONAL([RUN_TESTS], [test "x$enable_tests" = xyes])
 
-# Check if we have Fortran compiler
-if test "x$F77" != x; then
-  # Checks for BLAS (ACML, MKL, ATLAS or NETLIB)
-  ACX_BLAS
-
-  # Checks for CBLAS (ACML, MKL, ATLAS or NETLIB)
-  ACX_CBLAS
-
-  # Checks for LAPACK (ACML, MKL, ATLAS or NETLIB)
-  ACX_LAPACK
-
-  # Set LIBS
-  if test x"$acx_blas_ok" = xyes; then
-    if test x"$F77" = xgfortran; then
-      MY_FLIBS="-lgfortran"
-    else 
-      if test x"$F77" = xg77; then
-        MY_FLIBS="-lg2c"
-      fi 
-    fi 
-    LIBS="$BLAS_LIBS $LIBS$MY_FLIBS"
-    if test "x$CBLAS_LIBS" != x; then
-      LIBS="$CBLAS_LIBS $LIBS"
-    fi
-    if test x"$LAPACK_LIBS" != x; then
-      LIBS="$LAPACK_LIBS $LIBS"
-    fi
-  fi
-else
-  acx_blas_ok=nofortran;
-  blas_mkl_ok=no;
-  blas_acml_ok=no;
-  blas_atlas_ok=no;
-  acx_cblas_ok=noblas;
-  acx_lapack_ok=noblas;
-fi
+acx_blas_ok=nofortran;
 
 
 # Checks for header files
@@ -365,26 +351,6 @@ Testing tools:
   - diff ........... : ${diff_ok}
   - sed ............ : ${sed_ok}
 
-Optional modules:
-  - comm ........... : ${enable_comm}
-  - fixed .......... : ${enable_fixed}
-  - optim .......... : ${enable_optim}
-  - protocol ....... : ${enable_protocol}
-  - signal ......... : ${enable_signal}
-  - srccode ........ : ${enable_srccode}
-
-External libs:
-  - BLAS ........... : ${acx_blas_ok}
-    * MKL .......... : ${blas_mkl_ok}
-    * ACML ......... : ${blas_acml_ok}
-    * ATLAS ........ : ${blas_atlas_ok}
-  - CBLAS .......... : ${acx_cblas_ok}
-  - LAPACK ......... : ${acx_lapack_ok}
-  - FFT ............ : ${acx_fft_ok}
-    * MKL .......... : ${fft_mkl8_ok}
-    * ACML ......... : ${fft_acml_ok}
-    * FFTW ......... : ${fftw3_ok}
-
 Compiler/linker flags/libs/defs:
   - CXX ............ : ${CXX}
   - CXXFLAGS ....... : ${CXXFLAGS_OPT}
@@ -392,6 +358,11 @@ Compiler/linker flags/libs/defs:
   - CPPFLAGS ....... : ${CPPFLAGS}
   - LDFLAGS ........ : ${LDFLAGS}
   - LIBS ........... : ${LIBS}
+
+External libraries:
+  - GSL ............ : ${GSL_CONFIG}
+    o GSL_CFLAGS ... : ${GSL_CFLAGS}
+    o GSL_LIBS ..... : ${GSL_LIBS}
 
 ------------------------------------------------------------------------------
 Now type 'make && make install' to build and install $PACKAGE-$VERSION library
