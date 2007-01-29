@@ -1,0 +1,70 @@
+Name: @PACKAGE@
+Summary: @PACKAGE_NAME@ is a C++ library of Revenue Management and Optimisation classes and functions. Typically, the service providers (like, e.g., airlines, hotels or car rental companies) may use that library to help them optimise their revenues from their seat capacities.
+Version: @VERSION@
+Release: @RPM_RELEASE@
+Source: http://download.sourceforge.net/rmol/%{name}-%{version}.tar.gz
+Group: System Environment/Libraries
+License: LGPL
+Packager: Denis Arnaud <denis_arnaud@users.sourceforge.net>
+URL: http://rmol.sourceforge.net/
+BuildRoot: %{_tmppath}/%{name}-%{version}-buildroot
+Prereq: /sbin/ldconfig
+Prefix: %{_prefix}
+
+%description 
+RMOL is a C++ library of Revenue Management and Optimisation classes and
+functions. Typically, that library may be used by service providers
+(e.g., airlines offering flight seats, hotels offering rooms, rental car
+companies offering rental days, broadcasting company offering advertisement 
+slots, theaters offering seats, etc.).
+Most of the algorithms implemented are public and documented in the following
+book:
+The Theory and practice of Revenue Management, by Kallian T. Talluri and
+Garrett J. van Ryzin, Kluwer Academic Publishers, 2004, ISBN 1-4020-7701-7
+
+%package html-doc
+Summary: HTML documentation for the @PACKAGE_NAME@ library
+Group: System Environment/Libraries
+
+%description html-doc
+This package contains the documentation in the HTML format of the RMOL
+library. The documentation is the same as at the RMOL web page.
+
+%prep
+%setup -q
+
+%build
+%configure --with-docdir=%{_docdir}/%{name}-html-doc
+make
+
+%install
+[ "$RPM_BUILD_ROOT" != "/" ] && rm -rf $RPM_BUILD_ROOT
+make DESTDIR=$RPM_BUILD_ROOT install
+
+%clean
+[ "$RPM_BUILD_ROOT" != "/" ] && rm -rf $RPM_BUILD_ROOT
+
+%post
+/sbin/ldconfig
+
+%postun
+/sbin/ldconfig
+
+%files
+%defattr(-,root,root,-)
+%doc AUTHORS ChangeLog INSTALL NEWS README TODO
+%{_libdir}/*.la
+%{_libdir}/*.a
+%{_libdir}/*.so
+%{_libdir}/*.so.*
+%{_libdir}/pkgconfig/%{name}.pc
+%{_bindir}/%{name}-config
+%{_includedir}/%{name}
+%{_datadir}/%{name}/*.m
+
+%files html-doc
+%doc %{_docdir}/%{name}-html-doc
+
+%changelog
+* Sat Jan 27 2007  Denis Arnaud <denis_arnaud@users.sourceforge.net>
+- Initial spec file prepared
