@@ -15,12 +15,12 @@ endif
 
 
 MAINTAINERCLEANFILES = Makefile.in aclocal.m4 configure \
-			config-h.in sic/stamp-h.in
+			config-h.in sic/stamp-h.in autogen.sh bootstrap
 
 # Build in these directories:
 SUBDIRS = rmol win32 po $(HTML_DOC_DIR) $(TEST_DIR)
 
-EXTRA_DIST = autogen.sh bootstrap rmol.spec Makefile.common
+EXTRA_DIST = rmol.spec Makefile.common
 
 # Configuration helpers
 bin_SCRIPTS = @PACKAGE@-config
