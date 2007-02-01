@@ -163,6 +163,7 @@ AC_ARG_WITH(gsl,
 # AC_CHECK_LIB(gsl,main)
 GSL_CFLAGS=`${GSL_CONFIG} --cflags`
 GSL_LIBS=`${GSL_CONFIG} --libs`
+GSL_VERSION=`${GSL_CONFIG} --version`
 AC_SUBST(GSL_CFLAGS)
 AC_SUBST(GSL_LIBS)
 
@@ -361,6 +362,7 @@ Compiler/linker flags/libs/defs:
 
 External libraries:
   - GSL ............ : ${GSL_CONFIG}
+    o GSL_VERSION .. : ${GSL_VERSION}
     o GSL_CFLAGS ... : ${GSL_CFLAGS}
     o GSL_LIBS ..... : ${GSL_LIBS}
 
