@@ -76,10 +76,14 @@ public class Test {
 			}
 
 			// Calculate the optimal protections by the Monte Carlo Integration approach
+			long startTime = System.currentTimeMillis();
 			BusOptimizationManager.optimialOptimisationByMCIntegration(K, cabinCapacity, aBucketHolder);
-
+			long endTime = System.currentTimeMillis();
+			
 			// Display
 			aBucketHolder.display();
+			
+			System.out.println("Done in " + (endTime - startTime) + "ms");
 
 		} 
 		catch (Exception e) 
