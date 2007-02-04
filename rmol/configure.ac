@@ -297,7 +297,7 @@ AH_BOTTOM([
 
 # I18n
 AM_GNU_GETTEXT([external], [need-formatstring-macros])
-AM_GNU_GETTEXT_VERSION([0.15])
+AM_GNU_GETTEXT_VERSION([0.14])
 
 # Define configured files
 AC_CONFIG_FILES(
