@@ -47,50 +47,8 @@ public class BomDemand extends BomAbstract {
 	/**
 	 * Getter for the average yield per unit of demand.
 	 */
-	public final FldYieldRange getYieldRange(){
+	public final FldYieldRange getYieldRange() {
 		return _yieldRange;
-	}
-	
-	/** 
-	 * Getter for the upper yield of the range.
-	 */
-	public double getUpperYield() {
-		return _yieldRange.getUpperYield();
-	}
-	
-	/**
-	 * Getter for the average yield of the range.
-	 */
-	public double getAverageYield() {
-		return _yieldRange.getAverageYield();
-	}
-	
-	/** 
-	 * Getter for the lower yield of the range.
-	 */
-	public double getLowerYield() {
-		return _yieldRange.getLowerYield();
-	}
-	
-	/** 
-	 * Getter for the mean value.
-	 */
-	public double getMean() {
-		return _distributionParameters.getMean();
-	}
-	
-	/** 
-	 * Getter for the standard deviation value.
-	 */
-	public double getStandardDeviation() {
-		return _distributionParameters.getStandardDeviation();
-	}
-	
-	/**
-	 * Getter for the variance value.
-	 */
-	public double getVariance() {
-		return _distributionParameters.getVariance();
 	}
 	
 	@Override

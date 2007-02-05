@@ -42,32 +42,11 @@ public class BomGaussian extends BomAbstract {
 		return _params;
 	}
 
-	/**
-	 * Getter for the mean value.
-	 */
-	public final double getMean() {
-		return _params.getMean();
-	}
-
-	/**
-	 * Getter for the standard deviation value.
-	 */
-	public final double getStandardDeviation() {
-		return _params.getStandardDeviation();
-	}
-
-	/** 
-	 * Getter for the variance value. 
-	 */
-	public final double getVariance() {
-		return _params.getVariance();
-	}
-
 	/** 
 	 * Generate a Gaussian random variate (following the Gaussian
 	 * distribution).
 	 */
 	public final double generateVariate() {
-		return getMean() + getStandardDeviation() * _rand.nextGaussian();
+		return _params.getMean() + _params.getStandardDeviation() * _rand.nextGaussian();
 	}
 }

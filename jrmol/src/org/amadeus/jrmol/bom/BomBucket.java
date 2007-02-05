@@ -123,57 +123,15 @@ public class BomBucket extends BomAbstract {
 	/** 
 	 * Getter for the booking limit.
 	 */
-	public double getCumulatedBookingLimit() {
-		return _cumulatedBookingLimit;
-	}
-
-	/** 
-	 * Getter for the booking limit.
-	 */
 	public double getBookingLimit() {
 		return _bookingLimit;
 	}
 
 	/** 
-	 * Getter for the distribution parameters of the demand.
+	 * Getter for the booking limit.
 	 */
-	public final FldDistributionParameters getDistributionParameters() {
-		return _demand.getDistributionParameters();
-	}
-
-	/**
-	 * Getter for the demand mean.
-	 */
-	public final double getMean() {
-		return _demand.getMean();
-	}
-
-	/** 
-	 * Getter for the demand standard deviation.
-	 */
-	public final double getStandardDeviation() {
-		return _demand.getStandardDeviation();
-	}
-
-	/**
-	 * Getter for the upper yield.
-	 */
-	public final double getUpperYield() {
-		return _yieldRange.getUpperYield();
-	}
-
-	/** 
-	 * Getter for the average yield.
-	 */
-	public final double getAverageYield() {
-		return _yieldRange.getAverageYield();
-	}
-
-	/** 
-	 * Getter for the lower yield.
-	 */
-	public final double getLowerYield() {
-		return _yieldRange.getLowerYield();
+	public double getCumulatedBookingLimit() {
+		return _cumulatedBookingLimit;
 	}
 
 	/** 

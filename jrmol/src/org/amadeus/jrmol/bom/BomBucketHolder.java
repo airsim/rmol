@@ -237,11 +237,11 @@ public class BomBucketHolder extends BomAbstract {
 		for (final BomBucket currentBucket : _bucketList) {
 
 			// Mean Demand
-			final double currentMeanDemand = currentBucket.getMean();
+			final double currentMeanDemand = currentBucket.getDemand().getDistributionParameters().getMean();
 			_totalMeanDemand += currentMeanDemand;
 
 			// Optimal Revenue
-			final double currentPrice = currentBucket.getAverageYield();
+			final double currentPrice = currentBucket.getYieldRange().getAverageYield();
 			final double currentProtection = currentBucket.getProtection();
 			final double bucketOptimalRevenue = currentPrice * currentProtection;
 			_optimalRevenue += bucketOptimalRevenue;
@@ -261,9 +261,9 @@ public class BomBucketHolder extends BomAbstract {
 		out += "Class; Price; Mean; Std Dev; Protection; Cum. Protection; Cum. Bkg Limit;\n";
 
 		for (BomBucket currentBucket : _bucketList) {
-			final double pj = currentBucket.getUpperYield();
-			final double mj = currentBucket.getMean();
-			final double sj = currentBucket.getStandardDeviation();
+			final double pj = currentBucket.getYieldRange().getUpperYield();
+			final double mj = currentBucket.getDemand().getDistributionParameters().getMean();
+			final double sj = currentBucket.getDemand().getDistributionParameters().getStandardDeviation();
 			final double proj = currentBucket.getProtection();
 			final double yj = currentBucket.getCumulatedProtection();
 			final double bj = currentBucket.getCumulatedBookingLimit();

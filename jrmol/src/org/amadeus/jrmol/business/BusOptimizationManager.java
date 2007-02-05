@@ -60,7 +60,7 @@ public class BusOptimizationManager {
 			 * Initialise the random generator with the distribution parameters of
 			 * the demand for the current class/bucket, j.
 			 */
-			final FldDistributionParameters aDistribParams = currentBucket.getDistributionParameters();
+			final FldDistributionParameters aDistribParams = currentBucket.getDemand().getDistributionParameters();
 			final BomGaussian gaussianDemandGenerator = new BomGaussian(aDistribParams);
 
 			/**
@@ -96,8 +96,8 @@ public class BusOptimizationManager {
 			/** 
 			 * Retrieve the prices for Bucket(j) and Bucket(j+1).
 			 */
-			final double pj = currentBucket.getAverageYield();
-			final double pj1 = nextBucket.getAverageYield();
+			final double pj = currentBucket.getYieldRange().getAverageYield();
+			final double pj1 = nextBucket.getYieldRange().getAverageYield();
 
 			/** 
 			 * Consistency check: the yield/price of a higher class/bucket
