@@ -1,60 +1,35 @@
 /*!
-\page authors IT++ People
+\page authors RMOL People
 
 
 \section admins Project Admins
 
-- Tony Ottosson <tonyottosson@users.sourceforge.net> (\ref N)
-- Adam Piątyszek <ediap@users.sourceforge.net> (\ref N)
+- Denis Arnaud <denis_arnaud@users.sourceforge.net> (\ref N)
+- Patrick Grandjean <pgrandjean@users.sourceforge.net> (\ref N)
 
 
 \section developers Developers
 
-- Johan Bergman <emwjohb@users.sourceforge.net> 
-- Håkan Eriksson <hakanbe@users.sourceforge.net>
-- Thomas Eriksson <thomases2@users.sourceforge.net>
-- Pål Frenger <frenger@users.sourceforge.net>
-- Fredrik Huss <frehu@users.sourceforge.net>
-- Erik G. Larsson <erik_g_larsson@users.sourceforge.net>
-- Conrad Sanderson <conrad_s@users.sourceforge.net>
-- Simon Wood <sgwoodjr@users.sourceforge.net>
+- Karim Duval <duvalkarim@users.sourceforge.net> (\ref N)
+- Ngoc-Thach Hoang <hoangngocthach@users.sourceforge.net> (\ref N)
 
 
 \section retired Retired Developers
 
-- Thomas Lemaire
-- Anders Persson
-- Tobias Ringstrom
-- Jonas Samuelsson
+- Fabrice Bellard
 
 
 \section contributors Contributors
 
-- Mattias Andersson
-- Francois Cayre
-- Zbigniew Długaszewski (\ref N)
-- Teddy Furon
-- Bjorn Furugard
-- Kenneth Hilmersson
-- Peter Klotz
-- Krister Norlund
-- Andy Panov
-- Steve Peters
-- Conrad Sanderson
-- Svante Signell
-- Erik Stoy
-- Tobias Tynderfeldt
+- Simon Martin (\ref N)
 
 
 \section distributors Distribution Maintainers
 
-- Markus Dittrich <markusle@gentoo.org> 
-  (<a href="http://www.gentoo.org/">Gentoo Linux</a>)
-- Ed Hill <edhill@users.sourceforge.net> 
-  (<a href="http://fedoraproject.org/wiki/Extras/">Fedora Extras</a>)
+-  Christopher Gragsone <maetrics@users.sourceforge.net> 
 
 \note
 \anchor N
-(N) - <a href="http://newcom.ismb.it/">Newcom</a> member
+(N) - <a href="http://www.amadeus.com">Amadeus</a> employees.
  
 */

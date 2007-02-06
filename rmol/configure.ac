@@ -134,25 +134,27 @@ AC_SUBST(CXXFLAGS_OPT)
 # Support for the GSL (GNU Scientific Library)
 # -----------------------------------------------
 # Provide --with-gsl
-GSL_CONFIG=gsl-config
-AC_ARG_WITH(gsl,
-	[ --with-gsl=PATH		Use GSL library in PATH],
-	[ case $withval in
-	    yes) AC_PATH_PROG(GSL_CONFIG, gsl-config, false) ;;
-		/*) if test -d "$withval" && test -x "$withval/bin/gsl-config"; then
-		      GSL_CONFIG=$withval/bin/gsl-config
-			elif test -x "$withval"; then
-			  GSL_CONFIG=$withval
-			fi
+AM_PATH_GSL([1.8])
 
-			if ${GSL_CONFIG} --version >/dev/null 2>&1; then :; else
-			  AC_MSG_ERROR([Did not find gsl-config script at ${GSL_CONFIG}])
-			fi
-        ;;
-		*) AC_MSG_ERROR([*** GSL is required ***]) ;;
-	  esac
-    ]
-)
+#GSL_CONFIG=gsl-config
+#AC_ARG_WITH(gsl,
+#	[ --with-gsl=PATH		Use GSL library in PATH],
+#	[ case $withval in
+#	    yes) AC_PATH_PROG(GSL_CONFIG, gsl-config, false) ;;
+#		/*) if test -d "$withval" && test -x "$withval/bin/gsl-config"; then
+#		      GSL_CONFIG=$withval/bin/gsl-config
+#			elif test -x "$withval"; then
+#			  GSL_CONFIG=$withval
+#			fi
+#
+#			if ${GSL_CONFIG} --version >/dev/null 2>&1; then :; else
+#			  AC_MSG_ERROR([Did not find gsl-config script at ${GSL_CONFIG}])
+#			fi
+#       ;;
+#		*) AC_MSG_ERROR([*** GSL is required ***]) ;;
+#	  esac
+#    ]
+#)
 
 # PKG_CHECK_MODULES(DEPS, gsl-1.7 >= 1.7)
 # AC_SUBST(DEPS_CFLAGS)
@@ -161,8 +163,8 @@ AC_ARG_WITH(gsl,
 # AC_CHECK_LIB(m,main)
 # AC_CHECK_LIB(gslcblas,main)
 # AC_CHECK_LIB(gsl,main)
-GSL_CFLAGS=`${GSL_CONFIG} --cflags`
-GSL_LIBS=`${GSL_CONFIG} --libs`
+#GSL_CFLAGS=`${GSL_CONFIG} --cflags`
+#GSL_LIBS=`${GSL_CONFIG} --libs`
 GSL_VERSION=`${GSL_CONFIG} --version`
 AC_SUBST(GSL_CFLAGS)
 AC_SUBST(GSL_LIBS)
