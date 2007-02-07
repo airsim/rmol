@@ -1,5 +1,6 @@
 package org.amadeus.jrmol.bom;
 
+import java.util.NoSuchElementException;
 import java.util.Vector;
 
 /** 
@@ -7,6 +8,45 @@ import java.util.Vector;
  * recollection purposes).
  */
 public class BomBucketHolder extends BomAbstract {
+
+	private class BucketList extends Vector<BomBucket> {
+
+		private class BucketListIterator {
+			private int _cursor = 0;
+
+			public boolean hasNext() {
+				return _cursor < size() - 1;
+			}
+
+			public BomBucket[] next() {
+				try
+				{
+					BomBucket[] ret = new BomBucket[2];
+
+					ret[0] = get(_cursor);
+					ret[1] = get(_cursor + 1);
+
+					_cursor++;
+
+					return ret;
+				}
+				catch(IndexOutOfBoundsException e)
+				{
+					throw new NoSuchElementException();
+				}
+			}
+		}
+
+		private BucketList() {}
+
+		private BucketList(int iCapacity) {
+			super(iCapacity);
+		}
+
+		public BucketListIterator getIterator() {
+			return null;
+		}
+	}
 
 	/** 
 	 * The capacity of the cabin associated to the bucket/class list.
@@ -64,62 +104,6 @@ public class BomBucketHolder extends BomAbstract {
 	}
 
 	/** 
-	 * Get the cabin capacity.
-	 */
-	public final double getCabinCapacity() {
-		return _cabinCapacity;
-	}
-
-	/** 
-	 * Get the total mean demand. 
-	 */
-	public final double getTotalMeanDemand() {
-		return _totalMeanDemand;
-	}
-
-	/**
-	 * Get the demand factor.
-	 */
-	public final double getDemandFactor() {
-		return _demandFactor;
-	}
-
-	/**
-	 * Get the optimal revenue.
-	 */
-	public final double getOptimalRevenue() {
-		return _optimalRevenue;
-	}
-
-	/**
-	 * Get the size of list of buckets/classes.
-	 */
-	public final int getSize() {
-		return _bucketList.size();
-	}
-
-	/** 
-	 * Display on standard output.
-	 */
-	public void display() {
-		System.out.println(this);
-	}
-
-	/**
-	 * Get the current element (bucket/class).
-	 */
-	public BomBucket getCurrentBucket() {
-		return _currentBucket;
-	}
-
-	/**
-	 * Get the next element (bucket/class).
-	 */
-	public BomBucket getNextBucket() {
-		return _nextBucket;
-	}
-
-	/** 
 	 * Add an element (bucket/class).
 	 */
 	public void addBucket(final BomBucket iBucket) {
@@ -147,6 +131,136 @@ public class BomBucketHolder extends BomAbstract {
 	}
 
 	/** 
+	 * Re-calculate the total mean demand and optimal revenue
+	 * (from the demand, prices and protections).
+	 */
+	public void calculateMeanDemandAndOptimalRevenue() {
+		_totalMeanDemand = 0.0;
+		_optimalRevenue = 0.0;
+
+		for (final BomBucket currentBucket : _bucketList) {
+
+			// Mean Demand
+			final double currentMeanDemand = currentBucket.getDemand().getDistributionParameters().getMean();
+			_totalMeanDemand += currentMeanDemand;
+
+			// Optimal Revenue
+			final double currentPrice = currentBucket.getYieldRange().getAverageYield();
+			final double currentProtection = currentBucket.getProtection();
+			final double bucketOptimalRevenue = currentPrice * currentProtection;
+			_optimalRevenue += bucketOptimalRevenue;
+		}
+
+		if (_cabinCapacity != 0.0) {
+			_demandFactor = _totalMeanDemand / _cabinCapacity;
+		}
+	}
+
+	/**
+	 * Re-calculate the protections and booking limits
+	 * (from cumulated protections).
+	 */
+	public void calculateProtectionAndBookingLimits() {
+		// Number of classes/buckets: n
+		final int nbOfClasses = getSize();
+
+		/** 
+		 * Iterate on the classes/buckets, from 1 to n-1.
+		 * Note that n-1 corresponds to the size of the parameter list,
+		 * i.e., n corresponds to the number of classes/buckets.
+		 */
+		begin();
+		BomBucket firstBucket = getCurrentBucket();
+
+		// Set the cumulated booking limit of Bucket(1) to be equal to the capacity
+		firstBucket.setCumulatedBookingLimit(_cabinCapacity);
+
+		/** 
+		 * Set the protection of Bucket(1) to be equal to the cumulated protection
+		 * of that first Bucket.
+		 */
+		firstBucket.setProtection (firstBucket.getCumulatedProtection());
+
+		for (int j = 1; j <= nbOfClasses - 1; j++, iterate()) {
+			/** 
+			 * Retrieve Bucket(j) (current) and Bucket(j+1) (next).
+			 */
+			BomBucket currentBucket = getCurrentBucket();
+			BomBucket nextBucket = getNextBucket();
+
+			/**
+			 * Set the cumulated booking limit for Bucket(j+1)
+			 * (j ranging from 1 to n-1).
+			 */
+			final double yjm1 = currentBucket.getCumulatedProtection();
+			nextBucket.setCumulatedBookingLimit(_cabinCapacity - yjm1);
+
+			/** 
+			 * Set the protection of Bucket(1) to be equal to
+			 * the cumulated protection of that first Bucket.
+			 */
+			final double yj = nextBucket.getCumulatedProtection();
+			nextBucket.setProtection (yj - yjm1);
+		}
+	}
+
+	/** 
+	 * Display on standard output.
+	 */
+	public void display() {
+		System.out.println(this);
+	}
+
+	/** 
+	 * Get the cabin capacity.
+	 */
+	public final double getCabinCapacity() {
+		return _cabinCapacity;
+	}
+
+	/**
+	 * Get the current element (bucket/class).
+	 */
+	public BomBucket getCurrentBucket() {
+		return _currentBucket;
+	}
+
+	/**
+	 * Get the demand factor.
+	 */
+	public final double getDemandFactor() {
+		return _demandFactor;
+	}
+
+	/**
+	 * Get the next element (bucket/class).
+	 */
+	public BomBucket getNextBucket() {
+		return _nextBucket;
+	}
+
+	/**
+	 * Get the optimal revenue.
+	 */
+	public final double getOptimalRevenue() {
+		return _optimalRevenue;
+	}
+
+	/**
+	 * Get the size of list of buckets/classes.
+	 */
+	public final int getSize() {
+		return _bucketList.size();
+	}
+
+	/** 
+	 * Get the total mean demand. 
+	 */
+	public final double getTotalMeanDemand() {
+		return _totalMeanDemand;
+	}
+
+	/** 
 	 * Iterate for one element (bucket/class): 
 	 * increment both internal iterators on Buckets.
 	 */
@@ -171,85 +285,11 @@ public class BomBucketHolder extends BomAbstract {
 	 * - the booking limits and cumulated booking limits.
 	 */
 	public void recalculate() {
-	    // Re-calculate the booking limits
-	    calculateProtectionAndBookingLimits();
-	    
-	    // Re-calculate the Optimal Revenue
-	    calculateMeanDemandAndOptimalRevenue();
-	}
+		// Re-calculate the booking limits
+		calculateProtectionAndBookingLimits();
 
-	/**
-	 * Re-calculate the protections and booking limits
-	 * (from cumulated protections).
-	 */
-	public void calculateProtectionAndBookingLimits() {
-		// Number of classes/buckets: n
-		final int nbOfClasses = getSize();
-
-		/** 
-		 * Iterate on the classes/buckets, from 1 to n-1.
-		 * Note that n-1 corresponds to the size of the parameter list,
-		 * i.e., n corresponds to the number of classes/buckets.
-		 */
-		begin();
-		BomBucket firstBucket = getCurrentBucket();
-
-		// Set the cumulated booking limit of Bucket(1) to be equal to the capacity
-		firstBucket.setCumulatedBookingLimit (_cabinCapacity);
-
-		/** 
-		 * Set the protection of Bucket(1) to be equal to the cumulated protection
-		 * of that first Bucket.
-		 */
-		firstBucket.setProtection (firstBucket.getCumulatedProtection());
-
-		for (int j = 1; j <= nbOfClasses - 1; j++, iterate()) {
-			/** 
-			 * Retrieve Bucket(j) (current) and Bucket(j+1) (next).
-			 */
-			BomBucket currentBucket = getCurrentBucket();
-			BomBucket nextBucket = getNextBucket();
-
-			/**
-			 * Set the cumulated booking limit for Bucket(j+1)
-			 * (j ranging from 1 to n-1).
-			 */
-			final double yjm1 = currentBucket.getCumulatedProtection();
-			nextBucket.setCumulatedBookingLimit (_cabinCapacity - yjm1);
-
-			/** 
-			 * Set the protection of Bucket(1) to be equal to
-			 * the cumulated protection of that first Bucket.
-			 */
-			final double yj = nextBucket.getCumulatedProtection();
-			nextBucket.setProtection (yj - yjm1);
-		}
-	}
-
-	/** 
-	 * Re-calculate the total mean demand and optimal revenue
-	 * (from the demand, prices and protections).
-	 */
-	public void calculateMeanDemandAndOptimalRevenue() {
-		_totalMeanDemand = 0.0;
-		_optimalRevenue = 0.0;
-
-		for (final BomBucket currentBucket : _bucketList) {
-
-			// Mean Demand
-			final double currentMeanDemand = currentBucket.getDemand().getDistributionParameters().getMean();
-			_totalMeanDemand += currentMeanDemand;
-
-			// Optimal Revenue
-			final double currentPrice = currentBucket.getYieldRange().getAverageYield();
-			final double currentProtection = currentBucket.getProtection();
-			final double bucketOptimalRevenue = currentPrice * currentProtection;
-			_optimalRevenue += bucketOptimalRevenue;
-		}
-
-		if (_cabinCapacity != 0.0) {
-			_demandFactor = _totalMeanDemand / _cabinCapacity;
-		}
+		// Re-calculate the Optimal Revenue
+		calculateMeanDemandAndOptimalRevenue();
 	}
 
 	@Override
@@ -285,13 +325,5 @@ public class BomBucketHolder extends BomAbstract {
 		+ "; Optimal Revenue = " + _optimalRevenue + "\n";
 
 		return out;
-	}
-
-	private class BucketList extends Vector<BomBucket> {
-		private BucketList() {}
-
-		private BucketList(int iCapacity) {
-			super(iCapacity);
-		}
 	}
 }

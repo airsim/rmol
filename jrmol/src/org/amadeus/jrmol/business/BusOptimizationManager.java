@@ -65,7 +65,7 @@ public class BusOptimizationManager {
 
 			/**
 			 * Iterate on the random draws: generate random variates, d(j,k)
-			 * for the current class/bucket demand, j, and for k=1 to Kj.
+			 * for the current class/bucket demand, j, and for k = 1 to Kj.
 			 */
 			Vector<Double> aVariateList = new Vector<Double>();
 			BomPartialSumHolder currentPartialSumList =	new BomPartialSumHolder(Kj);

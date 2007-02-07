@@ -1,6 +1,5 @@
 package org.amadeus.jrmol.bom;
 
-import org.amadeus.jrmol.field.FldDistributionParameters;
 import org.amadeus.jrmol.field.FldYieldRange;
 
 /** 
@@ -77,6 +76,11 @@ public class BomBucket extends BomAbstract {
 		_cumulatedBookingLimit = iBucket.getCumulatedBookingLimit();
 	}
 
+	public BomBucket(final BomDemand iDemand) {
+		_yieldRange = new FldYieldRange(iDemand.getYieldRange());
+		_demand = new BomDemand(iDemand);
+	}
+
 	public BomBucket(final FldYieldRange iYieldRange) {
 		_yieldRange = new FldYieldRange(iYieldRange);
 		_demand = new BomDemand();
@@ -85,39 +89,6 @@ public class BomBucket extends BomAbstract {
 	public BomBucket(final FldYieldRange iYieldRange, final BomDemand iDemand) {
 		_yieldRange = new FldYieldRange(iYieldRange);
 		_demand = new BomDemand(iDemand);
-	}
-
-	public BomBucket(final BomDemand iDemand) {
-		_yieldRange = new FldYieldRange(iDemand.getYieldRange());
-		_demand = new BomDemand(iDemand);
-	}
-
-	/** 
-	 * Getter for the yield range.
-	 */
-	public final FldYieldRange getYieldRange() {
-		return _yieldRange;
-	}
-
-	/** 
-	 * Getter for the demand. 
-	 */
-	public final BomDemand getDemand() {
-		return _demand;
-	}
-
-	/** 
-	 * Getter for the protection.
-	 */
-	public double getProtection() {
-		return _protection;
-	}
-
-	/** 
-	 * Getter for the cumulated protection.
-	 */
-	public double getCumulatedProtection() {
-		return _cumulatedProtection;
 	}
 
 	/** 
@@ -135,17 +106,31 @@ public class BomBucket extends BomAbstract {
 	}
 
 	/** 
-	 * Setter for the protection.
+	 * Getter for the cumulated protection.
 	 */
-	public void setProtection(final double iProtection) {
-		_protection = iProtection;
+	public double getCumulatedProtection() {
+		return _cumulatedProtection;
 	}
 
 	/** 
-	 * Setter for the cumulated protection.
+	 * Getter for the demand. 
 	 */
-	public void setCumulatedProtection(final double iProtection) {
-		_cumulatedProtection = iProtection;
+	public final BomDemand getDemand() {
+		return _demand;
+	}
+
+	/** 
+	 * Getter for the protection.
+	 */
+	public double getProtection() {
+		return _protection;
+	}
+
+	/** 
+	 * Getter for the yield range.
+	 */
+	public final FldYieldRange getYieldRange() {
+		return _yieldRange;
 	}
 
 	/**
@@ -160,5 +145,19 @@ public class BomBucket extends BomAbstract {
 	 */
 	public void setCumulatedBookingLimit(final double iBookingLimit) {
 		_cumulatedBookingLimit = iBookingLimit;
+	}
+
+	/** 
+	 * Setter for the cumulated protection.
+	 */
+	public void setCumulatedProtection(final double iProtection) {
+		_cumulatedProtection = iProtection;
+	}
+
+	/** 
+	 * Setter for the protection.
+	 */
+	public void setProtection(final double iProtection) {
+		_protection = iProtection;
 	}
 }
