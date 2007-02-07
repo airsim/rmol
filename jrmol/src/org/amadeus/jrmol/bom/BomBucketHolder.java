@@ -1,6 +1,5 @@
 package org.amadeus.jrmol.bom;
 
-import java.util.NoSuchElementException;
 import java.util.Vector;
 
 /** 
@@ -8,45 +7,6 @@ import java.util.Vector;
  * recollection purposes).
  */
 public class BomBucketHolder extends BomAbstract {
-
-	private class BucketList extends Vector<BomBucket> {
-
-		private class BucketListIterator {
-			private int _cursor = 0;
-
-			public boolean hasNext() {
-				return _cursor < size() - 1;
-			}
-
-			public BomBucket[] next() {
-				try
-				{
-					BomBucket[] ret = new BomBucket[2];
-
-					ret[0] = get(_cursor);
-					ret[1] = get(_cursor + 1);
-
-					_cursor++;
-
-					return ret;
-				}
-				catch(IndexOutOfBoundsException e)
-				{
-					throw new NoSuchElementException();
-				}
-			}
-		}
-
-		private BucketList() {}
-
-		private BucketList(int iCapacity) {
-			super(iCapacity);
-		}
-
-		public BucketListIterator getIterator() {
-			return null;
-		}
-	}
 
 	/** 
 	 * The capacity of the cabin associated to the bucket/class list.
@@ -56,17 +16,26 @@ public class BomBucketHolder extends BomAbstract {
 	/** 
 	 * The list of (N) buckets/classes.
 	 */
-	private BucketList _bucketList = null;
-
+	private Vector<BomBucket> _bucketList = null;
+	
 	/** 
-	 * Iterator for the current bucket/class.
+	 * Current bucket/class index.
 	 */
 	private int _currentBucketIndex = 0;
 
+	/** 
+	 * Current bucket/class.
+	 */
 	private BomBucket _currentBucket = null;
 
+	/** 
+	 * Next bucket/class index.
+	 */
 	private int _nextBucketIndex = 0;
 
+	/** 
+	 * Next bucket/class.
+	 */
 	private BomBucket _nextBucket = null;
 
 	/** 
@@ -90,7 +59,7 @@ public class BomBucketHolder extends BomAbstract {
 	 * <br>Protected to force the use of the Factory.
 	 */
 	public BomBucketHolder() {
-		_bucketList = new BucketList();
+		_bucketList = new Vector<BomBucket>();
 	}
 
 	/**
@@ -100,7 +69,7 @@ public class BomBucketHolder extends BomAbstract {
 	 */
 	public BomBucketHolder(final double iCabinCapacity) {
 		_cabinCapacity = iCabinCapacity;
-		_bucketList = new BucketList((int) iCabinCapacity);
+		_bucketList = new Vector<BomBucket>((int) iCabinCapacity);
 	}
 
 	/** 
