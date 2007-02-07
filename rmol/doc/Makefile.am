@@ -30,7 +30,7 @@ html/index.html: doxygen_html.cfg \
 	doxygen $<; \
 	if test -d html; then \
 		cp $(srcdir)/images/rmol_logo.png html; \
-		cp $(srcdir)/images/newcom_logo.png html; \
+		cp $(srcdir)/images/sfx_logo.png html; \
 		cp $(srcdir)/images/favicon.ico html; \
 	fi
 

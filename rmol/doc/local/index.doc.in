@@ -1,5 +1,5 @@
 /*!
-\mainpage IT++ Documentation
+\mainpage RMOL Documentation
 
 \htmlonly
 <!-- start of main block -->
@@ -11,27 +11,32 @@
 <ul>
 <li><a href="features.html">Features</a></li>
 <li><a href="installation.html">Installation</a></li>
-<li><a href="linking.html">Linking with IT++</a></li>
-<li><a href="users_guide.html">Short Introduction to IT++</a></li>
+<li><a href="linking.html">Linking with RMOL</a></li>
+<li><a href="users_guide.html">Short Introduction to RMOL</a></li>
 <li><a href="tutorial.html">Some Tutorial Examples</a></li>
-<li><a href="verification.html">IT++ Verification</a></li>
+<li><a href="verification.html">RMOL Verification</a></li>
 <li><a href="copyright.html">Copyright and License</a></li>
 <li><a href="help_wanted.html">Make a Difference</a></li>
 <li><a href="authors.html">Authors</a></li>
 </ul>
 
-<a href="http://sourceforge.net/projects/itpp/"><b>IT++ at SourceForge:</b></a>
+<a href="http://sourceforge.net/projects/rmol/"><b>RMOL at SourceForge:</b></a>
 <ul>
-<li><a href="http://sourceforge.net/project/showfiles.php?group_id=37044">Download IT++</a></li>
-<li><a href="http://sourceforge.net/tracker/?group_id=37044&atid=418758">Bug Reports</a></li>
-<li><a href="http://sourceforge.net/tracker/?group_id=37044&atid=418761">Feature Requests</a></li>
-<li><a href="http://sourceforge.net/forum/forum.php?forum_id=115656">Ask for Help</a></li>
-<li><a href="http://sourceforge.net/forum/forum.php?forum_id=115655">Discuss IT++</a></li>
+<li><a href="http://sourceforge.net/project/showfiles.php?group_id=177703">Download RMOL</a></li>
+<li><a href="http://rmol.sourceforge.net/RPM-GPG-KEY-freshrpms-free">RPM-GPG-Key</a> for RMOL RPMs (save the file, and type 'rpm --import RPM-GPG-KEY-freshrpms-free' as root)</li>
+<li><a href="http://sourceforge.net/tracker/?group_id=177703&atid=882290">Bug Reports</a></li>
+<li><a href="http://sourceforge.net/tracker/?group_id=177703&atid=882293">Feature Requests</a></li>
+<li><a href="http://sourceforge.net/tracker/?group_id=177703&atid=882292">Submit Patches</a></li>
+<li><a href="http://sourceforge.net/tracker/?group_id=177703&atid=882291">Support Request</a></li>
+<li><a href="http://sourceforge.net/mail/?group_id=177703">Mailing lists</a></li>
+<li><a href="http://sourceforge.net/forum/forum.php?forum_id=613897">Discuss about Development issues</a></li>
+<li><a href="http://sourceforge.net/forum/forum.php?forum_id=613896">Ask for Help</a></li>
+<li><a href="http://sourceforge.net/forum/forum.php?forum_id=613895">Discuss RMOL</a></li>
 </ul>
 
-<b>IT++ Development:</b>
+<b>RMOL Development:</b>
 <ul>
-<li><a href="http://itpp.svn.sourceforge.net/viewvc/itpp/">SVN Repository</a></li>
+<li><a href="http://rmol.svn.sourceforge.net/viewvc/rmol/">SVN Repository</a></li>
 <li><a href="codingrules.html">Coding Rules</a></li>
 <li><a href="documentation.html">Documentation Rules</a></li>
 <li><a href="test.html">Test Rules</a></li>
@@ -39,66 +44,37 @@
 
 <b>External Libraries:</b>
 <ul>
-<li><a href="http://www.netlib.org/blas/">BLAS and CBLAS (NetLib)</a></li>
-<li><a href="http://www.netlib.org/lapack/">LAPACK (NetLib)</a></li>
-<li><a href="http://www.fftw.org/">FFTW</a></li>
-<li><a href="http://math-atlas.sourceforge.net/">ATLAS</a></li>
-<li><a href="http://developer.amd.com/acml.aspx">ACML (AMD)</a></li>
-<li><a href="http://www.intel.com/cd/software/products/asmo-na/eng/perflib/mkl/">MKL (Intel)</a></li>
+<li><a href="http://www.gnu.org/software/gsl">GSL</a></li>
 </ul>
 
 </div>
 <!-- end of left margin -->
 \endhtmlonly
 
-\section about About IT++
+\section about About RMOL
 
-IT++ is a C++ library of mathematical, signal processing, speech processing,
-and communications classes and functions. It is being developed by
-researchers in these areas and is widely used by researchers, both in the
-communications industry and universities. Since 2004, IT++ is also being
-developed as a part of the European Network of Excellence in Wireless
-Communications (<a href="http://newcom.ismb.it/">NEWCOM</a>).
+RMOL is a C++ library of revenue management and optimisation classes
+and functions.
 
-The kernel of the IT++ library are templated vector and matrix classes, and
-lots of functions for vectors and matrices. Such a kernel makes IT++ library
-similar to Matlab.
+RMOL makes an extensive use of existing open-source libraries for
+increased functionality, speed and accuracy. In particular <a
+href="http://www.gnu.org/software/gsl">GSL</a> (<em>GNU Scientific
+Library</em>) library is used.
 
-IT++ makes an extensive use of existing open-source libraries (but not
-only) for increased functionality, speed and accuracy. In particular 
-<a href="http://www.netlib.org/blas/">BLAS</a>,
-<a href="http://www.netlib.org/blas/">CBLAS</a>, 
-<a href="http://www.netlib.org/lapack/">LAPACK</a> and 
-<a href="http://www.fftw.org/">FFTW</a> libraries might be used. 
-Instead of NetLib's reference BLAS and LAPACK, some optimized
-platform-specific libraries can be used as well, i.e.:
-- <a href="http://math-atlas.sourceforge.net/">ATLAS</a> (<em>Automatically
-  Tuned Linear Algebra Software</em>) - includes optimised BLAS, CBLAS and a
-  limited set of LAPACK routines
-- <a href="http://www.intel.com/cd/software/products/asmo-na/eng/perflib/mkl/">MKL</a>  
-  (<em>Intel Math Kernel Library</em>) - includes all required BLAS, CBLAS,
-  LAPACK and FFT routines (FFTW not required)
-- <a href="http://developer.amd.com/acml.aspx">ACML</a> (<em>AMD Core Math
-  Library</em>) - includes BLAS, LAPACK and FFT routines (FFTW not required) 
-.
-It is possible to compile and use IT++ without any of the above
-listed libraries, but the functionality will be reduced. 
-      
-The IT++ library originates from the former department of Information
-Theory at the <a href="http://www.chalmers.se/en/">Chalmers University of
-Technology</a>, Gothenburg, Sweden. Because the library is coded in C++, the
-name IT++ seemed like a good idea at the time. While departments come and
-go, IT++ have developed a life of its' own and is now released under the
-terms of the <a href="http://www.gnu.org/copyleft/gpl.html">GNU General
-Public License</a> (GPL) for you to enjoy.
+The RMOL library originates from the department of Operational
+Research and Innovation at <a
+href="http://www.amadeus.com">Amadeus</a>, Sophia Antipolis,
+France. RMOL is released under the terms of the <a
+href="http://www.gnu.org/licenses/lgpl.html">GNU Lesser General Public
+License</a> (LGPL) for you to enjoy.
 
-IT++ should work on 
-<a href="http://en.wikipedia.org/wiki/GNU/Linux">GNU/Linux</a>, 
+RMOL should work on
+<a href="http://en.wikipedia.org/wiki/GNU/Linux">GNU/Linux</a>,
 <a href="http://www.sun.com/software/solaris/">Sun Solaris</a>,
-Microsoft Windows (with <a href="http://www.cygwin.com/">Cygwin</a>, 
-<a href="http://www.mingw.org/">MinGW/MSYS</a>, or
-<a href="http://msdn.microsoft.com/visualc/">Microsoft Visual C++ .NET</a>) 
-and <a href="http://www.apple.com/macosx/">Mac OS X</a> operating systems.
+Microsoft Windows (with <a href="http://www.cygwin.com/">Cygwin</a>,
+<a href="http://www.mingw.org/">MinGW/MSYS</a>, or 
+<a href="http://msdn.microsoft.com/visualc/">Microsoft Visual C++ .NET</a>) and
+<a href="http://www.apple.com/macosx/">Mac OS X</a> operating systems.
 
 \htmlonly
 </div>

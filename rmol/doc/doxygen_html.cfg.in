@@ -445,10 +445,10 @@ WARN_LOGFILE           = doxygen_html.log
 # configuration options related to the input files
 #---------------------------------------------------------------------------
 
-# The INPUT tag can be used to specify the files and/or directories that contain
-# documented source files. You may enter file names like "myfile.cpp" or 
-# directories like "/usr/src/myproject". Separate the files or directories 
-# with spaces.
+# The INPUT tag can be used to specify the files and/or directories
+# that contain documented source files. You may enter file names like
+# "myfile.cpp" or directories like "/usr/src/myproject". Separate the
+# files or directories with spaces.
 
 INPUT                  = @top_srcdir@/@PACKAGE@ \
                          @top_srcdir@/@PACKAGE@/basic \
@@ -464,10 +464,10 @@ INPUT                  = @top_srcdir@/@PACKAGE@ \
 # FILE_PATTERNS tag to specify one or more wildcard pattern (like *.cpp 
 # and *.h) to filter out the source-files in the directories. If left 
 # blank the following patterns are tested: 
-# *.c *.cc *.cxx *.cpp *.c++ *.java *.ii *.ixx *.ipp *.i++ *.inl *.h *.hh *.hxx 
-# *.hpp *.h++ *.idl *.odl *.cs *.php *.php3 *.inc *.m *.mm
+# *.c *.cc *.cxx *.cpp *.c++ *.java *.ii *.ixx *.ipp *.i++ *.inl *.h
+# *.hh *.hxx *.hpp *.h++ *.idl *.odl *.cs *.php *.php3 *.inc *.m *.mm
 
-FILE_PATTERNS          = *.h *.cpp \
+FILE_PATTERNS          = *.hpp *.cpp \
                          *.doc
 
 # The RECURSIVE tag can be used to turn specify whether or not subdirectories 
@@ -481,10 +481,7 @@ RECURSIVE              = NO
 # subdirectory from a directory tree whose root is specified with the INPUT tag.
 
 EXCLUDE                = @top_builddir@/@PACKAGE@/config.h \
-                         @top_srcdir@/@PACKAGE@/config_msvc.h \
-                         @top_srcdir@/@PACKAGE@/base/cblas.h \
-                         @top_srcdir@/@PACKAGE@/base/cblas.cpp \
-                         @top_srcdir@/@PACKAGE@/base/algebra/lapack.h
+                         @top_srcdir@/@PACKAGE@/config_msvc.h
 
 # The EXCLUDE_SYMLINKS tag can be used select whether or not files or 
 # directories that are symbolic links (a Unix filesystem feature) are excluded 
@@ -510,7 +507,7 @@ EXAMPLE_PATH           = @top_srcdir@/doc/tutorial/src \
 # and *.h) to filter out the source-files in the directories. If left 
 # blank all files are included.
 
-EXAMPLE_PATTERNS       = *.h *.cpp \
+EXAMPLE_PATTERNS       = *.hpp *.cpp \
                          *.ref
 
 # If the EXAMPLE_RECURSIVE tag is set to YES then subdirectories will be 
