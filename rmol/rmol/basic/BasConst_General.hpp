@@ -12,4 +12,4 @@ namespace RMOL {
   extern const int DEFAULT_NUMBER_OF_DRAWS_FOR_MC_SIMULATION;
   
 }
-#endif
+#endif // __RMOL_BAS_BASCONST_GENERAL_HPP

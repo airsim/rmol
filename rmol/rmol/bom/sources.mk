@@ -10,6 +10,7 @@ bom_h_sources = $(top_srcdir)/rmol/bom/BomAbstract.hpp \
 		$(top_srcdir)/rmol/bom/PartialSumHolder.hpp \
 		$(top_srcdir)/rmol/bom/Emsr.hpp \
 		$(top_srcdir)/rmol/bom/DemandGeneratorList.hpp \
+		$(top_srcdir)/rmol/bom/Overbooking.hpp \
 		$(top_srcdir)/rmol/bom/MCUtils.hpp
 bom_cc_sources = $(top_srcdir)/rmol/bom/BomAbstract.cpp \
 		$(top_srcdir)/rmol/bom/Bucket.cpp \
@@ -19,5 +20,6 @@ bom_cc_sources = $(top_srcdir)/rmol/bom/BomAbstract.cpp \
 		$(top_srcdir)/rmol/bom/PartialSumHolder.cpp \
 		$(top_srcdir)/rmol/bom/Emsr.cpp \
 		$(top_srcdir)/rmol/bom/DemandGeneratorList.cpp \
+		$(top_srcdir)/rmol/bom/Overbooking.cpp \
 		$(top_srcdir)/rmol/bom/MCUtils.cpp
 
