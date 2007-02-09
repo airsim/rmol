@@ -185,7 +185,7 @@ namespace RMOL {
     //Calculation booking limit
     const double lBookingLimit = calculateBookingLimit ();
 
-    const double lOBMean = lBookingLimit / CAPACITY - 1.0;
+    const double lOBMean = lBookingLimit / _capacity - 1.0;
     resultOBPercentage.setMean (lOBMean);
 	
     return resultOBPercentage;
@@ -195,31 +195,34 @@ namespace RMOL {
   // //////////////////////////////////////////////////////////////////////
   FldDistributionParameters Overbooking::calculateServiceLevel() const {
     FldDistributionParameters resultOBPercentage;
-		
+
+    // No-Show Rate
+    const double lNoShowMean = _noShowDistributionParameters.getMean();
+    
     // 	service level 1
-    unsigned int b = CAPACITY;
+    unsigned int b = _capacity;
     switch (SERVICE_LEVEL_TYPE){
-    case 1: default: 
-    {
-      double test = serviceLevel1(SHOW_RATE, b, CAPACITY );           
-      while (test<SERVICE_LEVEL1){
+    case 1: default: {
+      double test = serviceLevel1 (lNoShowMean, b, _capacity);
+      while (test < SERVICE_LEVEL1) {
         b++; 
-        test = serviceLevel1(SHOW_RATE, b, CAPACITY );
+        test = serviceLevel1 (lNoShowMean, b, _capacity);
       }
       break;
     }
-    case 2: 
-    { // service level 2
-      double test = fractionServiceLevel2(SHOW_RATE, b, CAPACITY);
+    case 2: {
+      // service level 2
+      double test = fractionServiceLevel2 (lNoShowMean, b, _capacity);
       while (test < SERVICE_LEVEL2){
         b++;
-        test = fractionServiceLevel2(SHOW_RATE, b, CAPACITY);
+        test = fractionServiceLevel2 (lNoShowMean, b, _capacity);
       }
       break;		
     }	
     }
-    resultOBPercentage.setMean (static_cast<double>(b) / CAPACITY - 1.0);
-    resultOBPercentage.setStandardDeviation (0); // a modifier
+    resultOBPercentage.setMean (static_cast<double>(b) / _capacity - 1.0);
+    // TODO: To be altered
+    resultOBPercentage.setStandardDeviation (0);
 
     return resultOBPercentage;
   }
@@ -264,11 +267,16 @@ namespace RMOL {
   // useful functions
   // //////////////////////////////////////////////////////////////////////
   double Overbooking::calculateBookingLimit () const {
-    double resultBookingLimit = CAPACITY;
+    double resultBookingLimit = _capacity;
 
-    //algorithm
+    // Demand Distribution Parameters
+    const double lDemandMean = _demandDistributionParameters.getMean();
+    const double lDemandStdDev =
+      _demandDistributionParameters.getStandardDeviation();
+    
+    // Algorithm
     double pNormal = 
-      gsl_cdf_gaussian_Q (CAPACITY - DEMAND_AVERAGE, DEMAND_DEVIATION);
+      gsl_cdf_gaussian_Q (_capacity - lDemandMean, lDemandStdDev);
 
     //  double pNormal = probabilityNormal (CAPACITY, DEMAND_AVERAGE, 
     //                                  DEMAND_DEVIATION);
@@ -279,13 +287,16 @@ namespace RMOL {
     }
     assert (PRICE_OVER_DENIED_COST < 1 - pNormal);
 
-    pNormal = gsl_cdf_gaussian_Q (CAPACITY - 1 - DEMAND_AVERAGE, 
-                                  DEMAND_DEVIATION);
+    pNormal = gsl_cdf_gaussian_Q (_capacity - 1 - lDemandMean, 
+                                  lDemandStdDev);
 
     //    pNormal = probabilityNormal (CAPACITY-1, DEMAND_AVERAGE, 
     //                           DEMAND_DEVIATION);
 
-    double lProbability = (1 - pNormal) * gsl_sf_pow_int (SHOW_RATE, CAPACITY);
+    const double lNoShowMean = _noShowDistributionParameters.getMean();
+    
+    double lProbability = (1 - pNormal)
+      * gsl_sf_pow_int (lNoShowMean, _capacity);
 
     int counter = 1;
     while ((lProbability < PRICE_OVER_DENIED_COST) && (counter < 100)) {
@@ -299,25 +310,27 @@ namespace RMOL {
 
       const unsigned int b = static_cast<unsigned int> (resultBookingLimit);
 
-      pNormal = gsl_cdf_gaussian_Q (b + 1 - DEMAND_AVERAGE, DEMAND_DEVIATION);
+      pNormal = gsl_cdf_gaussian_Q (b + 1 - lDemandMean, lDemandStdDev);
 
       //  pNormal = probabilityNormal (b+1, DEMAND_AVERAGE, DEMAND_DEVIATION);
 
-      assert (CAPACITY > 1);
-      assert (b - CAPACITY + 1 > 0);
+      assert (_capacity > 1);
+      assert (b - _capacity + 1 > 0);
       // assert (b >= 0); (derived from the other two)
 
 
       // The cumulated probability that the number of shows exceeds
       // the leg/cabin physical capacity
-      lProbability += (1+pNormal)*SHOW_RATE*gsl_ran_binomial_pdf(CAPACITY-1, SHOW_RATE, b);
+      lProbability += (1+pNormal)
+        * lNoShowMean * gsl_ran_binomial_pdf (_capacity-1, lNoShowMean, b);
       
     }
     return resultBookingLimit;
   }
 	
 
-  // Private useful functions, some of them are to be replaced by gsl library's functions
+  // Private useful functions, some of them are to be replaced by gsl
+  // library's functions
 
   // //////////////////////////////////////////////////////////////////////
   //to be deleted, already available in gsl lib
@@ -368,8 +381,8 @@ namespace RMOL {
   //////////////fraction of customers who will be denied service///////////////
   double Overbooking::fractionServiceLevel2 (const double iShowRate, 
                                              const int b, const int C) const {
-    double resultFraction = serviceLevel1 (iShowRate, b-1, CAPACITY-1) 
-      - C / b / iShowRate * serviceLevel1 (iShowRate, b, CAPACITY);
+    double resultFraction = serviceLevel1 (iShowRate, b-1, _capacity-1) 
+      - C / b / iShowRate * serviceLevel1 (iShowRate, b, _capacity);
 
     return resultFraction;
   } 
