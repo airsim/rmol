@@ -1,5 +1,7 @@
 package org.amadeus.jrmol.field;
 
+import org.amadeus.jrmol.basic.BasConst;
+
 /** 
  * Class wrapping the parameters of a distribution:
  * mean and standard deviation.
@@ -9,14 +11,14 @@ public class FldDistributionParameters {
 	/** 
 	 * Mean.
 	 */
-	private double _mean = 0.0;
+	private double _mean = BasConst.DEFAULT_DISTRIBUTION_PARAMETERS_MEAN;
 
 	/** 
 	 * Standard Deviation.
      * Note that the variance is defined as the square of
      * the standard deviation.
      */
-	private double _standardDeviation = 1.0;
+	private double _standardDeviation = BasConst.DEFAULT_DISTRIBUTION_PARAMETERS_DEVIATION;
 	
 	public FldDistributionParameters() {}
 	

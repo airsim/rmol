@@ -1,7 +1,7 @@
 import org.amadeus.jrmol.bom.BomBucket;
 import org.amadeus.jrmol.bom.BomBucketHolder;
 import org.amadeus.jrmol.bom.BomDemand;
-import org.amadeus.jrmol.business.BusOptimizationManager;
+import org.amadeus.jrmol.command.CmdOptimizeProtectionsByMCIntegration;
 import org.amadeus.jrmol.field.FldDistributionParameters;
 import org.amadeus.jrmol.field.FldYieldRange;
 
@@ -77,7 +77,7 @@ public class Test {
 
 			// Calculate the optimal protections by the Monte Carlo Integration approach
 			long startTime = System.currentTimeMillis();
-			BusOptimizationManager.optimialOptimisationByMCIntegration(K, cabinCapacity, aBucketHolder);
+			CmdOptimizeProtectionsByMCIntegration.optimize(K, cabinCapacity, aBucketHolder);
 			long endTime = System.currentTimeMillis();
 			
 			// Display

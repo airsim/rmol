@@ -1,5 +1,7 @@
 package org.amadeus.jrmol.field;
 
+import org.amadeus.jrmol.basic.BasConst;
+
 /** 
  * Class representing a range of yields.
  * <br>Typically, bookings are priced according to rules (e.g., fare rules),
@@ -16,17 +18,17 @@ public class FldYieldRange {
 	/** 
 	 * Upper yield.
 	 */
-	private double _upperYield = Double.MAX_VALUE;
+	private double _upperYield = BasConst.DEFAULT_YIELD_RANGE_UPPER_FIELD;
 
 	/** 
 	 * Average yield.
 	 */
-	private double _averageYield = Double.MAX_VALUE;
+	private double _averageYield = BasConst.DEFAULT_YIELD_RANGE_AVERAGE_FIELD;
 
 	/** 
 	 * Lower yield (most often, not used). 
 	 */
-	private double _lowerYield = Double.MIN_VALUE;
+	private double _lowerYield = BasConst.DEFAULT_YIELD_RANGE_LOWER_FIELD;
 	
 	public FldYieldRange() {}
 	

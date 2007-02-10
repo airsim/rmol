@@ -1,4 +1,4 @@
-package org.amadeus.jrmol.business;
+package org.amadeus.jrmol.command;
 
 import java.util.Vector;
 
@@ -8,7 +8,7 @@ import org.amadeus.jrmol.bom.BomGaussian;
 import org.amadeus.jrmol.bom.BomPartialSumHolder;
 import org.amadeus.jrmol.field.FldDistributionParameters;
 
-public class BusOptimizationManager {
+public class CmdOptimizeProtectionsByMCIntegration {
 
 	/** 
 	 * Calculate the optimal protections for the set of buckets/classes
@@ -22,7 +22,7 @@ public class BusOptimizationManager {
 	 * <br>The cabin capacity is used to a double to allow for some
 	 * overbooking.
 	 */
-	public static void optimialOptimisationByMCIntegration(final int K, final double iCabinCapacity, BomBucketHolder ioBucketHolder) {
+	public static void optimize(final int K, final double iCabinCapacity, BomBucketHolder ioBucketHolder) {
 
 		// Number of classes/buckets: n
 		final int nbOfClasses = ioBucketHolder.getSize();
