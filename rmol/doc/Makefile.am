@@ -14,6 +14,18 @@ docdir = @docdir@
 
 html_tarname = @PACKAGE_TARNAME@-html-doc-@PACKAGE_VERSION@
 
+# Manual
+info_TEXINFOS = rmol-ref.texi
+noinst_TEXINFOS = rmol-design.texi
+rmol_ref_TEXINFOS = intro.texi usage.texi err.texi debug.texi freemanuals.texi autoconf.texi gpl.texi fdl.texi
+
+# Man pages
+man_MANS = rmol.3 rmol-config.1
+
+noinst_DATA = sourceforge/howto_release_rmol.html.in
+EXTRA_DIST = $(man_MANS) $(noinst_DATA)
+
+# Targets
 all-local: html-local
 
 html-local: html/index.html

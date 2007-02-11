@@ -13,20 +13,26 @@ if RUN_TESTS
   TEST_DIR = test
 endif
 
-
+# Maintainance files
 MAINTAINERCLEANFILES = Makefile.in aclocal.m4 configure \
 			config-h.in sic/stamp-h.in autogen.sh bootstrap
+
+EXTRA_DIST = @PACKAGE@.spec @PACKAGE@.m4 @PACKAGE@.pc Makefile.common 
 
 # Build in these directories:
 SUBDIRS = rmol win32 po $(HTML_DOC_DIR) $(TEST_DIR)
 
-EXTRA_DIST = rmol.spec Makefile.common
 
 # Configuration helpers
 bin_SCRIPTS = @PACKAGE@-config
+
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = @PACKAGE@.pc
 
+m4datadir = $(datadir)/aclocal
+m4data_DATA = @PACKAGE@.m4
+
+# Targets
 uninstall-local:
 	rm -rf $(DESTDIR)$(includedir)/@PACKAGE@
 

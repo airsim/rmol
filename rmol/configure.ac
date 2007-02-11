@@ -193,8 +193,6 @@ test "x$diff_ok" != xyes && enable_tests=no
 test "x$sed_ok" != xyes && enable_tests=no
 AM_CONDITIONAL([RUN_TESTS], [test "x$enable_tests" = xyes])
 
-acx_blas_ok=nofortran;
-
 
 # Checks for header files
 AC_HEADER_STDC
@@ -320,6 +318,7 @@ AC_CONFIG_FILES(
 	doc/local/Makefile
 	doc/local/index.doc
 	doc/doxygen_html.cfg
+	doc/sourceforge/howto_release_rmol.html
 	po/Makefile.in
 	test/Makefile
 	win32/Makefile)
