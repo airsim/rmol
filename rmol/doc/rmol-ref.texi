@@ -1,0 +1,338 @@
+\input texinfo @c -*-texinfo-*-
+@c This will be for the printing version of the manual
+@c @input config-local.texi
+@c %**start of header
+@setfilename rmol-ref.info
+@settitle Revenue Management Optimisation Library -- Reference Manual
+@finalout
+@set frontcontents
+@ifset publish
+@setchapternewpage odd
+@end ifset
+@c %**end of header
+
+@dircategory Scientific software
+@direntry
+* rmol-ref: (rmol-ref).    Revenue Management Optimisation Library -- Reference
+@end direntry
+
+@c How to use the math macros
+@c ==========================
+@c 
+@c For simple expressions, simply use the @math{} command, e.g.
+@c
+@c     @math{\exp(x)/(1+x^2)}
+@c 
+@c but if the expression includes characters that need to be 'escaped'
+@c in texinfo, like '{' or '}', or needs different output for TeX and info,
+@c then use the following form,
+@c
+@c     blah blah blah @c{$y^{1+b} \le \pi$}
+@c     @math{y^@{1+b@} <= \pi}
+@c
+@c The first part using @c{} must appear at the end of a line (it reads
+@c up to the line end -- as far as texinfo is concerned it's actually
+@c a 'comment').  The comment command @c has been modified to capture
+@c a TeX expression which is output by the next @math.
+@c
+@c For ordinary comments use the @comment command.
+
+@tex
+% Mathematical macros taken from the GNU Calc Manual
+% ==================================================
+%
+% Some special kludges to make TeX formatting prettier.
+% Because makeinfo.c exists, we can't just define new commands.
+% So instead, we take over little-used existing commands.
+%
+% Redefine @cite{text} to act like $text$ in regular TeX.
+% Info will typeset this same as @samp{text}.
+\gdef\goodtex{\tex \let\rm\goodrm \let\t\ttfont \turnoffactive}
+\gdef\goodrm{\fam0\tenrm}
+\gdef\math{\goodtex$\mathxxx}
+\gdef\mathxxx#1{#1$\endgroup}
+\global\let\oldxrefX=\xrefX
+\gdef\xrefX[#1]{\begingroup\let\math=\dfn\oldxrefX[#1]\endgroup}
+%
+% Redefine @i{text} to be equivalent to @cite{text}, i.e., to use math mode.
+% This looks the same in TeX but omits the surrounding ` ' in Info.
+%\global\let\i=\cite
+%\global\let\math=\cite
+%
+% Redefine @c{tex-stuff} \n @whatever{info-stuff}.
+\gdef\c{\futurelet\next\mycxxx}
+\gdef\mycxxx{%
+  \ifx\next\bgroup \goodtex\let\next\mycxxy
+  \else\ifx\next\mindex \let\next\relax
+  \else\ifx\next\kindex \let\next\relax
+  \else\ifx\next\starindex \let\next\relax \else \let\next\comment
+  \fi\fi\fi\fi \next
+}
+\gdef\mycxxy#1#2{#1\endgroup\mycxxz}
+\gdef\mycxxz#1{}
+%
+% Define \Hat to take over from \hat as an accent
+\gdef\Hat{\mathaccent "705E}
+%
+%\gdef\beforedisplay{\vskip-10pt}
+%\gdef\afterdisplay{\vskip-5pt}
+\gdef\beforedisplay{}
+\gdef\afterdisplay{}
+{\globaldefs = 1
+\abovedisplayskip=7pt plus 2pt minus 1pt
+\belowdisplayskip=7pt plus 2pt minus 1pt
+\abovedisplayshortskip=7pt plus 2pt minus 1pt
+\belowdisplayshortskip=7pt plus 2pt minus 1pt}
+%\abovedisplayskip=12pt plus 3pt minus 3pt
+%\belowdisplayskip=12pt plus 3pt minus 3pt
+%\abovedisplayshortskip=7pt plus 1pt minus 1pt
+%\belowdisplayshortskip=7pt plus 1pt minus 1pt
+%\gdef\beforedisplayh{\vskip-25pt}
+%\gdef\afterdisplayh{\vskip-10pt}
+%
+\gdef\arcsec{\hbox{\rm arcsec}}
+\gdef\arccsc{\hbox{\rm arccsc}}
+\gdef\arccot{\hbox{\rm arccot}}
+\gdef\sech{\hbox{\rm sech}}
+\gdef\csch{\hbox{\rm csch}}
+\gdef\coth{\hbox{\rm coth}}
+\gdef\arcsinh{\hbox{\rm arcsinh}}
+\gdef\arccosh{\hbox{\rm arccosh}}
+\gdef\arctanh{\hbox{\rm arctanh}}
+\gdef\arcsech{\hbox{\rm arcsech}}
+\gdef\arccsch{\hbox{\rm arccsch}}
+\gdef\arccoth{\hbox{\rm arccoth}}
+%
+\gdef\Re{\hbox{\rm Re}}
+\gdef\Im{\hbox{\rm Im}}
+\gdef\Sin{\hbox{\rm Sin}}
+\gdef\Cos{\hbox{\rm Cos}}
+\gdef\Log{\hbox{\rm Log}}
+%
+\gdef\erf{\hbox{\rm erf}}
+\gdef\erfc{\hbox{\rm erfc}}
+\gdef\sinc{\hbox{\rm sinc}}
+\gdef\sgn{\hbox{\rm sgn}}
+\gdef\sign{\hbox{\rm sign}}
+\gdef\det{\hbox{\rm det}}
+\gdef\Var{\hbox{\rm Var}}
+\gdef\arg{\hbox{\rm arg}} % avoid temporary clobbering of arg in texinfo-4.8
+@end tex
+
+@include version-ref.texi
+@set RMOL @i{Revenue Management Optimisation Library}
+
+@copying
+Copyright @copyright{} 2006, 2007 The RMOL Team.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.2 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being ``GNU General Public License'' and ``Free Software
+Needs Free Documentation'', the Front-Cover text being ``A GNU Manual'',
+and with the Back-Cover Text being (a) (see below).  A copy of the
+license is included in the section entitled ``GNU Free Documentation
+License''.
+
+(a) The Back-Cover Text is: ``You have freedom to copy and modify this
+GNU Manual, like GNU software.''
+@end copying
+
+@titlepage
+@title Revenue Management Optimisation Library
+@subtitle Reference Manual
+@subtitle Edition @value{EDITION}, for RMOL Version @value{VERSION}
+@subtitle @value{UPDATED}
+
+@author Denis Arnaud
+Amadeus
+@comment @email{denis_arnaud@users.sourceforge.net}
+@sp 1
+
+@author Karim Duval
+Amadeus
+@comment @email{kduval@amadeus.com}
+@sp 1
+
+@author Ngoc-Thach Hoang
+Amadeus
+@comment @email{nhoang@amadeus.com}
+@sp 1
+
+@page
+@vskip 0pt plus 1filll
+@insertcopying
+@ifclear publish
+Printed copies of this manual can be purchased from Sourceforge.net
+at @uref{http://rmol.sourceforge.net}.
+
+The money raised from sales of the manual helps support the
+development of RMOL.
+@end ifclear
+@end titlepage
+
+@iftex
+@ifset frontcontents
+@contents
+@end ifset
+@end iftex
+
+@ifnottex
+@node Top, Introduction, (dir), (dir)
+@top RMOL
+
+This file documents the @value{RMOL} (RMOL), a collection of numerical
+routines for scientific computing.  It corresponds to release
+@value{VERSION} of the library.  Please report any errors in this
+manual to @email{bug-rmol@@gnu.org}.
+
+More information about RMOL can be found at the project homepage,
+@uref{http://www.gnu.org/software/rmol/}.
+
+A Japanese translation of this manual is available from the RMOL
+project homepage thanks to Daisuke Tominaga.
+
+Printed copies of this manual can be purchased from Network Theory Ltd
+at @uref{http://www.network-theory.co.uk/rmol/manual/}. The money
+raised from sales of the manual helps support the development of RMOL.
+
+@insertcopying
+@sp 1
+@end ifnottex
+
+@menu
+* Introduction::                
+* Using the library::           
+* Error Handling::
+* Debugging Numerical Programs::         
+* Contributors to RMOL::
+* Autoconf Macros::             
+* Free Software Needs Free Documentation::  
+* GNU General Public License::  
+* GNU Free Documentation License::  
+* Function Index::              
+* Variable Index::              
+* Type Index::                  
+* Concept Index::               
+@end menu
+
+@node  Introduction, Using the library, Top, Top
+@chapter Introduction
+@include intro.texi
+
+@node Using the library, Error Handling, Introduction, Top
+@chapter Using the library
+@cindex usage, compiling application programs
+@include usage.texi
+
+@node Error Handling, Debugging Numerical Programs, Using the library, Top
+@chapter Error Handling
+@cindex Errors
+@include err.texi
+
+@node Debugging Numerical Programs, Contributors to RMOL, Error Handling, Top
+@appendix Debugging Numerical Programs
+@include debug.texi
+
+@node Contributors to RMOL, Autoconf Macros, Debugging Numerical Programs, Top
+@appendix Contributors to RMOL
+
+(See the AUTHORS file in the distribution for up-to-date information.)
+
+@table @strong
+@item Denis Arnaud
+Conceived RMOL (with Karim Duval, Ngoc-Thach Hoang, Patrick Grandjean
+and Ivan Weber) and wrote the design document.  Wrote the single
+resource optimisation package and the relevant chapter in the manual.
+
+@item Karim Duval
+Conceived RMOL (with Denis Arnaud).  Wrote the forecaster package and
+the relevant chapter in the manual.
+
+@item Ivan Weber
+Conceived RMOL (with Denis Arnaud).  Wrote the multiple resource
+optimisation package and the relevant chapter in the manual.
+
+@item Ngoc-Thach Hoang
+Conceived RMOL (with Denis Arnaud).  Wrote the overbooking package and
+the relevant chapter in the manual.
+
+@item Patrick Grandjean
+Conceived RMOL (with Mark Galassi).  Wrote the Java package.
+
+@end table
+
+Thanks to Olivier Marode for help in proofreading the manual.
+
+
+@node  Autoconf Macros, Free Software Needs Free Documentation, Contributors to RMOL, Top
+@appendix Autoconf Macros
+@include autoconf.texi
+
+@comment @node  Copyright, GNU General Public License, Contributors to RMOL, Top
+@comment @unnumbered Copyright
+@comment @include science.texi
+
+@node  Free Software Needs Free Documentation, GNU General Public License, Autoconf Macros, Top
+@unnumbered Free Software Needs Free Documentation
+@include freemanuals.texi
+
+@node  GNU General Public License, GNU Free Documentation License, Free Software Needs Free Documentation, Top
+@unnumbered GNU General Public License
+@include gpl.texi
+
+@node GNU Free Documentation License, Function Index, GNU General Public License, Top
+@unnumbered GNU Free Documentation License
+@include fdl.texi
+
+@comment htmlhelp: @printindex fn
+@comment htmlhelp: @printindex vr
+@comment htmlhelp: @printindex tp
+@comment htmlhelp: @printindex cp
+@comment htmlhelp: @bye
+
+@iftex
+@normalbottom
+@end iftex
+
+@node Function Index, Variable Index, GNU Free Documentation License, Top
+@unnumbered Function Index
+
+@printindex fn
+
+@node Variable Index, Type Index, Function Index, Top
+@unnumbered Variable Index
+
+@printindex vr
+
+@node Type Index, Concept Index, Variable Index, Top
+@unnumbered Type Index
+
+@printindex tp
+
+@node Concept Index,  , Type Index, Top
+@unnumbered Concept Index
+
+@printindex cp
+
+@ifclear frontcontents
+@comment Use @setchapternewpage odd to ensure that the contents starts 
+@comment on an odd page so that it can always be moved to the front when 
+@comment printing two-up.
+@setchapternewpage odd
+@contents
+@end ifclear
+
+@ifset extrablankpages
+@comment final page must be blank for printed version
+@page
+@headings off
+@*
+@page
+@*
+@comment @page
+@comment @*
+@comment @page
+@comment @*
+@end ifset
+@bye
