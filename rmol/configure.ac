@@ -77,6 +77,13 @@ AC_ARG_ENABLE(exceptions,
                          [Define if you want exceptions handling])])
 test "x$enable_exceptions" != xyes && enable_exceptions=no
 
+# Check for info pages
+AC_ARG_ENABLE(info-doc, 
+              [AS_HELP_STRING([--disable-info-doc],
+                              [do not generate Info documentation])])
+test "x$enable_info_doc" != xno && enable_info_doc=yes
+
+
 # Check for html-doc switch
 AC_ARG_ENABLE(html-doc, 
               [AS_HELP_STRING([--disable-html-doc],
@@ -169,6 +176,14 @@ GSL_VERSION=`${GSL_CONFIG} --version`
 AC_SUBST(GSL_CFLAGS)
 AC_SUBST(GSL_LIBS)
 
+
+# Checks for documentation build tools
+#AC_CHECK_PROG([texinfo_ok], [texinfo], [yes], [no])
+#if test "x$enable_info_doc" != xno; then
+#  test "x$texinfo_ok" != xyes && enable_info_doc=no
+#  AC_PATH_PROG([PERL], [perl], [])
+#fi
+AM_CONDITIONAL([INFO_DOC], [test "x$enable_info_doc" = xyes])
 
 # Checks for documentation build tools
 AC_CHECK_PROG([doxygen_ok], [doxygen], [yes], [no])
@@ -311,6 +326,8 @@ AC_CONFIG_FILES(
 	rmol/bom/Makefile
 	rmol/factory/Makefile
 	rmol/command/Makefile
+	man/Makefile
+	info/Makefile
 	doc/Makefile
 	doc/images/Makefile
 	doc/tutorial/Makefile
@@ -335,15 +352,19 @@ Directories:
   - includedir ..... : ${includedir}
   - libdir ......... : ${libdir}
   - docdir ......... : ${docdir}
+  - mandir ......... : ${mandir}
+  - infodir ........ : ${infodir}
 
 Switches:
   - debug .......... : ${enable_debug}
   - exceptions ..... : ${enable_exceptions}
+  - info-doc ....... : ${enable_info_doc}
   - html-doc ....... : ${enable_html_doc}
   - shared ......... : ${enable_shared}
   - static ......... : ${enable_static}
 
 Documentation tools:
+  - texinfo ........ : ${texinfo_ok}
   - doxygen ........ : ${doxygen_ok}
   - latex .......... : ${latex_ok}
   - dvips .......... : ${dvips_ok}

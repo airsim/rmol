@@ -5,6 +5,10 @@ ACLOCAL_AMFLAGS = -I config
 
 AUTOMAKE_OPTIONS = dist-bzip2
 
+if INFO_DOC
+  INFO_DOC_DIR = info
+endif
+
 if HTML_DOC
   HTML_DOC_DIR = doc
 endif
@@ -20,7 +24,7 @@ MAINTAINERCLEANFILES = Makefile.in aclocal.m4 configure \
 EXTRA_DIST = @PACKAGE@.spec @PACKAGE@.m4 @PACKAGE@.pc Makefile.common 
 
 # Build in these directories:
-SUBDIRS = rmol win32 po $(HTML_DOC_DIR) $(TEST_DIR)
+SUBDIRS = rmol win32 po man $(INFO_DOC_DIR) $(HTML_DOC_DIR) $(TEST_DIR)
 
 
 # Configuration helpers
