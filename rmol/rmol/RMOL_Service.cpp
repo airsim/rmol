@@ -7,6 +7,7 @@
 #include <rmol/basic/BasConst_RMOL_Service.hpp>
 #include <rmol/bom/MCUtils.hpp>
 #include <rmol/factory/FacSupervisor.hpp>
+#include <rmol/factory/FacBucket.hpp>
 #include <rmol/factory/FacBucketHolder.hpp>
 #include <rmol/command/FileMgr.hpp>
 #include <rmol/RMOL_Service.hpp>
@@ -42,7 +43,7 @@ namespace RMOL {
     const FldYieldRange aYieldRange (iYieldRange);
     const FldDistributionParameters aDistribParams (iDemandMean, iDemandStandardDev);
     const Demand aDemand (aDistribParams, aYieldRange);
-    Bucket aBucket (aYieldRange, aDemand);
+    Bucket& aBucket = FacBucket::instance().create (aYieldRange, aDemand);
 
     assert (_bucketHolder != NULL);
     _bucketHolder->addBucket (aBucket);

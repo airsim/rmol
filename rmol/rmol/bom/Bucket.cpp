@@ -1,6 +1,10 @@
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
+// STL
+#include <iostream>
+#include <iomanip>
+// RMOL
 #include <rmol/bom/Bucket.hpp>
 
 namespace RMOL {
@@ -44,6 +48,24 @@ namespace RMOL {
 
   // //////////////////////////////////////////////////////////////////////
   Bucket::~Bucket() {
+  }
+
+  // //////////////////////////////////////////////////////////////////////
+  void Bucket::toStream (std::ostream& ioOut) const {
+    const double pj = getUpperYield();
+    const double mj = getMean();
+    const double sj = getStandardDeviation();
+    const double proj = getProtection();
+    const double yj = getCumulatedProtection();
+    const double bj = getCumulatedBookingLimit();
+    ioOut << std::fixed << std::setprecision (2)
+          << pj << "; " << mj << "; " << sj << "; " << proj << "; " << yj
+          << "; " << bj << std::endl;
+  }
+  
+  // //////////////////////////////////////////////////////////////////////
+  void Bucket::display () const {
+    toStream (std::cout);
   }
 
   // //////////////////////////////////////////////////////////////////////

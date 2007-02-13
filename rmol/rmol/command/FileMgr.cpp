@@ -8,6 +8,7 @@
 #include <fstream>
 // RMOL
 #include <rmol/bom/BucketHolder.hpp>
+#include <rmol/factory/FacBucket.hpp>
 #include <rmol/command/FileMgr.hpp>
 
 namespace RMOL {
@@ -61,7 +62,7 @@ namespace RMOL {
 
       if (hasAllPArams && i == 1) {
         const Demand aDemand (aDistribParams, aYieldRange);
-        Bucket aBucket (aYieldRange, aDemand);
+        Bucket& aBucket = FacBucket::instance().create (aYieldRange, aDemand);
         ioBucketHolder.addBucket (aBucket);
       }
 
@@ -73,7 +74,7 @@ namespace RMOL {
     } else {
       if (i == 2) {
         const Demand aDemand (aDistribParams, aYieldRange);
-        Bucket aBucket (aYieldRange);
+        Bucket& aBucket = FacBucket::instance().create (aYieldRange);
         ioBucketHolder.addBucket (aBucket);
       }
     }

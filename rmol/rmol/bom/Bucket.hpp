@@ -6,6 +6,7 @@
 // //////////////////////////////////////////////////////////////////////
 // RMOL
 #include <rmol/field/FldYieldRange.hpp>
+#include <rmol/bom/BomAbstract.hpp>
 #include <rmol/bom/Demand.hpp>
 
 namespace RMOL {
@@ -40,7 +41,12 @@ namespace RMOL {
       <br>b(j) = C - y(j-1),
       <br>Hence: b(n) <= b(n-1) <= ... <= b(1), where b(1)=C
   */
-  class Bucket {
+  class Bucket : public BomAbstract {
+    /** Friend Classes
+        <br>Those classes need to access the internal attributes of this object
+        in order to construct and initialise it.*/
+    friend class FacBucket;
+    
   public:
     /** Constructors. */
     Bucket ();
@@ -104,6 +110,14 @@ namespace RMOL {
     void setCumulatedBookingLimit (const double iBookingLimit) {
       _cumulatedBookingLimit = iBookingLimit;
     }
+
+    /** Dump a Business Object into an output stream.
+        @param ostream& the output stream
+        @return ostream& the output stream. */
+    void toStream (std::ostream& ioOut) const;
+
+    /** Display on standard output. */
+    void display () const;
 
     /** Destructors. */
     virtual ~Bucket();

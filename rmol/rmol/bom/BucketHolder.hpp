@@ -7,8 +7,8 @@
 // STL
 #include <iostream>
 // RMOL
-#include "BomAbstract.hpp"
-#include "BucketList.hpp"
+#include <rmol/bom/BomAbstract.hpp>
+#include <rmol/bom/BucketList.hpp>
 
 namespace RMOL {
 
@@ -58,8 +58,10 @@ namespace RMOL {
     /** Get the next element (bucket/class). */
     Bucket& getNextBucket ();
 
-    /** Add an element (bucket/class). */
-    void addBucket (const Bucket& iBucket);
+    /** Add an element (bucket/class).
+        <br>Note that the Bucket object may be altered by subsequent
+        operations. */
+    void addBucket (Bucket& iBucket);
 
     /** Initialise the internal iterators on Buckets:
 	The current iterator is set on the first Bucket,
