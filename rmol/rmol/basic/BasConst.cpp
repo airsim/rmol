@@ -1,8 +1,12 @@
 #include <rmol/basic/BasConst_General.hpp>
 #include <rmol/basic/BasConst_Overbooking.hpp>
+#include <rmol/basic/BasConst_RMOL_Service.hpp>
 
 namespace RMOL {
 
+  /** Default capacity for the RMOL_Service. */
+  const double DEFAULT_RMOL_SERVICE_CAPACITY = 1.0;
+  
   /** Default value for the number of draws within the Monte-Carlo
       Integration algorithm. */
   const int DEFAULT_NUMBER_OF_DRAWS_FOR_MC_SIMULATION = 100000;
