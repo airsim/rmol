@@ -63,6 +63,7 @@ namespace RMOL {
     _context (iResourceCapacity) {
     BucketHolder& aBucketHolder = 
       FacBucketHolder::instance().create (iResourceCapacity);
+    _context.setBucketHolder (&aBucketHolder);
   }
 
   // //////////////////////////////////////////////////////////////////////
