@@ -7,6 +7,7 @@
 #include <iostream>
 #include <iomanip>
 // RMOL
+#include <rmol/bom/Bucket.hpp>
 #include <rmol/bom/BucketHolder.hpp>
 
 namespace RMOL {
@@ -60,7 +61,7 @@ namespace RMOL {
   }
 
   // //////////////////////////////////////////////////////////////////////
-  Bucket& BucketHolder::getCurrentBucket () {
+  Bucket& BucketHolder::getCurrentBucket () const {
     Bucket* resultBucket_ptr = *_itCurrentBucket;
     assert (resultBucket_ptr != NULL);
     
@@ -68,7 +69,15 @@ namespace RMOL {
   }
 
   // //////////////////////////////////////////////////////////////////////
-  Bucket& BucketHolder::getNextBucket () {
+  Bucket& BucketHolder::getTaggedBucket () const {
+    Bucket* resultBucket_ptr = *_itTaggedBucket;
+    assert (resultBucket_ptr != NULL);
+    
+    return (*resultBucket_ptr);
+  }
+
+  // //////////////////////////////////////////////////////////////////////
+  Bucket& BucketHolder::getNextBucket () const {
     Bucket* resultBucket_ptr = *_itNextBucket;
     assert (resultBucket_ptr != NULL);
     
@@ -87,6 +96,17 @@ namespace RMOL {
     if (_itNextBucket != _bucketList.end()) {
       _itNextBucket++;
     }
+  }
+
+  // //////////////////////////////////////////////////////////////////////
+  void BucketHolder::tag () {
+      _itTaggedBucket = _itCurrentBucket;
+  }
+
+  // //////////////////////////////////////////////////////////////////////
+  bool BucketHolder::hasNotReachedEnd () const {
+    bool result = (_itCurrentBucket != _bucketList.end());
+    return result;
   }
 
   // //////////////////////////////////////////////////////////////////////

@@ -7,10 +7,12 @@
 #include <iostream>
 #include <cmath>
 // RMOL
-#include <rmol/factory/FacPartialSumHolder.hpp>
 #include <rmol/bom/VariateList.hpp>
 #include <rmol/bom/Gaussian.hpp>
+#include <rmol/bom/Bucket.hpp>
 #include <rmol/bom/MCUtils.hpp>
+#include <rmol/bom/BucketHolder.hpp>
+#include <rmol/factory/FacPartialSumHolder.hpp>
 
 namespace RMOL {
 

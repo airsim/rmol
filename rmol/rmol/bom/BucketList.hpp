@@ -6,10 +6,11 @@
 // //////////////////////////////////////////////////////////////////////
 // STL
 #include <list>
-// RMOL
-#include "Bucket.hpp"
 
 namespace RMOL {
+
+  /** Forward declarations. */
+  class Bucket;
 
   /** Define a vector (ordered list) of N buckets/classes. */
   typedef std::list<Bucket*> BucketList_T;

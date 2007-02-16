@@ -53,10 +53,13 @@ namespace RMOL {
     void display () const;
 
     /** Get the current element (bucket/class). */
-    Bucket& getCurrentBucket ();
+    Bucket& getCurrentBucket () const;
 
     /** Get the next element (bucket/class). */
-    Bucket& getNextBucket ();
+    Bucket& getNextBucket () const;
+
+    /** Get the tagged element (bucket/class). */
+    Bucket& getTaggedBucket () const;
 
     /** Add an element (bucket/class).
         <br>Note that the Bucket object may be altered by subsequent
@@ -71,6 +74,13 @@ namespace RMOL {
     /** Iterate for one element (bucket/class): 
 	increment both internal iterators on Buckets. */
     void iterate ();
+
+    /** States whether or not the end of the (bucket/class) list has
+        been reached. */
+    bool hasNotReachedEnd () const;
+
+    /** Tag one element (bucket/class) for later direct access. */
+    void tag ();
 
     /** Re-calculate the following values for the buckets/classes:
         - the optimal revenue (from the prices and protections);
@@ -97,6 +107,7 @@ namespace RMOL {
     /** Iterator for the current bucket/class. */
     BucketList_T::iterator _itCurrentBucket;
     BucketList_T::iterator _itNextBucket;
+    BucketList_T::iterator _itTaggedBucket;
 
     /** Total mean demand. */
     double _totalMeanDemand;

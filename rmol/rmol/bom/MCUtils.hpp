@@ -4,11 +4,11 @@
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
-// RMOL
-#include <rmol/bom/BucketList.hpp>
-#include <rmol/bom/BucketHolder.hpp>
 
 namespace RMOL {
+
+  /** Forward declarations. */
+  class BucketHolder;
 
   /** Utility methods for the Monte-Carlo algorithms. */
   class MCUtils {
