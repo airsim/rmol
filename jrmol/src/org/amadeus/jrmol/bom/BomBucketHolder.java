@@ -19,26 +19,6 @@ public class BomBucketHolder extends BomAbstract {
 	private Vector<BomBucket> _bucketList = null;
 	
 	/** 
-	 * Current bucket/class index.
-	 */
-	private int _currentBucketIndex = 0;
-
-	/** 
-	 * Current bucket/class.
-	 */
-	private BomBucket _currentBucket = null;
-
-	/** 
-	 * Next bucket/class index.
-	 */
-	private int _nextBucketIndex = 0;
-
-	/** 
-	 * Next bucket/class.
-	 */
-	private BomBucket _nextBucket = null;
-
-	/** 
 	 * Total mean demand.
 	 */
 	private double _totalMeanDemand = 0.0;
@@ -80,26 +60,6 @@ public class BomBucketHolder extends BomAbstract {
 	}
 
 	/** 
-	 * Initialise the internal iterators on Buckets:
-	 * The current iterator is set on the first Bucket,
-	 * the next iterator is set on the second bucket. 
-	 */
-	public void begin() {
-		_currentBucketIndex = 0;
-		_nextBucketIndex = 0;
-
-		if (_bucketList.size() == 0) return;
-
-		_currentBucket = _bucketList.get(_currentBucketIndex);
-		_nextBucket = _currentBucket;
-
-		if (_bucketList.size() == 1) return;
-
-		_nextBucketIndex++;
-		_nextBucket = _bucketList.get(_nextBucketIndex);
-	}
-
-	/** 
 	 * Re-calculate the total mean demand and optimal revenue
 	 * (from the demand, prices and protections).
 	 */
@@ -138,8 +98,8 @@ public class BomBucketHolder extends BomAbstract {
 		 * Note that n-1 corresponds to the size of the parameter list,
 		 * i.e., n corresponds to the number of classes/buckets.
 		 */
-		begin();
-		BomBucket firstBucket = getCurrentBucket();
+		BomBucketHolderIterator aBucketIterator = iterator();
+		BomBucket firstBucket = aBucketIterator.getCurrentBucket();
 
 		// Set the cumulated booking limit of Bucket(1) to be equal to the capacity
 		firstBucket.setCumulatedBookingLimit(_cabinCapacity);
@@ -150,12 +110,12 @@ public class BomBucketHolder extends BomAbstract {
 		 */
 		firstBucket.setProtection (firstBucket.getCumulatedProtection());
 
-		for (int j = 1; j <= nbOfClasses - 1; j++, iterate()) {
+		for (int j = 1; j <= nbOfClasses - 1; j++, aBucketIterator.iterate()) {
 			/** 
 			 * Retrieve Bucket(j) (current) and Bucket(j+1) (next).
 			 */
-			BomBucket currentBucket = getCurrentBucket();
-			BomBucket nextBucket = getNextBucket();
+			BomBucket currentBucket = aBucketIterator.getCurrentBucket();
+			BomBucket nextBucket = aBucketIterator.getNextBucket();
 
 			/**
 			 * Set the cumulated booking limit for Bucket(j+1)
@@ -174,13 +134,6 @@ public class BomBucketHolder extends BomAbstract {
 	}
 
 	/** 
-	 * Display on standard output.
-	 */
-	public void display() {
-		System.out.println(this);
-	}
-
-	/** 
 	 * Get the cabin capacity.
 	 */
 	public final double getCabinCapacity() {
@@ -188,24 +141,10 @@ public class BomBucketHolder extends BomAbstract {
 	}
 
 	/**
-	 * Get the current element (bucket/class).
-	 */
-	public BomBucket getCurrentBucket() {
-		return _currentBucket;
-	}
-
-	/**
 	 * Get the demand factor.
 	 */
 	public final double getDemandFactor() {
 		return _demandFactor;
-	}
-
-	/**
-	 * Get the next element (bucket/class).
-	 */
-	public BomBucket getNextBucket() {
-		return _nextBucket;
 	}
 
 	/**
@@ -229,24 +168,10 @@ public class BomBucketHolder extends BomAbstract {
 		return _totalMeanDemand;
 	}
 
-	/** 
-	 * Iterate for one element (bucket/class): 
-	 * increment both internal iterators on Buckets.
-	 */
-	public void iterate() {
-		if (_currentBucketIndex + 1 < _bucketList.size())
-		{
-			_currentBucketIndex++;
-			_currentBucket = _bucketList.get(_currentBucketIndex);
-		}
-
-		if (_nextBucketIndex + 1 < _bucketList.size())
-		{
-			_nextBucketIndex++;
-			_nextBucket = _bucketList.get(_nextBucketIndex);
-		}
+	public BomBucketHolderIterator iterator() {
+		return new BomBucketHolderIterator();
 	}
-
+	
 	/** 
 	 * Re-calculate the following values for the buckets/classes:
 	 * - the optimal revenue (from the prices and protections);
@@ -294,5 +219,85 @@ public class BomBucketHolder extends BomAbstract {
 		+ "; Optimal Revenue = " + _optimalRevenue + "\n";
 
 		return out;
+	}
+
+	public class BomBucketHolderIterator {
+		/** 
+		 * Current bucket/class index.
+		 */
+		private int _currentBucketIndex = 0;
+	
+		/** 
+		 * Current bucket/class.
+		 */
+		private BomBucket _currentBucket = null;
+	
+		/** 
+		 * Next bucket/class index.
+		 */
+		private int _nextBucketIndex = 0;
+	
+		/** 
+		 * Next bucket/class.
+		 */
+		private BomBucket _nextBucket = null;
+	
+		public BomBucketHolderIterator() {
+			init();
+		}
+		
+		/** 
+		 * Initialise the internal iterators on Buckets:
+		 * The current iterator is set on the first Bucket,
+		 * the next iterator is set on the second bucket. 
+		 */
+		private void init() {
+			_currentBucketIndex = 0;
+			_nextBucketIndex = 0;
+		
+			if (_bucketList.size() == 0) return;
+		
+			_currentBucket = _bucketList.get(_currentBucketIndex);
+			_nextBucket = _currentBucket;
+		
+			if (_bucketList.size() == 1) return;
+		
+			_nextBucketIndex++;
+			_nextBucket = _bucketList.get(_nextBucketIndex);
+		}
+	
+		/**
+		 * Get the current element (bucket/class).
+		 */
+		public BomBucket getCurrentBucket() {
+			return _currentBucket;
+		}
+	
+		/**
+		 * Get the next element (bucket/class).
+		 */
+		public BomBucket getNextBucket() {
+			return _nextBucket;
+		}
+	
+		/** 
+		 * Iterate for one element (bucket/class): 
+		 * increment both internal iterators on Buckets.
+		 */
+		public void iterate() {
+			if (_currentBucketIndex + 1 < _bucketList.size())
+			{
+				_currentBucketIndex++;
+				_currentBucket = _bucketList.get(_currentBucketIndex);
+			}
+		
+			if (_nextBucketIndex + 1 < _bucketList.size())
+			{
+				_nextBucketIndex++;
+				_nextBucket = _bucketList.get(_nextBucketIndex);
+			}
+		}
+		
+		
 	}
 }

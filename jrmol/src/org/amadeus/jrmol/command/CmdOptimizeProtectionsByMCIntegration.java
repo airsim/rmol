@@ -6,6 +6,7 @@ import org.amadeus.jrmol.bom.BomBucket;
 import org.amadeus.jrmol.bom.BomBucketHolder;
 import org.amadeus.jrmol.bom.BomGaussian;
 import org.amadeus.jrmol.bom.BomPartialSumHolder;
+import org.amadeus.jrmol.bom.BomBucketHolder.BomBucketHolderIterator;
 import org.amadeus.jrmol.field.FldDistributionParameters;
 
 public class CmdOptimizeProtectionsByMCIntegration {
@@ -45,15 +46,15 @@ public class CmdOptimizeProtectionsByMCIntegration {
 		 * Note that n-1 corresponds to the size of the parameter list,
 		 * i.e., n corresponds to the number of classes/buckets.
 		 */
-		ioBucketHolder.begin();
+		BomBucketHolderIterator aBucketHolderIterator = ioBucketHolder.iterator();
 
 		int Kj = K;
 		int lj = 0;
-		for (int j = 1 ; j <= nbOfClasses - 1; j++, ioBucketHolder.iterate()) {
+		for (int j = 1 ; j <= nbOfClasses - 1; j++, aBucketHolderIterator.iterate()) {
 			
 			/** Retrieve Bucket(j) (current) and Bucket(j+1) (next). */
-			BomBucket currentBucket = ioBucketHolder.getCurrentBucket();
-			BomBucket nextBucket = ioBucketHolder.getNextBucket();
+			BomBucket currentBucket = aBucketHolderIterator.getCurrentBucket();
+			BomBucket nextBucket = aBucketHolderIterator.getNextBucket();
 
 			// STEP 1.
 			/** 
@@ -140,7 +141,7 @@ public class CmdOptimizeProtectionsByMCIntegration {
 		}
 
 		// Set the protection of Bucket(n) to be equal to the capacity
-		BomBucket currentBucket = ioBucketHolder.getCurrentBucket();
+		BomBucket currentBucket = aBucketHolderIterator.getCurrentBucket();
 		currentBucket.setCumulatedProtection(iCabinCapacity);
 
 		/**

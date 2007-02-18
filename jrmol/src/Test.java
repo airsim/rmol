@@ -81,7 +81,7 @@ public class Test {
 			long endTime = System.currentTimeMillis();
 			
 			// Display
-			aBucketHolder.display();
+			System.out.println(aBucketHolder);
 			
 			System.out.println("Done in " + (endTime - startTime) + "ms");
 
