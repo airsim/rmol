@@ -1,5 +1,5 @@
-#ifndef __RMOL_FAC_FACPARTIALSUMHOLDER_HPP
-#define __RMOL_FAC_FACPARTIALSUMHOLDER_HPP
+#ifndef __RMOL_FAC_FACOVERBOOKING_HPP
+#define __RMOL_FAC_FACOVERBOOKING_HPP
 
 // //////////////////////////////////////////////////////////////////////
 // Import section
@@ -10,38 +10,38 @@
 namespace RMOL {
 
   /** Forward declarations. */
-  class PartialSumHolder;
+  class FldOverbookingPolicy;
+  class Overbooking;
 
-  /** Factory for PartialSum. */
-  class FacPartialSumHolder : public FacAbstract {
+  /** Factory for Overbooking. */
+  class FacOverbooking : public FacAbstract {
   public:
 
     /** Provide the unique instance.
         <br> The singleton is instantiated when first used
-        @return FacPartialSumHolder& */
-    static FacPartialSumHolder& instance();
+        @return FacOverbooking& */
+    static FacOverbooking& instance();
 
     /** Destructor.
         <br> The Destruction put the _instance to NULL
-        in order to be clean for the next FacPartialSumHolder::instance() */
-    virtual ~FacPartialSumHolder();
+        in order to be clean for the next FacOverbooking::instance() */
+    virtual ~FacOverbooking();
 
-    /** Create a new PartialSumHolder object.
+    /** Create a new Overbooking object.
         <br>This new object is added to the list of instantiated objects.
-        @return PartialSumHolder& The newly created object. */
-    PartialSumHolder& create ();
+        @return Overbooking& The newly created object. */
+    Overbooking& create (const FldOverbookingPolicy&);
     
-
   protected:
     /** Default Constructor.
         <br>This constructor is protected in order to ensure the singleton
         pattern.*/
-    FacPartialSumHolder () {}
+    FacOverbooking () {}
 
   private:
     /** The unique instance.*/
-    static FacPartialSumHolder* _instance;
+    static FacOverbooking* _instance;
 
   };
 }
-#endif // __RMOL_FAC_FACPARTIALSUMHOLDER_HPP
+#endif // __RMOL_FAC_FACOVERBOOKING_HPP

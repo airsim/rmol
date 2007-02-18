@@ -1,5 +1,5 @@
-#ifndef __RMOL_BUCKETHOLDER_HPP
-#define __RMOL_BUCKETHOLDER_HPP
+#ifndef __RMOL_BOM_BUCKETHOLDER_HPP
+#define __RMOL_BOM_BUCKETHOLDER_HPP
 
 // //////////////////////////////////////////////////////////////////////
 // Import section
@@ -21,9 +21,7 @@ namespace RMOL {
     friend class FacBucketHolder;
     
   public:
-    /** Destructor. */
-    ~BucketHolder();
-
+    // ////// Getters //////
     /** Get the cabin capacity. */
     const double getCabinCapacity () const {
       return _cabinCapacity;
@@ -52,6 +50,9 @@ namespace RMOL {
     /** Display on standard output. */
     void display () const;
 
+    /** Destructor. */
+    virtual ~BucketHolder();
+
     /** Get the current element (bucket/class). */
     Bucket& getCurrentBucket () const;
 
@@ -60,11 +61,6 @@ namespace RMOL {
 
     /** Get the tagged element (bucket/class). */
     Bucket& getTaggedBucket () const;
-
-    /** Add an element (bucket/class).
-        <br>Note that the Bucket object may be altered by subsequent
-        operations. */
-    void addBucket (Bucket& iBucket);
 
     /** Initialise the internal iterators on Buckets:
 	The current iterator is set on the first Bucket,
@@ -98,6 +94,13 @@ namespace RMOL {
 	<br>Protected to force the use of the Factory. */
     BucketHolder (const double iCabinCapacity);
 
+    /** Add an element (bucket/class).
+        <br>Note that the Bucket object may be altered by subsequent
+        operations.
+	<br>Protected to force the use of the Factory. */
+    void addBucket (Bucket&);
+
+  private:
     /** The capacity of the cabin associated to the bucket/class list. */
     const double _cabinCapacity;
 
@@ -130,4 +133,4 @@ namespace RMOL {
 
   };
 }
-#endif // __RMOL_BUCKETHOLDER_HPP
+#endif // __RMOL_BOM_BUCKETHOLDER_HPP

@@ -6,9 +6,13 @@
 // //////////////////////////////////////////////////////////////////////
 // RMOL
 #include <rmol/factory/FacAbstract.hpp>
-#include <rmol/bom/Bucket.hpp>
 
 namespace RMOL {
+
+  /** Forward declarations. */
+  class FldYieldRange;
+  class Bucket;
+  class Demand;
 
   /** Factory for Bucket. */
   class FacBucket : public FacAbstract {
@@ -33,7 +37,9 @@ namespace RMOL {
         <br>This new object is added to the list of instantiated objects.
         @return Bucket& The newly created object. */
     Bucket& create (const FldYieldRange&, const Demand&);
-    
+
+    /** Create the link between a Bucket (parent) and a Demand (child). */
+    static void createDemandLink (Bucket&, const Demand&);
 
   protected:
     /** Default Constructor.

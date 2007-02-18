@@ -7,8 +7,14 @@
 #include <sstream>
 #include <fstream>
 // RMOL
+#include <rmol/field/FldYieldRange.hpp>
+#include <rmol/field/FldDistributionParameters.hpp>
+#include <rmol/bom/Demand.hpp>
+#include <rmol/bom/Bucket.hpp>
 #include <rmol/bom/BucketHolder.hpp>
+#include <rmol/factory/FacDemand.hpp>
 #include <rmol/factory/FacBucket.hpp>
+#include <rmol/factory/FacBucketHolder.hpp>
 #include <rmol/command/FileMgr.hpp>
 
 namespace RMOL {
@@ -61,9 +67,10 @@ namespace RMOL {
       }
 
       if (hasAllPArams && i == 1) {
-        const Demand aDemand (aDistribParams, aYieldRange);
+        const Demand& aDemand = 
+	  FacDemand::instance().create (aDistribParams, aYieldRange);
         Bucket& aBucket = FacBucket::instance().create (aYieldRange, aDemand);
-        ioBucketHolder.addBucket (aBucket);
+	FacBucketHolder::instance().addBucket (ioBucketHolder, aBucket);
       }
 
     }
@@ -73,9 +80,10 @@ namespace RMOL {
                 << "\"" << std::endl;
     } else {
       if (i == 2) {
-        const Demand aDemand (aDistribParams, aYieldRange);
+        const Demand& aDemand = 
+	  FacDemand::instance().create (aDistribParams, aYieldRange);
         Bucket& aBucket = FacBucket::instance().create (aYieldRange);
-        ioBucketHolder.addBucket (aBucket);
+	FacBucketHolder::instance().addBucket (ioBucketHolder, aBucket);
       }
     }
 

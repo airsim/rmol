@@ -1,17 +1,20 @@
-#ifndef __RMOL_MCUTILS_HPP
-#define __RMOL_MCUTILS_HPP
+#ifndef __RMOL_BOM_MCUTILS_HPP
+#define __RMOL_BOM_MCUTILS_HPP
 
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
+#include <rmol/RmolTypes.hpp>
 
 namespace RMOL {
 
   /** Forward declarations. */
+  //class Resource;
   class BucketHolder;
+  class PartialSumHolderHolder;
 
   /** Utility methods for the Monte-Carlo algorithms. */
-  class MCUtils {
+  class MCOptimiser {
   public:
     
     /** 
@@ -26,9 +29,10 @@ namespace RMOL {
 	<br>The cabin capacity is used to a double to allow for some
 	overbooking.
      */
-    static void optimialOptimisationByMCIntegration (const int K, 
-						     const double iCabCapacity,
-						     BucketHolder&);
+    static void optimalOptimisationByMCIntegration (const int K, 
+						    const ResourceCapacity_T,
+						    BucketHolder&,
+						    PartialSumHolderHolder&);
   };
 }
-#endif
+#endif // __RMOL_BOM_MCUTILS_HPP

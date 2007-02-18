@@ -1,16 +1,19 @@
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
+// C
+#include <assert.h>
 // STL
 #include <iostream>
 #include <iomanip>
 // RMOL
+#include <rmol/bom/Demand.hpp>
 #include <rmol/bom/Bucket.hpp>
 
 namespace RMOL {
 
   // //////////////////////////////////////////////////////////////////////
-  Bucket::Bucket () : _yieldRange (), _demand (), 
+  Bucket::Bucket () : _yieldRange (), _demand (NULL), 
                       _protection (0.0), _cumulatedProtection (0.0),
                       _bookingLimit (0.0), _cumulatedBookingLimit (0.0) {
   }
@@ -18,7 +21,7 @@ namespace RMOL {
   // //////////////////////////////////////////////////////////////////////
   Bucket::Bucket (const Bucket& iBucket) :
     _yieldRange (iBucket.getYieldRange()), 
-    _demand (iBucket.getDemand()), 
+    _demand (&iBucket.getDemand()), 
     _protection (iBucket.getProtection()),
     _cumulatedProtection (iBucket.getCumulatedProtection()),
     _bookingLimit (iBucket.getBookingLimit()),
@@ -27,25 +30,11 @@ namespace RMOL {
 
   // //////////////////////////////////////////////////////////////////////
   Bucket::Bucket (const FldYieldRange& iYieldRange) :
-    _yieldRange (iYieldRange), _demand (), 
+    _yieldRange (iYieldRange), _demand (NULL), 
     _protection (0.0), _cumulatedProtection (0.0),
     _bookingLimit (0.0), _cumulatedBookingLimit (0.0) {
   }
   
-  // //////////////////////////////////////////////////////////////////////
-  Bucket::Bucket (const FldYieldRange& iYieldRange, const Demand& iDemand) :
-    _yieldRange (iYieldRange), _demand (iDemand), 
-    _protection (0.0), _cumulatedProtection (0.0),
-    _bookingLimit (0.0), _cumulatedBookingLimit (0.0) {
-  }
-    
-  // //////////////////////////////////////////////////////////////////////
-  Bucket::Bucket (const Demand& iDemand) :
-    _yieldRange (iDemand.getYieldRange()), _demand (iDemand), 
-    _protection (0.0), _cumulatedProtection (0.0),
-    _bookingLimit (0.0), _cumulatedBookingLimit (0.0) {
-  }
-
   // //////////////////////////////////////////////////////////////////////
   Bucket::~Bucket() {
   }
@@ -70,17 +59,31 @@ namespace RMOL {
 
   // //////////////////////////////////////////////////////////////////////
   const FldDistributionParameters& Bucket::getDistributionParameters() const {
-    return _demand.getDistributionParameters();
+    assert (_demand != NULL);
+    return _demand->getDistributionParameters();
+  }
+
+  // //////////////////////////////////////////////////////////////////////
+  const Demand& Bucket::getDemand() const {
+    assert (_demand != NULL);
+    return *_demand;
+  }
+
+  // //////////////////////////////////////////////////////////////////////
+  void Bucket::setDemand (const Demand& iDemand) {
+    _demand = &iDemand;
   }
 
   // //////////////////////////////////////////////////////////////////////
   const double Bucket::getMean() const {
-    return _demand.getMean();
+    assert (_demand != NULL);
+    return _demand->getMean();
   }
 
   // //////////////////////////////////////////////////////////////////////
   const double Bucket::getStandardDeviation() const {
-    return _demand.getStandardDeviation();
+    assert (_demand != NULL);
+    return _demand->getStandardDeviation();
   }
 
   // //////////////////////////////////////////////////////////////////////

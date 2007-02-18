@@ -10,25 +10,20 @@
 // RMOL
 #include <rmol/field/FldDistributionParameters.hpp>
 #include <rmol/field/FldOverbookingPolicy.hpp>
+#include <rmol/bom/DistributionParameterList.hpp>
 #include <rmol/bom/BomAbstract.hpp>
 
 namespace RMOL {
 
-  /** Type for the list of distribution parameters (mean, standard
-      deviation). */
-  typedef std::vector<FldDistributionParameters> DistributionParameterList_T;
-
   /** Class holding the algorithms for the optimisation of the
       overbooking controls. */
   class Overbooking : public BomAbstract {
-  public:
-    /** Default Constructor. */
-    Overbooking ();
-    /** Default Copy Constructor. */
-    Overbooking (const Overbooking&);
-    /** Constructor for a given policy. */
-    Overbooking (const FldOverbookingPolicy&);
+    /** Friend Classes
+        <br>Those classes need to access the internal attributes of this object
+        in order to construct and initialise it.*/
+    friend class FacOverbooking;
 
+  public:
     /** Destructor. */
     virtual ~Overbooking();
 
@@ -140,6 +135,12 @@ namespace RMOL {
     FldDistributionParameters calculateHybridPolicy() const;
 
   private:
+    /** Constructors. 
+	<br>Protected to force the use of the Factory. */
+    Overbooking ();
+    Overbooking (const Overbooking&);
+    Overbooking (const FldOverbookingPolicy&);
+
     /** */
     double calculateBookingLimit () const;
     /** */

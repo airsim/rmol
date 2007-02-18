@@ -12,5 +12,5 @@ libcmd_la_CXXFLAGS = $(CXXFLAGS_OPT)
 libcmd_debug_la_SOURCES = $(cmd_h_sources) $(cmd_cc_sources)
 libcmd_debug_la_CXXFLAGS = $(CXXFLAGS_DEBUG)
 
-pkgincludedir = $(includedir)/@PACKAGE@/command
-pkginclude_HEADERS = $(cmd_h_sources)
+#pkgincludedir = $(includedir)/@PACKAGE@/command
+#pkginclude_HEADERS = $(cmd_h_sources)

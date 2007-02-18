@@ -4,6 +4,7 @@
 // C
 #include <assert.h>
 // RMOL
+#include <rmol/bom/Bucket.hpp>
 #include <rmol/factory/FacSupervisor.hpp>
 #include <rmol/factory/FacBucket.hpp>
 
@@ -46,13 +47,21 @@ namespace RMOL {
                              const Demand& iDemand) {
     Bucket* aBucket_ptr = NULL;
 
-    aBucket_ptr = new Bucket (iYieldRange, iDemand);
+    aBucket_ptr = new Bucket (iYieldRange);
     assert (aBucket_ptr != NULL);
+
+    // Set the Demand link
+    createDemandLink (*aBucket_ptr, iDemand);
 
     // The new object is added to the Bom pool
     _pool.push_back (aBucket_ptr);
 
     return *aBucket_ptr;
+  }
+
+  // //////////////////////////////////////////////////////////////////////
+  void FacBucket::createDemandLink (Bucket& ioBucket, const Demand& iDemand) {
+    ioBucket.setDemand (iDemand);
   }
 
 }

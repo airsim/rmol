@@ -12,5 +12,5 @@ libfld_la_CXXFLAGS = $(CXXFLAGS_OPT)
 libfld_debug_la_SOURCES = $(fld_h_sources) $(fld_cc_sources)
 libfld_debug_la_CXXFLAGS = $(CXXFLAGS_DEBUG)
 
-pkgincludedir = $(includedir)/@PACKAGE@/field
-pkginclude_HEADERS = $(fld_h_sources)
+#pkgincludedir = $(includedir)/@PACKAGE@/field
+#pkginclude_HEADERS = $(fld_h_sources)

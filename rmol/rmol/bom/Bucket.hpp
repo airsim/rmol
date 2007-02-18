@@ -6,10 +6,13 @@
 // //////////////////////////////////////////////////////////////////////
 // RMOL
 #include <rmol/field/FldYieldRange.hpp>
+#include <rmol/field/FldDistributionParameters.hpp>
 #include <rmol/bom/BomAbstract.hpp>
-#include <rmol/bom/Demand.hpp>
 
 namespace RMOL {
+
+  /** Forward declarations. */
+  class Demand;
 
   /** Class counting the number of seats sold for a given yield range,
       and the characteristics of the corresponding demand.
@@ -46,23 +49,13 @@ namespace RMOL {
         <br>Those classes need to access the internal attributes of this object
         in order to construct and initialise it.*/
     friend class FacBucket;
+    friend class FacBucketHolder;
     
   public:
-    /** Constructors. */
-    Bucket ();
-    Bucket (const Bucket&);
-    Bucket (const FldYieldRange&);
-    Bucket (const FldYieldRange&, const Demand&);
-    Bucket (const Demand&);
-    
     // Getters
     /** Getter for the yield range. */
     const FldYieldRange& getYieldRange() const {
       return _yieldRange;
-    }
-    /** Getter for the demand. */
-    const Demand& getDemand() const {
-      return _demand;
     }
     /** Getter for the protection. */
     double getProtection() const {
@@ -123,11 +116,24 @@ namespace RMOL {
     virtual ~Bucket();
 
   private:
+    /** Constructors.
+	<br>Protected to force the use of the Factory. */
+    Bucket ();
+    Bucket (const Bucket&);
+    Bucket (const FldYieldRange&);
+
+    /** Getter for the demand. */
+    const Demand& getDemand() const;
+
+    /** Set the demand. */
+    void setDemand (const Demand& iDemand);
+
+  private:
     /** Yield range, defined by upper and average yield. */
     const FldYieldRange _yieldRange;
 
     /** Demand, defined by (mean, standard deviation) and yield range. */
-    const Demand _demand;
+    const Demand* _demand;
 
     /** Protection. */
     double _protection;

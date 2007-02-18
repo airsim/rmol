@@ -69,14 +69,6 @@ namespace RMOL {
   }
 
   // //////////////////////////////////////////////////////////////////////
-  Bucket& BucketHolder::getTaggedBucket () const {
-    Bucket* resultBucket_ptr = *_itTaggedBucket;
-    assert (resultBucket_ptr != NULL);
-    
-    return (*resultBucket_ptr);
-  }
-
-  // //////////////////////////////////////////////////////////////////////
   Bucket& BucketHolder::getNextBucket () const {
     Bucket* resultBucket_ptr = *_itNextBucket;
     assert (resultBucket_ptr != NULL);
@@ -85,8 +77,16 @@ namespace RMOL {
   }
 
   // //////////////////////////////////////////////////////////////////////
-  void BucketHolder::addBucket (Bucket& iBucket) {
-    _bucketList.push_back (&iBucket);
+  Bucket& BucketHolder::getTaggedBucket () const {
+    Bucket* resultBucket_ptr = *_itTaggedBucket;
+    assert (resultBucket_ptr != NULL);
+    
+    return (*resultBucket_ptr);
+  }
+
+  // //////////////////////////////////////////////////////////////////////
+  void BucketHolder::addBucket (Bucket& ioBucket) {
+    _bucketList.push_back (&ioBucket);
   }
 
   // //////////////////////////////////////////////////////////////////////

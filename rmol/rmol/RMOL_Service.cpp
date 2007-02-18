@@ -5,11 +5,17 @@
 #include <assert.h>
 // RMOL
 #include <rmol/basic/BasConst_RMOL_Service.hpp>
-#include <rmol/bom/MCUtils.hpp>
+#include <rmol/field/FldYieldRange.hpp>
+#include <rmol/field/FldDistributionParameters.hpp>
+#include <rmol/bom/Demand.hpp>
+#include <rmol/bom/Bucket.hpp>
+#include <rmol/bom/BucketHolder.hpp>
 #include <rmol/factory/FacSupervisor.hpp>
+#include <rmol/factory/FacDemand.hpp>
 #include <rmol/factory/FacBucket.hpp>
 #include <rmol/factory/FacBucketHolder.hpp>
 #include <rmol/command/FileMgr.hpp>
+#include <rmol/command/Optimiser.hpp>
 #include <rmol/RMOL_Service.hpp>
 
 namespace RMOL {
@@ -17,7 +23,8 @@ namespace RMOL {
   // //////////// RMOL_Service_Context ///////////
 
   // //////////////////////////////////////////////////////////////////////
-  RMOL_Service_Context::RMOL_Service_Context (const double iResourceCapacity) : 
+  RMOL_Service_Context::
+  RMOL_Service_Context (const ResourceCapacity_T iResourceCapacity) :
     _bucketHolder (NULL), _capacity (iResourceCapacity) {
   }
   
@@ -38,15 +45,18 @@ namespace RMOL {
   }
 
   // //////////////////////////////////////////////////////////////////////
-  void RMOL_Service_Context::addBucket (const double iYieldRange, const double iDemandMean,
+  void RMOL_Service_Context::addBucket (const double iYieldRange, 
+					const double iDemandMean,
                                         const double iDemandStandardDev) {
     const FldYieldRange aYieldRange (iYieldRange);
-    const FldDistributionParameters aDistribParams (iDemandMean, iDemandStandardDev);
-    const Demand aDemand (aDistribParams, aYieldRange);
+    const FldDistributionParameters aDistribParams (iDemandMean, 
+						    iDemandStandardDev);
+    const Demand& aDemand = 
+      FacDemand::instance().create (aDistribParams, aYieldRange);
     Bucket& aBucket = FacBucket::instance().create (aYieldRange, aDemand);
 
     assert (_bucketHolder != NULL);
-    _bucketHolder->addBucket (aBucket);
+    FacBucketHolder::instance().addBucket (*_bucketHolder, aBucket);
   }
 
   // //////////// RMOL_Service ///////////
@@ -72,7 +82,8 @@ namespace RMOL {
   }
 
   // //////////////////////////////////////////////////////////////////////
-  void RMOL_Service::addBucket (const double iYieldRange, const double iDemandMean,
+  void RMOL_Service::addBucket (const double iYieldRange, 
+				const double iDemandMean,
                                 const double iDemandStandardDev) {
     _context.addBucket (iYieldRange, iDemandMean, iDemandStandardDev);
   }
@@ -93,7 +104,8 @@ namespace RMOL {
     BucketHolder* ioBucketHolder_ptr = _context.getBucketHolder();
     assert (ioBucketHolder_ptr != NULL);
 
-    MCUtils::optimialOptimisationByMCIntegration (K, iCapacity, *ioBucketHolder_ptr);
+    Optimiser::optimalOptimisationByMCIntegration (K, iCapacity, 
+						   *ioBucketHolder_ptr);
 
     // Display
     ioBucketHolder_ptr->display();

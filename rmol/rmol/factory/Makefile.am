@@ -12,5 +12,5 @@ libfac_la_CXXFLAGS = $(CXXFLAGS_OPT)
 libfac_debug_la_SOURCES = $(fac_h_sources) $(fac_cc_sources)
 libfac_debug_la_CXXFLAGS = $(CXXFLAGS_DEBUG)
 
-pkgincludedir = $(includedir)/@PACKAGE@/factory
-pkginclude_HEADERS = $(fac_h_sources)
+#pkgincludedir = $(includedir)/@PACKAGE@/factory
+#pkginclude_HEADERS = $(fac_h_sources)

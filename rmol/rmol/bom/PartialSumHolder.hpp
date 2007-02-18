@@ -1,5 +1,5 @@
-#ifndef __RMOL_PARTIALSUMHOLDER_HPP
-#define __RMOL_PARTIALSUMHOLDER_HPP
+#ifndef __RMOL_BOM_PARTIALSUMHOLDER_HPP
+#define __RMOL_BOM_PARTIALSUMHOLDER_HPP
 
 // //////////////////////////////////////////////////////////////////////
 // Import section
@@ -7,8 +7,8 @@
 // STL
 #include <iostream>
 // RMOL
-#include "BomAbstract.hpp"
-#include "PartialSumList.hpp"
+#include <rmol/bom/BomAbstract.hpp>
+#include <rmol/bom/PartialSumList.hpp>
 
 namespace RMOL {
 
@@ -21,8 +21,8 @@ namespace RMOL {
     friend class FacPartialSumHolder;
     
   public:
-    /** Destructor. */
-    ~PartialSumHolder();
+    /** Reserve the space for K elements (partial sums). */
+    void initSize (const int K);
 
     /** Get the k-th element (partial sum). */
     const double getPartialSum (const int k) const;
@@ -40,14 +40,19 @@ namespace RMOL {
         @return ostream& the output stream. */
     void toStream (std::ostream& ioOut) const;
 
+    /** Display on standard output. */
+    void display () const;
+
+    /** Destructor. */
+    virtual ~PartialSumHolder();
+
   private:
     /** Constructors. */
-    PartialSumHolder();
-    /** Reserve the space for K elements (partial sums). */
-    PartialSumHolder (const int K);
+    PartialSumHolder ();
+    PartialSumHolder (const PartialSumHolder&);
 
     /** The vector of (K) partial sums. */
     PartialSumList_T _partialSumList;
   };
 }
-#endif // __RMOL_PARTIALSUMHOLDER_HPP
+#endif // __RMOL_BOM_PARTIALSUMHOLDER_HPP

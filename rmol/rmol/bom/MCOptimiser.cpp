@@ -10,17 +10,23 @@
 #include <rmol/bom/VariateList.hpp>
 #include <rmol/bom/Gaussian.hpp>
 #include <rmol/bom/Bucket.hpp>
-#include <rmol/bom/MCUtils.hpp>
 #include <rmol/bom/BucketHolder.hpp>
-#include <rmol/factory/FacPartialSumHolder.hpp>
+#include <rmol/bom/PartialSumHolder.hpp>
+#include <rmol/bom/PartialSumHolderHolder.hpp>
+//#include <rmol/bom/Resource.hpp>
+#include <rmol/bom/MCOptimiser.hpp>
 
 namespace RMOL {
 
   // //////////////////////////////////////////////////////////////////////
-  void MCUtils::
-  optimialOptimisationByMCIntegration (const int K, 
-                                       const double iCabinCapacity,
-                                       BucketHolder& ioBucketHolder) {
+  void MCOptimiser::
+  optimalOptimisationByMCIntegration(const int K, 
+				     const ResourceCapacity_T iCabinCapacity,
+				     BucketHolder& ioBucketHolder,
+				     PartialSumHolderHolder& ioPSHolderHolder){
+    // Retrieve the BucketHolder
+    // BucketHolder& ioBucketHolder = ioResource.getBucketHolder();
+
     // Number of classes/buckets: n
     const short nbOfClasses = ioBucketHolder.getSize();
 
@@ -31,11 +37,13 @@ namespace RMOL {
         null. Then, the generated demand (variates) will be added 
         incrementally.
     */
-    PartialSumHolder* previousPartialSumList_ptr = 
-      &(FacPartialSumHolder::instance().create (K));
+    ioPSHolderHolder.begin();
+    PartialSumHolder& firstPartialSumHolder = 
+      ioPSHolderHolder.getCurrentPartialSumHolder();
+    firstPartialSumHolder.initSize (K);
 
     for (int k=1 ; k <= K; k++) {
-      previousPartialSumList_ptr->addPartialSum (0.0);
+      firstPartialSumHolder.addPartialSum (0.0);
     }
 
     /** 
@@ -44,10 +52,11 @@ namespace RMOL {
         i.e., n corresponds to the number of classes/buckets.
     */
     ioBucketHolder.begin();
-
+    ioPSHolderHolder.iterate();
     int Kj = K;
     int lj = 0;
-    for (short j=1 ; j <= nbOfClasses - 1; j++, ioBucketHolder.iterate()) {
+    for (short j=1 ; j <= nbOfClasses - 1; 
+	 j++, ioBucketHolder.iterate(), ioPSHolderHolder.iterate()) {
       /** Retrieve Bucket(j) (current) and Bucket(j+1) (next). */
       Bucket& currentBucket = ioBucketHolder.getCurrentBucket();
       Bucket& nextBucket = ioBucketHolder.getNextBucket();
@@ -72,8 +81,12 @@ namespace RMOL {
          for the current class/bucket demand, j, and for k=1 to Kj.
       */
       VariateList_T aVariateList;
-      PartialSumHolder* currentPartialSumList_ptr = 
-        &(FacPartialSumHolder::instance().create (Kj));
+
+      PartialSumHolder& previousPartialSumList = 
+	ioPSHolderHolder.getPreviousPartialSumHolder();
+      PartialSumHolder& currentPartialSumList = 
+	ioPSHolderHolder.getCurrentPartialSumHolder();
+      currentPartialSumList.initSize (Kj);
       for (int k=1; k <= Kj; k++) {
         const double djk = gaussianDemandGenerator.generateVariate();
         aVariateList.push_back (djk);
@@ -88,9 +101,9 @@ namespace RMOL {
             Hence: S(j,k) = S'(j-1, l+k) + d(j,k). 
         */
         const double spjm1lpk = 
-          previousPartialSumList_ptr->getPartialSum (lj + k - 1);
+          previousPartialSumList.getPartialSum (lj + k - 1);
         const double sjk = spjm1lpk + djk;
-        currentPartialSumList_ptr->addPartialSum (sjk);
+        currentPartialSumList.addPartialSum (sjk);
 
         /* DEBUG
            std::cout << "d(" << j << ", " << k << "); " << djk 
@@ -103,7 +116,7 @@ namespace RMOL {
       /**
          Sort the partial sum vectors S(j,k) on k, for the current j.
       */
-      currentPartialSumList_ptr->sort ();
+      currentPartialSumList.sort ();
 
       /** Retrieve the prices for Bucket(j) and Bucket(j+1). */
       const double pj = currentBucket.getAverageYield();
@@ -136,9 +149,8 @@ namespace RMOL {
           The optimal protection is defined as:
           y(j) = 1/2 [S(j,lj) + S(j, lj+1)]
       */
-      const double sjl = currentPartialSumList_ptr->getPartialSum (lj - 1);
-      const double sjlp1 = 
-        currentPartialSumList_ptr->getPartialSum (lj + 1 - 1);
+      const double sjl = currentPartialSumList.getPartialSum (lj - 1);
+      const double sjlp1 = currentPartialSumList.getPartialSum (lj + 1 - 1);
       const double yj = (sjl + sjlp1) / 2;
 
       /** DEBUG
@@ -149,8 +161,9 @@ namespace RMOL {
       // Set the cumulated protection for Bucket(j) (j ranging from 1 to n-1)
       currentBucket.setCumulatedProtection (yj);
 
-      /** S'(j,k) = S(j,k). */
-      previousPartialSumList_ptr = currentPartialSumList_ptr;
+      /** S'(j,k) = S(j,k). 
+	  <br>The previousPartialSumList (S') now becomes equal to the 
+	  currentPartialSumList (S) (by iteration on ioPSHolderHolder). */
     }
 
     // Set the protection of Bucket(n) to be equal to the capacity

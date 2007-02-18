@@ -4,6 +4,7 @@
 // C
 #include <assert.h>
 // RMOL
+#include <rmol/bom/BucketHolder.hpp>
 #include <rmol/factory/FacSupervisor.hpp>
 #include <rmol/factory/FacBucketHolder.hpp>
 
@@ -39,6 +40,12 @@ namespace RMOL {
     _pool.push_back (aBucketHolder_ptr);
 
     return *aBucketHolder_ptr;
+  }
+
+  // //////////////////////////////////////////////////////////////////////
+  void FacBucketHolder::addBucket (BucketHolder& ioBucketHolder, 
+				   Bucket& ioBucket) {
+    ioBucketHolder.addBucket (ioBucket);
   }
 
 }

@@ -7,19 +7,20 @@
 // RMOL
 #include <rmol/field/FldDistributionParameters.hpp>
 #include <rmol/field/FldYieldRange.hpp>
+#include <rmol/bom/BomAbstract.hpp>
 
 namespace RMOL {
 
   /** Class modelling the demand. It holds:
       - Demand parameters: mean and standard deviation.
       - Yield range: upper yield and average yield. */
-  class Demand {
+  class Demand : public BomAbstract {
+    /** Friend Classes
+        <br>Those classes need to access the internal attributes of this object
+        in order to construct and initialise it.*/
+    friend class FacDemand;
+    
   public:
-    /** Constructors. */
-    Demand ();
-    Demand (const Demand&);
-    Demand (const FldDistributionParameters&, const FldYieldRange&);
-
     // Getters
     /** Getter for the demand distribution parmaters (i.e., mean and
         standard deviation). */
@@ -46,6 +47,13 @@ namespace RMOL {
     /** Destructors. */
     virtual ~Demand();
     
+  private:
+    /** Constructors.
+	<br>Protected to force the use of the Factory. */
+    Demand ();
+    Demand (const Demand&);
+    Demand (const FldDistributionParameters&, const FldYieldRange&);
+
   private:
     /** Yield range, i.e., upper and lower yields, as well as average yield
         (average revenue per unit of demand). */

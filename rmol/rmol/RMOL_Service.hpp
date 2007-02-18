@@ -6,6 +6,8 @@
 // //////////////////////////////////////////////////////////////////////
 // STL
 #include <string>
+// RMOL
+#include <rmol/RmolTypes.hpp>
 
 namespace RMOL {
 
@@ -19,7 +21,7 @@ namespace RMOL {
     /** Constructors. */
     RMOL_Service_Context ();
     RMOL_Service_Context (const RMOL_Service_Context&);
-    RMOL_Service_Context (const double iResourceCapacity);
+    RMOL_Service_Context (const ResourceCapacity_T iResourceCapacity);
     /** Destructor. */
     ~RMOL_Service_Context();
 
@@ -31,6 +33,7 @@ namespace RMOL {
     /** Add a bucket to the BucketHolder. */
     void addBucket (const double iYieldRange, const double iDemandMean,
                     const double iDemandStandardDev);
+
   private:
     /** Get the internal BucketHolder. */
     BucketHolder* getBucketHolder() const {
@@ -38,7 +41,7 @@ namespace RMOL {
     }
 
     /** Get the capacity. */
-    double getCapacity() const {
+    ResourceCapacity_T getCapacity() const {
       return _capacity;
     }
 
@@ -47,7 +50,7 @@ namespace RMOL {
     BucketHolder* _bucketHolder;
 
     /** Resource Capacity. */
-    double _capacity;
+    ResourceCapacity_T _capacity;
   };
 
   /** Interface for the RMOL Services. */

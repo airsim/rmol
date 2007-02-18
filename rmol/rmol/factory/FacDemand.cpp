@@ -4,24 +4,24 @@
 // C
 #include <assert.h>
 // RMOL
-#include <rmol/bom/PartialSumHolder.hpp>
+#include <rmol/bom/Demand.hpp>
 #include <rmol/factory/FacSupervisor.hpp>
-#include <rmol/factory/FacPartialSumHolder.hpp>
+#include <rmol/factory/FacDemand.hpp>
 
 namespace RMOL {
 
-  FacPartialSumHolder* FacPartialSumHolder::_instance = NULL;
+  FacDemand* FacDemand::_instance = NULL;
 
   // //////////////////////////////////////////////////////////////////////
-  FacPartialSumHolder::~FacPartialSumHolder () {
+  FacDemand::~FacDemand () {
     _instance = NULL;
   }
 
   // //////////////////////////////////////////////////////////////////////
-  FacPartialSumHolder& FacPartialSumHolder::instance () {
+  FacDemand& FacDemand::instance () {
 
     if (_instance == NULL) {
-      _instance = new FacPartialSumHolder();
+      _instance = new FacDemand();
       assert (_instance != NULL);
       
       FacSupervisor::instance().registerFactory (_instance);
@@ -30,16 +30,18 @@ namespace RMOL {
   }
 
   // //////////////////////////////////////////////////////////////////////
-  PartialSumHolder& FacPartialSumHolder::create () {
-    PartialSumHolder* aPartialSumHolder_ptr = NULL;
+  Demand& FacDemand::
+  create (const FldDistributionParameters& iDistributionParameters,
+	  const FldYieldRange& iYieldRange) {
+    Demand* aDemand_ptr = NULL;
 
-    aPartialSumHolder_ptr = new PartialSumHolder ();
-    assert (aPartialSumHolder_ptr != NULL);
+    aDemand_ptr = new Demand (iDistributionParameters, iYieldRange);
+    assert (aDemand_ptr != NULL);
 
     // The new object is added to the Bom pool
-    _pool.push_back (aPartialSumHolder_ptr);
+    _pool.push_back (aDemand_ptr);
 
-    return *aPartialSumHolder_ptr;
+    return *aDemand_ptr;
   }
 
 }

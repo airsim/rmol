@@ -1,5 +1,5 @@
-#ifndef __RMOL_FAC_FACPARTIALSUMHOLDER_HPP
-#define __RMOL_FAC_FACPARTIALSUMHOLDER_HPP
+#ifndef __RMOL_FAC_FACDEMAND_HPP
+#define __RMOL_FAC_FACDEMAND_HPP
 
 // //////////////////////////////////////////////////////////////////////
 // Import section
@@ -10,38 +10,39 @@
 namespace RMOL {
 
   /** Forward declarations. */
-  class PartialSumHolder;
+  class FldDistributionParameters;
+  class FldYieldRange;
+  class Demand;
 
-  /** Factory for PartialSum. */
-  class FacPartialSumHolder : public FacAbstract {
+  /** Factory for Demand. */
+  class FacDemand : public FacAbstract {
   public:
 
     /** Provide the unique instance.
         <br> The singleton is instantiated when first used
-        @return FacPartialSumHolder& */
-    static FacPartialSumHolder& instance();
+        @return FacDemand& */
+    static FacDemand& instance();
 
     /** Destructor.
         <br> The Destruction put the _instance to NULL
-        in order to be clean for the next FacPartialSumHolder::instance() */
-    virtual ~FacPartialSumHolder();
+        in order to be clean for the next FacDemand::instance() */
+    virtual ~FacDemand();
 
-    /** Create a new PartialSumHolder object.
+    /** Create a new Demand object.
         <br>This new object is added to the list of instantiated objects.
-        @return PartialSumHolder& The newly created object. */
-    PartialSumHolder& create ();
-    
+        @return Demand& The newly created object. */
+    Demand& create (const FldDistributionParameters&, const FldYieldRange&);
 
   protected:
     /** Default Constructor.
         <br>This constructor is protected in order to ensure the singleton
         pattern.*/
-    FacPartialSumHolder () {}
+    FacDemand () {}
 
   private:
     /** The unique instance.*/
-    static FacPartialSumHolder* _instance;
+    static FacDemand* _instance;
 
   };
 }
-#endif // __RMOL_FAC_FACPARTIALSUMHOLDER_HPP
+#endif // __RMOL_FAC_FACDEMAND_HPP

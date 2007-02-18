@@ -6,9 +6,12 @@
 // //////////////////////////////////////////////////////////////////////
 // RMOL
 #include <rmol/factory/FacAbstract.hpp>
-#include <rmol/bom/BucketHolder.hpp>
 
 namespace RMOL {
+
+  /** Forward declarations. */
+  class BucketHolder;
+  class Bucket;
 
   /** Factory for Bucket. */
   class FacBucketHolder : public FacAbstract {
@@ -29,6 +32,8 @@ namespace RMOL {
         @return BucketHolder& The newly created object. */
     BucketHolder& create (const double iCabinCapacity);
     
+    /** Add a Bucket (child) in the internal list of a BucketHolder (parent).*/
+    void addBucket (BucketHolder& ioBucketHolder, Bucket& ioBucket);
 
   protected:
     /** Default Constructor.
