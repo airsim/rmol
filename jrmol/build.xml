@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="jRMOL" default="dist" basedir=".">
+<project name="jRMOL" default="buildDeliveryJar" basedir=".">
 	
 	<!-- set global properties for this build -->
 	<property name="src" location="src"/>
 	<property name="build" location="build"/>
-	<property name="dist" location="dist"/>
-	<property name="version" value="0.0.1"/>
+	<property name="dist" location="lib"/>
+	<property name="version" value="0.0.2"/>
 	
 	<target name="init">
 		<!-- Create the time stamp -->
@@ -20,12 +20,15 @@
 		<javac srcdir="${src}" destdir="${build}"/>
 	</target>
 
-	<target name="dist" depends="compile">
+	<target name="buildDeliveryJar" depends="compile">
 		<!-- Create the distribution directory -->
-		<mkdir dir="${dist}/lib"/>
+		<mkdir dir="${dist}"/>
 
 		<!-- Put everything in ${build} into the MyProject-${DSTAMP}.jar file -->
 		<jar jarfile="${dist}/jRMOL-${version}.jar" basedir="${build}"/>
+		
+		<!-- Delete build dir -->
+		<delete dir="${build}"/>
 	</target>
 
 	<target name="clean">
