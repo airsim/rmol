@@ -34,7 +34,6 @@ rmol/bom/PartialSumHolderHolder.cpp
 rmol/bom/DistributionParameterList.hpp
 rmol/bom/Demand.cpp
 rmol/bom/Bucket.cpp
-rmol/bom/Resource.hpp
 rmol/bom/BomAbstract.cpp
 rmol/bom/PartialSumHolderList.hpp
 rmol/bom/PartialSumHolderHolder.hpp
