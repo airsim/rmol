@@ -85,11 +85,6 @@ namespace RMOL {
   }
 
   // //////////////////////////////////////////////////////////////////////
-  void BucketHolder::addBucket (Bucket& ioBucket) {
-    _bucketList.push_back (&ioBucket);
-  }
-
-  // //////////////////////////////////////////////////////////////////////
   void BucketHolder::begin () {
     _itCurrentBucket = _bucketList.begin();
     _itNextBucket = _bucketList.begin();

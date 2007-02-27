@@ -45,7 +45,7 @@ namespace RMOL {
   // //////////////////////////////////////////////////////////////////////
   void FacBucketHolder::addBucket (BucketHolder& ioBucketHolder, 
 				   Bucket& ioBucket) {
-    ioBucketHolder.addBucket (ioBucket);
+    ioBucketHolder._bucketList.push_back (&ioBucket);
   }
 
 }

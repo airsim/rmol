@@ -94,12 +94,6 @@ namespace RMOL {
 	<br>Protected to force the use of the Factory. */
     BucketHolder (const double iCabinCapacity);
 
-    /** Add an element (bucket/class).
-        <br>Note that the Bucket object may be altered by subsequent
-        operations.
-	<br>Protected to force the use of the Factory. */
-    void addBucket (Bucket&);
-
   private:
     /** The capacity of the cabin associated to the bucket/class list. */
     const double _cabinCapacity;
