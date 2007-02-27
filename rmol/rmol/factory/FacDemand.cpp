@@ -24,7 +24,7 @@ namespace RMOL {
       _instance = new FacDemand();
       assert (_instance != NULL);
       
-      FacSupervisor::instance().registerFactory (_instance);
+      FacSupervisor::instance().registerBomFactory (_instance);
     }
     return *_instance;
   }

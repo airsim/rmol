@@ -5,6 +5,7 @@
 #include <assert.h>
 // RMOL
 #include <rmol/factory/FacAbstract.hpp>
+#include <rmol/factory/FacServiceAbstract.hpp>
 #include <rmol/factory/FacSupervisor.hpp>
 
 namespace RMOL {
@@ -21,33 +22,55 @@ namespace RMOL {
   }
 
   // //////////////////////////////////////////////////////////////////////
-  void FacSupervisor::registerFactory (FacAbstract* ioFacAbstract_ptr) {
-    _pool.push_back (ioFacAbstract_ptr);
+  void FacSupervisor::registerBomFactory (FacAbstract* ioFacAbstract_ptr) {
+    _bomPool.push_back (ioFacAbstract_ptr);
+  }
+
+  // //////////////////////////////////////////////////////////////////////
+  void FacSupervisor::
+  registerServiceFactory (FacServiceAbstract* ioFacServiceAbstract_ptr) {
+    _svcPool.push_back (ioFacServiceAbstract_ptr);
   }
 
   // //////////////////////////////////////////////////////////////////////
   FacSupervisor::~FacSupervisor() {
-    clean();
+    cleanBomLayer();
+    cleanServiceLayer();
   }
 
   // //////////////////////////////////////////////////////////////////////
-  void FacSupervisor::clean() {
-    for (FactoryPool_T::const_iterator itFactory = _pool.begin();
-	 itFactory != _pool.end(); itFactory++) {
+  void FacSupervisor::cleanBomLayer() {
+    for (BomFactoryPool_T::const_iterator itFactory = _bomPool.begin();
+         itFactory != _bomPool.end(); itFactory++) {
       const FacAbstract* currentFactory_ptr = *itFactory;
       assert (currentFactory_ptr != NULL);
 
       delete (currentFactory_ptr); currentFactory_ptr = NULL;
     }
 
-    // Empty the pool of Factories
-    _pool.clear();
+    // Empty the pool of Bom Factories
+    _bomPool.clear();
+  }
+
+  // //////////////////////////////////////////////////////////////////////
+  void FacSupervisor::cleanServiceLayer() {
+    for (ServiceFactoryPool_T::const_iterator itFactory = _svcPool.begin();
+         itFactory != _svcPool.end(); itFactory++) {
+      const FacServiceAbstract* currentFactory_ptr = *itFactory;
+      assert (currentFactory_ptr != NULL);
+
+      delete (currentFactory_ptr); currentFactory_ptr = NULL;
+    }
+
+    // Empty the pool of Service Factories
+    _svcPool.clear();
   }
 
   // //////////////////////////////////////////////////////////////////////
   void FacSupervisor::cleanFactory () {
 	if (_instance != NULL) {
-		_instance->clean();
+		_instance->cleanBomLayer();
+		_instance->cleanServiceLayer();
 	}
     delete (_instance); _instance = NULL;
   }

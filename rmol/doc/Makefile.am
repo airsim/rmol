@@ -7,6 +7,7 @@ include $(top_srcdir)/@PACKAGE@/field/sources.mk
 include $(top_srcdir)/@PACKAGE@/bom/sources.mk
 include $(top_srcdir)/@PACKAGE@/factory/sources.mk
 include $(top_srcdir)/@PACKAGE@/command/sources.mk
+include $(top_srcdir)/@PACKAGE@/service/sources.mk
 
 SUBDIRS = images tutorial local
 
@@ -25,12 +26,13 @@ html-local: html/index.html
 html/index.html: doxygen_html.cfg \
 	$(doc_local_sources) $(html_local_sources) \
 	$(doc_tutorial_sources) $(cpp_tutorial_sources) \
-	$(svc_h_sources) $(svc_cc_sources) \
+	$(service_h_sources) $(service_cc_sources) \
 	$(bas_h_sources) $(bas_cc_sources) \
 	$(fld_h_sources) $(fld_cc_sources) \
 	$(bom_h_sources) $(bom_cc_sources) \
 	$(fac_h_sources) $(fac_cc_sources) \
-	$(cmd_h_sources) $(cmd_cc_sources)
+	$(cmd_h_sources) $(cmd_cc_sources) \
+	$(svc_h_sources) $(svc_cc_sources)
 	doxygen $<; \
 	if test -d html; then \
 		cp $(srcdir)/images/rmol_logo.png html; \

@@ -12,52 +12,13 @@
 namespace RMOL {
 
   /** Forward declaration. */
-  class BucketHolder;
-
-  class RMOL_Service_Context {
-    friend class RMOL_Service;
-
-  private:
-    /** Constructors. */
-    RMOL_Service_Context ();
-    RMOL_Service_Context (const RMOL_Service_Context&);
-    RMOL_Service_Context (const ResourceCapacity_T iResourceCapacity);
-    /** Destructor. */
-    ~RMOL_Service_Context();
-
-    /** Set the BucketHolder. */
-    void setBucketHolder (BucketHolder* ioBucketHolderPtr) {
-      _bucketHolder = ioBucketHolderPtr;
-    }
-
-    /** Add a bucket to the BucketHolder. */
-    void addBucket (const double iYieldRange, const double iDemandMean,
-                    const double iDemandStandardDev);
-
-  private:
-    /** Get the internal BucketHolder. */
-    BucketHolder* getBucketHolder() const {
-      return _bucketHolder;
-    }
-
-    /** Get the capacity. */
-    ResourceCapacity_T getCapacity() const {
-      return _capacity;
-    }
-
-  private:
-    /** Internal pointer on BucketHolder. */
-    BucketHolder* _bucketHolder;
-
-    /** Resource Capacity. */
-    ResourceCapacity_T _capacity;
-  };
+  class ServiceContext;
 
   /** Interface for the RMOL Services. */
   class RMOL_Service {
   public:
     /** Constructor. */
-    RMOL_Service (const double iResourceCapacity);
+    RMOL_Service (const ResourceCapacity_T iResourceCapacity);
     /** Destructor. */
     ~RMOL_Service();
 
@@ -76,8 +37,11 @@ namespace RMOL {
     RMOL_Service ();
     RMOL_Service (const RMOL_Service&);
 
+    /** Initialiser. */
+    void initContext (const ResourceCapacity_T iResourceCapacity);
+    
     /** Service Context. */
-    RMOL_Service_Context _context;
+    ServiceContext* _context;
   };
 }
-#endif
+#endif // __RMOL_SVC_RMOL_SERVICE_HPP
