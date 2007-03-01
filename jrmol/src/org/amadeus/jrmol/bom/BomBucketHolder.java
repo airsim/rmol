@@ -297,7 +297,5 @@ public class BomBucketHolder extends BomAbstract {
 				_nextBucket = _bucketList.get(_nextBucketIndex);
 			}
 		}
-		
-		
 	}
 }
