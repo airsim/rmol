@@ -1,13 +1,13 @@
 package org.amadeus.jrmol;
 
 import org.amadeus.jrmol.bom.BomBucketHolder;
-import org.amadeus.jrmol.command.CmdOptimizeProtectionsByMCIntegration;
+import org.amadeus.jrmol.command.CmdOptimizeProtectionsByMcIntegration;
 import org.amadeus.jrmol.service.SrvContext;
 
 /** 
  * Interface for the RMOL Services.
  */
-public class JRmolService {
+public class JRmol {
 
 	/** 
 	 * Service Context.
@@ -17,7 +17,7 @@ public class JRmolService {
 	/** 
 	 * Constructor.
 	 */
-	public JRmolService(final double iResourceCapacity) {
+	public JRmol(final double iResourceCapacity) {
 		initContext(iResourceCapacity);
 	}
 
@@ -48,7 +48,7 @@ public class JRmolService {
 	    
 	    assert(ioBucketHolder != null);
 
-	    CmdOptimizeProtectionsByMCIntegration.optimize(K, iCapacity, ioBucketHolder);
+	    CmdOptimizeProtectionsByMcIntegration.optimize(K, iCapacity, ioBucketHolder);
 
 	    // Display
 	    System.out.println(ioBucketHolder);
