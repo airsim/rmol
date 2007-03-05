@@ -94,21 +94,21 @@ public class BomBucket extends BomAbstract {
 	/** 
 	 * Getter for the booking limit.
 	 */
-	public double getBookingLimit() {
+	public final double getBookingLimit() {
 		return _bookingLimit;
 	}
 
 	/** 
 	 * Getter for the booking limit.
 	 */
-	public double getCumulatedBookingLimit() {
+	public final double getCumulatedBookingLimit() {
 		return _cumulatedBookingLimit;
 	}
 
 	/** 
 	 * Getter for the cumulated protection.
 	 */
-	public double getCumulatedProtection() {
+	public final double getCumulatedProtection() {
 		return _cumulatedProtection;
 	}
 
@@ -122,7 +122,7 @@ public class BomBucket extends BomAbstract {
 	/** 
 	 * Getter for the protection.
 	 */
-	public double getProtection() {
+	public final double getProtection() {
 		return _protection;
 	}
 
@@ -136,28 +136,28 @@ public class BomBucket extends BomAbstract {
 	/**
 	 * Setter for the booking limit.
 	 */
-	public void setBookingLimit(final double iBookingLimit) {
+	public final void setBookingLimit(final double iBookingLimit) {
 		_bookingLimit = iBookingLimit;
 	}
 
 	/** 
 	 * Setter for the cumulated booking limit.
 	 */
-	public void setCumulatedBookingLimit(final double iBookingLimit) {
+	public final void setCumulatedBookingLimit(final double iBookingLimit) {
 		_cumulatedBookingLimit = iBookingLimit;
 	}
 
 	/** 
 	 * Setter for the cumulated protection.
 	 */
-	public void setCumulatedProtection(final double iProtection) {
+	public final void setCumulatedProtection(final double iProtection) {
 		_cumulatedProtection = iProtection;
 	}
 
 	/** 
 	 * Setter for the protection.
 	 */
-	public void setProtection(final double iProtection) {
+	public final void setProtection(final double iProtection) {
 		_protection = iProtection;
 	}
 }

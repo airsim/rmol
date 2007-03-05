@@ -8,7 +8,7 @@ package org.amadeus.jrmol.command;
  * Class holding the algorithms for the optimisation of the
  * overbooking controls.
  */
-public class CmdOptimizeOverbookingControls {
+public abstract class CmdOptimizeOverbookingControls {
 //
 //	/** 
 //	 * Overbooking Calculation Policy.

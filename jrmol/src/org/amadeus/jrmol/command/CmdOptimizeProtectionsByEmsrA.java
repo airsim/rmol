@@ -1,5 +1,5 @@
 package org.amadeus.jrmol.command;
 
-public class CmdOptimizeProtectionsByEmsrA {
+public abstract class CmdOptimizeProtectionsByEmsrA {
 
 }

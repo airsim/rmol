@@ -58,7 +58,7 @@ public class Test {
 				final BomDemand aDemand1 = new BomDemand(aDistribParams1, aYieldRange1);
 				
 				BomBucket aBucket1 = new BomBucket(aYieldRange1, aDemand1);
-				aBucketHolder.addBucket (aBucket1);
+				aBucketHolder.addBucket(aBucket1);
 
 				// Class/bucket 2: N (45, 12), p2 = 70
 				final FldYieldRange aYieldRange2 = new FldYieldRange(70.0);

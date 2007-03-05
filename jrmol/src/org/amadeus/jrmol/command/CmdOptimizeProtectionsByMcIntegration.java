@@ -9,7 +9,7 @@ import org.amadeus.jrmol.bom.BomPartialSumHolder;
 import org.amadeus.jrmol.bom.BomBucketHolder.BomBucketHolderIterator;
 import org.amadeus.jrmol.field.FldDistributionParameters;
 
-public class CmdOptimizeProtectionsByMcIntegration {
+public abstract class CmdOptimizeProtectionsByMcIntegration {
 
 	/** 
 	 * Calculate the optimal protections for the set of buckets/classes
@@ -23,10 +23,10 @@ public class CmdOptimizeProtectionsByMcIntegration {
 	 * <br>The cabin capacity is used to a double to allow for some
 	 * overbooking.
 	 */
-	public static void optimize(final int K, final double iCabinCapacity, BomBucketHolder ioBucketHolder) {
+	public static final void optimize(final int K, final double iCabinCapacity, BomBucketHolder ioBucketHolder) {
 
 		// Number of classes/buckets: n
-		final int nbOfClasses = ioBucketHolder.getSize();
+		final int nbOfClasses = ioBucketHolder.size();
 
 		/** 
 		 * Initialise the partial sum vector representing the last step within
@@ -148,6 +148,6 @@ public class CmdOptimizeProtectionsByMcIntegration {
 		 * Re-calculate the values (protections, bkg limits and cumulated
 		 * booking limits, the optimal revenue.
 		 */
-		ioBucketHolder.recalculate();
+		CmdCalculateAll.calculate(ioBucketHolder);
 	}
 }

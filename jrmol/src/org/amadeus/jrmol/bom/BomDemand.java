@@ -37,22 +37,37 @@ public class BomDemand extends BomAbstract {
 	}
 
 	/** 
-	 * Getter for the demand distribution parmaters (i.e., mean and
+	 * Get for the demand distribution parmaters (i.e., mean and
 	 * standard deviation).
 	 */
 	public final FldDistributionParameters getDistributionParameters() {
 		return _distributionParameters;
 	}
+
+	/** 
+	 * Set the demand distribution parmaters (i.e., mean and
+	 * standard deviation).
+	 */
+	public final void setDistributionParameters(final FldDistributionParameters iDistributionParameters) {
+		_distributionParameters = iDistributionParameters;
+	}
 	
 	/**
-	 * Getter for the average yield per unit of demand.
+	 * Get for the average yield per unit of demand.
 	 */
 	public final FldYieldRange getYieldRange() {
 		return _yieldRange;
 	}
+
+	/**
+	 * Set for the average yield per unit of demand.
+	 */
+	public final void setYieldRange(final FldYieldRange iYieldRange) {
+		_yieldRange = iYieldRange;
+	}
 	
 	@Override
-	public String toString() {
+	public final String toString() {
 		String out = "";
 		
 		out += "<bombucket>";

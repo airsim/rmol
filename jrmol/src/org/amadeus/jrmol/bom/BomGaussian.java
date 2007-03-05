@@ -35,18 +35,26 @@ public class BomGaussian extends BomAbstract {
 	}
 
 	/** 
-	 * Getter for the parameters for the Gaussian distribution (i.e.,
-	 * mean and standard deviation).
-	 */
-	public final FldDistributionParameters getDistributionParameters() {
-		return _params;
-	}
-
-	/** 
 	 * Generate a Gaussian random variate (following the Gaussian
 	 * distribution).
 	 */
 	public final double generateVariate() {
 		return _params.getMean() + _params.getStandardDeviation() * _rand.nextGaussian();
+	}
+
+	/** 
+	 * Get for the parameters for the Gaussian distribution (i.e.,
+	 * mean and standard deviation).
+	 */
+	public final FldDistributionParameters getDistributionParameters() {
+		return _params;
+	}
+	
+	/** 
+	 * Set the parameters for the Gaussian distribution (i.e.,
+	 * mean and standard deviation).
+	 */
+	public final void setDistributionParameters(final FldDistributionParameters iDistributionParameters) {
+		_params = iDistributionParameters;
 	}
 }

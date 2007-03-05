@@ -9,6 +9,8 @@ import org.amadeus.jrmol.field.FldDistributionParameters;
  */
 public class BomDemandGeneratorList extends BomAbstract {
 
+	private class GaussianList extends Vector<BomGaussian> {}
+
 	private GaussianList _demandGeneratorList = null;
 
 	public BomDemandGeneratorList() {
@@ -25,6 +27,15 @@ public class BomDemandGeneratorList extends BomAbstract {
 		init(iDistributionParametersList);
 	}
 
+	/** Initialise the Random Genrators. */
+	private void init(final Vector<FldDistributionParameters> iDistributionParametersList) {
+	    for (FldDistributionParameters aParams : iDistributionParametersList) {	      
+	      final BomGaussian gaussianGenerator = new BomGaussian(aParams);
+	      
+	      _demandGeneratorList.add(gaussianGenerator);
+	    }
+	}
+
 	public void generateVariateList(final Vector<Double> iVariateList) {
 
 	    // Iterate on the (number of) classes/buckets, n
@@ -36,15 +47,4 @@ public class BomDemandGeneratorList extends BomAbstract {
 	      iVariateList.add(generatedVariate);
 	    }
 	}
-
-	/** Initialise the Random Genrators. */
-	private void init(final Vector<FldDistributionParameters> iDistributionParametersList) {
-	    for (FldDistributionParameters aParams : iDistributionParametersList) {	      
-	      final BomGaussian gaussianGenerator = new BomGaussian(aParams);
-	      
-	      _demandGeneratorList.add(gaussianGenerator);
-	    }
-	}
-
-	private class GaussianList extends Vector<BomGaussian> {}
 }
