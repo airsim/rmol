@@ -71,7 +71,7 @@ public abstract class CmdOptimizeProtectionsByMcIntegration {
 			Vector<Double> aVariateList = new Vector<Double>();
 			BomPartialSumHolder currentPartialSumList =	new BomPartialSumHolder(Kj);
 			for (int k = 1; k <= Kj; k++) {
-				final double djk = gaussianDemandGenerator.generateVariate();
+				final double djk = CmdGenerateVariate.generate(gaussianDemandGenerator);
 				aVariateList.add(djk);
 
 				/** 
