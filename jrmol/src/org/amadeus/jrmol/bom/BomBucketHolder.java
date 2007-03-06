@@ -202,11 +202,19 @@ public class BomBucketHolder extends BomAbstract {
 
 	@Override
 	public final String toString() {
+		String aDoubleFormat = "%1$ 16.2f";
+		String aStringFormat = "%1$16s";
 		String out = "";
 		int j = 0;
 
 		// Generate a CSV (Comma Separated Values) output
-		out += "Class; Price; Mean; Std Dev; Protection; Cum. Protection; Cum. Bkg Limit;\n";
+		out += String.format("%1$5s", "Class") + ";"
+			+ String.format(aStringFormat, "Price") + ";"
+			+ String.format(aStringFormat, "Mean") + ";"
+			+ String.format(aStringFormat, "Std Dev") + ";"
+			+ String.format(aStringFormat, "Protection") + ";"
+			+ String.format(aStringFormat, "Cum. Protection") + ";"
+			+ String.format(aStringFormat, "Cum. Bkg Limit") + ";\n";
 
 		for (BomBucket currentBucket : _bucketList) {
 			final double pj = currentBucket.getYieldRange().getUpperYield();
@@ -216,21 +224,21 @@ public class BomBucketHolder extends BomAbstract {
 			final double yj = currentBucket.getCumulatedProtection();
 			final double bj = currentBucket.getCumulatedBookingLimit();
 
-			out += j + "; " 
-			+ pj + "; " 
-			+ mj + "; " 
-			+ sj + "; " 
-			+ proj + "; " 
-			+ yj + "; "
-			+ bj + "\n";
+			out += String.format("%1$5d", j) + ";"
+			+ String.format(aDoubleFormat, pj) + ";" 
+			+ String.format(aDoubleFormat, mj) + ";" 
+			+ String.format(aDoubleFormat, sj) + ";" 
+			+ String.format(aDoubleFormat, proj) + ";" 
+			+ String.format(aDoubleFormat, yj) + ";"
+			+ String.format(aDoubleFormat, bj) + ";\n";
 
 			j++;
 		}
 
-		out += "Cabin Capacity = " + _cabinCapacity
+		out += "\nCabin Capacity = " + _cabinCapacity
 		+ "; Total Mean Demand = " + _totalMeanDemand
 		+ "; Demand Factor = " + _demandFactor
-		+ "; Optimal Revenue = " + _optimalRevenue + "\n";
+		+ "; Optimal Revenue = " + String.format("%1$.2f", _optimalRevenue) + "\n";
 
 		return out;
 	}
