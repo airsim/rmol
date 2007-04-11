@@ -1,6 +1,8 @@
 // STL
 #include <iostream>
 #include <sstream>
+// Boost (Extended STL)
+#include <boost/date_time/posix_time/posix_time.hpp>
 // GSL Random Number Generation (GSL Reference Manual, version 1.7, Chapter 17)
 #include <gsl/gsl_rng.h>
 // GSL Random Number Distributions (GSL Reference Manual, version 1.7,
@@ -36,9 +38,8 @@ double generateExponentialVariate (const double iLambda) {
 }
 
 // ///////////////////////////////////////////////////
-double generatePoissonVariate (const double iLambda) {
-  const double lMu = 1/iLambda;
-  double result = gsl_ran_poisson (_rngPoissonPtr, lMu);
+double generatePoissonVariate (const double iMu) {
+  double result = gsl_ran_poisson (_rngPoissonPtr, iMu);
   return result;
 }
 
@@ -52,11 +53,20 @@ void finalise () {
 int main (int argc, char* argv[]) {
   try {
     
+    // Time duration representing a full day
+    // (i.e., 24h or 1,440 minutes or 86,400 seconds)
+    const boost::posix_time::time_duration kDay (24, 0, 0, 0);
+    
+    // Length of the Simulation (time-length)
+    const int kSimulationLength = 365;
+    
     // Number of draws
     int K = 1000;
 
-    // Rate (lambda => mu = 1/ lambda)
+    // Rate, expressed as a number of events per day
+    // (lambda => mu = 1/ lambda)
     double lambda = 10.0;
+    // mu = 0.1 (= 2.4h, i.e., in average, an event occurs every 2.4h)
 
     if (argc >= 1 && argv[1] != NULL) {
       std::istringstream istr (argv[1]);
@@ -72,12 +82,32 @@ int main (int argc, char* argv[]) {
     init();
 
     // Generate k draws
-    std::cout << "Index; Exponential; Poisson; " << std::endl;
-    for (int i=1; i != K; i++) {
-      const double lExponentialVariate = generateExponentialVariate (lambda);
-      const double lPoissonVariate = generatePoissonVariate (lambda);
-      std::cout << i << "; " << lExponentialVariate << "; "
-		<< lPoissonVariate << "; " << std::endl;
+    std::cout << "Event#; Time; " << std::endl;
+    for (int i=1; i != kSimulationLength; i++) {
+
+      // Current time
+      boost::posix_time::time_duration lCurrentTime (0, 0, 0, 0);
+
+      // Current number of events
+      int lEventNumber = 0;
+
+      // Repeat until the current time exceeds 24h (i.e., 86,400 seconds)
+      while (lCurrentTime <= kDay) {
+        const double lExponentialVariateDay =
+          generateExponentialVariate (lambda);
+        const boost::posix_time::time_duration lExponentialVariateSeconds =
+          boost::posix_time::hours (lExponentialVariateDay * 24);
+
+        // Add an event
+        lEventNumber++;
+
+        // Add the inter-arrival time to the current time
+        lCurrentTime += lExponentialVariateSeconds;
+        
+        // const double lPoissonVariate = generatePoissonVariate (lambda);
+        
+        std::cout << lEventNumber << "; " << lCurrentTime << "; " << std::endl;
+      }
     }
     
     // Cleaning of random generators
