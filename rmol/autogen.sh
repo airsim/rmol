@@ -31,17 +31,9 @@ fi
 
 rm -f config.cache acconfig.h
 
-echo "- libtoolize."		&& \
-libtoolize --force		&& \
-echo "- aclocal."		&& \
-aclocal				&& \
-echo "- autoconf."		&& \
-autoconf			&& \
-echo "- autoheader."		&& \
-autoheader			&& \
-echo "- automake."		&& \
-automake --add-missing --gnu	&& \
-echo				&& \
+echo "- autoreconf."     	&& \
+autoreconf -fvi          	&& \
+echo "- configure."		&& \
 ./configure "$@"		&& exit 0
 
 exit 1

@@ -201,7 +201,7 @@ install-strip: install
 installdirs: installdirs-exec installdirs-data
 installdirs-exec:
 installdirs-data: installdirs-data-@USE_NLS@
-	if test "$(PACKAGE)" = "rmol"; then \
+	if test "$(PACKAGE)" = "gettext-tools"; then \
 	  $(mkinstalldirs) $(DESTDIR)$(gettextsrcdir); \
 	else \
 	  : ; \
