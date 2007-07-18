@@ -1,49 +1,55 @@
 Name: @PACKAGE@
-Summary: @PACKAGE_NAME@ is a C++ library of Revenue Management and Optimisation classes and functions. Typically, the service providers (like, e.g., airlines, hotels or car rental companies) may use that library to help them optimise their revenues from their seat capacities.
+Summary: @PACKAGE_NAME@ is a Demand Simulator for Travel and Leisure oriented Users. It uses dynamic libraries for the modules, so as to be flexible in the implementation of new methods and algorithms for each of those modules.
 Packager: Denis Arnaud <denis_arnaud@users.sourceforge.net>
 %define version @VERSION@
 %define release @RPM_RELEASE@
 Version: %{version}
 Release: %{release}
-License: LGPL
-Vendor: The RMOL Team
+License: GPL
+Vendor: Amadeus - MIT
 Distribution: Research Software
-Source: http://download.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
+Source: http://ncegcolnx14:8080/download/%{name}/%{name}-%{version}.tar.gz
 Group: System Environment/Libraries
-URL: http://%{name}.sourceforge.net/
-Requires: gsl-devel >= 1.8
-#Requires: gsl >= 1.8
+URL: http://ncegcolnx14:8080/latus
+#Requires: gsl-devel >= 1.8
+Requires: gsl >= 1.8
 
 Prefix: %{_prefix}
 
 BuildRoot: %{_tmppath}/%{name}-%{version}-buildroot
 BuildRequires: gsl-devel >= 1.8
-BuildRequires: gettext, autoconf >= 2.58, automake >= 1.8
+BuildRequires: autoconf >= 2.58, automake >= 1.8
 
 Prereq: /sbin/install-info
 
 %description 
-RMOL is a C++ library of Revenue Management and Optimisation classes and
-functions. Typically, that library may be used by service providers
-(e.g., airlines offering flight seats, hotels offering rooms, rental car
-companies offering rental days, broadcasting company offering advertisement 
-slots, theaters offering seats, etc.).
-Most of the algorithms implemented are public and documented in the following
-book:
-The Theory and practice of Revenue Management, by Kalyan T. Talluri and
-Garrett J. van Ryzin, Kluwer Academic Publishers, 2004, ISBN 1-4020-7701-7
+LATUS is a Demand Simulator for Travel and Leisure oriented Users.
+It uses dynamic libraries for the modules, so as to be flexible in the
+implementation of new methods and algorithms for each of those modules.
+ The modules are typically:
+ * Demand Generator (latus)
+ * User Choice Model (UCM)
+ * Central Reservation System (CRS)
+ * Travel Solutions Provider (TSP)
+ * Availability Server (AVS)
+ * Inventory (INV)
+ * Revenue Management System (RMS). 
 
-Install the rmol package if you need a library for high-level
-revenue management functionality.
+The providers (represented by an Inventory and a Revenue Management System) 
+can be of any type (airline, hotel, car rental, cruise, insurance companies, 
+etc.).
+
+Install the latus package if you need a program to simulate how different
+algorithms and methods best react to given demand scenarios.
 
 %package devel
-Summary: Static libraries and header files for RMOL development.
+Summary: Static libraries and header files for LATUS development.
 Group: Development/Libraries
 Requires: %{name} = %{version}
 
 %description devel
 
-The rmol-devel package contains the header files and static libraries
+The latus-devel package contains the header files and static libraries
 necessary for developing programs using the GSL (GNU Scientific
 Library).
 
@@ -52,8 +58,8 @@ Summary: HTML documentation for the @PACKAGE_NAME@ library
 Group: System Environment/Libraries
 
 %description html-doc
-This package contains the documentation in the HTML format of the RMOL
-library. The documentation is the same as at the RMOL web page.
+This package contains the documentation in the HTML format of the LATUS
+binary. The documentation is the same as at the LATUS web page.
 
 %prep
 %setup -q
@@ -65,7 +71,7 @@ make
 %install
 [ "$RPM_BUILD_ROOT" != "/" ] && rm -rf $RPM_BUILD_ROOT
 make DESTDIR=$RPM_BUILD_ROOT install
-%find_lang %{name}
+
 
 # remove unpackaged files from the buildroot
 rm -f $RPM_BUILD_ROOT%{_infodir}/dir
@@ -73,15 +79,15 @@ rm -rf $RPM_BUILD_ROOT%{_mandir}
 rm -rf $RPM_BUILD_ROOT%{_sysconfdir}
 rm -rf $RPM_BUILD_ROOT%{_libdir}/pkgconfig
 
-rmolcsuffix=`echo "%{_libdir}" | sed s,/usr/,,`
-mv $RPM_BUILD_ROOT%{_bindir}/%{name}-config $RPM_BUILD_ROOT%{_bindir}/%{name}-config-$rmolcsuffix
+latuscsuffix=`echo "%{_libdir}" | sed s,/usr/,,`
+mv $RPM_BUILD_ROOT%{_bindir}/%{name}-config $RPM_BUILD_ROOT%{_bindir}/%{name}-config-$latuscsuffix
 cat > $RPM_BUILD_ROOT%{_bindir}/%{name}-config << EOF
 #!/bin/sh
 if [ -e %{_bindir}/%{name}-config-lib64 ]; then
   exec %{_bindir}/%{name}-config-lib64 "\$@"
 elif [ -e %{_bindir}/%{name}-config-* ]; then
-  rmolcfile="\`ls %{_bindir}/%{name}-config-* | head -n1\`"
-  exec \$rmolcfile "\$@" 
+  latuscfile="\`ls %{_bindir}/%{name}-config-* | head -n1\`"
+  exec \$latuscfile "\$@" 
 fi
 EOF
 chmod 755 $RPM_BUILD_ROOT%{_bindir}/%{name}-config
@@ -102,11 +108,10 @@ fi
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%files -f %{name}.lang
+%files
 %defattr(-,root,root)
 %doc ABOUT-NLS AUTHORS COPYING ChangeLog INSTALL NEWS README TODO
 %{_libdir}/*so.*
-#%{_datadir}/locale/*/LC_*/*.mo
 
 %files devel
 %defattr(-,root,root)
@@ -128,5 +133,5 @@ rm -rf $RPM_BUILD_ROOT
 %doc %{_docdir}/%{name}-html-doc
 
 %changelog
-* Sat Jan 27 2007  Denis Arnaud <denis_arnaud@users.sourceforge.net>
+* Fri Mar 2 2007  Denis Arnaud <darnaud@amadeus.com>
 - Initial spec file prepared

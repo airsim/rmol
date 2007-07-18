@@ -1,0 +1,11 @@
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+libdir=@libdir@
+includedir=@includedir@
+
+Name: @PACKAGE_NAME@
+Description: Utilities for the Leisure And Travel Usage Simulation (LATUS)
+Version: @PACKAGE_VERSION@
+URL: http://ncegcolnx14:8080/latus
+Libs: -L${libdir} -l@PACKAGE@ @LDFLAGS@ @LIBS@
+Cflags: -I${includedir}
