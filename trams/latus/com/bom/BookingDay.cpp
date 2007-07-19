@@ -55,6 +55,43 @@ namespace LATUS {
     }
     
     // //////////////////////////////////////////////////////////////////////
+    void BookingDay::display() const {
+
+      // Store current formatting flags of std::cout
+      std::ios::fmtflags oldFlags = std::cout.flags();
+
+      std::cout << _bookingDate << " - " << _bookingTime << "; " << std::endl;
+      
+      int j = 1;
+      for (CityPairList_T::const_iterator itCityPair = _cityPairList.begin();
+           itCityPair != _cityPairList.end(); itCityPair++, j++) {
+        const CityPair* lCityPair_ptr = itCityPair->second;
+        assert (lCityPair_ptr != NULL);
+
+        lCityPair_ptr->display ();
+      }
+      
+      // DEBUG: Summary
+      std::cout << _bookingDate
+                << "; Total daily rate: " << _dailyRate
+                << std::endl;
+
+      // Reset formatting flags of std::cout
+      std::cout.flags (oldFlags);
+    }
+    
+    // //////////////////////////////////////////////////////////////////////
+    void BookingDay::displayCurrent() const {
+      // DEBUG
+      std::ios::fmtflags oldFlags = std::cout.flags();
+      LATUS_LOG_DEBUG (_bookingDate << "; Daily Rate: " 
+                       << std::fixed << std::setprecision(2) << _dailyRate
+                       << "; Current Time: " << _bookingTime 
+                       << "; Daily Nb of Events: " << _dailyEventNumber);
+      std::cout.flags (oldFlags);
+    }
+
+    // //////////////////////////////////////////////////////////////////////
     CityPair* BookingDay::getCityPair (const std::string& iDescription) const {
       CityPair* resultCityPair_ptr = NULL;
       
@@ -216,36 +253,6 @@ namespace LATUS {
       // Add the event to the dedicated list
       _eventList.insert (EventList_T::value_type (lNextEventTime,
                                                   lClassPath_ptr));
-    }
-
-    // //////////////////////////////////////////////////////////////////////
-    void BookingDay::display() const {
-      std::cout << _bookingDate << " - " << _bookingTime << "; " << std::endl;
-      
-      int j = 1;
-      for (CityPairList_T::const_iterator itCityPair = _cityPairList.begin();
-           itCityPair != _cityPairList.end(); itCityPair++, j++) {
-        const CityPair* lCityPair_ptr = itCityPair->second;
-        assert (lCityPair_ptr != NULL);
-
-        lCityPair_ptr->display ();
-      }
-      
-      // DEBUG: Summary
-      std::cout << _bookingDate
-                << "; Total daily rate: " << _dailyRate
-                << std::endl;
-    }
-    
-    // //////////////////////////////////////////////////////////////////////
-    void BookingDay::displayCurrent() const {
-      // DEBUG
-      std::ios::fmtflags oldFlags = std::cout.flags();
-      LATUS_LOG_DEBUG (_bookingDate << "; Daily Rate: " 
-                       << std::fixed << std::setprecision(2) << _dailyRate
-                       << "; Current Time: " << _bookingTime 
-                       << "; Daily Nb of Events: " << _dailyEventNumber);
-      std::cout.flags (oldFlags);
     }
 
   }

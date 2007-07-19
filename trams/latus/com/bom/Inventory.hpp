@@ -15,21 +15,21 @@ namespace LATUS {
   namespace COM {
 
     // Forward declarations
-    class WorldInventory;
+    class WorldSchedule;
     
     /** Class wrapping the Inventory for a specific airline/provider. */
     class Inventory : public BomAbstract {
-      friend class FacWorldInventory;
+      friend class FacWorldSchedule;
     public:
       // /////////// Getters //////////////
       /** Get the parent class. */
-      WorldInventory* getParent() const {
-        return getWorldInventory();
+      WorldSchedule* getParent() const {
+        return getWorldSchedule();
       }
 
-      /** Get the WorldInventory (parent class). */
-      WorldInventory* getWorldInventory() const {
-        return _worldInventory;
+      /** Get the WorldSchedule (parent class). */
+      WorldSchedule* getWorldSchedule() const {
+        return _worldSchedule;
       }
 
       /** Get the primary key. */
@@ -44,9 +44,9 @@ namespace LATUS {
 
 
       // ///////// Setters //////////
-      /** Set the WorldInventory (parent class). */
-      void setWorldInventory (WorldInventory* ioWorldInventoryPtr) {
-        _worldInventory = ioWorldInventoryPtr;
+      /** Set the WorldSchedule (parent class). */
+      void setWorldSchedule (WorldSchedule* ioWorldSchedulePtr) {
+        _worldSchedule = ioWorldSchedulePtr;
       }
 
 
@@ -68,8 +68,8 @@ namespace LATUS {
 
     private:
       // Parent
-      /** Parent class: WorldInventory. */
-      WorldInventory* _worldInventory;
+      /** Parent class: WorldSchedule. */
+      WorldSchedule* _worldSchedule;
       
       // Attributes
       /** Inventory Description, e.g., "BA". */

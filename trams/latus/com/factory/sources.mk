@@ -5,7 +5,7 @@ comfac_h_sources = $(top_srcdir)/latus/com/factory/FacBomAbstract.hpp \
 		$(top_srcdir)/latus/com/factory/FacBookingDay.hpp \
 		$(top_srcdir)/latus/com/factory/FacCityPair.hpp \
 		$(top_srcdir)/latus/com/factory/FacCityPairDate.hpp \
-		$(top_srcdir)/latus/com/factory/FacWorldInventory.hpp \
+		$(top_srcdir)/latus/com/factory/FacWorldSchedule.hpp \
 		$(top_srcdir)/latus/com/factory/FacClassPath.hpp
 comfac_cc_sources = $(top_srcdir)/latus/com/factory/FacBomAbstract.cpp \
 		$(top_srcdir)/latus/com/factory/FacSupervisor.cpp \
@@ -14,5 +14,5 @@ comfac_cc_sources = $(top_srcdir)/latus/com/factory/FacBomAbstract.cpp \
 		$(top_srcdir)/latus/com/factory/FacBookingDay.cpp \
 		$(top_srcdir)/latus/com/factory/FacCityPair.cpp \
 		$(top_srcdir)/latus/com/factory/FacCityPairDate.cpp \
-		$(top_srcdir)/latus/com/factory/FacWorldInventory.cpp \
+		$(top_srcdir)/latus/com/factory/FacWorldSchedule.cpp \
 		$(top_srcdir)/latus/com/factory/FacClassPath.cpp

@@ -1,5 +1,5 @@
-#ifndef __LATUS_CRS_CMD_DISTRIBUTOR_HPP
-#define __LATUS_CRS_CMD_DISTRIBUTOR_HPP
+#ifndef __LATUS_CRS_CMD_INVENTORYMANAGER_HPP
+#define __LATUS_CRS_CMD_INVENTORYMANAGER_HPP
 
 // //////////////////////////////////////////////////////////////////////
 // Import section
@@ -15,12 +15,12 @@ namespace LATUS {
     class WorldSchedule;
   }
 
-  namespace CRS {
+  namespace INV {
 
     /** Class wrapping the distribution methods. */
-    class Distributor : COM::CmdAbstract {
-      // Only LATUS_CRS can instantiate Distributor
-      friend class LATUS_CRS;
+    class InventoryManager : COM::CmdAbstract {
+      // Only LATUS_INV can instantiate InventoryManager
+      friend class LATUS_INV;
     public:
       // /////////// GETTERS //////////
       /** Get a reference on the (child) WorldSchedule object. */
@@ -59,10 +59,10 @@ namespace LATUS {
       
     private:
       /** Constructors. */
-      Distributor (const std::string& iInputFileName);
+      InventoryManager (const std::string& iInputFileName);
       
       /** Destructor. */
-      virtual ~Distributor();
+      virtual ~InventoryManager();
 
     private:
       /** Build the BOM thanks to the input file.
@@ -79,4 +79,4 @@ namespace LATUS {
 
   }
 }
-#endif // __LATUS_CRS_CMD_DISTRIBUTOR_HPP
+#endif // __LATUS_CRS_CMD_INVENTORYMANAGER_HPP

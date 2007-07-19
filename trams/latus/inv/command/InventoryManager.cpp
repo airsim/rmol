@@ -9,15 +9,15 @@
 #include <latus/com/factory/FacWorldSchedule.hpp>
 #include <latus/com/command/FileMgr.hpp>
 #include <latus/com/service/Logger.hpp>
-// LATUS CRS
-#include <latus/crs/command/Distributor.hpp>
+// LATUS INV
+#include <latus/inv/command/InventoryManager.hpp>
 
 namespace LATUS {
 
-  namespace CRS {
+  namespace INV {
 
     // //////////////////////////////////////////////////////////////////////
-    Distributor::Distributor (const std::string& iInputFileName)
+    InventoryManager::InventoryManager (const std::string& iInputFileName)
       : _worldSchedule (NULL), _inputFileName (iInputFileName) {
 
       // Read the input file and build the CityPairList
@@ -26,11 +26,11 @@ namespace LATUS {
     }
       
     // //////////////////////////////////////////////////////////////////////
-    Distributor::~Distributor() {
+    InventoryManager::~InventoryManager() {
     }
     
     // //////////////////////////////////////////////////////////////////////
-    bool Distributor::init () {
+    bool InventoryManager::init () {
 
       // Initialise the BookingDay object, which is the main entry point
       // for the demand-related event generation.
@@ -52,13 +52,13 @@ namespace LATUS {
     }
     
     // //////////////////////////////////////////////////////////////////////
-    void Distributor::display () const {
+    void InventoryManager::display () const {
       const COM::WorldSchedule& lWorldSchedule = getWorldScheduleRef();
       lWorldSchedule.display();
     }
 
     // //////////////////////////////////////////////////////////////////////
-    void Distributor::
+    void InventoryManager::
     provideAvailabilities (const COM::SegmentDateStruct_T& iOnD,
                            COM::TravelSolutionList_T& ioTSL) const {
 
@@ -76,8 +76,8 @@ namespace LATUS {
     }
 
     // //////////////////////////////////////////////////////////////////////
-    bool Distributor::sell (const COM::TravelSolutionList_T& iTS,
-                            const COM::BookingNumber_T& iPartySize) {
+    bool InventoryManager::sell (const COM::TravelSolutionList_T& iTS,
+                                 const COM::BookingNumber_T& iPartySize) {
       return true;
     }
 

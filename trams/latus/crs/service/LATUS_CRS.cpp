@@ -1,9 +1,11 @@
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
-// STL
-#include <iostream> // DEBUG
-// LATUS
+// LATUS Common
+#include <latus/com/service/ServiceContext.hpp>
+#include <latus/com/service/Logger.hpp>
+// LATUS CRS
+#include <latus/crs/command/Distributor.hpp>
 #include <latus/crs/service/LATUS_CRS.hpp>
 
 namespace LATUS {
@@ -41,7 +43,7 @@ namespace LATUS {
 
       std::cout << "Distribution service always up!" << std::endl;
 
-      Distribution lDistributor (lInputFilename);
+      Distributor lDistributor (lInputFilename);
 
       // TODO: Remove the hard coding
       // Hard-code a few TSL

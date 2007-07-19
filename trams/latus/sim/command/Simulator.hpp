@@ -13,7 +13,7 @@
 #include <boost/date_time/gregorian/gregorian.hpp>
 // LATUS Common
 #include <latus/com/bom/Event.hpp>
-#include <latus/com/cmd/CmdAbstract.hpp>
+#include <latus/com/command/CmdAbstract.hpp>
 // LATUS General
 #include <latus/LatusTypes.hpp>
 
@@ -32,7 +32,7 @@ namespace LATUS {
                      COM::CityPair*> EventList_T;
 
     /** Class wrapping the simulation methods. */
-    class Simulator : public CmdAbstract {
+    class Simulator : public COM::CmdAbstract {
       // Only LATUS_SIM can instantiate Simulator
       friend class LATUS_SIM;
     public:

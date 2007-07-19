@@ -4,6 +4,7 @@
 // LATUS Common
 #include <latus/com/basic/BasConst_GSL.hpp>
 #include <latus/com/basic/BasConst_BOOST_DateTime.hpp>
+#include <latus/com/basic/BasConst_WorldSchedule.hpp>
 #include <latus/com/basic/BasConst_BookingDay.hpp>
 #include <latus/com/basic/BasConst_LATUS_Service.hpp>
 #include <latus/com/basic/BasConst_CityPair.hpp>
@@ -33,6 +34,13 @@ namespace LATUS {
     const boost::gregorian::date_duration BOOST_DATE_DURATION_FOR_A_DAY (1);
 
     
+    // //////// WorldSchedule ///////
+    /** Default booking date for BookingDay. */
+    const boost::gregorian::date DEFAULT_WORLD_SCHEDULE_UPDATE_DATE (2007,
+                                                       boost::gregorian::Jan,
+                                                       1);
+    
+
     // //////// CityPair ////////
     /** Default booking date for BookingDay. */
     const boost::gregorian::date DEFAULT_BOOKING_DATE (2007,

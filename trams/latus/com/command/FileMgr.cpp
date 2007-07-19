@@ -9,9 +9,12 @@
 // Boost (Extended STL)
 #include <boost/date_time/gregorian/gregorian.hpp>
 // LATUS Common
-#include <latus/com/bom/CityPair.hpp>
+#include <latus/com/bom/BookingDay.hpp>
+#include <latus/com/bom/WorldSchedule.hpp>
 #include <latus/com/factory/FacBookingDay.hpp>
+#include <latus/com/factory/FacWorldSchedule.hpp>
 #include <latus/com/command/FileMgr.hpp>
+#include <latus/com/service/Logger.hpp>
 
 namespace LATUS {
 
@@ -90,9 +93,9 @@ namespace LATUS {
             // std::cout << "Mean = '" << aMean << "'" << std::endl;
 
             const double lStdDev = 0.0;
-            FacBookingDay::instance().
-              createClassPath (ioBookingDay, aCityPairStr, aDepDate,
-                               aClassPath, aMean, lStdDev);
+            FacBookingDay::createClassPath (ioBookingDay, aCityPairStr,
+                                            aDepDate, aClassPath,
+                                            aMean, lStdDev);
 
             i = 0;
           }
@@ -110,5 +113,12 @@ namespace LATUS {
 
       return true;
     }
+
+    // ////////////////////////////////////////////////////////////////////
+    bool FileMgr::
+    readAndProcessWorldScheduleInputFile (const std::string& iInputFileName,
+                                          WorldSchedule& ioWorldSchedule) {
+    }
+    
   }  
 }

@@ -23,6 +23,20 @@ include $(top_srcdir)/@PACKAGE@/sim/bom/sources.mk
 include $(top_srcdir)/@PACKAGE@/sim/factory/sources.mk
 include $(top_srcdir)/@PACKAGE@/sim/command/sources.mk
 include $(top_srcdir)/@PACKAGE@/sim/service/sources.mk
+include $(top_srcdir)/@PACKAGE@/crs/sources.mk
+include $(top_srcdir)/@PACKAGE@/crs/basic/sources.mk
+include $(top_srcdir)/@PACKAGE@/crs/field/sources.mk
+include $(top_srcdir)/@PACKAGE@/crs/bom/sources.mk
+include $(top_srcdir)/@PACKAGE@/crs/factory/sources.mk
+include $(top_srcdir)/@PACKAGE@/crs/command/sources.mk
+include $(top_srcdir)/@PACKAGE@/crs/service/sources.mk
+include $(top_srcdir)/@PACKAGE@/inv/sources.mk
+include $(top_srcdir)/@PACKAGE@/inv/basic/sources.mk
+include $(top_srcdir)/@PACKAGE@/inv/field/sources.mk
+include $(top_srcdir)/@PACKAGE@/inv/bom/sources.mk
+include $(top_srcdir)/@PACKAGE@/inv/factory/sources.mk
+include $(top_srcdir)/@PACKAGE@/inv/command/sources.mk
+include $(top_srcdir)/@PACKAGE@/inv/service/sources.mk
 
 SUBDIRS = images tutorial local
 
@@ -62,7 +76,21 @@ html/index.html: doxygen_html.cfg \
 	$(simbom_h_sources) $(simbom_cc_sources) \
 	$(simfac_h_sources) $(simfac_cc_sources) \
 	$(simcmd_h_sources) $(simcmd_cc_sources) \
-	$(simsvc_h_sources) $(simsvc_cc_sources)
+	$(simsvc_h_sources) $(simsvc_cc_sources) \
+	$(crsservice_h_sources) $(crsservice_cc_sources) \
+	$(crsbas_h_sources) $(crsbas_cc_sources) \
+	$(crsfld_h_sources) $(crsfld_cc_sources) \
+	$(crsbom_h_sources) $(crsbom_cc_sources) \
+	$(crsfac_h_sources) $(crsfac_cc_sources) \
+	$(crscmd_h_sources) $(crscmd_cc_sources) \
+	$(crssvc_h_sources) $(crssvc_cc_sources) \
+	$(invservice_h_sources) $(invservice_cc_sources) \
+	$(invbas_h_sources) $(invbas_cc_sources) \
+	$(invfld_h_sources) $(invfld_cc_sources) \
+	$(invbom_h_sources) $(invbom_cc_sources) \
+	$(invfac_h_sources) $(invfac_cc_sources) \
+	$(invcmd_h_sources) $(invcmd_cc_sources) \
+	$(invsvc_h_sources) $(invsvc_cc_sources)
 	doxygen $<; \
 	if test -d html; then \
 		cp $(srcdir)/images/@PACKAGE@_logo.png html; \

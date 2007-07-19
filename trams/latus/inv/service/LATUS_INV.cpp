@@ -1,9 +1,10 @@
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
-// STL
-#include <iostream> // DEBUG
-// LATUS
+// LATUS Common
+#include <latus/com/service/ServiceContext.hpp>
+#include <latus/com/service/Logger.hpp>
+// LATUS INV
 #include <latus/inv/service/LATUS_INV.hpp>
 
 namespace LATUS {

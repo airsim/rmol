@@ -8,11 +8,14 @@
 #include <string>
 // LATUS Common
 #include <latus/com/command/CmdAbstract.hpp>
-#include <latus/com/bom/CityPairList.hpp>
 
 namespace LATUS {
 
   namespace COM {
+
+    // Forward declarations
+    class BookingDay;
+    class WorldSchedule;
     
     /** Class filling the CityPairList structure (representing
         a list of CityPair objects) from a given input file. */
@@ -24,6 +27,11 @@ namespace LATUS {
       readAndProcessDemandInputFile (const std::string& iInputFileName,
                                      BookingDay&);
       
+      /** Read the input values from a CSV file for the World Schedule. */
+      static bool
+      readAndProcessWorldScheduleInputFile (const std::string& iInputFileName,
+                                            WorldSchedule&);
+
     };
   }
 }

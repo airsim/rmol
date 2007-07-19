@@ -46,8 +46,8 @@ namespace LATUS {
 
       // Initialise the BookingDay object, which is the main entry point
       // for the demand-related event generation.
-      _bookingDay = &COM::FacBookingDay::instance().
-        create (COM::DEFAULT_BOOKING_DATE);
+      _bookingDay =
+        &COM::FacBookingDay::instance().create (COM::DEFAULT_BOOKING_DATE);
       assert (_bookingDay != NULL);
       
       // Read input data and parameters from a CSV-type file

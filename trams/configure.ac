@@ -322,6 +322,11 @@ AC_CONFIG_FILES(
 	latus/tsp/command/Makefile
 	latus/tsp/service/Makefile
 	latus/inv/Makefile
+	latus/inv/basic/Makefile
+	latus/inv/field/Makefile
+	latus/inv/bom/Makefile
+	latus/inv/factory/Makefile
+	latus/inv/command/Makefile
 	latus/inv/service/Makefile
 	latus/sim/Makefile
 	latus/sim/basic/Makefile
