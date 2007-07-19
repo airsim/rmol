@@ -13,6 +13,7 @@
 #include <boost/date_time/gregorian/gregorian.hpp>
 // LATUS Common
 #include <latus/com/bom/Event.hpp>
+#include <latus/com/cmd/CmdAbstract.hpp>
 // LATUS General
 #include <latus/LatusTypes.hpp>
 
@@ -31,17 +32,10 @@ namespace LATUS {
                      COM::CityPair*> EventList_T;
 
     /** Class wrapping the simulation methods. */
-    class Simulator {
+    class Simulator : public CmdAbstract {
+      // Only LATUS_SIM can instantiate Simulator
+      friend class LATUS_SIM;
     public:
-      /** Constructors. */
-      Simulator (const boost::gregorian::date& iStartDate,
-                 const boost::gregorian::date& iEndDate,
-                 const std::string& iInputFileName);
-      
-      /** Destructor. */
-      virtual ~Simulator();
-
-
       // /////////// GETTERS //////////
       /** Get the start date of the simulation. */
       const boost::gregorian::date& getStartDate () const {
@@ -76,7 +70,7 @@ namespace LATUS {
       }
 
 
-      // ////////// ///////////      
+      // ////////// Main Methods ///////////      
       /**
          Main call-back.
       */
@@ -87,13 +81,25 @@ namespace LATUS {
       */
       static void sampleSimulate ();
 
+      
       // ///////// DISPLAY METHODS /////////
-      /** Display the CityPair objects. */
+      /** Display the BOM objects. */
       void display () const;
       
 
     private:
-      /** Build the CityPairList thanks to the input file. */
+      /** Constructors. */
+      Simulator (const boost::gregorian::date& iStartDate,
+                 const boost::gregorian::date& iEndDate,
+                 const std::string& iInputFileName);
+      
+      /** Destructor. */
+      virtual ~Simulator();
+
+    private:
+      /** Build the BOM thanks to the input file.
+          <br>The BOM is composed of BookingDay, CityPair, CityPairDate
+          and ClassPath objects. */
       bool init ();
 
       /** Get the current booking date of the simulation.

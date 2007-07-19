@@ -39,10 +39,8 @@ namespace LATUS {
       void simulate () const;
       
     private:
-      /** Default Constructors. */
+      /** Constructors. */
       LATUS_SIM (const std::string& iModuleName);
-      LATUS_SIM ();
-      LATUS_SIM (const LATUS_SIM&);
       /** Destructor. */
       ~LATUS_SIM();
 

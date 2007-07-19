@@ -15,10 +15,12 @@ namespace LATUS {
     /** Service (Interface) class for the CRS (Central Reservation System)
         module. */
     class LATUS_CRS : public COM::LATUS_ServiceAbstract {
+      // Only FacCrsService_Service may instantiate LATUS_CRS
+      friend class FacCrsService;
     public:
 
-      /** Initialise the context (e.g., load the BOM). */
-      void initialise();
+      /** Set the input file name (for test purposes). */
+      void setInputFilename (const std::string&);
 
       /** Calculate and return the availabilities corresponding to a given
           product.
@@ -35,6 +37,16 @@ namespace LATUS {
       bool sell (const COM::TravelSolutionList_T& iTS,
                  const COM::BookingNumber_T& iPartySize);
 
+    private:
+      /** Constructors. */
+      LATUS_CRS (const std::string& iModuleName);
+      /** Destructor. */
+      ~LATUS_CRS();
+
+    private:
+      /** Initialiser (e.g., to load the BOM). */
+      void initSpecificContext ();
+      
     };
   }
 }

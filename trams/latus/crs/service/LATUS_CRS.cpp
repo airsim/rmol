@@ -11,7 +11,18 @@ namespace LATUS {
   namespace CRS {
 
     // //////////////////////////////////////////////////////////////////////
-    void LATUS_CRS::initialise() {
+    LATUS_CRS::LATUS_CRS (const std::string& iModuleName) :
+      LATUS_ServiceAbstract(COM::ModuleDescription(COM::ModuleDescription::CRS,
+                                                   iModuleName)) {
+    }
+    
+    // //////////////////////////////////////////////////////////////////////
+    LATUS_CRS::~LATUS_CRS () {
+    }
+
+    // //////////////////////////////////////////////////////////////////////
+    void LATUS_CRS::initSpecificContext () {
+      
     }
 
     // //////////////////////////////////////////////////////////////////////
@@ -20,7 +31,17 @@ namespace LATUS {
                            const COM::AirportCode_T& iDestination,
                            const COM::DateTime_T& iDate,
                            COM::TravelSolutionList_T& ioTSL) const {
+
+      // Retrieve the service context specific to the SIM module
+      const COM::ServiceContext& lServiceContext = getServiceContext();
+
+      // Get the parameters stored within the Service Context (passed through
+      // by the caller)
+      const std::string& lInputFilename = lServiceContext.getInputFilename();
+
       std::cout << "Distribution service always up!" << std::endl;
+
+      Distribution lDistributor (lInputFilename);
 
       // TODO: Remove the hard coding
       // Hard-code a few TSL
@@ -31,15 +52,7 @@ namespace LATUS {
       const COM::DateTime_T l21Apr (2007, boost::gregorian::Apr, 21);
       const COM::SegmentDateStruct_T lSegment1 (lBA, l341, lNCE, lLHR, l21Apr);
 
-      const COM::AirportCode_T lMUC ("MUC");
-      const COM::AirportCode_T lMIA ("MIA");
-      const COM::AirportCode_T lLAX ("LAX");
-      const COM::CabinCode_T lSHBusiness ("C");
-      const COM::CabinCode_T lSHEconomy ("M");
-      const COM::CabinCode_T lFirst ("F");
-      const COM::CabinCode_T lLHBusiness ("J");
-      const COM::CabinCode_T lTravelPlus ("W");
-      const COM::CabinCode_T lLHEconomy ("M");
+      lDistributor.provideAvailabilities (lSegment1, ioTSL);
     }
     
     // //////////////////////////////////////////////////////////////////////

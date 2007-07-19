@@ -13,20 +13,6 @@ namespace LATUS {
   namespace SIM {
 
     // //////////////////////////////////////////////////////////////////////
-    LATUS_SIM::LATUS_SIM () :
-      LATUS_ServiceAbstract(COM::ModuleDescription(COM::ModuleDescription::SIM,
-                                                   "SIM")) {
-      initSpecificContext();
-    }
-
-    // //////////////////////////////////////////////////////////////////////
-    LATUS_SIM::LATUS_SIM (const LATUS_SIM& iService) :
-      LATUS_ServiceAbstract(COM::ModuleDescription(COM::ModuleDescription::SIM,
-                                                   "SIM")) {
-      initSpecificContext();
-    }
-
-    // //////////////////////////////////////////////////////////////////////
     LATUS_SIM::LATUS_SIM (const std::string& iModuleName) :
       LATUS_ServiceAbstract(COM::ModuleDescription(COM::ModuleDescription::SIM,
                                                    iModuleName)) {

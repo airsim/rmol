@@ -52,7 +52,8 @@ namespace LATUS {
       
       // Read input data and parameters from a CSV-type file
       const bool hasFileBeenRead = 
-        COM::FileMgr::readAndProcessInputFile (_inputFileName, *_bookingDay);
+        COM::FileMgr::readAndProcessDemandInputFile (_inputFileName,
+                                                     *_bookingDay);
       if (hasFileBeenRead == false) {
         LATUS_LOG_ERROR ("Can not parse the \"" << _inputFileName 
                          << "\" file (hint: check that it exists).");

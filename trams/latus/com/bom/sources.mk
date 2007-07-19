@@ -10,10 +10,15 @@ combom_h_sources = $(top_srcdir)/latus/com/bom/BomAbstract.hpp \
 					$(top_srcdir)/latus/com/bom/CityPair.hpp \
 					$(top_srcdir)/latus/com/bom/CityPairDate.hpp \
 					$(top_srcdir)/latus/com/bom/ClassPath.hpp \
+					$(top_srcdir)/latus/com/bom/WorldInventory.hpp \
+					$(top_srcdir)/latus/com/bom/InventoryList.hpp \
+					$(top_srcdir)/latus/com/bom/Inventory.hpp \
 					$(top_srcdir)/latus/com/bom/SegmentDate.hpp
 combom_cc_sources = $(top_srcdir)/latus/com/bom/BomAbstract.cpp \
 					$(top_srcdir)/latus/com/bom/BookingDay.cpp \
 					$(top_srcdir)/latus/com/bom/CityPair.cpp \
 					$(top_srcdir)/latus/com/bom/CityPairDate.cpp \
 					$(top_srcdir)/latus/com/bom/ClassPath.cpp \
+					$(top_srcdir)/latus/com/bom/WorldInventory.cpp \
+					$(top_srcdir)/latus/com/bom/Inventory.cpp \
 					$(top_srcdir)/latus/com/bom/SegmentDate.cpp

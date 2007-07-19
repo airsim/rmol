@@ -35,8 +35,8 @@ namespace LATUS {
 
     // ////////////////////////////////////////////////////////////////////
     bool FileMgr::
-    readAndProcessInputFile (const std::string& iInputFileName,
-                             BookingDay& ioBookingDay) {
+    readAndProcessDemandInputFile (const std::string& iInputFileName,
+                                   BookingDay& ioBookingDay) {
       
       // Open the input file
       std::ifstream inputFile (iInputFileName.c_str());
