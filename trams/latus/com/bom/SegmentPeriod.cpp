@@ -4,29 +4,28 @@
 // C
 #include <assert.h>
 // LATUS COM
-#include <latus/com/bom/SegmentDate.hpp>
-
+#include <latus/com/bom/SegmentPeriod.hpp>
 
 namespace LATUS {
 
   namespace COM {
 
     // //////////////////////////////////////////////////////////////////////
-    SegmentDate::SegmentDate (const SegmentDateKey_T& iKey)
+    SegmentPeriod::SegmentPeriod (const SegmentPeriodKey_T& iKey)
       : _key (iKey) {
     }
     
     // //////////////////////////////////////////////////////////////////////
-    SegmentDate::~SegmentDate () {
+    SegmentPeriod::~SegmentPeriod () {
     }
 
     // //////////////////////////////////////////////////////////////////////
-    const std::string SegmentDate::describeKey() const {
+    const std::string SegmentPeriod::describeKey() const {
       return _key.describe();
     }
     
     // //////////////////////////////////////////////////////////////////////
-    void SegmentDate::display() const {
+    void SegmentPeriod::display() const {
 
       // Store current formatting flags of std::cout
       std::ios::fmtflags oldFlags = std::cout.flags();

@@ -1,5 +1,5 @@
-#ifndef __LATUS_COM_BOM_SEGMENTDATE_HPP
-#define __LATUS_COM_BOM_SEGMENTDATE_HPP
+#ifndef __LATUS_COM_BOM_LEGDATE_HPP
+#define __LATUS_COM_BOM_LEGDATE_HPP
 
 // //////////////////////////////////////////////////////////////////////
 // Import section
@@ -12,17 +12,17 @@ namespace LATUS {
 
   namespace COM {
 
-    /** Class wrapping the Segment-Date specific attributes and methods. */
-    class SegmentDate : public BomAbstract {
+    /** Class wrapping the Leg-Date specific attributes and methods. */
+    class LegDate : public BomAbstract {
     public:
       // /////////// Getters //////////////
       /** Get the primary key. */
-      const SegmentDateKey_T& getPrimaryKey() const {
-        return getSegmentDateKey();
+      const LegDateKey_T& getPrimaryKey() const {
+        return getLegDateKey();
       }
 
       /** Get the flight-date key. */
-      const SegmentDateKey_T& getSegmentDateKey() const {
+      const LegDateKey_T& getLegDateKey() const {
         return _key;
       }
 
@@ -60,17 +60,17 @@ namespace LATUS {
     private:
       /** Constructors are private so as to force the usage of the Factory
           layer. */
-      SegmentDate (const SegmentDateKey_T&); 
+      LegDate (const LegDateKey_T&); 
 
       /** Destructor. */
-      virtual ~SegmentDate();
+      virtual ~LegDate();
 
 
     private:
       // Primary Key
-      /** Segment-Date Key is composed of the airline code, flight number, 
+      /** Leg-Date Key is composed of the airline code, flight number, 
           departure date, board point and off point. */
-      SegmentDateKey_T _key;
+      LegDateKey_T _key;
 
       // Attributes
       /** Off Date. */
@@ -82,4 +82,4 @@ namespace LATUS {
 
   }
 }
-#endif // __LATUS_COM_BOM_SEGMENTDATE_HPP
+#endif // __LATUS_COM_BOM_LEGDATE_HPP

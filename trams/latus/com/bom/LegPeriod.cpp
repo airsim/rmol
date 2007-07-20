@@ -4,29 +4,28 @@
 // C
 #include <assert.h>
 // LATUS COM
-#include <latus/com/bom/SegmentDate.hpp>
-
+#include <latus/com/bom/LegPeriod.hpp>
 
 namespace LATUS {
 
   namespace COM {
 
     // //////////////////////////////////////////////////////////////////////
-    SegmentDate::SegmentDate (const SegmentDateKey_T& iKey)
+    LegPeriod::LegPeriod (const LegPeriodKey_T& iKey)
       : _key (iKey) {
     }
     
     // //////////////////////////////////////////////////////////////////////
-    SegmentDate::~SegmentDate () {
+    LegPeriod::~LegPeriod () {
     }
 
     // //////////////////////////////////////////////////////////////////////
-    const std::string SegmentDate::describeKey() const {
+    const std::string LegPeriod::describeKey() const {
       return _key.describe();
     }
     
     // //////////////////////////////////////////////////////////////////////
-    void SegmentDate::display() const {
+    void LegPeriod::display() const {
 
       // Store current formatting flags of std::cout
       std::ios::fmtflags oldFlags = std::cout.flags();
@@ -34,13 +33,13 @@ namespace LATUS {
       std::cout << describeKey() << std::endl;
 
       /*      
-      for (SegmentCabinList_T::const_iterator itSegmentCabin =
+      for (LegCabinList_T::const_iterator itLegCabin =
              _cityPairList.begin();
-           itSegmentCabin != _cityPairList.end(); itSegmentCabin++) {
-        const SegmentCabin* lSegmentCabin_ptr = itSegmentCabin->second;
-        assert (lSegmentCabin_ptr != NULL);
+           itLegCabin != _cityPairList.end(); itLegCabin++) {
+        const LegCabin* lLegCabin_ptr = itLegCabin->second;
+        assert (lLegCabin_ptr != NULL);
 
-        lSegmentCabin_ptr->display ();
+        lLegCabin_ptr->display ();
       }
       */
       

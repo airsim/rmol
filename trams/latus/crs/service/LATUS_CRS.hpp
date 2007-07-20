@@ -28,13 +28,13 @@ namespace LATUS {
       void provideTravelSolution (const COM::AirportCode_T& iOrigin,
                                   const COM::AirportCode_T& iDestination,
                                   const COM::DateTime_T& iDate,
-                                  COM::TravelSolutionList_T& ioTSL) const;
+                                  COM::TravelSolutionKeyList_T& ioTSL) const;
 
       /** Register the sell of a given number of travellers on a given
           Travel Solution.
           <br>The party size may be a floating number, so as to cope with
           overbooking. */
-      bool sell (const COM::TravelSolutionList_T& iTS,
+      bool sell (const COM::TravelSolutionKeyList_T& iTS,
                  const COM::BookingNumber_T& iPartySize);
 
     private:

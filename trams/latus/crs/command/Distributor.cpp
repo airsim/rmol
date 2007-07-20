@@ -59,8 +59,8 @@ namespace LATUS {
 
     // //////////////////////////////////////////////////////////////////////
     void Distributor::
-    provideAvailabilities (const COM::SegmentDateStruct_T& iOnD,
-                           COM::TravelSolutionList_T& ioTSL) const {
+    provideAvailabilities (const COM::SegmentDateKey_T& iOnD,
+                           COM::TravelSolutionKeyList_T& ioTSL) const {
 
       // TODO: Remove the hard coding
       // Hard-code a few TSL
@@ -76,7 +76,7 @@ namespace LATUS {
     }
 
     // //////////////////////////////////////////////////////////////////////
-    bool Distributor::sell (const COM::TravelSolutionList_T& iTS,
+    bool Distributor::sell (const COM::TravelSolutionKeyList_T& iTS,
                             const COM::BookingNumber_T& iPartySize) {
       return true;
     }

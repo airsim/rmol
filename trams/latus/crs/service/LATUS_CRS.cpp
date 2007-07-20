@@ -32,7 +32,7 @@ namespace LATUS {
     provideTravelSolution (const COM::AirportCode_T& iOrigin,
                            const COM::AirportCode_T& iDestination,
                            const COM::DateTime_T& iDate,
-                           COM::TravelSolutionList_T& ioTSL) const {
+                           COM::TravelSolutionKeyList_T& ioTSL) const {
 
       // Retrieve the service context specific to the SIM module
       const COM::ServiceContext& lServiceContext = getServiceContext();
@@ -49,16 +49,18 @@ namespace LATUS {
       // Hard-code a few TSL
       const COM::AirlineCode_T lBA ("BA");
       const COM::FlightNumber_T l341 = 341;
+      const COM::FlightKey_T lBA341 (lBA, l341);
+      const COM::DateTime_T l21Apr (2007, boost::gregorian::Apr, 21);
       const COM::AirportCode_T lNCE ("NCE");
       const COM::AirportCode_T lLHR ("LHR");
-      const COM::DateTime_T l21Apr (2007, boost::gregorian::Apr, 21);
-      const COM::SegmentDateStruct_T lSegment1 (lBA, l341, lNCE, lLHR, l21Apr);
+      const COM::AirportPair_T lNCELHR (lNCE, lLHR);
+      const COM::SegmentDateKey_T lSegment1 (lBA341, l21Apr, lNCELHR);
 
       lDistributor.provideAvailabilities (lSegment1, ioTSL);
     }
     
     // //////////////////////////////////////////////////////////////////////
-    bool LATUS_CRS::sell (const COM::TravelSolutionList_T& iTS,
+    bool LATUS_CRS::sell (const COM::TravelSolutionKeyList_T& iTS,
                           const COM::BookingNumber_T& iPartySize) {
       return true;
     }

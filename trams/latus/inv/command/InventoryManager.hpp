@@ -41,14 +41,14 @@ namespace LATUS {
       /** Calculate and return the availabilities corresponding to a given
           product.
           @return The vector of Travel Solutions (TS). */
-      void provideAvailabilities (const COM::SegmentDateStruct_T& iOnD,
-                                  COM::TravelSolutionList_T& ioTSL) const;
+      void provideAvailabilities (const COM::SegmentDateKey_T& iOnD,
+                                  COM::TravelSolutionKeyList_T& ioTSL) const;
 
       /** Register the sell of a given number of travellers on a given
           Travel Solution.
           <br>The party size may be a floating number, so as to cope with
           overbooking. */
-      bool sell (const COM::TravelSolutionList_T& iTS,
+      bool sell (const COM::TravelSolutionKeyList_T& iTS,
                  const COM::BookingNumber_T& iPartySize);
 
 

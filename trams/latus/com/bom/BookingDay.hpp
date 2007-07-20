@@ -215,13 +215,13 @@ namespace LATUS {
           <br>Mainly, the random generator is initialised. */
       void initRandomGenerator();
 
-      /** Get the list of (children) BookingDay objects. */
+      /** Get the list of (children) CityPair objects. */
       const CityPairList_T& getCityPairList () const {
         return _cityPairList;
       }
 
-      /** Retrieve, if existing, the BookingDayDate corresponding to the
-          given departure date.
+      /** Retrieve, if existing, the CityPair corresponding to the
+          given description.
           <br>If not existing, return the NULL pointer. */
       CityPair* getCityPair (const std::string& iDescription) const;
       
