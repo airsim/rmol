@@ -6,6 +6,7 @@
 // //////////////////////////////////////////////////////////////////////
 // LATUS Common
 #include <latus/com/basic/BasComTypes.hpp>
+#include <latus/com/bom/TravelSolution.hpp>
 #include <latus/com/service/LATUS_ServiceAbstract.hpp>
 
 namespace LATUS {

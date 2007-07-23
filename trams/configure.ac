@@ -2,7 +2,7 @@
 #-------------------------------------------------------------------
 AC_PREREQ(2.59)
 AC_COPYRIGHT([Copyright (C) 2007  Amadeus DEV-ORI <dev-ori@amadeus.com>])
-AC_INIT([LATUS],[0.1.0],[dev-ori@amadeus.com],[latus])
+AC_INIT([LATUS],[0.1.1],[dev-ori@amadeus.com],[latus])
 AC_CONFIG_HEADER([latus/config.h])
 AC_CONFIG_SRCDIR([latus/com/basic/BasConst.cpp])
 AC_CONFIG_AUX_DIR([config])
@@ -17,7 +17,7 @@ LATUS_EXTERNAL_VERSION="1.00.1"
 AC_SUBST(LATUS_EXTERNAL_VERSION)
 
 # Shared library versioning
-GENERIC_LIBRARY_VERSION="0:0:0"
+GENERIC_LIBRARY_VERSION="0:1:1"
 #                        | | |
 #                 +------+ | +---+
 #                 |        |     |
@@ -33,7 +33,7 @@ GENERIC_LIBRARY_VERSION="0:0:0"
 AC_SUBST(GENERIC_LIBRARY_VERSION)
 
 # Upload command
-UPLOAD_COMMAND="ncftpput -u ngi -v ncegcolnx14.nce.amadeus.net local/Linux/httpd/htdocs/download/latus"
+UPLOAD_COMMAND="ncftpput -u sim -v nceorilnx01.nce.amadeus.net local/Linux/httpd/htdocs/download/latus"
 AC_SUBST(UPLOAD_COMMAND)
 
 # Check for host and disable building a shared library in Windows

@@ -53,7 +53,7 @@ namespace LATUS {
       const COM::DateTime_T l21Apr (2007, boost::gregorian::Apr, 21);
       const COM::AirportCode_T lNCE ("NCE");
       const COM::AirportCode_T lLHR ("LHR");
-      const COM::AirportPair_T lNCELHR (lNCE, lLHR);
+      const COM::AirportPairKey_T lNCELHR (lNCE, lLHR);
       const COM::SegmentDateKey_T lSegment1 (lBA341, l21Apr, lNCELHR);
 
       lDistributor.provideAvailabilities (lSegment1, ioTSL);
@@ -66,5 +66,4 @@ namespace LATUS {
     }
     
   }
-  
 }

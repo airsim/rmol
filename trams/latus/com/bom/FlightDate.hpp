@@ -5,8 +5,8 @@
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // LATUS Common
-#include <latus/com/basic/BasComTypes.hpp>
 #include <latus/com/bom/BomAbstract.hpp>
+#include <latus/com/bom/FlightDateKey.hpp>
 #include <latus/com/bom/LegDateList.hpp>
 #include <latus/com/bom/SegmentDateList.hpp>
 

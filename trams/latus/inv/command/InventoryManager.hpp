@@ -6,6 +6,8 @@
 // //////////////////////////////////////////////////////////////////////
 // LATUS Common
 #include <latus/com/basic/BasComTypes.hpp>
+#include <latus/com/bom/SegmentDateKey.hpp>
+#include <latus/com/bom/TravelSolution.hpp>
 #include <latus/com/command/CmdAbstract.hpp>
 
 namespace LATUS {

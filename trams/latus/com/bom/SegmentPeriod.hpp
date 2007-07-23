@@ -5,7 +5,7 @@
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // LATUS Common
-#include <latus/com/basic/BasComTypes.hpp>
+#include <latus/com/bom/SegmentPeriodKey.hpp>
 #include <latus/com/bom/BomAbstract.hpp>
 
 namespace LATUS {

@@ -10,6 +10,18 @@ combom_h_sources = $(top_srcdir)/latus/com/bom/BomAbstract.hpp \
 					$(top_srcdir)/latus/com/bom/CityPair.hpp \
 					$(top_srcdir)/latus/com/bom/CityPairDate.hpp \
 					$(top_srcdir)/latus/com/bom/ClassPath.hpp \
+					$(top_srcdir)/latus/com/bom/PeriodKey.hpp \
+					$(top_srcdir)/latus/com/bom/FlightKey.hpp \
+					$(top_srcdir)/latus/com/bom/FlightPeriodKey.hpp \
+					$(top_srcdir)/latus/com/bom/LegPeriodKey.hpp \
+					$(top_srcdir)/latus/com/bom/AirportPairKey.hpp \
+					$(top_srcdir)/latus/com/bom/SegmentPeriodKey.hpp \
+					$(top_srcdir)/latus/com/bom/FlightDateKey.hpp \
+					$(top_srcdir)/latus/com/bom/LegDateKey.hpp \
+					$(top_srcdir)/latus/com/bom/LegCabinKey.hpp \
+					$(top_srcdir)/latus/com/bom/SegmentDateKey.hpp \
+					$(top_srcdir)/latus/com/bom/SegmentCabinKey.hpp \
+					$(top_srcdir)/latus/com/bom/TravelSolution.hpp \
 					$(top_srcdir)/latus/com/bom/WorldSchedule.hpp \
 					$(top_srcdir)/latus/com/bom/InventoryList.hpp \
 					$(top_srcdir)/latus/com/bom/Inventory.hpp \
@@ -31,6 +43,17 @@ combom_cc_sources = $(top_srcdir)/latus/com/bom/BomAbstract.cpp \
 					$(top_srcdir)/latus/com/bom/CityPair.cpp \
 					$(top_srcdir)/latus/com/bom/CityPairDate.cpp \
 					$(top_srcdir)/latus/com/bom/ClassPath.cpp \
+					$(top_srcdir)/latus/com/bom/PeriodKey.cpp \
+					$(top_srcdir)/latus/com/bom/FlightKey.cpp \
+					$(top_srcdir)/latus/com/bom/FlightPeriodKey.cpp \
+					$(top_srcdir)/latus/com/bom/LegPeriodKey.cpp \
+					$(top_srcdir)/latus/com/bom/AirportPairKey.cpp \
+					$(top_srcdir)/latus/com/bom/SegmentPeriodKey.cpp \
+					$(top_srcdir)/latus/com/bom/FlightDateKey.cpp \
+					$(top_srcdir)/latus/com/bom/LegDateKey.cpp \
+					$(top_srcdir)/latus/com/bom/LegCabinKey.cpp \
+					$(top_srcdir)/latus/com/bom/SegmentDateKey.cpp \
+					$(top_srcdir)/latus/com/bom/SegmentCabinKey.cpp \
 					$(top_srcdir)/latus/com/bom/WorldSchedule.cpp \
 					$(top_srcdir)/latus/com/bom/Inventory.cpp \
 					$(top_srcdir)/latus/com/bom/FlightPeriod.cpp \
