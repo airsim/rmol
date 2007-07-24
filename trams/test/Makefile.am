@@ -23,4 +23,4 @@ simulator_SOURCES = simulator.cpp
 simulator_LDADD = $(BOOST_LIB) \
 		$(top_builddir)/@PACKAGE@/liblatus.la
 
-EXTRA_DIST = test_single_date_simulator.sh test_full_event_generator.sh test_simulator.sh
+EXTRA_DIST = test_single_date_simulator.sh test_full_event_generator.sh test_simulator.sh samples/*.csv db/*.csv db/*.sql
