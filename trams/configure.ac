@@ -2,7 +2,7 @@
 #-------------------------------------------------------------------
 AC_PREREQ(2.59)
 AC_COPYRIGHT([Copyright (C) 2007  Amadeus DEV-ORI <dev-ori@amadeus.com>])
-AC_INIT([LATUS],[0.1.1],[dev-ori@amadeus.com],[latus])
+AC_INIT([LATUS],[0.2.0],[dev-ori@amadeus.com],[latus])
 AC_CONFIG_HEADER([latus/config.h])
 AC_CONFIG_SRCDIR([latus/com/basic/BasConst.cpp])
 AC_CONFIG_AUX_DIR([config])
@@ -13,11 +13,11 @@ RPM_RELEASE="1"
 AC_SUBST(RPM_RELEASE)
 
 # LATUS External version
-LATUS_EXTERNAL_VERSION="1.00.1"
+LATUS_EXTERNAL_VERSION="0.20.0"
 AC_SUBST(LATUS_EXTERNAL_VERSION)
 
 # Shared library versioning
-GENERIC_LIBRARY_VERSION="0:1:1"
+GENERIC_LIBRARY_VERSION="0:2:0"
 #                        | | |
 #                 +------+ | +---+
 #                 |        |     |
