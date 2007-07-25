@@ -21,8 +21,15 @@ namespace LATUS {
     // //////////////////////////////////////////////////////////////////////
     const std::string SegmentDateKey_T::describe() const {
       std::ostringstream ostr;
-      ostr << flightKey.describe() << "; "
-           << airportPairKey.describe() << "; ";
+      const std::string& lShortKey = describeShort();
+      ostr << flightKey.describe() << lShortKey;
+      return ostr.str();
+    }
+
+    // //////////////////////////////////////////////////////////////////////
+    const std::string SegmentDateKey_T::describeShort() const {
+      std::ostringstream ostr;
+      ostr << airportPairKey.describe();
       return ostr.str();
     }
 

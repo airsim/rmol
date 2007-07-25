@@ -11,6 +11,7 @@ lib_LTLIBRARIES = lib@PACKAGE@inv.la
 if ENABLE_DEBUG
   lib_LTLIBRARIES += lib@PACKAGE@inv_debug.la
 endif
+
 lib@PACKAGE@inv_la_SOURCES = $(invservice_h_sources) $(invservice_cc_sources)
 lib@PACKAGE@inv_la_LIBADD = $(top_builddir)/@PACKAGE@/inv/basic/libinvbas.la \
 			$(top_builddir)/@PACKAGE@/inv/field/libinvfld.la \

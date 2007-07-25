@@ -47,6 +47,7 @@ namespace LATUS {
       /** Destructor. */
       virtual ~FlightPeriod();
 
+    private:
       /** Get the list of (children) LegPeriod objects. */
       const LegPeriodList_T& getLegPeriodList () const {
         return _legPeriodList;

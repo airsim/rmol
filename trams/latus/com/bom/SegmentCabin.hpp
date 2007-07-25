@@ -12,10 +12,24 @@ namespace LATUS {
 
   namespace COM {
 
+    // Forward declarations
+    class SegmentDate;
+    
     /** Class wrapping the Segment-Cabin specific attributes and methods. */
     class SegmentCabin : public BomAbstract {
+      friend class FacSegmentCabin;
     public:
       // /////////// Getters //////////////
+      /** Get the parent class. */
+      SegmentDate* getParent() const {
+        return getSegmentDate();
+      }
+
+      /** Get the SegmentDate (parent class). */
+      SegmentDate* getSegmentDate() const {
+        return _segmentDate;
+      }
+
       /** Get the primary key. */
       const SegmentCabinKey_T& getPrimaryKey() const {
         return getSegmentCabinKey();
@@ -33,6 +47,11 @@ namespace LATUS {
 
 
       // ///////// Setters //////////
+      /** Set the SegmentDate (parent class). */
+      void setSegmentDate (SegmentDate* ioSegmentDatePtr) {
+        _segmentDate = ioSegmentDatePtr;
+      }
+
       /** Set the off cabin. */
       void setCapacity (const CabinCapacity_T& iCapacity) {
         _capacity = iCapacity;
@@ -43,7 +62,10 @@ namespace LATUS {
       /** Get a string describing the key. */
       const std::string describeKey() const;
 
-      /** Display the full BookingDay context. */
+      /** Get a string describing the short key. */
+      const std::string describeShortKey() const;
+
+      /** Display the full SegmentCabin context. */
       void display() const;
 
       
@@ -57,6 +79,10 @@ namespace LATUS {
 
 
     private:
+      // Parent
+      /** Parent class: SegmentDate. */
+      SegmentDate* _segmentDate;
+      
       // Primary Key
       /** Segment-Cabin Key is composed of the cabin code. */
       SegmentCabinKey_T _key;

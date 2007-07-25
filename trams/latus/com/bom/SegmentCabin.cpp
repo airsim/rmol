@@ -25,6 +25,11 @@ namespace LATUS {
     }
     
     // //////////////////////////////////////////////////////////////////////
+    const std::string SegmentCabin::describeShortKey() const {
+      return _key.describeShort();
+    }
+    
+    // //////////////////////////////////////////////////////////////////////
     void SegmentCabin::display() const {
 
       // Store current formatting flags of std::cout

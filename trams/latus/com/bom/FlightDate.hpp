@@ -16,6 +16,7 @@ namespace LATUS {
 
     /** Class wrapping the Flight-Date specific attributes and methods. */
     class FlightDate : public BomAbstract {
+      friend class FacFlightDate;
     public:
       // /////////// Getters //////////////
       /** Get the primary key. */
@@ -35,6 +36,9 @@ namespace LATUS {
       /** Get a string describing the key. */
       const std::string describeKey() const;
 
+      /** Get a string describing the short key. */
+      const std::string describeShortKey() const;
+
       /** Display the full BookingDay context. */
       void display() const;
 
@@ -47,6 +51,7 @@ namespace LATUS {
       /** Destructor. */
       virtual ~FlightDate();
 
+    private:
       /** Get the list of (children) LegDate objects. */
       const LegDateList_T& getLegDateList () const {
         return _legDateList;

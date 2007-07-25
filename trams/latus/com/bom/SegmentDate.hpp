@@ -7,15 +7,30 @@
 // LATUS Common
 #include <latus/com/bom/BomAbstract.hpp>
 #include <latus/com/bom/SegmentDateKey.hpp>
+#include <latus/com/bom/SegmentCabinList.hpp>
 
 namespace LATUS {
 
   namespace COM {
 
+    // Forward declarations
+    class FlightDate;
+    
     /** Class wrapping the Segment-Date specific attributes and methods. */
     class SegmentDate : public BomAbstract {
+      friend class FacSegmentDate;
     public:
       // /////////// Getters //////////////
+      /** Get the parent class. */
+      FlightDate* getParent() const {
+        return getFlightDate();
+      }
+
+      /** Get the FlightDate (parent class). */
+      FlightDate* getFlightDate() const {
+        return _flightDate;
+      }
+
       /** Get the primary key. */
       const SegmentDateKey_T& getPrimaryKey() const {
         return getSegmentDateKey();
@@ -38,6 +53,11 @@ namespace LATUS {
 
 
       // ///////// Setters //////////
+      /** Set the FlightDate (parent class). */
+      void setFlightDate (FlightDate* ioFlightDatePtr) {
+        _flightDate = ioFlightDatePtr;
+      }
+
       /** Set the off date. */
       void setOffDate (const DateTime_T& iOffDate) {
         _offDate = iOffDate;
@@ -53,6 +73,9 @@ namespace LATUS {
       /** Get a string describing the key. */
       const std::string describeKey() const;
 
+      /** Get a string describing the short key. */
+      const std::string describeShortKey() const;
+
       /** Display the full BookingDay context. */
       void display() const;
 
@@ -65,12 +88,30 @@ namespace LATUS {
       /** Destructor. */
       virtual ~SegmentDate();
 
-
     private:
+      /** Get the list of (children) SegmentCabin objects. */
+      const SegmentCabinList_T& getSegmentCabinList () const {
+        return _segmentCabinList;
+      }
+
+      /** Retrieve, if existing, the SegmentCabin corresponding to the
+          given board point.
+          <br>If not existing, return the NULL pointer. */
+      SegmentCabin* getSegmentCabin(const std::string& iSegmentCabinKey) const;
+      
+      
+    private:
+      // Parent
+      /** Parent class: FlightDate. */
+      FlightDate* _flightDate;
+      
       // Primary Key
       /** Segment-Date Key is composed of the airline code, flight number, 
           departure date, board point and off point. */
       SegmentDateKey_T _key;
+
+      /** Children: list of SegmentCabin objects. */
+      SegmentCabinList_T _segmentCabinList;
 
       // Attributes
       /** Off Date. */

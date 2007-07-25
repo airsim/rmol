@@ -21,7 +21,15 @@ namespace LATUS {
     // //////////////////////////////////////////////////////////////////////
     const std::string LegCabinKey_T::describe() const {
       std::ostringstream ostr;
-      ostr << legDateKey.describe() << "; " << cabinCode << "; ";
+      const std::string& lShortKey = describeShort();
+      ostr << legDateKey.describe() << lShortKey;
+      return ostr.str();
+    }
+
+    // //////////////////////////////////////////////////////////////////////
+    const std::string LegCabinKey_T::describeShort() const {
+      std::ostringstream ostr;
+      ostr << cabinCode << "; ";
       return ostr.str();
     }
 

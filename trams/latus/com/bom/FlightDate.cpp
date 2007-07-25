@@ -27,6 +27,11 @@ namespace LATUS {
     }
     
     // //////////////////////////////////////////////////////////////////////
+    const std::string FlightDate::describeShortKey() const {
+      return _key.describeShort();
+    }
+    
+    // //////////////////////////////////////////////////////////////////////
     void FlightDate::display() const {
 
       // Store current formatting flags of std::cout
@@ -56,8 +61,7 @@ namespace LATUS {
     }
     
     // //////////////////////////////////////////////////////////////////////
-    LegDate* FlightDate::
-    getLegDate (const std::string& iLegDateKey) const {
+    LegDate* FlightDate::getLegDate (const std::string& iLegDateKey) const {
       LegDate* resultLegDate_ptr = NULL;
       
       LegDateList_T::const_iterator itLegDate =

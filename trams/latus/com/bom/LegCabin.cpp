@@ -4,6 +4,7 @@
 // C
 #include <assert.h>
 // LATUS COM
+#include <latus/com/bom/LegDate.hpp>
 #include <latus/com/bom/LegCabin.hpp>
 
 namespace LATUS {
@@ -12,7 +13,7 @@ namespace LATUS {
 
     // //////////////////////////////////////////////////////////////////////
     LegCabin::LegCabin (const LegCabinKey_T& iKey)
-      : _key (iKey) {
+      : _key (iKey), _legDate (NULL) {
     }
     
     // //////////////////////////////////////////////////////////////////////
@@ -22,6 +23,11 @@ namespace LATUS {
     // //////////////////////////////////////////////////////////////////////
     const std::string LegCabin::describeKey() const {
       return _key.describe();
+    }
+    
+    // //////////////////////////////////////////////////////////////////////
+    const std::string LegCabin::describeShortKey() const {
+      return _key.describeShort();
     }
     
     // //////////////////////////////////////////////////////////////////////

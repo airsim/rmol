@@ -7,15 +7,30 @@
 // LATUS Common
 #include <latus/com/bom/BomAbstract.hpp>
 #include <latus/com/bom/LegDateKey.hpp>
+#include <latus/com/bom/LegCabinList.hpp>
 
 namespace LATUS {
 
   namespace COM {
 
+    // Forward declarations
+    class FlightDate;
+    
     /** Class wrapping the Leg-Date specific attributes and methods. */
     class LegDate : public BomAbstract {
+      friend class FacLegDate;
     public:
       // /////////// Getters //////////////
+      /** Get the parent class. */
+      FlightDate* getParent() const {
+        return getFlightDate();
+      }
+
+      /** Get the FlightDate (parent class). */
+      FlightDate* getFlightDate() const {
+        return _flightDate;
+      }
+
       /** Get the primary key. */
       const LegDateKey_T& getPrimaryKey() const {
         return getLegDateKey();
@@ -38,6 +53,11 @@ namespace LATUS {
 
 
       // ///////// Setters //////////
+      /** Set the FlightDate (parent class). */
+      void setFlightDate (FlightDate* ioFlightDatePtr) {
+        _flightDate = ioFlightDatePtr;
+      }
+
       /** Set the off date. */
       void setOffDate (const DateTime_T& iOffDate) {
         _offDate = iOffDate;
@@ -53,6 +73,9 @@ namespace LATUS {
       /** Get a string describing the key. */
       const std::string describeKey() const;
 
+      /** Get a string describing the short key. */
+      const std::string describeShortKey() const;
+
       /** Display the full BookingDay context. */
       void display() const;
 
@@ -65,12 +88,30 @@ namespace LATUS {
       /** Destructor. */
       virtual ~LegDate();
 
-
     private:
+      /** Get the list of (children) LegCabin objects. */
+      const LegCabinList_T& getLegCabinList () const {
+        return _legCabinList;
+      }
+
+      /** Retrieve, if existing, the LegCabin corresponding to the
+          given board point.
+          <br>If not existing, return the NULL pointer. */
+      LegCabin* getLegCabin (const std::string& iLegCabinKey) const;
+      
+      
+    private:
+      // Parent
+      /** Parent class: FlightDate. */
+      FlightDate* _flightDate;
+      
       // Primary Key
       /** Leg-Date Key is composed of the airline code, flight number, 
           departure date, board point and off point. */
       LegDateKey_T _key;
+
+      /** Children: list of LegCabin objects. */
+      LegCabinList_T _legCabinList;
 
       // Attributes
       /** Off Date. */

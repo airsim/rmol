@@ -56,25 +56,6 @@ namespace LATUS {
                                    const std::string& iClassPathDescription,
                                    const double iDistributionMean,
                                    const double iDistributionStdDev);
-      
-      // TODO: DEPRECATED
-      /** Retrieve, if existing, the reference on the given
-          class path/combination distribution object.
-          If not existing, create one, and return the corresponding
-          reference. */
-      static double& 
-      getDistributionDetailsInstance (const std::string& iClassPath,
-                                      ClassPathDistributionList_T&);
-      
-      // TODO: DEPRECATED
-      /** Retrieve, if existing, the reference on the given departure date
-          distribution object.
-          If not existing, create one, and return the corresponding
-          reference. */
-      static ClassPathDistributionList_T& 
-      getClassPathDistributionListInstance (const boost::gregorian::date& iDepDate,
-                                            DepDateDistributionList_T&);
-
     
     protected:
       /** Default Constructor.

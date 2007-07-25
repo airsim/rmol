@@ -34,9 +34,11 @@ combom_h_sources = $(top_srcdir)/latus/com/bom/BomAbstract.hpp \
 					$(top_srcdir)/latus/com/bom/FlightDate.hpp \
 					$(top_srcdir)/latus/com/bom/LegDateList.hpp \
 					$(top_srcdir)/latus/com/bom/LegDate.hpp \
+					$(top_srcdir)/latus/com/bom/LegCabinList.hpp \
 					$(top_srcdir)/latus/com/bom/LegCabin.hpp \
 					$(top_srcdir)/latus/com/bom/SegmentDateList.hpp \
 					$(top_srcdir)/latus/com/bom/SegmentDate.hpp \
+					$(top_srcdir)/latus/com/bom/SegmentCabinList.hpp \
 					$(top_srcdir)/latus/com/bom/SegmentCabin.hpp
 combom_cc_sources = $(top_srcdir)/latus/com/bom/BomAbstract.cpp \
 					$(top_srcdir)/latus/com/bom/BookingDay.cpp \

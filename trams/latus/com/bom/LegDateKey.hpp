@@ -27,6 +27,9 @@ namespace LATUS {
 
       /** Display of the key. */
       const std::string describe() const;
+
+      /** Display of the short key. */
+      const std::string describeShort() const;
     };
     
   }

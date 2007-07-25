@@ -34,7 +34,8 @@ namespace LATUS {
 
       std::cout << describeKey() << std::endl;
 
-      for (LegPeriodList_T::const_iterator itLegPeriod = _legPeriodList.begin();
+      for (LegPeriodList_T::const_iterator itLegPeriod =
+             _legPeriodList.begin();
            itLegPeriod != _legPeriodList.end(); itLegPeriod++) {
         const LegPeriod* lLegPeriod_ptr = itLegPeriod->second;
         assert (lLegPeriod_ptr != NULL);

@@ -12,10 +12,24 @@ namespace LATUS {
 
   namespace COM {
 
+    // Forward declarations
+    class LegDate;
+    
     /** Class wrapping the Leg-Cabin specific attributes and methods. */
     class LegCabin : public BomAbstract {
+      friend class FacLegCabin;
     public:
       // /////////// Getters //////////////
+      /** Get the parent class. */
+      LegDate* getParent() const {
+        return getLegDate();
+      }
+
+      /** Get the LegDate (parent class). */
+      LegDate* getLegDate() const {
+        return _legDate;
+      }
+
       /** Get the primary key. */
       const LegCabinKey_T& getPrimaryKey() const {
         return getLegCabinKey();
@@ -33,6 +47,11 @@ namespace LATUS {
 
 
       // ///////// Setters //////////
+      /** Set the LegDate (parent class). */
+      void setLegDate (LegDate* ioLegDatePtr) {
+        _legDate = ioLegDatePtr;
+      }
+
       /** Set the off cabin. */
       void setCapacity (const CabinCapacity_T& iCapacity) {
         _capacity = iCapacity;
@@ -42,6 +61,9 @@ namespace LATUS {
       // ///////// Display Methods //////////
       /** Get a string describing the key. */
       const std::string describeKey() const;
+
+      /** Get a string describing the short key. */
+      const std::string describeShortKey() const;
 
       /** Display the full BookingDay context. */
       void display() const;
@@ -57,6 +79,10 @@ namespace LATUS {
 
 
     private:
+      // Parent
+      /** Parent class: LegDate. */
+      LegDate* _legDate;
+      
       // Primary Key
       /** Leg-Cabin Key is composed of the cabin code. */
       LegCabinKey_T _key;

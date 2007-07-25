@@ -20,6 +20,11 @@ namespace LATUS {
     
     // //////////////////////////////////////////////////////////////////////
     const std::string FlightDateKey_T::describe() const {
+      return describeShort();
+    }
+
+    // //////////////////////////////////////////////////////////////////////
+    const std::string FlightDateKey_T::describeShort() const {
       std::ostringstream ostr;
       ostr << flightKey.describe() << "; " << flightDate << "; ";
       return ostr.str();
