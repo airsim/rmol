@@ -142,40 +142,14 @@ AC_SUBST(CXXFLAGS_OPT)
 # -----------------------------------------------
 # Provide --with-gsl
 AM_PATH_GSL([1.8])
-
-#GSL_CONFIG=gsl-config
-#AC_ARG_WITH(gsl,
-#	[ --with-gsl=PATH		Use GSL library in PATH],
-#	[ case $withval in
-#	    yes) AC_PATH_PROG(GSL_CONFIG, gsl-config, false) ;;
-#		/*) if test -d "$withval" && test -x "$withval/bin/gsl-config"; then
-#		      GSL_CONFIG=$withval/bin/gsl-config
-#			elif test -x "$withval"; then
-#			  GSL_CONFIG=$withval
-#			fi
-#
-#			if ${GSL_CONFIG} --version >/dev/null 2>&1; then :; else
-#			  AC_MSG_ERROR([Did not find gsl-config script at ${GSL_CONFIG}])
-#			fi
-#       ;;
-#		*) AC_MSG_ERROR([*** GSL is required ***]) ;;
-#	  esac
-#    ]
-#)
-
-# PKG_CHECK_MODULES(DEPS, gsl-1.7 >= 1.7)
-# AC_SUBST(DEPS_CFLAGS)
-# AC_SUBST(DEPS_LIBS)
-# or
-# AC_CHECK_LIB(m,main)
-# AC_CHECK_LIB(gslcblas,main)
-# AC_CHECK_LIB(gsl,main)
-#GSL_CFLAGS=`${GSL_CONFIG} --cflags`
-#GSL_LIBS=`${GSL_CONFIG} --libs`
 GSL_VERSION=`${GSL_CONFIG} --version`
 AC_SUBST(GSL_CFLAGS)
 AC_SUBST(GSL_LIBS)
 
+AX_BOOST([1.33])
+AC_SUBST(BOOST_CPPFLAGS)
+AC_SUBST(BOOST_LDFLAGS)
+AC_SUBST(BOOST_DATE_TIME_LIB)
 
 # Checks for documentation build tools
 #AC_CHECK_PROG([texinfo_ok], [texinfo], [yes], [no])
@@ -388,6 +362,12 @@ External libraries:
     o GSL_VERSION .. : ${GSL_VERSION}
     o GSL_CFLAGS ... : ${GSL_CFLAGS}
     o GSL_LIBS ..... : ${GSL_LIBS}
+
+  - Boost .......... :
+    o BOOST_VERSION. : ${boost_lib_version_shorten}
+    o BOOST_CPPFLAGS : ${BOOST_CPPFLAGS}
+    o BOOST_LDFLAGS. : ${BOOST_LDFLAGS}
+    o BOOST_DT_LIB.. : ${BOOST_DATE_TIME_LIB}
 
 ------------------------------------------------------------------------------
 Now type 'make && make install' to build and install $PACKAGE-$VERSION library

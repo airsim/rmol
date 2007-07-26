@@ -95,8 +95,10 @@ int main (int argc, char* argv[]) {
       while (lCurrentTime <= kDay) {
         const double lExponentialVariateDay =
           generateExponentialVariate (lambda);
+        const long int lExponentialVariateHours =
+          static_cast<long int> (lExponentialVariateDay * 24);
         const boost::posix_time::time_duration lExponentialVariateSeconds =
-          boost::posix_time::hours (lExponentialVariateDay * 24);
+          boost::posix_time::hours (lExponentialVariateHours);
 
         // Add an event
         lEventNumber++;
