@@ -41,5 +41,20 @@ namespace LATUS {
       std::cout.flags (oldFlags);
     }
     
+    // //////////////////////////////////////////////////////////////////////
+    LegCabin* SegmentCabin::
+    getLegCabin (const std::string& iLegCabinKey) const {
+      LegCabin* resultLegCabin_ptr = NULL;
+      
+      LegCabinList_T::const_iterator itLegCabin =
+        _legCabinList.find (iLegCabinKey);
+
+      if (itLegCabin != _legCabinList.end()) {
+        resultLegCabin_ptr = itLegCabin->second;
+      }
+
+      return resultLegCabin_ptr;
+    }
+
   }
 }

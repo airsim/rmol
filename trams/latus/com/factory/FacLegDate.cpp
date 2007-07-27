@@ -7,8 +7,10 @@
 #include <latus/com/bom/LegDateKey.hpp>
 #include <latus/com/bom/LegDate.hpp>
 #include <latus/com/bom/LegCabin.hpp>
+#include <latus/com/bom/SegmentDate.hpp>
 #include <latus/com/factory/FacSupervisor.hpp>
 #include <latus/com/factory/FacLegDate.hpp>
+#include <latus/com/factory/FacSegmentDate.hpp>
 #include <latus/com/service/Logger.hpp>
 
 namespace LATUS {
@@ -62,6 +64,23 @@ namespace LATUS {
                          << " and " << ioLegCabin.describeShortKey());
         assert (insertSucceeded == true);
       }
+    }
+
+    // //////////////////////////////////////////////////////////////////////
+    void FacLegDate::initLinkWithSegmentDate (LegDate& ioLegDate,
+                                              SegmentDate& ioSegmentDate) {
+      // Link the LegDate to the SegmentDate
+      const bool insertSucceeded = ioLegDate._segmentDateList.
+        insert (SegmentDateList_T::value_type (ioSegmentDate.describeKey(),
+                                               &ioSegmentDate)).second;
+      if (insertSucceeded == false) {
+        LATUS_LOG_ERROR ("Insertion failed for " << ioLegDate.describeKey()
+                         << " and " << ioSegmentDate.describeShortKey());
+        assert (insertSucceeded == true);
+      }
+
+      // Link the SegmentDate to the LegDate
+      FacSegmentDate::initLinkWithLegDate (ioSegmentDate, ioLegDate);
     }
 
   }

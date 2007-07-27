@@ -16,6 +16,7 @@ namespace LATUS {
     struct SegmentDateKey_T;
     class SegmentDate;
     class SegmentCabin;
+    class LegDate;
     
     /** Factory for SegmentDate objects. */
     class FacSegmentDate : public FacBomAbstract {
@@ -41,6 +42,16 @@ namespace LATUS {
           @exception FacExceptionNullPointer
           @exception FacException.*/
       static void initLinkWithSegmentCabin (SegmentDate&, SegmentCabin&);
+
+      /** Initialise the link between a SegmentDate and a LegDate.
+          <br>That method creates links in the SegmentDate->LegDate direction
+          only, as it called by the corresponding method from FacLegDate
+          for the other direction.
+          @param SegmentDate&
+          @param LegDate&
+          @exception FacExceptionNullPointer
+          @exception FacException.*/
+      static void initLinkWithLegDate (SegmentDate&, LegDate&);
 
     protected:
       /** Default Constructor.

@@ -66,5 +66,19 @@ namespace LATUS {
       return resultSegmentCabin_ptr;
     }
     
+    // //////////////////////////////////////////////////////////////////////
+    LegDate* SegmentDate::getLegDate (const std::string& iLegDateKey) const {
+      LegDate* resultLegDate_ptr = NULL;
+      
+      LegDateList_T::const_iterator itLegDate =
+        _legDateList.find (iLegDateKey);
+
+      if (itLegDate != _legDateList.end()) {
+        resultLegDate_ptr = itLegDate->second;
+      }
+
+      return resultLegDate_ptr;
+    }
+
   }
 }

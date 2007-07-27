@@ -8,6 +8,7 @@
 #include <latus/com/bom/BomAbstract.hpp>
 #include <latus/com/bom/LegDateKey.hpp>
 #include <latus/com/bom/LegCabinList.hpp>
+#include <latus/com/bom/SegmentDateList.hpp>
 
 namespace LATUS {
 
@@ -99,6 +100,16 @@ namespace LATUS {
           <br>If not existing, return the NULL pointer. */
       LegCabin* getLegCabin (const std::string& iLegCabinKey) const;
       
+      /** Get the list of (children) SegmentDate objects. */
+      const SegmentDateList_T& getSegmentDateList () const {
+        return _segmentDateList;
+      }
+
+      /** Retrieve, if existing, the SegmentDate corresponding to the
+          given board point.
+          <br>If not existing, return the NULL pointer. */
+      SegmentDate* getSegmentDate (const std::string& iSegmentDateKey) const;
+      
       
     private:
       // Parent
@@ -112,6 +123,9 @@ namespace LATUS {
 
       /** Children: list of LegCabin objects. */
       LegCabinList_T _legCabinList;
+
+      /** List of crossing SegmentDate objects. */
+      SegmentDateList_T _segmentDateList;
 
       // Attributes
       /** Off Date. */

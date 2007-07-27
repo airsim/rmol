@@ -7,6 +7,7 @@
 // LATUS Common
 #include <latus/com/bom/BomAbstract.hpp>
 #include <latus/com/bom/LegCabinKey.hpp>
+#include <latus/com/bom/SegmentCabinList.hpp>
 
 namespace LATUS {
 
@@ -77,6 +78,17 @@ namespace LATUS {
       /** Destructor. */
       virtual ~LegCabin();
 
+    private:
+      /** Get the list of (children) SegmentCabin objects. */
+      const SegmentCabinList_T& getSegmentCabinList () const {
+        return _segmentCabinList;
+      }
+
+      /** Retrieve, if existing, the SegmentCabin corresponding to the
+          given board point.
+          <br>If not existing, return the NULL pointer. */
+      SegmentCabin* getSegmentCabin(const std::string& iSegmentCabinKey) const;
+      
 
     private:
       // Parent
@@ -86,6 +98,9 @@ namespace LATUS {
       // Primary Key
       /** Leg-Cabin Key is composed of the cabin code. */
       LegCabinKey_T _key;
+
+      /** List of crossing SegmentCabin objects. */
+      SegmentCabinList_T _segmentCabinList;
 
       // Attributes
       /** Capacity of the cabin. */
