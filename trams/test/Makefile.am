@@ -5,7 +5,8 @@ MAINTAINERCLEANFILES = Makefile.in
 
 check_PROGRAMS = random_cycle_test \
 				single_date_simulator \
-				simulator
+				simulator \
+				parser spirit_parser
 
 random_cycle_test_SOURCES = random_cycle_test.cpp
 random_cycle_test_LDADD = $(BOOST_LIB) \
@@ -23,4 +24,12 @@ simulator_SOURCES = simulator.cpp
 simulator_LDADD = $(BOOST_LIB) \
 		$(top_builddir)/@PACKAGE@/liblatus.la
 
-EXTRA_DIST = test_single_date_simulator.sh test_full_event_generator.sh test_simulator.sh samples/*.csv db/*.csv db/*.sql
+parser_SOURCES = parser.cpp
+parser_LDADD = $(BOOST_LIB)
+
+spirit_parser_SOURCES = spirit_parser.cpp
+spirit_parser_LDADD = $(BOOST_LIB)
+
+EXTRA_DIST = test_single_date_simulator.sh test_full_event_generator.sh \
+			test_simulator.sh test_parser.sh test_spirit_parser.sh \
+			samples/*.csv db/*.csv db/*.sql
