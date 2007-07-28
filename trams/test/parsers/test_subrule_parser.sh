@@ -1,7 +1,7 @@
 #!/bin/sh
 
 INSTALL_DIR=`grep "^prefix =" ../Makefile | cut -d"=" -d" " -f3`
-TST_PROG=./parser
+TST_PROG=./parser_subrule
 LATUS_API_VERSION=`grep "^LATUS_API_VERSION =" ../Makefile | cut -d"=" -d" " -f3`
 LATUS_LIBRARY_NAME=`grep "^LATUS_LIBRARY_NAME =" ../Makefile | cut -d"=" -d" " -f3`
 LATUS_LIB=lib${LATUS_LIBRARY_NAME}-${LATUS_API_VERSION}.so

@@ -6,7 +6,7 @@ MAINTAINERCLEANFILES = Makefile.in
 check_PROGRAMS = random_cycle_test \
 				single_date_simulator \
 				simulator \
-				parser spirit_parser
+				parser spirit_parser parser_subrule
 
 random_cycle_test_SOURCES = random_cycle_test.cpp
 random_cycle_test_LDADD = $(BOOST_LIB) \
@@ -30,6 +30,10 @@ parser_LDADD = $(BOOST_LIB)
 spirit_parser_SOURCES = spirit_parser.cpp
 spirit_parser_LDADD = $(BOOST_LIB)
 
+parser_subrule_SOURCES = parser_subrule.cpp
+parser_subrule_LDADD = $(BOOST_LIB)
+
 EXTRA_DIST = test_single_date_simulator.sh test_full_event_generator.sh \
 			test_simulator.sh test_parser.sh test_spirit_parser.sh \
+			test_subrule_parser.sh \
 			samples/*.csv db/*.csv db/*.sql
