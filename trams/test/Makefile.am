@@ -3,10 +3,13 @@ include $(top_srcdir)/Makefile.common
 
 MAINTAINERCLEANFILES = Makefile.in
 
+# Build in these directories
+SUBDIRS = parsers
+
 check_PROGRAMS = random_cycle_test \
 				single_date_simulator \
 				simulator \
-				parser spirit_parser parser_subrule
+				parser
 
 random_cycle_test_SOURCES = random_cycle_test.cpp
 random_cycle_test_LDADD = $(BOOST_LIB) \
@@ -27,13 +30,6 @@ simulator_LDADD = $(BOOST_LIB) \
 parser_SOURCES = parser.cpp
 parser_LDADD = $(BOOST_LIB)
 
-spirit_parser_SOURCES = spirit_parser.cpp
-spirit_parser_LDADD = $(BOOST_LIB)
-
-parser_subrule_SOURCES = parser_subrule.cpp
-parser_subrule_LDADD = $(BOOST_LIB)
-
 EXTRA_DIST = test_single_date_simulator.sh test_full_event_generator.sh \
-			test_simulator.sh test_parser.sh test_spirit_parser.sh \
-			test_subrule_parser.sh \
+			test_simulator.sh test_parser.sh \
 			samples/*.csv db/*.csv db/*.sql

@@ -346,6 +346,7 @@ AC_CONFIG_FILES(
     doc/doxygen_html.cfg
     doc/website/howto_to_release_latus.html
 	test/Makefile
+	test/parsers/Makefile
 	win32/Makefile)
 AC_OUTPUT
 
