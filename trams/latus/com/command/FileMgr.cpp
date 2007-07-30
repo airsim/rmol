@@ -143,7 +143,7 @@ namespace LATUS {
     bool FileMgr::
     readAndProcessWorldScheduleInputFile (const std::string& iInputFileName,
                                           WorldSchedule& ioWorldSchedule) {
-
+/*
       // Open the input file
       std::ifstream inputFile (iInputFileName.c_str());
       if (! inputFile) {
@@ -213,7 +213,7 @@ namespace LATUS {
         std::cerr << "Problem when reading input file \"" << iInputFileName
                   << "\"" << std::endl;
       }
-
+*/
       return true;
     }
     
