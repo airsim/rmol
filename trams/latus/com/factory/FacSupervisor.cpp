@@ -3,10 +3,12 @@
 // //////////////////////////////////////////////////////////////////////
 // C
 #include <assert.h>
-// LATUS
+// LATUS Common
 #include <latus/com/factory/FacBomAbstract.hpp>
 #include <latus/com/factory/FacServiceAbstract.hpp>
 #include <latus/com/factory/FacSupervisor.hpp>
+// LATUS General
+#include <latus/com/service/LATUS_Service_Internal.hpp>
 
 namespace LATUS {
 
@@ -14,6 +16,10 @@ namespace LATUS {
 
     FacSupervisor* FacSupervisor::_instance = NULL;
 
+    // //////////////////////////////////////////////////////////////////////
+    FacSupervisor::FacSupervisor () : _latusService (NULL) {
+    }
+    
     // //////////////////////////////////////////////////////////////////////
     FacSupervisor& FacSupervisor::instance() {
       if (_instance == NULL) {
@@ -33,6 +39,12 @@ namespace LATUS {
     void FacSupervisor::
     registerServiceFactory (FacServiceAbstract* ioFacServiceAbstract_ptr) {
       _svcPool.push_back (ioFacServiceAbstract_ptr);
+    }
+
+    // //////////////////////////////////////////////////////////////////////
+    void FacSupervisor::
+    registerLatusService (LATUS_Service_Internal* ioLatusService_ptr) {
+      _latusService = ioLatusService_ptr;
     }
 
     // //////////////////////////////////////////////////////////////////////
@@ -70,10 +82,16 @@ namespace LATUS {
     }
 
     // //////////////////////////////////////////////////////////////////////
+    void FacSupervisor::cleanLatusService() {
+      delete (_latusService); _latusService = NULL;
+    }
+
+    // //////////////////////////////////////////////////////////////////////
     void FacSupervisor::cleanFactory () {
       if (_instance != NULL) {
 		_instance->cleanBomLayer();
 		_instance->cleanServiceLayer();
+		_instance->cleanLatusService();
       }
       delete (_instance); _instance = NULL;
     }

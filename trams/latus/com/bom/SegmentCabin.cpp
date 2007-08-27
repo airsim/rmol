@@ -5,6 +5,7 @@
 #include <assert.h>
 // LATUS COM
 #include <latus/com/bom/SegmentCabin.hpp>
+#include <latus/com/bom/LegCabin.hpp>
 
 namespace LATUS {
 
@@ -12,7 +13,7 @@ namespace LATUS {
 
     // //////////////////////////////////////////////////////////////////////
     SegmentCabin::SegmentCabin (const SegmentCabinKey_T& iKey)
-      : _key (iKey) {
+      : _key (iKey), _segmentDate (NULL) {
     }
     
     // //////////////////////////////////////////////////////////////////////
@@ -35,26 +36,30 @@ namespace LATUS {
       // Store current formatting flags of std::cout
       std::ios::fmtflags oldFlags = std::cout.flags();
 
-      std::cout << describeKey() << std::endl;
+      std::cout << describeKey()
+                << " ; ";
+
+      for (LegCabinOrderedList_T::const_iterator itLegCabin =
+             _legCabinList.begin();
+           itLegCabin != _legCabinList.end(); ++itLegCabin) {
+        const LegCabin* lLegCabin_ptr = *itLegCabin;
+        assert (lLegCabin_ptr != NULL);
+
+        std::cout << lLegCabin_ptr->getBoardPoint()
+                  << "/" << getCabinCode() << "-";
+      }
+      std::cout << std::endl;
+
+      for (ClassStructOrderedList_T::const_iterator itClass =
+             _classOrderedList.begin();
+           itClass != _classOrderedList.end(); ++itClass) {
+        const ClassStruct_T& lClass = *itClass;
+        lClass.display();
+      }
 
       // Reset formatting flags of std::cout
       std::cout.flags (oldFlags);
     }
     
-    // //////////////////////////////////////////////////////////////////////
-    LegCabin* SegmentCabin::
-    getLegCabin (const std::string& iLegCabinKey) const {
-      LegCabin* resultLegCabin_ptr = NULL;
-      
-      LegCabinList_T::const_iterator itLegCabin =
-        _legCabinList.find (iLegCabinKey);
-
-      if (itLegCabin != _legCabinList.end()) {
-        resultLegCabin_ptr = itLegCabin->second;
-      }
-
-      return resultLegCabin_ptr;
-    }
-
   }
 }

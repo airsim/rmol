@@ -8,6 +8,7 @@
 #include <string>
 // LATUS Common
 #include <latus/com/basic/BasComTypes.hpp>
+#include <latus/com/bom/KeyAbstract.hpp>
 #include <latus/com/bom/FlightKey.hpp>
 
 namespace LATUS {
@@ -15,7 +16,7 @@ namespace LATUS {
   namespace COM {
 
     /** Define the key elements of a flight-date. */
-    struct FlightDateKey_T {
+    struct FlightDateKey_T : public KeyAbstract {
       FlightKey_T flightKey;
       DateTime_T flightDate;
 

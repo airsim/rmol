@@ -49,6 +49,11 @@ namespace LATUS {
           @exception FacException.*/
       static void initLinkWithSegmentDate (FlightDate&, SegmentDate&);
     
+      /** Create the routing between the legs and segments for the given
+          FlightDate object. */
+      static void createRouting (FlightDate& ioFlightDate);
+
+
     protected:
       /** Default Constructor.
           <br>This constructor is protected in order to ensure the singleton

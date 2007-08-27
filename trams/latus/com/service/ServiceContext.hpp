@@ -8,8 +8,10 @@
 #include <map>
 // Boost (Extended STL)
 #include <boost/date_time/gregorian/gregorian.hpp>
-// LATUS
+// LATUS General
 #include <latus/LatusTypes.hpp>
+// LATUS Common
+#include <latus/com/basic/BasComTypes.hpp>
 #include <latus/com/basic/ModuleDescription.hpp>
 #include <latus/com/service/ServiceAbstract.hpp>
 
@@ -17,19 +19,29 @@ namespace LATUS {
 
   namespace COM {
 
+    // Forward declarations
+    class WorldSchedule;
+    class Network;
+
     /** Inner class holding the context for the LATUS Service object. */
     class ServiceContext : public ServiceAbstract {
-      /** The LATUS_Service class should be the sole class to get access to
-          ServiceContext content: general users do not want to bother
-          with a context interface. */
+      // The LATUS_Service_Internal class should be the sole class to
+      // get access to ServiceContext content: general users do not
+      // want to bother with a context interface.
+      friend class LATUS_Service_Internal;
       friend class LATUS_ServiceAbstract;
       friend class ServiceContextManager;
       friend class FacServiceContext;
     public:
       // //////// GETTERS /////////
-      /** Get the input filename. */
-      const std::string& getInputFilename () const {
-        return _inputFilename;
+      /** Get the demand input filename. */
+      const std::string& getDemandInputFilename () const {
+        return _demandInputFilename;
+      }
+      
+      /** Get the schedule input filename. */
+      const std::string& getScheduleInputFilename () const {
+        return _scheduleInputFilename;
       }
       
       /** Get the number of simulations to be run. */
@@ -38,20 +50,30 @@ namespace LATUS {
       }
       
       /** Get the start date of the simulation. */
-      const boost::gregorian::date& getStartDate () const {
+      const DateTime_T& getStartDate () const {
         return _startDate;
       }
 
       /** Get the end date of the simulation. */
-      const boost::gregorian::date& getEndDate () const {
+      const DateTime_T& getEndDate () const {
         return _endDate;
+      }
+
+      /** Get the owner airline code. */
+      const AirlineCode_T& getOwnerAirlineCode () const {
+        return _ownerAirlineCode;
       }
 
 
       // //////// SETTERS /////////
-      /** Set the input filename. */
-      void setInputFilename (const std::string& iInputFilename) {
-        _inputFilename = iInputFilename;
+      /** Set the demand input filename. */
+      void setDemandInputFilename (const std::string& iInputFilename) {
+        _demandInputFilename = iInputFilename;
+      }
+      
+      /** Set the schedule input filename. */
+      void setScheduleInputFilename (const std::string& iInputFilename) {
+        _scheduleInputFilename = iInputFilename;
       }
       
       /** Set the number of simulations to be run. */
@@ -60,25 +82,55 @@ namespace LATUS {
       }
       
       /** Set the start date of the simulation. */
-      void setStartDate (const boost::gregorian::date& iStartDate) {
+      void setStartDate (const DateTime_T& iStartDate) {
         _startDate = iStartDate;
       }
 
       /** Set the end date of the simulation. */
-      void setEndDate (const boost::gregorian::date& iEndDate) {
+      void setEndDate (const DateTime_T& iEndDate) {
         _endDate = iEndDate;
       }
 
+      /** Set the owner airline code. */
+      void setOwnerAirlineCode (const AirlineCode_T& iAirlineCode) {
+        _ownerAirlineCode = iAirlineCode;
+      }
+
+
+    public:
+      // //////// Getters for the internal BOM /////////
+      /** Get the WorldSchedule object reference. */
+      WorldSchedule& getWorldSchedule () const;
+      
+      /** Get the Network object reference. */
+      Network& getNetwork () const;
+      
+      // //////// Setters for the internal BOM ///////
+      /** Set the WorldSchedule object reference. */
+      void setWorldSchedule (WorldSchedule& ioWorldSchedule) {
+        _worldSchedule = &ioWorldSchedule;
+      }
+      
+      /** Set the Network object reference. */
+      void setNetwork (Network& ioNetwork) {
+        _network = &ioNetwork;
+      }
+      
 
     private:
-      /** Get the type of the module (normally, COM). */
-      ModuleDescription::EN_ModuleType getModuleType() const;
+      // Attributes
+      /** Get the whole module description (type and name). */
+      const ModuleDescription& getModuleDescription() const;
 
-      /** Get the name of the module (normally, COM). */
+      /** Get the type of the module. */
+      const ModuleDescription::EN_ModuleType getModuleType() const;
+
+      /** Get the name of the module. */
       const std::string& getModuleName() const;
 
       
     private:
+      // /////// Construction / initialisation ////////
       /** Constructors. */
       ServiceContext ();
       ServiceContext (const ServiceContext&);
@@ -88,19 +140,36 @@ namespace LATUS {
       /** Destructor. */
       ~ServiceContext();
 
+      
     private:
-      // Desccription (mainly, type and name) of the module (normally, COM)
+      // /////// Parameters set by the external clients ///////
+      /** Desccription (mainly, type and name) of the module (normally, COM). */
       ModuleDescription _moduleDescription;
       
-      // Input filename
-      std::string _inputFilename;
+      /** (SIM Service Context) Demand input filename. */
+      std::string _demandInputFilename;
 
-      // Number of simulations to be run
+      /** (TSP Service Context) Schedule input filename. */
+      std::string _scheduleInputFilename;
+
+      /** (SIM Service Context) Number of simulations to be run. */
       int _simulationRunNumber;
 
-      // Simulation length (time length) / date range for the simulation
-      boost::gregorian::date _startDate;
-      boost::gregorian::date _endDate;
+      /** (SIM Service Context) Simulation length (time length) / date range
+          for the simulation. */
+      DateTime_T _startDate;
+      DateTime_T _endDate;
+
+      /** (INV and RMS Service Contexts) Owner airline code. */
+      AirlineCode_T _ownerAirlineCode;
+
+    private:
+      // ////////// BOM holders //////////
+      /** (TSP ServiceContext) World Schedule. */
+      WorldSchedule* _worldSchedule;
+
+      /** (TSP ServiceContext) Network. */
+      Network* _network;
     };
 
   }

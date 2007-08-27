@@ -9,6 +9,7 @@
 #include <latus/com/bom/InventoryList.hpp>
 #include <latus/com/factory/FacSupervisor.hpp>
 #include <latus/com/factory/FacWorldSchedule.hpp>
+#include <latus/com/factory/FacInventory.hpp>
 #include <latus/com/service/Logger.hpp>
 
 namespace LATUS {
@@ -57,51 +58,28 @@ namespace LATUS {
       
       // Link the WorldSchedule to the Inventory
       const bool insertSucceeded = ioWorldSchedule._inventoryList.
-        insert (InventoryList_T::value_type (ioInventory.getPrimaryKey(),
-                                            &ioInventory)).second;
+        insert (InventoryList_T::value_type (ioInventory.describeShortKey(),
+                                             &ioInventory)).second;
       if (insertSucceeded == false) {
-        LATUS_LOG_ERROR ("Insertion failed for " << ioWorldSchedule.describeKey()
-                         << " and " << ioInventory.describeKey());
+        LATUS_LOG_ERROR ("Insertion failed for "
+                         << ioWorldSchedule.describeKey()
+                         << " and " << ioInventory.describeShortKey());
         assert (insertSucceeded == true);
       }
     }
   
     // //////////////////////////////////////////////////////////////////////
-    void FacWorldSchedule::
-    createLegCabin (WorldSchedule& ioWorldSchedule,
-                    const AirlineCode_T& iAirlineCode,
-                    const FlightNumber_T& iFlightNumber,
-                    const AirportCode_T& iBoardPoint,
-                    const AirportCode_T& iOffPoint,
-                    const DateTime_T& iFlightDate,
-                    const CabinCode_T& iCabinCode) {
-      /* TODO: implement the BOM for that (Inventory, FlightDate, etc.)
+    void FacWorldSchedule::createRouting (WorldSchedule& ioWorldSchedule) {
       const InventoryList_T& lInventoryList =
         ioWorldSchedule.getInventoryList();
-    
-      InventoryList_T::const_iterator itInventory =
-        lInventoryList.find (iInventoryDescription);
-    
-      // If the Inventory instance does not exist yet, create it
-      if (itInventory == lInventoryList.end()) {
-        Inventory& aInventory =
-          FacInventory::instance().create (iInventoryDescription);
-
-        initLinkWithInventory (ioWorldSchedule, aInventory);
-      
-        itInventory = lInventoryList.find (iInventoryDescription);
-        assert (itInventory != lInventoryList.end());
+      for (InventoryList_T::const_iterator itInv = lInventoryList.begin();
+           itInv != lInventoryList.end(); itInv++) {
+        Inventory* lInventory_ptr = itInv->second;
+        assert (lInventory_ptr != NULL);
+        
+        FacInventory::createRouting (*lInventory_ptr);
       }
-    
-      Inventory* lInventory_ptr = itInventory->second;
-      assert (lInventory_ptr != NULL);
-    
-      // Forward the ClassPath object creation request to FacInventory
-      FacInventory::createLegCabin (*lInventory_ptr, iAirlineCode,
-                                    iFlightNumber, iBoardPoint, iOffPoint,
-                                    iFlightDate, iCabinCode);
-      */
     }
-  
+      
   }
 }

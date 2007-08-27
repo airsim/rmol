@@ -42,14 +42,9 @@ namespace LATUS {
           @exception FacException.*/
       static void initLinkWithInventory (WorldSchedule&, Inventory&);
 
-      /** Create a new LegCabin object with the given parameters.
-          <br>This new object is added to the list of instantiated objects.
-          <br>Any missing intermediary object (Inventory and/or FlightDate)
-          will be created and added to the corresponding children list. */
-      static void createLegCabin (WorldSchedule&,
-                                  const AirlineCode_T&, const FlightNumber_T&,
-                                  const AirportCode_T&, const AirportCode_T&,
-                                  const DateTime_T&, const CabinCode_T&);
+      /** Create the routing between the legs and segments for all the
+          Inventories of the given WorldSchedule object. */
+      static void createRouting (WorldSchedule&);
       
 
     protected:

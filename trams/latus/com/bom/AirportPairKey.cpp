@@ -25,5 +25,12 @@ namespace LATUS {
       return ostr.str();
     }
 
+    // //////////////////////////////////////////////////////////////////////
+    bool AirportPairKey_T::
+    operator== (const AirportPairKey_T& iAirportPairKey) const {
+      return (boardPoint == iAirportPairKey.boardPoint
+              && offPoint == iAirportPairKey.offPoint);
+    }
+
   }
 }

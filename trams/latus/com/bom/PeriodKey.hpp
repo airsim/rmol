@@ -21,11 +21,11 @@ namespace LATUS {
     struct PeriodKey_T {
       DateTime_T startDate;
       DateTime_T endDate;
-      DOW_T dow;
+      DOW_String_T dow;
 
       /** Constructor. */
       PeriodKey_T (const DateTime_T& iStartDate, const DateTime_T& iEndDate, 
-                   const DOW_T& iDow);
+                   const DOW_String_T& iDow);
       
       /** Display. */
       const std::string describe() const;

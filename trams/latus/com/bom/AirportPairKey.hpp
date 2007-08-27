@@ -24,6 +24,9 @@ namespace LATUS {
 
       /** Display of the airport pair. */
       const std::string describe() const;
+
+      /** operator== */
+      bool operator== (const AirportPairKey_T&) const;
     };
 
   }

@@ -8,6 +8,7 @@
 #include <latus/com/bom/BomAbstract.hpp>
 #include <latus/com/bom/SegmentCabinKey.hpp>
 #include <latus/com/bom/LegCabinList.hpp>
+#include <latus/com/bom/ClassStruct.hpp>
 
 namespace LATUS {
 
@@ -41,6 +42,11 @@ namespace LATUS {
         return _key;
       }
 
+      /** Get the cabin code (primary key). */
+      const CabinCode_T& getCabinCode() const {
+        return _key.cabinCode;
+      }
+      
       /** Get the off cabin. */
       const CabinCapacity_T& getCapacity () const {
         return _capacity;
@@ -79,16 +85,11 @@ namespace LATUS {
       virtual ~SegmentCabin();
 
     private:
-      /** Get the list of (children) LegCabin objects. */
-      const LegCabinList_T& getLegCabinList () const {
+      /** Get the (ordered) list of (children) LegCabin objects. */
+      const LegCabinOrderedList_T& getLegCabinList () const {
         return _legCabinList;
       }
 
-      /** Retrieve, if existing, the LegCabin corresponding to the
-          given board point.
-          <br>If not existing, return the NULL pointer. */
-      LegCabin* getLegCabin (const std::string& iLegCabinKey) const;
-      
 
     private:
       // Parent
@@ -99,8 +100,12 @@ namespace LATUS {
       /** Segment-Cabin Key is composed of the cabin code. */
       SegmentCabinKey_T _key;
 
+      /** Children: lists of classes. */
+      ClassStructOrderedList_T _classOrderedList;
+      ClassStructList_T _classList;
+      
       /** List of routing LegCabin objects. */
-      LegCabinList_T _legCabinList;
+      LegCabinOrderedList_T _legCabinList;
 
       // Attributes
       /** Capacity of the cabin. */

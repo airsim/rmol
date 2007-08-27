@@ -7,9 +7,7 @@
 // STL
 #include <string>
 #include <map>
-// LATUS Common
-#include <latus/com/bom/BomAbstract.hpp>
-
+#include <vector>
 
 namespace LATUS {
 
@@ -18,8 +16,9 @@ namespace LATUS {
     /** Forward declarations. */
     class LegCabin;
 
-    /** Define list of Leg-Cabin objects. */
+    /** Define lists of Leg-Cabin objects. */
     typedef std::map<std::string, LegCabin*> LegCabinList_T;
+    typedef std::vector<LegCabin*> LegCabinOrderedList_T;
 
   }
 }

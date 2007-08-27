@@ -53,6 +53,13 @@ namespace LATUS {
           @exception FacException.*/
       static void initLinkWithLegDate (SegmentDate&, LegDate&);
 
+      /** Create the routing between the leg-cabins and segment-cabins for the
+          given SegmentDate object.
+          <br>Note that the SegmentDate attributes derived from its routing
+          legs (e.g., board and off dates) are also set. */
+      static void createRouting (SegmentDate&);
+
+
     protected:
       /** Default Constructor.
           <br>This constructor is protected in order to ensure the singleton

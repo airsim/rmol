@@ -20,13 +20,21 @@ namespace LATUS {
     
     // //////////////////////////////////////////////////////////////////////
     const std::string FlightDateKey_T::describe() const {
-      return describeShort();
+      // See also the describeShort() comment.
+      std::ostringstream ostr;
+      const std::string& lShortKey = describeShort();
+      ostr << lShortKey;
+      return ostr.str();
     }
 
     // //////////////////////////////////////////////////////////////////////
     const std::string FlightDateKey_T::describeShort() const {
+      // As the describeShort() method is used to make sure FlightDate objects
+      // are not duplicated within an Inventory, the unique key elements are
+      // the date of the flight plus the flight number (key element of the
+      // FlightKey structure), not the date of the flight alone.
       std::ostringstream ostr;
-      ostr << flightKey.describe() << "; " << flightDate << "; ";
+      ostr << flightKey.describe() << flightDate << "; ";
       return ostr.str();
     }
 

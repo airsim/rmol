@@ -14,6 +14,7 @@ namespace LATUS {
     /** Forward declarations. */
     struct SegmentCabinKey_T;
     class SegmentCabin;
+    struct ClassStruct_T;
     class LegCabin;
     
     /** Factory for SegmentCabin objects. */
@@ -33,6 +34,13 @@ namespace LATUS {
           <br>This new object is added to the list of instantiated objects.
           @return SegmentCabin& The newly created object. */
       SegmentCabin& create (const SegmentCabinKey_T&);
+
+      /** Initialise the link between a SegmentCabin and a Class.
+          @param SegmentCabin&
+          @param Class&
+          @exception FacExceptionNullPointer
+          @exception FacException.*/
+      static void initLinkWithClass (SegmentCabin&, const ClassStruct_T&);
 
       /** Initialise the link between a SegmentCabin and a LegCabin.
           <br>That method creates links in the SegmentCabin->LegCabin direction

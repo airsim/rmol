@@ -11,21 +11,9 @@ namespace LATUS {
   namespace COM {
 
     // //////////////////////////////////////////////////////////////////////
-    ServiceContext::ServiceContext () :
-      _moduleDescription (ModuleDescription::COM, "COM") {
-      init ();
-    }
-  
-    // //////////////////////////////////////////////////////////////////////
-    ServiceContext::ServiceContext (const ServiceContext& iServiceContext) :
-      _moduleDescription (iServiceContext.getModuleType(),
-                          iServiceContext.getModuleName()) {
-      init ();
-    }
-
-    // //////////////////////////////////////////////////////////////////////
     ServiceContext::
     ServiceContext (const ModuleDescription& iModuleDescription) :
+      _worldSchedule (NULL), _network (NULL),
       _moduleDescription (iModuleDescription.getType(),
                           iModuleDescription.getName()) {
       init ();
@@ -40,7 +28,13 @@ namespace LATUS {
     }
 
     // //////////////////////////////////////////////////////////////////////
-    ModuleDescription::EN_ModuleType ServiceContext::getModuleType() const {
+    const ModuleDescription& ServiceContext::getModuleDescription() const {
+      return _moduleDescription;
+    }
+
+    // //////////////////////////////////////////////////////////////////////
+    const ModuleDescription::EN_ModuleType ServiceContext::
+    getModuleType() const {
       return _moduleDescription.getType();
     }
 
@@ -49,5 +43,16 @@ namespace LATUS {
       return _moduleDescription.getName();
     }
 
+    // //////////////////////////////////////////////////////////////////////
+    WorldSchedule& ServiceContext::getWorldSchedule () const {
+      assert (_worldSchedule != NULL);
+      return *_worldSchedule;
+    }
+
+    // //////////////////////////////////////////////////////////////////////
+    Network& ServiceContext::getNetwork () const {
+      assert (_network != NULL);
+      return *_network;
+    }
   }
 }

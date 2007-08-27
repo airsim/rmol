@@ -4,6 +4,7 @@
 // C
 #include <assert.h>
 // LATUS COM
+#include <latus/com/bom/FlightDate.hpp>
 #include <latus/com/bom/Inventory.hpp>
 
 namespace LATUS {
@@ -11,10 +12,22 @@ namespace LATUS {
   namespace COM {
 
     // //////////////////////////////////////////////////////////////////////
+    Inventory::Inventory (const InventoryKey_T& iKey)
+      : _key (iKey), _worldSchedule (NULL) {
+    }
+    
+    // //////////////////////////////////////////////////////////////////////
+    Inventory::~Inventory () {
+    }
+
+    // //////////////////////////////////////////////////////////////////////
     const std::string Inventory::describeKey() const {
-      std::ostringstream ostr;
-      ostr << "\"" << _description << "\"";
-      return ostr.str();
+      return _key.describe();
+    }
+    
+    // //////////////////////////////////////////////////////////////////////
+    const std::string Inventory::describeShortKey() const {
+      return _key.describeShort();
     }
     
     // //////////////////////////////////////////////////////////////////////
@@ -23,25 +36,46 @@ namespace LATUS {
       // Store current formatting flags of std::cout
       std::ios::fmtflags oldFlags = std::cout.flags();
 
-      std::cout << _description << "; ";
+      std::cout << describeKey() << std::endl;
 
-      /*
-      int j = 1;
-      for (FlightDateDateList_T::const_iterator itFlightDateDate =
-             _cityPairDateList.begin();
-           itFlightDateDate != _cityPairDateList.end();
-           itFlightDateDate++, j++) {
-        const FlightDateDate* lFlightDateDate_ptr = itFlightDateDate->second;
-        assert (lFlightDateDate_ptr != NULL);
+      for (FlightDateList_T::const_iterator itFlightDate =
+             _flightDateList.begin();
+           itFlightDate != _flightDateList.end(); ++itFlightDate) {
+        const FlightDate* lFlightDate_ptr = itFlightDate->second;
+        assert (lFlightDate_ptr != NULL);
 
-        bool lIndented = (j != 1);
-        lFlightDateDate_ptr->display (lIndented);
+        lFlightDate_ptr->display ();
       }
-      */
       
       // Reset formatting flags of std::cout
       std::cout.flags (oldFlags);
     }
 
+    // //////////////////////////////////////////////////////////////////////
+    FlightDate* Inventory::
+    getFlightDateInternal (const std::string& iFlightDateKey) const {
+      FlightDate* resultFlightDate_ptr = NULL;
+      
+      FlightDateList_T::const_iterator itFlightDate =
+        _flightDateList.find (iFlightDateKey);
+
+      if (itFlightDate != _flightDateList.end()) {
+        resultFlightDate_ptr = itFlightDate->second;
+      }
+
+      return resultFlightDate_ptr;
+    }
+    
+    // //////////////////////////////////////////////////////////////////////
+    FlightDate* Inventory::
+    getFlightDate (const FlightNumber_T& iFlightNumber,
+                   const DateTime_T& iFlightDate) const {
+      const InventoryKey_T& lInventoryKey = getPrimaryKey();
+      const FlightKey_T lFlightKey (lInventoryKey, iFlightNumber);
+      const FlightDateKey_T lFlightDateKey (lFlightKey, iFlightDate);
+      const std::string& lFlightDateKeyString = lFlightDateKey.describeShort();
+      return getFlightDateInternal (lFlightDateKeyString);
+    }
+    
   }
 }

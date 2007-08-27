@@ -7,6 +7,7 @@
 // STL
 #include <string>
 #include <map>
+#include <vector>
 
 namespace LATUS {
 
@@ -15,8 +16,9 @@ namespace LATUS {
     /** Forward declarations. */
     class SegmentCabin;
 
-    /** Define list of Segment-Cabin objects. */
+    /** Define lists of Segment-Cabin objects. */
     typedef std::map<std::string, SegmentCabin*> SegmentCabinList_T;
+    typedef std::vector<SegmentCabin*> SegmentCabinOrderedList_T;
 
   }
 }

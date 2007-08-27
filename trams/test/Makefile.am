@@ -9,7 +9,8 @@ SUBDIRS = parsers
 check_PROGRAMS = random_cycle_test \
 				single_date_simulator \
 				simulator \
-				parser
+				parser \
+				date
 
 random_cycle_test_SOURCES = random_cycle_test.cpp
 random_cycle_test_LDADD = $(BOOST_LIB) \
@@ -28,8 +29,10 @@ simulator_LDADD = $(BOOST_LIB) \
 		$(top_builddir)/@PACKAGE@/liblatus.la
 
 parser_SOURCES = parser.cpp
-parser_LDADD = $(BOOST_LIB)
+parser_LDADD = $(BOOST_LIB) \
+		$(top_builddir)/@PACKAGE@/liblatus.la
 
-EXTRA_DIST = test_single_date_simulator.sh test_full_event_generator.sh \
-			test_simulator.sh test_parser.sh \
-			samples/*.csv db/*.csv db/*.sql
+date_SOURCES = date.cpp
+date_LDADD = $(BOOST_LIB)
+
+EXTRA_DIST = test_*.sh samples/*.csv db/*.csv db/*.sql

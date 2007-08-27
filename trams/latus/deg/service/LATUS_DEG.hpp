@@ -23,27 +23,15 @@ namespace LATUS {
       // Only FacDegService_Service may instantiate LATUS_DEG
       friend class FacDegService;
     public:
-      /** Set the input file name (for test purposes). */
-      void setInputFilename (const std::string&);
-
-      /** Set the start date of the simulation. */
-      void setStartDate (const boost::gregorian::date&);
-
-      /** Set the end date of the simulation. */
-      void setEndDate (const boost::gregorian::date&);
-
       /** Main entry point: generate an event. */
       void generateEvent () const;
       
     private:
       /** Default Constructors. */
-      LATUS_DEG (const std::string& iModuleName);
+      LATUS_DEG ();
       /** Destructor. */
       ~LATUS_DEG();
 
-      /** Initialiser. */
-      void initSpecificContext ();
-      
     private:
       // Attributes
     };

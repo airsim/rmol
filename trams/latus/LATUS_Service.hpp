@@ -9,16 +9,16 @@
 
 namespace LATUS {
 
-  /** Forward declaration. */
-  namespace SIM {
-    class LATUS_SIM;
-  }
+  // Internal interface implementing that external one
+  class LATUS_Service_Internal;
 
+  
   /** Interface for the LATUS Services. */
   class LATUS_Service {
   public:
     /** Constructor. */
     LATUS_Service ();
+
     /** Destructor. */
     ~LATUS_Service();
 
@@ -29,8 +29,11 @@ namespace LATUS {
     /** Set the number of simulations to be run. */
     void setSimulationRunNumber (const int);
 
-    /** Set the input filename (for test purposes). */
-    void setInputFilename (const std::string&);
+    /** Set the demand input filename (for test purposes). */
+    void setDemandInputFilename (const std::string&);
+
+    /** Set the schedule input filename (for test purposes). */
+    void setScheduleInputFilename (const std::string&);
 
     /** Set the start date of the simulation. */
     void setStartDate (const boost::gregorian::date&);
@@ -38,20 +41,15 @@ namespace LATUS {
     /** Set the end date of the simulation. */
     void setEndDate (const boost::gregorian::date&);
 
+
+  public:
     /** Simulate. */
     void simulate () const;
 
+    
   private:
-    /** Default Constructors. */
-    // LATUS_Service ();
-    LATUS_Service (const LATUS_Service&);
-
     /** Initialiser. */
     void init ();
-    
-    /** Simulator (SIM) Service */
-    SIM::LATUS_SIM* _simService;
-    
   };
 }
 #endif // __LATUS_SVC_LATUS_SERVICE_HPP

@@ -7,11 +7,13 @@
 // LATUS Common
 #include <latus/com/basic/ModuleDescription.hpp>
 #include <latus/com/service/ServiceAbstract.hpp>
-#include <latus/com/service/ServiceContextManager.hpp>
 
 namespace LATUS {
 
   namespace COM {
+
+    // Forward declarations
+    class ServiceContext;
 
     /** Base class representing each module interface (service). */
     class LATUS_ServiceAbstract : public ServiceAbstract {
@@ -22,38 +24,17 @@ namespace LATUS {
       /** Destructor. */
       ~LATUS_ServiceAbstract();
       
-      /** Get the specific context. */
-      ServiceContext& getServiceContext() const;
+      /** Get the service context specific to the given module description
+          (type and name). */
+      static ServiceContext& getServiceContext (const ModuleDescription&);
       
       /** Add a specific ServiceContext object to the dedicated list. */
-      void registerSpecificServiceContext (ServiceContext& ioSpecific);
+      static void createAndRegisterSpecificServiceContext (const ModuleDescription&);
 
-      /** Get the type of the specific module. */
-      ModuleDescription::EN_ModuleType getModuleType() const {
-        return _moduleDescription.getType();
-      }
-
-      /** Get the name of the specific module. */
-      const std::string& getModuleName() const {
-        return _moduleDescription.getName();
-      }
-      
     protected:
       /** Default Constructors. */
       LATUS_ServiceAbstract ();
       LATUS_ServiceAbstract (const LATUS_ServiceAbstract&);
-
-      /** Initialiser.
-          <br>A Service Context specific to the current service is created
-          and registered through the ServiceContextManager. */
-      void init ();
-      
-    protected:
-      /** Specific Module. */
-      COM::ModuleDescription _moduleDescription;
-      
-      /** Common Service Context. */
-      ServiceContextManager _serviceContextManager;
     };
     
   }

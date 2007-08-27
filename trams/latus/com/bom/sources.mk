@@ -1,4 +1,6 @@
 combom_h_sources = $(top_srcdir)/latus/com/bom/BomAbstract.hpp \
+					$(top_srcdir)/latus/com/bom/KeyAbstract.hpp \
+					$(top_srcdir)/latus/com/bom/StructAbstract.hpp \
 					$(top_srcdir)/latus/com/bom/DistributionDetails.hpp \
 					$(top_srcdir)/latus/com/bom/ClassPathList.hpp \
 					$(top_srcdir)/latus/com/bom/CityPairDateList.hpp \
@@ -16,15 +18,27 @@ combom_h_sources = $(top_srcdir)/latus/com/bom/BomAbstract.hpp \
 					$(top_srcdir)/latus/com/bom/LegPeriodKey.hpp \
 					$(top_srcdir)/latus/com/bom/AirportPairKey.hpp \
 					$(top_srcdir)/latus/com/bom/SegmentPeriodKey.hpp \
+					$(top_srcdir)/latus/com/bom/InventoryKey.hpp \
 					$(top_srcdir)/latus/com/bom/FlightDateKey.hpp \
 					$(top_srcdir)/latus/com/bom/LegDateKey.hpp \
 					$(top_srcdir)/latus/com/bom/LegCabinKey.hpp \
 					$(top_srcdir)/latus/com/bom/SegmentDateKey.hpp \
 					$(top_srcdir)/latus/com/bom/SegmentCabinKey.hpp \
+					$(top_srcdir)/latus/com/bom/ClassKey.hpp \
+					$(top_srcdir)/latus/com/bom/NetworkDateKey.hpp \
+					$(top_srcdir)/latus/com/bom/AirportDateKey.hpp \
+					$(top_srcdir)/latus/com/bom/OutboundPathKey.hpp \
 					$(top_srcdir)/latus/com/bom/TravelSolution.hpp \
 					$(top_srcdir)/latus/com/bom/WorldSchedule.hpp \
 					$(top_srcdir)/latus/com/bom/InventoryList.hpp \
 					$(top_srcdir)/latus/com/bom/Inventory.hpp \
+					$(top_srcdir)/latus/com/bom/Network.hpp \
+					$(top_srcdir)/latus/com/bom/NetworkDateList.hpp \
+					$(top_srcdir)/latus/com/bom/NetworkDate.hpp \
+					$(top_srcdir)/latus/com/bom/AirportDateList.hpp \
+					$(top_srcdir)/latus/com/bom/AirportDate.hpp \
+					$(top_srcdir)/latus/com/bom/OutboundPathList.hpp \
+					$(top_srcdir)/latus/com/bom/OutboundPath.hpp \
 					$(top_srcdir)/latus/com/bom/FlightPeriod.hpp \
 					$(top_srcdir)/latus/com/bom/LegPeriodList.hpp \
 					$(top_srcdir)/latus/com/bom/LegPeriod.hpp \
@@ -39,9 +53,9 @@ combom_h_sources = $(top_srcdir)/latus/com/bom/BomAbstract.hpp \
 					$(top_srcdir)/latus/com/bom/SegmentDateList.hpp \
 					$(top_srcdir)/latus/com/bom/SegmentDate.hpp \
 					$(top_srcdir)/latus/com/bom/SegmentCabinList.hpp \
-					$(top_srcdir)/latus/com/bom/SegmentCabin.hpp
-combom_cc_sources = $(top_srcdir)/latus/com/bom/BomAbstract.cpp \
-					$(top_srcdir)/latus/com/bom/BookingDay.cpp \
+					$(top_srcdir)/latus/com/bom/SegmentCabin.hpp \
+					$(top_srcdir)/latus/com/bom/ClassStruct.hpp
+combom_cc_sources = $(top_srcdir)/latus/com/bom/BookingDay.cpp \
 					$(top_srcdir)/latus/com/bom/CityPair.cpp \
 					$(top_srcdir)/latus/com/bom/CityPairDate.cpp \
 					$(top_srcdir)/latus/com/bom/ClassPath.cpp \
@@ -51,13 +65,22 @@ combom_cc_sources = $(top_srcdir)/latus/com/bom/BomAbstract.cpp \
 					$(top_srcdir)/latus/com/bom/LegPeriodKey.cpp \
 					$(top_srcdir)/latus/com/bom/AirportPairKey.cpp \
 					$(top_srcdir)/latus/com/bom/SegmentPeriodKey.cpp \
+					$(top_srcdir)/latus/com/bom/InventoryKey.cpp \
 					$(top_srcdir)/latus/com/bom/FlightDateKey.cpp \
 					$(top_srcdir)/latus/com/bom/LegDateKey.cpp \
 					$(top_srcdir)/latus/com/bom/LegCabinKey.cpp \
 					$(top_srcdir)/latus/com/bom/SegmentDateKey.cpp \
 					$(top_srcdir)/latus/com/bom/SegmentCabinKey.cpp \
+					$(top_srcdir)/latus/com/bom/ClassKey.cpp \
+					$(top_srcdir)/latus/com/bom/NetworkDateKey.cpp \
+					$(top_srcdir)/latus/com/bom/AirportDateKey.cpp \
+					$(top_srcdir)/latus/com/bom/OutboundPathKey.cpp \
 					$(top_srcdir)/latus/com/bom/WorldSchedule.cpp \
 					$(top_srcdir)/latus/com/bom/Inventory.cpp \
+					$(top_srcdir)/latus/com/bom/Network.cpp \
+					$(top_srcdir)/latus/com/bom/NetworkDate.cpp \
+					$(top_srcdir)/latus/com/bom/AirportDate.cpp \
+					$(top_srcdir)/latus/com/bom/OutboundPath.cpp \
 					$(top_srcdir)/latus/com/bom/FlightPeriod.cpp \
 					$(top_srcdir)/latus/com/bom/LegPeriod.cpp \
 					$(top_srcdir)/latus/com/bom/SegmentPeriod.cpp \
@@ -65,4 +88,5 @@ combom_cc_sources = $(top_srcdir)/latus/com/bom/BomAbstract.cpp \
 					$(top_srcdir)/latus/com/bom/LegDate.cpp \
 					$(top_srcdir)/latus/com/bom/LegCabin.cpp \
 					$(top_srcdir)/latus/com/bom/SegmentDate.cpp \
-					$(top_srcdir)/latus/com/bom/SegmentCabin.cpp
+					$(top_srcdir)/latus/com/bom/SegmentCabin.cpp \
+					$(top_srcdir)/latus/com/bom/ClassStruct.cpp

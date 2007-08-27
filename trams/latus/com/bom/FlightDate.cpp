@@ -4,6 +4,7 @@
 // C
 #include <assert.h>
 // LATUS COM
+#include <latus/com/bom/Inventory.hpp>
 #include <latus/com/bom/FlightDate.hpp>
 #include <latus/com/bom/LegDate.hpp>
 #include <latus/com/bom/SegmentDate.hpp>
@@ -14,7 +15,7 @@ namespace LATUS {
 
     // //////////////////////////////////////////////////////////////////////
     FlightDate::FlightDate (const FlightDateKey_T& iKey)
-      : _key (iKey) {
+      : _key (iKey), _inventory (NULL) {
     }
     
     // //////////////////////////////////////////////////////////////////////
@@ -39,18 +40,19 @@ namespace LATUS {
 
       std::cout << describeKey() << std::endl;
 
-      for (LegDateList_T::const_iterator itLegDate = _legDateList.begin();
-           itLegDate != _legDateList.end(); itLegDate++) {
-        const LegDate* lLegDate_ptr = itLegDate->second;
+      for (LegDateOrderedList_T::const_iterator itLegDate =
+             _legDateOrderedList.begin();
+           itLegDate != _legDateOrderedList.end(); ++itLegDate) {
+        const LegDate* lLegDate_ptr = *itLegDate;
         assert (lLegDate_ptr != NULL);
 
         lLegDate_ptr->display ();
       }
       
-      for (SegmentDateList_T::const_iterator itSegmentDate =
-             _segmentDateList.begin();
-           itSegmentDate != _segmentDateList.end(); itSegmentDate++) {
-        const SegmentDate* lSegmentDate_ptr = itSegmentDate->second;
+      for (SegmentDateOrderedList_T::const_iterator itSegmentDate =
+             _segmentDateOrderedList.begin();
+           itSegmentDate != _segmentDateOrderedList.end(); ++itSegmentDate) {
+        const SegmentDate* lSegmentDate_ptr = *itSegmentDate;
         assert (lSegmentDate_ptr != NULL);
 
         lSegmentDate_ptr->display ();
@@ -59,9 +61,16 @@ namespace LATUS {
       // Reset formatting flags of std::cout
       std::cout.flags (oldFlags);
     }
+
+    // //////////////////////////////////////////////////////////////////////
+    const AirlineCode_T& FlightDate::getAirlineCode() const {
+      assert (_inventory != NULL);
+      return _inventory->getAirlineCode();
+    }
     
     // //////////////////////////////////////////////////////////////////////
-    LegDate* FlightDate::getLegDate (const std::string& iLegDateKey) const {
+    LegDate* FlightDate::
+    getLegDateInternal (const std::string& iLegDateKey) const {
       LegDate* resultLegDate_ptr = NULL;
       
       LegDateList_T::const_iterator itLegDate =
@@ -75,8 +84,16 @@ namespace LATUS {
     }
     
     // //////////////////////////////////////////////////////////////////////
+    LegDate* FlightDate::getLegDate (const AirportCode_T& iBoardPoint) const {
+      const FlightDateKey_T& lFlightDateKey = getPrimaryKey();
+      const LegDateKey_T lLegDateKey (lFlightDateKey, iBoardPoint);
+      const std::string& lLegDateKeyString = lLegDateKey.describeShort();
+      return getLegDateInternal (lLegDateKeyString);
+    }
+    
+    // //////////////////////////////////////////////////////////////////////
     SegmentDate* FlightDate::
-    getSegmentDate (const std::string& iSegmentDateKey) const {
+    getSegmentDateInternal (const std::string& iSegmentDateKey) const {
       SegmentDate* resultSegmentDate_ptr = NULL;
       
       SegmentDateList_T::const_iterator itSegmentDate =
@@ -87,6 +104,18 @@ namespace LATUS {
       }
 
       return resultSegmentDate_ptr;
+    }
+    
+    // //////////////////////////////////////////////////////////////////////
+    SegmentDate* FlightDate::
+    getSegmentDate (const AirportCode_T& iBoardPoint,
+                    const AirportCode_T& iOffPoint) const {
+      const FlightDateKey_T& lFlightDateKey = getPrimaryKey();
+      const AirportPairKey_T lAirportPairKey (iBoardPoint, iOffPoint);
+      const SegmentDateKey_T lSegmentDateKey (lFlightDateKey, lAirportPairKey);
+      const std::string& lSegmentDateKeyString =
+        lSegmentDateKey.describeShort();
+      return getSegmentDateInternal (lSegmentDateKeyString);
     }
     
   }

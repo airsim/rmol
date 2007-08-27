@@ -36,11 +36,16 @@ namespace LATUS {
       // Store current formatting flags of std::cout
       std::ios::fmtflags oldFlags = std::cout.flags();
 
-      std::cout << describeKey() << std::endl;
+      std::cout << describeKey()
+                << " - " << _offPoint
+                << ", " << _boardDate << " --> " << _offDate
+                << ", " << _boardTime << " --> " << _offTime
+                << "/ " << _elapsedTime << std::endl;
 
-      for (LegCabinList_T::const_iterator itLegCabin = _legCabinList.begin();
-           itLegCabin != _legCabinList.end(); itLegCabin++) {
-        const LegCabin* lLegCabin_ptr = itLegCabin->second;
+      for (LegCabinOrderedList_T::const_iterator itLegCabin =
+             _legCabinOrderedList.begin();
+           itLegCabin != _legCabinOrderedList.end(); itLegCabin++) {
+        const LegCabin* lLegCabin_ptr = *itLegCabin;
         assert (lLegCabin_ptr != NULL);
 
         lLegCabin_ptr->display ();
@@ -51,7 +56,19 @@ namespace LATUS {
     }
     
     // //////////////////////////////////////////////////////////////////////
-    LegCabin* LegDate::getLegCabin (const std::string& iLegCabinKey) const {
+    const Duration_T LegDate::getTimeOffSet() const {
+      // TimeOffSet = (OffTime - BoardTime) + (OffDate - BoardDate) * 24
+      //              - ElapsedTime
+      Duration_T oTimeOffSet = (_offTime - _boardTime);
+      const DateOffSet_T& lDateOffSet = getDateOffSet();
+      const Duration_T lDateOffSetInHours (lDateOffSet.days() * 24, 0, 0);
+      oTimeOffSet += lDateOffSetInHours - _elapsedTime;
+      return oTimeOffSet;
+    }
+
+    // //////////////////////////////////////////////////////////////////////
+    LegCabin* LegDate::
+    getLegCabinInternal (const std::string& iLegCabinKey) const {
       LegCabin* resultLegCabin_ptr = NULL;
       
       LegCabinList_T::const_iterator itLegCabin =
@@ -62,6 +79,14 @@ namespace LATUS {
       }
 
       return resultLegCabin_ptr;
+    }
+    
+    // //////////////////////////////////////////////////////////////////////
+    LegCabin* LegDate::getLegCabin (const CabinCode_T& iCabinCode) const {
+      const LegDateKey_T& lLegDateKey = getPrimaryKey();
+      const LegCabinKey_T lLegCabinKey (lLegDateKey, iCabinCode);
+      const std::string& lLegCabinKeyString = lLegCabinKey.describeShort();
+      return getLegCabinInternal (lLegCabinKeyString);
     }
     
     // //////////////////////////////////////////////////////////////////////

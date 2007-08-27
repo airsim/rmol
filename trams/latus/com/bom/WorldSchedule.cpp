@@ -9,14 +9,13 @@
 #include <latus/com/bom/WorldSchedule.hpp>
 #include <latus/com/bom/Inventory.hpp>
 
-
 namespace LATUS {
 
   namespace COM {
 
     // //////////////////////////////////////////////////////////////////////
     WorldSchedule::WorldSchedule (const boost::gregorian::date& iUpdateDate)
-      : _updateDate (iUpdateDate) {
+      : _network (NULL), _updateDate (iUpdateDate) {
     }
 
     // //////////////////////////////////////////////////////////////////////
@@ -41,7 +40,7 @@ namespace LATUS {
       int j = 1;
       for (InventoryList_T::const_iterator itInventory =
              _inventoryList.begin();
-           itInventory != _inventoryList.end(); itInventory++, j++) {
+           itInventory != _inventoryList.end(); ++itInventory, ++j) {
         const Inventory* lInventory_ptr = itInventory->second;
         assert (lInventory_ptr != NULL);
 
@@ -50,6 +49,35 @@ namespace LATUS {
       
       // Reset formatting flags of std::cout
       std::cout.flags (oldFlags);
+    }
+    
+    // //////////////////////////////////////////////////////////////////////
+    Network& WorldSchedule::getNetwork () const {
+      assert (_network != NULL);
+      return *_network;
+    }
+    
+    // //////////////////////////////////////////////////////////////////////
+    Inventory* WorldSchedule::
+    getInventoryInternal (const std::string& iInventoryKey) const {
+      Inventory* resultInventory_ptr = NULL;
+      
+      InventoryList_T::const_iterator itInventory =
+        _inventoryList.find (iInventoryKey);
+
+      if (itInventory != _inventoryList.end()) {
+        resultInventory_ptr = itInventory->second;
+      }
+
+      return resultInventory_ptr;
+    }
+    
+    // //////////////////////////////////////////////////////////////////////
+    Inventory* WorldSchedule::
+    getInventory (const AirlineCode_T& iAirlineCode) const {
+      const InventoryKey_T lInventoryKey (iAirlineCode);
+      const std::string& lInventoryKeyString = lInventoryKey.describeShort();
+      return getInventoryInternal (lInventoryKeyString);
     }
     
   }

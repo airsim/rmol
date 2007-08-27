@@ -46,6 +46,12 @@ namespace LATUS {
         return _capacity;
       }
 
+      /** Get the board point (from the LegDate parent). */
+      const AirportCode_T& getBoardPoint () const;
+
+      /** Get the off point (from the LegDate parent). */
+      const AirportCode_T& getOffPoint () const;
+
 
       // ///////// Setters //////////
       /** Set the LegDate (parent class). */

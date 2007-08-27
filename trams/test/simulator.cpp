@@ -21,7 +21,10 @@ int main (int argc, char* argv[]) {
     int K = 2;
 
     // Input O&D Demand File
-    std::string lFilename ("samples/demand.csv");
+    std::string lDemandFilename ("samples/demand.csv");
+
+    // Input Schedule File
+    std::string lScheduleFilename ("samples/world_schedule.csv");
 
     // Read the command-line parameters
     if (argc >= 1 && argv[1] != NULL) {
@@ -31,7 +34,12 @@ int main (int argc, char* argv[]) {
 
     if (argc >= 2 && argv[2] != NULL) {
       std::istringstream istr (argv[2]);
-      istr >> lFilename;
+      istr >> lDemandFilename;
+    }
+
+    if (argc >= 3 && argv[3] != NULL) {
+      std::istringstream istr (argv[3]);
+      istr >> lScheduleFilename;
     }
 
     // Initialise the context
@@ -43,8 +51,11 @@ int main (int argc, char* argv[]) {
     // Set the number of simulation runs
     latusService.setSimulationRunNumber (K);
 
+    // Set the demand input filename (for test purposes)
+    latusService.setDemandInputFilename (lDemandFilename);
+
     // Set the input filename (for test purposes)
-    latusService.setInputFilename (lFilename);
+    latusService.setScheduleInputFilename (lScheduleFilename);
 
     // Set the start date of the simulation
     latusService.setStartDate (boost::gregorian::date (2007,

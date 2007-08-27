@@ -6,13 +6,15 @@
 // //////////////////////////////////////////////////////////////////////
 // Boost (Extended STL)
 #include <boost/date_time/gregorian/gregorian.hpp>
+// LATUS Common
+#include <latus/com/basic/BasComTypes.hpp>
 
 namespace LATUS {
 
   namespace COM {
 
     /** Default booking date for BookingDay. */
-    extern const boost::gregorian::date DEFAULT_WORLD_SCHEDULE_UPDATE_DATE;
+    extern const DateTime_T DEFAULT_WORLD_SCHEDULE_UPDATE_DATE;
 
   }
 }

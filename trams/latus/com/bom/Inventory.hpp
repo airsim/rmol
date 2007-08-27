@@ -7,11 +7,18 @@
 // STL
 #include <string>
 // LATUS Common
+#include <latus/com/basic/BasComTypes.hpp>
 #include <latus/com/bom/BomAbstract.hpp>
-
+#include <latus/com/bom/InventoryKey.hpp>
+#include <latus/com/bom/FlightDateList.hpp>
 
 namespace LATUS {
 
+  // Forward declarations
+  namespace TSP {
+    class NetworkGenerator;
+  }
+  
   namespace COM {
 
     // Forward declarations
@@ -19,7 +26,8 @@ namespace LATUS {
     
     /** Class wrapping the Inventory for a specific airline/provider. */
     class Inventory : public BomAbstract {
-      friend class FacWorldSchedule;
+      friend class FacInventory;
+      friend class TSP::NetworkGenerator;
     public:
       // /////////// Getters //////////////
       /** Get the parent class. */
@@ -33,16 +41,27 @@ namespace LATUS {
       }
 
       /** Get the primary key. */
-      const std::string& getPrimaryKey() const {
-        return getDescription();
+      const InventoryKey_T& getPrimaryKey() const {
+        return getInventoryKey();
       }
 
-      /** Get the description, e.g., "BA". */
-      const std::string& getDescription() const {
-        return _description;
+      /** Get the flight-date key. */
+      const InventoryKey_T& getInventoryKey() const {
+        return _key;
       }
 
-
+      /** Get the airline code (primary key). */
+      const AirlineCode_T& getAirlineCode() const {
+        return _key.airlineCode;
+      }
+      
+      /** Retrieve, if existing, the FlightDate corresponding to the
+          given flight number and flight date (FlightDate key).
+          <br>If not existing, return the NULL pointer. */
+      FlightDate* getFlightDate (const FlightNumber_T& iFlightNumber,
+                                 const DateTime_T& iFlightDate) const;
+      
+      
       // ///////// Setters //////////
       /** Set the WorldSchedule (parent class). */
       void setWorldSchedule (WorldSchedule* ioWorldSchedulePtr) {
@@ -54,26 +73,52 @@ namespace LATUS {
       /** Get a string describing the key. */
       const std::string describeKey() const;
 
-      /** Display the full BookingDay context. */
+      /** Get a string describing the short key. */
+      const std::string describeShortKey() const;
+
+      /** Display the full Inventory context. */
       void display() const;
 
 
     private:
+      /** Get the list of (children) FlightDate objects. */
+      const FlightDateList_T& getFlightDateList () const {
+        return _flightDateList;
+      }
+
+      /** Retrieve, if existing, the FlightDate corresponding to the
+          given FlightDate key (InventoryKey + flight number).
+          <br>If not existing, return the NULL pointer.
+          <br>Note that the string must be formed thanks to the
+          FlightDateKey::describeShort() method, as that latter is used when
+          inserting the FlightDate within the Inventory dedicated list. */
+      FlightDate*
+      getFlightDateInternal (const std::string& iFlightDateKey) const;
+      
+
+    private:
       /** Constructors are private so as to force the usage of the Factory
           layer. */
-      Inventory (const std::string& iDescription); 
+      Inventory (const InventoryKey_T&); 
 
       /** Destructor. */
       virtual ~Inventory();
 
+      
     private:
       // Parent
       /** Parent class: WorldSchedule. */
       WorldSchedule* _worldSchedule;
       
+      // Primary Key
+      /** Inventory Key is composed of the airline code. */
+      InventoryKey_T _key;
+      
       // Attributes
-      /** Inventory Description, e.g., "BA". */
-      const std::string _description;
+      //
+      
+      // Children: List of FlightDate objects
+      FlightDateList_T _flightDateList;
     };
 
   }

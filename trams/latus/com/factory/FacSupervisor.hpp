@@ -14,6 +14,7 @@ namespace LATUS {
     // Forward declarations
     class FacBomAbstract;
     class FacServiceAbstract;
+    class LATUS_Service_Internal;
 
     /** Singleton class to register and clean all Factories. */
     class FacSupervisor {
@@ -30,25 +31,38 @@ namespace LATUS {
 
       /** Register a newly instantiated concrete factory for the Bom layer.
           <br>When a concrete Factory is firstly instantiated
-          this factory have to register itself to the FacSupervisor
+          this factory have to register itself to the FacSupervisor.
           @param FacAbstract& the concrete Factory to register. */
       void registerBomFactory (FacBomAbstract*);
 
       /** Register a newly instantiated concrete factory for the Service layer.
           <br>When a concrete Factory is firstly instantiated
-          this factory have to register itself to the FacSupervisor
+          this factory have to register itself to the FacSupervisor.
           @param FacServiceAbstract& the concrete Factory to register. */
       void registerServiceFactory (FacServiceAbstract*);
 
-      /** Clean all created object.
+      /** Register a newly instantiated concrete factory for the
+          LATUS_Service_Internal object. In fact, as the
+          LATUS_Service_Internal object follows the singleton pattern, the
+          concrete factory is the LATUS_Service_Internal object itself.
+          <br>When a concrete Factory is firstly instantiated
+          this factory have to register itself to the FacSupervisor.
+          @param FacServiceAbstract& the concrete Factory to
+          register. */
+      void registerLatusService (LATUS_Service_Internal*);
+
+      /** Clean all the BOM created object.
           <br>Call the clean method of all the instantiated  factories
           for the Bom layer. */
       void cleanBomLayer();
 
-      /** Clean all created object.
+      /** Clean all Service created object.
           <br>Call the clean method of all the instantiated  factories
           for the Service layer. */
       void cleanServiceLayer();
+
+      /** Delete the Latus Service object. */
+      void cleanLatusService();
 
       /** Clean the static instance.
           <br> The singleton is deleted.*/
@@ -64,14 +78,17 @@ namespace LATUS {
       /** Default Constructor.
           <br>This constructor is protected 
           to ensure the singleton pattern. */
-      FacSupervisor () {}
-      FacSupervisor (const FacSupervisor&) {}
+      FacSupervisor ();
+      FacSupervisor (const FacSupervisor&);
 
 
     private:
       /** The unique instance.*/
       static FacSupervisor* _instance;
 
+      /** LATUS_Service (singleton) instance. */
+      LATUS_Service_Internal* _latusService;
+      
       /** List of instantiated factories for the Bom layer. */
       BomFactoryPool_T _bomPool;
 

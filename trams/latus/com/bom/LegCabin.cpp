@@ -36,7 +36,9 @@ namespace LATUS {
       // Store current formatting flags of std::cout
       std::ios::fmtflags oldFlags = std::cout.flags();
 
-      std::cout << describeKey() << std::endl;
+      std::cout << describeKey()
+                << " : " << _capacity
+                << std::endl;
 
       // Reset formatting flags of std::cout
       std::cout.flags (oldFlags);
@@ -57,5 +59,17 @@ namespace LATUS {
       return resultSegmentCabin_ptr;
     }
 
+    // //////////////////////////////////////////////////////////////////////
+    const AirportCode_T& LegCabin::getBoardPoint () const {
+      assert (_legDate != NULL);
+      return _legDate->getBoardPoint();
+    }
+    
+    // //////////////////////////////////////////////////////////////////////
+    const AirportCode_T& LegCabin::getOffPoint () const {
+      assert (_legDate != NULL);
+      return _legDate->getOffPoint();
+    }
+    
   }
 }

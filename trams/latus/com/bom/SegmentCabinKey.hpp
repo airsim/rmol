@@ -8,6 +8,7 @@
 #include <string>
 // LATUS Common
 #include <latus/com/basic/BasComTypes.hpp>
+#include <latus/com/bom/KeyAbstract.hpp>
 #include <latus/com/bom/SegmentDateKey.hpp>
 
 namespace LATUS {
@@ -15,7 +16,7 @@ namespace LATUS {
   namespace COM {
 
     /** Define the key elements of a segment-cabin. */
-    struct SegmentCabinKey_T {
+    struct SegmentCabinKey_T : public KeyAbstract {
       SegmentDateKey_T segmentDateKey;
       CabinCode_T cabinCode;
 

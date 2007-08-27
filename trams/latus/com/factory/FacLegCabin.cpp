@@ -9,7 +9,6 @@
 #include <latus/com/bom/SegmentCabin.hpp>
 #include <latus/com/factory/FacSupervisor.hpp>
 #include <latus/com/factory/FacLegCabin.hpp>
-#include <latus/com/factory/FacSegmentCabin.hpp>
 #include <latus/com/service/Logger.hpp>
 
 namespace LATUS {
@@ -60,9 +59,6 @@ namespace LATUS {
                          << " and " << ioSegmentCabin.describeShortKey());
         assert (insertSucceeded == true);
       }
-
-      // Link the SegmentCabin to the LegCabin
-      FacSegmentCabin::initLinkWithLegCabin (ioSegmentCabin, ioLegCabin);
     }
 
   }

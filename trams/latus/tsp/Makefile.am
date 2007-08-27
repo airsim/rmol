@@ -5,7 +5,7 @@ include $(srcdir)/sources.mk
 
 MAINTAINERCLEANFILES = Makefile.in
 
-SUBDIRS = basic field bom factory command service
+SUBDIRS = basic bom factory command service
 
 lib_LTLIBRARIES = lib@PACKAGE@tsp.la
 if ENABLE_DEBUG

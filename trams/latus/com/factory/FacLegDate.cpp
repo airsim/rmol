@@ -10,7 +10,6 @@
 #include <latus/com/bom/SegmentDate.hpp>
 #include <latus/com/factory/FacSupervisor.hpp>
 #include <latus/com/factory/FacLegDate.hpp>
-#include <latus/com/factory/FacSegmentDate.hpp>
 #include <latus/com/service/Logger.hpp>
 
 namespace LATUS {
@@ -51,11 +50,11 @@ namespace LATUS {
 
     // //////////////////////////////////////////////////////////////////////
     void FacLegDate::initLinkWithLegCabin (LegDate& ioLegDate,
-                                             LegCabin& ioLegCabin) {
+                                           LegCabin& ioLegCabin) {
       // Link the LegDate to the LegCabin, and vice versa
       ioLegCabin.setLegDate (&ioLegDate);
       
-      // Link the LegDate to the LegCabin
+      // Add the LegCabin to the LegDate internal map (of LegCabin objects)
       const bool insertSucceeded = ioLegDate._legCabinList.
         insert (LegCabinList_T::value_type (ioLegCabin.describeShortKey(),
                                            &ioLegCabin)).second;
@@ -64,6 +63,9 @@ namespace LATUS {
                          << " and " << ioLegCabin.describeShortKey());
         assert (insertSucceeded == true);
       }
+
+      // Add the LegCabin to the LegDate internal vector (of LegCabin objects)
+      ioLegDate._legCabinOrderedList.push_back (&ioLegCabin);
     }
 
     // //////////////////////////////////////////////////////////////////////
@@ -78,9 +80,6 @@ namespace LATUS {
                          << " and " << ioSegmentDate.describeShortKey());
         assert (insertSucceeded == true);
       }
-
-      // Link the SegmentDate to the LegDate
-      FacSegmentDate::initLinkWithLegDate (ioSegmentDate, ioLegDate);
     }
 
   }

@@ -4,6 +4,8 @@
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
+// STL
+#include <string>
 // LATUS Common
 #include <latus/com/basic/BasComTypes.hpp>
 #include <latus/com/service/LATUS_ServiceAbstract.hpp>
@@ -14,26 +16,39 @@ namespace LATUS {
 
     /** Service (Interface) class for the Inventory module. */
     class LATUS_INV : public COM::LATUS_ServiceAbstract {
+      // Only FacInvService_Service may instantiate LATUS_INV
+      friend class FacInvService;
     public:
+      /** Get the instance corresponding to the given name. */
+      static LATUS_INV& instance (const std::string& iInventoryName);
 
-      /** Initialise the context (e.g., load the BOM). */
-      void initialise();
-
+    public:
       /** Calculate and return the availabilities corresponding to a given
           product.
           @return The vector of availabilities per class/bucket. */
-      void calculateAvailabilities (const COM::AirportCode_T& iOrigin,
-                                    const COM::AirportCode_T& iDestination,
-                                    const COM::DateTime_T& iDate,
-                                    COM::BucketAvailabilities_T& ioAvl) const;
+      static void calculateAvailabilities (const std::string& iModuleName,
+                                           const COM::AirportCode_T& iOrigin,
+                                           const COM::AirportCode_T& iDestination,
+                                           const COM::DateTime_T& iDate,
+                                           COM::BucketAvailabilities_T& ioAvl);
 
       /** Register the sell of a given number of bookings.
           <br>The party size may be a floating number, so as to cope with
           overbooking. */
-      bool sell (const COM::AirportCode_T& iOrigin,
-                 const COM::AirportCode_T& iDestination,
-                 const COM::DateTime_T& iDate,
-                 const COM::BookingNumber_T& iPartySize);
+      static bool sell (const std::string& iModuleName,
+                        const COM::AirportCode_T& iOrigin,
+                        const COM::AirportCode_T& iDestination,
+                        const COM::DateTime_T& iDate,
+                        const COM::BookingNumber_T& iPartySize);
+
+      
+    private:
+      /** Constructors. */
+      LATUS_INV ();
+      /** Destructor. */
+      ~LATUS_INV();
+      /** Initialiser. For example, load the BOM. */
+      void initSpecificContext ();
 
     };
   }

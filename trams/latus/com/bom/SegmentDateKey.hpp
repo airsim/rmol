@@ -8,7 +8,8 @@
 #include <string>
 // LATUS Common
 #include <latus/com/basic/BasComTypes.hpp>
-#include <latus/com/bom/FlightKey.hpp>
+#include <latus/com/bom/KeyAbstract.hpp>
+#include <latus/com/bom/FlightDateKey.hpp>
 #include <latus/com/bom/AirportPairKey.hpp>
 
 namespace LATUS {
@@ -16,14 +17,12 @@ namespace LATUS {
   namespace COM {
 
     /** Define the key elements of a segment-date. */
-    struct SegmentDateKey_T {
-      FlightKey_T flightKey;
-      DateTime_T boardDate;
+    struct SegmentDateKey_T : public KeyAbstract {
+      FlightDateKey_T flightDateKey;
       AirportPairKey_T airportPairKey;
 
       /** Constructor. */
-      SegmentDateKey_T (const FlightKey_T& iFlightKey,
-                        const DateTime_T& iBoardDate,
+      SegmentDateKey_T (const FlightDateKey_T& iFlightDateKey,
                         const AirportPairKey_T& iAirportPairKey);
 
       /** Display of the key. */
@@ -31,6 +30,9 @@ namespace LATUS {
 
       /** Display of the short key. */
       const std::string describeShort() const;
+
+      /** operator== */
+      bool operator==(const SegmentDateKey_T&) const;
     };
     
   }

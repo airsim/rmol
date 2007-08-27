@@ -8,6 +8,7 @@
 // LATUS Common
 #include <latus/com/basic/BasConst_BOOST_DateTime.hpp>
 #include <latus/com/basic/BasConst_BookingDay.hpp>
+#include <latus/com/basic/BasConst_LATUS_Service.hpp> // DEBUG
 #include <latus/com/bom/Event.hpp>
 #include <latus/com/bom/BookingDay.hpp>
 #include <latus/com/bom/CityPair.hpp>
@@ -161,18 +162,16 @@ namespace LATUS {
     // //////////////////////////////////////////////////////////////////////
     void Simulator::sampleSimulate () {
 
-      INV::LATUS_INV anInventory;
-
-      // Initialise the Inventory Bom
-      anInventory.initialise();
-
       // Calculate the availabilities for the NCE-NYC / 12-JUN-2007
       const COM::AirportCode_T lOrigin ("NCE");
       const COM::AirportCode_T lDestination ("NYC");
       const COM::DateTime_T lDepartureDate (2007, boost::gregorian::Jun, 12);
       COM::BucketAvailabilities_T lAvlList;
-      anInventory.calculateAvailabilities (lOrigin, lDestination,
-                                           lDepartureDate, lAvlList);
+
+      const std::string anInventoryModuleName (COM::DEFAULT_LATUS_INV1_MODULE_NAME);
+      INV::LATUS_INV::calculateAvailabilities (anInventoryModuleName,
+                                               lOrigin, lDestination,
+                                               lDepartureDate, lAvlList);
 
       COM::BucketAvailabilities_T::const_iterator itAvl = lAvlList.begin();
       for (short i = 0; itAvl != lAvlList.end(); itAvl++, i++) {

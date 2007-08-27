@@ -26,8 +26,8 @@ namespace LATUS {
       /** Set the number of simulation runs. */
       void setSimulationRunNumber (const int);
 
-      /** Set the input file name (for test purposes). */
-      void setInputFilename (const std::string&);
+      /** Set the demand input file name (for test purposes). */
+      void setDemandInputFilename (const std::string&);
 
       /** Set the start date of the simulation. */
       void setStartDate (const boost::gregorian::date&);
@@ -36,16 +36,13 @@ namespace LATUS {
       void setEndDate (const boost::gregorian::date&);
 
       /** Main entry point. */
-      void simulate () const;
+      static void simulate (const std::string& iModuleName);
       
     private:
       /** Constructors. */
-      LATUS_SIM (const std::string& iModuleName);
+      LATUS_SIM();
       /** Destructor. */
       ~LATUS_SIM();
-
-      /** Initialiser. */
-      void initSpecificContext ();
       
     private:
       // Attributes
