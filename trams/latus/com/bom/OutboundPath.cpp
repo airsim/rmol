@@ -123,10 +123,43 @@ namespace LATUS {
       SegmentDateLightList_T::const_iterator firstSegment =
         _segmentDateLightList.begin();
       oSegment_ptr = *firstSegment;
+      assert (oSegment_ptr != NULL);
 
       return oSegment_ptr;
     }
 
+    // //////////////////////////////////////////////////////////////////////
+    const SegmentDate* OutboundPath::getLastSegmentDate () const {
+      const SegmentDate* oSegment_ptr = NULL;
+      
+      if (_segmentDateLightList.size() == 0) {
+        return oSegment_ptr;
+      }
+
+      // Retrieve the last segment of the list
+      SegmentDateLightList_T::const_reverse_iterator lastSegment =
+        _segmentDateLightList.rbegin();
+      oSegment_ptr = *lastSegment;
+      assert (oSegment_ptr != NULL);
+
+      return oSegment_ptr;
+    }
+
+    // //////////////////////////////////////////////////////////////////////
+    bool OutboundPath::isConnectable (const OutboundPath& iOutboundPath) const {
+      // Delegate the check on the two (potentially) connecting SegmentDate
+      // objects, i.e., the last SegmentDate of the current OutboundPath,
+      // and the first SegmentDate of the given OutboundPath.
+      const SegmentDate* lOffSegment_ptr = getLastSegmentDate();
+      assert (lOffSegment_ptr != NULL);
+
+      const SegmentDate* lBoardSegment_ptr =
+        iOutboundPath.getFirstSegmentDate();
+      assert (lBoardSegment_ptr != NULL);
+      
+      return lOffSegment_ptr->isConnectable (*lBoardSegment_ptr);
+    }
+    
     // //////////////////////////////////////////////////////////////////////
     const Duration_T OutboundPath::
     calculateElapsedTimeFromRouting (const SegmentDate& iLastSegment) const {
@@ -174,6 +207,11 @@ namespace LATUS {
         const Duration_T& lStopOverTime = currentSegmentDate_ptr->getBoardTime()
           - previousSegmentDate_ptr->getOffTime();
         oElapsedTime += lStopOverTime;
+
+        // Add the elapsed time of the current outbound path
+        const Duration_T& currentElapsedTime =
+          currentSegmentDate_ptr->getElapsedTime();
+        oElapsedTime += currentElapsedTime;
       }
       
       // Store the result

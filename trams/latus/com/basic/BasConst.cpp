@@ -5,6 +5,7 @@
 #include <latus/com/basic/BasConst_GSL.hpp>
 #include <latus/com/basic/BasConst_BOOST_DateTime.hpp>
 #include <latus/com/basic/BasConst_WorldSchedule.hpp>
+#include <latus/com/basic/BasConst_TravelSolution.hpp>
 #include <latus/com/basic/BasConst_BookingDay.hpp>
 #include <latus/com/basic/BasConst_LATUS_Service.hpp>
 #include <latus/com/basic/BasConst_CityPair.hpp>
@@ -68,20 +69,21 @@ namespace LATUS {
     const Availability_T DEFAULT_CLASS_AVAILABILITY = 0.0;
     
 
+    // //////// Travel Solutions ///////
+    /** Default Minimum connection time. */
+    const Duration_T DEFAULT_MINIMUM_CONNECTION_TIME (2, 0, 0);
+
+    
     // //////// CityPair ////////
     /** Default booking date for BookingDay. */
-    const boost::gregorian::date DEFAULT_BOOKING_DATE (2007,
-                                                       boost::gregorian::Jan,
-                                                       1);
+    const DateTime_T DEFAULT_BOOKING_DATE (2007, boost::gregorian::Jan, 1);
     
     /** Default departure date for CityPairDate. */
-    const boost::gregorian::date DEFAULT_DEPARTURE_DATE (2008,
-                                                         boost::gregorian::Jan,
-                                                         1);
+    const DateTime_T DEFAULT_DEPARTURE_DATE (2008, boost::gregorian::Jan, 1);
     
     /** Date duration representing the time during which a flight-date is open
         to the reservation (in boost::date_duration unit).*/
-    const boost::gregorian::date_duration DEFAULT_FLIGHT_DATE_RESERVATION_DURATION (365);
+    const DateOffSet_T DEFAULT_FLIGHT_DATE_RESERVATION_DURATION (365);
 
     
     // ///////// LATUS Service /////////

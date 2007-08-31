@@ -119,33 +119,10 @@ namespace LATUS {
       }
       assert (lNetworkDate_ptr != NULL);
 
-      /* DEPRECATED
-      // Create also a NetworkDate and an AirportDate corresponding to the
-      // off point.
-      const COM::DateTime_T& lOffDate = iSegmentDate.getOffDate();
-      COM::NetworkDate* lOffNetworkDate_ptr =
-        ioNetwork.getNetworkDate (lOffDate);
-      if (lOffNetworkDate_ptr == NULL) {
-        // Create the NetworkDate with the primary key (reference date)
-        const COM::NetworkDateKey_T lOffNetworkDateKey (lOffDate);
-        lOffNetworkDate_ptr = 
-          &COM::FacNetworkDate::instance().create (lOffNetworkDateKey);
-        assert (lOffNetworkDate_ptr != NULL);
-
-        // Link the NetworkDate with the Network
-        COM::FacNetwork::initLinkWithNetworkDate (ioNetwork,
-                                                  *lOffNetworkDate_ptr);
-      }
-      */
-
-      // TODO: Review the comment
       // Go down recursively in the Network-BOM depth for the origin
       // (board point of the SegmentDate), but not for the destination (off
       // point of the SegmentDate), as the Network is made of origin nodes
-      // and outbound pathes. However, the recursion will create the
-      // AirportDate corresponding to the (SegmentDate) destination, and
-      // the (destination) NetworkDate needs therefore to be created before
-      // going down recursively.
+      // and outbound pathes.
       createSinglePaths (*lNetworkDate_ptr, iSegmentDate);
     }
     
@@ -176,37 +153,6 @@ namespace LATUS {
       }
       assert (lAirportDate_ptr != NULL);
 
-      /* DEPRECATED
-      // Create also a NetworkDate and an AirportDate corresponding to the
-      // off point.
-      const COM::DateTime_T& lOffDate = iSegmentDate.getOffDate();
-      const COM::AirportCode_T& lOffPoint = iSegmentDate.getOffPoint();
-      COM::AirportDate* lOffAirportDate_ptr =
-        ioNetworkDate.getAirportDate (lOffPoint, lOffDate);
-      if (lOffAirportDate_ptr == NULL) {
-        // Create the AirportDate with the primary key (NetworkDateKey
-        // + destination)
-        const COM::NetworkDateKey_T lOffNetworkDateKey (lOffDate);
-        const COM::AirportDateKey_T lOffAirportDateKey (lOffNetworkDateKey,
-                                                        lOffPoint);
-        lOffAirportDate_ptr = 
-          &COM::FacAirportDate::instance().create (lOffAirportDateKey);
-        assert (lOffAirportDate_ptr != NULL);
-
-        // Get the NetworkDate corresponding to the (SegmentDate) destination.
-        // By construction, it is not NULL, as it has been built up-stream
-        // (i.e., just before recursively calling this method).
-        COM::NetworkDate* lOffNetworkDate_ptr =
-          ioNetworkDate.getNetworkDate (lOffDate);
-        assert (lOffNetworkDate_ptr != NULL);
-        
-        // Link the AirportDate with the NetworkDate
-        COM::FacNetworkDate::initLinkWithAirportDate (*lOffNetworkDate_ptr,
-                                                      *lOffAirportDate_ptr);
-      }
-      */
-      
-      // TODO: Review the comment
       // Go down recursively in the Network-BOM depth for the origin
       // (board point of the SegmentDate), but not for the destination (off
       // point of the SegmentDate), as the Network is made of origin nodes
@@ -388,6 +334,16 @@ namespace LATUS {
             *itDestinationOutboundList;
           assert (lOutboundPath_1_ptr != NULL);
 
+          // Check that a passenger can connect (i.e., be able to do the
+          // transfer from one plane to another). If the transfer/connection
+          // is not feasible, then the current single-segment outbound-path
+          // must not be added. And there is nothing more to do at that stage.
+          const bool isConnectable =
+            lOutboundPath_im1_ptr->isConnectable (*lOutboundPath_1_ptr);
+          if (isConnectable == false) {
+            continue;
+          }
+          
           // Get the off point of the single-segment OutboundPath
           // attached to the intermediate destination (im1). That off point is
           // at a length i of the initial AirportDate: (i-1) + 1.

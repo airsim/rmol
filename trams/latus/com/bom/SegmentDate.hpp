@@ -94,6 +94,13 @@ namespace LATUS {
                         - ElapsedTime. */
       const Duration_T getTimeOffSet() const;
 
+      /** States whether or not the given SegmentDate may connect with the
+          current one.
+          <br>Basically, the board time of the given SegmentDate should be
+          such as to allow the passenger connecting from the previous flight
+          (current SegmentDate object) to the next one (given SegmentDate). */
+      bool isConnectable (const SegmentDate&) const;
+      
 
       // ///////// Setters //////////
       /** Set the FlightDate (parent class). */
@@ -137,7 +144,7 @@ namespace LATUS {
       /** Display the full BookingDay context. */
       void display() const;
 
-      
+
     private:
       /** Constructors are private so as to force the usage of the Factory
           layer. */
@@ -162,6 +169,8 @@ namespace LATUS {
         return _legDateList;
       }
 
+      
+      // ////////// Business Methods /////////
       /** Fill the attributes derived from the routing legs (e.g., board
           and off dates). */
       void fillFromRouting();

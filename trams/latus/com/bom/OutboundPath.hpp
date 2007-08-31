@@ -82,6 +82,15 @@ namespace LATUS {
           the segments of the internal list. */
       bool isAirlineFlown (const AirlineCode_T&) const;
 
+      /** States whether or not the given OutboundPath may connect with the
+          current one.
+          <br>Basically, the board time of the given OutboundPath should be
+          such as to allow the passenger connecting from the previous flight
+          (current OutboundPath object) to the next one (given OutboundPath).
+          <br>Note that this method relies on the eponym method of the
+          SegmentDate class. */
+      bool isConnectable (const OutboundPath&) const;
+      
       
       // ///////// Setters //////////
       /** Set the AirportDate (parent class). */
@@ -120,6 +129,12 @@ namespace LATUS {
           <br>Return a NULL pointer if the list is empty. */
       const SegmentDate* getFirstSegmentDate () const;
       
+      /** Get the last SegmentDate (constant) object of the list.
+          <br>Return a NULL pointer if the list is empty. */
+      const SegmentDate* getLastSegmentDate () const;
+      
+
+      // ////////// Business Methods /////////
       /** Calculate the elapsed time according to the segment routing.
           <br>Note that the given segment-date should come at the end of the
           outbound-path. An assertion will fail if the given board point and

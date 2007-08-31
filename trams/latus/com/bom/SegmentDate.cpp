@@ -3,7 +3,8 @@
 // //////////////////////////////////////////////////////////////////////
 // C
 #include <assert.h>
-// LATUS COM
+// LATUS Common
+#include <latus/com/basic/BasConst_TravelSolution.hpp>
 #include <latus/com/bom/FlightDate.hpp>
 #include <latus/com/bom/SegmentDate.hpp>
 #include <latus/com/bom/SegmentCabin.hpp>
@@ -134,10 +135,35 @@ namespace LATUS {
         const Duration_T& lStopOverTime = currentLegDate_ptr->getBoardTime()
           - previousLegDate_ptr->getOffTime();
         oElapsedTime += lStopOverTime;
+
+        // Add the elapsed time of the current segment
+        const Duration_T& currentElapsedTime =
+          currentLegDate_ptr->getElapsedTime();
+        oElapsedTime += currentElapsedTime;
       }
       
       // Store the result
       setElapsedTime (oElapsedTime);
+    }
+
+    // //////////////////////////////////////////////////////////////////////
+    bool SegmentDate::isConnectable (const SegmentDate& iSegmentDate) const {
+      bool oIsConnectable = false;
+
+      const DateTime_T& lOffDate = getOffDate();
+      const DateTime_T& lBoardDate = iSegmentDate.getBoardDate();
+      const DateOffSet_T lDateOffSet = lBoardDate - lOffDate;
+      const Duration_T lDateOffSetInHours (lDateOffSet.days() * 24, 0, 0);
+
+      const Duration_T& lOffTime = getOffTime();
+      const Duration_T& lBoardTime = iSegmentDate.getBoardTime();
+
+      const Duration_T lStopOverTime =
+        lBoardTime - lOffTime + lDateOffSetInHours;
+
+      oIsConnectable = (lStopOverTime >= DEFAULT_MINIMUM_CONNECTION_TIME);
+      
+      return oIsConnectable;
     }
     
     // //////////////////////////////////////////////////////////////////////
