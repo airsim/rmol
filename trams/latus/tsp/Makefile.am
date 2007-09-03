@@ -13,7 +13,6 @@ if ENABLE_DEBUG
 endif
 lib@PACKAGE@tsp_la_SOURCES = $(tspservice_h_sources) $(tspservice_cc_sources)
 lib@PACKAGE@tsp_la_LIBADD = $(top_builddir)/@PACKAGE@/tsp/basic/libtspbas.la \
-			$(top_builddir)/@PACKAGE@/tsp/field/libtspfld.la \
 			$(top_builddir)/@PACKAGE@/tsp/bom/libtspbom.la \
 			$(top_builddir)/@PACKAGE@/tsp/factory/libtspfac.la \
 			$(top_builddir)/@PACKAGE@/tsp/command/libtspcmd.la \
