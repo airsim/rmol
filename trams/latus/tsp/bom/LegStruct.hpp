@@ -26,14 +26,19 @@ namespace LATUS {
     struct LegStruct_T : public COM::StructAbstract {
       // Attributes
       COM::AirportCode_T _boardPoint;
+      COM::DateOffSet_T _boardDateOffSet;
       COM::Duration_T _boardTime;
       COM::AirportCode_T _offPoint;
-      COM::DateOffSet_T _dateOffSet;
+      COM::DateOffSet_T _offDateOffSet;
       COM::Duration_T _offTime;
       COM::Duration_T _elapsed;
       LegCabinStructList_T _cabinList;
 
-      /** Fill the LegDate objects with the attributes of the LegStruct. */
+      /** Fill the LegDate objects with the attributes of the LegStruct.
+          <br>The given reference date corresponds to the date of the
+          FlightDate. Indeed, each Leg gets date off-sets, when compared
+          to that (reference) flight-date, both for the board date
+          and for the off date. */
       void fill (const COM::DateTime_T& iRefDate, COM::LegDate&) const;
       
       /** Give a description of the structure (for display purposes). */

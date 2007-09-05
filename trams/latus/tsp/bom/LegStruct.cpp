@@ -16,15 +16,23 @@ namespace LATUS {
   namespace TSP {
 
     // //////////////////////////////////////////////////////////////////////
-    LegStruct_T::LegStruct_T () : _dateOffSet (COM::DEFAULT_DATE_OFFSET) {
+    LegStruct_T::LegStruct_T ()
+      : _boardDateOffSet (COM::DEFAULT_DATE_OFFSET),
+        _offDateOffSet (COM::DEFAULT_DATE_OFFSET) {
     }
     
     // //////////////////////////////////////////////////////////////////////
     const std::string LegStruct_T::describe() const {
       std::ostringstream ostr;
-      ostr << "    " << _boardPoint << " / " << _boardTime
-           << " -- " << _offPoint << " / " << _offTime
-           << " --> " << _elapsed
+      ostr << "    " << _boardPoint << " / " << _boardTime;
+      if (_boardDateOffSet.days() != 0) {
+        ostr << " [" << _boardDateOffSet.days() << "]";
+      }
+      ostr << " -- " << _offPoint << " / " << _offTime;
+      if (_offDateOffSet.days() != 0) {
+        ostr << " [" << _offDateOffSet.days() << "]";
+      }
+      ostr << " --> " << _elapsed
            << std::endl;
       for (LegCabinStructList_T::const_iterator itCabin = _cabinList.begin();
            itCabin != _cabinList.end(); itCabin++) {
@@ -43,14 +51,15 @@ namespace LATUS {
       ioLegDate.setOffPoint (_offPoint);
 
       // Set the Board Date
-      ioLegDate.setBoardDate (iRefDate);
+      const boost::gregorian::date_duration lBoardDateOffSet (_boardDateOffSet);
+      ioLegDate.setBoardDate (iRefDate+ lBoardDateOffSet);
 
       // Set the Board Time
       ioLegDate.setBoardTime (_boardTime);
       
       // Set the Off Date
-      const boost::gregorian::date_duration lDateOffSet (_dateOffSet);
-      ioLegDate.setOffDate (iRefDate + lDateOffSet);
+      const boost::gregorian::date_duration lOffDateOffSet (_offDateOffSet);
+      ioLegDate.setOffDate (iRefDate + lOffDateOffSet);
 
       // Set the Off Time
       ioLegDate.setOffTime (_offTime);

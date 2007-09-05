@@ -78,6 +78,7 @@ namespace LATUS {
       unsigned int _itYear;
       unsigned int _itMonth;
       unsigned int _itDay;
+      int _dateOffSet;
       
       /** Staging Time. */
       unsigned int _itHours;

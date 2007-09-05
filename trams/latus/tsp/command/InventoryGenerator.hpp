@@ -53,7 +53,7 @@ namespace LATUS {
       
       /** Generate a LegDate. */
       static COM::LegDate& createLegDate (COM::FlightDate&,
-                                          const COM::DateTime_T& iLegBoardDate,
+                                          const COM::DateTime_T& iReferenceDate,
                                           const LegStruct_T& iLeg);
 
       /** Generate a LegCabin. */

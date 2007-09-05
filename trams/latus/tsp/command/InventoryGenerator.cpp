@@ -128,7 +128,6 @@ namespace LATUS {
       COM::FacInventory::initLinkWithFlightDate (ioInventory, *lFlightDate_ptr);
 
       // Iterate on the Leg-Dates
-      COM::DateTime_T currentBoardDate = iFlightDate;
       COM::Duration_T currentOffTime (0, 0, 0);
       COM::AirportCode_T previousOffPoint;
       const LegStructList_T& lLegList = iFlightPeriod._legList;
@@ -138,23 +137,15 @@ namespace LATUS {
 
         // Create the Leg-branch of the FlightDate BOM
         COM::LegDate& lLegDate =
-          createLegDate (*lFlightDate_ptr, currentBoardDate, lLeg);
+          createLegDate (*lFlightDate_ptr, iFlightDate, lLeg);
 
-        // TODO: Check (in a better way than with the following simple
-        // assertion) that the assumption of getting a date off-set
-        // only for the off date is valid.
-        assert (lLeg._boardTime > currentOffTime);
-        currentOffTime = lLegDate.getOffTime();
-
-        // The Board Date of the next leg is set to be the Off Date of the
-        // current leg. It assumes that the board date of the next leg does
-        // not add a supplementary off-set. In that latter case, it would mean
-        // that the World Schedule input file should be altered to get a date
-        // off-set for each given date (board and off dates).
-        currentBoardDate = lLegDate.getOffDate();
+        // TODO: Check that the board date/time of the next leg is greated
+        // than the off date/time of the current leg. Throw an exception
+        // otherwise.
 
         // TODO: specify, in the schedule input file specifications, that the
         // legs should be given in their natural order.
+        // Then, replace the assertion by a thrown exception.
         //
         // Check that the legs are given in their natural order. If the schedule
         // input does not respect that assumption, the following assertion will
@@ -182,7 +173,7 @@ namespace LATUS {
     // //////////////////////////////////////////////////////////////////////
     COM::LegDate& InventoryGenerator::
     createLegDate (COM::FlightDate& ioFlightDate,
-                   const COM::DateTime_T& iLegBoardDate,
+                   const COM::DateTime_T& iReferenceDate,
                    const LegStruct_T& iLeg) {
       // Set the Leg-Date primary key
       const COM::FlightDateKey_T& lFlightDateKey = ioFlightDate.getPrimaryKey();
@@ -197,7 +188,7 @@ namespace LATUS {
       COM::FacFlightDate::initLinkWithLegDate (ioFlightDate, lLegDate);
 
       // Set the Leg-Date attributes
-      iLeg.fill (iLegBoardDate, lLegDate);
+      iLeg.fill (iReferenceDate, lLegDate);
       
       // Iterate on the Cabins
       const LegCabinStructList_T& lCabinList = iLeg._cabinList;

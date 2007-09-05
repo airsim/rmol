@@ -122,14 +122,6 @@ namespace LATUS {
         void operator() (iterator_t iStr, iterator_t iStrEnd) const;
       };
 
-      /** Store the date off-set. */
-      struct storeDateOffSet : public ParserSemanticAction {
-        /** Actor Constructor. */
-        storeDateOffSet (FlightPeriodStruct_T&);
-        /** Actor Function (functor). */
-        void operator() (int iDateOffSet) const;
-      };
-
       /** Store the off time. */
       struct storeOffTime : public ParserSemanticAction {
         /** Actor Constructor. */
@@ -244,7 +236,8 @@ namespace LATUS {
          FlightKey           ::= AirlineCode ';' FlightNumber
                                  ';' DateRangeStart ';' DateRangeEnd ';' DOW
          LegKey              ::= BoardPoint ';' OffPoint
-         LegDetails          ::= BoardTime ';' DateOffSet ';' OffTime
+         LegDetails          ::= BoardTime ['/' BoardDateOffSet]
+                                 ';' OffTime ['/' BoardDateOffSet]
                                  ';' Elapsed
          LegCabinDetails     ::= CabinCode ';' Capacity
          Leg                 ::= LegKey ';' LegDetails (';' CabinDetails)+
@@ -273,8 +266,8 @@ namespace LATUS {
           // Instantiation of rules
           boost::spirit::rule<ScannerT> flight_period_list, flight_period,
             flight_period_end, flight_key, airline_code, flight_number,
-            date, dow, leg, leg_key, leg_details, time, leg_cabin_details,
-            segment, segment_key, full_segment_cabin_details,
+            date, dow, leg, leg_key, leg_details, time, date_offset,
+            leg_cabin_details, segment, segment_key, full_segment_cabin_details,
             segment_cabin_details, general_segments, specific_segments;
 
           /** Entry point of the parser. */

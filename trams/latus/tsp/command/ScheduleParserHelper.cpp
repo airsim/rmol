@@ -180,18 +180,23 @@ namespace LATUS {
         
         // Reset the number of seconds
         _flightPeriod._itSeconds = 0;
+
+        // Reset the date off-set
+        _flightPeriod._dateOffSet = 0;
       }
 
       // //////////////////////////////////////////////////////////////////////
-      storeDateOffSet::
-      storeDateOffSet (FlightPeriodStruct_T& ioFlightPeriod)
-        : ParserSemanticAction (ioFlightPeriod) {
-      }
-      
-      // //////////////////////////////////////////////////////////////////////
-      void storeDateOffSet::operator() (int iDateOffSet) const {
-        const COM::DateOffSet_T lDateOffSet (iDateOffSet);
-        _flightPeriod._itLeg._dateOffSet = lDateOffSet;
+      void storeOffTime::operator() (iterator_t iStr,
+                                     iterator_t iStrEnd) const {
+        _flightPeriod._itLeg._offTime = _flightPeriod.getTime();
+        
+        // Reset the number of seconds
+        _flightPeriod._itSeconds = 0;
+
+        // As the board date off set is optional, it can be set only afterwards,
+        // based on the staging date off-set value (_flightPeriod._dateOffSet).
+        const COM::DateOffSet_T lDateOffSet (_flightPeriod._dateOffSet);
+        _flightPeriod._itLeg._boardDateOffSet = lDateOffSet;
       }
 
       // //////////////////////////////////////////////////////////////////////
@@ -200,15 +205,6 @@ namespace LATUS {
         : ParserSemanticAction (ioFlightPeriod) {
       }
     
-      // //////////////////////////////////////////////////////////////////////
-      void storeOffTime::operator() (iterator_t iStr,
-                                     iterator_t iStrEnd) const {
-        _flightPeriod._itLeg._offTime = _flightPeriod.getTime();
-        
-        // Reset the number of seconds
-        _flightPeriod._itSeconds = 0;
-      }
-
       // //////////////////////////////////////////////////////////////////////
       storeElapsedTime::
       storeElapsedTime (FlightPeriodStruct_T& ioFlightPeriod)
@@ -222,6 +218,11 @@ namespace LATUS {
         
         // Reset the number of seconds
         _flightPeriod._itSeconds = 0;
+
+        // As the board date off set is optional, it can be set only afterwards,
+        // based on the staging date off-set value (_flightPeriod._dateOffSet).
+        const COM::DateOffSet_T lDateOffSet (_flightPeriod._dateOffSet);
+        _flightPeriod._itLeg._offDateOffSet = lDateOffSet;
       }
 
       // //////////////////////////////////////////////////////////////////////
@@ -537,12 +538,12 @@ namespace LATUS {
 	 
         leg_details =
           time[storeBoardTime(self._flightPeriod)]
-          >> ';'
-          >> (int1_p)[storeDateOffSet(self._flightPeriod)]
-          >> ';'
-          >> time[storeOffTime(self._flightPeriod)]
-          >> ';'
-          >> time[storeElapsedTime(self._flightPeriod)]
+            >> !(date_offset)
+            >> ';'
+            >> time[storeOffTime(self._flightPeriod)]
+            >> !(date_offset)
+            >> ';'
+            >> time[storeElapsedTime(self._flightPeriod)]
           ;
         
         time =
@@ -551,8 +552,13 @@ namespace LATUS {
            >> ':'
            >> (minutes_p)[boost::spirit::assign_a(self._flightPeriod._itMinutes)]
            >> !(':' >> (seconds_p)[boost::spirit::assign_a(self._flightPeriod._itSeconds)])
-                                  ]
+          ]
           ;
+
+        date_offset =
+          boost::spirit::ch_p('/')
+          >> (int1_p)[boost::spirit::assign_a(self._flightPeriod._dateOffSet)]
+          ;          
         
         leg_cabin_details =
           (cabin_code_p)[storeLegCabinCode(self._flightPeriod)]
@@ -601,6 +607,7 @@ namespace LATUS {
         BOOST_SPIRIT_DEBUG_NODE (leg_key);
         BOOST_SPIRIT_DEBUG_NODE (leg_details);
         BOOST_SPIRIT_DEBUG_NODE (time);
+        BOOST_SPIRIT_DEBUG_NODE (date_offset);
         BOOST_SPIRIT_DEBUG_NODE (leg_cabin_details);
         BOOST_SPIRIT_DEBUG_NODE (segment);
         BOOST_SPIRIT_DEBUG_NODE (segment_key);
