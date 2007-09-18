@@ -106,9 +106,15 @@ namespace LATUS {
     /** Default name for the first Inventory (INV) module. */
     const std::string DEFAULT_LATUS_INV1_MODULE_NAME ("BA");
 
+    /** Default name for the first Inventory (INV) airline owner. */
+    const std::string DEFAULT_LATUS_INV1_AIRLINE_CODE ("BA");
+
     /** Default name for the second Inventory (INV) module. */
     const std::string DEFAULT_LATUS_INV2_MODULE_NAME ("AA");
 
+    /** Default name for the second Inventory (INV) airline owner. */
+    const std::string DEFAULT_LATUS_INV2_AIRLINE_CODE ("AA");
+    
     /** Maximum number of legs linked to a single flight-date.
         <br>Note that the number of derived segments is n*(n+1)/2 if n
         is the number of legs. */

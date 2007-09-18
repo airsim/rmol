@@ -2,8 +2,6 @@
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // LATUS Common
-#include <latus/com/basic/ModuleDescription.hpp>
-#include <latus/com/service/ServiceContext.hpp>
 #include <latus/com/service/Logger.hpp>
 // LATUS CRS
 #include <latus/crs/command/Distributor.hpp>
@@ -29,16 +27,10 @@ namespace LATUS {
                            const COM::DateTime_T& iDate,
                            COM::TravelSolutionKeyList_T& ioTSL) {
 
-      // Retrieve the service context specific to the CRS module
-      const COM::ModuleDescription lCrsModule (COM::ModuleDescription::SIM,
-                                               iModuleName);
-      const COM::ServiceContext& lServiceContext =
-        getServiceContext (lCrsModule);
-
-      // Get the parameters stored within the Service Context (passed through
-      // by the caller)
+      // Retrieve the schedule input filename from the CRS specific
+      // service context
       const std::string& lInputFilename =
-        lServiceContext.getDemandInputFilename();
+        getScheduleInputFilename (iModuleName);
 
       std::cout << "Distribution service always up!" << std::endl;
 
@@ -63,13 +55,6 @@ namespace LATUS {
     bool LATUS_CRS::sell (const std::string& iModuleName,
                           const COM::TravelSolutionKeyList_T& iTS,
                           const COM::BookingNumber_T& iPartySize) {
-
-      // Retrieve the service context specific to the CRS module
-      const COM::ModuleDescription lCrsModule (COM::ModuleDescription::SIM,
-                                               iModuleName);
-      const COM::ServiceContext& lServiceContext =
-        getServiceContext (lCrsModule);
-
       return true;
     }
     

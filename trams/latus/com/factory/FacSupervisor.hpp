@@ -14,7 +14,7 @@ namespace LATUS {
     // Forward declarations
     class FacBomAbstract;
     class FacServiceAbstract;
-    class LATUS_Service_Internal;
+    class ServiceContextManager;
 
     /** Singleton class to register and clean all Factories. */
     class FacSupervisor {
@@ -42,14 +42,14 @@ namespace LATUS {
       void registerServiceFactory (FacServiceAbstract*);
 
       /** Register a newly instantiated concrete factory for the
-          LATUS_Service_Internal object. In fact, as the
-          LATUS_Service_Internal object follows the singleton pattern, the
-          concrete factory is the LATUS_Service_Internal object itself.
+          ServiceContextManager object. In fact, as the
+          ServiceContextManager object follows the singleton pattern, the
+          concrete factory is the ServiceContextManager object itself.
           <br>When a concrete Factory is firstly instantiated
           this factory have to register itself to the FacSupervisor.
           @param FacServiceAbstract& the concrete Factory to
           register. */
-      void registerLatusService (LATUS_Service_Internal*);
+      void registerServiceContextManager (ServiceContextManager*);
 
       /** Clean all the BOM created object.
           <br>Call the clean method of all the instantiated  factories
@@ -61,8 +61,8 @@ namespace LATUS {
           for the Service layer. */
       void cleanServiceLayer();
 
-      /** Delete the Latus Service object. */
-      void cleanLatusService();
+      /** Delete the ServiceContextManager object. */
+      void cleanServiceContextManager();
 
       /** Clean the static instance.
           <br> The singleton is deleted.*/
@@ -86,8 +86,8 @@ namespace LATUS {
       /** The unique instance.*/
       static FacSupervisor* _instance;
 
-      /** LATUS_Service (singleton) instance. */
-      LATUS_Service_Internal* _latusService;
+      /** ServiceContextManager (singleton) instance. */
+      ServiceContextManager* _serviceContextManager;
       
       /** List of instantiated factories for the Bom layer. */
       BomFactoryPool_T _bomPool;

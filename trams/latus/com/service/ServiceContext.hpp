@@ -25,14 +25,12 @@ namespace LATUS {
 
     /** Inner class holding the context for the LATUS Service object. */
     class ServiceContext : public ServiceAbstract {
-      // The LATUS_Service_Internal class should be the sole class to
-      // get access to ServiceContext content: general users do not
+      // The ServiceContextManager class should be the sole class to
+      // get access to the ServiceContext content: general users do not
       // want to bother with a context interface.
-      friend class LATUS_Service_Internal;
-      friend class LATUS_ServiceAbstract;
       friend class ServiceContextManager;
       friend class FacServiceContext;
-    public:
+    private:
       // //////// GETTERS /////////
       /** Get the demand input filename. */
       const std::string& getDemandInputFilename () const {
@@ -97,7 +95,7 @@ namespace LATUS {
       }
 
 
-    public:
+    private:
       // //////// Getters for the internal BOM /////////
       /** Get the WorldSchedule object reference. */
       WorldSchedule& getWorldSchedule () const;

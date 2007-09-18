@@ -2,11 +2,8 @@
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // LATUS Common
-#include <latus/com/basic/ModuleDescription.hpp>
 #include <latus/com/bom/WorldSchedule.hpp>
 #include <latus/com/bom/Network.hpp>
-#include <latus/com/service/ServiceContext.hpp>
-#include <latus/com/service/LATUS_Service_Internal.hpp>
 #include <latus/com/service/Logger.hpp>
 // LATUS TSP
 #include <latus/tsp/command/ScheduleParser.hpp>
@@ -27,20 +24,17 @@ namespace LATUS {
 
     // //////////////////////////////////////////////////////////////////////
     void LATUS_TSP::generateInventories (const std::string& iModuleName) {
-      // Retrieve the schedule input file name.
-      const COM::ModuleDescription lTspModule (COM::ModuleDescription::TSP,
-                                               iModuleName);
-      COM::ServiceContext& lServiceContext = getServiceContext (lTspModule);
-
+      // Retrieve the schedule input filename from the TSP specific
+      // service context
       const std::string& lScheduleInputFilename =
-        lServiceContext.getScheduleInputFilename ();
+        getScheduleInputFilename (iModuleName);
 
       // Parse the schedule input file, and generate the Inventories
       COM::WorldSchedule& lWorldSchedule =
         ScheduleParser::generateInventories (lScheduleInputFilename);
 
       // Store the WorldSchedule within the TSP specific service context
-      lServiceContext.setWorldSchedule (lWorldSchedule);
+      setWorldSchedule (lWorldSchedule, iModuleName);
 
       // DEBUG
       LATUS_LOG_DEBUG ("Generated WorldSchedule:");
@@ -50,12 +44,11 @@ namespace LATUS {
       COM::Network& lNetwork = NetworkGenerator::createNetwork (lWorldSchedule);
 
       // Store the Network within the TSP specific service context
-      lServiceContext.setNetwork (lNetwork);
+      setNetwork (lNetwork, iModuleName);
 
       // DEBUG
       LATUS_LOG_DEBUG ("Generated Network:");
       lNetwork.display();
-      
     }
     
     // //////////////////////////////////////////////////////////////////////

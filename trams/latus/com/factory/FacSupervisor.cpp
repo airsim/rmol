@@ -7,8 +7,7 @@
 #include <latus/com/factory/FacBomAbstract.hpp>
 #include <latus/com/factory/FacServiceAbstract.hpp>
 #include <latus/com/factory/FacSupervisor.hpp>
-// LATUS General
-#include <latus/com/service/LATUS_Service_Internal.hpp>
+#include <latus/com/service/ServiceContextManager.hpp>
 
 namespace LATUS {
 
@@ -17,7 +16,7 @@ namespace LATUS {
     FacSupervisor* FacSupervisor::_instance = NULL;
 
     // //////////////////////////////////////////////////////////////////////
-    FacSupervisor::FacSupervisor () : _latusService (NULL) {
+    FacSupervisor::FacSupervisor () : _serviceContextManager (NULL) {
     }
     
     // //////////////////////////////////////////////////////////////////////
@@ -43,8 +42,8 @@ namespace LATUS {
 
     // //////////////////////////////////////////////////////////////////////
     void FacSupervisor::
-    registerLatusService (LATUS_Service_Internal* ioLatusService_ptr) {
-      _latusService = ioLatusService_ptr;
+    registerServiceContextManager (ServiceContextManager* ioServiceCtxMgr_ptr) {
+      _serviceContextManager = ioServiceCtxMgr_ptr;
     }
 
     // //////////////////////////////////////////////////////////////////////
@@ -82,8 +81,8 @@ namespace LATUS {
     }
 
     // //////////////////////////////////////////////////////////////////////
-    void FacSupervisor::cleanLatusService() {
-      delete (_latusService); _latusService = NULL;
+    void FacSupervisor::cleanServiceContextManager() {
+      delete (_serviceContextManager); _serviceContextManager = NULL;
     }
 
     // //////////////////////////////////////////////////////////////////////
@@ -91,7 +90,7 @@ namespace LATUS {
       if (_instance != NULL) {
 		_instance->cleanBomLayer();
 		_instance->cleanServiceLayer();
-		_instance->cleanLatusService();
+		_instance->cleanServiceContextManager();
       }
       delete (_instance); _instance = NULL;
     }

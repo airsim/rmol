@@ -2,8 +2,6 @@
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // LATUS Common
-#include <latus/com/basic/ModuleDescription.hpp>
-#include <latus/com/service/ServiceContext.hpp>
 #include <latus/com/service/Logger.hpp>
 // LATUS Inventory
 #include <latus/sim/command/Simulator.hpp>
@@ -24,19 +22,13 @@ namespace LATUS {
     // //////////////////////////////////////////////////////////////////////
     void LATUS_SIM::simulate (const std::string& iModuleName) {
 
-      // Retrieve the service context specific to the SIM module
-      const COM::ModuleDescription lSimModule (COM::ModuleDescription::SIM,
-                                               iModuleName);
-      const COM::ServiceContext& lServiceContext =
-        getServiceContext (lSimModule);
-
       // Get the parameters stored within the Service Context (passed through
       // by the caller)
-      const int lSimulationRunNumber = lServiceContext.getSimulationRunNumber();
+      const int lSimulationRunNumber = getSimulationRunNumber (iModuleName);
       const std::string& lDemandInputFilename =
-        lServiceContext.getDemandInputFilename();
-      const COM::DateTime_T& lStartDate = lServiceContext.getStartDate();
-      const COM::DateTime_T& lEndDate = lServiceContext.getEndDate();
+        getDemandInputFilename (iModuleName);
+      const COM::DateTime_T& lStartDate = getStartDate (iModuleName);
+      const COM::DateTime_T& lEndDate = getEndDate (iModuleName);
 
       // Perform K simulations    
       for (unsigned int i=1; i != lSimulationRunNumber; i++) {
