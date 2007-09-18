@@ -5,8 +5,8 @@ include $(srcdir)/sources.mk
 
 MAINTAINERCLEANFILES = Makefile.in
 
-#SUBDIRS = com deg ucm avs crs tsp inv rms sim service
-SUBDIRS = com deg crs tsp inv sim
+#SUBDIRS = com deg ucm rms inv avs tsp crs sim service
+SUBDIRS = com deg inv tsp crs sim
 
 EXTRA_DIST = config_msvc.h
 
