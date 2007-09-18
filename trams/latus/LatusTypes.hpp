@@ -33,6 +33,9 @@ namespace LATUS {
   class ObjectNotFoundException : public RootException {
   };
 
+  class InventoryNotFoundException : public RootException {
+  };
+
   class FlightDateNotFoundException : public RootException {
   };
 

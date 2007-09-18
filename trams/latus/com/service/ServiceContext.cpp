@@ -13,7 +13,7 @@ namespace LATUS {
     // //////////////////////////////////////////////////////////////////////
     ServiceContext::
     ServiceContext (const ModuleDescription& iModuleDescription) :
-      _worldSchedule (NULL), _network (NULL),
+      _worldSchedule (NULL), _network (NULL), _inventory (NULL),
       _moduleDescription (iModuleDescription.getType(),
                           iModuleDescription.getName()) {
       init ();
@@ -53,6 +53,12 @@ namespace LATUS {
     Network& ServiceContext::getNetwork () const {
       assert (_network != NULL);
       return *_network;
+    }
+
+    // //////////////////////////////////////////////////////////////////////
+    Inventory& ServiceContext::getInventory () const {
+      assert (_inventory != NULL);
+      return *_inventory;
     }
   }
 }

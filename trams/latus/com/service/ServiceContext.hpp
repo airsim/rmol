@@ -22,6 +22,7 @@ namespace LATUS {
     // Forward declarations
     class WorldSchedule;
     class Network;
+    class Inventory;
 
     /** Inner class holding the context for the LATUS Service object. */
     class ServiceContext : public ServiceAbstract {
@@ -103,6 +104,10 @@ namespace LATUS {
       /** Get the Network object reference. */
       Network& getNetwork () const;
       
+      /** Get the Inventory object reference. */
+      Inventory& getInventory () const;
+      
+
       // //////// Setters for the internal BOM ///////
       /** Set the WorldSchedule object reference. */
       void setWorldSchedule (WorldSchedule& ioWorldSchedule) {
@@ -112,6 +117,11 @@ namespace LATUS {
       /** Set the Network object reference. */
       void setNetwork (Network& ioNetwork) {
         _network = &ioNetwork;
+      }
+      
+      /** Set the Inventory object reference. */
+      void setInventory (Inventory& ioInventory) {
+        _inventory = &ioInventory;
       }
       
 
@@ -168,6 +178,9 @@ namespace LATUS {
 
       /** (TSP ServiceContext) Network. */
       Network* _network;
+
+      /** (INV ServiceContext) Inventory. */
+      Inventory* _inventory;
     };
 
   }

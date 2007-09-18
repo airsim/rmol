@@ -20,143 +20,145 @@ namespace LATUS {
     }
 
     // //////////////////////////////////////////////////////////////////////
-    const int LATUS_ServiceAbstract::
-    getSimulationRunNumber (const std::string& iModuleName) {
-      return ServiceContextManager::instance().
-        getSimulationRunNumber (iModuleName);
+    const int LATUS_ServiceAbstract::getSimulationRunNumber () {
+      return ServiceContextManager::getSimulationRunNumber ();
     }
     
     // //////////////////////////////////////////////////////////////////////
-    const std::string& LATUS_ServiceAbstract::
-    getDemandInputFilename (const std::string& iModuleName) {
-      return ServiceContextManager::instance().
-        getDemandInputFilename (iModuleName);
+    const std::string& LATUS_ServiceAbstract::getDemandInputFilename () {
+      return ServiceContextManager::getDemandInputFilename ();
     }
 
     // //////////////////////////////////////////////////////////////////////
-    const DateTime_T& LATUS_ServiceAbstract::
-    getStartDate (const std::string& iModuleName) {
-      return ServiceContextManager::instance().getStartDate (iModuleName);
+    const DateTime_T& LATUS_ServiceAbstract::getStartDate () {
+      return ServiceContextManager::getStartDate ();
     }
 
     // //////////////////////////////////////////////////////////////////////
-    const DateTime_T& LATUS_ServiceAbstract::
-    getEndDate (const std::string& iModuleName) {
-      return ServiceContextManager::instance().getEndDate (iModuleName);
+    const DateTime_T& LATUS_ServiceAbstract::getEndDate () {
+      return ServiceContextManager::getEndDate ();
     }
 
     // //////////////////////////////////////////////////////////////////////
-    const std::string& LATUS_ServiceAbstract::
-    getScheduleInputFilename (const std::string& iModuleName) {
-      return ServiceContextManager::instance().
-        getScheduleInputFilename (iModuleName);
+    const std::string& LATUS_ServiceAbstract::getScheduleInputFilename () {
+      return ServiceContextManager::getScheduleInputFilename ();
     }
 
     // //////////////////////////////////////////////////////////////////////
     const AirlineCode_T& LATUS_ServiceAbstract::
     getOwnerAirlineCode (const std::string& iModuleName) {
-      return ServiceContextManager::instance().getOwnerAirlineCode(iModuleName);
+      return ServiceContextManager::getOwnerAirlineCode (iModuleName);
     }
-    
+
     // //////////////////////////////////////////////////////////////////////
-    WorldSchedule& LATUS_ServiceAbstract::
-    getWorldSchedule (const std::string& iModuleName) {
-      return ServiceContextManager::instance().getWorldSchedule (iModuleName);
+    WorldSchedule& LATUS_ServiceAbstract::getWorldSchedule () {
+      return ServiceContextManager::getWorldSchedule ();
     }
       
     // //////////////////////////////////////////////////////////////////////
-    Network& LATUS_ServiceAbstract::
-    getNetwork (const std::string& iModuleName) {
-      return ServiceContextManager::instance().getNetwork (iModuleName);
+    Network& LATUS_ServiceAbstract::getNetwork () {
+      return ServiceContextManager::getNetwork ();
+    }
+
+    // //////////////////////////////////////////////////////////////////////
+    Inventory& LATUS_ServiceAbstract::
+    getInventory (const std::string& iModuleName) {
+      return ServiceContextManager::getInventory (iModuleName);
     }
 
     // //////////////////////////////////////////////////////////////////////
     void LATUS_ServiceAbstract::
-    setSimulationRunNumber (const int iSimulationRunNumber,
-                            const std::string& iModuleName) {
-      ServiceContextManager::instance().
-        setSimulationRunNumber (iSimulationRunNumber, iModuleName);
+    setSimulationRunNumber (const int iSimulationRunNumber) {
+      ServiceContextManager::setSimulationRunNumber (iSimulationRunNumber);
     }
     
     // //////////////////////////////////////////////////////////////////////
     void LATUS_ServiceAbstract::
-    setDemandInputFilename (const std::string& iInputFilename,
-                            const std::string& iModuleName) {
-      ServiceContextManager::instance().
-        setDemandInputFilename (iInputFilename, iModuleName);
+    setDemandInputFilename (const std::string& iInputFilename) {
+      ServiceContextManager::setDemandInputFilename (iInputFilename);
     }
 
     // //////////////////////////////////////////////////////////////////////
     void LATUS_ServiceAbstract::
-    setStartDate (const DateTime_T& iStartDate,
-                  const std::string& iModuleName) {
-      ServiceContextManager::instance().setStartDate (iStartDate, iModuleName);
+    setStartDate (const DateTime_T& iStartDate) {
+      ServiceContextManager::setStartDate (iStartDate);
     }
 
     // //////////////////////////////////////////////////////////////////////
     void LATUS_ServiceAbstract::
-    setEndDate (const DateTime_T& iEndDate,
-                const std::string& iModuleName) {
-      ServiceContextManager::instance().setEndDate (iEndDate, iModuleName);
+    setEndDate (const DateTime_T& iEndDate) {
+      ServiceContextManager::setEndDate (iEndDate);
     }
 
     // //////////////////////////////////////////////////////////////////////
     void LATUS_ServiceAbstract::
-    setScheduleInputFilename (const std::string& iInputFilename,
-                              const std::string& iModuleName) {
-      ServiceContextManager::instance().
-        setScheduleInputFilename (iInputFilename, iModuleName);
+    setScheduleInputFilename (const std::string& iInputFilename) {
+      ServiceContextManager::setScheduleInputFilename (iInputFilename);
     }
     
     // //////////////////////////////////////////////////////////////////////
     void LATUS_ServiceAbstract::
     setOwnerAirlineCode (const AirlineCode_T& iAirlineCode,
                          const std::string& iModuleName) {
-      ServiceContextManager::instance().
-        setOwnerAirlineCode (iAirlineCode, iModuleName);
+      ServiceContextManager::setOwnerAirlineCode (iAirlineCode, iModuleName);
     }
     
     // //////////////////////////////////////////////////////////////////////
     void LATUS_ServiceAbstract::
-    setWorldSchedule (WorldSchedule& ioWorldSchedule,
-                      const std::string& iModuleName) {
-      ServiceContextManager::instance().
-        setWorldSchedule (ioWorldSchedule, iModuleName);
+    setWorldSchedule (WorldSchedule& ioWorldSchedule) {
+      ServiceContextManager::setWorldSchedule (ioWorldSchedule);
     }
       
     // //////////////////////////////////////////////////////////////////////
-    void LATUS_ServiceAbstract::setNetwork (Network& ioNetwork,
-                                            const std::string& iModuleName) {
-      ServiceContextManager::instance().setNetwork (ioNetwork, iModuleName);
+    void LATUS_ServiceAbstract::setNetwork (Network& ioNetwork) {
+      ServiceContextManager::setNetwork (ioNetwork);
+    }
+    
+    // //////////////////////////////////////////////////////////////////////
+    void LATUS_ServiceAbstract::setInventory (Inventory& ioInventory,
+                                              const std::string& iModuleName) {
+      ServiceContextManager::setInventory (ioInventory, iModuleName);
     }
     
     // //////////////////////////////////////////////////////////////////////
     void LATUS_ServiceAbstract::
-    createAndRegisterSpecificSimServiceContext(const std::string& iModuleName) {
-      ServiceContextManager::instance().
-        createAndRegisterSpecificSimServiceContext (iModuleName);
+    createAndRegisterSpecificSimServiceContext () {
+      ServiceContextManager::createAndRegisterSpecificSimServiceContext ();
     }
       
     // //////////////////////////////////////////////////////////////////////
-    void LATUS_ServiceAbstract::
-    createAndRegisterSpecificCrsServiceContext(const std::string& iModuleName) {
-      ServiceContextManager::instance().
-        createAndRegisterSpecificCrsServiceContext (iModuleName);
+    void LATUS_ServiceAbstract::createAndRegisterSpecificCrsServiceContext () {
+      ServiceContextManager::createAndRegisterSpecificCrsServiceContext ();
+    }
+
+    // //////////////////////////////////////////////////////////////////////
+    void LATUS_ServiceAbstract::createAndRegisterSpecificTspServiceContext () {
+      ServiceContextManager::createAndRegisterSpecificTspServiceContext ();
     }
 
     // //////////////////////////////////////////////////////////////////////
     void LATUS_ServiceAbstract::
-    createAndRegisterSpecificTspServiceContext(const std::string& iModuleName) {
-      ServiceContextManager::instance().
-        createAndRegisterSpecificTspServiceContext (iModuleName);
+    createAndRegisterSpecificInvServiceContext(const AirlineCode_T& iAirlineCode,
+                                               const std::string& iModuleName) {
+      ServiceContextManager::
+        createAndRegisterSpecificInvServiceContext (iAirlineCode, iModuleName);
     }
 
     // //////////////////////////////////////////////////////////////////////
-    void LATUS_ServiceAbstract::
-    createAndRegisterSpecificInvServiceContext(const std::string& iModuleName) {
-      ServiceContextManager::instance().
-        createAndRegisterSpecificInvServiceContext (iModuleName);
+    unsigned short LATUS_ServiceAbstract::getInvSpecificContextNumber() {
+      return ServiceContextManager::getInvSpecificContextNumber();
+    }
+      
+    // //////////////////////////////////////////////////////////////////////
+    unsigned short LATUS_ServiceAbstract::getRmsSpecificContextNumber() {
+      return ServiceContextManager::getRmsSpecificContextNumber();
     }
 
+    // //////////////////////////////////////////////////////////////////////
+    void LATUS_ServiceAbstract::registerInventoriesWithinServiceContexts() {
+      ServiceContextManager::instance().
+        registerInventoriesWithinServiceContexts();
+    }
+      
   }
 }

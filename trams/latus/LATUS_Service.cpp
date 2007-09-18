@@ -33,24 +33,27 @@ namespace LATUS {
   void LATUS_Service::init () {
     // TODO: create the services based on a XML configuration file.
 
-    // Register the Simulator module
-    COM::LATUS_ServiceAbstract::
-      createAndRegisterSpecificSimServiceContext (COM::DEFAULT_LATUS_SIM_MODULE_NAME);
+    // Register the Simulator (SIM) module
+    COM::LATUS_ServiceAbstract::createAndRegisterSpecificSimServiceContext();
+
+    // Register the Central Reservation System (CRS) module
+    COM::LATUS_ServiceAbstract::createAndRegisterSpecificCrsServiceContext();
 
     // Register the Travel Service Provider (TSP) module
-    COM::LATUS_ServiceAbstract::
-      createAndRegisterSpecificTspServiceContext (COM::DEFAULT_LATUS_TSP_MODULE_NAME);
+    COM::LATUS_ServiceAbstract::createAndRegisterSpecificTspServiceContext();
 
     // Register the Inventory module for BA
     COM::LATUS_ServiceAbstract::
-      createAndRegisterSpecificInvServiceContext (COM::DEFAULT_LATUS_INV1_MODULE_NAME);
+      createAndRegisterSpecificInvServiceContext (COM::DEFAULT_LATUS_INV1_AIRLINE_CODE,
+                                                  COM::DEFAULT_LATUS_INV1_MODULE_NAME);
     COM::LATUS_ServiceAbstract::
       setOwnerAirlineCode (COM::DEFAULT_LATUS_INV1_AIRLINE_CODE,
                            COM::DEFAULT_LATUS_INV1_MODULE_NAME);
 
     // Register the Inventory module for AA
     COM::LATUS_ServiceAbstract::
-      createAndRegisterSpecificInvServiceContext (COM::DEFAULT_LATUS_INV2_MODULE_NAME);
+      createAndRegisterSpecificInvServiceContext (COM::DEFAULT_LATUS_INV2_AIRLINE_CODE,
+                                                  COM::DEFAULT_LATUS_INV2_MODULE_NAME);
     COM::LATUS_ServiceAbstract::
       setOwnerAirlineCode (COM::DEFAULT_LATUS_INV2_AIRLINE_CODE,
                            COM::DEFAULT_LATUS_INV2_MODULE_NAME);
@@ -64,47 +67,43 @@ namespace LATUS {
 
   // //////////////////////////////////////////////////////////////////////
   void LATUS_Service::setSimulationRunNumber (const int iSimulationRunNumber) {
-    COM::LATUS_ServiceAbstract::
-      setSimulationRunNumber (iSimulationRunNumber,
-                              COM::DEFAULT_LATUS_SIM_MODULE_NAME);
+    COM::LATUS_ServiceAbstract::setSimulationRunNumber (iSimulationRunNumber);
   }
 
   // //////////////////////////////////////////////////////////////////////
   void LATUS_Service::
   setScheduleInputFilename (const std::string& iInputFilename) {
-    COM::LATUS_ServiceAbstract::
-      setScheduleInputFilename (iInputFilename,
-                                COM::DEFAULT_LATUS_TSP_MODULE_NAME);
+    COM::LATUS_ServiceAbstract::setScheduleInputFilename (iInputFilename);
   }
 
   // //////////////////////////////////////////////////////////////////////
   void LATUS_Service::
   setDemandInputFilename (const std::string& iInputFilename) {
-    COM::LATUS_ServiceAbstract::
-      setDemandInputFilename (iInputFilename,
-                              COM::DEFAULT_LATUS_SIM_MODULE_NAME);
+    COM::LATUS_ServiceAbstract::setDemandInputFilename (iInputFilename);
   }
 
   // //////////////////////////////////////////////////////////////////////
   void LATUS_Service::setStartDate (const boost::gregorian::date& iStartDate) {
-    COM::LATUS_ServiceAbstract::
-      setStartDate (iStartDate, COM::DEFAULT_LATUS_SIM_MODULE_NAME);
+    COM::LATUS_ServiceAbstract::setStartDate (iStartDate);
   }
 
   // //////////////////////////////////////////////////////////////////////
   void LATUS_Service::setEndDate (const boost::gregorian::date& iEndDate) {
-    COM::LATUS_ServiceAbstract::
-      setEndDate (iEndDate, COM::DEFAULT_LATUS_SIM_MODULE_NAME);
+    COM::LATUS_ServiceAbstract::setEndDate (iEndDate);
   }
 
   // //////////////////////////////////////////////////////////////////////
   void LATUS_Service::simulate () const {
     // Parse the CSV-formatted schedule input file, and generate the
     // corresponding Inventories for the airlines.
-    TSP::LATUS_TSP::generateInventories (COM::DEFAULT_LATUS_TSP_MODULE_NAME);
+    TSP::LATUS_TSP::generateInventories ();
+
+    // Set the references to Inventory BOM objects within each of
+    // the Inventory specific contexts.
+    COM::LATUS_ServiceAbstract::registerInventoriesWithinServiceContexts ();
 
     // Call the main entry of the Simulator Service
-    SIM::LATUS_SIM::simulate (COM::DEFAULT_LATUS_SIM_MODULE_NAME);
+    SIM::LATUS_SIM::simulate ();
 
     // Clean all the instantiated (BOM & Service) objects, so as to free
     // the corresponding memory.

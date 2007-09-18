@@ -36,7 +36,7 @@ namespace LATUS {
       void setEndDate (const boost::gregorian::date&);
 
       /** Main entry point. */
-      static void simulate (const std::string& iModuleName);
+      static void simulate ();
       
     private:
       /** Constructors. */

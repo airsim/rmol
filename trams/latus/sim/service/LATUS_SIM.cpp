@@ -20,15 +20,14 @@ namespace LATUS {
     }
 
     // //////////////////////////////////////////////////////////////////////
-    void LATUS_SIM::simulate (const std::string& iModuleName) {
+    void LATUS_SIM::simulate () {
 
       // Get the parameters stored within the Service Context (passed through
       // by the caller)
-      const int lSimulationRunNumber = getSimulationRunNumber (iModuleName);
-      const std::string& lDemandInputFilename =
-        getDemandInputFilename (iModuleName);
-      const COM::DateTime_T& lStartDate = getStartDate (iModuleName);
-      const COM::DateTime_T& lEndDate = getEndDate (iModuleName);
+      const int lSimulationRunNumber = getSimulationRunNumber ();
+      const std::string& lDemandInputFilename = getDemandInputFilename ();
+      const COM::DateTime_T& lStartDate = getStartDate ();
+      const COM::DateTime_T& lEndDate = getEndDate ();
 
       // Perform K simulations    
       for (unsigned int i=1; i != lSimulationRunNumber; i++) {

@@ -21,16 +21,14 @@ namespace LATUS {
 
     // //////////////////////////////////////////////////////////////////////
     void LATUS_CRS::
-    provideTravelSolution (const std::string& iModuleName,
-                           const COM::AirportCode_T& iOrigin,
+    provideTravelSolution (const COM::AirportCode_T& iOrigin,
                            const COM::AirportCode_T& iDestination,
                            const COM::DateTime_T& iDate,
                            COM::TravelSolutionKeyList_T& ioTSL) {
 
       // Retrieve the schedule input filename from the CRS specific
       // service context
-      const std::string& lInputFilename =
-        getScheduleInputFilename (iModuleName);
+      const std::string& lInputFilename = getScheduleInputFilename ();
 
       std::cout << "Distribution service always up!" << std::endl;
 
@@ -52,8 +50,7 @@ namespace LATUS {
     }
     
     // //////////////////////////////////////////////////////////////////////
-    bool LATUS_CRS::sell (const std::string& iModuleName,
-                          const COM::TravelSolutionKeyList_T& iTS,
+    bool LATUS_CRS::sell (const COM::TravelSolutionKeyList_T& iTS,
                           const COM::BookingNumber_T& iPartySize) {
       return true;
     }

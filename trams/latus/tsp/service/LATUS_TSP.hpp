@@ -26,14 +26,13 @@ namespace LATUS {
           simulator, and generates the inventories accordingly.
           The schedule file name is stored within the (TSP-specific)
           ServiceContext object. */
-      static void generateInventories (const std::string& iModuleName);
+      static void generateInventories ();
 
 
       /** Calculate and return the travel solutions corresponding to a given
           product demand.
           @return The vector of availabilities per class/bucket. */
-      static void getTravelSolutions (const std::string& iModuleName,
-                                      const COM::AirportCode_T& iOrigin,
+      static void getTravelSolutions (const COM::AirportCode_T& iOrigin,
                                       const COM::AirportCode_T& iDestination,
                                       const COM::DateTime_T& iDate,
                                       COM::BucketAvailabilities_T& ioAvl);

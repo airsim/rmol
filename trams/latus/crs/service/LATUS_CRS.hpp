@@ -23,8 +23,7 @@ namespace LATUS {
       /** Calculate and return the availabilities corresponding to a given
           product.
           @return The vector of Travel Solutions (TS). */
-      static void provideTravelSolution (const std::string& iModuleName,
-                                         const COM::AirportCode_T& iOrigin,
+      static void provideTravelSolution (const COM::AirportCode_T& iOrigin,
                                          const COM::AirportCode_T& iDestination,
                                          const COM::DateTime_T& iDate,
                                          COM::TravelSolutionKeyList_T& ioTSL);
@@ -33,8 +32,7 @@ namespace LATUS {
           Travel Solution.
           <br>The party size may be a floating number, so as to cope with
           overbooking. */
-      static bool sell (const std::string& iModuleName,
-                        const COM::TravelSolutionKeyList_T& iTS,
+      static bool sell (const COM::TravelSolutionKeyList_T& iTS,
                         const COM::BookingNumber_T& iPartySize);
 
     private:

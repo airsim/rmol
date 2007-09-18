@@ -3,7 +3,6 @@
 #include <sstream>
 // LATUS
 #include <latus/LATUS_Service.hpp>
-#include <latus/com/basic/BasConst_LATUS_Service.hpp>
 #include <latus/tsp/service/LATUS_TSP.hpp>
 
 /** As the LATUS_TSP::generateInventories() method is not exposed in the
@@ -35,7 +34,7 @@ int main (int argc, char* argv[]) {
 
     // Parse the CSV-formatted schedule input file, and generate the
     // corresponding Inventories for the airlines.
-    LATUS::TSP::LATUS_TSP::generateInventories (LATUS::COM::DEFAULT_LATUS_TSP_MODULE_NAME);
+    LATUS::TSP::LATUS_TSP::generateInventories ();
     
   } catch (const std::exception& stde) {
     std::cerr << "Standard exception: " << stde.what() << std::endl;

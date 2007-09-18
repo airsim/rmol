@@ -23,18 +23,17 @@ namespace LATUS {
     }
 
     // //////////////////////////////////////////////////////////////////////
-    void LATUS_TSP::generateInventories (const std::string& iModuleName) {
+    void LATUS_TSP::generateInventories () {
       // Retrieve the schedule input filename from the TSP specific
       // service context
-      const std::string& lScheduleInputFilename =
-        getScheduleInputFilename (iModuleName);
+      const std::string& lScheduleInputFilename = getScheduleInputFilename ();
 
       // Parse the schedule input file, and generate the Inventories
       COM::WorldSchedule& lWorldSchedule =
         ScheduleParser::generateInventories (lScheduleInputFilename);
 
       // Store the WorldSchedule within the TSP specific service context
-      setWorldSchedule (lWorldSchedule, iModuleName);
+      setWorldSchedule (lWorldSchedule);
 
       // DEBUG
       LATUS_LOG_DEBUG ("Generated WorldSchedule:");
@@ -44,7 +43,7 @@ namespace LATUS {
       COM::Network& lNetwork = NetworkGenerator::createNetwork (lWorldSchedule);
 
       // Store the Network within the TSP specific service context
-      setNetwork (lNetwork, iModuleName);
+      setNetwork (lNetwork);
 
       // DEBUG
       LATUS_LOG_DEBUG ("Generated Network:");
@@ -52,12 +51,10 @@ namespace LATUS {
     }
     
     // //////////////////////////////////////////////////////////////////////
-    void LATUS_TSP::
-    getTravelSolutions (const std::string& iModuleName,
-                        const COM::AirportCode_T& iOrigin,
-                        const COM::AirportCode_T& iDestination,
-                        const COM::DateTime_T& iDate,
-                        COM::BucketAvailabilities_T& ioAvl) {
+    void LATUS_TSP::getTravelSolutions (const COM::AirportCode_T& iOrigin,
+                                        const COM::AirportCode_T& iDestination,
+                                        const COM::DateTime_T& iDate,
+                                        COM::BucketAvailabilities_T& ioAvl) {
       std::cout << "TSP Service always up!" << std::endl;
 
       // TODO: Remove the hard coding
