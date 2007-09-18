@@ -12,7 +12,9 @@ if ENABLE_DEBUG
   lib_LTLIBRARIES += lib@PACKAGE@tsp_debug.la
 endif
 lib@PACKAGE@tsp_la_SOURCES = $(tspservice_h_sources) $(tspservice_cc_sources)
-lib@PACKAGE@tsp_la_LIBADD = $(top_builddir)/@PACKAGE@/tsp/basic/libtspbas.la \
+lib@PACKAGE@tsp_la_LIBADD = \
+			$(top_builddir)/@PACKAGE@/com/lib@PACKAGE@com.la \
+			$(top_builddir)/@PACKAGE@/tsp/basic/libtspbas.la \
 			$(top_builddir)/@PACKAGE@/tsp/bom/libtspbom.la \
 			$(top_builddir)/@PACKAGE@/tsp/factory/libtspfac.la \
 			$(top_builddir)/@PACKAGE@/tsp/command/libtspcmd.la \
@@ -22,6 +24,7 @@ lib@PACKAGE@tsp_la_LDFLAGS = -version-info $(GENERIC_LIBRARY_VERSION)
 lib@PACKAGE@tsp_debug_la_SOURCES = $(tspservice_h_sources) \
 									$(tspservice_cc_sources)
 lib@PACKAGE@tsp_debug_la_LIBADD = \
+			$(top_builddir)/@PACKAGE@/com/lib@PACKAGE@com_debug.la \
 			$(top_builddir)/@PACKAGE@/tsp/basic/libtspbas_debug.la \
 			$(top_builddir)/@PACKAGE@/tsp/field/libtspfld_debug.la \
 			$(top_builddir)/@PACKAGE@/tsp/bom/libtspbom_debug.la \

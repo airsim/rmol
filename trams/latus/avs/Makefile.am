@@ -5,28 +5,30 @@ include $(srcdir)/sources.mk
 
 MAINTAINERCLEANFILES = Makefile.in
 
-SUBDIRS = basic field bom factory command service
+SUBDIRS = basic bom factory command service
 
 lib_LTLIBRARIES = libavs.la
 if ENABLE_DEBUG
   lib_LTLIBRARIES += libavs_debug.la
 endif
 libavs_la_SOURCES = $(service_h_sources) $(service_cc_sources)
-libavs_la_LIBADD = $(top_builddir)/avs/basic/libbas.la \
-			$(top_builddir)/avs/field/libfld.la \
-			$(top_builddir)/avs/bom/libbom.la \
-			$(top_builddir)/avs/factory/libfac.la \
-			$(top_builddir)/avs/command/libcmd.la \
-			$(top_builddir)/avs/command/libsvc.la
+libavs_la_LIBADD = 
+			$(top_builddir)/@PACKAGE@/com/lib@PACKAGE@com_debug.la \
+			$(top_builddir)/@PACKAGE@/avs/basic/libavsbas.la \
+			$(top_builddir)/@PACKAGE@/avs/bom/libavsbom.la \
+			$(top_builddir)/@PACKAGE@/avs/factory/libavsfac.la \
+			$(top_builddir)/@PACKAGE@/avs/command/libavscmd.la \
+			$(top_builddir)/@PACKAGE@/avs/service/libavssvc.la
 libavs_la_LDFLAGS = -version-info $(GENERIC_LIBRARY_VERSION)
 
 libavs_debug_la_SOURCES = $(service_h_sources) $(service_cc_sources)
-libavs_debug_la_LIBADD =$(top_builddir)/avs/basic/libbas_debug.la \
-			$(top_builddir)/avs/field/libfld_debug.la \
-			$(top_builddir)/avs/bom/libbom_debug.la \
-			$(top_builddir)/avs/factory/libfac_debug.la \
-			$(top_builddir)/avs/command/libcmd_debug.la \
-			$(top_builddir)/avs/command/libavs_debug.la
+libavs_debug_la_LIBADD = \
+			$(top_builddir)/@PACKAGE@/com/lib@PACKAGE@com_debug.la \
+			$(top_builddir)/@PACKAGE@/avs/basic/libavsbas_debug.la \
+			$(top_builddir)/@PACKAGE@/avs/bom/libavsbom_debug.la \
+			$(top_builddir)/@PACKAGE@/avs/factory/libavsfac_debug.la \
+			$(top_builddir)/@PACKAGE@/avs/command/libavscmd_debug.la \
+			$(top_builddir)/@PACKAGE@/avs/service/libavssvc_debug.la
 libavs_debug_la_LDFLAGS = -version-info $(GENERIC_LIBRARY_VERSION)
 
 #nobase_pkginclude_HEADERS = $(service_h_sources)

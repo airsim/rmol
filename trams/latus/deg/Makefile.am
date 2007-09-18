@@ -13,7 +13,9 @@ if ENABLE_DEBUG
 endif
 
 lib@PACKAGE@deg_la_SOURCES = $(degservice_h_sources) $(degservice_cc_sources)
-lib@PACKAGE@deg_la_LIBADD = $(top_builddir)/@PACKAGE@/deg/basic/libdegbas.la \
+lib@PACKAGE@deg_la_LIBADD = \
+			$(top_builddir)/@PACKAGE@/com/lib@PACKAGE@com.la \
+			$(top_builddir)/@PACKAGE@/deg/basic/libdegbas.la \
 			$(top_builddir)/@PACKAGE@/deg/field/libdegfld.la \
 			$(top_builddir)/@PACKAGE@/deg/bom/libdegbom.la \
 			$(top_builddir)/@PACKAGE@/deg/factory/libdegfac.la \
@@ -24,6 +26,7 @@ lib@PACKAGE@deg_la_LDFLAGS = -version-info $(GENERIC_LIBRARY_VERSION)
 lib@PACKAGE@deg_debug_la_SOURCES = $(degservice_h_sources) \
 									$(degservice_cc_sources)
 lib@PACKAGE@deg_debug_la_LIBADD = \
+			$(top_builddir)/@PACKAGE@/com/lib@PACKAGE@com_debug.la \
 			$(top_builddir)/@PACKAGE@/deg/basic/libdegbas_debug.la \
 			$(top_builddir)/@PACKAGE@/deg/field/libdegfld_debug.la \
 			$(top_builddir)/@PACKAGE@/deg/bom/libdegbom_debug.la \
