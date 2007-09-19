@@ -36,6 +36,7 @@ namespace LATUS {
       // them publicly.
       friend class FlightPeriodFileParser;
       friend struct ScheduleParserHelper::doEndFlight;
+      friend class ScheduleParser;
     private:
       /** Generate the Flight-Date objects corresponding to the given
           Flight-Period, and add them to the given WorldSchedule. */
@@ -68,7 +69,6 @@ namespace LATUS {
       /** Generate a Class. */
       static void createClass (COM::SegmentCabin&, const COM::ClassCode_T&);
 
-    public:
       /** Create the routing between the legs and segments for all the
           Inventories of the given WorldSchedule object. */
       static void createRouting (COM::WorldSchedule&);
