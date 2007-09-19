@@ -14,8 +14,8 @@ namespace LATUS {
 
     // //////////////////////////////////////////////////////////////////////
     LegCabin::LegCabin (const LegCabinKey_T& iKey)
-      : _key (iKey), _legDate (NULL),
-        _soldSeat (0), _commitedSpace (0.0), _availabilityPool (0.0) {
+      : _key (iKey), _legDate (NULL),_soldSeat (0),
+        _commitedSpace (0.0), _availabilityPool (0.0), _availability(0.0) {
     }
     
     // //////////////////////////////////////////////////////////////////////
@@ -72,9 +72,8 @@ namespace LATUS {
     }
 
      // //////////////////////////////////////////////////////////////////////
-    //ToDo
     void LegCabin::updateAllAvailabilities() {
-      
+      setAvailability (getAvailabilityPool());      
     }
     
     // //////////////////////////////////////////////////////////////////////

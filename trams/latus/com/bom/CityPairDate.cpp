@@ -23,7 +23,7 @@ namespace LATUS {
   namespace COM {
 
     // //////////////////////////////////////////////////////////////////////
-    CityPairDate::CityPairDate (const boost::gregorian::date& iDepartureDate)
+    CityPairDate::CityPairDate (const DateTime_T& iDepartureDate)
       : _cityPair (NULL), _departureDate (iDepartureDate),
         _hasDeparted (false), _currentDTD (0), _rngUniformIntPtr (NULL) {
       initRandomGenerator();
@@ -49,9 +49,15 @@ namespace LATUS {
       
       const std::string& lParentKeyDescription = _cityPair->describeKey();
       std::ostringstream ostr;
-      ostr << lParentKeyDescription << "; "
+      ostr << lParentKeyDescription
            << boost::gregorian::to_iso_extended_string (_departureDate);
       return ostr.str();
+    }
+    
+    // //////////////////////////////////////////////////////////////////////
+    CityPair& CityPairDate::getCityPairRef() const {
+      assert (_cityPair != NULL);
+      return *_cityPair;
     }
     
     // //////////////////////////////////////////////////////////////////////
@@ -70,14 +76,25 @@ namespace LATUS {
     }
     
     // //////////////////////////////////////////////////////////////////////
-    const boost::gregorian::date& CityPairDate::getCurrentDate () const {
+    const AirportCode_T& CityPairDate::getOrigin () const {
+      assert (_cityPair != NULL);
+      return _cityPair->getOrigin();
+    }
+
+    // //////////////////////////////////////////////////////////////////////
+    const AirportCode_T& CityPairDate::getDestination () const {
+      assert (_cityPair != NULL);
+      return _cityPair->getDestination();
+    }
+    
+    // //////////////////////////////////////////////////////////////////////
+    const DateTime_T& CityPairDate::getCurrentDate () const {
       assert (_cityPair != NULL);
       return _cityPair->getCurrentDate();
     }
 
     // //////////////////////////////////////////////////////////////////////
-    const boost::posix_time::time_duration& CityPairDate::
-    getCurrentTime () const {
+    const Duration_T& CityPairDate::getCurrentTime () const {
       assert (_cityPair != NULL);
       return _cityPair->getCurrentTime();
     }
@@ -98,8 +115,8 @@ namespace LATUS {
         assert (lClassPath_ptr != NULL);
         
         // By construction, the demand occurs before the departure date.
-        const boost::gregorian::date& lCurrentDate = getCurrentDate();
-        const boost::gregorian::date& lDepartureDate = getDepartureDate();
+        const DateTime_T& lCurrentDate = getCurrentDate();
+        const DateTime_T& lDepartureDate = getDepartureDate();
         assert (lCurrentDate < lDepartureDate);
       
         // TODO: consider de-activating the weighting by the Weibull

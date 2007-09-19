@@ -4,6 +4,8 @@
 // LATUS Common
 #include <latus/com/bom/WorldSchedule.hpp>
 #include <latus/com/bom/Network.hpp>
+#include <latus/com/bom/NetworkDate.hpp>
+#include <latus/com/bom/AirportDate.hpp>
 #include <latus/com/service/Logger.hpp>
 // LATUS TSP
 #include <latus/tsp/command/ScheduleParser.hpp>
@@ -54,15 +56,43 @@ namespace LATUS {
     void LATUS_TSP::getTravelSolutions (const COM::AirportCode_T& iOrigin,
                                         const COM::AirportCode_T& iDestination,
                                         const COM::DateTime_T& iDate,
-                                        COM::BucketAvailabilities_T& ioAvl) {
-      std::cout << "TSP Service always up!" << std::endl;
+                                        COM::OutboundPathLightList_T& ioPaths) {
 
-      // TODO: Remove the hard coding
-      // Hard-code a few availabilities
-      ioAvl.push_back (12.1);
-      ioAvl.push_back (8.4);
-      ioAvl.push_back (5.7);
-      ioAvl.push_back (3.3);
+      // DEBUG
+      LATUS_LOG_DEBUG ("Travel Solutions for: "
+                       << iOrigin << "-" << iDestination << " / " << iDate);
+      
+      // Retrieve the Network
+      const COM::Network& lNetwork = getNetwork();
+
+      // Retrieve the NetworkDate for that departure date.
+      const COM::NetworkDate* lNetworkDate_ptr =
+        lNetwork.getNetworkDate (iDate);
+
+      // If there is no NetworkDate for that departure date, there is no
+      // travel solution, and there is therefore nothing more to be done
+      // (the list of Travel Solutions stay empty).
+      if (lNetworkDate_ptr == NULL) {
+        return;
+      }
+      assert (lNetworkDate_ptr != NULL);
+
+      // Retrieve the AirportDate for that origin.
+      const COM::AirportDate* lAirportDate_ptr =
+        lNetworkDate_ptr->getAirportDate (iOrigin);
+      
+      // If there is no AirportDate for that departure date, there is no
+      // travel solution, and there is therefore nothing more to be done
+      // (the list of Travel Solutions stay empty).
+      if (lAirportDate_ptr == NULL) {
+        return;
+      }
+      assert (lAirportDate_ptr != NULL);
+
+      // Retrieve all the outbound paths from the airport-date, i.e., all the
+      // travel solutions from the origin airport to the destination airport
+      // for that departure date.
+      lAirportDate_ptr->getOutboundPathList (iDestination, ioPaths);
     }
     
   }

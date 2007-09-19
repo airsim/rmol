@@ -50,15 +50,30 @@ namespace LATUS {
         return _bookingNumber;
       }
 
-       /** Get the overbooking rate dedicated to the class. */
+      /** Get the overbooking rate dedicated to the class. */
       const OverbookingRate_T getOverbookingRate() const {
         return _overbookingRate;
+      }
+
+      /** Get the boolean given whether a protection is considered. */
+      const BookingLimitBool_T getBookingLimitBool() const {
+        return _bookingLimitBool;
+      }
+
+      /** Get the protection value. */
+      const BookingLimit_T getBookingLimit() const {
+        return _bookingLimit;
       }
 
       // ///////// Setters //////////
       /** Set the SegmentCabin (parent class). */
       void setSegmentCabin (SegmentCabin* ioSegmentCabinPtr) {
         _segmentCabin = ioSegmentCabinPtr;
+      }
+
+       /** Set the Availability number. */
+      void setAvailability (Availability_T iAvailability) {
+        _availability = iAvailability;
       }
 
       // ///////// Display Methods //////////
@@ -87,8 +102,8 @@ namespace LATUS {
       // Attributes
       BookingNumber_T _bookingNumber;
       Availability_T _availability;
-      BookingConstraint_T _bookingConstraint;
-      BookingConstraintValue_T _bookingConstraintValue;
+      BookingLimitBool_T _bookingLimitBool;
+      BookingLimit_T _bookingLimit;
       OverbookingRate_T _overbookingRate;
       
     };

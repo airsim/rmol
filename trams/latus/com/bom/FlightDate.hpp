@@ -92,7 +92,7 @@ namespace LATUS {
       /** Update the commited spaces in cabins. */
       void updateCommitedSpaces() const;
 
-      /** Update the availabilities from leg to segment cabins. */
+      /** Update the availability pools from leg to segment cabins. */
       void updateAvailabilityPools() const;
 
        /** Update all availabilities. */

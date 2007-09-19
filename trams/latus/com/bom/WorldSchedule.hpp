@@ -76,7 +76,7 @@ namespace LATUS {
        /** Update the availability pools for all LegCabin then for all  SegmentCabin */
       void updateAvailabilityPools() const;
 
-       /** Update all the availabilities */
+       /** Update all availabilities */
       void updateAllAvailabilities() const;
 
       

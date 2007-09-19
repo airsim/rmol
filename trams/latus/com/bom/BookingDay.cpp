@@ -92,17 +92,29 @@ namespace LATUS {
     }
 
     // //////////////////////////////////////////////////////////////////////
-    CityPair* BookingDay::getCityPair (const std::string& iDescription) const {
+    CityPair* BookingDay::
+    getCityPairInternal (const std::string& iCityPairKey) const {
       CityPair* resultCityPair_ptr = NULL;
       
       CityPairList_T::const_iterator itCityPair =
-        _cityPairList.find (iDescription);
+        _cityPairList.find (iCityPairKey);
 
       if (itCityPair != _cityPairList.end()) {
         resultCityPair_ptr = itCityPair->second;
       }
 
       return resultCityPair_ptr;
+    }
+    
+    // //////////////////////////////////////////////////////////////////////
+    CityPair* BookingDay::
+    getCityPair (const AirportCode_T& iOrigin,
+                 const AirportCode_T& iDestination) const {
+      const AirportPairKey_T lAirportPairKey (iOrigin, iDestination);
+      const CityPairKey_T lCityPairKey (lAirportPairKey);
+      const std::string lCityPairKeyStr = lCityPairKey.describeShort();
+
+      return getCityPairInternal (lCityPairKeyStr);
     }
     
     // //////////////////////////////////////////////////////////////////////
@@ -172,7 +184,7 @@ namespace LATUS {
         const bool insertSucceeded = _cityPairDistribution.
           insert (CityPairDistribution_T::
                   value_type (oDailyRate,
-                              lCityPair_ptr->getPrimaryKey())).second;
+                              lCityPair_ptr->describeShortKey())).second;
 
         if (insertSucceeded == false) {
           LATUS_LOG_ERROR ("Insertion failed for " << oDailyRate

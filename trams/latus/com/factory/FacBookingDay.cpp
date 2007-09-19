@@ -57,11 +57,11 @@ namespace LATUS {
       
       // Link the BookingDay to the CityPair
       const bool insertSucceeded = ioBookingDay._cityPairList.
-        insert (CityPairList_T::value_type (ioCityPair.getPrimaryKey(),
+        insert (CityPairList_T::value_type (ioCityPair.describeShortKey(),
                                             &ioCityPair)).second;
       if (insertSucceeded == false) {
         LATUS_LOG_ERROR ("Insertion failed for " << ioBookingDay.describeKey()
-                         << " and " << ioCityPair.describeKey());
+                         << " and " << ioCityPair.describeShortKey());
         assert (insertSucceeded == true);
       }
     }
@@ -69,33 +69,31 @@ namespace LATUS {
     // //////////////////////////////////////////////////////////////////////
     void FacBookingDay::
     createClassPath (BookingDay& ioBookingDay,
-                     const std::string& iCityPairDescription,
+                     const AirportCode_T& iOrigin,
+                     const AirportCode_T& iDestination,
                      const boost::gregorian::date& iDepDate,
                      const std::string& iClassPathDescription,
                      const double iDistributionMean,
                      const double iDistributionStdDev) {
 
       const CityPairList_T& lCityPairList = ioBookingDay.getCityPairList();
-    
-      CityPairList_T::const_iterator itCityPair =
-        lCityPairList.find (iCityPairDescription);
+
+      CityPair* aCityPair_ptr = ioBookingDay.getCityPair (iOrigin,
+                                                          iDestination);
     
       // If the CityPair instance does not exist yet, create it
-      if (itCityPair == lCityPairList.end()) {
-        CityPair& aCityPair =
-          FacCityPair::instance().create (iCityPairDescription);
+      if (aCityPair_ptr == NULL) {
+        const AirportPairKey_T lAirportPairKey (iOrigin, iDestination);
+        const CityPairKey_T lCityPairKey (lAirportPairKey);
+        aCityPair_ptr = &FacCityPair::instance().create (lCityPairKey);
+        assert (aCityPair_ptr != NULL);
 
-        initLinkWithCityPair (ioBookingDay, aCityPair);
-      
-        itCityPair = lCityPairList.find (iCityPairDescription);
-        assert (itCityPair != lCityPairList.end());
+        initLinkWithCityPair (ioBookingDay, *aCityPair_ptr);
       }
-    
-      CityPair* lCityPair_ptr = itCityPair->second;
-      assert (lCityPair_ptr != NULL);
+      assert (aCityPair_ptr != NULL);
     
       // Forward the ClassPath object creation request to FacCityPair
-      FacCityPair::createClassPath (*lCityPair_ptr, iDepDate,
+      FacCityPair::createClassPath (*aCityPair_ptr, iDepDate,
                                     iClassPathDescription,
                                     iDistributionMean, iDistributionStdDev);
     }

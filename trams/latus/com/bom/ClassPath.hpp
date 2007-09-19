@@ -4,13 +4,10 @@
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
-// C
-#include <assert.h>
 // STL
 #include <string>
-// Boost (Extended STL)
-#include <boost/date_time/gregorian/gregorian.hpp>
 // LATUS Common
+#include <latus/com/basic/BasComTypes.hpp>
 #include <latus/com/bom/BomAbstract.hpp>
 #include <latus/com/bom/DistributionDetails.hpp>
 
@@ -43,10 +40,7 @@ namespace LATUS {
       }
 
       /** Get the CityPairDateRef (parent class). */
-      CityPairDate& getCityPairDateRef() const {
-        assert (_cityPairDate != NULL);
-        return *_cityPairDate;
-      }
+      CityPairDate& getCityPairDateRef() const;
 
       /** Get the primary key. */
       const std::string& getPrimaryKey() const {
@@ -73,15 +67,22 @@ namespace LATUS {
         return _dailyRate;
       }
 
+      /** Get the origin (from CityPair parent). */
+      const AirportCode_T& getOrigin () const;
+
+      /** Get the destination (from CityPair parent). */
+      const AirportCode_T& getDestination () const;
+
       /** Get the current simulation/booking date (from CityPair parent). */
-      const boost::gregorian::date& getCurrentDate() const;
+      const DateTime_T& getCurrentDate() const;
 
       /** Get the departure date (from CityPairDate parent). */
-      const boost::gregorian::date& getDepartureDate() const;
+      const DateTime_T& getDepartureDate() const;
 
       /** Get the current DTD (from the CityPairDate parent). */
-      const boost::gregorian::date_duration& getCurrentDTD() const;
+      const DateOffSet_T& getCurrentDTD() const;
 
+      
       // ///////// Setters //////////
       /** Set the CityPairDate (parent class). */
       void setCityPairDate (CityPairDate* ioCityPairDatePtr) {

@@ -53,8 +53,8 @@ namespace LATUS {
       }
 
        /** Get the number of reserved seats. */
-      const ReservedSeats_T& getReservedSeats () const {
-        return _reservedSeats;
+      const BlockSpace_T& getBlockSpace () const {
+        return _blockSpace;
       }
 
        /** Get the booking counter. */
@@ -84,8 +84,8 @@ namespace LATUS {
       }
 
       /** Set the number of reserved seats. */
-      void setReservedSeats (const ReservedSeats_T& iReservedSeats) {
-        _reservedSeats = iReservedSeats;
+      void setBlockSpace (const BlockSpace_T& iBlockSpace) {
+        _blockSpace = iBlockSpace;
       }
 
       /** Set the total number of bookings. */
@@ -162,7 +162,7 @@ namespace LATUS {
       CabinCapacity_T _capacity;
 
       /** Reserved seats in the cabin. */
-      ReservedSeats_T _reservedSeats;      
+      BlockSpace_T _blockSpace;      
 
       /** Counter of all bookings into the cabin. */
       BookingNumber_T _bookingCounter;

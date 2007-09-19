@@ -50,7 +50,7 @@ namespace LATUS {
     typedef double CabinCapacity_T;
 
      /** Define the number of seat which could not be used for the booking. */
-    typedef int ReservedSeats_T;
+    typedef double BlockSpace_T;
 
     /** Define the class code (product segment class, e.g., H, B, K, etc.). */
     typedef std::string ClassCode_T;
@@ -67,11 +67,11 @@ namespace LATUS {
      /** Define a number of commited spaces in a cabin. */
     typedef double CommitedSpace_T;
 
-    /** Define availibility of booking constraint. */
-    typedef bool BookingConstraint_T;
+    /** Define availibility of booking limit. */
+    typedef bool BookingLimitBool_T;
 
-    /** Define the value of the booking constraint. */
-    typedef double BookingConstraintValue_T;
+    /** Define the value of the booking limit. */
+    typedef double BookingLimit_T;
 
     /** Define the rate of overbooking */
     typedef double OverbookingRate_T;

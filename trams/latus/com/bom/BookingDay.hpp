@@ -15,6 +15,7 @@
 // LATUS General
 #include <latus/LatusTypes.hpp>
 // LATUS Common
+#include <latus/com/basic/BasComTypes.hpp>
 #include <latus/com/bom/BomAbstract.hpp>
 #include <latus/com/bom/CityPairList.hpp>
 #include <latus/com/bom/Event.hpp>
@@ -73,6 +74,12 @@ namespace LATUS {
         return _dailyRate;
       }
 
+      /** Retrieve, if existing, the CityPair corresponding to the
+          given description.
+          <br>If not existing, return the NULL pointer. */
+      CityPair* getCityPair (const AirportCode_T& iOrigin,
+                             const AirportCode_T& iDestination) const;
+      
       /** States whether the (current) booking time has reached the end of
           the day (midnight). */
       bool hasReachedEndOfDay () const;
@@ -221,9 +228,13 @@ namespace LATUS {
       }
 
       /** Retrieve, if existing, the CityPair corresponding to the
-          given description.
-          <br>If not existing, return the NULL pointer. */
-      CityPair* getCityPair (const std::string& iDescription) const;
+          given CityPair key (i.e., (board point, off point) pair).
+          <br>If not existing, return the NULL pointer.
+          <br>Note that the string must be formed thanks to the
+          CityPairKey_T::describeShort() method, as that latter is used when
+          inserting the CityPair within the BookingDay dedicated list. */
+      CityPair*
+      getCityPairInternal (const std::string& iCityPairKey) const;
       
       /** Get the list of Event objects. */
       const EventList_T& getEventList () const {

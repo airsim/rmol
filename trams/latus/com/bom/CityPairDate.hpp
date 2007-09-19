@@ -4,17 +4,13 @@
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
-// C
-#include <assert.h>
 // STL
 #include <string>
 #include <map>
-// Boost (Extended STL)
-#include <boost/date_time/posix_time/posix_time.hpp>
-#include <boost/date_time/gregorian/gregorian.hpp>
 // GSL Random Number Generation (GSL Reference Manual, version 1.7, Chapter 17)
 #include <gsl/gsl_rng.h>
 // LATUS Common
+#include <latus/com/basic/BasComTypes.hpp>
 #include <latus/com/bom/BomAbstract.hpp>
 #include <latus/com/bom/ClassPathList.hpp>
 
@@ -54,23 +50,26 @@ namespace LATUS {
       }
 
       /** Get the CityPair (parent class). */
-      CityPair& getCityPairRef() const {
-        assert (_cityPair != NULL);
-        return *_cityPair;
-      }
+      CityPair& getCityPairRef() const;
 
       /** Get the primary key. */
-      const boost::gregorian::date& getPrimaryKey() const {
+      const DateTime_T& getPrimaryKey() const {
         return getDepartureDate();
       }
 
       /** Get the departure date. */
-      const boost::gregorian::date& getDepartureDate() const {
+      const DateTime_T& getDepartureDate() const {
         return _departureDate;
       }
 
+      /** Get the origin (from the parent class). */
+      const AirportCode_T& getOrigin () const;
+
+      /** Get the destination (from the parent class). */
+      const AirportCode_T& getDestination () const;
+
       /** Get the current DTD. */
-      const boost::gregorian::date_duration& getCurrentDTD() const {
+      const DateOffSet_T& getCurrentDTD() const {
         return _currentDTD;
       }
 
@@ -85,10 +84,10 @@ namespace LATUS {
       }
 
       /** Get the current simulation/booking date (from BookingDay parent). */
-      const boost::gregorian::date& getCurrentDate() const;
+      const DateTime_T& getCurrentDate() const;
 
       /** Get the current simulation/booking time (from BookingDay parent). */
-      const boost::posix_time::time_duration& getCurrentTime() const;
+      const Duration_T& getCurrentTime() const;
 
 
       // ///////// Setters //////////
@@ -98,7 +97,7 @@ namespace LATUS {
       }
 
       /** Set the current DTD. */
-      void setCurrentDTD (const boost::gregorian::date_duration& iCurrentDTD) {
+      void setCurrentDTD (const DateOffSet_T& iCurrentDTD) {
         _currentDTD = iCurrentDTD;
       }
 
@@ -138,7 +137,7 @@ namespace LATUS {
     private:
       /** Constructors are private so as to force the usage of the Factory
           layer. */
-      CityPairDate (const boost::gregorian::date& iDepartureDate);
+      CityPairDate (const DateTime_T& iDepartureDate);
       CityPairDate ();
       CityPairDate (const CityPairDate&);
 
@@ -166,14 +165,14 @@ namespace LATUS {
       
       /** Departure Date (for the demand corresponding to the
           given CityPair). */
-      boost::gregorian::date _departureDate;
+      DateTime_T _departureDate;
 
       /** States whether or not the departure date has been passed over. */
       bool _hasDeparted;
 
       /** Days-to-Departure (DTD), expressed as the number of days
           separating the current booking date from the departure date. */
-      boost::gregorian::date_duration _currentDTD;
+      DateOffSet_T _currentDTD;
 
       /** Children: list of ClassPath objects (wrapping, for a given
           class path/combination, the final demand distribution). */

@@ -5,6 +5,9 @@
 #include <assert.h>
 // STL
 #include <sstream>
+// Boost (Extended STL)
+#include <boost/date_time/posix_time/posix_time.hpp>
+#include <boost/date_time/gregorian/gregorian.hpp>
 // GSL Random Number Distributions (GSL Reference Manual, version 1.7,
 // Chapter 19)
 #include <gsl/gsl_math.h>
@@ -23,8 +26,8 @@ namespace LATUS {
   namespace COM {
 
     // //////////////////////////////////////////////////////////////////////
-    CityPair::CityPair (const std::string& iDescription)
-      : _bookingDay (NULL), _description (iDescription),
+    CityPair::CityPair (const CityPairKey_T& iCityPairKey)
+      : _bookingDay (NULL), _key (iCityPairKey),
         _dailyRate (0.0), _dailyEventNumber (0),
         _rngExponentialPtr (NULL), _rngUniformIntPtr (NULL) {
       initRandomGenerator();
@@ -48,27 +51,30 @@ namespace LATUS {
     }
     
     // //////////////////////////////////////////////////////////////////////
-    const boost::gregorian::date& CityPair::getCurrentDate () const {
+    const DateTime_T& CityPair::getCurrentDate () const {
       assert (_bookingDay != NULL);
       return _bookingDay->getBookingDate();
     }
 
     // //////////////////////////////////////////////////////////////////////
-    const boost::posix_time::time_duration& CityPair::getCurrentTime () const {
+    const Duration_T& CityPair::getCurrentTime () const {
       assert (_bookingDay != NULL);
       return _bookingDay->getBookingTime();
     }
 
     // //////////////////////////////////////////////////////////////////////
     const std::string CityPair::describeKey() const {
-      std::ostringstream ostr;
-      ostr << "\"" << _description << "\"";
-      return ostr.str();
+      return _key.describe();
+    }
+    
+    // //////////////////////////////////////////////////////////////////////
+    const std::string CityPair::describeShortKey() const {
+      return _key.describeShort();
     }
     
     // //////////////////////////////////////////////////////////////////////
     CityPairDate* CityPair::
-    getCityPairDate (const boost::gregorian::date& iDepDate) const {
+    getCityPairDate (const DateTime_T& iDepDate) const {
       CityPairDate* resultCityPairDate_ptr = NULL;
       
       CityPairDateList_T::const_iterator itCityPairDate =
@@ -100,9 +106,8 @@ namespace LATUS {
         // booking date, it means that the corresponding demand has already
         // gone / flown, and its daily rate contribution is therefore
         // disregarded (as it is null, by construction).
-        const boost::gregorian::date& lCurrentDate = getCurrentDate();
-        const boost::gregorian::date& lDepartureDate =
-          lCityPairDate_ptr->getDepartureDate();
+        const DateTime_T& lCurrentDate = getCurrentDate();
+        const DateTime_T& lDepartureDate= lCityPairDate_ptr->getDepartureDate();
         if (lCurrentDate >= lDepartureDate) {
           continue;
         }
@@ -186,7 +191,7 @@ namespace LATUS {
     }
 
     // //////////////////////////////////////////////////////////////////////
-    boost::posix_time::time_duration CityPair::drawNextEventTime () {
+    Duration_T CityPair::drawNextEventTime () {
       // Generate a random variate, expressed in (fractional) day
       const double lExponentialVariateInDays =
         generateExponentialVariate (_dailyRate);
@@ -197,13 +202,12 @@ namespace LATUS {
                                 * TIME_DURATION_FOR_A_DAY_IN_SECONDS);
       
       // Convert the variate in a (Boost typedef) time duration
-      const boost::posix_time::time_duration lExponentialVariate =
+      const Duration_T lExponentialVariate =
         boost::posix_time::seconds (lExponentialVariateInSeconds);
       
       // Add the inter-arrival time to the current time
-      const boost::posix_time::time_duration& lCurrentTime = getCurrentTime();
-      const boost::posix_time::time_duration oResult =
-        lCurrentTime + lExponentialVariate;
+      const Duration_T& lCurrentTime = getCurrentTime();
+      const Duration_T oResult = lCurrentTime + lExponentialVariate;
 
       /*
       LATUS_LOG_DEBUG ("[" << describeKey() << "]: Daily rate: "
@@ -225,7 +229,7 @@ namespace LATUS {
       // Store current formatting flags of std::cout
       std::ios::fmtflags oldFlags = std::cout.flags();
 
-      std::cout << _description << "; ";
+      std::cout << describeKey();
       
       int j = 1;
       for (CityPairDateList_T::const_iterator itCityPairDate =
@@ -251,7 +255,7 @@ namespace LATUS {
       }
       
       // Summary
-      std::cout << _description
+      std::cout << describeKey()
                 << "; Total daily rate: " << _dailyRate
                 << std::endl;
 
@@ -263,7 +267,7 @@ namespace LATUS {
     void CityPair::displayCurrent() const {
       // DEBUG
       std::ios::fmtflags oldFlags = std::cout.flags();
-      LATUS_LOG_DEBUG (_description << "; Daily Rate: " 
+      LATUS_LOG_DEBUG (describeKey() << "; Daily Rate: " 
                        << std::fixed << std::setprecision(2) << _dailyRate
                        << "; Daily Nb of Events: " << _dailyEventNumber);
       std::cout.flags (oldFlags);

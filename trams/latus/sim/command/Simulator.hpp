@@ -8,10 +8,8 @@
 #include <assert.h>
 // STL
 #include <map>
-// Boost (Extended STL)
-#include <boost/date_time/posix_time/posix_time.hpp>
-#include <boost/date_time/gregorian/gregorian.hpp>
 // LATUS Common
+#include <latus/com/basic/BasComTypes.hpp>
 #include <latus/com/bom/Event.hpp>
 #include <latus/com/command/CmdAbstract.hpp>
 // LATUS General
@@ -28,8 +26,7 @@ namespace LATUS {
   namespace SIM {
 
     /** Queue of reservations/events. */
-    typedef std::map<boost::posix_time::time_duration,
-                     COM::CityPair*> EventList_T;
+    typedef std::map<COM::Duration_T, COM::CityPair*> EventList_T;
 
     /** Class wrapping the simulation methods. */
     class Simulator : public COM::CmdAbstract {
@@ -38,12 +35,12 @@ namespace LATUS {
     public:
       // /////////// GETTERS //////////
       /** Get the start date of the simulation. */
-      const boost::gregorian::date& getStartDate () const {
+      const COM::DateTime_T& getStartDate () const {
         return _startDate;
       }
 
       /** Get the end date of the simulation. */
-      const boost::gregorian::date& getEndDate () const {
+      const COM::DateTime_T& getEndDate () const {
         return _endDate;
       }
 
@@ -60,12 +57,12 @@ namespace LATUS {
 
       // /////////// SETTERS //////////
       /** Set the start date of the simulation. */
-      void setStartDate (const boost::gregorian::date& iStartDate) {
+      void setStartDate (const COM::DateTime_T& iStartDate) {
         _startDate = iStartDate;
       }
 
       /** Set the end date of the simulation. */
-      void setEndDate (const boost::gregorian::date& iEndDate) {
+      void setEndDate (const COM::DateTime_T& iEndDate) {
         _endDate = iEndDate;
       }
 
@@ -89,8 +86,8 @@ namespace LATUS {
 
     private:
       /** Constructors. */
-      Simulator (const boost::gregorian::date& iStartDate,
-                 const boost::gregorian::date& iEndDate,
+      Simulator (const COM::DateTime_T& iStartDate,
+                 const COM::DateTime_T& iEndDate,
                  const std::string& iInputFileName);
       
       /** Destructor. */
@@ -105,12 +102,12 @@ namespace LATUS {
       /** Get the current booking date of the simulation.
           <br>The current date of the simulation is the one held by the
           BookingDay object (acting as a wrapper for that). */
-      const boost::gregorian::date& getCurrentDate () const;
+      const COM::DateTime_T& getCurrentDate () const;
       
       /** Set the current booking date of the simulation.
           <br>The current date of the simulation is the one held by the
           BookingDay object (acting as a wrapper for that). */
-      void setCurrentDate (const boost::gregorian::date&) const;
+      void setCurrentDate (const COM::DateTime_T&) const;
       
       /** Add one day to the current date of the simulation.
           <br>The current date of the simulation is the one held by the
@@ -153,8 +150,8 @@ namespace LATUS {
       COM::BookingDay* _bookingDay;
 
       // Simulation length (time length) / date range for the simulation
-      boost::gregorian::date _startDate;
-      boost::gregorian::date _endDate;
+      COM::DateTime_T _startDate;
+      COM::DateTime_T _endDate;
     };
   }
 }

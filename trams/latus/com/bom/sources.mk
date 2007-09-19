@@ -8,6 +8,7 @@ combom_h_sources = $(top_srcdir)/latus/com/bom/BomAbstract.hpp \
 					$(top_srcdir)/latus/com/bom/DepDateDistributionList.hpp \
 					$(top_srcdir)/latus/com/bom/Event.hpp \
 					$(top_srcdir)/latus/com/bom/BookingDay.hpp \
+					$(top_srcdir)/latus/com/bom/CityPairKey.hpp \
 					$(top_srcdir)/latus/com/bom/CityPairList.hpp \
 					$(top_srcdir)/latus/com/bom/CityPair.hpp \
 					$(top_srcdir)/latus/com/bom/CityPairDate.hpp \
@@ -56,6 +57,7 @@ combom_h_sources = $(top_srcdir)/latus/com/bom/BomAbstract.hpp \
 					$(top_srcdir)/latus/com/bom/SegmentCabin.hpp \
 					$(top_srcdir)/latus/com/bom/ClassStruct.hpp
 combom_cc_sources = $(top_srcdir)/latus/com/bom/BookingDay.cpp \
+					$(top_srcdir)/latus/com/bom/CityPairKey.cpp \
 					$(top_srcdir)/latus/com/bom/CityPair.cpp \
 					$(top_srcdir)/latus/com/bom/CityPairDate.cpp \
 					$(top_srcdir)/latus/com/bom/ClassPath.cpp \

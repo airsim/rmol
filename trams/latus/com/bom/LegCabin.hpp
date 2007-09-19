@@ -61,6 +61,11 @@ namespace LATUS {
         return _availabilityPool;
       }
 
+      /** Get the value of the availability. */
+      const Availability_T& getAvailability () const {
+        return _availability;
+      }
+
       /** Get the board point (from the LegDate parent). */
       const AirportCode_T& getBoardPoint () const;
 
@@ -92,6 +97,11 @@ namespace LATUS {
       /** Set the value of availability pool. */
       void setAvailabilityPool (const Availability_T& iAvailabilityPool) {
         _availabilityPool = iAvailabilityPool;
+      }
+
+      /** Set the value of availability. */
+      void setAvailability (const Availability_T& iAvailability) {
+        _availability = iAvailability;
       }
 
       // ///////// Display Methods //////////
@@ -161,6 +171,9 @@ namespace LATUS {
 
       /** Availability Pool between capacity and commited spaces. */
       Availability_T _availabilityPool;
+
+      /** Availability Pool between capacity and commited spaces. */
+      Availability_T _availability;
 
     };
 

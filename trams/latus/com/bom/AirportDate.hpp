@@ -68,6 +68,11 @@ namespace LATUS {
                                      const SegmentNumber_T&,
                                      const AirlineNumber_T&) const;
 
+      /** Get the list of Outbound-Path objects (if any) corresponding to
+          the given destination. */
+      void getOutboundPathList (const AirportCode_T& iDestination,
+                                OutboundPathLightList_T&) const;
+      
 
       // ///////// Setters //////////
       /** Set the NetworkDate (parent class). */

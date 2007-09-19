@@ -19,6 +19,7 @@ namespace LATUS {
   namespace COM {
 
     /** Forward declarations. */
+    struct CityPairKey_T;
     class CityPair;
     class CityPairDate;
     
@@ -38,7 +39,7 @@ namespace LATUS {
       /** Create a new CityPair object.
           <br>This new object is added to the list of instantiated objects.
           @return CityPair& The newly created object. */
-      CityPair& create (const std::string&);
+      CityPair& create (const CityPairKey_T&);
 
       /** Initialise the link between a CityPair and a CityPairDate.
           @param CityPair&

@@ -3,6 +3,8 @@
 // //////////////////////////////////////////////////////////////////////
 // C
 #include <assert.h>
+// STL
+#include <limits>
 // LATUS COM
 #include <latus/com/bom/SegmentCabin.hpp>
 #include <latus/com/bom/LegCabin.hpp>
@@ -13,7 +15,7 @@ namespace LATUS {
 
     // //////////////////////////////////////////////////////////////////////
     SegmentCabin::SegmentCabin (const SegmentCabinKey_T& iKey)
-      : _key (iKey), _segmentDate (NULL), _reservedSeats (0),
+      : _key (iKey), _segmentDate (NULL), _blockSpace (0.0),
         _bookingCounter (0), _commitedSpace (0.0), _availabilityPool (0.0) {
     }
     
@@ -76,7 +78,7 @@ namespace LATUS {
 
     // //////////////////////////////////////////////////////////////////////
     void SegmentCabin::updateCommitedSpaces() {
-      CommitedSpace_T lCommitedSpace = getReservedSeats();
+      CommitedSpace_T lCommitedSpace = getBlockSpace();
       for (ClassStructOrderedList_T::const_iterator itClass =
              _classOrderedList.begin();
            itClass != _classOrderedList.end(); ++itClass) {
@@ -88,8 +90,7 @@ namespace LATUS {
 
     // //////////////////////////////////////////////////////////////////////
     void SegmentCabin::updateAvailabilityPools() {
-      //ToDo: Set the default availabilityPool value in the BasConst.cpp file
-      Availability_T lAvailabilityPool = 300000.0;
+      Availability_T lAvailabilityPool = std::numeric_limits<int>::max();
       for (LegCabinOrderedList_T::const_iterator itLegCabin =
              _legCabinList.begin();
            itLegCabin != _legCabinList.end(); ++itLegCabin) {
@@ -104,12 +105,17 @@ namespace LATUS {
 
      // //////////////////////////////////////////////////////////////////////
     void SegmentCabin::updateAllAvailabilities() {
-      Availability_T lAvailibilityPool = getAvailabilityPool();
-       for (ClassStructOrderedList_T::const_iterator itClass =
+      Availability_T lAvailabilityPool = getAvailabilityPool();
+       for (ClassStructOrderedList_T::iterator itClass =
              _classOrderedList.begin();
            itClass != _classOrderedList.end(); ++itClass) {
-        const ClassStruct_T& lClass = *itClass;
-        //lClass.setAvailabilities(lAvailabilityPool);
+        ClassStruct_T& lClass = *itClass;
+        if ((lClass.getBookingLimitBool()) && (lClass.getBookingLimit()< lAvailabilityPool)) {
+          lClass.setAvailability(lClass.getBookingLimit());
+        }
+        else {
+          lClass.setAvailability(lAvailabilityPool);
+        }
       }
     }
   }

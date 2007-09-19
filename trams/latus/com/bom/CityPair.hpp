@@ -7,13 +7,12 @@
 // STL
 #include <string>
 #include <map>
-// Boost (Extended STL)
-#include <boost/date_time/posix_time/posix_time.hpp>
-#include <boost/date_time/gregorian/gregorian.hpp>
 // GSL Random Number Generation (GSL Reference Manual, version 1.7, Chapter 17)
 #include <gsl/gsl_rng.h>
 // LATUS Common
+#include <latus/com/basic/BasComTypes.hpp>
 #include <latus/com/bom/BomAbstract.hpp>
+#include <latus/com/bom/CityPairKey.hpp>
 #include <latus/com/bom/CityPairDateList.hpp>
 
 namespace LATUS {
@@ -46,13 +45,23 @@ namespace LATUS {
       }
 
       /** Get the primary key. */
-      const std::string& getPrimaryKey() const {
-        return getDescription();
+      const CityPairKey_T& getPrimaryKey() const {
+        return getCityPairKey();
       }
 
-      /** Get the description, e.g., "NCE-LAX". */
-      const std::string& getDescription() const {
-        return _description;
+      /** Get the city pair key. */
+      const CityPairKey_T& getCityPairKey() const {
+        return _key;
+      }
+
+      /** Get the origin (part of the primary key). */
+      const AirportCode_T& getOrigin () const {
+        return _key.airportPairKey.boardPoint;
+      }
+
+      /** Get the destination (part of the primary key). */
+      const AirportCode_T& getDestination () const {
+        return _key.airportPairKey.offPoint;
       }
 
       /** Get the total final demand. */
@@ -66,10 +75,10 @@ namespace LATUS {
       }
 
       /** Get the current simulation/booking date (from BookingDay parent). */
-      const boost::gregorian::date& getCurrentDate() const;
+      const DateTime_T& getCurrentDate() const;
 
       /** Get the current simulation/booking time (from BookingDay parent). */
-      const boost::posix_time::time_duration& getCurrentTime() const;
+      const Duration_T& getCurrentTime() const;
 
 
       // ///////// Setters //////////
@@ -108,12 +117,15 @@ namespace LATUS {
       /** Draw / generate the inter-arrival time, derived from the current
           daily rate, and return the resulting time, i.e.,
           the current time + inter-arrival time. */
-      boost::posix_time::time_duration drawNextEventTime ();
+      Duration_T drawNextEventTime ();
 
 
       // ///////// Display //////////
       /** Get a string describing the key. */
       const std::string describeKey() const;
+
+      /** Get a string describing the short key. */
+      const std::string describeShortKey() const;
 
       /** Display the full CityPair context. */
       void display() const;
@@ -124,7 +136,7 @@ namespace LATUS {
     private:
       /** Constructors are private so as to force the usage of the Factory
           layer. */
-      CityPair (const std::string& iDescription); 
+      CityPair (const CityPairKey_T&); 
 
       /** Destructor. */
       virtual ~CityPair();
@@ -141,7 +153,7 @@ namespace LATUS {
       /** Retrieve, if existing, the CityPairDate corresponding to the
           given departure date.
           <br>If not existing, return the NULL pointer. */
-      CityPairDate* getCityPairDate (const boost::gregorian::date& iDepDate) const;
+      CityPairDate* getCityPairDate (const DateTime_T& iDepDate) const;
       
     private:
       // Parent
@@ -149,8 +161,9 @@ namespace LATUS {
       BookingDay* _bookingDay;
       
       // Attributes
-      /** City Pair Description, e.g., "NCE-LAX". */
-      const std::string _description;
+      /** City Pair Key is composed of the origin and destination (e.g.,
+          "NCE-LAX"). */
+      CityPairKey_T _key;
 
       /** Children: list of CityPairDate objects (wrapping, for a given
           departure date, the distributions for the corresponding class

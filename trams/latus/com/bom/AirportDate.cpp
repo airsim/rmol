@@ -90,5 +90,26 @@ namespace LATUS {
       return getOutboundPathInternal (lOutboundPathKeyString);
     }
     
+    // //////////////////////////////////////////////////////////////////////
+    void AirportDate::
+    getOutboundPathList (const AirportCode_T& iDestination,
+                         OutboundPathLightList_T& ioPathList) const {
+
+      for (OutboundPathList_T::const_iterator itPath =
+             _outboundPathList.begin();
+           itPath != _outboundPathList.end(); ++itPath) {
+        OutboundPath* lOutboundPath_ptr = itPath->second;
+        assert (lOutboundPath_ptr != NULL);
+
+        // Retrieve the destination of the outbound path
+        const AirportCode_T& lDestination = lOutboundPath_ptr->getDestination();
+
+        if (lDestination == iDestination) {
+          ioPathList.push_back (lOutboundPath_ptr);
+        }
+      }
+      
+    }
+    
   }
 }

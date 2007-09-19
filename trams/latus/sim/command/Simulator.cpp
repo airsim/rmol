@@ -13,11 +13,15 @@
 #include <latus/com/bom/CityPair.hpp>
 #include <latus/com/bom/CityPairDate.hpp>
 #include <latus/com/bom/ClassPath.hpp>
+#include <latus/com/bom/OutboundPathList.hpp>
+#include <latus/com/bom/OutboundPath.hpp>
 #include <latus/com/factory/FacBookingDay.hpp>
 #include <latus/com/command/FileMgr.hpp>
 #include <latus/com/service/Logger.hpp>
 // LATUS Inventory
-#include <latus/inv/service/LATUS_INV.hpp>
+#include <latus/inv/service/LATUS_INV.hpp> // Debug
+// LATUS TSP
+#include <latus/tsp/service/LATUS_TSP.hpp>
 // LATUS Main
 #include <latus/sim/command/Simulator.hpp>
 
@@ -26,8 +30,8 @@ namespace LATUS {
   namespace SIM {
 
     // //////////////////////////////////////////////////////////////////////
-    Simulator::Simulator (const boost::gregorian::date& iStartDate,
-                          const boost::gregorian::date& iEndDate,
+    Simulator::Simulator (const COM::DateTime_T& iStartDate,
+                          const COM::DateTime_T& iEndDate,
                           const std::string& iInputFileName)
       : _bookingDay (NULL), _inputFileName (iInputFileName),
         _startDate (iStartDate), _endDate (iEndDate) {
@@ -64,7 +68,7 @@ namespace LATUS {
     }
     
     // //////////////////////////////////////////////////////////////////////
-    const boost::gregorian::date& Simulator::getCurrentDate () const {
+    const COM::DateTime_T& Simulator::getCurrentDate () const {
       // Get the (current) booking date from the BookingDay object.
       const COM::BookingDay& lBookingDay = getBookingDayRef();
       return lBookingDay.getBookingDate();
@@ -72,7 +76,7 @@ namespace LATUS {
       
     // //////////////////////////////////////////////////////////////////////
     void Simulator::
-    setCurrentDate (const boost::gregorian::date& iBookingDate) const {
+    setCurrentDate (const COM::DateTime_T& iBookingDate) const {
       // Set the (current) booking date for the BookingDay object.
       COM::BookingDay& lBookingDay = getBookingDayRef();
       lBookingDay.setBookingDate (iBookingDate);
@@ -95,9 +99,29 @@ namespace LATUS {
       const COM::ClassPath* lClassPath_ptr = iEvent.second;
       assert (lClassPath_ptr != NULL);
 
-      std::cout << lClassPath_ptr->describeKey() << "; "
-                << boost::gregorian::to_iso_extended_string (getCurrentDate())
-                << "; " << iEvent.first << std::endl;
+      // Get the Travel Solutions corresponding to the city pair and
+      // departure date
+      const COM::AirportCode_T& lOrigin = lClassPath_ptr->getOrigin();
+      const COM::AirportCode_T& lDestination = lClassPath_ptr->getDestination();
+      const COM::DateTime_T& lDepDate = lClassPath_ptr->getDepartureDate();
+      COM::OutboundPathLightList_T lTravelSolutionList;
+      TSP::LATUS_TSP::getTravelSolutions (lOrigin, lDestination, lDepDate,
+                                          lTravelSolutionList);
+
+      // Debug
+      LATUS_LOG_DEBUG ("Travel Solutions for " << lOrigin << "-"
+                       << lDestination << " / " << lDepDate);
+      unsigned short idx = 0;
+      for (COM::OutboundPathLightList_T::const_iterator itPath =
+             lTravelSolutionList.begin();
+           itPath != lTravelSolutionList.end(); ++itPath, ++idx) {
+        const COM::OutboundPath* lOutboundPath_ptr = *itPath;
+        assert (lOutboundPath_ptr != NULL);
+
+        std::cout << "[" << idx << "]: "
+                  << lOutboundPath_ptr->describeKey() << std::endl;
+      }
+      
     }
 
     // //////////////////////////////////////////////////////////////////////

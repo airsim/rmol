@@ -9,6 +9,7 @@
 // Boost (Extended STL)
 #include <boost/date_time/gregorian/gregorian.hpp>
 // LATUS Common
+#include <latus/com/basic/BasComTypes.hpp>
 #include <latus/com/factory/FacBomAbstract.hpp>
 
 namespace LATUS {
@@ -49,7 +50,8 @@ namespace LATUS {
           <br>Any missing intermediary object (CityPair and/or CityPairDate)
           will be created and added to the corresponding children list. */
       static void createClassPath (BookingDay&,
-                                   const std::string& iCityPairDescription,
+                                   const AirportCode_T& iOrigin,
+                                   const AirportCode_T& iDestination,
                                    const boost::gregorian::date& iDepDate,
                                    const std::string& iClassPathDescription,
                                    const double iDistributionMean,

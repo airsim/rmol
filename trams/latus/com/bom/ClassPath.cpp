@@ -1,6 +1,8 @@
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
+// C
+#include <assert.h>
 // STL
 #include <iostream>
 #include <sstream>
@@ -36,7 +38,7 @@ namespace LATUS {
       
       const std::string& lParentKeyDescription = _cityPairDate->describeKey();
       std::ostringstream ostr;
-      ostr << lParentKeyDescription << ";\"" << _description << "\"";
+      ostr << lParentKeyDescription << "; \"" << _description << "\"";
       return ostr.str();
     }
     
@@ -50,19 +52,37 @@ namespace LATUS {
     }
 
     // //////////////////////////////////////////////////////////////////////
-    const boost::gregorian::date& ClassPath::getCurrentDate() const {
+    CityPairDate& ClassPath::getCityPairDateRef() const {
+      assert (_cityPairDate != NULL);
+      return *_cityPairDate;
+    }
+    
+    // //////////////////////////////////////////////////////////////////////
+    const AirportCode_T& ClassPath::getOrigin () const {
+      assert (_cityPairDate != NULL);
+      return _cityPairDate->getOrigin();
+    }
+
+    // //////////////////////////////////////////////////////////////////////
+    const AirportCode_T& ClassPath::getDestination () const {
+      assert (_cityPairDate != NULL);
+      return _cityPairDate->getDestination();
+    }
+
+    // //////////////////////////////////////////////////////////////////////
+    const DateTime_T& ClassPath::getCurrentDate() const {
       assert (_cityPairDate != NULL);
       return _cityPairDate->getCurrentDate();
     }
 
     // //////////////////////////////////////////////////////////////////////
-    const boost::gregorian::date& ClassPath::getDepartureDate() const {
+    const DateTime_T& ClassPath::getDepartureDate() const {
       assert (_cityPairDate != NULL);
       return _cityPairDate->getDepartureDate();
     }
     
     // //////////////////////////////////////////////////////////////////////
-    const boost::gregorian::date_duration& ClassPath::getCurrentDTD() const {
+    const DateOffSet_T& ClassPath::getCurrentDTD() const {
       assert (_cityPairDate != NULL);
       return _cityPairDate->getCurrentDTD();
     }
@@ -95,8 +115,8 @@ namespace LATUS {
       oDailyRate = 0.0;
       
       // By construction, the demand occurs before the departure date.
-      const boost::gregorian::date& lCurrentDate = getCurrentDate();
-      const boost::gregorian::date& lDepartureDate = getDepartureDate();
+      const DateTime_T& lCurrentDate = getCurrentDate();
+      const DateTime_T& lDepartureDate = getDepartureDate();
       assert (lCurrentDate < lDepartureDate);
       
       // Simulation length-time (expressed as a number of days)
@@ -107,7 +127,7 @@ namespace LATUS {
       // return (_totalFinalDemand / lSimulationLengthInDays);
       
       // Current length-time (expressed as a number of days)
-      const boost::gregorian::date_duration lCurrentDuration = lCurrentDate
+      const DateOffSet_T lCurrentDuration = lCurrentDate
         - (lDepartureDate - DEFAULT_FLIGHT_DATE_RESERVATION_DURATION);
       const double lCurrentDurationInDays =
         static_cast<const double> (lCurrentDuration.days());

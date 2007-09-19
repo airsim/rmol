@@ -32,11 +32,11 @@ namespace LATUS {
     /** Default availability for ClassStruct_T. */
     extern const Availability_T DEFAULT_CLASS_AVAILABILITY;
 
-    /** Default boolean for booking Constraint availability for ClassStruct_T. */
-    extern const BookingConstraint_T DEFAULT_CLASS_BOOKING_CONSTRAINT;
+    /** Default boolean for booking limit availability for ClassStruct_T. */
+    extern const BookingLimitBool_T DEFAULT_CLASS_BOOKING_LIMIT_BOOL;
 
-    /** Default booking constraint value for ClassStruct_T. */
-    extern const BookingConstraintValue_T DEFAULT_CLASS_BOOKING_CONSTRAINT_VALUE;
+    /** Default booking limit value for ClassStruct_T. */
+    extern const BookingLimit_T DEFAULT_CLASS_BOOKING_LIMIT;
 
     /** Default over-booking rate for ClassStruct_T. */
     extern const OverbookingRate_T DEFAULT_CLASS_OVERBOOKING_RATE;

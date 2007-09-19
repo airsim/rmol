@@ -35,11 +35,10 @@ namespace LATUS {
     }
 
     // //////////////////////////////////////////////////////////////////////
-    CityPair& FacCityPair::
-    create (const std::string& iDescription) {
+    CityPair& FacCityPair::create (const CityPairKey_T& iKey) {
       CityPair* aCityPair_ptr = NULL;
 
-      aCityPair_ptr = new CityPair (iDescription);
+      aCityPair_ptr = new CityPair (iKey);
       assert (aCityPair_ptr != NULL);
 
       // The new object is added to the Bom pool
