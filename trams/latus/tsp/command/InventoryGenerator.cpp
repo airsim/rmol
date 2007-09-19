@@ -73,6 +73,16 @@ namespace LATUS {
     createRouting (COM::WorldSchedule& ioWorldSchedule) {
       COM::FacWorldSchedule::createRouting (ioWorldSchedule);
     }
+
+     // //////////////////////////////////////////////////////////////////////
+    void InventoryGenerator::
+    recalculateAvailabilities (COM::WorldSchedule& ioWorldSchedule) {
+      ioWorldSchedule.updateBookingAndSeatCounters ();
+      ioWorldSchedule.updateCommitedSpaces ();
+      ioWorldSchedule.updateAvailabilityPools ();
+      ioWorldSchedule.updateAllAvailabilities ();
+      
+    }
       
     // //////////////////////////////////////////////////////////////////////
     COM::Inventory& InventoryGenerator::

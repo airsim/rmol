@@ -67,6 +67,12 @@ namespace LATUS {
     }
 
     // //////////////////////////////////////////////////////////////////////
+    Inventory& LATUS_ServiceAbstract::
+    getAirlineInventory (const AirlineCode_T& iAirlineCode) {
+      return ServiceContextManager::getAirlineInventory (iAirlineCode);
+    }
+
+    // //////////////////////////////////////////////////////////////////////
     void LATUS_ServiceAbstract::
     setSimulationRunNumber (const int iSimulationRunNumber) {
       ServiceContextManager::setSimulationRunNumber (iSimulationRunNumber);
@@ -94,13 +100,6 @@ namespace LATUS {
     void LATUS_ServiceAbstract::
     setScheduleInputFilename (const std::string& iInputFilename) {
       ServiceContextManager::setScheduleInputFilename (iInputFilename);
-    }
-    
-    // //////////////////////////////////////////////////////////////////////
-    void LATUS_ServiceAbstract::
-    setOwnerAirlineCode (const AirlineCode_T& iAirlineCode,
-                         const std::string& iModuleName) {
-      ServiceContextManager::setOwnerAirlineCode (iAirlineCode, iModuleName);
     }
     
     // //////////////////////////////////////////////////////////////////////
@@ -138,10 +137,16 @@ namespace LATUS {
 
     // //////////////////////////////////////////////////////////////////////
     void LATUS_ServiceAbstract::
-    createAndRegisterSpecificInvServiceContext(const AirlineCode_T& iAirlineCode,
-                                               const std::string& iModuleName) {
+    createAndRegisterSpecificInvServiceContext (const AirlineCode_T& iAirlineCode) {
       ServiceContextManager::
-        createAndRegisterSpecificInvServiceContext (iAirlineCode, iModuleName);
+        createAndRegisterSpecificInvServiceContext (iAirlineCode);
+    }
+
+    // //////////////////////////////////////////////////////////////////////
+    void LATUS_ServiceAbstract::
+    createAndRegisterSpecificRmsServiceContext (const AirlineCode_T& iAirlineCode) {
+      ServiceContextManager::
+        createAndRegisterSpecificRmsServiceContext (iAirlineCode);
     }
 
     // //////////////////////////////////////////////////////////////////////

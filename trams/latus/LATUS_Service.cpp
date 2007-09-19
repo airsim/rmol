@@ -44,19 +44,11 @@ namespace LATUS {
 
     // Register the Inventory module for BA
     COM::LATUS_ServiceAbstract::
-      createAndRegisterSpecificInvServiceContext (COM::DEFAULT_LATUS_INV1_AIRLINE_CODE,
-                                                  COM::DEFAULT_LATUS_INV1_MODULE_NAME);
-    COM::LATUS_ServiceAbstract::
-      setOwnerAirlineCode (COM::DEFAULT_LATUS_INV1_AIRLINE_CODE,
-                           COM::DEFAULT_LATUS_INV1_MODULE_NAME);
+      createAndRegisterSpecificInvServiceContext (COM::DEFAULT_LATUS_INV1_AIRLINE_CODE);
 
     // Register the Inventory module for AA
     COM::LATUS_ServiceAbstract::
-      createAndRegisterSpecificInvServiceContext (COM::DEFAULT_LATUS_INV2_AIRLINE_CODE,
-                                                  COM::DEFAULT_LATUS_INV2_MODULE_NAME);
-    COM::LATUS_ServiceAbstract::
-      setOwnerAirlineCode (COM::DEFAULT_LATUS_INV2_AIRLINE_CODE,
-                           COM::DEFAULT_LATUS_INV2_MODULE_NAME);
+      createAndRegisterSpecificInvServiceContext (COM::DEFAULT_LATUS_INV2_AIRLINE_CODE);
   }
 
   // //////////////////////////////////////////////////////////////////////

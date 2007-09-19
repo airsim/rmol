@@ -8,7 +8,6 @@
 // LATUS Common
 #include <latus/com/basic/BasConst_BOOST_DateTime.hpp>
 #include <latus/com/basic/BasConst_BookingDay.hpp>
-#include <latus/com/basic/BasConst_LATUS_Service.hpp> // DEBUG
 #include <latus/com/bom/Event.hpp>
 #include <latus/com/bom/BookingDay.hpp>
 #include <latus/com/bom/CityPair.hpp>
@@ -168,8 +167,8 @@ namespace LATUS {
       const COM::DateTime_T lDepartureDate (2007, boost::gregorian::Jun, 12);
       COM::BucketAvailabilities_T lAvlList;
 
-      const std::string anInventoryModuleName (COM::DEFAULT_LATUS_INV1_MODULE_NAME);
-      INV::LATUS_INV::calculateAvailabilities (anInventoryModuleName,
+      const COM::AirlineCode_T lAirlineCode ("BA");
+      INV::LATUS_INV::calculateAvailabilities (lAirlineCode,
                                                lOrigin, lDestination,
                                                lDepartureDate, lAvlList);
 

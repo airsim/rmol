@@ -8,6 +8,7 @@
 #include <latus/com/basic/BasConst_TravelSolution.hpp>
 #include <latus/com/basic/BasConst_BookingDay.hpp>
 #include <latus/com/basic/BasConst_LATUS_Service.hpp>
+#include <latus/com/basic/BasConst_ServiceContextManagement.hpp>
 #include <latus/com/basic/BasConst_CityPair.hpp>
 #include <latus/com/basic/BasConst_Period_BOM.hpp>
 #include <latus/com/basic/BasConst_ClassStruct.hpp>
@@ -67,7 +68,15 @@ namespace LATUS {
     
     /** Default availability for ClassStruct_T. */
     const Availability_T DEFAULT_CLASS_AVAILABILITY = 0.0;
-    
+
+     /** Default boolean for booking Constraint availability for ClassStruct_T. */
+    const BookingConstraint_T DEFAULT_CLASS_BOOKING_CONSTRAINT = false;
+
+    /** Default booking constraint value for ClassStruct_T. */
+    const BookingConstraintValue_T DEFAULT_CLASS_BOOKING_CONSTRAINT_VALUE = 0.0;
+
+     /** Default over-booking rate for ClassStruct_T. */
+    const OverbookingRate_T DEFAULT_CLASS_OVERBOOKING_RATE = 0.0;
 
     // //////// Travel Solutions ///////
     /** Default Minimum connection time. */
@@ -86,13 +95,16 @@ namespace LATUS {
     const DateOffSet_T DEFAULT_FLIGHT_DATE_RESERVATION_DURATION (365);
 
     
-    // ///////// LATUS Service /////////
+    // ///////// Service Context Management /////////
 
-    /** Default number of airlines for the LATUS_Service. */
-    const unsigned int DEFAULT_LATUS_SERVICE_NUMBER_OF_AIRLINES = 1;
-
-    /** Default name for the Simulator module. */
+    /** Default name for the Simulator (SIM) module. */
     const std::string DEFAULT_LATUS_SIM_MODULE_NAME ("SIM");
+
+    /** Default name for the Discrete Event Generator (DEG) module. */
+    const std::string DEFAULT_LATUS_DEG_MODULE_NAME ("DEG");
+
+    /** Default name for the User Choice Model (UCM) module. */
+    const std::string DEFAULT_LATUS_UCM_MODULE_NAME ("UCM");
 
     /** Default name for the Central Reservation System (CRS) module. */
     const std::string DEFAULT_LATUS_CRS_MODULE_NAME ("CRS");
@@ -100,21 +112,21 @@ namespace LATUS {
     /** Default name for the Travel Service Provider (TSP) module. */
     const std::string DEFAULT_LATUS_TSP_MODULE_NAME ("TSP");
 
-    /** Default name for the Discrete Event Generator (DEG) module. */
-    const std::string DEFAULT_LATUS_DEG_MODULE_NAME ("DEG");
+    /** Default name for the Fare Quote (FQT) module. */
+    const std::string DEFAULT_LATUS_FQT_MODULE_NAME ("FQT");
 
-    /** Default name for the first Inventory (INV) module. */
-    const std::string DEFAULT_LATUS_INV1_MODULE_NAME ("BA");
+    /** Default root name for the Inventory (INV) module. */
+    const std::string DEFAULT_LATUS_INV_ROOT_MODULE_NAME ("INV");
 
-    /** Default name for the first Inventory (INV) airline owner. */
-    const std::string DEFAULT_LATUS_INV1_AIRLINE_CODE ("BA");
+    /** Default root name for the Revenue Management System (RMS) module. */
+    const std::string DEFAULT_LATUS_RMS_ROOT_MODULE_NAME ("RMS");
 
-    /** Default name for the second Inventory (INV) module. */
-    const std::string DEFAULT_LATUS_INV2_MODULE_NAME ("AA");
-
-    /** Default name for the second Inventory (INV) airline owner. */
-    const std::string DEFAULT_LATUS_INV2_AIRLINE_CODE ("AA");
     
+    // ///////// LATUS Service /////////
+
+    /** Default number of airlines for the LATUS_Service. */
+    const unsigned int DEFAULT_LATUS_SERVICE_NUMBER_OF_AIRLINES = 1;
+
     /** Maximum number of legs linked to a single flight-date.
         <br>Note that the number of derived segments is n*(n+1)/2 if n
         is the number of legs. */
@@ -123,6 +135,12 @@ namespace LATUS {
     /** Maximum number of segments linked to a single O&D
         (Origin & Destination). */
     const unsigned short MAXIMUM_NUMBER_OF_SEGMENTS_IN_OND = 3;
+
+    /** Default name for the first Inventory (INV) airline owner. */
+    const std::string DEFAULT_LATUS_INV1_AIRLINE_CODE ("BA");
+
+    /** Default name for the second Inventory (INV) airline owner. */
+    const std::string DEFAULT_LATUS_INV2_AIRLINE_CODE ("AA");
   }
 
 }

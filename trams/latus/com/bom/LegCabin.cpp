@@ -6,6 +6,7 @@
 // LATUS COM
 #include <latus/com/bom/LegDate.hpp>
 #include <latus/com/bom/LegCabin.hpp>
+#include <latus/com/bom/SegmentCabin.hpp>
 
 namespace LATUS {
 
@@ -13,7 +14,8 @@ namespace LATUS {
 
     // //////////////////////////////////////////////////////////////////////
     LegCabin::LegCabin (const LegCabinKey_T& iKey)
-      : _key (iKey), _legDate (NULL) {
+      : _key (iKey), _legDate (NULL),
+        _soldSeat (0), _commitedSpace (0.0), _availabilityPool (0.0) {
     }
     
     // //////////////////////////////////////////////////////////////////////
@@ -36,12 +38,43 @@ namespace LATUS {
       // Store current formatting flags of std::cout
       std::ios::fmtflags oldFlags = std::cout.flags();
 
-      std::cout << describeKey()
-                << " : " << _capacity
+      std::cout << describeKey() << " Capa: " << _capacity 
+                << ", SSeats: " << _soldSeat 
                 << std::endl;
 
       // Reset formatting flags of std::cout
       std::cout.flags (oldFlags);
+    }
+
+    // //////////////////////////////////////////////////////////////////////
+    //ToDo: Update the seatCounters from the buckets
+    void LegCabin::updateBookingAndSeatCounters() {
+    }
+
+     // //////////////////////////////////////////////////////////////////////
+    void LegCabin::updateCommitedSpaces() {
+      CommitedSpace_T lCommitedSpace = 0.0;
+      for (SegmentCabinList_T::const_iterator itSegmentCabin =
+             _segmentCabinList.begin();
+           itSegmentCabin != _segmentCabinList.end(); itSegmentCabin++) {
+        const SegmentCabin* lSegmentCabin_ptr = itSegmentCabin->second;
+        assert (lSegmentCabin_ptr != NULL);
+
+        lCommitedSpace += (lSegmentCabin_ptr->getCommitedSpace());
+      }
+      setCommitedSpace (lCommitedSpace);
+    }
+
+    // //////////////////////////////////////////////////////////////////////
+    void LegCabin::updateAvailabilityPools() {
+      Availability_T lAvailabilityPool = (getCapacity()-getCommitedSpace());
+      setAvailabilityPool (lAvailabilityPool);
+    }
+
+     // //////////////////////////////////////////////////////////////////////
+    //ToDo
+    void LegCabin::updateAllAvailabilities() {
+      
     }
     
     // //////////////////////////////////////////////////////////////////////

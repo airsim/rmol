@@ -45,6 +45,16 @@ namespace LATUS {
         return _key;
       }
 
+      /** Get the booking number of the classStruct. */
+      const BookingNumber_T getBookingNumber() const {
+        return _bookingNumber;
+      }
+
+       /** Get the overbooking rate dedicated to the class. */
+      const OverbookingRate_T getOverbookingRate() const {
+        return _overbookingRate;
+      }
+
       // ///////// Setters //////////
       /** Set the SegmentCabin (parent class). */
       void setSegmentCabin (SegmentCabin* ioSegmentCabinPtr) {
@@ -77,6 +87,9 @@ namespace LATUS {
       // Attributes
       BookingNumber_T _bookingNumber;
       Availability_T _availability;
+      BookingConstraint_T _bookingConstraint;
+      BookingConstraintValue_T _bookingConstraintValue;
+      OverbookingRate_T _overbookingRate;
       
     };
 

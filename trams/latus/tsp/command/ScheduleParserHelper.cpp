@@ -681,10 +681,6 @@ namespace LATUS {
         LATUS_LOG_ERROR ("Parsing of schedule input file: " << _filename
                          << " failed.");
       }
-
-      // Complete the WorldSchedule BOM building: create the routings
-      // for all the flights of the (world) schedule.
-      InventoryGenerator::createRouting (_worldSchedule);
      }
     
   }

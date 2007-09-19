@@ -54,6 +54,62 @@ namespace LATUS {
       // Reset formatting flags of std::cout
       std::cout.flags (oldFlags);
     }
+
+    // //////////////////////////////////////////////////////////////////////
+    void LegDate::updateBookingsAndSeatCounters() const {
+
+      for (LegCabinOrderedList_T::const_iterator itLegCabin =
+             _legCabinOrderedList.begin();
+           itLegCabin != _legCabinOrderedList.end(); itLegCabin++) {
+        LegCabin* lLegCabin_ptr = *itLegCabin;
+        assert (lLegCabin_ptr != NULL);
+
+        lLegCabin_ptr->updateBookingAndSeatCounters();
+      }
+            
+    }
+
+    // //////////////////////////////////////////////////////////////////////
+    void LegDate::updateCommitedSpaces() const {
+
+      for (LegCabinOrderedList_T::const_iterator itLegCabin =
+             _legCabinOrderedList.begin();
+           itLegCabin != _legCabinOrderedList.end(); itLegCabin++) {
+        LegCabin* lLegCabin_ptr = *itLegCabin;
+        assert (lLegCabin_ptr != NULL);
+
+        lLegCabin_ptr->updateCommitedSpaces();
+      }
+            
+    }
+
+    // //////////////////////////////////////////////////////////////////////
+    void LegDate::updateAvailabilityPools() const {
+
+      for (LegCabinOrderedList_T::const_iterator itLegCabin =
+             _legCabinOrderedList.begin();
+           itLegCabin != _legCabinOrderedList.end(); itLegCabin++) {
+        LegCabin* lLegCabin_ptr = *itLegCabin;
+        assert (lLegCabin_ptr != NULL);
+
+        lLegCabin_ptr->updateAvailabilityPools();
+      }
+            
+    }
+
+    // //////////////////////////////////////////////////////////////////////
+    void LegDate::updateAllAvailabilities() const {
+
+      for (LegCabinOrderedList_T::const_iterator itLegCabin =
+             _legCabinOrderedList.begin();
+           itLegCabin != _legCabinOrderedList.end(); itLegCabin++) {
+        LegCabin* lLegCabin_ptr = *itLegCabin;
+        assert (lLegCabin_ptr != NULL);
+
+        lLegCabin_ptr->updateAllAvailabilities();
+      }
+            
+    }
     
     // //////////////////////////////////////////////////////////////////////
     const Duration_T LegDate::getTimeOffSet() const {

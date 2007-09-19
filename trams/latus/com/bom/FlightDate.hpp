@@ -85,6 +85,19 @@ namespace LATUS {
       /** Display the full FlightDate context. */
       void display() const;
 
+       // ///////// Counting Methods //////////
+      /** Update counters. */
+      void updateBookingsAndSeatCounters() const;
+
+      /** Update the commited spaces in cabins. */
+      void updateCommitedSpaces() const;
+
+      /** Update the availabilities from leg to segment cabins. */
+      void updateAvailabilityPools() const;
+
+       /** Update all availabilities. */
+      void updateAllAvailabilities() const;
+
       
     private:
       /** Constructors are private so as to force the usage of the Factory

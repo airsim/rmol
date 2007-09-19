@@ -63,6 +63,98 @@ namespace LATUS {
     }
 
     // //////////////////////////////////////////////////////////////////////
+    void FlightDate::updateBookingsAndSeatCounters() const {
+
+      for (LegDateOrderedList_T::const_iterator itLegDate =
+             _legDateOrderedList.begin();
+           itLegDate != _legDateOrderedList.end(); ++itLegDate) {
+        const LegDate* lLegDate_ptr = *itLegDate;
+        assert (lLegDate_ptr != NULL);
+
+        lLegDate_ptr->updateBookingsAndSeatCounters ();
+      }
+      
+      for (SegmentDateOrderedList_T::const_iterator itSegmentDate =
+             _segmentDateOrderedList.begin();
+           itSegmentDate != _segmentDateOrderedList.end(); ++itSegmentDate) {
+        const SegmentDate* lSegmentDate_ptr = *itSegmentDate;
+        assert (lSegmentDate_ptr != NULL);
+
+        lSegmentDate_ptr->updateBookingAndSeatCounters();
+      }
+      
+    }
+
+     // //////////////////////////////////////////////////////////////////////
+    void FlightDate::updateCommitedSpaces() const {
+      
+      for (SegmentDateOrderedList_T::const_iterator itSegmentDate =
+             _segmentDateOrderedList.begin();
+           itSegmentDate != _segmentDateOrderedList.end(); ++itSegmentDate) {
+        const SegmentDate* lSegmentDate_ptr = *itSegmentDate;
+        assert (lSegmentDate_ptr != NULL);
+
+        lSegmentDate_ptr->updateCommitedSpaces();
+      }
+      
+      for (LegDateOrderedList_T::const_iterator itLegDate =
+             _legDateOrderedList.begin();
+           itLegDate != _legDateOrderedList.end(); ++itLegDate) {
+        const LegDate* lLegDate_ptr = *itLegDate;
+        assert (lLegDate_ptr != NULL);
+
+        lLegDate_ptr->updateCommitedSpaces ();
+      }
+      
+    }
+
+    // //////////////////////////////////////////////////////////////////////
+    void FlightDate::updateAvailabilityPools() const {
+
+      for (LegDateOrderedList_T::const_iterator itLegDate =
+             _legDateOrderedList.begin();
+           itLegDate != _legDateOrderedList.end(); ++itLegDate) {
+        const LegDate* lLegDate_ptr = *itLegDate;
+        assert (lLegDate_ptr != NULL);
+
+        lLegDate_ptr->updateAvailabilityPools ();
+      }
+      
+      for (SegmentDateOrderedList_T::const_iterator itSegmentDate =
+             _segmentDateOrderedList.begin();
+           itSegmentDate != _segmentDateOrderedList.end(); ++itSegmentDate) {
+        const SegmentDate* lSegmentDate_ptr = *itSegmentDate;
+        assert (lSegmentDate_ptr != NULL);
+
+        lSegmentDate_ptr->updateAvailabilityPools();
+      }
+      
+    }
+
+    // //////////////////////////////////////////////////////////////////////
+    void FlightDate::updateAllAvailabilities() const {
+
+      for (LegDateOrderedList_T::const_iterator itLegDate =
+             _legDateOrderedList.begin();
+           itLegDate != _legDateOrderedList.end(); ++itLegDate) {
+        const LegDate* lLegDate_ptr = *itLegDate;
+        assert (lLegDate_ptr != NULL);
+
+        lLegDate_ptr->updateAllAvailabilities ();
+      }
+      
+      for (SegmentDateOrderedList_T::const_iterator itSegmentDate =
+             _segmentDateOrderedList.begin();
+           itSegmentDate != _segmentDateOrderedList.end(); ++itSegmentDate) {
+        const SegmentDate* lSegmentDate_ptr = *itSegmentDate;
+        assert (lSegmentDate_ptr != NULL);
+
+        lSegmentDate_ptr->updateAllAvailabilities();
+      }
+      
+    }
+
+    // //////////////////////////////////////////////////////////////////////
     const AirlineCode_T& FlightDate::getAirlineCode() const {
       assert (_inventory != NULL);
       return _inventory->getAirlineCode();

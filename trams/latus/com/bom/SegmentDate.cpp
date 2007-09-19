@@ -67,6 +67,62 @@ namespace LATUS {
       // Reset formatting flags of std::cout
       std::cout.flags (oldFlags);
     }
+
+    // //////////////////////////////////////////////////////////////////////
+    void SegmentDate::updateBookingAndSeatCounters() const {
+
+      for (SegmentCabinOrderedList_T::const_iterator itSegmentCabin =
+             _segmentCabinOrderedList.begin();
+           itSegmentCabin != _segmentCabinOrderedList.end(); ++itSegmentCabin) {
+        SegmentCabin* lSegmentCabin_ptr = *itSegmentCabin;
+        assert (lSegmentCabin_ptr != NULL);
+
+        lSegmentCabin_ptr->updateBookingAndSeatCounters();
+      }
+      
+    }
+
+    // //////////////////////////////////////////////////////////////////////
+    void SegmentDate::updateCommitedSpaces() const {
+
+      for (SegmentCabinOrderedList_T::const_iterator itSegmentCabin =
+             _segmentCabinOrderedList.begin();
+           itSegmentCabin != _segmentCabinOrderedList.end(); ++itSegmentCabin) {
+        SegmentCabin* lSegmentCabin_ptr = *itSegmentCabin;
+        assert (lSegmentCabin_ptr != NULL);
+
+        lSegmentCabin_ptr->updateCommitedSpaces();
+      }
+      
+    }
+
+    // //////////////////////////////////////////////////////////////////////
+    void SegmentDate::updateAvailabilityPools() const {
+
+      for (SegmentCabinOrderedList_T::const_iterator itSegmentCabin =
+             _segmentCabinOrderedList.begin();
+           itSegmentCabin != _segmentCabinOrderedList.end(); ++itSegmentCabin) {
+        SegmentCabin* lSegmentCabin_ptr = *itSegmentCabin;
+        assert (lSegmentCabin_ptr != NULL);
+
+        lSegmentCabin_ptr->updateAvailabilityPools();
+      }
+      
+    }
+
+    // //////////////////////////////////////////////////////////////////////
+    void SegmentDate::updateAllAvailabilities() const {
+
+      for (SegmentCabinOrderedList_T::const_iterator itSegmentCabin =
+             _segmentCabinOrderedList.begin();
+           itSegmentCabin != _segmentCabinOrderedList.end(); ++itSegmentCabin) {
+        SegmentCabin* lSegmentCabin_ptr = *itSegmentCabin;
+        assert (lSegmentCabin_ptr != NULL);
+
+        lSegmentCabin_ptr->updateAllAvailabilities();
+      }
+      
+    }
     
     // //////////////////////////////////////////////////////////////////////
     const AirlineCode_T& SegmentDate::getAirlineCode() const {

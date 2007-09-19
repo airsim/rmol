@@ -94,10 +94,6 @@ namespace LATUS {
       /** Set the end date of the simulation. */
       static void setEndDate (const DateTime_T&);
 
-      /** Set the owner airline code. */
-      static void setOwnerAirlineCode (const AirlineCode_T&,
-                                       const std::string& iModuleName);
-      
 
       // //////// Getters for the internal BOM ///////
       /** Set the WorldSchedule object reference. */
@@ -108,6 +104,9 @@ namespace LATUS {
 
       /** Get the Inventory object reference. */
       static Inventory& getInventory (const std::string& iModuleName);
+
+      /** Get the Inventory object reference. */
+      static Inventory& getAirlineInventory (const AirlineCode_T&);
 
       
       // //////// Setters for the internal BOM ///////
@@ -145,15 +144,13 @@ namespace LATUS {
           <br>That method in turn calls
           ServiceContextManager::createAndRegisterSpecificServiceContext(). */
       static void
-      createAndRegisterSpecificInvServiceContext (const AirlineCode_T&,
-                                                  const std::string& iModuleName);
+      createAndRegisterSpecificInvServiceContext (const AirlineCode_T&);
 
       /** Create and register a specific RMS ServiceContext object.
           <br>That method in turn calls
           ServiceContextManager::createAndRegisterSpecificServiceContext(). */
       static void
-      createAndRegisterSpecificRmsServiceContext (const AirlineCode_T&,
-                                                  const std::string& iModuleName);
+      createAndRegisterSpecificRmsServiceContext (const AirlineCode_T&);
 
       /** Get the number of registered Inventory specific service contexts. */
       static unsigned short getInvSpecificContextNumber();

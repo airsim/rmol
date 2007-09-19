@@ -49,6 +49,9 @@ namespace LATUS {
         <br>The capacity is expressed as a double to cope with overbooking. */
     typedef double CabinCapacity_T;
 
+     /** Define the number of seat which could not be used for the booking. */
+    typedef int ReservedSeats_T;
+
     /** Define the class code (product segment class, e.g., H, B, K, etc.). */
     typedef std::string ClassCode_T;
     
@@ -61,6 +64,18 @@ namespace LATUS {
     /** Define a number (of travellers) in party. */
     typedef int BookingNumber_T;
 
+     /** Define a number of commited spaces in a cabin. */
+    typedef double CommitedSpace_T;
+
+    /** Define availibility of booking constraint. */
+    typedef bool BookingConstraint_T;
+
+    /** Define the value of the booking constraint. */
+    typedef double BookingConstraintValue_T;
+
+    /** Define the rate of overbooking */
+    typedef double OverbookingRate_T;
+    
     /** Define the list of class codes as a string. */
     typedef std::string ClassList_String_T;
 
@@ -69,6 +84,7 @@ namespace LATUS {
 
     /** Define a number of airlines (in a path). */
     typedef unsigned short AirlineNumber_T;
+
   }
 }
 #endif // __COM_BAS_BASCOMTYPES_HPP

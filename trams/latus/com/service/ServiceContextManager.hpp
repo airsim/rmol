@@ -170,14 +170,25 @@ namespace LATUS {
           <br>The INV ServiceContext is initialised with the given module name.
           <br>That method calls createAndRegisterSpecificServiceContext()
           with the module type (i.e., INV). */
-      static void createAndRegisterSpecificInvServiceContext (const AirlineCode_T&,
-                                                              const std::string& iModuleName);
+      void createAndRegisterSpecificInvServiceContextInternal (const AirlineCode_T&);
+
+      /** Create and register a specific INV ServiceContext object.
+          <br>The INV ServiceContext is initialised with the given module name.
+          <br>That method calls createAndRegisterSpecificServiceContext()
+          with the module type (i.e., INV). */
+      static void createAndRegisterSpecificInvServiceContext (const AirlineCode_T&);
 
       /** Create and register a specific RMS ServiceContext object.
           <br>The RMS ServiceContext is initialised with the given module name.
           <br>That method calls createAndRegisterSpecificServiceContext()
           with the module type (i.e., RMS). */
-      static void createAndRegisterSpecificRmsServiceContext (const std::string& iModuleName);
+      void createAndRegisterSpecificRmsServiceContextInternal (const AirlineCode_T&);
+
+      /** Create and register a specific RMS ServiceContext object.
+          <br>The RMS ServiceContext is initialised with the given module name.
+          <br>That method calls createAndRegisterSpecificServiceContext()
+          with the module type (i.e., RMS). */
+      static void createAndRegisterSpecificRmsServiceContext (const AirlineCode_T&);
 
       /** Create and register a specific ServiceContext object (i.e., add it
           to the dedicated list).

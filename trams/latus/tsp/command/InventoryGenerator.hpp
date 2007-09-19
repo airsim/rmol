@@ -41,8 +41,7 @@ namespace LATUS {
           Flight-Period, and add them to the given WorldSchedule. */
       static void createFlightDates (COM::WorldSchedule&,
                                      const FlightPeriodStruct_T&);
-
-      /** Generate an Inventory. */
+       /** Generate an Inventory. */
       static COM::Inventory& createInventory (COM::WorldSchedule&,
                                               const COM::AirlineCode_T&);
       
@@ -69,9 +68,14 @@ namespace LATUS {
       /** Generate a Class. */
       static void createClass (COM::SegmentCabin&, const COM::ClassCode_T&);
 
+    public:
       /** Create the routing between the legs and segments for all the
           Inventories of the given WorldSchedule object. */
       static void createRouting (COM::WorldSchedule&);
+
+       /** Compute the number of available seats
+          for all flights. */
+      static void recalculateAvailabilities (COM::WorldSchedule&);
     };
 
   }

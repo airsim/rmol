@@ -17,6 +17,7 @@
 // LATUS TSP
 #include <latus/tsp/command/ScheduleParserHelper.hpp>
 #include <latus/tsp/command/ScheduleParser.hpp>
+#include <latus/tsp/command/InventoryGenerator.hpp>
 
 namespace LATUS {
 
@@ -36,6 +37,14 @@ namespace LATUS {
       // corresponding Inventories for the airlines.
       lFlightPeriodParser.generateInventories ();
 
+      // Complete the WorldSchedule BOM building: create the routings
+      // for all the flights of the (world) schedule.
+      InventoryGenerator::createRouting (oWorldSchedule);
+
+      // Complete the WorldSchedule BOM building: compute the number of
+      // available seats for all flights.
+       InventoryGenerator::recalculateAvailabilities (oWorldSchedule);
+      
       return oWorldSchedule;
     }
 

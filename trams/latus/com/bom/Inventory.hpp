@@ -68,7 +68,6 @@ namespace LATUS {
         _worldSchedule = ioWorldSchedulePtr;
       }
 
-
       // ///////// Display Methods //////////
       /** Get a string describing the key. */
       const std::string describeKey() const;
@@ -78,6 +77,19 @@ namespace LATUS {
 
       /** Display the full Inventory context. */
       void display() const;
+
+       // ///////// Counting methods  //////////
+      /** Update the counters. */
+       void updateBookingsAndSeatCounters() const;
+
+      /** Update the commited spaces in cabins. */
+       void updateCommitedSpaces() const;
+
+      /** Update the availabilities from leg to segment cabins. */
+      void updateAvailabilityPools() const;
+
+      /** Update all availabilities in the inventory. */
+      void updateAllAvailabilities() const;
 
 
     private:

@@ -4,7 +4,7 @@
 // C
 #include <assert.h>
 // LATUS Common
-#include <latus/com/basic/BasConst_LATUS_Service.hpp>
+#include <latus/com/basic/BasConst_ServiceContextManagement.hpp>
 #include <latus/com/bom/WorldSchedule.hpp>
 #include <latus/com/factory/FacSupervisor.hpp>
 #include <latus/com/factory/FacServiceContext.hpp>
@@ -101,16 +101,30 @@ namespace LATUS {
     }
 
     // //////////////////////////////////////////////////////////////////////
+    std::string getDefaultInvModuleName (const AirlineCode_T& iAirlineCode) {
+      std::ostringstream ostr;
+      ostr << DEFAULT_LATUS_INV_ROOT_MODULE_NAME << iAirlineCode;
+      return ostr.str();
+    }
+    
+    // //////////////////////////////////////////////////////////////////////
     void ServiceContextManager::
-    createAndRegisterSpecificInvServiceContext(const AirlineCode_T& iAirlineCode,
-                                               const std::string& iModuleName) {
-      const ModuleDescription lInvModule (ModuleDescription::INV, iModuleName);
+    createAndRegisterSpecificInvServiceContextInternal (const AirlineCode_T& iAirlineCode) {
+      // Build the Inventory module name (as the concatenation of "INV" and of
+      // the owner airline code).
+      const std::string& lModuleName = getDefaultInvModuleName (iAirlineCode);
+
+      // Register a specific service context for that airline Inventory.
+      const ModuleDescription lInvModule (ModuleDescription::INV, lModuleName);
       createAndRegisterSpecificServiceContext (lInvModule);
+
+      // Set the owner airline code
+      setOwnerAirlineCode (iAirlineCode, lModuleName);
 
       // Register the Inventory specific service context within
       // the Inventory-related list.
       ServiceContext& lSpecificServiceContext = getSpecificContext (lInvModule);
-      const bool insertSucceeded = instance()._invSpecificContextList.
+      const bool insertSucceeded = _invSpecificContextList.
         insert (InvServiceContextList_T::
                 value_type (iAirlineCode, &lSpecificServiceContext)).second;
       if (insertSucceeded == false) {
@@ -119,6 +133,55 @@ namespace LATUS {
                          << lSpecificServiceContext.getModuleName());
         assert (insertSucceeded == true);
       }
+    }
+
+    // //////////////////////////////////////////////////////////////////////
+    void ServiceContextManager::
+    createAndRegisterSpecificInvServiceContext (const AirlineCode_T& iAirlineCode) {
+      instance().
+        createAndRegisterSpecificInvServiceContextInternal (iAirlineCode);
+    }
+
+    // //////////////////////////////////////////////////////////////////////
+    std::string getDefaultRmsModuleName (const AirlineCode_T& iAirlineCode) {
+      std::ostringstream ostr;
+      ostr << DEFAULT_LATUS_RMS_ROOT_MODULE_NAME << iAirlineCode;
+      return ostr.str();
+    }
+    
+    // //////////////////////////////////////////////////////////////////////
+    void ServiceContextManager::
+    createAndRegisterSpecificRmsServiceContextInternal (const AirlineCode_T& iAirlineCode) {
+      // Build the RMS module name (as the concatenation of "RMS" and of
+      // the owner airline code).
+      const std::string& lModuleName = getDefaultRmsModuleName (iAirlineCode);
+
+      // Register a specific service context for that airline RMS.
+      const ModuleDescription lRmsModule (ModuleDescription::RMS, lModuleName);
+      createAndRegisterSpecificServiceContext (lRmsModule);
+
+      // Set the owner airline code
+      setOwnerAirlineCode (iAirlineCode, lModuleName);
+
+      // Register the RMS specific service context within
+      // the RMS-related list.
+      ServiceContext& lSpecificServiceContext = getSpecificContext (lRmsModule);
+      const bool insertSucceeded = _rmsSpecificContextList.
+        insert (RmsServiceContextList_T::
+                value_type (iAirlineCode, &lSpecificServiceContext)).second;
+      if (insertSucceeded == false) {
+        LATUS_LOG_ERROR ("Insertion of the specific context in "
+                         << "ServiceContextManager failed for "
+                         << lSpecificServiceContext.getModuleName());
+        assert (insertSucceeded == true);
+      }
+    }
+
+    // //////////////////////////////////////////////////////////////////////
+    void ServiceContextManager::
+    createAndRegisterSpecificRmsServiceContext (const AirlineCode_T& iAirlineCode) {
+      instance().
+        createAndRegisterSpecificRmsServiceContextInternal (iAirlineCode);
     }
 
     // //////////////////////////////////////////////////////////////////////

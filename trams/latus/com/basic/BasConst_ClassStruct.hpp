@@ -32,6 +32,15 @@ namespace LATUS {
     /** Default availability for ClassStruct_T. */
     extern const Availability_T DEFAULT_CLASS_AVAILABILITY;
 
+    /** Default boolean for booking Constraint availability for ClassStruct_T. */
+    extern const BookingConstraint_T DEFAULT_CLASS_BOOKING_CONSTRAINT;
+
+    /** Default booking constraint value for ClassStruct_T. */
+    extern const BookingConstraintValue_T DEFAULT_CLASS_BOOKING_CONSTRAINT_VALUE;
+
+    /** Default over-booking rate for ClassStruct_T. */
+    extern const OverbookingRate_T DEFAULT_CLASS_OVERBOOKING_RATE;
+
   }
 }
 #endif // __LATUS_COM_BAS_BASCONST_CLASSSTRUCT_HPP

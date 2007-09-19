@@ -46,6 +46,21 @@ namespace LATUS {
         return _capacity;
       }
 
+      /** Get the number of sold seat. */
+      const BookingNumber_T& getSoldSeat () const {
+        return _soldSeat;
+      }
+
+      /** Get the value of commited space. */
+      const CommitedSpace_T& getCommitedSpace () const {
+        return _commitedSpace;
+      }
+
+      /** Get the value of the availability pool. */
+      const Availability_T& getAvailabilityPool () const {
+        return _availabilityPool;
+      }
+
       /** Get the board point (from the LegDate parent). */
       const AirportCode_T& getBoardPoint () const;
 
@@ -64,6 +79,20 @@ namespace LATUS {
         _capacity = iCapacity;
       }
 
+       /** Set the number of sold seat. */
+      void setSoldSeat (const BookingNumber_T& iSoldSeat) {
+        _soldSeat = iSoldSeat;
+      }
+
+       /** Set the value of commited space. */
+      void setCommitedSpace (const CommitedSpace_T& iCommitedSpace) {
+        _commitedSpace = iCommitedSpace;
+      }
+
+      /** Set the value of availability pool. */
+      void setAvailabilityPool (const Availability_T& iAvailabilityPool) {
+        _availabilityPool = iAvailabilityPool;
+      }
 
       // ///////// Display Methods //////////
       /** Get a string describing the key. */
@@ -75,6 +104,18 @@ namespace LATUS {
       /** Display the full BookingDay context. */
       void display() const;
 
+      // ///////// Counting Method //////////
+      /** Update the booked seats. */
+      void updateBookingAndSeatCounters();
+
+      /** Update the booked seats. */
+      void updateCommitedSpaces();
+
+      /** Update availabilities from the capacity and the commited space. */
+      void updateAvailabilityPools();
+
+       /** Update all availabilities for every buckets. */
+      void updateAllAvailabilities();
       
     private:
       /** Constructors are private so as to force the usage of the Factory
@@ -111,6 +152,16 @@ namespace LATUS {
       // Attributes
       /** Capacity of the cabin. */
       CabinCapacity_T _capacity;
+
+      /** Sold seat into the cabin. */
+      BookingNumber_T  _soldSeat;
+
+      /** Commited space for all segmentCabin composed by this LegCabin. */
+      CommitedSpace_T  _commitedSpace;
+
+      /** Availability Pool between capacity and commited spaces. */
+      Availability_T _availabilityPool;
+
     };
 
   }

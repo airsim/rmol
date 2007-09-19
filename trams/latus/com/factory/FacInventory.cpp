@@ -60,7 +60,8 @@ namespace LATUS {
         insert (FlightDateList_T::value_type (ioFlightDate.describeShortKey(),
                                               &ioFlightDate)).second;
       if (insertSucceeded == false) {
-        LATUS_LOG_ERROR ("Insertion failed for " << ioInventory.describeKey()
+
+       LATUS_LOG_ERROR ("Insertion failed for " << ioInventory.describeKey()
                          << " and " << ioFlightDate.describeShortKey());
         assert (insertSucceeded == true);
       }

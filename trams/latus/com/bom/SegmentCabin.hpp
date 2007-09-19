@@ -52,6 +52,25 @@ namespace LATUS {
         return _capacity;
       }
 
+       /** Get the number of reserved seats. */
+      const ReservedSeats_T& getReservedSeats () const {
+        return _reservedSeats;
+      }
+
+       /** Get the booking counter. */
+      const BookingNumber_T& getBookingCounter () const {
+        return _bookingCounter;
+      }
+
+      /** Get the commited Space value. */
+      const CommitedSpace_T& getCommitedSpace () const {
+        return _commitedSpace;
+      }
+
+      /** Get the availability pool value. */
+      const Availability_T& getAvailabilityPool () const {
+        return _availabilityPool;
+      }
 
       // ///////// Setters //////////
       /** Set the SegmentDate (parent class). */
@@ -64,6 +83,25 @@ namespace LATUS {
         _capacity = iCapacity;
       }
 
+      /** Set the number of reserved seats. */
+      void setReservedSeats (const ReservedSeats_T& iReservedSeats) {
+        _reservedSeats = iReservedSeats;
+      }
+
+      /** Set the total number of bookings. */
+      void setBookingCounter (const BookingNumber_T& iBookingCounter) {
+        _bookingCounter = iBookingCounter;
+      }
+
+      /** Set the value of commited space. */
+      void setCommitedSpace (const CommitedSpace_T& iCommitedSpace) {
+        _commitedSpace = iCommitedSpace;
+      }
+
+      /** Set the value of availability pool. */
+      void setAvailabilityPool (const Availability_T& iAvailabilityPool) {
+        _availabilityPool = iAvailabilityPool;
+      }
 
       // ///////// Display Methods //////////
       /** Get a string describing the key. */
@@ -75,6 +113,18 @@ namespace LATUS {
       /** Display the full SegmentCabin context. */
       void display() const;
 
+      // ///////// Counting Methods //////////
+      /** Update the booking counters. */
+      void updateBookingAndSeatCounters();
+
+      /** Update the commited spaces in cabins. */
+      void updateCommitedSpaces();
+
+      /** Update the availability pool for the whole segmentcabin. */
+      void updateAvailabilityPools();
+
+      /** Update availibilities for each class. */
+      void updateAllAvailabilities();
       
     private:
       /** Constructors are private so as to force the usage of the Factory
@@ -110,6 +160,18 @@ namespace LATUS {
       // Attributes
       /** Capacity of the cabin. */
       CabinCapacity_T _capacity;
+
+      /** Reserved seats in the cabin. */
+      ReservedSeats_T _reservedSeats;      
+
+      /** Counter of all bookings into the cabin. */
+      BookingNumber_T _bookingCounter;
+
+      /** Commited space (seat unity) */
+      CommitedSpace_T _commitedSpace;
+
+       /** Value of the availibility pool */
+      Availability_T _availabilityPool;
     };
 
   }

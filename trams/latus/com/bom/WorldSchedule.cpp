@@ -50,6 +50,56 @@ namespace LATUS {
       // Reset formatting flags of std::cout
       std::cout.flags (oldFlags);
     }
+
+    // //////////////////////////////////////////////////////////////////////
+    void WorldSchedule::updateBookingAndSeatCounters() const {
+      
+      for (InventoryList_T::const_iterator itInventory =
+             _inventoryList.begin();
+           itInventory != _inventoryList.end(); ++itInventory) {
+        const Inventory* lInventory_ptr = itInventory->second;
+        assert (lInventory_ptr != NULL);
+
+         lInventory_ptr->updateBookingsAndSeatCounters ();
+      }
+    }
+
+     // //////////////////////////////////////////////////////////////////////
+    void WorldSchedule::updateCommitedSpaces() const {
+      
+      for (InventoryList_T::const_iterator itInventory =
+             _inventoryList.begin();
+           itInventory != _inventoryList.end(); ++itInventory) {
+        const Inventory* lInventory_ptr = itInventory->second;
+        assert (lInventory_ptr != NULL);
+
+         lInventory_ptr->updateCommitedSpaces ();
+      }
+    }
+
+     // //////////////////////////////////////////////////////////////////////
+    void WorldSchedule::updateAvailabilityPools() const {
+      for (InventoryList_T::const_iterator itInventory =
+             _inventoryList.begin();
+           itInventory != _inventoryList.end(); ++itInventory) {
+        const Inventory* lInventory_ptr = itInventory->second;
+        assert (lInventory_ptr != NULL);
+
+         lInventory_ptr->updateAvailabilityPools ();
+      }
+    }
+
+     // //////////////////////////////////////////////////////////////////////
+    void WorldSchedule::updateAllAvailabilities() const {
+      for (InventoryList_T::const_iterator itInventory =
+             _inventoryList.begin();
+           itInventory != _inventoryList.end(); ++itInventory) {
+        const Inventory* lInventory_ptr = itInventory->second;
+        assert (lInventory_ptr != NULL);
+
+         lInventory_ptr->updateAllAvailabilities ();
+      }
+    }
     
     // //////////////////////////////////////////////////////////////////////
     Network& WorldSchedule::getNetwork () const {

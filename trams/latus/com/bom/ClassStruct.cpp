@@ -15,14 +15,18 @@ namespace LATUS {
     ClassStruct_T::ClassStruct_T (const ClassKey_T& iClassKey)
       : _key (iClassKey), _segmentCabin (NULL),
         _bookingNumber (DEFAULT_CLASS_BOOKING_NUMBER),
-        _availability (DEFAULT_CLASS_AVAILABILITY) {
+        _availability (DEFAULT_CLASS_AVAILABILITY),
+        _bookingConstraint (DEFAULT_CLASS_BOOKING_CONSTRAINT),
+        _bookingConstraintValue (DEFAULT_CLASS_BOOKING_CONSTRAINT_VALUE),
+        _overbookingRate (1 + DEFAULT_CLASS_OVERBOOKING_RATE) {
     }
     
     // //////////////////////////////////////////////////////////////////////
     const std::string ClassStruct_T::describe() const {
       std::ostringstream ostr;
       ostr << describeKey() << " - Bkgs: " << _bookingNumber << ", Avl: "
-           << _availability << ", ";
+           << _availability << ", BConst: " << _bookingConstraint << ", BConstVal: "
+           << _bookingConstraintValue << ", ObR: " << _overbookingRate;
       return ostr.str();
     }
 

@@ -51,6 +51,62 @@ namespace LATUS {
       std::cout.flags (oldFlags);
     }
 
+     // //////////////////////////////////////////////////////////////////////
+     void Inventory::updateBookingsAndSeatCounters() const {
+      
+        for (FlightDateList_T::const_iterator itFlightDate =
+             _flightDateList.begin();
+           itFlightDate != _flightDateList.end(); ++itFlightDate) {
+        const FlightDate* lFlightDate_ptr = itFlightDate->second;
+        assert (lFlightDate_ptr != NULL);
+
+        lFlightDate_ptr->updateBookingsAndSeatCounters ();
+        }
+
+     }
+
+     // //////////////////////////////////////////////////////////////////////
+     void Inventory::updateCommitedSpaces() const {
+      
+        for (FlightDateList_T::const_iterator itFlightDate =
+             _flightDateList.begin();
+           itFlightDate != _flightDateList.end(); ++itFlightDate) {
+        const FlightDate* lFlightDate_ptr = itFlightDate->second;
+        assert (lFlightDate_ptr != NULL);
+
+        lFlightDate_ptr->updateCommitedSpaces ();
+        }
+
+     }
+
+    // //////////////////////////////////////////////////////////////////////
+     void Inventory::updateAvailabilityPools() const {
+      
+        for (FlightDateList_T::const_iterator itFlightDate =
+             _flightDateList.begin();
+           itFlightDate != _flightDateList.end(); ++itFlightDate) {
+        const FlightDate* lFlightDate_ptr = itFlightDate->second;
+        assert (lFlightDate_ptr != NULL);
+
+        lFlightDate_ptr->updateAvailabilityPools ();
+        }
+
+     }
+
+    // //////////////////////////////////////////////////////////////////////
+     void Inventory::updateAllAvailabilities() const {
+      
+        for (FlightDateList_T::const_iterator itFlightDate =
+             _flightDateList.begin();
+           itFlightDate != _flightDateList.end(); ++itFlightDate) {
+        const FlightDate* lFlightDate_ptr = itFlightDate->second;
+        assert (lFlightDate_ptr != NULL);
+
+        lFlightDate_ptr->updateAllAvailabilities ();
+        }
+
+     }
+
     // //////////////////////////////////////////////////////////////////////
     FlightDate* Inventory::
     getFlightDateInternal (const std::string& iFlightDateKey) const {

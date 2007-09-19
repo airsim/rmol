@@ -26,7 +26,7 @@ namespace LATUS {
       /** Calculate and return the availabilities corresponding to a given
           product.
           @return The vector of availabilities per class/bucket. */
-      static void calculateAvailabilities (const std::string& iModuleName,
+      static void calculateAvailabilities (const COM::AirlineCode_T&,
                                            const COM::AirportCode_T& iOrigin,
                                            const COM::AirportCode_T& iDestination,
                                            const COM::DateTime_T& iDate,
@@ -35,7 +35,7 @@ namespace LATUS {
       /** Register the sell of a given number of bookings.
           <br>The party size may be a floating number, so as to cope with
           overbooking. */
-      static bool sell (const std::string& iModuleName,
+      static bool sell (const COM::AirlineCode_T& iAirlineCode,
                         const COM::AirportCode_T& iOrigin,
                         const COM::AirportCode_T& iDestination,
                         const COM::DateTime_T& iDate,

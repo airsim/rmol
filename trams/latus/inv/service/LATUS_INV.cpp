@@ -2,6 +2,7 @@
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // LATUS Common
+#include <latus/com/bom/Inventory.hpp>
 #include <latus/com/service/Logger.hpp>
 // LATUS INV
 #include <latus/inv/service/LATUS_INV.hpp>
@@ -20,13 +21,16 @@ namespace LATUS {
 
     // //////////////////////////////////////////////////////////////////////
     void LATUS_INV::
-    calculateAvailabilities (const std::string& iModuleName,
+    calculateAvailabilities (const COM::AirlineCode_T& iAirlineCode,
                              const COM::AirportCode_T& iOrigin,
                              const COM::AirportCode_T& iDestination,
                              const COM::DateTime_T& iDate,
                              COM::BucketAvailabilities_T& ioAvl) {
 
-      std::cout << "Inventory Service always up!" << std::endl;
+      COM::Inventory& lInventory = getAirlineInventory (iAirlineCode);
+      
+      std::cout << "Availabilities re-calculated for "
+                << lInventory.describeKey() << std::endl;
 
       // TODO: Remove the hard coding
       // Hard-code a few availabilities
@@ -37,12 +41,17 @@ namespace LATUS {
     }
     
     // //////////////////////////////////////////////////////////////////////
-    bool LATUS_INV::sell (const std::string& iModuleName,
+    bool LATUS_INV::sell (const COM::AirlineCode_T& iAirlineCode,
                           const COM::AirportCode_T& iOrigin,
                           const COM::AirportCode_T& iDestination,
                           const COM::DateTime_T& iDate,
                           const COM::BookingNumber_T& iPartySize) {
 
+      COM::Inventory& lInventory = getAirlineInventory (iAirlineCode);
+      
+      std::cout << "Sell registered for "
+                << lInventory.describeKey() << std::endl;
+      
       return true;
     }
   

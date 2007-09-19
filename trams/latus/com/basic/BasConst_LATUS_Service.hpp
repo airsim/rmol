@@ -14,26 +14,8 @@ namespace LATUS {
     /** Default number of airlines for the LATUS_Service. */
     extern const unsigned int DEFAULT_LATUS_SERVICE_NUMBER_OF_AIRLINES;
     
-    /** Default name for the Simulator module. */
-    extern const std::string DEFAULT_LATUS_SIM_MODULE_NAME;
-
-    /** Default name for the Central Reservation System (CRS) module. */
-    extern const std::string DEFAULT_LATUS_CRS_MODULE_NAME;
-
-    /** Default name for the Travel Service Provider (TSP) module. */
-    extern const std::string DEFAULT_LATUS_TSP_MODULE_NAME;
-
-    /** Default name for the Discrete Event Generator (DEG) module. */
-    extern const std::string DEFAULT_LATUS_DEG_MODULE_NAME;
-
-    /** Default name for the first Inventory (INV) module. */
-    extern const std::string DEFAULT_LATUS_INV1_MODULE_NAME;
-
     /** Default name for the first Inventory (INV) airline owner. */
     extern const std::string DEFAULT_LATUS_INV1_AIRLINE_CODE;
-
-    /** Default name for the second Inventory (INV) module. */
-    extern const std::string DEFAULT_LATUS_INV2_MODULE_NAME;
 
     /** Default name for the second Inventory (INV) airline owner. */
     extern const std::string DEFAULT_LATUS_INV2_AIRLINE_CODE;
