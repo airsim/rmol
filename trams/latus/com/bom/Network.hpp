@@ -47,6 +47,9 @@ namespace LATUS {
           layer. */
       Network (); 
 
+      /** Default constructors. */
+      Network (const Network&);
+      
       /** Destructor. */
       virtual ~Network();
 

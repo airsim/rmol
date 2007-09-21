@@ -163,6 +163,10 @@ namespace LATUS {
           layer. */
       SegmentDate (const SegmentDateKey_T&); 
 
+      /** Default constructors. */
+      SegmentDate ();
+      SegmentDate (const SegmentDate&);
+      
       /** Destructor. */
       virtual ~SegmentDate();
 

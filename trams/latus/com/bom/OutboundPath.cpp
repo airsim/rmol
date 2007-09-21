@@ -57,19 +57,15 @@ namespace LATUS {
     const DateTime_T& OutboundPath::getOffDate() const {
       assert (_segmentDateLightList.size() >= 1);
       
-      SegmentDateLightList_T::const_reverse_iterator itSegmentDate =
-        _segmentDateLightList.rbegin();
-      assert (itSegmentDate != _segmentDateLightList.rend());
-      
-      const SegmentDate* lSegmentDate_ptr = *itSegmentDate;
-      assert (lSegmentDate_ptr != NULL);
+      const SegmentDate* lastSegmentDate_ptr = getLastSegmentDate();
+      assert (lastSegmentDate_ptr != NULL);
 
       // A small sanity check: check that the destination is the same as the
       // off point of the last segment.
-      const AirportCode_T& lDestination = lSegmentDate_ptr->getOffPoint();
+      const AirportCode_T& lDestination = lastSegmentDate_ptr->getOffPoint();
       assert (lDestination == _key.destination);
       
-      return lSegmentDate_ptr->getOffDate();
+      return lastSegmentDate_ptr->getOffDate();
     }
 
     // //////////////////////////////////////////////////////////////////////

@@ -21,18 +21,18 @@ namespace LATUS {
   namespace COM {
 
     /* Samples for demand.csv:
-      NCE-LAX; 2007-04-21; H-H; 50.0;
-      NCE-LAX; 2007-04-21; K-K; 75.0;
-      NCE-LAX; 2007-04-30; H-H; 5.0;
-      NCE-LAX; 2007-04-30; K-K; 10.0;
-      NCE-LAX; 2007-06-20; H-H; 1.0;
-      NCE-LAX; 2007-06-20; K-K; 4.0;
-      NCE-MIA; 2007-04-21; H-H; 25.0;
-      NCE-MIA; 2007-04-21; K-K; 37.5;
-      NCE-MIA; 2007-04-30; H-H; 2.5;
-      NCE-MIA; 2007-04-30; K-K; 0.5;
-      NCE-MIA; 2007-06-20; H-H; 0.5;
-      NCE-MIA; 2007-06-20; K-K; 2.0;
+      NCE-LAX; 2007-04-21; H; H; 50.0;
+      NCE-LAX; 2007-04-21; K; K; 75.0;
+      NCE-LAX; 2007-04-30; H; H; 5.0;
+      NCE-LAX; 2007-04-30; K; K; 10.0;
+      NCE-LAX; 2007-06-20; H; H; 1.0;
+      NCE-LAX; 2007-06-20; K; K; 4.0;
+      NCE-MIA; 2007-04-21; H; H; 25.0;
+      NCE-MIA; 2007-04-21; K; K; 37.5;
+      NCE-MIA; 2007-04-30; H; H; 2.5;
+      NCE-MIA; 2007-04-30; K; K; 0.5;
+      NCE-MIA; 2007-06-20; H; H; 0.5;
+      NCE-MIA; 2007-06-20; K; K; 2.0;
     */
 
 
@@ -55,7 +55,8 @@ namespace LATUS {
 
       std::string aOriginStr;
       std::string aDestinationStr;
-      std::string aClassPath;
+      std::string aCabinCode;
+      std::string aClassCode;
       boost::gregorian::date aDepDate;
       double aMean = 0.0;
     
@@ -68,14 +69,15 @@ namespace LATUS {
           hasAllPArams = true;
         }
 
-        if (i == 1 || i == 2 || i == 3 || i == 4) {
+        if (i == 1 || i == 2 || i == 3 || i == 4 || i == 5) {
           hasRead = (iStringStr >> dvalStr);
         }
 
-        if (i == 5) {
+        if (i == 6) {
           hasRead = (iStringStr >> dval);
+
         }
-      
+
         if (hasRead) {
           if (i == 1) {
             aOriginStr = dvalStr;
@@ -83,26 +85,29 @@ namespace LATUS {
           } else if (i == 2) {
             aDestinationStr = dvalStr;
             // std::cout << "City Pair = '" << aOriginStr
-            // << "-" << aDestinationStr << "'" << std::endl;
+            //   << "-" << aDestinationStr << "'" << std::endl;
             
           } else if (i == 3) {
             aDepDate = boost::gregorian::from_simple_string (dvalStr);
-            // std::cout << "Date = '" << aDepDate << "'" << std::endl;
+            //  std::cout << "Date = '" << aDepDate << "'" << std::endl;
 
           } else if (i == 4) {
-            aClassPath = dvalStr;
-            // std::cout << "Class Path = '" << aClassPath << "'" << std::endl;
+            aCabinCode = dvalStr;
+            //  std::cout << "Cabin Code = '" << aCabinCode << "'" << std::endl;
 
           } else if (i == 5) {
+            aClassCode = dvalStr;
+            //  std::cout << "Class Code = '" << aClassCode << "'" << std::endl;
+
+          } else if (i == 6) {
             aMean = dval;
             // std::cout << "Mean = '" << aMean << "'" << std::endl;
 
             const double lStdDev = 0.0;
-            FacBookingDay::createClassPath (ioBookingDay,
-                                            aOriginStr, aDestinationStr,
-                                            aDepDate, aClassPath,
+            FacBookingDay::createClassPath (ioBookingDay,aOriginStr,
+                                            aDestinationStr, aDepDate,
+                                            aCabinCode, aClassCode,
                                             aMean, lStdDev);
-
             i = 0;
           }
           i++;

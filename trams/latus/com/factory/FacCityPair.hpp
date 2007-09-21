@@ -54,7 +54,8 @@ namespace LATUS {
           will be created and added to the corresponding children list. */
       static void createClassPath (CityPair&,
                                    const boost::gregorian::date& iDepDate,
-                                   const std::string& iClassPathDescription,
+                                   const std::string& iCabinCode,
+                                   const std::string& iClassCode,
                                    const double iDistributionMean,
                                    const double iDistributionStdDev);
     

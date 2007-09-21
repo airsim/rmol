@@ -92,6 +92,10 @@ namespace LATUS {
           layer. */
       NetworkDate (const NetworkDateKey_T&); 
 
+      /** Default constructors. */
+      NetworkDate ();
+      NetworkDate (const NetworkDate&);
+      
       /** Destructor. */
       virtual ~NetworkDate();
 

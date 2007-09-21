@@ -64,15 +64,15 @@ namespace LATUS {
 
       // TODO: Remove the hard coding
       // Hard-code a few TSL
-      const COM::AirportCode_T lMUC ("MUC");
-      const COM::AirportCode_T lMIA ("MIA");
-      const COM::AirportCode_T lLAX ("LAX");
-      const COM::CabinCode_T lSHBusiness ("C");
-      const COM::CabinCode_T lSHEconomy ("M");
-      const COM::CabinCode_T lFirst ("F");
-      const COM::CabinCode_T lLHBusiness ("J");
-      const COM::CabinCode_T lTravelPlus ("W");
-      const COM::CabinCode_T lLHEconomy ("M");
+      // const COM::AirportCode_T lMUC ("MUC");
+      // const COM::AirportCode_T lMIA ("MIA");
+      // const COM::AirportCode_T lLAX ("LAX");
+      // const COM::CabinCode_T lSHBusiness ("C");
+      // const COM::CabinCode_T lSHEconomy ("M");
+      // const COM::CabinCode_T lFirst ("F");
+      // const COM::CabinCode_T lLHBusiness ("J");
+      // const COM::CabinCode_T lTravelPlus ("W");
+      // const COM::CabinCode_T lLHEconomy ("M");
     }
 
     // //////////////////////////////////////////////////////////////////////

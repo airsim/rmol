@@ -60,9 +60,11 @@ namespace LATUS {
       AirportDate* getAirportDate (const AirportCode_T&,
                                    const DateTime_T&) const;
 
-      /** Retrieve, if existing, the OutboundPath corresponding to the
+      /** Retrieve, if existing, an OutboundPath corresponding to the
           given origin, elapsed time, number of segments and number of
           airlines (OutboundPath key).
+          <br>Note that several OutboundPath objects may correspond to the
+          given characteristics. Only the first one is returned here.
           <br>If not existing, return the NULL pointer. */
       OutboundPath* getOutboundPath (const AirportCode_T&, const Duration_T&,
                                      const SegmentNumber_T&,
@@ -97,6 +99,10 @@ namespace LATUS {
           layer. */
       AirportDate (const AirportDateKey_T&); 
 
+      /** Default constructors. */
+      AirportDate ();
+      AirportDate (const AirportDate&);
+      
       /** Destructor. */
       virtual ~AirportDate();
 
@@ -115,6 +121,8 @@ namespace LATUS {
       /** Retrieve, if existing, the OutboundPath corresponding to the
           given OutboundPath key (AirportDateKey + destination + elapsed time
           + number of segments + number of airlines).
+          <br>Note that several OutboundPath objects may correspond to the
+          given characteristics. Only the first one is returned here.
           <br>If not existing, return the NULL pointer.
           <br>Note that the string must be formed thanks to the
           OutboundPathKey::describeShort() method, as that latter is used when

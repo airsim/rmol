@@ -67,7 +67,8 @@ namespace LATUS {
     // //////////////////////////////////////////////////////////////////////
     void FacCityPair::createClassPath(CityPair& ioCityPair,
                                       const boost::gregorian::date& iDepDate,
-                                      const std::string& iClassPathDescription,
+                                      const std::string& iCabinCode,
+                                      const std::string& iClassCode,
                                       const double iDistributionMean,
                                       const double iDistributionStdDev) {
 
@@ -87,7 +88,7 @@ namespace LATUS {
       
       // Forward the ClassPath object creation request to FacCityPairDate
       FacCityPairDate::createClassPath(*lCityPairDate_ptr,
-                                       iClassPathDescription,
+                                       iCabinCode, iClassCode,
                                        iDistributionMean, iDistributionStdDev);
 
     }

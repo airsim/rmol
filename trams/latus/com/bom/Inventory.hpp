@@ -113,6 +113,10 @@ namespace LATUS {
           layer. */
       Inventory (const InventoryKey_T&); 
 
+      /** Default constructors. */
+      Inventory ();
+      Inventory (const Inventory&);
+      
       /** Destructor. */
       virtual ~Inventory();
 

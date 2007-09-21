@@ -33,11 +33,11 @@ namespace LATUS {
 
     // //////////////////////////////////////////////////////////////////////
     ClassPath& FacClassPath::
-    create (const std::string& iDescription,
+    create (const std::string& iCabinCode, const std::string& iClassCode,
             const DistributionDetails_T& iDistributionDetails) {
       ClassPath* aClassPath_ptr = NULL;
-
-      aClassPath_ptr = new ClassPath (iDescription, iDistributionDetails);
+      
+      aClassPath_ptr = new ClassPath (iCabinCode, iClassCode, iDistributionDetails);
       assert (aClassPath_ptr != NULL);
 
       // The new object is added to the Bom pool

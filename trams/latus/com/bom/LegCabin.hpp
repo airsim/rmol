@@ -132,6 +132,10 @@ namespace LATUS {
           layer. */
       LegCabin (const LegCabinKey_T&); 
 
+      /** Default constructors. */
+      LegCabin ();
+      LegCabin (const LegCabin&);
+      
       /** Destructor. */
       virtual ~LegCabin();
 

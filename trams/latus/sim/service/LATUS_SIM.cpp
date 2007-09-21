@@ -30,10 +30,10 @@ namespace LATUS {
       const COM::DateTime_T& lEndDate = getEndDate ();
 
       // DEBUG
-      LATUS_LOG_DEBUG ("Simulation for " << lSimulationRunNumber
+      /* LATUS_LOG_DEBUG ("Simulation for " << lSimulationRunNumber
                        << " runs, " << "with '" << lDemandInputFilename
                        << "' for the demand data. The simulations run between "
-                       << lStartDate << " and " << lEndDate);
+                       << lStartDate << " and " << lEndDate);*/
       
       // Perform K simulations    
       for (unsigned int i=1; i != lSimulationRunNumber; i++) {

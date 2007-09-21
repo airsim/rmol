@@ -20,7 +20,7 @@ namespace LATUS {
     class OutboundPath;
 
     /** Define lists of Outbound-Path objects. */
-    typedef std::map<std::string, OutboundPath*> OutboundPathList_T;
+    typedef std::multimap<std::string, OutboundPath*> OutboundPathList_T;
     typedef std::list<OutboundPath*> OutboundPathLightList_T;
 
     /** Define a random-access list of list of Outbound-Path objects. */

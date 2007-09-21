@@ -44,12 +44,22 @@ namespace LATUS {
 
       /** Get the primary key. */
       const std::string& getPrimaryKey() const {
-        return getDescription();
+        getClassDescription();
+      }
+      
+       /** Get the class description "H-H". */
+      const std::string& getClassDescription() const {
+        return _classDescription;
       }
 
-      /** Get the description, e.g., "H-H". */
-      const std::string& getDescription() const {
-        return _description;
+      /** Get the cabin code "H". */
+      const std::string& getCabinCode() const {
+        return _cabinCode;
+      }
+
+       /** Get the class code, e.g., "H-H". */
+      const std::string& getClassCode() const {
+        return _classCode;
       }
 
       /** Get the mean value of the final demand distribution. */
@@ -112,7 +122,8 @@ namespace LATUS {
     private:
       /** Constructors are private so as to force the usage of the Factory
           layer. */
-      ClassPath (const std::string& iDescription,
+      ClassPath (const std::string& iCabinCode,
+                 const std::string& iClassCode,
                  const DistributionDetails_T&);
 
       /** Destructor. */
@@ -122,9 +133,15 @@ namespace LATUS {
       // Attributes
       /** Parent class: CityPairDate. */
       CityPairDate* _cityPairDate;
+
+      /** ClassDescription "H-H". */
+      const std::string _classDescription;
       
-      /** Class Path Description, e.g., "H-H". */
-      const std::string _description;
+      /** Cabin Code "H". */
+      const std::string _cabinCode;
+
+      /** Class Code, e.g., "H". */
+      const std::string _classCode;
 
       /** Mean value and standard deviation of the Final Demand Distribution.*/
       const DistributionDetails_T _distributionDetails;

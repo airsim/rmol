@@ -82,15 +82,10 @@ namespace LATUS {
 
       // Add the OutboundPath to the (general) AirportDate internal map (of
       // OutboundPath objects of all lengths).
-      const bool insertSucceeded = ioAirportDate._outboundPathList.
-        insert (OutboundPathList_T::value_type (ioOutboundPath.describeShortKey(),
-                                                &ioOutboundPath)).second;
-      if (insertSucceeded == false) {
-        LATUS_LOG_ERROR ("Insertion failed for " << ioAirportDate.describeKey()
-                         << " and " << ioOutboundPath.describeShortKey());
-        assert (insertSucceeded == true);
-      }
-
+      ioAirportDate._outboundPathList.
+        insert (OutboundPathList_T::
+                value_type (ioOutboundPath.describeShortKey(),
+                            &ioOutboundPath));
     }
 
     // //////////////////////////////////////////////////////////////////////

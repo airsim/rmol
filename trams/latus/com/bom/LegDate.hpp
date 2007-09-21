@@ -160,6 +160,10 @@ namespace LATUS {
           layer. */
       LegDate (const LegDateKey_T&); 
 
+      /** Default constructors. */
+      LegDate ();
+      LegDate (const LegDate&);
+      
       /** Destructor. */
       virtual ~LegDate();
 

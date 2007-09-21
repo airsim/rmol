@@ -9,6 +9,7 @@
 #include <latus/com/bom/SegmentDate.hpp>
 #include <latus/com/bom/SegmentCabin.hpp>
 #include <latus/com/bom/LegDate.hpp>
+#include <latus/com/service/Logger.hpp>
 
 namespace LATUS {
 
@@ -218,7 +219,7 @@ namespace LATUS {
         lBoardTime - lOffTime + lDateOffSetInHours;
 
       oIsConnectable = (lStopOverTime >= DEFAULT_MINIMUM_CONNECTION_TIME);
-      
+
       return oIsConnectable;
     }
     

@@ -20,9 +20,9 @@ namespace LATUS {
   namespace COM {
 
     // //////////////////////////////////////////////////////////////////////
-    ClassPath::ClassPath (const std::string& iDescription,
+    ClassPath::ClassPath (const std::string& iCabinCode, const std::string& iClassCode,
                           const DistributionDetails_T& iDistributionDetails) :
-      _cityPairDate (NULL), _description (iDescription),
+      _cityPairDate (NULL),_classDescription (iCabinCode + "-" + iClassCode), _cabinCode (iCabinCode), _classCode (iClassCode),
       _distributionDetails (iDistributionDetails) {
 
     }
@@ -38,7 +38,8 @@ namespace LATUS {
       
       const std::string& lParentKeyDescription = _cityPairDate->describeKey();
       std::ostringstream ostr;
-      ostr << lParentKeyDescription << "; \"" << _description << "\"";
+      ostr << lParentKeyDescription << "; \"" << _cabinCode
+           << "-" << _classCode  << "\"";
       return ostr.str();
     }
     
@@ -47,7 +48,8 @@ namespace LATUS {
       if (iIndented == true) {
         std::cout << "                      ";
       }
-      std::cout << _description << "; ~N (" << getDistributionMean() << ", "
+      std::cout << _cabinCode << "-" << _classCode << "; ~N ("
+                << getDistributionMean() << ", "
                 << getDistributionStdDev() << "); " << std::endl;
     }
 

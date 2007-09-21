@@ -104,6 +104,10 @@ namespace LATUS {
           layer. */
       FlightDate (const FlightDateKey_T&); 
 
+      /** Default constructors. */
+      FlightDate ();
+      FlightDate (const FlightDate&);
+      
       /** Destructor. */
       virtual ~FlightDate();
 

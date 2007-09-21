@@ -31,7 +31,7 @@ namespace LATUS {
       /** Create a new ClassPath object.
           <br>This new object is added to the list of instantiated objects.
           @return ClassPath& The newly created object. */
-      ClassPath& create (const std::string& iDescription,
+      ClassPath& create (const std::string& iCabinCode, const std::string& iClassCode,
                          const DistributionDetails_T&);
 
     protected:

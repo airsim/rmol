@@ -131,6 +131,10 @@ namespace LATUS {
           layer. */
       SegmentCabin (const SegmentCabinKey_T&); 
 
+      /** Default constructors. */
+      SegmentCabin ();
+      SegmentCabin (const SegmentCabin&);
+      
       /** Destructor. */
       virtual ~SegmentCabin();
 

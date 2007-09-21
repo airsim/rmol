@@ -13,15 +13,14 @@
 #include <latus/com/bom/CityPair.hpp>
 #include <latus/com/bom/CityPairDate.hpp>
 #include <latus/com/bom/ClassPath.hpp>
-#include <latus/com/bom/OutboundPathList.hpp>
-#include <latus/com/bom/OutboundPath.hpp>
 #include <latus/com/factory/FacBookingDay.hpp>
 #include <latus/com/command/FileMgr.hpp>
 #include <latus/com/service/Logger.hpp>
-// LATUS Inventory
-#include <latus/inv/service/LATUS_INV.hpp> // Debug
-// LATUS TSP
-#include <latus/tsp/service/LATUS_TSP.hpp>
+#include <latus/com/bom/TravelSolution.hpp>
+// LATUS INV
+#include <latus/inv/service/LATUS_INV.hpp> // DEBUG
+// LATUS CRS
+#include <latus/crs/service/LATUS_CRS.hpp>
 // LATUS Main
 #include <latus/sim/command/Simulator.hpp>
 
@@ -37,7 +36,7 @@ namespace LATUS {
         _startDate (iStartDate), _endDate (iEndDate) {
 
       // Read the input file and build the CityPairList
-      const bool hasSucceeded = init();
+       const bool hasSucceeded = init();
       assert (hasSucceeded == true);
     }
       
@@ -58,11 +57,11 @@ namespace LATUS {
       const bool hasFileBeenRead = 
         COM::FileMgr::readAndProcessDemandInputFile (_inputFileName,
                                                      *_bookingDay);
-      if (hasFileBeenRead == false) {
+       if (hasFileBeenRead == false) {
         LATUS_LOG_ERROR ("Can not parse the \"" << _inputFileName 
                          << "\" file (hint: check that it exists).");
         return false;
-      }
+       }
 
       return true;
     }
@@ -104,23 +103,10 @@ namespace LATUS {
       const COM::AirportCode_T& lOrigin = lClassPath_ptr->getOrigin();
       const COM::AirportCode_T& lDestination = lClassPath_ptr->getDestination();
       const COM::DateTime_T& lDepDate = lClassPath_ptr->getDepartureDate();
-      COM::OutboundPathLightList_T lTravelSolutionList;
-      TSP::LATUS_TSP::getTravelSolutions (lOrigin, lDestination, lDepDate,
-                                          lTravelSolutionList);
+      COM::TravelSolutionKeyList_T lTravelSolutionKeyList;
 
-      // Debug
-      LATUS_LOG_DEBUG ("Travel Solutions for " << lOrigin << "-"
-                       << lDestination << " / " << lDepDate);
-      unsigned short idx = 0;
-      for (COM::OutboundPathLightList_T::const_iterator itPath =
-             lTravelSolutionList.begin();
-           itPath != lTravelSolutionList.end(); ++itPath, ++idx) {
-        const COM::OutboundPath* lOutboundPath_ptr = *itPath;
-        assert (lOutboundPath_ptr != NULL);
-
-        std::cout << "[" << idx << "]: "
-                  << lOutboundPath_ptr->describeKey() << std::endl;
-      }
+      CRS::LATUS_CRS::provideTravelSolution (lOrigin, lDestination, lDepDate,
+                                             lTravelSolutionKeyList);
       
     }
 

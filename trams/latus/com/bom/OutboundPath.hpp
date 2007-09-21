@@ -113,7 +113,11 @@ namespace LATUS {
     private:
       /** Constructors are private so as to force the usage of the Factory
           layer. */
-      OutboundPath (const OutboundPathKey_T&); 
+      OutboundPath (const OutboundPathKey_T&);
+
+      /** Default constructors. */
+      OutboundPath ();
+      OutboundPath (const OutboundPath&);
 
       /** Destructor. */
       virtual ~OutboundPath();
@@ -133,7 +137,7 @@ namespace LATUS {
           <br>Return a NULL pointer if the list is empty. */
       const SegmentDate* getLastSegmentDate () const;
       
-
+    public:
       // ////////// Business Methods /////////
       /** Calculate the elapsed time according to the segment routing.
           <br>Note that the given segment-date should come at the end of the

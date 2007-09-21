@@ -95,7 +95,11 @@ namespace LATUS {
       // //////////////////////////////////////////////////////////////////////
       void storeDateRangeEnd::operator() (iterator_t iStr,
                                           iterator_t iStrEnd) const {
-        _flightPeriod._dateRangeEnd = _flightPeriod.getDate();
+        // As a Boost date period (COM::DatePeriod_T) defines the last day of
+        // the period to be end-date - one day, we have to add one day to that
+        // end date before.
+        const COM::DateOffSet_T oneDay (1);
+        _flightPeriod._dateRangeEnd = _flightPeriod.getDate() + oneDay;
         // std::cout << "Date Range End: "
         // << _flightPeriod._dateRangeEnd << std::endl;
 

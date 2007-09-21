@@ -54,7 +54,7 @@ namespace LATUS {
                                                  ClassPath& ioClassPath) {
       // Link the CityPairDate to the ClassPath, and vice versa
       ioClassPath.setCityPairDate (&ioCityPairDate);
-      
+
       // Link the CityPairDate to the ClassPath
       const bool insertSucceeded = ioCityPairDate._classPathList.
         insert (ClassPathList_T::value_type (ioClassPath.getPrimaryKey(),
@@ -70,20 +70,24 @@ namespace LATUS {
     // //////////////////////////////////////////////////////////////////////
     void FacCityPairDate::
     createClassPath (CityPairDate& ioCityPairDate,
-                     const std::string& iClassPathDescription,
+                     const std::string& iCabinCode,
+                     const std::string& iClassCode,
                      const double iDistributionMean,
                      const double iDistributionStdDev) {
 
+      std::ostringstream ostr;
+      ostr << iCabinCode << "-" << iClassCode;
+
       ClassPath* lClassPath_ptr =
-        ioCityPairDate.getClassPath (iClassPathDescription);
+        ioCityPairDate.getClassPath (ostr.str());
 
       if (lClassPath_ptr == NULL) {
         ClassPath& lClassPath = FacClassPath::instance().
-          create (iClassPathDescription,
+          create (iCabinCode, iClassCode,
                   DistributionDetails_T (iDistributionMean,
                                          iDistributionStdDev));
+        std::cout << iCabinCode << "-" << iClassCode << std::endl;
         lClassPath_ptr = &lClassPath;
-
         FacCityPairDate::initLinkWithClassPath (ioCityPairDate, lClassPath);
       }
       assert (lClassPath_ptr != NULL);

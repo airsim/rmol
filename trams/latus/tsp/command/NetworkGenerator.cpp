@@ -174,34 +174,34 @@ namespace LATUS {
       // There is a single airline in the list (since there is a single segment)
       const COM::AirlineNumber_T lAirlineNumber = 1;
 
-      // If an OutboundPath with those parameters does not exist yet,
-      // create one.
-      COM::OutboundPath* lOutboundPath_ptr =
-        ioAirportDate.getOutboundPath (lDestination, lElapsedTime,
-                                       lSegmentNumber, lAirlineNumber);
-
-      if (lOutboundPath_ptr == NULL) {
-        const COM::OutboundPathKey_T lOutboundPathKey (lAirportDateKey,
-                                                       lDestination,
-                                                       lElapsedTime,
-                                                       lSegmentNumber,
-                                                       lAirlineNumber);
-        lOutboundPath_ptr =
-          &COM::FacOutboundPath::instance().create (lOutboundPathKey);
-        assert (lOutboundPath_ptr != NULL);
-
-        // Add the SegmentDate reference to the dedicated list within
-        // the OutboundPath. Note that this must be done before the
-        // link between the OutboundPath and AirportDate, as that latter
-        // method uses the number of segments within the OutboundPath
-        // object.
-        COM::FacOutboundPath::initLinkWithSegmentDate (*lOutboundPath_ptr,
-                                                       iSegmentDate);
+      // Create an outbound-path object for that (single) segment-date.
+      // By construction, no other identical outbound-path (i.e., segment-date
+      // in our case) is already in the list for that airport-date. Indeed,
+      // the segment-dates are browsed once, and only once.
+      // <br>However, an airport-date may get several (single segment-date)
+      // outbound-pathes with the same characteristics, in particular in case
+      // of commutting. For instance, BA175 LHR-JFK and BA179 LHR-JFK get
+      // exactly the same characteristics (origin, destination,
+      // elapsed time, number of segments, number of airlines).
+      const COM::OutboundPathKey_T lOutboundPathKey (lAirportDateKey,
+                                                     lDestination,
+                                                     lElapsedTime,
+                                                     lSegmentNumber,
+                                                     lAirlineNumber);
+      COM::OutboundPath& lOutboundPath =
+        COM::FacOutboundPath::instance().create (lOutboundPathKey);
+      
+      // Add the SegmentDate reference to the dedicated list within
+      // the OutboundPath. Note that this must be done before the
+      // link between the OutboundPath and AirportDate, as that latter
+      // method uses the number of segments within the OutboundPath
+      // object.
+      COM::FacOutboundPath::initLinkWithSegmentDate (lOutboundPath,
+                                                     iSegmentDate);
         
-        // Link the OutboundPath to the AirportDate
-        COM::FacAirportDate::initLinkWithOutboundPath (ioAirportDate,
-                                                       *lOutboundPath_ptr);
-      }
+      // Link the OutboundPath to the AirportDate
+      COM::FacAirportDate::initLinkWithOutboundPath (ioAirportDate,
+                                                     lOutboundPath);
     }
     
     // //////////////////////////////////////////////////////////////////////
@@ -305,9 +305,10 @@ namespace LATUS {
         // If there is no AirportDate corresponding to the destination (off
         // point of the last SegmentDate), it means that the destination is
         // an end point (no other SegmentDate is starting from there).
-        // Hence, there is nothing else to do for now for that AirportDate.
+        // Hence, there is nothing else to do for now for that (final)
+        // destination, and we can process the next (i-1)-outbound-path.
         if (lDestination_im1_ptr == NULL) {
-          return;
+          continue;
         }
         assert (lDestination_im1_ptr != NULL);
         
@@ -337,7 +338,8 @@ namespace LATUS {
           // Check that a passenger can connect (i.e., be able to do the
           // transfer from one plane to another). If the transfer/connection
           // is not feasible, then the current single-segment outbound-path
-          // must not be added. And there is nothing more to do at that stage.
+          // must not be added. There is nothing more to do at that stage,
+          // and we can handle the next single-segment outbound-path.
           const bool isConnectable =
             lOutboundPath_im1_ptr->isConnectable (*lOutboundPath_1_ptr);
           if (isConnectable == false) {
@@ -378,24 +380,20 @@ namespace LATUS {
             ++lAirlineNumber_i;
           }
 
-          // It may happen, when i=2 (=> i-1 = 1), that the combination
-          // of the (single-segment) outbound path with the segment-date
+          // It may happen that the combination of the (single-segment)
+          // outbound path with the last segment-date of the (i-1)-outbound path
           // produces a segment-date of the same flight-date. For instance,
           // BA9 LHR-BKK and BA9 BKK-SYD add up to BA9 LHR-SYD, which is
           // already a segment-date of the BA9 flight-date.
           // In that case, there is no need to add up the segment-date
           // to the (single-segment) outbound-path.
-          const COM::SegmentNumber_T& lSegmentNumber_im1 =
-            lOutboundPath_im1_ptr->getSegmentNumber();
-          if (lSegmentNumber_im1 == 1) {
-            const COM::SegmentDate* lSegment_im1_ptr =
-              lOutboundPath_im1_ptr->getFirstSegmentDate();
-            assert (lSegment_im1_ptr != NULL);
-            if (lSegment_im1_ptr->getAirlineCode() == lAirlineCode_1
-                && lSegment_im1_ptr->getFlightNumber()
-                == lSegmentDate_1_ptr->getFlightNumber()) {
-              continue;
-            }
+          const COM::SegmentDate* lSegment_im1_ptr =
+            lOutboundPath_im1_ptr->getLastSegmentDate();
+          assert (lSegment_im1_ptr != NULL);
+          if (lSegment_im1_ptr->getAirlineCode() == lAirlineCode_1
+              && lSegment_im1_ptr->getFlightNumber()
+              == lSegmentDate_1_ptr->getFlightNumber()) {
+            continue;
           }
             
           // Calculate the total elapsed time flown by the i-length

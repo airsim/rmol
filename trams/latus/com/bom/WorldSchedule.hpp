@@ -85,6 +85,10 @@ namespace LATUS {
           layer. */
       WorldSchedule (const DateTime_T& iUpdateDate); 
 
+      /** Default constructors. */
+      WorldSchedule ();
+      WorldSchedule (const WorldSchedule&);
+      
       /** Destructor. */
       virtual ~WorldSchedule();
 

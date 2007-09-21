@@ -53,7 +53,8 @@ namespace LATUS {
                                    const AirportCode_T& iOrigin,
                                    const AirportCode_T& iDestination,
                                    const boost::gregorian::date& iDepDate,
-                                   const std::string& iClassPathDescription,
+                                   const std::string& iCabinCode,
+                                   const std::string& iClassCode,
                                    const double iDistributionMean,
                                    const double iDistributionStdDev);
       
