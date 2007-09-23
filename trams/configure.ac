@@ -125,13 +125,13 @@ AC_SUBST(PACKAGE_DEBUG)
 
 # Set optimised flags
 if test "x$CXXFLAGS" = x; then
-  CXXFLAGS_OPT="-DASSERT_LEVEL=1 -O3" 
+  CXXFLAGS_OPT="-DASSERT_LEVEL=1 -O2" 
   # Only for GCC compiler 
   if test "x$GXX" = xyes; then
     if test "x$enable_exceptions" = xno; then
       CXXFLAGS_OPT="$CXXFLAGS_OPT -fno-exceptions"
     fi
-    CXXFLAGS_OPT="$CXXFLAGS_OPT -pipe"
+    CXXFLAGS_OPT="$CXXFLAGS_OPT -Wall -pipe"
   fi
 else
   CXXFLAGS_OPT="$CXXFLAGS"
