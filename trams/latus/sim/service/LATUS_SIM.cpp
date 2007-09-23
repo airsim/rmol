@@ -39,9 +39,7 @@ namespace LATUS {
                          << lStartDate << " and " << lEndDate);
       
         // Call the corresponding Use Case (command)
-        Simulator lSimulator (lWholeDemand, lStartDate, lEndDate,
-                              lDemandInputFilename);
-        lSimulator.simulate();
+        Simulator::simulate (lWholeDemand, lStartDate, lEndDate);
       }
     }
 

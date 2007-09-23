@@ -30,50 +30,13 @@ namespace LATUS {
       // Only LATUS_SIM can instantiate Simulator
       friend class LATUS_SIM;
     public:
-      // /////////// GETTERS //////////
-      /** Get the start date of the simulation. */
-      const COM::DateTime_T& getStartDate () const {
-        return _startDate;
-      }
-
-      /** Get the end date of the simulation. */
-      const COM::DateTime_T& getEndDate () const {
-        return _endDate;
-      }
-
-      /** Get a reference on the (child) BookingDay object. */
-      COM::BookingDay* getBookingDay() const {
-        return _bookingDay;
-      }
-
-      /** Get a reference on the (child) BookingDay object. */
-      COM::BookingDay& getBookingDayRef() const {
-        assert (_bookingDay != NULL);
-        return *_bookingDay;
-      }
-
-      // /////////// SETTERS //////////
-      /** Set the start date of the simulation. */
-      void setStartDate (const COM::DateTime_T& iStartDate) {
-        _startDate = iStartDate;
-      }
-
-      /** Set the end date of the simulation. */
-      void setEndDate (const COM::DateTime_T& iEndDate) {
-        _endDate = iEndDate;
-      }
-
-
       // ////////// Main Methods ///////////      
       /**
          Main call-back.
       */
-      void simulate ();
-
-      /**
-         Main sample call-back.
-      */
-      static void sampleSimulate ();
+      static void simulate (COM::WholeDemand&,
+                            const COM::DateTime_T& iStartDate,
+                            const COM::DateTime_T& iEndDate);
 
       
       // ///////// DISPLAY METHODS /////////
@@ -83,40 +46,18 @@ namespace LATUS {
 
     private:
       /** Constructors. */
-      Simulator (COM::WholeDemand&,
-                 const COM::DateTime_T& iStartDate,
-                 const COM::DateTime_T& iEndDate,
-                 const std::string& iInputFileName);
+      Simulator ();
+      Simulator (const Simulator&);
       
       /** Destructor. */
       virtual ~Simulator();
 
     private:
-      /** Build the BOM thanks to the input file.
-          <br>The BOM is composed of BookingDay, CityPair, CityPairDate
-          and ClassPath objects. */
-      bool init (COM::WholeDemand&);
-
-      /** Get the current booking date of the simulation.
-          <br>The current date of the simulation is the one held by the
-          BookingDay object (acting as a wrapper for that). */
-      const COM::DateTime_T& getCurrentDate () const;
-      
-      /** Set the current booking date of the simulation.
-          <br>The current date of the simulation is the one held by the
-          BookingDay object (acting as a wrapper for that). */
-      void setCurrentDate (const COM::DateTime_T&) const;
-      
-      /** Add one day to the current date of the simulation.
-          <br>The current date of the simulation is the one held by the
-          BookingDay object (acting as a wrapper for that). */
-      void incrementCurrentDate () const;
-
       /** Play a reservation / event.
           <br>The reservation / event object contains both the time of the
           event and the reservation details (city pair description,
           departure date, class-path). */
-      void playEvent (const COM::Event_T& iEvent) const;
+      static void playEvent (const COM::Event_T& iEvent);
       
       /** Generate and play the reservations / events for the current
           booking date.
@@ -138,18 +79,11 @@ namespace LATUS {
 			<li>Insert that newly generated event in the dedicated 
 			  queue / list.</li>
 		  </ol> */
-      void generateAndPlayForCurrentDay ();
+      static void generateAndPlayForCurrentDay (COM::BookingDay&);
       
     private:
-      // Filename of the input file (for test purposes)
-      std::string _inputFileName;
-
       // BOM (the BookingDay class is the entry point to the BOM)
       COM::BookingDay* _bookingDay;
-
-      // Simulation length (time length) / date range for the simulation
-      COM::DateTime_T _startDate;
-      COM::DateTime_T _endDate;
     };
   }
 }
