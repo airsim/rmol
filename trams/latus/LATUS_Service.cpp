@@ -12,6 +12,8 @@
 #include <latus/LATUS_Service.hpp>
 // LATUS Simulator
 #include <latus/sim/service/LATUS_SIM.hpp>
+// LATUS Discrete-Event Generator
+#include <latus/deg/service/LATUS_DEG.hpp>
 // LATUS Travel Solution Provider
 #include <latus/tsp/service/LATUS_TSP.hpp>
 // LATUS Inventory
@@ -35,6 +37,9 @@ namespace LATUS {
 
     // Register the Simulator (SIM) module
     COM::LATUS_ServiceAbstract::createAndRegisterSpecificSimServiceContext();
+
+    // Register the Discrete-Event Generator (DEG) module
+    COM::LATUS_ServiceAbstract::createAndRegisterSpecificDegServiceContext();
 
     // Register the Central Reservation System (CRS) module
     COM::LATUS_ServiceAbstract::createAndRegisterSpecificCrsServiceContext();
@@ -86,6 +91,10 @@ namespace LATUS {
 
   // //////////////////////////////////////////////////////////////////////
   void LATUS_Service::simulate () const {
+    // Parse the CSV-formatted demand input file, and generate the
+    // corresponding Demand (BOM) objects.
+    DEG::LATUS_DEG::generateDemands ();
+
     // Parse the CSV-formatted schedule input file, and generate the
     // corresponding Inventories for the airlines.
     TSP::LATUS_TSP::generateInventories ();

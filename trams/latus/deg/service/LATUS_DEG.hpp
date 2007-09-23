@@ -6,9 +6,8 @@
 // //////////////////////////////////////////////////////////////////////
 // STL
 #include <string>
-// Boost (Extended STL)
-#include <boost/date_time/gregorian/gregorian.hpp>
 // LATUS Common
+#include <latus/com/basic/BasComTypes.hpp>
 #include <latus/com/service/LATUS_ServiceAbstract.hpp>
 
 namespace LATUS {
@@ -23,6 +22,12 @@ namespace LATUS {
       // Only FacDegService_Service may instantiate LATUS_DEG
       friend class FacDegService;
     public:
+      /** Parses the CSV file describing the demand for the
+          simulator, and generates the demand objects (BOM) accordingly.
+          The demand file name is stored within the (DEG-specific)
+          ServiceContext object. */
+      static void generateDemands ();
+      
       /** Main entry point: generate an event. */
       void generateEvent () const;
       

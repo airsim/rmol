@@ -5,16 +5,14 @@
 #include <assert.h>
 // GSL Random Number Distributions (GSL Reference Manual, version 1.7,
 // Chapter 19)
-#include <gsl/gsl_math.h>
 #include <gsl/gsl_randist.h>
 #include <gsl/gsl_cdf.h>
 // LATUS Common
 #include <latus/com/basic/BasConst_GSL.hpp>
 #include <latus/com/basic/BasConst_BOOST_DateTime.hpp>
-#include <latus/com/bom/CityPair.hpp>
-#include <latus/com/bom/CityPairDate.hpp>
-#include <latus/com/bom/ClassPath.hpp>
+#include <latus/com/bom/WholeDemand.hpp>
 #include <latus/com/bom/BookingDay.hpp>
+#include <latus/com/bom/CityPair.hpp>
 #include <latus/com/service/Logger.hpp>
 
 namespace LATUS {
@@ -23,8 +21,9 @@ namespace LATUS {
 
     // //////////////////////////////////////////////////////////////////////
     BookingDay::BookingDay (const boost::gregorian::date& iBookingDate)
-      : _bookingDate (iBookingDate), _bookingTime (0, 0, 0, 0), 
-        _dailyRate (0.0), _dailyEventNumber (0),
+      : _wholeDemand (NULL),
+        _bookingDate (iBookingDate), _bookingTime (0, 0, 0, 0), 
+        _dailyEventNumber (0),
         _rngExponentialPtr (NULL), _rngUniformIntPtr (NULL) {
 
       initRandomGenerator();
@@ -46,6 +45,12 @@ namespace LATUS {
       _rngUniformIntPtr = gsl_rng_alloc (DEFAULT_LATUS_RANDOM_GENERATOR_TYPE);
       assert (_rngUniformIntPtr != NULL);
     }
+
+    // //////////////////////////////////////////////////////////////////////
+    WholeDemand& BookingDay::getWholeDemandRef () const {
+      assert (_wholeDemand != NULL);
+      return *_wholeDemand;
+    }
     
     // //////////////////////////////////////////////////////////////////////
     const std::string BookingDay::describeKey() const {
@@ -61,20 +66,12 @@ namespace LATUS {
       std::ios::fmtflags oldFlags = std::cout.flags();
 
       std::cout << _bookingDate << " - " << _bookingTime << "; " << std::endl;
-      
-      int j = 1;
-      for (CityPairList_T::const_iterator itCityPair = _cityPairList.begin();
-           itCityPair != _cityPairList.end(); itCityPair++, j++) {
-        const CityPair* lCityPair_ptr = itCityPair->second;
-        assert (lCityPair_ptr != NULL);
 
-        lCityPair_ptr->display ();
-      }
+      assert (_wholeDemand != NULL);
+      _wholeDemand->display ();
       
       // DEBUG: Summary
-      std::cout << _bookingDate
-                << "; Total daily rate: " << _dailyRate
-                << std::endl;
+      std::cout << _bookingDate << std::endl;
 
       // Reset formatting flags of std::cout
       std::cout.flags (oldFlags);
@@ -84,39 +81,17 @@ namespace LATUS {
     void BookingDay::displayCurrent() const {
       // DEBUG
       std::ios::fmtflags oldFlags = std::cout.flags();
-      LATUS_LOG_DEBUG (_bookingDate << "; Daily Rate: " 
-                       << std::fixed << std::setprecision(2) << _dailyRate
-                       << "; Current Time: " << _bookingTime 
+      LATUS_LOG_DEBUG (_bookingDate << "; Current Time: " << _bookingTime 
                        << "; Daily Nb of Events: " << _dailyEventNumber);
       std::cout.flags (oldFlags);
     }
 
     // //////////////////////////////////////////////////////////////////////
-    CityPair* BookingDay::
-    getCityPairInternal (const std::string& iCityPairKey) const {
-      CityPair* resultCityPair_ptr = NULL;
-      
-      CityPairList_T::const_iterator itCityPair =
-        _cityPairList.find (iCityPairKey);
-
-      if (itCityPair != _cityPairList.end()) {
-        resultCityPair_ptr = itCityPair->second;
-      }
-
-      return resultCityPair_ptr;
+    const double BookingDay::getDailyRate() const {
+      assert (_wholeDemand != NULL);
+      return _wholeDemand->getDailyRate();
     }
-    
-    // //////////////////////////////////////////////////////////////////////
-    CityPair* BookingDay::
-    getCityPair (const AirportCode_T& iOrigin,
-                 const AirportCode_T& iDestination) const {
-      const AirportPairKey_T lAirportPairKey (iOrigin, iDestination);
-      const CityPairKey_T lCityPairKey (lAirportPairKey);
-      const std::string lCityPairKeyStr = lCityPairKey.describeShort();
 
-      return getCityPairInternal (lCityPairKeyStr);
-    }
-    
     // //////////////////////////////////////////////////////////////////////
     bool BookingDay::hasReachedEndOfDay () const {
       return (_bookingTime >= BOOST_TIME_DURATION_FOR_A_DAY);
@@ -152,61 +127,14 @@ namespace LATUS {
     
     // //////////////////////////////////////////////////////////////////////
     void BookingDay::updateDailyRate () {
-      double oDailyRate = 0.0;
-      
-      // Empty the daily rate distribution, as it will be (re-)filled
-      // by the below main loop on CityPair objects.
-      _cityPairDistribution.clear();
-      
-      // Update the daily rates
-      for (CityPairList_T::const_iterator itCityPair = _cityPairList.begin();
-           itCityPair != _cityPairList.end(); itCityPair++) {
-        CityPair* lCityPair_ptr = itCityPair->second;
-        assert (lCityPair_ptr != NULL);
-
-        /** Re-calculate the daily rate (final demand weighted by a modulation,
-            e.g., here, according to a Weibull distribution). */
-        lCityPair_ptr->updateDailyRate();
-
-        const double lCityPairDailyRate = lCityPair_ptr->getDailyRate();
-
-        // If the daily rate is null, then no event should be generated
-        // for the corresponding CityPair object: the departure date is
-        // probably too far.
-        if (gsl_fcmp (lCityPairDailyRate, 0.0, 1e-3) == 0) {
-          continue;
-        }
-
-        oDailyRate += lCityPairDailyRate;
-        
-        // Insert the current cumulated daily rate within the daily rate
-        // distribution vector
-        const bool insertSucceeded = _cityPairDistribution.
-          insert (CityPairDistribution_T::
-                  value_type (oDailyRate,
-                              lCityPair_ptr->describeShortKey())).second;
-
-        if (insertSucceeded == false) {
-          LATUS_LOG_ERROR ("Insertion failed for " << oDailyRate
-                           << " and " << lCityPair_ptr->describeKey());
-          assert (insertSucceeded == true);
-        }
-      }
-
-      setDailyRate (oDailyRate);
+      assert (_wholeDemand != NULL);
+      _wholeDemand->updateDailyRate();
     }
 
     // //////////////////////////////////////////////////////////////////////
     void BookingDay::drawEventsForAllCityPairs () {
-      for (CityPairList_T::const_iterator itCityPair = _cityPairList.begin();
-           itCityPair != _cityPairList.end(); itCityPair++) {
-        CityPair* lCityPair_ptr = itCityPair->second;
-        assert (lCityPair_ptr != NULL);
-
-        // Draw the next event corresponding to the CityPair (derived from the
-        // CityPair daily rate), and add it to the event queue.
-        drawCityPairNextEvent (*lCityPair_ptr);
-      }
+      assert (_wholeDemand != NULL);
+      _wholeDemand->drawEventsForAllCityPairs (_eventList);
     }
 
     // //////////////////////////////////////////////////////////////////////
@@ -230,42 +158,15 @@ namespace LATUS {
     }
 
     // //////////////////////////////////////////////////////////////////////
+    void BookingDay::drawCityPairNextEvent (CityPair& ioCityPair) {
+      ioCityPair.drawCityPairNextEvent (_eventList);
+    }
+    
+    // //////////////////////////////////////////////////////////////////////
     void BookingDay::
     removeEventFromList (const EventList_T::iterator& ioEventKey) {
       _eventList.erase (ioEventKey);
     }
     
-    // //////////////////////////////////////////////////////////////////////
-    void BookingDay::drawCityPairNextEvent (CityPair& ioCityPair) {
-      
-      // Draw the inter-arrival time corresponding to the CityPair daily rate
-      const boost::posix_time::time_duration& lNextEventTime =
-        ioCityPair.drawNextEventTime ();
-        
-      // Generate the next event:
-      // 1. Generate a departure date (hence, we derive the CityPairDate)
-      CityPairDate* lCityPairDate_ptr = ioCityPair.drawCityPairDate();
-      if (lCityPairDate_ptr == NULL) {
-        return;
-      }
-      assert (lCityPairDate_ptr != NULL);
-      
-      // 1. Generate a class-path (hence, we derive the ClassPath)
-      ClassPath* lClassPath_ptr = lCityPairDate_ptr->drawClassPath();
-      if (lClassPath_ptr == NULL) {
-        return;
-      }
-      assert (lClassPath_ptr != NULL);
-
-      /*
-      LATUS_LOG_DEBUG ("Drawn ClassPath: " << lClassPath_ptr->describeKey()
-                       << " for event time: " << lNextEventTime);
-      */
-        
-      // Add the event to the dedicated list
-      _eventList.insert (EventList_T::value_type (lNextEventTime,
-                                                  lClassPath_ptr));
-    }
-
   }
 }

@@ -12,16 +12,17 @@
 #include <latus/com/bom/BookingDay.hpp>
 #include <latus/com/bom/CityPair.hpp>
 #include <latus/com/bom/CityPairDate.hpp>
-#include <latus/com/bom/ClassPath.hpp>
+#include <latus/com/bom/WTP.hpp>
 #include <latus/com/factory/FacBookingDay.hpp>
-#include <latus/com/command/FileMgr.hpp>
 #include <latus/com/service/Logger.hpp>
 #include <latus/com/bom/TravelSolution.hpp>
+// LATUS DEG
+#include <latus/deg/service/LATUS_DEG.hpp>
 // LATUS INV
 #include <latus/inv/service/LATUS_INV.hpp> // DEBUG
 // LATUS CRS
 #include <latus/crs/service/LATUS_CRS.hpp>
-// LATUS Main
+// LATUS SIM
 #include <latus/sim/command/Simulator.hpp>
 
 namespace LATUS {
@@ -29,14 +30,15 @@ namespace LATUS {
   namespace SIM {
 
     // //////////////////////////////////////////////////////////////////////
-    Simulator::Simulator (const COM::DateTime_T& iStartDate,
+    Simulator::Simulator (COM::WholeDemand& ioWholeDemand,
+                          const COM::DateTime_T& iStartDate,
                           const COM::DateTime_T& iEndDate,
                           const std::string& iInputFileName)
       : _bookingDay (NULL), _inputFileName (iInputFileName),
         _startDate (iStartDate), _endDate (iEndDate) {
 
       // Read the input file and build the CityPairList
-       const bool hasSucceeded = init();
+      const bool hasSucceeded = init (ioWholeDemand);
       assert (hasSucceeded == true);
     }
       
@@ -45,14 +47,18 @@ namespace LATUS {
     }
     
     // //////////////////////////////////////////////////////////////////////
-    bool Simulator::init () {
+    bool Simulator::init (COM::WholeDemand& ioWholeDemand) {
 
       // Initialise the BookingDay object, which is the main entry point
-      // for the demand-related event generation.
+      // for the demand-related event generation, and link it to the
+      // Demand (BOM) objects.
       _bookingDay =
         &COM::FacBookingDay::instance().create (COM::DEFAULT_BOOKING_DATE);
       assert (_bookingDay != NULL);
       
+      COM::FacBookingDay::initLinkWithWholeDemand (*_bookingDay, ioWholeDemand);
+
+      /*
       // Read input data and parameters from a CSV-type file
       const bool hasFileBeenRead = 
         COM::FileMgr::readAndProcessDemandInputFile (_inputFileName,
@@ -62,6 +68,7 @@ namespace LATUS {
                          << "\" file (hint: check that it exists).");
         return false;
        }
+      */
 
       return true;
     }
@@ -95,19 +102,18 @@ namespace LATUS {
 
     // //////////////////////////////////////////////////////////////////////
     void Simulator::playEvent (const COM::Event_T& iEvent) const {
-      const COM::ClassPath* lClassPath_ptr = iEvent.second;
-      assert (lClassPath_ptr != NULL);
+      const COM::WTP* lWTP_ptr = iEvent.second;
+      assert (lWTP_ptr != NULL);
 
       // Get the Travel Solutions corresponding to the city pair and
       // departure date
-      const COM::AirportCode_T& lOrigin = lClassPath_ptr->getOrigin();
-      const COM::AirportCode_T& lDestination = lClassPath_ptr->getDestination();
-      const COM::DateTime_T& lDepDate = lClassPath_ptr->getDepartureDate();
+      const COM::AirportCode_T& lOrigin = lWTP_ptr->getOrigin();
+      const COM::AirportCode_T& lDestination = lWTP_ptr->getDestination();
+      const COM::DateTime_T& lDepDate = lWTP_ptr->getDepartureDate();
       COM::TravelSolutionKeyList_T lTravelSolutionKeyList;
 
       CRS::LATUS_CRS::provideTravelSolution (lOrigin, lDestination, lDepDate,
                                              lTravelSolutionKeyList);
-      
     }
 
     // //////////////////////////////////////////////////////////////////////
@@ -139,6 +145,10 @@ namespace LATUS {
 		  break;
 		}
 
+        // DEBUG
+        LATUS_LOG_DEBUG ("Booking Date: " << lBookingDay.getBookingDate()
+                         << ", Booking Time: " << lBookingDay.getBookingTime());
+        
         // Play the reservation event
         playEvent (lEvent);
         
@@ -146,9 +156,9 @@ namespace LATUS {
         lBookingDay.eraseEvent (lEventTime);
 
         // Draw the next event for the corresponding CityPair
-        const COM::ClassPath* lClassPath_ptr = lEvent.second;
-        assert (lClassPath_ptr != NULL);
-        COM::CityPairDate& lCityPairDate = lClassPath_ptr->getCityPairDateRef();
+        const COM::WTP* lWTP_ptr = lEvent.second;
+        assert (lWTP_ptr != NULL);
+        COM::CityPairDate& lCityPairDate = lWTP_ptr->getCityPairDateRef();
         COM::CityPair& lCityPair = lCityPairDate.getCityPairRef();
         lBookingDay.drawCityPairNextEvent (lCityPair);
       }

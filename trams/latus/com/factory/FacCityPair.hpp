@@ -6,13 +6,9 @@
 // //////////////////////////////////////////////////////////////////////
 // STL
 #include <string>
-// Boost (Extended STL)
-#include <boost/date_time/gregorian/gregorian.hpp>
 // LATUS Common
+#include <latus/com/basic/BasComTypes.hpp>
 #include <latus/com/factory/FacBomAbstract.hpp>
-#include <latus/com/bom/CityPairList.hpp>
-#include <latus/com/bom/ClassPathDistributionList.hpp>
-#include <latus/com/bom/DepDateDistributionList.hpp>
 
 namespace LATUS {
 
@@ -48,17 +44,6 @@ namespace LATUS {
           @exception FacException.*/
       static void initLinkWithCityPairDate (CityPair&, CityPairDate&);
 
-      /** Create a new ClassPath object with the given parameters.
-          <br>This new object is added to the list of instantiated objects.
-          <br>Any missing intermediary object (CityPair and/or CityPairDate)
-          will be created and added to the corresponding children list. */
-      static void createClassPath (CityPair&,
-                                   const boost::gregorian::date& iDepDate,
-                                   const std::string& iCabinCode,
-                                   const std::string& iClassCode,
-                                   const double iDistributionMean,
-                                   const double iDistributionStdDev);
-    
     protected:
       /** Default Constructor.
           <br>This constructor is protected in order to ensure the singleton

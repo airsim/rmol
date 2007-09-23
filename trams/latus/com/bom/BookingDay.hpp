@@ -6,10 +6,6 @@
 // //////////////////////////////////////////////////////////////////////
 // STL
 #include <string>
-#include <map>
-// Boost (Extended STL)
-#include <boost/date_time/posix_time/posix_time.hpp>
-#include <boost/date_time/gregorian/gregorian.hpp>
 // GSL Random Number Generation (GSL Reference Manual, version 1.7, Chapter 17)
 #include <gsl/gsl_rng.h>
 // LATUS General
@@ -17,7 +13,6 @@
 // LATUS Common
 #include <latus/com/basic/BasComTypes.hpp>
 #include <latus/com/bom/BomAbstract.hpp>
-#include <latus/com/bom/CityPairList.hpp>
 #include <latus/com/bom/Event.hpp>
 
 namespace LATUS {
@@ -25,61 +20,41 @@ namespace LATUS {
   namespace COM {
 
     // Forward declarations
-    class BookingDay;
-    class ClassPath;
+    class WholeDemand;
+    class WTP;
+    class CityPair;
 
     /** Class storing the context for a Booking Day. */
     class BookingDay : public BomAbstract {
       friend class FacBookingDay;
-    private:
-      // Private type definitions
-      /** Type, for a given BookingDay, corresponding to the City Pair
-          probability distribution.
-          <br>Note that that probability distribution is normally not used:
-          it is here for debugging purpose only. */
-      typedef std::map<double, std::string> CityPairDistribution_T;
-                       
-      /** Queue of reservations / events.
-          <br>Each event is defined by a reservation time and by the full
-          reservation details, provided through the ClassPath object.
-          Indeed, that latter encompasses the city pair, the travel departure
-          date and the class-path information (as the CityPair C++ class is the
-          parent of the CityPairDate C++ class, itself parent of the ClassPath
-          C++ class).
-          <br>For example, an event can take the shape of a reservation for the
-          H-H class combination, made at (with a booking time of) 14:02:50
-          for a NCE-MIA travel departing on 21-Apr-2007. */
-      typedef std::multimap<boost::posix_time::time_duration,
-                            ClassPath*> EventList_T;
-    
     public:
       // /////////// Getters //////////////
+      /** Get the WholeDemand object reference. */
+      WholeDemand* getWholeDemand () const {
+        return _wholeDemand;
+      }
+
+      /** Get the WholeDemand object reference. */
+      WholeDemand& getWholeDemandRef () const;
+
       /** Get the primary key. */
-      const boost::gregorian::date& getPrimaryKey() const {
+      const DateTime_T& getPrimaryKey() const {
         return getBookingDate();
       }
 
       /** Get the current simulation/booking date. */
-      const boost::gregorian::date& getBookingDate() const {
+      const DateTime_T& getBookingDate() const {
         return _bookingDate;
       }
 
       /** Get the time of next reservation / event for that Booking Day. */
-      const boost::posix_time::time_duration& getBookingTime () const {
+      const Duration_T& getBookingTime () const {
         return _bookingTime;
       }
 
       /** Get the daily rate. */
-      const double getDailyRate() const {
-        return _dailyRate;
-      }
+      const double getDailyRate() const;
 
-      /** Retrieve, if existing, the CityPair corresponding to the
-          given description.
-          <br>If not existing, return the NULL pointer. */
-      CityPair* getCityPair (const AirportCode_T& iOrigin,
-                             const AirportCode_T& iDestination) const;
-      
       /** States whether the (current) booking time has reached the end of
           the day (midnight). */
       bool hasReachedEndOfDay () const;
@@ -99,8 +74,13 @@ namespace LATUS {
 
 
       // ///////// Setters //////////
+      /** Set the WholeDemand object reference. */
+      void setWholeDemand (WholeDemand* ioWholeDemand) {
+        _wholeDemand = ioWholeDemand;
+      }
+
       /** Set the current simulation / booking date. */
-      void setBookingDate (const boost::gregorian::date& iBookingDate) {
+      void setBookingDate (const DateTime_T& iBookingDate) {
         _bookingDate = iBookingDate;
       }
 
@@ -108,18 +88,14 @@ namespace LATUS {
       void incrementBookingDate ();
 
       /** Set the time of next reservation / event for that Booking Day. */
-      void setBookingTime(const boost::posix_time::time_duration& iBookingTime) {
+      void setBookingTime(const Duration_T& iBookingTime) {
         _bookingTime = iBookingTime;
-      }
-
-      /** Set the daily rate. */
-      void setDailyRate (const double iDailyRate) {
-        _dailyRate = iDailyRate;
       }
 
 
       // /////////// Main Business Methods ////////////
-      /** Update the daily rates for all the CityPair objects.
+      /** Update the daily rates for all the CityPair objects of the
+          WholeDemand object.
           <br>The daily rate depends on:
           <br><ol>
           <li>The current / booking date.</li>
@@ -177,28 +153,7 @@ namespace LATUS {
 			class-path).</li>
           </ol>. */
       void drawCityPairNextEvent (CityPair&);
-
-      /** Generate and play the reservations / events for the
-          current / booking date.
-		  <br>After calling resetForCurrentDate(), that method enters
-		  the main loop where the following steps are processed, until
-		  the current (booking) time gets above midnight:
-		  <br><ol>
-			<li>Get the first (closest in time) reservation / event,
-		      containing (by construction) the combination of
-			  the city pair, departure date and class-path
-			  information.</li>
-			<li>Set the current (booking) time to the (booking) time of
-			  the reservation / event.</li>
-			<li>Remove that event from the dedicated queue / list.</li>
-			<li>Play that event (give it back to the Simulator).</li>
-			<li>Draw / generate, for that CityPair object, a new event
-			  (simply by calling the drawCityPairNextEvent() method).</li>
-			<li>Insert that newly generated event in the dedicated 
-			  queue / list.</li>
-		  </ol> */
-      void generateAndPlay ();
-
+      
 
       // ///////// Display Methods //////////
       /** Get a string describing the key. */
@@ -213,7 +168,7 @@ namespace LATUS {
     private:
       /** Constructors are private so as to force the usage of the Factory
           layer. */
-      BookingDay (const boost::gregorian::date& iBookingDate); 
+      BookingDay (const DateTime_T& iBookingDate); 
 
       /** Destructor. */
       virtual ~BookingDay();
@@ -222,20 +177,6 @@ namespace LATUS {
           <br>Mainly, the random generator is initialised. */
       void initRandomGenerator();
 
-      /** Get the list of (children) CityPair objects. */
-      const CityPairList_T& getCityPairList () const {
-        return _cityPairList;
-      }
-
-      /** Retrieve, if existing, the CityPair corresponding to the
-          given CityPair key (i.e., (board point, off point) pair).
-          <br>If not existing, return the NULL pointer.
-          <br>Note that the string must be formed thanks to the
-          CityPairKey_T::describeShort() method, as that latter is used when
-          inserting the CityPair within the BookingDay dedicated list. */
-      CityPair*
-      getCityPairInternal (const std::string& iCityPairKey) const;
-      
       /** Get the list of Event objects. */
       const EventList_T& getEventList () const {
         return _eventList;
@@ -247,25 +188,17 @@ namespace LATUS {
 
     private:
       // Attributes
-      /** Children: list of CityPair objects. */
-      CityPairList_T _cityPairList;
-
+      /** Children: WholeDemand object. */
+      WholeDemand* _wholeDemand;
+      
       /** Current Simulation / Booking Date. */
-      boost::gregorian::date _bookingDate;
+      DateTime_T _bookingDate;
 
       /** Time of the next reservation/event for the booking day. */
-      boost::posix_time::time_duration _bookingTime;
-
-      /** Daily rate, corresponding to the final demand pro-rated/weighted
-          according to the distribution in City Pairs. */
-      double _dailyRate;
+      Duration_T _bookingTime;
 
       /** Number of reservations / events made during the simulation day. */
       int _dailyEventNumber;
-
-      /** List, for a given BookingDay, holding the Departure date probability
-          (discrete) distribution. */
-      CityPairDistribution_T _cityPairDistribution;
 
       /** List of reservations / events made during the simulation day. */
       EventList_T _eventList;

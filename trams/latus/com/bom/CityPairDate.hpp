@@ -12,7 +12,7 @@
 // LATUS Common
 #include <latus/com/basic/BasComTypes.hpp>
 #include <latus/com/bom/BomAbstract.hpp>
-#include <latus/com/bom/ClassPathList.hpp>
+#include <latus/com/bom/WTPList.hpp>
 
 namespace LATUS {
   
@@ -20,7 +20,7 @@ namespace LATUS {
 
     /** Forward declarations. */
     class CityPair;
-    class ClassPath;
+    class WTP;
 
     /** Class storing the context of a CityPair for a given departure date.
         <br>Mainly, it stores the distributions (of traveller demand)
@@ -28,9 +28,9 @@ namespace LATUS {
     class CityPairDate : public BomAbstract {
       friend class FacCityPairDate;
     private:
-      /** Type, for a given CityPairDate, corresponding to the Class-Path
+      /** Type, for a given CityPairDate, corresponding to the WTP
           probability distribution. */
-      typedef std::map<double, ClassPath*> ClassPathDistribution_T;
+      typedef std::map<double, WTP*> WTPDistribution_T;
       
     public:
       // /////////// Getters //////////////
@@ -113,16 +113,15 @@ namespace LATUS {
 
 
       // ////////////
-      /** Update the daily rates of each ClassPath, according to the
+      /** Update the daily rates of each WTP, according to the
           current date (of the simulation).
           At the same time, build the daily rate distributions. */
       void updateDailyRate();
       
-      /** Draw / generate a ClassPath corresponding to a
-          reservation / event.
+      /** Draw / generate a WTP corresponding to a reservation / event.
           <br>When there is no more demand event to generate, the NULL
           pointer is returned. */
-      ClassPath* drawClassPath () const;
+      WTP* drawWTP () const;
       
 
       // ///////// Display //////////
@@ -148,16 +147,17 @@ namespace LATUS {
           <br>Mainly, the random generator is initialised. */
       void initRandomGenerator();
 
-      /** Get the (children) list of ClassPath objects. */
-      const ClassPathList_T& getClassPathList() const {
-        return _classPathList;
+      /** Get the (children) list of WTP objects. */
+      const WTPList_T& getWTPList() const {
+        return _wtpList;
       }
 
-      /** Retrieve, if existing, the ClassPath corresponding to the
+      /** Retrieve, if existing, the WTP corresponding to the
           given class path/combination description.
           <br>If not existing, return the NULL pointer. */
-      ClassPath* getClassPath (const std::string& iDescription) const;
+      WTP* getWTP (const PriceValue_T& iWTPValue) const;
 
+      
     private:
       // Attributes
       /** Parent class: CityPair. */
@@ -174,9 +174,9 @@ namespace LATUS {
           separating the current booking date from the departure date. */
       DateOffSet_T _currentDTD;
 
-      /** Children: list of ClassPath objects (wrapping, for a given
-          class path/combination, the final demand distribution). */
-      ClassPathList_T _classPathList;
+      /** Children: list of WTP objects (wrapping, for a given
+          WTP, the final demand distribution). */
+      WTPList_T _wtpList;
 
       /** Final demand for the whole city pair date (on the date range,
           and for all the class paths/combinations). */
@@ -186,9 +186,9 @@ namespace LATUS {
           according to the distribution in DTD/departure date. */
       double _dailyRate;
 
-      /** List, for a given CityPairDate, holding the Class-Path probability
+      /** List, for a given CityPairDate, holding the WTP probability
           (discrete) distribution. */
-      ClassPathDistribution_T _classPathDistribution;
+      WTPDistribution_T _wtpDistribution;
 
       /** (GSL) Random seed. */
       gsl_rng* _rngUniformIntPtr;

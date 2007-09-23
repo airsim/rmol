@@ -45,6 +45,18 @@ namespace LATUS {
         economy). */
     typedef std::string CabinCode_T;
     
+    /** Define a price value (e.g., 1000.0 Euros). */
+    typedef double PriceValue_T;
+
+    /** Define a price currency (e.g., EUR for Euros). */
+    typedef std::string PriceCurrency_T;
+
+    /** Define a mean value (e.g., 20.2). */
+    typedef double MeanValue_T;
+
+    /** Define a standard deviation value (e.g., 1.5). */
+    typedef double StandardDeviationValue_T;
+
     /** Define the cabin capacity (resource, e.g., 200 seats).
         <br>The capacity is expressed as a double to cope with overbooking. */
     typedef double CabinCapacity_T;

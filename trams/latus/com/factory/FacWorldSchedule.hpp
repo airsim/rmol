@@ -33,7 +33,7 @@ namespace LATUS {
           <br>This new object is added to the list of instantiated objects.
           @param const boost::gregorian::date& Creation/update date.
           @return WorldSchedule& The newly created object. */
-      WorldSchedule& create (const boost::gregorian::date& iUpdateDate);
+      WorldSchedule& create (const DateTime_T& iUpdateDate);
 
       /** Initialise the link between a WorldSchedule and a Schedule.
           @param WorldSchedule&

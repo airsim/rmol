@@ -18,6 +18,7 @@ namespace LATUS {
 
     // Forward declarations
     class ServiceContext;
+    class WholeDemand;
     class WorldSchedule;
     class Network;
     class Inventory;
@@ -100,6 +101,9 @@ namespace LATUS {
       
       
       // //////// Getters for the internal BOM ///////
+      /** Get the WholeDemand object reference. */
+      static WholeDemand& getWholeDemand ();
+      
       /** Get the WorldSchedule object reference. */
       static WorldSchedule& getWorldSchedule ();
       
@@ -114,6 +118,9 @@ namespace LATUS {
 
       
       // //////// Setters for the internal BOM ///////
+      /** Set the WholeDemand object reference. */
+      static void setWholeDemand (WholeDemand& ioWholeDemand);
+      
       /** Set the WorldSchedule object reference. */
       static void setWorldSchedule (WorldSchedule& ioWorldSchedule);
       
@@ -153,6 +160,12 @@ namespace LATUS {
           <br>That method calls createAndRegisterSpecificServiceContext()
           with the module type (i.e., SIM). */
       static void createAndRegisterSpecificSimServiceContext ();
+
+      /** Create and register a specific DEG ServiceContext object.
+          <br>The DEG ServiceContext is initialised with a default module name.
+          <br>That method calls createAndRegisterSpecificServiceContext()
+          with the module type (i.e., DEG). */
+      static void createAndRegisterSpecificDegServiceContext ();
 
       /** Create and register a specific CRS ServiceContext object.
           <br>The CRS ServiceContext is initialised with a default module name.

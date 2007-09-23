@@ -4,10 +4,6 @@
 // C
 #include <assert.h>
 // LATUS Common
-#include <latus/com/basic/BasConst_WorldSchedule.hpp>
-#include <latus/com/bom/WorldSchedule.hpp>
-#include <latus/com/factory/FacWorldSchedule.hpp>
-#include <latus/com/command/FileMgr.hpp>
 #include <latus/com/service/Logger.hpp>
 // LATUS INV
 #include <latus/inv/command/InventoryManager.hpp>
@@ -31,30 +27,11 @@ namespace LATUS {
     
     // //////////////////////////////////////////////////////////////////////
     bool InventoryManager::init () {
-
-      // Initialise the BookingDay object, which is the main entry point
-      // for the demand-related event generation.
-      _worldSchedule = &COM::FacWorldSchedule::instance().
-        create (COM::DEFAULT_WORLD_SCHEDULE_UPDATE_DATE);
-      assert (_worldSchedule != NULL);
-      
-      // Read input data and parameters from a CSV-type file
-      const bool hasFileBeenRead = 
-        COM::FileMgr::readAndProcessWorldScheduleInputFile (_inputFileName,
-                                                            *_worldSchedule);
-      if (hasFileBeenRead == false) {
-        LATUS_LOG_ERROR ("Can not parse the \"" << _inputFileName 
-                         << "\" file (hint: check that it exists).");
-        return false;
-      }
-
       return true;
     }
     
     // //////////////////////////////////////////////////////////////////////
     void InventoryManager::display () const {
-      const COM::WorldSchedule& lWorldSchedule = getWorldScheduleRef();
-      lWorldSchedule.display();
     }
 
     // //////////////////////////////////////////////////////////////////////

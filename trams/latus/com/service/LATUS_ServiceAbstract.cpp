@@ -51,6 +51,11 @@ namespace LATUS {
     }
 
     // //////////////////////////////////////////////////////////////////////
+    WholeDemand& LATUS_ServiceAbstract::getWholeDemand () {
+      return ServiceContextManager::getWholeDemand ();
+    }
+      
+    // //////////////////////////////////////////////////////////////////////
     WorldSchedule& LATUS_ServiceAbstract::getWorldSchedule () {
       return ServiceContextManager::getWorldSchedule ();
     }
@@ -104,6 +109,12 @@ namespace LATUS {
     
     // //////////////////////////////////////////////////////////////////////
     void LATUS_ServiceAbstract::
+    setWholeDemand (WholeDemand& ioWholeDemand) {
+      ServiceContextManager::setWholeDemand (ioWholeDemand);
+    }
+      
+    // //////////////////////////////////////////////////////////////////////
+    void LATUS_ServiceAbstract::
     setWorldSchedule (WorldSchedule& ioWorldSchedule) {
       ServiceContextManager::setWorldSchedule (ioWorldSchedule);
     }
@@ -123,6 +134,12 @@ namespace LATUS {
     void LATUS_ServiceAbstract::
     createAndRegisterSpecificSimServiceContext () {
       ServiceContextManager::createAndRegisterSpecificSimServiceContext ();
+    }
+      
+    // //////////////////////////////////////////////////////////////////////
+    void LATUS_ServiceAbstract::
+    createAndRegisterSpecificDegServiceContext () {
+      ServiceContextManager::createAndRegisterSpecificDegServiceContext ();
     }
       
     // //////////////////////////////////////////////////////////////////////

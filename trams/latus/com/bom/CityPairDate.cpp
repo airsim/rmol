@@ -13,7 +13,7 @@
 // LATUS Common
 #include <latus/com/basic/BasConst_CityPair.hpp>
 #include <latus/com/basic/BasConst_GSL.hpp>
-#include <latus/com/bom/ClassPath.hpp>
+#include <latus/com/bom/WTP.hpp>
 #include <latus/com/bom/CityPair.hpp>
 #include <latus/com/bom/CityPairDate.hpp>
 #include <latus/com/service/Logger.hpp>
@@ -55,24 +55,63 @@ namespace LATUS {
     }
     
     // //////////////////////////////////////////////////////////////////////
+    void CityPairDate::display (const bool iIndented) const {
+
+      // Store current formatting flags of std::cout
+      std::ios::fmtflags oldFlags = std::cout.flags();
+      
+      if (iIndented == true) {
+        std::cout << "          ";
+      }
+      std::cout << _departureDate << "; ";
+      
+      int k = 1;
+      for (WTPList_T::const_iterator itWTP= _wtpList.begin();
+           itWTP != _wtpList.end(); itWTP++, k++) {
+        const WTP* lWTP_ptr = itWTP->second;
+        assert (lWTP_ptr != NULL);
+
+        bool lIndented = (k != 1);
+        lWTP_ptr->display (lIndented);
+      }
+
+      for (WTPDistribution_T::const_reverse_iterator itWTP =
+             _wtpDistribution.rbegin();
+           itWTP != _wtpDistribution.rend(); itWTP++) {
+        const double lDailyRate = itWTP->first;
+        const WTP* lWTP_ptr = itWTP->second;
+        assert (lWTP_ptr != NULL);
+
+        std::cout << "                      [ "
+                  << lWTP_ptr->describeKey() << " | "
+                  << std::setprecision(2) << lDailyRate
+                  << " ]" << std::endl;
+      }
+
+      // Reset formatting flags of std::cout
+      std::cout.flags (oldFlags);
+    }
+    
+    // //////////////////////////////////////////////////////////////////////
     CityPair& CityPairDate::getCityPairRef() const {
       assert (_cityPair != NULL);
       return *_cityPair;
     }
     
     // //////////////////////////////////////////////////////////////////////
-    ClassPath* CityPairDate::
-    getClassPath (const std::string& iDescription) const {
-      ClassPath* resultClassPath_ptr = NULL;
-      
-      ClassPathList_T::const_iterator itClassPath =
-        _classPathList.find (iDescription);
+    WTP* CityPairDate::getWTP (const PriceValue_T& iWTPValue) const {
+      WTP* resultWTP_ptr = NULL;
 
-      if (itClassPath != _classPathList.end()) {
-        resultClassPath_ptr = itClassPath->second;
+      // TODO: apply the float::closeTo() method, as floats can not be
+      // compared as is.
+      
+      WTPList_T::const_iterator itWTP = _wtpList.find (iWTPValue);
+
+      if (itWTP != _wtpList.end()) {
+        resultWTP_ptr = itWTP->second;
       }
 
-      return resultClassPath_ptr;
+      return resultWTP_ptr;
     }
     
     // //////////////////////////////////////////////////////////////////////
@@ -104,15 +143,14 @@ namespace LATUS {
       double oDailyRate = 0.0;
       
       // Empty the daily rate distribution, as it will be (re-)filled
-      // by the below main loop on ClassPath objects.
-      _classPathDistribution.clear();
+      // by the below main loop on WTP objects.
+      _wtpDistribution.clear();
       
       // Update the daily rate
-      for (ClassPathList_T::const_iterator itClassPath =
-             _classPathList.begin();
-           itClassPath != _classPathList.end(); itClassPath++) {
-        ClassPath* lClassPath_ptr = itClassPath->second;
-        assert (lClassPath_ptr != NULL);
+      for (WTPList_T::const_iterator itWTP = _wtpList.begin();
+           itWTP != _wtpList.end(); itWTP++) {
+        WTP* lWTP_ptr = itWTP->second;
+        assert (lWTP_ptr != NULL);
         
         // By construction, the demand occurs before the departure date.
         const DateTime_T& lCurrentDate = getCurrentDate();
@@ -124,29 +162,29 @@ namespace LATUS {
         // be given according to DTD.
         /** Re-calculate the daily rate (final demand weighted by a modulation,
             e.g., here, according to a Weibull distribution). */
-        lClassPath_ptr->updateDailyRate();
+        lWTP_ptr->updateDailyRate();
 
-        const double lClassPathDailyRate = lClassPath_ptr->getDailyRate();
+        const double lWTPDailyRate = lWTP_ptr->getDailyRate();
 
         // If the daily rate is null, then no event should be generated
-        // for the corresponding ClassPath object: the departure date is
+        // for the corresponding WTP object: the departure date is
         // probably too far.
-        if (gsl_fcmp (lClassPathDailyRate, 0.0, 1e-3) == 0) {
+        if (gsl_fcmp (lWTPDailyRate, 0.0, 1e-3) == 0) {
           continue;
         }
 
-        // Add up the daily of the ClassPath to the CityPairDate daily rate.
-        oDailyRate += lClassPathDailyRate;
+        // Add up the daily of the WTP to the CityPairDate daily rate.
+        oDailyRate += lWTPDailyRate;
 
         // Insert the current cumulated daily rate within the daily rate
         // distribution vector
-        const bool insertSucceeded = _classPathDistribution.
-          insert (ClassPathDistribution_T::value_type (oDailyRate,
-                                                       lClassPath_ptr)).second;
+        const bool insertSucceeded = _wtpDistribution.
+          insert (WTPDistribution_T::value_type (oDailyRate,
+                                                 lWTP_ptr)).second;
 
         if (insertSucceeded == false) {
           LATUS_LOG_ERROR ("Insertion failed for " << oDailyRate
-                           << " and " << lClassPath_ptr->describeKey());
+                           << " and " << lWTP_ptr->describeKey());
           assert (insertSucceeded == true);
         }
 
@@ -156,22 +194,22 @@ namespace LATUS {
     }
     
     // //////////////////////////////////////////////////////////////////////
-    ClassPath* CityPairDate::drawClassPath () const {
-      ClassPath* oResult = NULL;
+    WTP* CityPairDate::drawWTP () const {
+      WTP* oResult = NULL;
       
       // When the daily rate distribution is empty, there is no more
       // demand event to generate.
-      if (_classPathDistribution.empty() == true) {
+      if (_wtpDistribution.empty() == true) {
         return oResult;
       }
       
-      // Retrieve the ClassPath description getting the highest daily rate:
+      // Retrieve the WTP description getting the highest daily rate:
       // since the distribution list (map) is ordered by daily rate,
-      // the searched ClassPath is simply the last item of the list.
-      ClassPathDistribution_T::const_reverse_iterator itHighestRateClassPath =
-        _classPathDistribution.rbegin();
-      assert (itHighestRateClassPath != _classPathDistribution.rend());
-      const double lHighestDailyRate = itHighestRateClassPath->first;
+      // the searched WTP is simply the last item of the list.
+      WTPDistribution_T::const_reverse_iterator itHighestRateWTP =
+        _wtpDistribution.rbegin();
+      assert (itHighestRateWTP != _wtpDistribution.rend());
+      const double lHighestDailyRate = itHighestRateWTP->first;
 
       // Generate a random floating point number, uniformly distributed in the
       // range [0, lHighestDailyRate[ (including 0.0 but not
@@ -181,56 +219,17 @@ namespace LATUS {
       const double lVariate =
         gsl_rng_uniform (_rngUniformIntPtr) * lHighestDailyRate;
 
-      // Retrieve, within the distribution list, the ClassPath getting
+      // Retrieve, within the distribution list, the WTP getting
       // the closest daily rate (say, lDailyRate),
       // such that lVariate >= lDailyRate.
-      ClassPathDistribution_T::const_iterator itClassPath =
-        _classPathDistribution.lower_bound (lVariate);
+      WTPDistribution_T::const_iterator itWTP =
+        _wtpDistribution.lower_bound (lVariate);
       
-      // Return the corresponding ClassPath
-      oResult = itClassPath->second;
+      // Return the corresponding WTP
+      oResult = itWTP->second;
       assert (oResult != NULL);
       return oResult;
     }
 
-    // //////////////////////////////////////////////////////////////////////
-    void CityPairDate::display (const bool iIndented) const {
-
-      // Store current formatting flags of std::cout
-      std::ios::fmtflags oldFlags = std::cout.flags();
-      
-      if (iIndented == true) {
-        std::cout << "         ";
-      }
-      std::cout << _departureDate << "; ";
-      
-      int k = 1;
-      for (ClassPathList_T::const_iterator itClassPath= _classPathList.begin();
-           itClassPath != _classPathList.end(); itClassPath++, k++) {
-        const ClassPath* lClassPath_ptr = itClassPath->second;
-        assert (lClassPath_ptr != NULL);
-
-        bool lIndented = (k != 1);
-        lClassPath_ptr->display (lIndented);
-      }
-
-      for (ClassPathDistribution_T::const_reverse_iterator itClassPath =
-             _classPathDistribution.rbegin();
-           itClassPath != _classPathDistribution.rend(); itClassPath++) {
-        const double lDailyRate = itClassPath->first;
-        const ClassPath* lClassPath_ptr = itClassPath->second;
-        assert (lClassPath_ptr != NULL);
-
-        std::cout << "                      [ "
-                  << lClassPath_ptr->describeKey() << " | "
-                  << std::setprecision(2) << lDailyRate
-                  << " ]" << std::endl;
-      }
-
-      // Reset formatting flags of std::cout
-      std::cout.flags (oldFlags);
-    }
-    
   }
-  
 }

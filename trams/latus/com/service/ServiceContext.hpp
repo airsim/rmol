@@ -20,6 +20,7 @@ namespace LATUS {
   namespace COM {
 
     // Forward declarations
+    class WholeDemand;
     class WorldSchedule;
     class Network;
     class Inventory;
@@ -98,6 +99,9 @@ namespace LATUS {
 
     private:
       // //////// Getters for the internal BOM /////////
+      /** Get the WholeDemand object reference. */
+      WholeDemand& getWholeDemand () const;
+      
       /** Get the WorldSchedule object reference. */
       WorldSchedule& getWorldSchedule () const;
       
@@ -109,6 +113,11 @@ namespace LATUS {
       
 
       // //////// Setters for the internal BOM ///////
+      /** Set the WholeDemand object reference. */
+      void setWholeDemand (WholeDemand& ioWholeDemand) {
+        _wholeDemand = &ioWholeDemand;
+      }
+      
       /** Set the WorldSchedule object reference. */
       void setWorldSchedule (WorldSchedule& ioWorldSchedule) {
         _worldSchedule = &ioWorldSchedule;
@@ -173,6 +182,9 @@ namespace LATUS {
 
     private:
       // ////////// BOM holders //////////
+      /** (DEG ServiceContext) Whole Demand. */
+      WholeDemand* _wholeDemand;
+
       /** (TSP ServiceContext) World Schedule. */
       WorldSchedule* _worldSchedule;
 

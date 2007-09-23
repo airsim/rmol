@@ -28,17 +28,19 @@ namespace LATUS {
       const std::string& lDemandInputFilename = getDemandInputFilename ();
       const COM::DateTime_T& lStartDate = getStartDate ();
       const COM::DateTime_T& lEndDate = getEndDate ();
+      COM::WholeDemand& lWholeDemand = getWholeDemand();
 
-      // DEBUG
-      /* LATUS_LOG_DEBUG ("Simulation for " << lSimulationRunNumber
-                       << " runs, " << "with '" << lDemandInputFilename
-                       << "' for the demand data. The simulations run between "
-                       << lStartDate << " and " << lEndDate);*/
-      
       // Perform K simulations    
-      for (unsigned int i=1; i != lSimulationRunNumber; i++) {
+      for (unsigned int i=1; i != lSimulationRunNumber+1; ++i) {
+        // DEBUG
+        LATUS_LOG_DEBUG ("Simulation run " << i << " with '"
+                         << lDemandInputFilename
+                         << "' for the demand data. The simulations run between "
+                         << lStartDate << " and " << lEndDate);
+      
         // Call the corresponding Use Case (command)
-        Simulator lSimulator (lStartDate, lEndDate, lDemandInputFilename);
+        Simulator lSimulator (lWholeDemand, lStartDate, lEndDate,
+                              lDemandInputFilename);
         lSimulator.simulate();
       }
     }

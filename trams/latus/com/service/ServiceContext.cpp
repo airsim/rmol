@@ -13,7 +13,8 @@ namespace LATUS {
     // //////////////////////////////////////////////////////////////////////
     ServiceContext::
     ServiceContext (const ModuleDescription& iModuleDescription) :
-      _worldSchedule (NULL), _network (NULL), _inventory (NULL),
+      _wholeDemand (NULL), _worldSchedule (NULL),
+      _network (NULL), _inventory (NULL),
       _moduleDescription (iModuleDescription.getType(),
                           iModuleDescription.getName()) {
       init ();
@@ -41,6 +42,12 @@ namespace LATUS {
     // //////////////////////////////////////////////////////////////////////
     const std::string& ServiceContext::getModuleName() const {
       return _moduleDescription.getName();
+    }
+
+    // //////////////////////////////////////////////////////////////////////
+    WholeDemand& ServiceContext::getWholeDemand () const {
+      assert (_wholeDemand != NULL);
+      return *_wholeDemand;
     }
 
     // //////////////////////////////////////////////////////////////////////

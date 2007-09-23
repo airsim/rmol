@@ -14,13 +14,14 @@
 #include <latus/com/bom/BomAbstract.hpp>
 #include <latus/com/bom/CityPairKey.hpp>
 #include <latus/com/bom/CityPairDateList.hpp>
+#include <latus/com/bom/Event.hpp>
 
 namespace LATUS {
   
   namespace COM {
 
     // Forward declarations
-    class BookingDay;
+    class WholeDemand;
     class CityPairDate;
     
     /** Class storing the context for City Pairs. */
@@ -35,13 +36,13 @@ namespace LATUS {
     public:
       // /////////// Getters //////////////
       /** Get the parent class. */
-      BookingDay* getParent() const {
-        return getBookingDay();
+      WholeDemand* getParent() const {
+        return getWholeDemand();
       }
 
-      /** Get the BookingDay (parent class). */
-      BookingDay* getBookingDay() const {
-        return _bookingDay;
+      /** Get the WholeDemand (parent class). */
+      WholeDemand* getWholeDemand() const {
+        return _wholeDemand;
       }
 
       /** Get the primary key. */
@@ -80,11 +81,16 @@ namespace LATUS {
       /** Get the current simulation/booking time (from BookingDay parent). */
       const Duration_T& getCurrentTime() const;
 
+      /** Retrieve, if existing, the CityPairDate corresponding to the
+          given departure date.
+          <br>If not existing, return the NULL pointer. */
+      CityPairDate* getCityPairDate (const DateTime_T& iDepDate) const;
+      
 
       // ///////// Setters //////////
-      /** Set the BookingDay (parent class). */
-      void setBookingDay (BookingDay* ioBookingDayPtr) {
-        _bookingDay = ioBookingDayPtr;
+      /** Set the WholeDemand (parent class). */
+      void setWholeDemand (WholeDemand* ioWholeDemandPtr) {
+        _wholeDemand = ioWholeDemandPtr;
       }
 
       /** Set the total final demand. */
@@ -98,7 +104,22 @@ namespace LATUS {
       }
 
 
-      // ////////////
+
+      // ///////// Display //////////
+      /** Get a string describing the key. */
+      const std::string describeKey() const;
+
+      /** Get a string describing the short key. */
+      const std::string describeShortKey() const;
+
+      /** Display the full CityPair context. */
+      void display() const;
+
+      /** Display the current CityPair context. */
+      void displayCurrent() const;
+
+
+      // //////////// Business Support Methods ///////////
       /** Update the daily rates of each CityPairDate, according to the
           current date (of the simulation).
           At the same time, build the daily rate distributions. */
@@ -119,19 +140,28 @@ namespace LATUS {
           the current time + inter-arrival time. */
       Duration_T drawNextEventTime ();
 
-
-      // ///////// Display //////////
-      /** Get a string describing the key. */
-      const std::string describeKey() const;
-
-      /** Get a string describing the short key. */
-      const std::string describeShortKey() const;
-
-      /** Display the full CityPair context. */
-      void display() const;
-
-      /** Display the current CityPair context. */
-      void displayCurrent() const;
+      /** Draw / generate a reservation / event for the given CityPair,
+          and add it to the dedicated queue.
+          <br>That encompasses the following steps:
+          <br><ol>
+            <li>Draw / generate the inter-arrival time of the next event.
+            That inter-arrival time is then added to the current (booking)
+            time (of the Booking Day) to give the (booking) time of the
+            next event. For example, if the current booking time is 10:45:22
+            and the inter-arrival time is 05:12:30, then the (booking) time
+            of the next event is: 15:57:52.</li>
+		    <li>Draw / generate a departure date, according to the uniform 
+			daily rate distribution (helper object) attached to the given
+			CityPair object.</li>
+			<li>Draw / generate a class-path, according to the uniform
+			daily rate distribution (helper object) attached to each of the
+			CityPairDate objects of the given CityPair.</li>
+			<li>Build a reservation / event object with those elements
+			(booking time and the combination of departure date and 
+			class-path).</li>
+          </ol>. */
+      void drawCityPairNextEvent (EventList_T&);
+      
 
     private:
       /** Constructors are private so as to force the usage of the Factory
@@ -150,15 +180,11 @@ namespace LATUS {
         return _cityPairDateList;
       }
 
-      /** Retrieve, if existing, the CityPairDate corresponding to the
-          given departure date.
-          <br>If not existing, return the NULL pointer. */
-      CityPairDate* getCityPairDate (const DateTime_T& iDepDate) const;
-      
+
     private:
       // Parent
-      /** Parent class: BookingDay. */
-      BookingDay* _bookingDay;
+      /** Parent class: BookingDay, WholeDemand. */
+      WholeDemand* _wholeDemand;
       
       // Attributes
       /** City Pair Key is composed of the origin and destination (e.g.,

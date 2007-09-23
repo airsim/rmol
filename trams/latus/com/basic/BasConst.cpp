@@ -5,6 +5,7 @@
 #include <latus/com/basic/BasConst_GSL.hpp>
 #include <latus/com/basic/BasConst_BOOST_DateTime.hpp>
 #include <latus/com/basic/BasConst_WorldSchedule.hpp>
+#include <latus/com/basic/BasConst_WholeDemand.hpp>
 #include <latus/com/basic/BasConst_TravelSolution.hpp>
 #include <latus/com/basic/BasConst_BookingDay.hpp>
 #include <latus/com/basic/BasConst_LATUS_Service.hpp>
@@ -27,22 +28,21 @@ namespace LATUS {
     // (i.e., 24h or 1,440 minutes or 86,400 seconds)
 
     /** Time duration representing a full day (in boost::time_duration unit).*/
-    const boost::posix_time::time_duration BOOST_TIME_DURATION_FOR_A_DAY =
-    boost::posix_time::hours(24);
+    const Duration_T BOOST_TIME_DURATION_FOR_A_DAY =
+      boost::posix_time::hours(24);
 
     /** Time duration representing a full day (in seconds).*/
     const int TIME_DURATION_FOR_A_DAY_IN_SECONDS =
     static_cast<const int> (BOOST_TIME_DURATION_FOR_A_DAY.total_seconds());
 
     /** Date duration representing a full day (in boost::date_duration unit).*/
-    const boost::gregorian::date_duration BOOST_DATE_DURATION_FOR_A_DAY (1);
+    const DateOffSet_T BOOST_DATE_DURATION_FOR_A_DAY (1);
 
     
     // //////// (Flight-)Period-related BOM ///////
     /** Default date period (0-length, i.e., it lasts one day).*/
-    const DatePeriod_T
-    BOOST_DEFAULT_DATE_PERIOD (boost::gregorian::date (2007, 1, 1),
-                               boost::gregorian::date (2007, 1, 1));
+    const DatePeriod_T BOOST_DEFAULT_DATE_PERIOD (DateTime_T (2007, 1, 1),
+                                                  DateTime_T (2007, 1, 1));
 
     /** Representation of Dow-Of-the-Week */
     const std::string DOW_STR[] = {"Mon", "Tue", "Wed", "Thu", "Fri",
@@ -56,10 +56,17 @@ namespace LATUS {
 
     
     // //////// WorldSchedule ///////
-    /** Default booking date for BookingDay. */
+    /** Default update date for the WorldSchedule. */
     const DateTime_T DEFAULT_WORLD_SCHEDULE_UPDATE_DATE (2007,
                                                          boost::gregorian::Jan,
                                                          1);
+    
+
+    // //////// WholeDemand ///////
+    /** Default update date for the WholeDemand. */
+    const DateTime_T DEFAULT_WHOLE_DEMAND_UPDATE_DATE (2007,
+                                                       boost::gregorian::Jan,
+                                                       1);
     
 
     // //////// (Segment-)Class-related BOM ///////
@@ -78,6 +85,7 @@ namespace LATUS {
      /** Default over-booking rate for ClassStruct_T. */
     const OverbookingRate_T DEFAULT_CLASS_OVERBOOKING_RATE = 0.0;
 
+    
     // //////// Travel Solutions ///////
     /** Default Minimum connection time. */
     const Duration_T DEFAULT_MINIMUM_CONNECTION_TIME (2, 0, 0);

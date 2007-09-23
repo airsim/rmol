@@ -87,6 +87,13 @@ namespace LATUS {
     }
 
     // //////////////////////////////////////////////////////////////////////
+    void ServiceContextManager::createAndRegisterSpecificDegServiceContext () {
+      const ModuleDescription lDegModule (ModuleDescription::DEG,
+                                          DEFAULT_LATUS_DEG_MODULE_NAME);
+      createAndRegisterSpecificServiceContext (lDegModule);
+    }
+
+    // //////////////////////////////////////////////////////////////////////
     void ServiceContextManager::createAndRegisterSpecificCrsServiceContext () {
       const ModuleDescription lCrsModule (ModuleDescription::CRS,
                                           DEFAULT_LATUS_CRS_MODULE_NAME);
@@ -286,6 +293,14 @@ namespace LATUS {
     }
 
     // //////////////////////////////////////////////////////////////////////
+    WholeDemand& ServiceContextManager::getWholeDemand () {
+      const ModuleDescription lDegModule (ModuleDescription::DEG,
+                                          DEFAULT_LATUS_DEG_MODULE_NAME);
+      ServiceContext& lDegServiceContext = getSpecificContext (lDegModule);
+      return lDegServiceContext.getWholeDemand();
+    }
+      
+    // //////////////////////////////////////////////////////////////////////
     WorldSchedule& ServiceContextManager::getWorldSchedule () {
       const ModuleDescription lTspModule (ModuleDescription::TSP,
                                           DEFAULT_LATUS_TSP_MODULE_NAME);
@@ -371,6 +386,15 @@ namespace LATUS {
       lInvServiceContext.setOwnerAirlineCode (iAirlineCode);
     }
     
+    // //////////////////////////////////////////////////////////////////////
+    void ServiceContextManager::
+    setWholeDemand (WholeDemand& ioWholeDemand) {
+      const ModuleDescription lDegModule (ModuleDescription::DEG,
+                                          DEFAULT_LATUS_DEG_MODULE_NAME);
+      ServiceContext& lDegServiceContext = getSpecificContext (lDegModule);
+      lDegServiceContext.setWholeDemand (ioWholeDemand);
+    }
+      
     // //////////////////////////////////////////////////////////////////////
     void ServiceContextManager::
     setWorldSchedule (WorldSchedule& ioWorldSchedule) {

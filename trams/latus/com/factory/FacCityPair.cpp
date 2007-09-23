@@ -8,7 +8,6 @@
 #include <latus/com/bom/CityPairDate.hpp>
 #include <latus/com/factory/FacSupervisor.hpp>
 #include <latus/com/factory/FacCityPair.hpp>
-#include <latus/com/factory/FacCityPairDate.hpp>
 #include <latus/com/service/Logger.hpp>
 
 namespace LATUS {
@@ -62,35 +61,6 @@ namespace LATUS {
                          << " and " << ioCityPairDate.describeKey());
         assert (insertSucceeded == true);
       }
-    }
-
-    // //////////////////////////////////////////////////////////////////////
-    void FacCityPair::createClassPath(CityPair& ioCityPair,
-                                      const boost::gregorian::date& iDepDate,
-                                      const std::string& iCabinCode,
-                                      const std::string& iClassCode,
-                                      const double iDistributionMean,
-                                      const double iDistributionStdDev) {
-
-      // Check whether the CityPairDate exists
-      CityPairDate* lCityPairDate_ptr = ioCityPair.getCityPairDate (iDepDate);
-
-      // When not existing, create the CityPairDate object, and link it to
-      // the CityPair (parent).
-      if (lCityPairDate_ptr == NULL) {
-        CityPairDate& lCityPairDate =
-          FacCityPairDate::instance().create (iDepDate);
-        lCityPairDate_ptr = &lCityPairDate;
-
-        FacCityPair::initLinkWithCityPairDate (ioCityPair, lCityPairDate);
-      }
-      assert (lCityPairDate_ptr != NULL);
-      
-      // Forward the ClassPath object creation request to FacCityPairDate
-      FacCityPairDate::createClassPath(*lCityPairDate_ptr,
-                                       iCabinCode, iClassCode,
-                                       iDistributionMean, iDistributionStdDev);
-
     }
 
   }

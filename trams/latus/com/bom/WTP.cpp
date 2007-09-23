@@ -3,16 +3,13 @@
 // //////////////////////////////////////////////////////////////////////
 // C
 #include <assert.h>
-// STL
-#include <iostream>
-#include <sstream>
 // GSL Random Number Distributions (GSL Reference Manual, version 1.7,
 // Chapter 19)
 #include <gsl/gsl_cdf.h>
 // LATUS Common
 #include <latus/com/basic/BasConst_CityPair.hpp>
 #include <latus/com/bom/CityPairDate.hpp>
-#include <latus/com/bom/ClassPath.hpp>
+#include <latus/com/bom/WTP.hpp>
 #include <latus/com/service/Logger.hpp>
 
 namespace LATUS {
@@ -20,77 +17,75 @@ namespace LATUS {
   namespace COM {
 
     // //////////////////////////////////////////////////////////////////////
-    ClassPath::ClassPath (const std::string& iCabinCode, const std::string& iClassCode,
-                          const DistributionDetails_T& iDistributionDetails) :
-      _cityPairDate (NULL),_classDescription (iCabinCode + "-" + iClassCode), _cabinCode (iCabinCode), _classCode (iClassCode),
+    WTP::WTP (const PriceValue_T& iWTPValue,
+              const PriceCurrency_T& iWTPCurrency,
+              const DistributionDetails_T& iDistributionDetails) :
+      _cityPairDate (NULL), _wtpValue (iWTPValue), _wtpCurrency (iWTPCurrency),
       _distributionDetails (iDistributionDetails) {
-
     }
 
     // //////////////////////////////////////////////////////////////////////
-    ClassPath::~ClassPath() {
-
+    WTP::~WTP() {
     }
 
     // //////////////////////////////////////////////////////////////////////
-    const std::string ClassPath::describeKey() const {
+    const std::string WTP::describeKey() const {
       assert (_cityPairDate != NULL);
       
       const std::string& lParentKeyDescription = _cityPairDate->describeKey();
       std::ostringstream ostr;
-      ostr << lParentKeyDescription << "; \"" << _cabinCode
-           << "-" << _classCode  << "\"";
+      ostr << lParentKeyDescription << "; " << _wtpValue << " " << _wtpCurrency;
       return ostr.str();
     }
     
     // //////////////////////////////////////////////////////////////////////
-    void ClassPath::display (const bool iIndented) const {
+    void WTP::display (const bool iIndented) const {
       if (iIndented == true) {
-        std::cout << "                      ";
+        std::cout << "                       ";
       }
-      std::cout << _cabinCode << "-" << _classCode << "; ~N ("
+      std::cout << _wtpValue << " " << _wtpCurrency << "; ~N ("
                 << getDistributionMean() << ", "
                 << getDistributionStdDev() << "); " << std::endl;
     }
 
     // //////////////////////////////////////////////////////////////////////
-    CityPairDate& ClassPath::getCityPairDateRef() const {
+    CityPairDate& WTP::getCityPairDateRef() const {
       assert (_cityPairDate != NULL);
       return *_cityPairDate;
     }
     
     // //////////////////////////////////////////////////////////////////////
-    const AirportCode_T& ClassPath::getOrigin () const {
+    const AirportCode_T& WTP::getOrigin () const {
       assert (_cityPairDate != NULL);
       return _cityPairDate->getOrigin();
     }
 
     // //////////////////////////////////////////////////////////////////////
-    const AirportCode_T& ClassPath::getDestination () const {
+    const AirportCode_T& WTP::getDestination () const {
       assert (_cityPairDate != NULL);
       return _cityPairDate->getDestination();
     }
 
     // //////////////////////////////////////////////////////////////////////
-    const DateTime_T& ClassPath::getCurrentDate() const {
+    const DateTime_T& WTP::getCurrentDate() const {
       assert (_cityPairDate != NULL);
       return _cityPairDate->getCurrentDate();
     }
 
     // //////////////////////////////////////////////////////////////////////
-    const DateTime_T& ClassPath::getDepartureDate() const {
+    const DateTime_T& WTP::getDepartureDate() const {
       assert (_cityPairDate != NULL);
       return _cityPairDate->getDepartureDate();
     }
     
     // //////////////////////////////////////////////////////////////////////
-    const DateOffSet_T& ClassPath::getCurrentDTD() const {
+    const DateOffSet_T& WTP::getCurrentDTD() const {
       assert (_cityPairDate != NULL);
       return _cityPairDate->getCurrentDTD();
     }
     
     // //////////////////////////////////////////////////////////////////////
-    void ClassPath::updateDailyRate () {
+    void WTP::updateDailyRate () {
       double oDailyRate = 0.0;
       
       /**
@@ -171,5 +166,4 @@ namespace LATUS {
     }
     
   }
-  
 }

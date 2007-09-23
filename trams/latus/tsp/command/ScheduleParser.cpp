@@ -6,10 +6,6 @@
 // STL
 #include <iostream>
 #include <string>
-// Boost Spirit (Parsing)
-//#define BOOST_SPIRIT_DEBUG
-#include <boost/spirit/core.hpp>
-#include <boost/spirit/iterator/file_iterator.hpp>
 // LATUS Common
 #include <latus/com/basic/BasConst_WorldSchedule.hpp>
 #include <latus/com/bom/WorldSchedule.hpp>

@@ -20,9 +20,6 @@ namespace LATUS {
       // Only FacTspService_Service may instantiate LATUS_TSP
       friend class FacTspService;
     public:
-      /** Set the schedule input file name (for test purposes). */
-      void setScheduleInputFilename (const std::string&) const;
-
       /** Parses the CSV file describing the airline schedules for the
           simulator, and generates the inventories accordingly.
           The schedule file name is stored within the (TSP-specific)

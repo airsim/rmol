@@ -20,13 +20,10 @@ namespace LATUS {
   // Forward declarations
   namespace COM {
     class BookingDay;
-    class CityPair;
+    class WholeDemand;
   }
 
   namespace SIM {
-
-    /** Queue of reservations/events. */
-    typedef std::map<COM::Duration_T, COM::CityPair*> EventList_T;
 
     /** Class wrapping the simulation methods. */
     class Simulator : public COM::CmdAbstract {
@@ -86,7 +83,8 @@ namespace LATUS {
 
     private:
       /** Constructors. */
-      Simulator (const COM::DateTime_T& iStartDate,
+      Simulator (COM::WholeDemand&,
+                 const COM::DateTime_T& iStartDate,
                  const COM::DateTime_T& iEndDate,
                  const std::string& iInputFileName);
       
@@ -97,7 +95,7 @@ namespace LATUS {
       /** Build the BOM thanks to the input file.
           <br>The BOM is composed of BookingDay, CityPair, CityPairDate
           and ClassPath objects. */
-      bool init ();
+      bool init (COM::WholeDemand&);
 
       /** Get the current booking date of the simulation.
           <br>The current date of the simulation is the one held by the

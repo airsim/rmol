@@ -1,5 +1,5 @@
-#ifndef __LATUS_COM_BOM_CLASSPATH_HPP
-#define __LATUS_COM_BOM_CLASSPATH_HPP
+#ifndef __LATUS_COM_BOM_WTP_HPP
+#define __LATUS_COM_BOM_WTP_HPP
 
 // //////////////////////////////////////////////////////////////////////
 // Import section
@@ -12,16 +12,15 @@
 #include <latus/com/bom/DistributionDetails.hpp>
 
 namespace LATUS {
-  
+
   namespace COM {
 
-    /** Forward declarations. */
+    // Forward declarations
     class CityPairDate;
 
-    /** Class storing the context for Class Path associated
-        to departure dates. */
-    class ClassPath : public BomAbstract {
-      friend class FacClassPath;
+    /** Class storing the demand Willingness-To-Pay (WTP) parameter. */
+    class WTP : public COM::BomAbstract {
+      friend class FacWTP;
     public:
       // /////////// Getters //////////////
       /** Get the parent class. */
@@ -43,25 +42,20 @@ namespace LATUS {
       CityPairDate& getCityPairDateRef() const;
 
       /** Get the primary key. */
-      const std::string& getPrimaryKey() const {
-        getClassDescription();
+      const PriceValue_T& getPrimaryKey() const {
+        return getWTPValue();
+      }
+
+      /** Get the WTP value (primary key). */
+      const PriceValue_T& getWTPValue() const {
+        return _wtpValue;
       }
       
-       /** Get the class description "H-H". */
-      const std::string& getClassDescription() const {
-        return _classDescription;
+      /** Get the WTP currency (primary key). */
+      const PriceCurrency_T& getWTPCurrency() const {
+        return _wtpCurrency;
       }
-
-      /** Get the cabin code "H". */
-      const std::string& getCabinCode() const {
-        return _cabinCode;
-      }
-
-       /** Get the class code, e.g., "H-H". */
-      const std::string& getClassCode() const {
-        return _classCode;
-      }
-
+      
       /** Get the mean value of the final demand distribution. */
       const double getDistributionMean() const {
         return _distributionDetails.first;
@@ -122,26 +116,20 @@ namespace LATUS {
     private:
       /** Constructors are private so as to force the usage of the Factory
           layer. */
-      ClassPath (const std::string& iCabinCode,
-                 const std::string& iClassCode,
-                 const DistributionDetails_T&);
+      WTP (const PriceValue_T&, const PriceCurrency_T&,
+           const DistributionDetails_T&);
 
       /** Destructor. */
-      virtual ~ClassPath();
+      virtual ~WTP();
 
     private:
       // Attributes
       /** Parent class: CityPairDate. */
       CityPairDate* _cityPairDate;
 
-      /** ClassDescription "H-H". */
-      const std::string _classDescription;
-      
-      /** Cabin Code "H". */
-      const std::string _cabinCode;
-
-      /** Class Code, e.g., "H". */
-      const std::string _classCode;
+      /** Willingness-To-Pay (WTP). */
+      const PriceValue_T _wtpValue;
+      const PriceCurrency_T _wtpCurrency;
 
       /** Mean value and standard deviation of the Final Demand Distribution.*/
       const DistributionDetails_T _distributionDetails;
@@ -150,7 +138,7 @@ namespace LATUS {
           according to the distribution in DTD/departure date. */
       double _dailyRate;
     };
-    
+
   }
 }
-#endif // __LATUS_COM_BOM_CLASSPATH_HPP
+#endif // __LATUS_COM_BOM_WTP_HPP

@@ -5,9 +5,6 @@
 #include <assert.h>
 // STL
 #include <sstream>
-// Boost (Extended STL)
-#include <boost/date_time/posix_time/posix_time.hpp>
-#include <boost/date_time/gregorian/gregorian.hpp>
 // GSL Random Number Distributions (GSL Reference Manual, version 1.7,
 // Chapter 19)
 #include <gsl/gsl_math.h>
@@ -16,9 +13,9 @@
 // LATUS Common
 #include <latus/com/basic/BasConst_GSL.hpp>
 #include <latus/com/basic/BasConst_BOOST_DateTime.hpp>
-#include <latus/com/bom/BookingDay.hpp>
-#include <latus/com/bom/CityPairDate.hpp>
+#include <latus/com/bom/WholeDemand.hpp>
 #include <latus/com/bom/CityPair.hpp>
+#include <latus/com/bom/CityPairDate.hpp>
 #include <latus/com/service/Logger.hpp>
 
 namespace LATUS {
@@ -27,7 +24,7 @@ namespace LATUS {
 
     // //////////////////////////////////////////////////////////////////////
     CityPair::CityPair (const CityPairKey_T& iCityPairKey)
-      : _bookingDay (NULL), _key (iCityPairKey),
+      : _wholeDemand (NULL), _key (iCityPairKey),
         _dailyRate (0.0), _dailyEventNumber (0),
         _rngExponentialPtr (NULL), _rngUniformIntPtr (NULL) {
       initRandomGenerator();
@@ -52,14 +49,14 @@ namespace LATUS {
     
     // //////////////////////////////////////////////////////////////////////
     const DateTime_T& CityPair::getCurrentDate () const {
-      assert (_bookingDay != NULL);
-      return _bookingDay->getBookingDate();
+      assert (_wholeDemand != NULL);
+      return _wholeDemand->getCurrentDate();
     }
 
     // //////////////////////////////////////////////////////////////////////
     const Duration_T& CityPair::getCurrentTime () const {
-      assert (_bookingDay != NULL);
-      return _bookingDay->getBookingTime();
+      assert (_wholeDemand != NULL);
+      return _wholeDemand->getCurrentTime();
     }
 
     // //////////////////////////////////////////////////////////////////////
@@ -72,6 +69,56 @@ namespace LATUS {
       return _key.describeShort();
     }
     
+    // //////////////////////////////////////////////////////////////////////
+    void CityPair::display() const {
+
+      // Store current formatting flags of std::cout
+      std::ios::fmtflags oldFlags = std::cout.flags();
+
+      std::cout << describeKey();
+      
+      int j = 1;
+      for (CityPairDateList_T::const_iterator itCityPairDate =
+             _cityPairDateList.begin();
+           itCityPairDate != _cityPairDateList.end(); itCityPairDate++, j++) {
+        const CityPairDate* lCityPairDate_ptr = itCityPairDate->second;
+        assert (lCityPairDate_ptr != NULL);
+
+        bool lIndented = (j != 1);
+        lCityPairDate_ptr->display (lIndented);
+      }
+      
+      for (DepDateDistribution_T::const_reverse_iterator itCityPairDate =
+             _depDateDistribution.rbegin();
+           itCityPairDate != _depDateDistribution.rend(); itCityPairDate++) {
+        const double lDailyRate = itCityPairDate->first;
+        const CityPairDate* lCityPairDate_ptr = itCityPairDate->second;
+        assert (lCityPairDate_ptr != NULL);
+
+        std::cout << "         [ " << lCityPairDate_ptr->describeKey() << " | "
+                  << std::setprecision(2) << lDailyRate
+                  << " ]" << std::endl;
+      }
+      
+      // Summary
+      std::cout << describeKey()
+                << "; Total daily rate: " << _dailyRate
+                << std::endl;
+
+      // Reset formatting flags of std::cout
+      std::cout.flags (oldFlags);
+    }
+    
+    // //////////////////////////////////////////////////////////////////////
+    void CityPair::displayCurrent() const {
+      // DEBUG
+      std::ios::fmtflags oldFlags = std::cout.flags();
+      LATUS_LOG_DEBUG (describeKey() << "; Daily Rate: " 
+                       << std::fixed << std::setprecision(2) << _dailyRate
+                       << "; Daily Nb of Events: " << _dailyEventNumber);
+      std::cout.flags (oldFlags);
+    }
+
     // //////////////////////////////////////////////////////////////////////
     CityPairDate* CityPair::
     getCityPairDate (const DateTime_T& iDepDate) const {
@@ -224,53 +271,32 @@ namespace LATUS {
     }
     
     // //////////////////////////////////////////////////////////////////////
-    void CityPair::display() const {
-
-      // Store current formatting flags of std::cout
-      std::ios::fmtflags oldFlags = std::cout.flags();
-
-      std::cout << describeKey();
-      
-      int j = 1;
-      for (CityPairDateList_T::const_iterator itCityPairDate =
-             _cityPairDateList.begin();
-           itCityPairDate != _cityPairDateList.end(); itCityPairDate++, j++) {
-        const CityPairDate* lCityPairDate_ptr = itCityPairDate->second;
-        assert (lCityPairDate_ptr != NULL);
-
-        bool lIndented = (j != 1);
-        lCityPairDate_ptr->display (lIndented);
+    void CityPair::drawCityPairNextEvent (EventList_T& ioEventList) {
+      // Draw the inter-arrival time corresponding to the CityPair daily rate
+      const Duration_T& lNextEventTime = drawNextEventTime ();
+        
+      // Generate the next event:
+      // 1. Generate a departure date (hence, we derive the CityPairDate)
+      CityPairDate* lCityPairDate_ptr = drawCityPairDate();
+      if (lCityPairDate_ptr == NULL) {
+        return;
       }
+      assert (lCityPairDate_ptr != NULL);
       
-      for (DepDateDistribution_T::const_reverse_iterator itCityPairDate =
-             _depDateDistribution.rbegin();
-           itCityPairDate != _depDateDistribution.rend(); itCityPairDate++) {
-        const double lDailyRate = itCityPairDate->first;
-        const CityPairDate* lCityPairDate_ptr = itCityPairDate->second;
-        assert (lCityPairDate_ptr != NULL);
-
-        std::cout << "         [ " << lCityPairDate_ptr->describeKey() << " | "
-                  << std::setprecision(2) << lDailyRate
-                  << " ]" << std::endl;
+      // 1. Generate a Willingness-To-Pay value (hence, we derive the WTP)
+      WTP* lWTP_ptr = lCityPairDate_ptr->drawWTP();
+      if (lWTP_ptr == NULL) {
+        return;
       }
-      
-      // Summary
-      std::cout << describeKey()
-                << "; Total daily rate: " << _dailyRate
-                << std::endl;
+      assert (lWTP_ptr != NULL);
+          
+      /*
+      LATUS_LOG_DEBUG ("Drawn WTP: " << lWTP_ptr->describeKey()
+                       << " for event time: " << lNextEventTime);
+      */
 
-      // Reset formatting flags of std::cout
-      std::cout.flags (oldFlags);
-    }
-    
-    // //////////////////////////////////////////////////////////////////////
-    void CityPair::displayCurrent() const {
-      // DEBUG
-      std::ios::fmtflags oldFlags = std::cout.flags();
-      LATUS_LOG_DEBUG (describeKey() << "; Daily Rate: " 
-                       << std::fixed << std::setprecision(2) << _dailyRate
-                       << "; Daily Nb of Events: " << _dailyEventNumber);
-      std::cout.flags (oldFlags);
+      // Add the event to the dedicated list
+      ioEventList.insert (EventList_T::value_type (lNextEventTime, lWTP_ptr));
     }
 
   }

@@ -1,59 +1,59 @@
-#ifndef __LATUS_COM_FAC_FACBOOKINGDAY_HPP
-#define __LATUS_COM_FAC_FACBOOKINGDAY_HPP
+#ifndef __LATUS_COM_FAC_FACWHOLEDEMAND_HPP
+#define __LATUS_COM_FAC_FACWHOLEDEMAND_HPP
 
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
-// STL
-#include <string>
 // LATUS Common
 #include <latus/com/basic/BasComTypes.hpp>
 #include <latus/com/factory/FacBomAbstract.hpp>
 
 namespace LATUS {
-  
+
   namespace COM {
 
-    /** Forward declarations. */
-    class BookingDay;
+    // Forward declarations
     class WholeDemand;
+    class CityPair;
     
-    /** Factory for BookingDay objects. */
-    class FacBookingDay : public FacBomAbstract {
+    /** Factory for WholeDemand objects. */
+    class FacWholeDemand : public FacBomAbstract {
     public:
       /** Provide the unique instance.
           <br>The singleton is instantiated when first used
-          @return FacBookingDay& */
-      static FacBookingDay& instance();
+          @return FacWholeDemand& */
+      static FacWholeDemand& instance();
 
       /** Destructor.
           <br>The Destruction put the _instance to NULL
-          in order to be clean for the next FacBookingDay::instance() */
-      virtual ~FacBookingDay();
+          in order to be clean for the next FacWholeDemand::instance() */
+      virtual ~FacWholeDemand();
 
-      /** Create a new BookingDay object.
+      /** Create a new WholeDemand object.
           <br>This new object is added to the list of instantiated objects.
-          @return BookingDay& The newly created object. */
-      BookingDay& create (const DateTime_T& iBookingDate);
+          @param const boost::gregorian::date& Creation/update date.
+          @return WholeDemand& The newly created object. */
+      WholeDemand& create (const DateTime_T& iUpdateDate);
 
-      /** Initialise the link between a BookingDay and a WholeDemand.
-          @param BookingDay&
+      /** Initialise the link between a WholeDemand and a Schedule.
           @param WholeDemand&
+          @param CityPair&
           @exception FacExceptionNullPointer
           @exception FacException.*/
-      static void initLinkWithWholeDemand (BookingDay&, WholeDemand&);
+      static void initLinkWithCityPair (WholeDemand&, CityPair&);
+
 
     protected:
       /** Default Constructor.
           <br>This constructor is protected in order to ensure the singleton
           pattern.*/
-      FacBookingDay () {}
+      FacWholeDemand () {}
 
     private:
       /** The unique instance.*/
-      static FacBookingDay* _instance;
+      static FacWholeDemand* _instance;
     };
 
   }
 }
-#endif // __LATUS_COM_FAC_FACBOOKINGDAY_HPP
+#endif // __LATUS_COM_FAC_FACWHOLEDEMAND_HPP

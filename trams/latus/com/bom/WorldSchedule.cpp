@@ -14,7 +14,7 @@ namespace LATUS {
   namespace COM {
 
     // //////////////////////////////////////////////////////////////////////
-    WorldSchedule::WorldSchedule (const boost::gregorian::date& iUpdateDate)
+    WorldSchedule::WorldSchedule (const DateTime_T& iUpdateDate)
       : _network (NULL), _updateDate (iUpdateDate) {
     }
 

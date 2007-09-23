@@ -6,11 +6,9 @@
 // //////////////////////////////////////////////////////////////////////
 // STL
 #include <string>
-// Boost (Extended STL)
-#include <boost/date_time/gregorian/gregorian.hpp>
 // LATUS Common
+#include <latus/com/basic/BasComTypes.hpp>
 #include <latus/com/factory/FacBomAbstract.hpp>
-#include <latus/com/bom/CityPairDateList.hpp>
 
 namespace LATUS {
   
@@ -18,7 +16,7 @@ namespace LATUS {
 
     /** Forward declarations. */
     class CityPairDate;
-    class ClassPath;
+    class WTP;
     
     /** Factory for CityPairDate objects. */
     class FacCityPairDate : public FacBomAbstract {
@@ -36,25 +34,15 @@ namespace LATUS {
       /** Create a new CityPairDate object.
           <br>This new object is added to the list of instantiated objects.
           @return CityPairDate& The newly created object. */
-      CityPairDate& create (const boost::gregorian::date& iDepDate);
+      CityPairDate& create (const DateTime_T& iDepDate);
 
-      /** Initialise the link between a CityPairDate and a ClassPath.
+      /** Initialise the link between a CityPairDate and a WTP.
           @param CityPairDate&
-          @param ClassPath&
+          @param WTP&
           @exception FacExceptionNullPointer
           @exception FacException.*/
-      static void initLinkWithClassPath (CityPairDate&, ClassPath&);
+      static void initLinkWithWTP (CityPairDate&, WTP&);
 
-      /** Create a new ClassPath object with the given parameters.
-          <br>This new object is added to the list of instantiated objects.
-          <br>Any missing intermediary object (CityPairDate)
-          will be created and added to the corresponding children list. */
-      static void createClassPath (CityPairDate&,
-                                   const std::string& iCabinCode,
-                                   const std::string& iClassCode,
-                                   const double iDistributionMean,
-                                   const double iDistributionStdDev);
-      
     protected:
       /** Default Constructor.
           <br>This constructor is protected in order to ensure the singleton

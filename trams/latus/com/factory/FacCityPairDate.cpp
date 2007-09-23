@@ -6,10 +6,9 @@
 // LATUS Common
 #include <latus/com/bom/CityPairDate.hpp>
 #include <latus/com/bom/DistributionDetails.hpp>
-#include <latus/com/bom/ClassPath.hpp>
+#include <latus/com/bom/WTP.hpp>
 #include <latus/com/factory/FacSupervisor.hpp>
 #include <latus/com/factory/FacCityPairDate.hpp>
-#include <latus/com/factory/FacClassPath.hpp>
 #include <latus/com/service/Logger.hpp>
 
 namespace LATUS {
@@ -36,8 +35,7 @@ namespace LATUS {
     }
 
     // //////////////////////////////////////////////////////////////////////
-    CityPairDate& FacCityPairDate::
-    create (const boost::gregorian::date& iDepDate) {
+    CityPairDate& FacCityPairDate::create (const DateTime_T& iDepDate) {
       CityPairDate* aCityPairDate_ptr = NULL;
 
       aCityPairDate_ptr = new CityPairDate (iDepDate);
@@ -50,49 +48,21 @@ namespace LATUS {
     }
     
     // //////////////////////////////////////////////////////////////////////
-    void FacCityPairDate::initLinkWithClassPath (CityPairDate& ioCityPairDate,
-                                                 ClassPath& ioClassPath) {
-      // Link the CityPairDate to the ClassPath, and vice versa
-      ioClassPath.setCityPairDate (&ioCityPairDate);
+    void FacCityPairDate::initLinkWithWTP (CityPairDate& ioCityPairDate,
+                                           WTP& ioWTP) {
+      // Link the CityPairDate to the WTP, and vice versa
+      ioWTP.setCityPairDate (&ioCityPairDate);
 
-      // Link the CityPairDate to the ClassPath
-      const bool insertSucceeded = ioCityPairDate._classPathList.
-        insert (ClassPathList_T::value_type (ioClassPath.getPrimaryKey(),
-                                             &ioClassPath)).second;
+      // Link the CityPairDate to the WTP
+      const bool insertSucceeded = ioCityPairDate._wtpList.
+        insert (WTPList_T::value_type (ioWTP.getPrimaryKey(), &ioWTP)).second;
       if (insertSucceeded == false) {
         LATUS_LOG_ERROR ("Insertion failed for "
                          << ioCityPairDate.describeKey()
-                         << " and " << ioClassPath.describeKey());
+                         << " and " << ioWTP.describeKey());
         assert (insertSucceeded == true);
       }
     }
 
-    // //////////////////////////////////////////////////////////////////////
-    void FacCityPairDate::
-    createClassPath (CityPairDate& ioCityPairDate,
-                     const std::string& iCabinCode,
-                     const std::string& iClassCode,
-                     const double iDistributionMean,
-                     const double iDistributionStdDev) {
-
-      std::ostringstream ostr;
-      ostr << iCabinCode << "-" << iClassCode;
-
-      ClassPath* lClassPath_ptr =
-        ioCityPairDate.getClassPath (ostr.str());
-
-      if (lClassPath_ptr == NULL) {
-        ClassPath& lClassPath = FacClassPath::instance().
-          create (iCabinCode, iClassCode,
-                  DistributionDetails_T (iDistributionMean,
-                                         iDistributionStdDev));
-        std::cout << iCabinCode << "-" << iClassCode << std::endl;
-        lClassPath_ptr = &lClassPath;
-        FacCityPairDate::initLinkWithClassPath (ioCityPairDate, lClassPath);
-      }
-      assert (lClassPath_ptr != NULL);
-    }
-
   }
-  
 }
