@@ -39,22 +39,17 @@ namespace LATUS {
     provideAvailabilities (const COM::SegmentDateKey_T& iOnD,
                            COM::TravelSolutionKeyList_T& ioTSL) const {
 
-      // TODO: Remove the hard coding
-      // Hard-code a few TSL
-      // const COM::AirportCode_T lMUC ("MUC");
-      // const COM::AirportCode_T lMIA ("MIA");
-      // const COM::AirportCode_T lLAX ("LAX");
-      // const COM::CabinCode_T lSHBusiness ("C");
-      // const COM::CabinCode_T lSHEconomy ("M");
-      // const COM::CabinCode_T lFirst ("F");
-      // const COM::CabinCode_T lLHBusiness ("J");
-      // const COM::CabinCode_T lTravelPlus ("W");
-      // const COM::CabinCode_T lLHEconomy ("M");
     }
 
     // //////////////////////////////////////////////////////////////////////
     bool Distributor::sell (const COM::TravelSolutionKeyList_T& iTS,
                             const COM::BookingNumber_T& iPartySize) {
+
+      // const TravelSolutionKey_T* iTravelSolutionKey_ptr = NULL;
+        
+      // if (iTS.size() == 0) {
+      //  return iTravelSolutionKey_ptr;
+      // }
       return true;
     }
 

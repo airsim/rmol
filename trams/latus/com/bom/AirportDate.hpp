@@ -90,6 +90,18 @@ namespace LATUS {
       /** Get a string describing the short key. */
       const std::string describeShortKey() const;
 
+       /** Retrieve, if existing, the OutboundPath corresponding to the
+          given OutboundPath key (AirportDateKey + destination + elapsed time
+          + number of segments + number of airlines).
+          <br>Note that several OutboundPath objects may correspond to the
+          given characteristics. Only the first one is returned here.
+          <br>If not existing, return the NULL pointer.
+          <br>Note that the string must be formed thanks to the
+          OutboundPathKey::describeShort() method, as that latter is used when
+          inserting the OutboundPath within the FlightDate dedicated list. */
+      OutboundPath*
+      getOutboundPath (const std::string& iOutboundPathKey) const;
+
       /** Display the full AirportDate context. */
       void display() const;
 

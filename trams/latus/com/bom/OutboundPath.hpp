@@ -37,6 +37,11 @@ namespace LATUS {
         return _airportDate;
       }
 
+      /** Get the fare associated to this outbound path. */
+      const Fare_T& getFare () const {
+        return _fare;
+      }
+
       /** Get the primary key. */
       const OutboundPathKey_T& getPrimaryKey() const {
         return getOutboundPathKey();
@@ -90,7 +95,9 @@ namespace LATUS {
           <br>Note that this method relies on the eponym method of the
           SegmentDate class. */
       bool isConnectable (const OutboundPath&) const;
-      
+
+      /** Method computing the fare associated to the outbound path. */
+      void fareQuote (); 
       
       // ///////// Setters //////////
       /** Set the AirportDate (parent class). */
@@ -173,6 +180,9 @@ namespace LATUS {
       /** Child: Outbound-Path, i.e., an ordered list of SegmentDate constant
           objects. */
       SegmentDateLightList_T _segmentDateLightList;
+
+      /**Value of the travel solution associated to the outbound path. */
+      Fare_T _fare;
     };
 
   }

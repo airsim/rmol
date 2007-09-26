@@ -110,6 +110,12 @@ namespace LATUS {
       }
       
     }
+
+     // //////////////////////////////////////////////////////////////////////
+    OutboundPath* AirportDate::
+    getOutboundPath (const std::string& iOutboundPathKeyS) const {
+      return getOutboundPathInternal (iOutboundPathKeyS);
+    }
     
   }
 }

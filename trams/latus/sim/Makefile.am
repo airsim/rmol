@@ -5,7 +5,7 @@ include $(srcdir)/sources.mk
 
 MAINTAINERCLEANFILES = Makefile.in
 
-SUBDIRS = basic field bom factory command service
+SUBDIRS = basic bom factory command service
 
 lib_LTLIBRARIES = lib@PACKAGE@sim.la
 if ENABLE_DEBUG
@@ -18,7 +18,6 @@ lib@PACKAGE@sim_la_LIBADD = \
 			$(top_builddir)/@PACKAGE@/deg/lib@PACKAGE@deg.la \
 			$(top_builddir)/@PACKAGE@/crs/lib@PACKAGE@crs.la \
 			$(top_builddir)/@PACKAGE@/sim/basic/libsimbas.la \
-			$(top_builddir)/@PACKAGE@/sim/field/libsimfld.la \
 			$(top_builddir)/@PACKAGE@/sim/bom/libsimbom.la \
 			$(top_builddir)/@PACKAGE@/sim/factory/libsimfac.la \
 			$(top_builddir)/@PACKAGE@/sim/command/libsimcmd.la \
@@ -32,7 +31,6 @@ lib@PACKAGE@sim_debug_la_LIBADD = \
 			$(top_builddir)/@PACKAGE@/deg/lib@PACKAGE@deg_debug.la \
 			$(top_builddir)/@PACKAGE@/crs/lib@PACKAGE@crs_debug.la \
 			$(top_builddir)/@PACKAGE@/sim/basic/libsimbas_debug.la \
-			$(top_builddir)/@PACKAGE@/sim/field/libsimfld_debug.la \
 			$(top_builddir)/@PACKAGE@/sim/bom/libsimbom_debug.la \
 			$(top_builddir)/@PACKAGE@/sim/factory/libsimfac_debug.la \
 			$(top_builddir)/@PACKAGE@/sim/command/libsimcmd_debug.la \

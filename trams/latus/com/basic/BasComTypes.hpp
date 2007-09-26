@@ -97,6 +97,9 @@ namespace LATUS {
     /** Define a number of airlines (in a path). */
     typedef unsigned short AirlineNumber_T;
 
+    /** Define the fare of a travel solution. */
+    typedef double Fare_T;
+
   }
 }
 #endif // __COM_BAS_BASCOMTYPES_HPP

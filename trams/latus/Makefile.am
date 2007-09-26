@@ -6,7 +6,7 @@ include $(srcdir)/sources.mk
 MAINTAINERCLEANFILES = Makefile.in
 
 #SUBDIRS = com deg ucm rms inv avs tsp crs sim service
-SUBDIRS = com deg inv tsp crs sim
+SUBDIRS = com deg inv tsp fqt crs ucm sim
 
 EXTRA_DIST = config_msvc.h
 
@@ -17,20 +17,24 @@ endif
 lib@PACKAGE@_la_SOURCES = $(service_h_sources) $(service_cc_sources)
 lib@PACKAGE@_la_LIBADD = \
 			$(top_builddir)/@PACKAGE@/com/lib@PACKAGE@com.la \
-			$(top_builddir)/@PACKAGE@/crs/lib@PACKAGE@crs.la \
-			$(top_builddir)/@PACKAGE@/tsp/lib@PACKAGE@tsp.la \
-			$(top_builddir)/@PACKAGE@/inv/lib@PACKAGE@inv.la \
 			$(top_builddir)/@PACKAGE@/deg/lib@PACKAGE@deg.la \
+			$(top_builddir)/@PACKAGE@/inv/lib@PACKAGE@inv.la \
+			$(top_builddir)/@PACKAGE@/tsp/lib@PACKAGE@tsp.la \
+			$(top_builddir)/@PACKAGE@/fqt/lib@PACKAGE@fqt.la \
+			$(top_builddir)/@PACKAGE@/crs/lib@PACKAGE@crs.la \
+			$(top_builddir)/@PACKAGE@/ucm/lib@PACKAGE@ucm.la \
 			$(top_builddir)/@PACKAGE@/sim/lib@PACKAGE@sim.la
 lib@PACKAGE@_la_LDFLAGS = -version-info $(GENERIC_LIBRARY_VERSION)
 
 lib@PACKAGE@_debug_la_SOURCES = $(service_h_sources) $(service_cc_sources)
 lib@PACKAGE@_debug_la_LIBADD = \
 			$(top_builddir)/@PACKAGE@/com/lib@PACKAGE@com_debug.la \
-			$(top_builddir)/@PACKAGE@/crs/lib@PACKAGE@crs_debug.la \
-			$(top_builddir)/@PACKAGE@/tsp/lib@PACKAGE@tsp_debug.la \
-			$(top_builddir)/@PACKAGE@/inv/lib@PACKAGE@inv_debug.la \
 			$(top_builddir)/@PACKAGE@/deg/lib@PACKAGE@deg_debug.la \
+			$(top_builddir)/@PACKAGE@/inv/lib@PACKAGE@inv_debug.la \
+			$(top_builddir)/@PACKAGE@/tsp/lib@PACKAGE@tsp_debug.la \
+			$(top_builddir)/@PACKAGE@/fqt/lib@PACKAGE@fqt_debug.la \
+			$(top_builddir)/@PACKAGE@/crs/lib@PACKAGE@crs_debug.la \
+			$(top_builddir)/@PACKAGE@/ucm/lib@PACKAGE@ucm_debug.la \
 			$(top_builddir)/@PACKAGE@/sim/lib@PACKAGE@sim_debug.la
 lib@PACKAGE@_debug_la_LDFLAGS = -version-info $(GENERIC_LIBRARY_VERSION)
 

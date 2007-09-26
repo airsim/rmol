@@ -295,42 +295,54 @@ AC_CONFIG_FILES(
 	latus/Makefile
 	latus/com/Makefile
 	latus/com/basic/Makefile
-	latus/com/field/Makefile
 	latus/com/bom/Makefile
 	latus/com/factory/Makefile
 	latus/com/command/Makefile
 	latus/com/service/Makefile
 	latus/deg/Makefile
 	latus/deg/basic/Makefile
-	latus/deg/field/Makefile
 	latus/deg/bom/Makefile
 	latus/deg/factory/Makefile
 	latus/deg/command/Makefile
 	latus/deg/service/Makefile
+	latus/ucm/Makefile
+	latus/ucm/basic/Makefile
+	latus/ucm/bom/Makefile
+	latus/ucm/factory/Makefile
+	latus/ucm/command/Makefile
+	latus/ucm/service/Makefile
 	latus/crs/Makefile
 	latus/crs/basic/Makefile
-	latus/crs/field/Makefile
 	latus/crs/bom/Makefile
 	latus/crs/factory/Makefile
 	latus/crs/command/Makefile
 	latus/crs/service/Makefile
+	latus/fqt/Makefile
+	latus/fqt/basic/Makefile
+	latus/fqt/bom/Makefile
+	latus/fqt/factory/Makefile
+	latus/fqt/command/Makefile
+	latus/fqt/service/Makefile
 	latus/tsp/Makefile
 	latus/tsp/basic/Makefile
-	latus/tsp/field/Makefile
 	latus/tsp/bom/Makefile
 	latus/tsp/factory/Makefile
 	latus/tsp/command/Makefile
 	latus/tsp/service/Makefile
+	latus/rms/Makefile
+	latus/rms/basic/Makefile
+	latus/rms/bom/Makefile
+	latus/rms/factory/Makefile
+	latus/rms/command/Makefile
+	latus/rms/service/Makefile
 	latus/inv/Makefile
 	latus/inv/basic/Makefile
-	latus/inv/field/Makefile
 	latus/inv/bom/Makefile
 	latus/inv/factory/Makefile
 	latus/inv/command/Makefile
 	latus/inv/service/Makefile
 	latus/sim/Makefile
 	latus/sim/basic/Makefile
-	latus/sim/field/Makefile
 	latus/sim/bom/Makefile
 	latus/sim/factory/Makefile
 	latus/sim/command/Makefile

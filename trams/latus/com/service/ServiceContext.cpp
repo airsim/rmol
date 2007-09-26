@@ -13,10 +13,10 @@ namespace LATUS {
     // //////////////////////////////////////////////////////////////////////
     ServiceContext::
     ServiceContext (const ModuleDescription& iModuleDescription) :
-      _wholeDemand (NULL), _worldSchedule (NULL),
-      _network (NULL), _inventory (NULL),
       _moduleDescription (iModuleDescription.getType(),
-                          iModuleDescription.getName()) {
+                          iModuleDescription.getName()),
+      _wholeDemand (NULL), _worldSchedule (NULL),
+      _network (NULL), _inventory (NULL) {
       init ();
     }
 

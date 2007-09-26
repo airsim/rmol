@@ -7,7 +7,6 @@
 // LATUS Common
 #include <latus/com/basic/BasComTypes.hpp>
 #include <latus/com/bom/SegmentDateKey.hpp>
-#include <latus/com/bom/TravelSolution.hpp>
 #include <latus/com/command/CmdAbstract.hpp>
 
 namespace LATUS {
@@ -36,23 +35,7 @@ namespace LATUS {
         return *_worldSchedule;
       }
 
-      // /////////// SETTERS //////////
-
-      
-      // ////////// Main Methods ///////////      
-      /** Calculate and return the availabilities corresponding to a given
-          product.
-          @return The vector of Travel Solutions (TS). */
-      void provideAvailabilities (const COM::SegmentDateKey_T& iOnD,
-                                  COM::TravelSolutionKeyList_T& ioTSL) const;
-
-      /** Register the sell of a given number of travellers on a given
-          Travel Solution.
-          <br>The party size may be a floating number, so as to cope with
-          overbooking. */
-      bool sell (const COM::TravelSolutionKeyList_T& iTS,
-                 const COM::BookingNumber_T& iPartySize);
-
+      // /////////// SETTERS ///////////////
 
       // ///////// DISPLAY METHODS /////////
       /** Display the BOM objects. */

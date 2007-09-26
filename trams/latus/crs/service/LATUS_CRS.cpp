@@ -10,6 +10,10 @@
 #include <latus/crs/service/LATUS_CRS.hpp>
 // LATUS TSP
 #include <latus/tsp/service/LATUS_TSP.hpp>
+// LATUS FQT
+#include <latus/fqt/service/LATUS_FQT.hpp>
+// LATUS UCM
+#include <latus/ucm/service/LATUS_UCM.hpp>
 
 namespace LATUS {
   
@@ -46,25 +50,32 @@ namespace LATUS {
                   << iOutboundPath_ptr->describeKey() << std::endl;
       }
 
+      // Quote the fares of the travel solutions according to the profil
+      // of the request
+      FQT::LATUS_FQT::quoteTravelSolutions(iOrigin, iDate, ioTSL);
+      
+
       // Retrieve the schedule input filename from the CRS specific
       // service context
       const std::string& lInputFilename = getScheduleInputFilename ();
 
       Distributor lDistributor (lInputFilename);
 
-      // TODO: Remove the hard coding
-      // Hard-code a few TSL
-      //const COM::AirlineCode_T lBA ("BA");
-      //const COM::FlightNumber_T l341 = 341;
-      //const COM::FlightKey_T lBA341 (lBA, l341);
-      //const COM::DateTime_T l21Apr (2007, boost::gregorian::Apr, 21);
-      //const COM::FlightDateKey_T lBA34121Apr2007 (lBA341, l21Apr);
-      //const COM::AirportCode_T lNCE ("NCE");
-      //const COM::AirportCode_T lLHR ("LHR");
-      //const COM::AirportPairKey_T lNCELHR (lNCE, lLHR);
-      //const COM::SegmentDateKey_T lSegment1 (lBA34121Apr2007, lNCELHR);
-
       //lDistributor.provideAvailabilities (lSegment1, ioTSL);
+
+    }
+
+    // //////////////////////////////////////////////////////////////////////
+    void LATUS_CRS::
+    arrangeTravelSolutions (const COM::AirportCode_T& iOrigin,
+                           const COM::AirportCode_T& iDestination,
+                           const COM::DateTime_T& iDate,
+                           COM::TravelSolutionKeyList_T& iTSL) {
+
+      // Arrange the list of travel solutions depending on the UCM preferences
+      UCM::LATUS_UCM::chooseTravelSolution(iOrigin, iDestination, iDate,
+                                           iTSL);
+      
     }
     
     // //////////////////////////////////////////////////////////////////////

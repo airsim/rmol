@@ -26,7 +26,6 @@ lib@PACKAGE@tsp_debug_la_SOURCES = $(tspservice_h_sources) \
 lib@PACKAGE@tsp_debug_la_LIBADD = \
 			$(top_builddir)/@PACKAGE@/com/lib@PACKAGE@com_debug.la \
 			$(top_builddir)/@PACKAGE@/tsp/basic/libtspbas_debug.la \
-			$(top_builddir)/@PACKAGE@/tsp/field/libtspfld_debug.la \
 			$(top_builddir)/@PACKAGE@/tsp/bom/libtspbom_debug.la \
 			$(top_builddir)/@PACKAGE@/tsp/factory/libtspfac_debug.la \
 			$(top_builddir)/@PACKAGE@/tsp/command/libtspcmd_debug.la \

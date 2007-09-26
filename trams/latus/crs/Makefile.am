@@ -5,7 +5,7 @@ include $(srcdir)/sources.mk
 
 MAINTAINERCLEANFILES = Makefile.in
 
-SUBDIRS = basic field bom factory command service
+SUBDIRS = basic bom factory command service
 
 lib_LTLIBRARIES = lib@PACKAGE@crs.la
 if ENABLE_DEBUG
@@ -17,7 +17,6 @@ lib@PACKAGE@crs_la_LIBADD = \
 			$(top_builddir)/@PACKAGE@/tsp/lib@PACKAGE@tsp.la \
 			$(top_builddir)/@PACKAGE@/inv/lib@PACKAGE@inv.la \
 			$(top_builddir)/@PACKAGE@/crs/basic/libcrsbas.la \
-			$(top_builddir)/@PACKAGE@/crs/field/libcrsfld.la \
 			$(top_builddir)/@PACKAGE@/crs/bom/libcrsbom.la \
 			$(top_builddir)/@PACKAGE@/crs/factory/libcrsfac.la \
 			$(top_builddir)/@PACKAGE@/crs/command/libcrscmd.la \
@@ -31,7 +30,6 @@ lib@PACKAGE@crs_debug_la_LIBADD = \
 			$(top_builddir)/@PACKAGE@/tsp/lib@PACKAGE@tsp_debug.la \
 			$(top_builddir)/@PACKAGE@/inv/lib@PACKAGE@inv_debug.la \
 			$(top_builddir)/@PACKAGE@/crs/basic/libcrsbas_debug.la \
-			$(top_builddir)/@PACKAGE@/crs/field/libcrsfld_debug.la \
 			$(top_builddir)/@PACKAGE@/crs/bom/libcrsbom_debug.la \
 			$(top_builddir)/@PACKAGE@/crs/factory/libcrsfac_debug.la \
 			$(top_builddir)/@PACKAGE@/crs/command/libcrscmd_debug.la \

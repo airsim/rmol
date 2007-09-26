@@ -15,7 +15,7 @@
 #include <latus/com/bom/WTP.hpp>
 #include <latus/com/factory/FacBookingDay.hpp>
 #include <latus/com/service/Logger.hpp>
-#include <latus/com/bom/TravelSolution.hpp>
+#include <latus/com/bom/TravelSolutionList.hpp>
 // LATUS DEG
 #include <latus/deg/service/LATUS_DEG.hpp>
 // LATUS INV
