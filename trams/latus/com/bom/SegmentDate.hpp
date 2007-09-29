@@ -5,10 +5,13 @@
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // LATUS Common
+#include <latus/com/basic/BasComTypes.hpp>
 #include <latus/com/bom/BomAbstract.hpp>
 #include <latus/com/bom/SegmentDateKey.hpp>
 #include <latus/com/bom/SegmentCabinList.hpp>
 #include <latus/com/bom/LegDateList.hpp>
+#include <latus/com/bom/TravelSolutionList.hpp>
+#include <latus/com/bom/ClassStruct.hpp>
 
 namespace LATUS {
 
@@ -157,6 +160,11 @@ namespace LATUS {
       /** update all class availabilities for the segment. */
       void updateAllAvailabilities() const;
 
+      // ////////// Business Methods /////////
+      /** Method which returns the cheapest available solution for that segmentDate. */
+      bool buildCheapestSolution (ClassStructList_T&,
+                                  const SeatNumber_T&) const;
+
 
     private:
       /** Constructors are private so as to force the usage of the Factory
@@ -202,7 +210,6 @@ namespace LATUS {
           and the elapsed time of the segment is equal to the elapsed time
           of the single routing leg. */
       void updateElapsedTimeFromRouting();
-
       
     private:
       // Parent

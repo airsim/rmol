@@ -15,7 +15,7 @@ namespace LATUS {
 
     // //////////////////////////////////////////////////////////////////////
     WorldSchedule::WorldSchedule (const DateTime_T& iUpdateDate)
-      : _network (NULL), _updateDate (iUpdateDate) {
+      : _updateDate (iUpdateDate), _network (NULL) {
     }
 
     // //////////////////////////////////////////////////////////////////////

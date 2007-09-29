@@ -6,6 +6,7 @@
 // STL
 #include <iostream> // DEBUG
 // LATUS Common
+#include <latus/com/basic/BasComTypes.hpp>
 #include <latus/com/basic/BasConst_BOOST_DateTime.hpp>
 #include <latus/com/basic/BasConst_BookingDay.hpp>
 #include <latus/com/bom/Event.hpp>
@@ -45,13 +46,25 @@ namespace LATUS {
       const COM::AirportCode_T& lOrigin = lWTP_ptr->getOrigin();
       const COM::AirportCode_T& lDestination = lWTP_ptr->getDestination();
       const COM::DateTime_T& lDepDate = lWTP_ptr->getDepartureDate();
+      const COM::SeatNumber_T& lSeatNumber = lWTP_ptr->getSeatNumber();
 
-      const COM::TravelSolutionBlockKey_T lTravelSolutionBlockKey (lOrigin, lDestination, lDepDate);
+      const COM::TravelSolutionBlockKey_T lTravelSolutionBlockKey (lOrigin, lDestination, lDepDate, lSeatNumber);
       COM::TravelSolutionBlock& lTravelSolutionBlock =
           COM::FacTravelSolutionBlock::instance().create (lTravelSolutionBlockKey);
 
       CRS::LATUS_CRS::provideTravelSolution (lOrigin, lDestination, lDepDate,
                                              lTravelSolutionBlock);
+
+      CRS::LATUS_CRS::arrangeTravelSolutions (lTravelSolutionBlock);
+
+      const bool sellStatus = CRS::LATUS_CRS::sell(lTravelSolutionBlock, lSeatNumber);
+
+      if (sellStatus == true) {
+         LATUS_LOG_DEBUG ("Vente effectuee ");
+      }
+      else {
+         LATUS_LOG_DEBUG ("Vente non effectuee ");
+      }
     }
 
     // //////////////////////////////////////////////////////////////////////

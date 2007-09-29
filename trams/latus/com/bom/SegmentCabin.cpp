@@ -15,7 +15,7 @@ namespace LATUS {
 
     // //////////////////////////////////////////////////////////////////////
     SegmentCabin::SegmentCabin (const SegmentCabinKey_T& iKey)
-      : _key (iKey), _segmentDate (NULL), _blockSpace (0.0),
+      : _segmentDate (NULL), _key (iKey), _capacity (0.0), _blockSpace (0.0),
         _bookingCounter (0), _commitedSpace (0.0), _availabilityPool (0.0) {
     }
     
@@ -103,7 +103,7 @@ namespace LATUS {
       setAvailabilityPool (lAvailabilityPool);
     }
 
-     // //////////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////////////
     void SegmentCabin::updateAllAvailabilities() {
       Availability_T lAvailabilityPool = getAvailabilityPool();
        for (ClassStructOrderedList_T::iterator itClass =
@@ -117,6 +117,34 @@ namespace LATUS {
           lClass.setAvailability(lAvailabilityPool);
         }
       }
+    }
+
+    // //////////////////////////////////////////////////////////////////////
+    void SegmentCabin::buildCheapestSolution (ClassStructList_T& ioClassStruct,
+                                  const SeatNumber_T& ioSeatNumber,
+                                  const SegmentDateKey_T& ioSegmentDateKey) const {
+
+      /*Availability_T segCabinAvailability = 0.0;
+      SegmentCabin* lSegmentCabin = NULL;
+      SegmentCabinList_T:: const_iterator itSegmentCabin =
+        _segmentCabinList.begin();
+
+      while (segCabinAvailability < lSeatNumber - DEFAULT_EPSILON_VALUE
+      && itSegmentCabin != _segmentCabinList.end()) {
+        lSegmentCabin = itSegmentCabin->second;
+        assert (lSegmentCabin != NULL);
+        segCabinAvailability = lSegmentCabin->getAvailabilityPool();
+        itSegmentCabin++;
+      }
+
+      if (segCabinAvailability < lSeatNumber - DEFAULT_EPSILON_VALUE) {
+        return false;
+      }
+      else {
+        assert (lSegmentCabin != NULL);
+        lSegmentCabin->buildCheapestSolution (ioClassStruct, lSeatNumber, getPrimaryKey());
+        return true;
+        }*/
     }
   }
 }

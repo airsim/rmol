@@ -125,6 +125,12 @@ namespace LATUS {
 
       /** Update availibilities for each class. */
       void updateAllAvailabilities();
+
+      // ///////// Business Methods //////////
+      void buildCheapestSolution (ClassStructList_T&,
+                                  const SeatNumber_T&,
+                                  const SegmentDateKey_T&) const;
+
       
     private:
       /** Constructors are private so as to force the usage of the Factory

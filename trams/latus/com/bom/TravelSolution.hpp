@@ -5,9 +5,10 @@
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // LATUS Common
-#include <latus/com/bom/TravelSolutionKey.hpp>
-#include <latus/com/bom/BomAbstract.hpp>
 #include <latus/com/basic/BasComTypes.hpp>
+#include <latus/com/bom/BomAbstract.hpp>
+#include <latus/com/bom/TravelSolutionKey.hpp>
+#include <latus/com/bom/ClassStruct.hpp>
 
 namespace LATUS {
 
@@ -17,10 +18,10 @@ namespace LATUS {
    class OutboundPath;
    class TravelSolutionBlock;
    
+   /** Class wrapping the Travel-Solution specific attributes and methods. */
    class TravelSolution : public BomAbstract {
      friend class FacTravelSolution;
      friend class AirportDate;
-
    public:
      // /////////// Getters //////////////
       /** Get the fare associated to the current travel solution. */
@@ -45,17 +46,29 @@ namespace LATUS {
 
       /** Get the outboundpath associated to this travel solution. */
       OutboundPath* getOutboundPath() const {
-        return _outboundPath;
+        return _outboundPath_ptr;
       }
 
       // ///////// Setters //////////
       /** Set the OutboundPath. */
       void setOutboundPath (OutboundPath* ioOutboundPathPtr) {
-        _outboundPath = ioOutboundPathPtr;
+        _outboundPath_ptr = ioOutboundPathPtr;
       }
 
+      /** Set the OutboundPath. */
+      void setTSAvailability (const Availability_T& tsAvailable) {
+        _tSAvailability = tsAvailable;
+      }
+
+     // ///////// Business method //////////
+     /**Method building the cheapest solution .*/
+     bool buildCheapestSolution (const SeatNumber_T& lSN);
+     
+     /** Method computing availabilities from the cheapest travel solution .*/
+     void calculateAvailabilities ();
+
      /** Method computing the fare of the travel solution. */
-      void fareQuote();
+     void fareQuote();
       
 
       // ///////// Display Methods //////////
@@ -88,17 +101,17 @@ namespace LATUS {
       TravelSolutionKey_T _key;
 
       /** The outbound path associated to this solution.*/
-     OutboundPath* _outboundPath;
+     OutboundPath* _outboundPath_ptr;
      
       /** Value of the travel solution associated to the outbound path. */
       Fare_T _fare;
 
-      /** Availability of the travel solutrion . */
+      /** Availability of the travel solution . */
       Availability_T _tSAvailability;
 
-      /** Map associated each segment date to the class struct pointer
+      /** ClassStruct vector describing the cheapest solution
           corresponding to the current travel solution. */
-     // TravelSolutionList_T tsMap;
+      ClassStructList_T _classStructList;
    };
    
  }

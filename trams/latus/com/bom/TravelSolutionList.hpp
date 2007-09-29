@@ -10,19 +10,21 @@
 #include <vector>
 // LATUS Common
 #include <latus/com/bom/TravelSolutionKey.hpp>
-#include <latus/com/bom/TravelSolution.hpp>
-
 
 namespace LATUS {
 
   namespace COM {
 
+    // Forward declarations
+    class TravelSolution;
+
     /** Define a list of travel solutions. */
     typedef std::vector<TravelSolutionKey_T> TravelSolutionKeyList_T;
 
-    /** Define a map linking segmentdate key with classStruct
-        for the crrent travel solution.*/
+    /** Define a map linking travelSolution key with travel solutions.*/
     typedef std::multimap<std::string, TravelSolution*> TravelSolutionList_T;
+
   }
+  
 }
 #endif // __LATUS_COM_BOM_TRAVELSOLUTIONLIST_HPP

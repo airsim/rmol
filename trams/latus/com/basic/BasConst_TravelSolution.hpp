@@ -15,6 +15,12 @@ namespace LATUS {
     /** Default Minimum connection time. */
     extern const Duration_T DEFAULT_MINIMUM_CONNECTION_TIME;
 
+    /** Default epsilon value. */
+    extern const double DEFAULT_EPSILON_VALUE;
+
+    /** Default value of Availability. */
+    extern const Availability_T DEFAULT_CLASS_AVAILABILITY;
+
     
   }
 }

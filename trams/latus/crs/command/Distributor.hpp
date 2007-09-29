@@ -5,8 +5,7 @@
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // LATUS Common
-#include <latus/com/bom/SegmentDateKey.hpp>
-#include <latus/com/bom/TravelSolutionList.hpp>
+#include <latus/com/bom/TravelSolution.hpp>
 #include <latus/com/command/CmdAbstract.hpp>
 
 namespace LATUS {
@@ -41,16 +40,16 @@ namespace LATUS {
       // ////////// Main Methods ///////////      
       /** Calculate and return the availabilities corresponding to a given
           product.
-          @return The vector of Travel Solutions (TS). */
-      void provideAvailabilities (const COM::SegmentDateKey_T& iOnD,
-                                  COM::TravelSolutionKeyList_T& ioTSL) const;
+          @return the list of associated class and the availability value. */
+      void provideAvailabilities (COM::TravelSolution& lTS,
+                                  const COM::SeatNumber_T& lSN);
 
       /** Register the sell of a given number of travellers on a given
           Travel Solution.
           <br>The party size may be a floating number, so as to cope with
           overbooking. */
-      bool sell (const COM::TravelSolutionKeyList_T& iTS,
-                 const COM::BookingNumber_T& iPartySize);
+      bool sell (const COM::TravelSolution& lTS,
+                 const COM::BookingNumber_T& lPS);
 
 
       // ///////// DISPLAY METHODS /////////

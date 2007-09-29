@@ -15,7 +15,7 @@ namespace LATUS {
 
     // //////////////////////////////////////////////////////////////////////
     OutboundPath::OutboundPath (const OutboundPathKey_T& iKey)
-      : _key (iKey), _airportDate (NULL) {
+      : _airportDate (NULL), _key (iKey) {
     }
     
     // //////////////////////////////////////////////////////////////////////
@@ -212,6 +212,23 @@ namespace LATUS {
       
       // Store the result
       return oElapsedTime;
+    }
+
+    // //////////////////////////////////////////////////////////////////////
+    bool OutboundPath::buildCheapestSolution (ClassStructList_T& lCSL, const SeatNumber_T& lST) const {
+
+      bool available = true;
+      for (SegmentDateLightList_T::const_iterator itSegmentDate =
+             _segmentDateLightList.begin();
+           itSegmentDate != _segmentDateLightList.end(); ++itSegmentDate) {
+        const SegmentDate* lSegmentDate_ptr = *itSegmentDate;
+        assert (lSegmentDate_ptr != NULL);
+        available = lSegmentDate_ptr->buildCheapestSolution(lCSL, lST);
+        if (available == false) {
+          break;
+        }
+      }
+      return available;
     }
     
   }

@@ -17,6 +17,10 @@
 namespace LATUS {
 
   namespace COM {
+
+    // ///////// General /////////
+    /** Default (GSL) random generator type. */
+    const double DEFAULT_EPSILON_VALUE = 0.0001;
     
     // ///////// GSL /////////
     /** Default (GSL) random generator type. */
@@ -101,6 +105,9 @@ namespace LATUS {
     /** Date duration representing the time during which a flight-date is open
         to the reservation (in boost::date_duration unit).*/
     const DateOffSet_T DEFAULT_FLIGHT_DATE_RESERVATION_DURATION (365);
+
+    /** Default number of seats required whenever a demand is processed into the simulator. */
+    const unsigned short DEFAULT_NUMBER_OF_REQUIRED_SEATS = 1;
 
     
     // ///////// Service Context Management /////////

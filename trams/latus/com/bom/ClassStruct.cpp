@@ -13,7 +13,7 @@ namespace LATUS {
 
     // //////////////////////////////////////////////////////////////////////
     ClassStruct_T::ClassStruct_T (const ClassKey_T& iClassKey)
-      : _key (iClassKey), _segmentCabin (NULL),
+      : _segmentCabin (NULL), _key (iClassKey),
         _bookingNumber (DEFAULT_CLASS_BOOKING_NUMBER),
         _availability (DEFAULT_CLASS_AVAILABILITY),
         _bookingLimitBool (DEFAULT_CLASS_BOOKING_LIMIT_BOOL),

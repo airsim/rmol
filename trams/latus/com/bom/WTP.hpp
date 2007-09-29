@@ -55,6 +55,11 @@ namespace LATUS {
       const PriceCurrency_T& getWTPCurrency() const {
         return _wtpCurrency;
       }
+
+      /** Get the number of seats. */
+      const SeatNumber_T& getSeatNumber() const {
+        return _seatNumber;
+      }
       
       /** Get the mean value of the final demand distribution. */
       const double getDistributionMean() const {
@@ -130,6 +135,9 @@ namespace LATUS {
       /** Willingness-To-Pay (WTP). */
       const PriceValue_T _wtpValue;
       const PriceCurrency_T _wtpCurrency;
+
+      /** Number of seats required. */
+      const SeatNumber_T _seatNumber;
 
       /** Mean value and standard deviation of the Final Demand Distribution.*/
       const DistributionDetails_T _distributionDetails;

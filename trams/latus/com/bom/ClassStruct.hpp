@@ -110,7 +110,7 @@ namespace LATUS {
 
     /** Lists of Class-Detail strucutres. */
     typedef std::vector<ClassStruct_T> ClassStructOrderedList_T;
-    typedef std::map<std::string, ClassStruct_T*> ClassStructList_T;
+    typedef std::map<std::string, ClassStruct_T> ClassStructList_T;
   }
 }
 #endif // __LATUS_COM_BOM_CLASSSTRUCT_HPP

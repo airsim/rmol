@@ -18,6 +18,13 @@ namespace LATUS {
         to the reservation (in boost::date_duration unit).*/
     extern const boost::gregorian::date_duration DEFAULT_FLIGHT_DATE_RESERVATION_DURATION;
 
+    /** Default nember of required seats by the demand. */
+    extern const unsigned short DEFAULT_NUMBER_OF_REQUIRED_SEATS;
+
+    /** Default epsilon value in order to be able to compare
+        availabilities with 0. */
+    extern const double DEFAULT_EPSILON_VALUE;
+
   }
 }
 #endif

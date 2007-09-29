@@ -5,10 +5,12 @@
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // LATUS Common
+#include <latus/com/basic/BasComTypes.hpp>
 #include <latus/com/bom/BomAbstract.hpp>
 #include <latus/com/bom/OutboundPathKey.hpp>
 #include <latus/com/bom/SegmentDateList.hpp>
-#include <latus/com/basic/BasComTypes.hpp>
+#include <latus/com/bom/TravelSolutionList.hpp>
+#include <latus/com/bom/ClassStruct.hpp>
 
 namespace LATUS {
 
@@ -92,6 +94,10 @@ namespace LATUS {
           SegmentDate class. */
       bool isConnectable (const OutboundPath&) const;
 
+      // ///////// Business methods //////////
+      /** Method which returns the cheapest available travel solution. */
+      bool buildCheapestSolution (ClassStructList_T&, const SeatNumber_T&) const;
+      
       /** Method computing the fare associated to the outbound path. */
       void fareQuote (); 
       

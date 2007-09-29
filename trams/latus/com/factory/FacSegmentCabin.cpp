@@ -66,7 +66,7 @@ namespace LATUS {
       // objects)
       const bool insertSucceeded = ioSegmentCabin._classList.
         insert (ClassStructList_T::value_type (lClass.describeShortKey(),
-                                               &lClass)).second;
+                                               lClass)).second;
       if (insertSucceeded == false) {
         LATUS_LOG_ERROR ("Insertion failed for " << ioSegmentCabin.describeKey()
                          << " and " << lClass.describeShortKey());

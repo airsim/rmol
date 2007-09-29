@@ -19,10 +19,13 @@ namespace LATUS {
   
   namespace COM {
 
+    // Forward declarations
+    class TravelSolution;
+    class AirportDate;
+
     /** Class wrapping the travels solutions. */
     class TravelSolutionBlock : public BomAbstract {
       friend class FacTravelSolutionBlock;
-      friend class AirportDate;
       friend class CRS::LATUS_CRS;
     public:
       // /////////// Getters //////////////
@@ -46,6 +49,12 @@ namespace LATUS {
         return _key.destination;
       }
 
+       /** Get the number of seats required by the demand
+           (part of the primary key). */
+      const SeatNumber_T& getSeatNumber() const {
+        return _key.seatNumber;
+      }
+
        /** Get the list of travel solutions. */
       TravelSolutionList_T& getTravelSolutionList() {
         return _travelSolutionList;
@@ -61,7 +70,11 @@ namespace LATUS {
       void incrementTravelSolutionNumber () {
         _travelSolutionNumber +=1;
       }
-     
+
+      // ///////// Busines methods //////////
+      /** Get the Best travel solution for the demand. */
+      void getBestTravelSolution (TravelSolution* bTS, const SeatNumber_T& iPartSize) const;
+      
       // ///////// Display Methods //////////
       /** Get a string describing the key. */
       const std::string describeKey() const;

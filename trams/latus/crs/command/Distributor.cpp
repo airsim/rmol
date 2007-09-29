@@ -5,6 +5,8 @@
 #include <assert.h>
 // LATUS Common
 #include <latus/com/service/Logger.hpp>
+#include <latus/com/basic/BasConst_TravelSolution.hpp>
+
 // LATUS CRS
 #include <latus/crs/command/Distributor.hpp>
 
@@ -14,7 +16,7 @@ namespace LATUS {
 
     // //////////////////////////////////////////////////////////////////////
     Distributor::Distributor (const std::string& iInputFileName)
-      : _worldSchedule (NULL), _inputFileName (iInputFileName) {
+      : _inputFileName (iInputFileName), _worldSchedule (NULL) {
 
       // Read the input file and build the CityPairList
       const bool hasSucceeded = init();
@@ -36,20 +38,24 @@ namespace LATUS {
 
     // //////////////////////////////////////////////////////////////////////
     void Distributor::
-    provideAvailabilities (const COM::SegmentDateKey_T& iOnD,
-                           COM::TravelSolutionKeyList_T& ioTSL) const {
-
+    provideAvailabilities (COM::TravelSolution& iTraSol,
+                           const COM::SeatNumber_T& iSN) {
+      
+      bool tsAvailability = iTraSol.buildCheapestSolution(iSN);
+      if (tsAvailability == true) {
+        iTraSol.calculateAvailabilities();
+      }
+      else {
+        
+        iTraSol.setTSAvailability (COM::DEFAULT_CLASS_AVAILABILITY);
+      }
     }
 
     // //////////////////////////////////////////////////////////////////////
-    bool Distributor::sell (const COM::TravelSolutionKeyList_T& iTS,
-                            const COM::BookingNumber_T& iPartySize) {
+    bool Distributor::sell (const COM::TravelSolution& iTS,
+                            const COM::BookingNumber_T& iPS) {
 
-      // const TravelSolutionKey_T* iTravelSolutionKey_ptr = NULL;
-        
-      // if (iTS.size() == 0) {
-      //  return iTravelSolutionKey_ptr;
-      // }
+     
       return true;
     }
 

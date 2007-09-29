@@ -178,7 +178,6 @@ namespace LATUS {
 
       /** Availability Pool between capacity and commited spaces. */
       Availability_T _availability;
-
     };
 
   }

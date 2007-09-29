@@ -641,7 +641,7 @@ namespace LATUS {
     FlightPeriodFileParser::
     FlightPeriodFileParser (COM::WorldSchedule& ioWorldSchedule,
                             const std::string& iFilename)
-      : _worldSchedule (ioWorldSchedule), _filename (iFilename) {
+      : _filename (iFilename), _worldSchedule (ioWorldSchedule) {
       init();
     }
 

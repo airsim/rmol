@@ -5,6 +5,7 @@
 #include <assert.h>
 // LATUS COM
 #include <latus/com/bom/TravelSolution.hpp>
+#include <latus/com/bom/OutboundPath.hpp>
 #include <latus/com/service/Logger.hpp>
 
 namespace LATUS {
@@ -13,7 +14,7 @@ namespace LATUS {
 
     // //////////////////////////////////////////////////////////////////////
     TravelSolution::TravelSolution (const TravelSolutionKey_T& iKey)
-      : _key (iKey), _outboundPath (NULL), _fare (0.0), _tSAvailability (0.0) {
+      : _key (iKey), _outboundPath_ptr (NULL), _fare (0.0), _tSAvailability (0.0) {
     }
     
     // //////////////////////////////////////////////////////////////////////
@@ -40,6 +41,17 @@ namespace LATUS {
 
       // Reset formatting flags of std::cout
       std::cout.flags (oldFlags);
+    }
+
+     // //////////////////////////////////////////////////////////////////////
+    bool TravelSolution::buildCheapestSolution (const SeatNumber_T& lSeatNumber) {     
+      
+      bool availability = getOutboundPath()->buildCheapestSolution(_classStructList, lSeatNumber );
+      return availability;
+    }
+
+     // //////////////////////////////////////////////////////////////////////
+    void TravelSolution::calculateAvailabilities () {     
     }
 
     // //////////////////////////////////////////////////////////////////////

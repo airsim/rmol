@@ -123,7 +123,5 @@ namespace LATUS {
     };
 
   }
-
 }
-
 #endif // __LATUS_COM_BOM_WORLDSCHEDULE_HPP

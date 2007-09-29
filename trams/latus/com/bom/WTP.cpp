@@ -6,8 +6,9 @@
 // GSL Random Number Distributions (GSL Reference Manual, version 1.7,
 // Chapter 19)
 #include <gsl/gsl_cdf.h>
-// LATUS Common
+// LATUS Basic
 #include <latus/com/basic/BasConst_CityPair.hpp>
+// LATUS Common
 #include <latus/com/bom/CityPairDate.hpp>
 #include <latus/com/bom/WTP.hpp>
 #include <latus/com/service/Logger.hpp>
@@ -21,7 +22,7 @@ namespace LATUS {
               const PriceCurrency_T& iWTPCurrency,
               const DistributionDetails_T& iDistributionDetails) :
       _cityPairDate (NULL), _wtpValue (iWTPValue), _wtpCurrency (iWTPCurrency),
-      _distributionDetails (iDistributionDetails) {
+      _seatNumber (DEFAULT_NUMBER_OF_REQUIRED_SEATS),_distributionDetails (iDistributionDetails) {
     }
 
     // //////////////////////////////////////////////////////////////////////

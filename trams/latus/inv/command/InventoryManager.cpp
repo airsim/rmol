@@ -14,7 +14,7 @@ namespace LATUS {
 
     // //////////////////////////////////////////////////////////////////////
     InventoryManager::InventoryManager (const std::string& iInputFileName)
-      : _worldSchedule (NULL), _inputFileName (iInputFileName) {
+      : _inputFileName (iInputFileName), _worldSchedule (NULL) {
 
       // Read the input file and build the CityPairList
       const bool hasSucceeded = init();

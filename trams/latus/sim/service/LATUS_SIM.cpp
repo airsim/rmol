@@ -24,7 +24,7 @@ namespace LATUS {
 
       // Get the parameters stored within the Service Context (passed through
       // by the caller)
-      const int lSimulationRunNumber = getSimulationRunNumber ();
+      const unsigned int lSimulationRunNumber = getSimulationRunNumber ();
       const std::string& lDemandInputFilename = getDemandInputFilename ();
       const COM::DateTime_T& lStartDate = getStartDate ();
       const COM::DateTime_T& lEndDate = getEndDate ();

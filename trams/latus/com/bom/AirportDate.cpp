@@ -8,13 +8,9 @@
 #include <latus/com/bom/AirportDate.hpp>
 #include <latus/com/bom/OutboundPath.hpp>
 #include <latus/com/bom/TravelSolution.hpp>
-#include <latus/com/bom/TravelSolutionKey.hpp>
 #include <latus/com/factory/FacTravelSolution.hpp>
 #include <latus/com/bom/TravelSolutionList.hpp>
 #include <latus/com/bom/TravelSolutionBlock.hpp>
-#include <latus/com/bom/TravelSolutionBlockKey.hpp>
-#include <latus/com/factory/FacTravelSolutionBlock.hpp>
-
 
 namespace LATUS {
 
@@ -22,7 +18,7 @@ namespace LATUS {
 
     // //////////////////////////////////////////////////////////////////////
     AirportDate::AirportDate (const AirportDateKey_T& iKey)
-      : _key (iKey), _networkDate (NULL) {
+      : _networkDate (NULL), _key (iKey) {
     }
     
     // //////////////////////////////////////////////////////////////////////
@@ -137,6 +133,8 @@ namespace LATUS {
           // Creation of a new TravelSolution only made by the outbound path. */
           const COM::OutboundPathKey_T& lOutboundPathKey = lOutboundPath_ptr->getOutboundPathKey();
           const COM::TravelSolutionKey_T lTravelSolutionKey (lOutboundPathKey);
+
+          // TODO (Action Item blardeux): Remove any call to Factory within the BOM layer!
           COM::TravelSolution& lTravelSolution =
           COM::FacTravelSolution::instance().create (lTravelSolutionKey);
 

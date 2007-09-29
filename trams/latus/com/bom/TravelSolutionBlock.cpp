@@ -1,4 +1,13 @@
+// //////////////////////////////////////////////////////////////////////
+// Import section
+// //////////////////////////////////////////////////////////////////////
+// C
+#include <assert.h>
+// LATUS Common
+#include <latus/com/basic/BasConst_CityPair.hpp>
+#include <latus/com/bom/TravelSolution.hpp>
 #include <latus/com/bom/AirportDate.hpp>
+#include <latus/com/bom/TravelSolutionBlock.hpp>
 #include <latus/com/service/Logger.hpp>
 
 namespace LATUS {
@@ -7,7 +16,7 @@ namespace LATUS {
 
     // //////////////////////////////////////////////////////////////////////
     TravelSolutionBlock::TravelSolutionBlock (const TravelSolutionBlockKey_T& iKey)
-      : _key (iKey), _airportDate (NULL), _travelSolutionNumber (0) {
+      : _airportDate (NULL), _key (iKey), _travelSolutionNumber (0) {
     }
     
     // //////////////////////////////////////////////////////////////////////
@@ -44,6 +53,23 @@ namespace LATUS {
       
       // Reset formatting flags of std::cout
       std::cout.flags (oldFlags);
+    }
+
+    // //////////////////////////////////////////////////////////////////////
+    void TravelSolutionBlock::getBestTravelSolution (TravelSolution* lbTS, const SeatNumber_T& lPartSize) const {
+      bool lProductSell = false;
+      TravelSolutionList_T:: const_iterator itTravelSolution
+        = _travelSolutionList.begin();
+
+      while ((lProductSell != true) && (itTravelSolution != _travelSolutionList.end())) {
+        lbTS = itTravelSolution->second;
+        assert (lbTS != NULL);
+        Availability_T travelSolAvailability = lbTS->getTSAvailability();
+        if (travelSolAvailability > (lPartSize - COM::DEFAULT_EPSILON_VALUE)) {
+          lProductSell = true;
+        }
+        itTravelSolution++;
+      }
     }
     
   }

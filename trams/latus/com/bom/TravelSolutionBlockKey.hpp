@@ -20,11 +20,13 @@ namespace LATUS {
       AirportCode_T origin;
       AirportCode_T destination;
       DateTime_T dateTime;
+      SeatNumber_T seatNumber;
 
       /** Constructor. */
       TravelSolutionBlockKey_T (const AirportCode_T&,
                                 const AirportCode_T&,
-                                const DateTime_T&);
+                                const DateTime_T&,
+                                const SeatNumber_T&);
       
       /** Display of the key. */
       const std::string describe() const;

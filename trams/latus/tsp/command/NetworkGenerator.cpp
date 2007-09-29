@@ -266,7 +266,11 @@ namespace LATUS {
       // are thus done at that stage.
       const COM::OutboundPathListList_T& lOutboundPathListList =
         ioAirportDate.getOutboundPathListList();
-      if (lOutboundPathListList.size() < iSegmentNumber - 1) {
+      const short lSegmentNumber_m1_Short = iSegmentNumber - 1;
+      assert (lSegmentNumber_m1_Short >= 0);
+      const COM::SegmentNumber_T lSegmentNumber_m1 = 
+        static_cast<const COM::SegmentNumber_T> (lSegmentNumber_m1_Short);
+      if (lOutboundPathListList.size() < lSegmentNumber_m1) {
         return;
       }
       

@@ -68,6 +68,10 @@ namespace LATUS {
       if (itAirport == _airportList.end()) {
         // Add the airport code to the airport set
         const bool insertSuccessful = _airportList.insert (iAirport).second;
+
+		if (insertSuccessful == false) {
+			// TODO: throw an exception
+		}
           
         // Add the airport code to the airport vector
         _airportOrderedList.push_back (iAirport);

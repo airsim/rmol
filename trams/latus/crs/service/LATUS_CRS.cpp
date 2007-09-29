@@ -2,6 +2,8 @@
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // LATUS Common
+#include <latus/com/bom/TravelSolutionList.hpp>
+#include <latus/com/bom/TravelSolution.hpp>
 #include <latus/com/service/Logger.hpp>
 // LATUS CRS
 #include <latus/crs/command/Distributor.hpp>
@@ -47,7 +49,15 @@ namespace LATUS {
 
       Distributor lDistributor (lInputFilename);
 
-      //lDistributor.provideAvailabilities (lSegment1, ioTSL);
+      COM::TravelSolutionList_T lTravelSolutionList = iTSB.getTravelSolutionList();
+      for (COM::TravelSolutionList_T::iterator itTravelSolution =
+             lTravelSolutionList.begin();
+           itTravelSolution != lTravelSolutionList.end(); ++itTravelSolution) {
+        COM::TravelSolution* lTravelSolution_ptr = itTravelSolution->second;
+        assert (lTravelSolution_ptr != NULL);
+        const COM::SeatNumber_T& iSeatNumber =  iTSB.getSeatNumber();
+        lDistributor.provideAvailabilities (*lTravelSolution_ptr, iSeatNumber);
+     }
 
     }
 
@@ -63,7 +73,14 @@ namespace LATUS {
     // //////////////////////////////////////////////////////////////////////
     bool LATUS_CRS::sell (const COM::TravelSolutionBlock& iTS,
                           const COM::BookingNumber_T& iPartySize) {
-      return true;
+      bool productSell = false;
+      COM::TravelSolution* iTravelSolution = NULL;
+
+      iTS.getBestTravelSolution (iTravelSolution, iPartySize);
+      if (iTravelSolution != NULL) {
+        productSell = true;
+      }
+      return productSell;
     }
     
   }

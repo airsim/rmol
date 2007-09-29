@@ -51,6 +51,9 @@ namespace LATUS {
     /** Define a price currency (e.g., EUR for Euros). */
     typedef std::string PriceCurrency_T;
 
+    /** Define the number of seats required by a demand. */
+    typedef unsigned short SeatNumber_T;
+
     /** Define a mean value (e.g., 20.2). */
     typedef double MeanValue_T;
 

@@ -17,7 +17,7 @@ namespace LATUS {
 
     // //////////////////////////////////////////////////////////////////////
     SegmentDate::SegmentDate (const SegmentDateKey_T& iKey)
-      : _key (iKey), _flightDate (NULL) {
+      : _flightDate (NULL), _key (iKey) {
     }
     
     // //////////////////////////////////////////////////////////////////////
@@ -257,5 +257,30 @@ namespace LATUS {
       updateElapsedTimeFromRouting();
     }
 
+    // //////////////////////////////////////////////////////////////////////
+     bool SegmentDate::buildCheapestSolution (ClassStructList_T& ioClassStruct,
+                                              const SeatNumber_T& lSeatNumber) const {
+
+      Availability_T segCabinAvailability = 0.0;
+      SegmentCabin* lSegmentCabin = NULL;
+      SegmentCabinList_T:: const_iterator itSegmentCabin
+        = _segmentCabinList.begin();
+
+      while ((segCabinAvailability < (lSeatNumber - DEFAULT_EPSILON_VALUE)) && (itSegmentCabin != _segmentCabinList.end())) {
+        lSegmentCabin = itSegmentCabin->second;
+        assert (lSegmentCabin != NULL);
+        segCabinAvailability = lSegmentCabin->getAvailabilityPool();
+        itSegmentCabin++;
+      }
+
+      if (segCabinAvailability < (lSeatNumber - DEFAULT_EPSILON_VALUE)) {
+        return false;
+      }
+      else {
+        assert (lSegmentCabin != NULL);
+        lSegmentCabin->buildCheapestSolution (ioClassStruct, lSeatNumber, getPrimaryKey());
+        return true;
+      }
+     }
   }
 }
