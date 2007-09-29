@@ -15,7 +15,7 @@ namespace LATUS {
 
     // //////////////////////////////////////////////////////////////////////
     OutboundPath::OutboundPath (const OutboundPathKey_T& iKey)
-      : _key (iKey), _airportDate (NULL), _fare (0.0) {
+      : _key (iKey), _airportDate (NULL) {
     }
     
     // //////////////////////////////////////////////////////////////////////
@@ -156,17 +156,6 @@ namespace LATUS {
       return lOffSegment_ptr->isConnectable (*lBoardSegment_ptr);
     }
 
-     // //////////////////////////////////////////////////////////////////////
-    void OutboundPath::fareQuote () {
-       for (SegmentDateLightList_T::const_iterator itSegmentDate =
-             _segmentDateLightList.begin();
-           itSegmentDate != _segmentDateLightList.end(); ++itSegmentDate) {
-        const SegmentDate* lSegmentDate_ptr = *itSegmentDate;
-        assert (lSegmentDate_ptr != NULL);
-      }
-      
-    }
-    
     // //////////////////////////////////////////////////////////////////////
     const Duration_T OutboundPath::
     calculateElapsedTimeFromRouting (const SegmentDate& iLastSegment) const {

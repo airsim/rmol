@@ -100,6 +100,10 @@ namespace LATUS {
     /** Define the fare of a travel solution. */
     typedef double Fare_T;
 
+     /** Define a number of travel solutions
+         (in a travel solution block). */
+    typedef unsigned short TravelSolutionNumber_T;
+
   }
 }
 #endif // __COM_BAS_BASCOMTYPES_HPP

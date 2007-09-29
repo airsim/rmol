@@ -8,7 +8,7 @@
 #include <string>
 // LATUS Common
 #include <latus/com/basic/BasComTypes.hpp>
-#include <latus/com/bom/OutboundPathList.hpp>
+#include <latus/com/bom/TravelSolutionBlock.hpp>
 #include <latus/com/service/LATUS_ServiceAbstract.hpp>
 
 namespace LATUS {
@@ -33,7 +33,7 @@ namespace LATUS {
       static void getTravelSolutions (const COM::AirportCode_T& iOrigin,
                                       const COM::AirportCode_T& iDestination,
                                       const COM::DateTime_T& iDate,
-                                      COM::OutboundPathLightList_T&);
+                                      COM::TravelSolutionBlock&);
 
 
     private:

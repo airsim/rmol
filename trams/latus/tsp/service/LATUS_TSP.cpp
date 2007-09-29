@@ -56,7 +56,7 @@ namespace LATUS {
     void LATUS_TSP::getTravelSolutions (const COM::AirportCode_T& iOrigin,
                                         const COM::AirportCode_T& iDestination,
                                         const COM::DateTime_T& iDate,
-                                        COM::OutboundPathLightList_T& ioPaths) {
+                                        COM::TravelSolutionBlock& ioTSolutions) {
 
       // DEBUG
       LATUS_LOG_DEBUG ("Travel Solutions for: "
@@ -78,7 +78,7 @@ namespace LATUS {
       assert (lNetworkDate_ptr != NULL);
 
       // Retrieve the AirportDate for that origin.
-      const COM::AirportDate* lAirportDate_ptr =
+      COM::AirportDate* lAirportDate_ptr =
         lNetworkDate_ptr->getAirportDate (iOrigin);
       
       // If there is no AirportDate for that departure date, there is no
@@ -89,10 +89,12 @@ namespace LATUS {
       }
       assert (lAirportDate_ptr != NULL);
 
+      ioTSolutions.setAirportDate(lAirportDate_ptr);
+
       // Retrieve all the outbound paths from the airport-date, i.e., all the
       // travel solutions from the origin airport to the destination airport
       // for that departure date.
-      lAirportDate_ptr->getOutboundPathList (iDestination, ioPaths);
+      lAirportDate_ptr->createTravelSolutionList (iDestination, ioTSolutions);
     }
     
   }

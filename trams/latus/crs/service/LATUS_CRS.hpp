@@ -6,7 +6,7 @@
 // //////////////////////////////////////////////////////////////////////
 // LATUS Common
 #include <latus/com/basic/BasComTypes.hpp>
-#include <latus/com/bom/TravelSolutionList.hpp>
+#include <latus/com/bom/TravelSolutionBlock.hpp>
 #include <latus/com/service/LATUS_ServiceAbstract.hpp>
 
 namespace LATUS {
@@ -24,19 +24,16 @@ namespace LATUS {
       static void provideTravelSolution (const COM::AirportCode_T& iOrigin,
                                          const COM::AirportCode_T& iDestination,
                                          const COM::DateTime_T& iDate,
-                                         COM::TravelSolutionKeyList_T& ioTSL);
+                                         COM::TravelSolutionBlock& ioTSL);
 
       /** Organize the list of Travel Solution according to the UCM preferences. */
-      static void  arrangeTravelSolutions (const COM::AirportCode_T& iOrigin,
-                                           const COM::AirportCode_T& iDestination,
-                                           const COM::DateTime_T& iDate,
-                                           COM::TravelSolutionKeyList_T& iTSL);
+      static void  arrangeTravelSolutions (COM::TravelSolutionBlock& iTSL);
       
       /** Register the sell of a given number of travellers on a given
           Travel Solution.
           <br>The party size may be a floating number, so as to cope with
           overbooking. */
-      static bool sell (const COM::TravelSolutionKeyList_T& iTS,
+      static bool sell (const COM::TravelSolutionBlock& iTS,
                         const COM::BookingNumber_T& iPartySize);
 
     private:

@@ -20,10 +20,6 @@ single_date_simulator_SOURCES = single_date_simulator.cpp
 single_date_simulator_LDADD = $(BOOST_LIB) \
 		$(top_builddir)/@PACKAGE@/liblatus.la
 
-#full_event_generator_SOURCES = full_event_generator.cpp
-#full_event_generator_LDADD = $(BOOST_LIB) \
-#		$(top_builddir)/@PACKAGE@/liblatus.la
-
 simulator_SOURCES = simulator.cpp
 simulator_LDADD = $(BOOST_LIB) \
 		$(top_builddir)/@PACKAGE@/liblatus.la

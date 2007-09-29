@@ -23,12 +23,9 @@ namespace LATUS {
 
     // //////////////////////////////////////////////////////////////////////
     void LATUS_UCM::
-    chooseTravelSolution (const COM::AirportCode_T& iOrigin,
-                          const COM::AirportCode_T& iDestination,
-                          const COM::DateTime_T& iDate,
-                          COM::TravelSolutionKeyList_T& ioTSL) {
+    chooseTravelSolution (COM::TravelSolutionBlock& ioTSLB) {
 
-      ChoiceManager::chooseTravelSolution (iOrigin, iDestination, iDate, ioTSL);
+      ChoiceManager::chooseTravelSolution (ioTSLB);
     }
 
   }

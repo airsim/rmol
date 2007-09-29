@@ -29,6 +29,10 @@ combom_h_sources = $(top_srcdir)/latus/com/bom/BomAbstract.hpp \
 					$(top_srcdir)/latus/com/bom/AirportDateKey.hpp \
 					$(top_srcdir)/latus/com/bom/OutboundPathKey.hpp \
 					$(top_srcdir)/latus/com/bom/TravelSolution.hpp \
+					$(top_srcdir)/latus/com/bom/TravelSolutionKey.hpp \
+					$(top_srcdir)/latus/com/bom/TravelSolutionList.hpp \
+					$(top_srcdir)/latus/com/bom/TravelSolutionBlock.hpp \
+					$(top_srcdir)/latus/com/bom/TravelSolutionBlockKey.hpp \
 					$(top_srcdir)/latus/com/bom/WorldSchedule.hpp \
 					$(top_srcdir)/latus/com/bom/InventoryList.hpp \
 					$(top_srcdir)/latus/com/bom/Inventory.hpp \
@@ -77,6 +81,10 @@ combom_cc_sources = $(top_srcdir)/latus/com/bom/BookingDay.cpp \
 					$(top_srcdir)/latus/com/bom/NetworkDateKey.cpp \
 					$(top_srcdir)/latus/com/bom/AirportDateKey.cpp \
 					$(top_srcdir)/latus/com/bom/OutboundPathKey.cpp \
+					$(top_srcdir)/latus/com/bom/TravelSolution.cpp \
+					$(top_srcdir)/latus/com/bom/TravelSolutionKey.cpp \
+					$(top_srcdir)/latus/com/bom/TravelSolutionBlock.cpp \
+					$(top_srcdir)/latus/com/bom/TravelSolutionBlockKey.cpp \
 					$(top_srcdir)/latus/com/bom/WorldSchedule.cpp \
 					$(top_srcdir)/latus/com/bom/Inventory.cpp \
 					$(top_srcdir)/latus/com/bom/Network.cpp \

@@ -5,8 +5,7 @@
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // LATUS Common
-#include <latus/com/basic/BasComTypes.hpp>
-#include <latus/com/bom/TravelSolutionList.hpp>
+#include <latus/com/bom/TravelSolutionBlock.hpp>
 #include <latus/com/service/LATUS_ServiceAbstract.hpp>
 
 namespace LATUS {
@@ -19,10 +18,7 @@ namespace LATUS {
 
       /** Choose a product from a given list of products.
           @return The vector of Travel Solutions (TS). */
-      static void chooseTravelSolution (const COM::AirportCode_T& iOrigin,
-                                        const COM::AirportCode_T& iDestination,
-                                        const COM::DateTime_T& iDate,
-                                        COM::TravelSolutionKeyList_T& ioTSL);
+      static void chooseTravelSolution (COM::TravelSolutionBlock& ioTSLB);
     private:
       /** Constructors. */
       LATUS_UCM ();

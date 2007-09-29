@@ -5,8 +5,7 @@
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // LATUS Common
-#include <latus/com/bom/AirportDate.hpp>
-#include <latus/com/bom/TravelSolutionList.hpp>
+#include <latus/com/bom/TravelSolutionBlock.hpp>
 // LATUS Command
 #include <latus/com/command/CmdAbstract.hpp>
 
@@ -21,8 +20,7 @@ namespace LATUS {
       /** Calculate and return the price quotations corresponding to a given
           list of products.
           @return The vector of Travel Solutions (TS). */
-      static void quoteTravelSolutions (const COM::AirportDate& iAirportDate,
-                                        COM::TravelSolutionKeyList_T& iTSL);
+      static void quoteTravelSolutions (COM::TravelSolutionBlock& iTSL);
 
     private:
       /** Constructors. */

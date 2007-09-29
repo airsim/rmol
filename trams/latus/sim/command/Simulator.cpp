@@ -15,7 +15,9 @@
 #include <latus/com/bom/WTP.hpp>
 #include <latus/com/factory/FacBookingDay.hpp>
 #include <latus/com/service/Logger.hpp>
-#include <latus/com/bom/TravelSolutionList.hpp>
+#include <latus/com/bom/TravelSolutionBlock.hpp>
+#include <latus/com/bom/TravelSolutionBlockKey.hpp>
+#include <latus/com/factory/FacTravelSolutionBlock.hpp>
 // LATUS DEG
 #include <latus/deg/service/LATUS_DEG.hpp>
 // LATUS INV
@@ -43,10 +45,13 @@ namespace LATUS {
       const COM::AirportCode_T& lOrigin = lWTP_ptr->getOrigin();
       const COM::AirportCode_T& lDestination = lWTP_ptr->getDestination();
       const COM::DateTime_T& lDepDate = lWTP_ptr->getDepartureDate();
-      COM::TravelSolutionKeyList_T lTravelSolutionKeyList;
+
+      const COM::TravelSolutionBlockKey_T lTravelSolutionBlockKey (lOrigin, lDestination, lDepDate);
+      COM::TravelSolutionBlock& lTravelSolutionBlock =
+          COM::FacTravelSolutionBlock::instance().create (lTravelSolutionBlockKey);
 
       CRS::LATUS_CRS::provideTravelSolution (lOrigin, lDestination, lDepDate,
-                                             lTravelSolutionKeyList);
+                                             lTravelSolutionBlock);
     }
 
     // //////////////////////////////////////////////////////////////////////

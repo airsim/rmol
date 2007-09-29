@@ -14,6 +14,8 @@ comfac_h_sources = $(top_srcdir)/latus/com/factory/FacBomAbstract.hpp \
 		$(top_srcdir)/latus/com/factory/FacLegCabin.hpp \
 		$(top_srcdir)/latus/com/factory/FacSegmentDate.hpp \
 		$(top_srcdir)/latus/com/factory/FacSegmentCabin.hpp \
+		$(top_srcdir)/latus/com/factory/FacTravelSolution.hpp \
+		$(top_srcdir)/latus/com/factory/FacTravelSolutionBlock.hpp \
 		$(top_srcdir)/latus/com/factory/FacNetwork.hpp \
 		$(top_srcdir)/latus/com/factory/FacNetworkDate.hpp \
 		$(top_srcdir)/latus/com/factory/FacAirportDate.hpp \
@@ -34,6 +36,8 @@ comfac_cc_sources = $(top_srcdir)/latus/com/factory/FacBomAbstract.cpp \
 		$(top_srcdir)/latus/com/factory/FacLegCabin.cpp \
 		$(top_srcdir)/latus/com/factory/FacSegmentDate.cpp \
 		$(top_srcdir)/latus/com/factory/FacSegmentCabin.cpp \
+		$(top_srcdir)/latus/com/factory/FacTravelSolution.cpp \
+		$(top_srcdir)/latus/com/factory/FacTravelSolutionBlock.cpp \
 		$(top_srcdir)/latus/com/factory/FacNetwork.cpp \
 		$(top_srcdir)/latus/com/factory/FacNetworkDate.cpp \
 		$(top_srcdir)/latus/com/factory/FacAirportDate.cpp \

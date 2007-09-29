@@ -8,6 +8,7 @@
 #include <latus/com/bom/BomAbstract.hpp>
 #include <latus/com/bom/OutboundPathKey.hpp>
 #include <latus/com/bom/SegmentDateList.hpp>
+#include <latus/com/basic/BasComTypes.hpp>
 
 namespace LATUS {
 
@@ -35,11 +36,6 @@ namespace LATUS {
       /** Get the AirportDate (parent class). */
       AirportDate* getAirportDate() const {
         return _airportDate;
-      }
-
-      /** Get the fare associated to this outbound path. */
-      const Fare_T& getFare () const {
-        return _fare;
       }
 
       /** Get the primary key. */
@@ -180,9 +176,6 @@ namespace LATUS {
       /** Child: Outbound-Path, i.e., an ordered list of SegmentDate constant
           objects. */
       SegmentDateLightList_T _segmentDateLightList;
-
-      /**Value of the travel solution associated to the outbound path. */
-      Fare_T _fare;
     };
 
   }

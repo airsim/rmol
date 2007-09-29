@@ -3,8 +3,6 @@
 // //////////////////////////////////////////////////////////////////////
 // LATUS Common
 #include <latus/com/service/Logger.hpp>
-#include <latus/com/bom/OutboundPathList.hpp>
-#include <latus/com/bom/OutboundPath.hpp>
 // LATUS CRS
 #include <latus/crs/command/Distributor.hpp>
 #include <latus/crs/service/LATUS_CRS.hpp>
@@ -32,27 +30,15 @@ namespace LATUS {
     provideTravelSolution (const COM::AirportCode_T& iOrigin,
                            const COM::AirportCode_T& iDestination,
                            const COM::DateTime_T& iDate,
-                           COM::TravelSolutionKeyList_T& ioTSL) {
-      
-      COM::OutboundPathLightList_T iTravelSolutionList;
+                           COM::TravelSolutionBlock& iTSB) {
 
       TSP::LATUS_TSP::getTravelSolutions (iOrigin, iDestination, iDate,
-                                          iTravelSolutionList);
+                                          iTSB);
+      iTSB.display();
   
-      unsigned short idx = 0;
-      for (COM::OutboundPathLightList_T::const_iterator itPath =
-             iTravelSolutionList.begin();
-           itPath != iTravelSolutionList.end(); ++itPath, ++idx) {
-        const COM::OutboundPath* iOutboundPath_ptr = *itPath;
-        assert (iOutboundPath_ptr != NULL);
-
-        std::cout << "[" << idx << "]: "
-                  << iOutboundPath_ptr->describeKey() << std::endl;
-      }
-
       // Quote the fares of the travel solutions according to the profil
       // of the request
-      FQT::LATUS_FQT::quoteTravelSolutions(iOrigin, iDate, ioTSL);
+       FQT::LATUS_FQT::quoteTravelSolutions(iTSB);
       
 
       // Retrieve the schedule input filename from the CRS specific
@@ -67,19 +53,15 @@ namespace LATUS {
 
     // //////////////////////////////////////////////////////////////////////
     void LATUS_CRS::
-    arrangeTravelSolutions (const COM::AirportCode_T& iOrigin,
-                           const COM::AirportCode_T& iDestination,
-                           const COM::DateTime_T& iDate,
-                           COM::TravelSolutionKeyList_T& iTSL) {
+    arrangeTravelSolutions (COM::TravelSolutionBlock& ilTSL) {
 
       // Arrange the list of travel solutions depending on the UCM preferences
-      UCM::LATUS_UCM::chooseTravelSolution(iOrigin, iDestination, iDate,
-                                           iTSL);
+      UCM::LATUS_UCM::chooseTravelSolution(ilTSL);
       
     }
     
     // //////////////////////////////////////////////////////////////////////
-    bool LATUS_CRS::sell (const COM::TravelSolutionKeyList_T& iTS,
+    bool LATUS_CRS::sell (const COM::TravelSolutionBlock& iTS,
                           const COM::BookingNumber_T& iPartySize) {
       return true;
     }

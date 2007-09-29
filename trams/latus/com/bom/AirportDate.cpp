@@ -7,6 +7,14 @@
 #include <latus/com/bom/NetworkDate.hpp>
 #include <latus/com/bom/AirportDate.hpp>
 #include <latus/com/bom/OutboundPath.hpp>
+#include <latus/com/bom/TravelSolution.hpp>
+#include <latus/com/bom/TravelSolutionKey.hpp>
+#include <latus/com/factory/FacTravelSolution.hpp>
+#include <latus/com/bom/TravelSolutionList.hpp>
+#include <latus/com/bom/TravelSolutionBlock.hpp>
+#include <latus/com/bom/TravelSolutionBlockKey.hpp>
+#include <latus/com/factory/FacTravelSolutionBlock.hpp>
+
 
 namespace LATUS {
 
@@ -106,6 +114,41 @@ namespace LATUS {
 
         if (lDestination == iDestination) {
           ioPathList.push_back (lOutboundPath_ptr);
+        }
+      }
+      
+    }
+
+     // //////////////////////////////////////////////////////////////////////
+    void AirportDate::
+    createTravelSolutionList (const AirportCode_T& iDestination,
+                         TravelSolutionBlock& ioTravelSolutionBlock) const {
+      
+      for (OutboundPathList_T::const_iterator itPath =
+             _outboundPathList.begin();
+           itPath != _outboundPathList.end(); ++itPath) {
+        OutboundPath* lOutboundPath_ptr = itPath->second;
+        assert (lOutboundPath_ptr != NULL);
+
+        // Retrieve the destination of the outbound path
+        const AirportCode_T& lDestination = lOutboundPath_ptr->getDestination();
+
+        if (lDestination == iDestination) {          
+          // Creation of a new TravelSolution only made by the outbound path. */
+          const COM::OutboundPathKey_T& lOutboundPathKey = lOutboundPath_ptr->getOutboundPathKey();
+          const COM::TravelSolutionKey_T lTravelSolutionKey (lOutboundPathKey);
+          COM::TravelSolution& lTravelSolution =
+          COM::FacTravelSolution::instance().create (lTravelSolutionKey);
+
+          lTravelSolution.setOutboundPath(lOutboundPath_ptr);
+
+          COM::TravelSolutionList_T& lTravelSolutionList = ioTravelSolutionBlock.getTravelSolutionList();
+          
+          lTravelSolutionList.insert (TravelSolutionList_T::
+                value_type (lTravelSolution.describeShortKey(),
+                            &lTravelSolution));
+          
+           ioTravelSolutionBlock.incrementTravelSolutionNumber();
         }
       }
       

@@ -9,6 +9,7 @@
 #include <latus/com/bom/AirportDateKey.hpp>
 #include <latus/com/bom/OutboundPathList.hpp>
 #include <latus/com/bom/SegmentDateList.hpp>
+#include <latus/com/bom/TravelSolutionBlock.hpp>
 
 namespace LATUS {
 
@@ -74,6 +75,11 @@ namespace LATUS {
           the given destination. */
       void getOutboundPathList (const AirportCode_T& iDestination,
                                 OutboundPathLightList_T&) const;
+
+       /** Create a list of travel solution corresponding to
+          the given destination. */
+      void createTravelSolutionList (const AirportCode_T& iDestination,
+                                TravelSolutionBlock&) const;
       
 
       // ///////// Setters //////////
