@@ -16,6 +16,7 @@ namespace LATUS {
   // Forward declarations
   namespace TSP {
     class NetworkGenerator;
+    class TravelSolutionProvider;
   }
   
   namespace COM {
@@ -28,6 +29,7 @@ namespace LATUS {
     class AirportDate : public BomAbstract {
       friend class FacAirportDate;
       friend class TSP::NetworkGenerator;
+      friend class TSP::TravelSolutionProvider;
     public:
       // /////////// Getters //////////////
       /** Get the parent class. */
@@ -76,11 +78,6 @@ namespace LATUS {
       void getOutboundPathList (const AirportCode_T& iDestination,
                                 OutboundPathLightList_T&) const;
 
-       /** Create a list of travel solution corresponding to
-          the given destination. */
-      void createTravelSolutionList (const AirportCode_T& iDestination,
-                                TravelSolutionBlock&) const;
-      
 
       // ///////// Setters //////////
       /** Set the NetworkDate (parent class). */

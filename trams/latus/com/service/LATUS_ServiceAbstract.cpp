@@ -44,6 +44,11 @@ namespace LATUS {
       return ServiceContextManager::getScheduleInputFilename ();
     }
 
+     // //////////////////////////////////////////////////////////////////////
+    const std::string& LATUS_ServiceAbstract::getWorldScheduleOutputFilename () {
+      return ServiceContextManager::getWorldScheduleOutputFilename ();
+    }
+
     // //////////////////////////////////////////////////////////////////////
     const AirlineCode_T& LATUS_ServiceAbstract::
     getOwnerAirlineCode (const std::string& iModuleName) {
@@ -105,6 +110,12 @@ namespace LATUS {
     void LATUS_ServiceAbstract::
     setScheduleInputFilename (const std::string& iInputFilename) {
       ServiceContextManager::setScheduleInputFilename (iInputFilename);
+    }
+
+     // //////////////////////////////////////////////////////////////////////
+    void LATUS_ServiceAbstract::
+    setWorldScheduleOutputFilename (const std::string& iOutputFilename) {
+      ServiceContextManager::setWorldScheduleOutputFilename (iOutputFilename);
     }
     
     // //////////////////////////////////////////////////////////////////////

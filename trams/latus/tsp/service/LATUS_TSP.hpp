@@ -30,10 +30,7 @@ namespace LATUS {
       /** Calculate and return the travel solutions corresponding to a given
           product demand.
           @return The vector of availabilities per class/bucket. */
-      static void getTravelSolutions (const COM::AirportCode_T& iOrigin,
-                                      const COM::AirportCode_T& iDestination,
-                                      const COM::DateTime_T& iDate,
-                                      COM::TravelSolutionBlock&);
+      static void getTravelSolutions (COM::TravelSolutionBlock& iTravelSolutions);
 
 
     private:

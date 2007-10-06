@@ -77,11 +77,7 @@ namespace LATUS {
      // //////////////////////////////////////////////////////////////////////
     void InventoryGenerator::
     recalculateAvailabilities (COM::WorldSchedule& ioWorldSchedule) {
-      ioWorldSchedule.updateBookingAndSeatCounters ();
-      ioWorldSchedule.updateCommitedSpaces ();
-      ioWorldSchedule.updateAvailabilityPools ();
-      ioWorldSchedule.updateAllAvailabilities ();
-      
+      ioWorldSchedule.recalculateAvailabilities ();      
     }
       
     // //////////////////////////////////////////////////////////////////////

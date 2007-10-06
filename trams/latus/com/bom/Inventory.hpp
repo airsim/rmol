@@ -6,6 +6,7 @@
 // //////////////////////////////////////////////////////////////////////
 // STL
 #include <string>
+#include <fstream>
 // LATUS Common
 #include <latus/com/basic/BasComTypes.hpp>
 #include <latus/com/bom/BomAbstract.hpp>
@@ -77,6 +78,9 @@ namespace LATUS {
 
       /** Display the full Inventory context. */
       void display() const;
+
+      /** Write in a file the inventory context. */
+      void exportInformations(std::ofstream& iOF) const;
 
        // ///////// Counting methods  //////////
       /** Update the counters. */

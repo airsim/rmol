@@ -4,6 +4,8 @@
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
+// STL
+#include <fstream>
 // LATUS Common
 #include <latus/com/bom/BomAbstract.hpp>
 #include <latus/com/bom/FlightDateKey.hpp>
@@ -84,6 +86,9 @@ namespace LATUS {
 
       /** Display the full FlightDate context. */
       void display() const;
+
+      /** Write in a file the FlightDate context. */
+      void exportInformations(std::ofstream& iOFile) const;
 
        // ///////// Counting Methods //////////
       /** Update counters. */

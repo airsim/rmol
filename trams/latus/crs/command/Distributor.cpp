@@ -41,12 +41,11 @@ namespace LATUS {
     provideAvailabilities (COM::TravelSolution& iTraSol,
                            const COM::SeatNumber_T& iSN) {
       
-      bool tsAvailability = iTraSol.buildCheapestSolution(iSN);
+      bool tsAvailability = iTraSol.buildCheapestAvailableSolution(iSN);
       if (tsAvailability == true) {
         iTraSol.calculateAvailabilities();
       }
-      else {
-        
+      else {        
         iTraSol.setTSAvailability (COM::DEFAULT_CLASS_AVAILABILITY);
       }
     }

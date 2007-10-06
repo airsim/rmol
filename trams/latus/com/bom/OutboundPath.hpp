@@ -96,7 +96,7 @@ namespace LATUS {
 
       // ///////// Business methods //////////
       /** Method which returns the cheapest available travel solution. */
-      bool buildCheapestSolution (ClassStructList_T&, const SeatNumber_T&) const;
+      bool buildCheapestAvailableSolution (ClassStructList_T&, const SeatNumber_T&) const;
       
       /** Method computing the fare associated to the outbound path. */
       void fareQuote (); 

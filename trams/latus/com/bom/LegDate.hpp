@@ -4,6 +4,8 @@
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
+// STL
+#include <fstream>
 // LATUS Common
 #include <latus/com/bom/BomAbstract.hpp>
 #include <latus/com/bom/LegDateKey.hpp>
@@ -140,6 +142,9 @@ namespace LATUS {
 
       /** Display the full BookingDay context. */
       void display() const;
+
+      /** Write in a file the full BookingDay context. */
+      void exportInformations(std::ofstream& iOutFile) const;
       
        // ///////// Counting methods  //////////
        /** Update the counters of booked seats. */

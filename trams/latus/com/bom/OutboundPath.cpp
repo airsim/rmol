@@ -215,7 +215,7 @@ namespace LATUS {
     }
 
     // //////////////////////////////////////////////////////////////////////
-    bool OutboundPath::buildCheapestSolution (ClassStructList_T& lCSL, const SeatNumber_T& lST) const {
+    bool OutboundPath::buildCheapestAvailableSolution (ClassStructList_T& lCSL, const SeatNumber_T& lST) const {
 
       bool available = true;
       for (SegmentDateLightList_T::const_iterator itSegmentDate =
@@ -223,9 +223,9 @@ namespace LATUS {
            itSegmentDate != _segmentDateLightList.end(); ++itSegmentDate) {
         const SegmentDate* lSegmentDate_ptr = *itSegmentDate;
         assert (lSegmentDate_ptr != NULL);
-        available = lSegmentDate_ptr->buildCheapestSolution(lCSL, lST);
-        if (available == false) {
-          break;
+        bool segmentAvailability = lSegmentDate_ptr->buildCheapestAvailableSolution(lCSL, lST);
+        if (!segmentAvailability) {
+          available = false;
         }
       }
       return available;

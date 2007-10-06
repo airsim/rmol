@@ -61,11 +61,14 @@ namespace LATUS {
       }
 
      // ///////// Business method //////////
-     /**Method building the cheapest solution .*/
-     bool buildCheapestSolution (const SeatNumber_T& lSN);
+     /** Method building the cheapest solution .*/
+     bool buildCheapestAvailableSolution (const SeatNumber_T& lSN);
      
      /** Method computing availabilities from the cheapest travel solution .*/
      void calculateAvailabilities ();
+
+     /** Method updating the required inventory. */ 
+     bool sell (const BookingNumber_T&) const;
 
      /** Method computing the fare of the travel solution. */
      void fareQuote();

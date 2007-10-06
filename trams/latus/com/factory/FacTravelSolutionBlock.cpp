@@ -5,6 +5,7 @@
 #include <assert.h>
 // LATUS Common
 #include <latus/com/bom/TravelSolutionBlockKey.hpp>
+#include <latus/com/bom/WTP.hpp>
 #include <latus/com/bom/TravelSolutionBlock.hpp>
 #include <latus/com/factory/FacSupervisor.hpp>
 #include <latus/com/factory/FacTravelSolutionBlock.hpp>
@@ -34,10 +35,10 @@ namespace LATUS {
     }
 
     // //////////////////////////////////////////////////////////////////////
-    TravelSolutionBlock& FacTravelSolutionBlock::create (const TravelSolutionBlockKey_T& iKey) {
+    TravelSolutionBlock& FacTravelSolutionBlock::create (const TravelSolutionBlockKey_T& iKey, const WTP* iWTP_ptr) {
       TravelSolutionBlock* aTravelSolutionBlock_ptr = NULL;
 
-      aTravelSolutionBlock_ptr = new TravelSolutionBlock (iKey);
+      aTravelSolutionBlock_ptr = new TravelSolutionBlock (iKey, iWTP_ptr);
       assert (aTravelSolutionBlock_ptr != NULL);
 
       // The new object is added to the Bom pool

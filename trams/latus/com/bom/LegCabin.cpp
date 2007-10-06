@@ -3,10 +3,13 @@
 // //////////////////////////////////////////////////////////////////////
 // C
 #include <assert.h>
+// STL
+#include <stdexcept>
 // LATUS COM
 #include <latus/com/bom/LegDate.hpp>
 #include <latus/com/bom/LegCabin.hpp>
 #include <latus/com/bom/SegmentCabin.hpp>
+#include <latus/com/basic/BasConst_ClassStruct.hpp>
 
 namespace LATUS {
 
@@ -47,6 +50,19 @@ namespace LATUS {
     }
 
     // //////////////////////////////////////////////////////////////////////
+    void LegCabin::exportInformations(std::ofstream& iOutpFile) const {
+      try {
+        iOutpFile << describeKey() << " Capa: " << _capacity 
+                << ", SSeats: " << _soldSeat 
+                << std::endl;
+      }
+      catch (const std::exception& lce){
+        std::cout << "Error (LegCabin) in exporting the output file: " << lce.what() << std::endl;
+      }
+
+    }
+
+    // //////////////////////////////////////////////////////////////////////
     //ToDo: Update the seatCounters from the buckets
     void LegCabin::updateBookingAndSeatCounters() {
     }
@@ -74,6 +90,18 @@ namespace LATUS {
      // //////////////////////////////////////////////////////////////////////
     void LegCabin::updateAllAvailabilities() {
       setAvailability (getAvailabilityPool());      
+    }
+
+    // //////////////////////////////////////////////////////////////////////
+    bool LegCabin::updateBookings (const BookingNumber_T& oBookingNumber) {
+      assert(oBookingNumber <= _availability + DEFAULT_EPSILON_VALUE);
+      if (oBookingNumber <= _availability + DEFAULT_EPSILON_VALUE) {
+         _soldSeat = _soldSeat + oBookingNumber;
+        return true;
+      }
+      else {
+        return false;
+      }
     }
     
     // //////////////////////////////////////////////////////////////////////

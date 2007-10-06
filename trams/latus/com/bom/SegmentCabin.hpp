@@ -4,6 +4,8 @@
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
+// STL
+#include <fstream>
 // LATUS Common
 #include <latus/com/bom/BomAbstract.hpp>
 #include <latus/com/bom/SegmentCabinKey.hpp>
@@ -16,6 +18,7 @@ namespace LATUS {
 
     // Forward declarations
     class SegmentDate;
+    class ClassKey;
     
     /** Class wrapping the Segment-Cabin specific attributes and methods. */
     class SegmentCabin : public BomAbstract {
@@ -72,6 +75,9 @@ namespace LATUS {
         return _availabilityPool;
       }
 
+      /** Get a ClasStruct from a ClassKey. */
+      ClassStruct_T& getClassStruct (const ClassKey_T&);
+
       // ///////// Setters //////////
       /** Set the SegmentDate (parent class). */
       void setSegmentDate (SegmentDate* ioSegmentDatePtr) {
@@ -112,6 +118,9 @@ namespace LATUS {
 
       /** Display the full SegmentCabin context. */
       void display() const;
+      
+      /** Write in a file the full SegmentCabin context. */
+      void exportInformations(std::ofstream& ioOutFile) const;
 
       // ///////// Counting Methods //////////
       /** Update the booking counters. */
@@ -127,9 +136,15 @@ namespace LATUS {
       void updateAllAvailabilities();
 
       // ///////// Business Methods //////////
-      void buildCheapestSolution (ClassStructList_T&,
+      /* Method which generates the required ClassStruct of the
+         cheapest available solution. */
+      bool buildCheapestAvailableSolution (ClassStructList_T&,
                                   const SeatNumber_T&,
                                   const SegmentDateKey_T&) const;
+
+      /* Method updating the class and legs linked to this segment
+         in the inventory in order to simulate a sell. */
+      bool updateInventory (const BookingNumber_T&, const ClassKey_T&);
 
       
     private:

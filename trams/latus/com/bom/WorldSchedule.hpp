@@ -4,6 +4,8 @@
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
+//STL
+#include <fstream>
 // Boost (Extended STL)
 #include <boost/date_time/gregorian/gregorian.hpp>
 // LATUS Common
@@ -66,14 +68,20 @@ namespace LATUS {
       /** Display the full BookingDay context. */
       void display() const;
 
+      /** Write in a file the full BookingDay context. */
+      void exportInformations(std::ofstream&) const;
+
        // ///////// Counting methods  //////////
-      /** Update counters for all bookings and seats for all flights */
+      /** Update availability variables for the whole WorldSchedule. */
+      void recalculateAvailabilities() const;
+      
+      /** Update counters for all bookings and seats for all flights. */
       void updateBookingAndSeatCounters() const;
 
-       /** Update the commited spaces for all Segment Cabin and for all Legs */
+       /** Update the commited spaces for all Segment Cabin and for all Legs. */
       void updateCommitedSpaces() const;
 
-       /** Update the availability pools for all LegCabin then for all  SegmentCabin */
+       /** Update the availability pools for all LegCabin then for all  SegmentCabin. */
       void updateAvailabilityPools() const;
 
        /** Update all availabilities */

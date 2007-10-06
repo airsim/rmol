@@ -37,7 +37,10 @@ namespace LATUS {
     }
     
     // //////////////////////////////////////////////////////////////////////
-    void Simulator::playEvent (const COM::Event_T& iEvent) {
+    void Simulator::playEvent (const COM::Event_T& iEvent,
+                               COM::BookingNumber_T& iTotalBookingRequestNumber,
+                               COM::BookingNumber_T& iTotalBookingNumber) {
+      
       const COM::WTP* lWTP_ptr = iEvent.second;
       assert (lWTP_ptr != NULL);
 
@@ -48,28 +51,34 @@ namespace LATUS {
       const COM::DateTime_T& lDepDate = lWTP_ptr->getDepartureDate();
       const COM::SeatNumber_T& lSeatNumber = lWTP_ptr->getSeatNumber();
 
+      //increment the total request number of the simulation
+      iTotalBookingRequestNumber = iTotalBookingRequestNumber + lSeatNumber;
+
+      // Creation of the TravelSolutions wrapper
       const COM::TravelSolutionBlockKey_T lTravelSolutionBlockKey (lOrigin, lDestination, lDepDate, lSeatNumber);
       COM::TravelSolutionBlock& lTravelSolutionBlock =
-          COM::FacTravelSolutionBlock::instance().create (lTravelSolutionBlockKey);
-
-      CRS::LATUS_CRS::provideTravelSolution (lOrigin, lDestination, lDepDate,
-                                             lTravelSolutionBlock);
+          COM::FacTravelSolutionBlock::instance().create (lTravelSolutionBlockKey, lWTP_ptr);
+      
+      CRS::LATUS_CRS::provideTravelSolution (lTravelSolutionBlock);
 
       CRS::LATUS_CRS::arrangeTravelSolutions (lTravelSolutionBlock);
 
       const bool sellStatus = CRS::LATUS_CRS::sell(lTravelSolutionBlock, lSeatNumber);
 
       if (sellStatus == true) {
-         LATUS_LOG_DEBUG ("Vente effectuee ");
+        iTotalBookingNumber = iTotalBookingNumber + lSeatNumber;
+        // LATUS_LOG_DEBUG ("Booking made ");
       }
       else {
-         LATUS_LOG_DEBUG ("Vente non effectuee ");
+         LATUS_LOG_DEBUG ("Booking not made because no travel solution are available ");
       }
     }
 
     // //////////////////////////////////////////////////////////////////////
     void Simulator::
-    generateAndPlayForCurrentDay (COM::BookingDay& ioBookingDay) {
+    generateAndPlayForCurrentDay (COM::BookingDay& ioBookingDay,
+                                  COM::BookingNumber_T& ioTotalBookingRequestNumber,
+                                  COM::BookingNumber_T& ioTotalBookingNumber) {
       // Initialise the current time to midnight, re-calculate the (booking)
       // daily rates corresponding to the current date, and build the
       // daily rate distributions.
@@ -96,11 +105,11 @@ namespace LATUS {
 		}
 
         // DEBUG
-        LATUS_LOG_DEBUG ("Booking Date: " << ioBookingDay.getBookingDate()
-                         << ", Booking Time: " << ioBookingDay.getBookingTime());
+        /* LATUS_LOG_DEBUG ("Booking Date: " << ioBookingDay.getBookingDate()
+           << ", Booking Time: " << ioBookingDay.getBookingTime());*/
         
         // Play the reservation event
-        playEvent (lEvent);
+        playEvent (lEvent, ioTotalBookingRequestNumber, ioTotalBookingNumber );
         
         // Remove the event from the event list
         ioBookingDay.eraseEvent (lEventTime);
@@ -118,6 +127,11 @@ namespace LATUS {
     void Simulator::simulate (COM::WholeDemand& ioWholeDemand,
                               const COM::DateTime_T& iStartDate,
                               const COM::DateTime_T& iEndDate) {
+      // Initialisation of the total booking request number
+      COM::BookingNumber_T totalBookingRequestNumber = 0;
+      // Initialisation of the total booking number
+      COM::BookingNumber_T totalBookingNumber = 0;
+      
       // TODO: Study whether a BookingDay strcuture (rather than a BOM class)
       // would not be more appropriate.
       
@@ -131,9 +145,15 @@ namespace LATUS {
 
       // Loop from the start date to the end date, typically during one year.
       while (lBookingDay.getBookingDate() <= iEndDate) {
-        generateAndPlayForCurrentDay (lBookingDay);
+        generateAndPlayForCurrentDay (lBookingDay,totalBookingRequestNumber,
+                                      totalBookingNumber);
         lBookingDay.incrementBookingDate ();
       }
+      // DEBUG
+      LATUS_LOG_DEBUG ("Total number of booking request: "
+                        << totalBookingRequestNumber
+                        << " and total number of bookings: "
+                        << totalBookingNumber);    
     }
     
   }

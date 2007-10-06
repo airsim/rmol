@@ -3,6 +3,8 @@
 // //////////////////////////////////////////////////////////////////////
 // C
 #include <assert.h>
+// STL
+#include <stdexcept>
 // LATUS Common
 #include <latus/com/basic/BasConst_TravelSolution.hpp>
 #include <latus/com/bom/FlightDate.hpp>
@@ -67,6 +69,40 @@ namespace LATUS {
       
       // Reset formatting flags of std::cout
       std::cout.flags (oldFlags);
+    }
+
+    // //////////////////////////////////////////////////////////////////////
+    void SegmentDate::exportInformations(std::ofstream& iOuFile) const {
+      try {
+        iOuFile << describeKey()
+                << ", " << _boardDate << " --> " << _offDate
+                << ", " << _boardTime << " --> " << _offTime
+                << " / " << _elapsedTime
+                << " ; ";
+
+        for (LegDateOrderedList_T::const_iterator itLegDate =
+             _legDateList.begin();
+           itLegDate != _legDateList.end(); ++itLegDate) {
+          const LegDate* lLegDate_ptr = *itLegDate;
+          assert (lLegDate_ptr != NULL);
+
+          iOuFile << lLegDate_ptr->getBoardPoint() << "-";
+        }
+        iOuFile << std::endl;
+      }
+      catch (const std::exception& sde){
+        std::cout << "Error (SegmentDate) in exporting the output file: " << sde.what() << std::endl;
+      }
+
+      for (SegmentCabinOrderedList_T::const_iterator itSegmentCabin =
+             _segmentCabinOrderedList.begin();
+           itSegmentCabin != _segmentCabinOrderedList.end(); ++itSegmentCabin) {
+        const SegmentCabin* lSegmentCabin_ptr = *itSegmentCabin;
+        assert (lSegmentCabin_ptr != NULL);
+
+        lSegmentCabin_ptr->exportInformations (iOuFile);
+      }
+      
     }
 
     // //////////////////////////////////////////////////////////////////////
@@ -258,29 +294,26 @@ namespace LATUS {
     }
 
     // //////////////////////////////////////////////////////////////////////
-     bool SegmentDate::buildCheapestSolution (ClassStructList_T& ioClassStruct,
+     bool SegmentDate::buildCheapestAvailableSolution (ClassStructList_T& ioClassStruct,
                                               const SeatNumber_T& lSeatNumber) const {
-
-      Availability_T segCabinAvailability = 0.0;
+      bool cabinAvailability = false;
       SegmentCabin* lSegmentCabin = NULL;
-      SegmentCabinList_T:: const_iterator itSegmentCabin
-        = _segmentCabinList.begin();
+      SegmentCabinList_T:: const_reverse_iterator itSegmentCabin
+        = _segmentCabinList.rbegin();
 
-      while ((segCabinAvailability < (lSeatNumber - DEFAULT_EPSILON_VALUE)) && (itSegmentCabin != _segmentCabinList.end())) {
+      while (!cabinAvailability && itSegmentCabin != _segmentCabinList.rend()) {
         lSegmentCabin = itSegmentCabin->second;
         assert (lSegmentCabin != NULL);
-        segCabinAvailability = lSegmentCabin->getAvailabilityPool();
+        Availability_T segCabinAvailability = lSegmentCabin->getAvailabilityPool();
+        if (segCabinAvailability >= lSeatNumber - DEFAULT_EPSILON_VALUE) {
+          bool anyClassAvailability = lSegmentCabin->buildCheapestAvailableSolution (ioClassStruct, lSeatNumber, getPrimaryKey());
+          if (anyClassAvailability == true) {
+            cabinAvailability = true;
+          }
+        }
         itSegmentCabin++;
       }
-
-      if (segCabinAvailability < (lSeatNumber - DEFAULT_EPSILON_VALUE)) {
-        return false;
-      }
-      else {
-        assert (lSegmentCabin != NULL);
-        lSegmentCabin->buildCheapestSolution (ioClassStruct, lSeatNumber, getPrimaryKey());
-        return true;
-      }
+      return cabinAvailability;
      }
   }
 }

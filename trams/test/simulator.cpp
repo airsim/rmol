@@ -26,6 +26,9 @@ int main (int argc, char* argv[]) {
     // Input Schedule File
     std::string lScheduleFilename ("samples/world_schedule.csv");
 
+    // Output WorldSchedule File
+    std::string lWorldScheduleFilename ("samples/inventoryResults.txt");
+
     // Read the command-line parameters
     if (argc >= 1 && argv[1] != NULL) {
       std::istringstream istr (argv[1]);
@@ -56,6 +59,9 @@ int main (int argc, char* argv[]) {
 
     // Set the input filename (for test purposes)
     latusService.setScheduleInputFilename (lScheduleFilename);
+
+    // Set the input filename (for test purposes)
+    latusService.setWorldScheduleOutputFilename (lWorldScheduleFilename);
 
     // Set the start date of the simulation
     latusService.setStartDate (boost::gregorian::date (2007,

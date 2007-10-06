@@ -5,9 +5,11 @@
 #include <assert.h>
 // STL
 #include <limits>
+#include <stdexcept>
 // LATUS COM
 #include <latus/com/bom/SegmentCabin.hpp>
 #include <latus/com/bom/LegCabin.hpp>
+#include <latus/com/basic/BasConst_TravelSolution.hpp>
 
 namespace LATUS {
 
@@ -21,6 +23,13 @@ namespace LATUS {
     
     // //////////////////////////////////////////////////////////////////////
     SegmentCabin::~SegmentCabin () {
+    }
+
+     // //////////////////////////////////////////////////////////////////////
+    ClassStruct_T& SegmentCabin::getClassStruct (const ClassKey_T& iClassKey) {
+      ClassStructList_T::iterator itClass = _classList.find(iClassKey.describeShort());
+      assert (itClass != _classList.end());
+      return itClass->second;
     }
 
     // //////////////////////////////////////////////////////////////////////
@@ -53,10 +62,10 @@ namespace LATUS {
       }
       std::cout << std::endl;
 
-      for (ClassStructOrderedList_T::const_iterator itClass =
-             _classOrderedList.begin();
-           itClass != _classOrderedList.end(); ++itClass) {
-        const ClassStruct_T& lClass = *itClass;
+      for (ClassStructList_T::const_iterator itClass =
+             _classList.begin();
+           itClass != _classList.end(); ++itClass) {
+        const ClassStruct_T& lClass = itClass->second;
         lClass.display();
       }
 
@@ -65,25 +74,54 @@ namespace LATUS {
     }
 
     // //////////////////////////////////////////////////////////////////////
+    void SegmentCabin::exportInformations(std::ofstream& ioOutFile) const {
+      try {
+        ioOutFile << describeKey()
+                << " ; ";
+
+        for (LegCabinOrderedList_T::const_iterator itLegCabin =
+             _legCabinList.begin();
+           itLegCabin != _legCabinList.end(); ++itLegCabin) {
+          const LegCabin* lLegCabin_ptr = *itLegCabin;
+          assert (lLegCabin_ptr != NULL);
+
+          ioOutFile << lLegCabin_ptr->getBoardPoint()
+                  << "/" << getCabinCode() << "-";
+        }
+        ioOutFile << std::endl;
+      }
+      catch (const std::exception& sce){
+        std::cout << "Error (SegmentCabin) in exporting the output file: " << sce.what() << std::endl;
+      }
+      for (ClassStructList_T::const_iterator itClass =
+             _classList.begin();
+           itClass != _classList.end(); ++itClass) {
+        const ClassStruct_T& lClass = itClass->second;
+        lClass.exportInformations(ioOutFile);
+      }
+
+    }
+
+    // //////////////////////////////////////////////////////////////////////
     void SegmentCabin::updateBookingAndSeatCounters() {
       BookingNumber_T lBookingCounter = 0;
-       for (ClassStructOrderedList_T::const_iterator itClass =
-             _classOrderedList.begin();
-           itClass != _classOrderedList.end(); ++itClass) {
-        const ClassStruct_T& lClass = *itClass;
+       for (ClassStructList_T::const_iterator itClass =
+             _classList.begin();
+           itClass != _classList.end(); ++itClass) {
+        const ClassStruct_T& lClass = itClass->second;
         lBookingCounter += lClass.getBookingNumber();
-        }
+      }
       setBookingCounter (lBookingCounter);
     }
 
     // //////////////////////////////////////////////////////////////////////
     void SegmentCabin::updateCommitedSpaces() {
       CommitedSpace_T lCommitedSpace = getBlockSpace();
-      for (ClassStructOrderedList_T::const_iterator itClass =
-             _classOrderedList.begin();
-           itClass != _classOrderedList.end(); ++itClass) {
-        const ClassStruct_T& lClass = *itClass;
-        lCommitedSpace += (lClass.getBookingNumber()*(1+lClass.getOverbookingRate()));
+      for (ClassStructList_T::const_iterator itClass =
+             _classList.begin();
+           itClass != _classList.end(); ++itClass) {
+        const ClassStruct_T& lClass = itClass->second;
+        lCommitedSpace += (lClass.getBookingNumber()*(lClass.getOverbookingRate()));
       }
       setCommitedSpace (lCommitedSpace);
     }
@@ -106,10 +144,10 @@ namespace LATUS {
     // //////////////////////////////////////////////////////////////////////
     void SegmentCabin::updateAllAvailabilities() {
       Availability_T lAvailabilityPool = getAvailabilityPool();
-       for (ClassStructOrderedList_T::iterator itClass =
-             _classOrderedList.begin();
-           itClass != _classOrderedList.end(); ++itClass) {
-        ClassStruct_T& lClass = *itClass;
+       for (ClassStructList_T::iterator itClass =
+             _classList.begin();
+           itClass != _classList.end(); ++itClass) {
+        ClassStruct_T& lClass = itClass->second;
         if ((lClass.getBookingLimitBool()) && (lClass.getBookingLimit()< lAvailabilityPool)) {
           lClass.setAvailability(lClass.getBookingLimit());
         }
@@ -120,31 +158,49 @@ namespace LATUS {
     }
 
     // //////////////////////////////////////////////////////////////////////
-    void SegmentCabin::buildCheapestSolution (ClassStructList_T& ioClassStruct,
+    bool SegmentCabin::buildCheapestAvailableSolution (ClassStructList_T& ioClassStructList,
                                   const SeatNumber_T& ioSeatNumber,
                                   const SegmentDateKey_T& ioSegmentDateKey) const {
 
-      /*Availability_T segCabinAvailability = 0.0;
-      SegmentCabin* lSegmentCabin = NULL;
-      SegmentCabinList_T:: const_iterator itSegmentCabin =
-        _segmentCabinList.begin();
+      bool classAvailability = false;
 
-      while (segCabinAvailability < lSeatNumber - DEFAULT_EPSILON_VALUE
-      && itSegmentCabin != _segmentCabinList.end()) {
-        lSegmentCabin = itSegmentCabin->second;
-        assert (lSegmentCabin != NULL);
-        segCabinAvailability = lSegmentCabin->getAvailabilityPool();
-        itSegmentCabin++;
-      }
+      ClassStructList_T:: const_reverse_iterator itClassStruct =
+        _classList.rbegin();
 
-      if (segCabinAvailability < lSeatNumber - DEFAULT_EPSILON_VALUE) {
-        return false;
+      while (!classAvailability && itClassStruct != _classList.rend()) {
+        const ClassStruct_T& lClassStruct = itClassStruct->second;
+        Availability_T classStructAvailability = lClassStruct.getAvailability();
+        if (classStructAvailability >= ioSeatNumber - DEFAULT_EPSILON_VALUE) {
+          ClassStruct_T lClass (lClassStruct);
+          ioClassStructList.insert (ClassStructList_T::value_type (ioSegmentDateKey.describe(), lClass));
+          classAvailability = true;
+        }
+        itClassStruct++;
       }
-      else {
-        assert (lSegmentCabin != NULL);
-        lSegmentCabin->buildCheapestSolution (ioClassStruct, lSeatNumber, getPrimaryKey());
-        return true;
-        }*/
+      return classAvailability;
+    }
+
+     // //////////////////////////////////////////////////////////////////////
+    bool SegmentCabin::updateInventory (const BookingNumber_T& ioBookingNumber,
+                                  const ClassKey_T& ioClassKey) {
+      bool sellProcedureControl = true;
+
+      ClassStruct_T& invClassStruct = getClassStruct(ioClassKey);
+      sellProcedureControl = invClassStruct.updateInventory(ioBookingNumber);
+      if (sellProcedureControl) {
+        for (LegCabinOrderedList_T::iterator itLegCabin =
+             _legCabinList.begin();
+             itLegCabin != _legCabinList.end(); ++itLegCabin) {
+          LegCabin* lLegCabin_ptr = *itLegCabin;
+          assert (lLegCabin_ptr != NULL);
+          bool updateLegControl = lLegCabin_ptr->updateBookings(ioBookingNumber);
+          if (!updateLegControl) {
+            sellProcedureControl = false;
+          }
+        }
+      }
+      return sellProcedureControl;
+      
     }
   }
 }

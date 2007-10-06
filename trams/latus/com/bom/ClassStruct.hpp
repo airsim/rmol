@@ -5,6 +5,7 @@
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // STL
+#include <fstream>
 #include <string>
 #include <vector>
 // LATUS Common
@@ -21,8 +22,10 @@ namespace LATUS {
 
     /** Utility Structure for the parsing of Class details. */
     struct ClassStruct_T : public StructAbstract {
-      /** Constructor. */
+      /** Constructors. */
       ClassStruct_T (const ClassKey_T&);
+      
+      ClassStruct_T (const ClassStruct_T&);
       
       // /////////// Getters //////////////
       /** Get the parent class. */
@@ -65,6 +68,11 @@ namespace LATUS {
         return _bookingLimit;
       }
 
+      /** Get the availability number. */
+      const Availability_T getAvailability() const {
+        return _availability;
+      }
+
       // ///////// Setters //////////
       /** Set the SegmentCabin (parent class). */
       void setSegmentCabin (SegmentCabin* ioSegmentCabinPtr) {
@@ -89,6 +97,12 @@ namespace LATUS {
       /** Display the full SegmentCabin context. */
       void display() const;
 
+      /** Write in a file the full SegmentCabin context. */
+      void exportInformations(std::ofstream& ioOutputFile) const;
+
+      // ///////// Business Methods //////////
+      /** Update the bookingNumber . */
+      bool updateInventory (const BookingNumber_T&);
 
       // /////////////// Attributes //////////
       // Parent

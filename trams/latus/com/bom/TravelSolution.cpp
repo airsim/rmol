@@ -3,9 +3,12 @@
 // //////////////////////////////////////////////////////////////////////
 // C
 #include <assert.h>
+// STL
+#include <limits>
 // LATUS COM
 #include <latus/com/bom/TravelSolution.hpp>
 #include <latus/com/bom/OutboundPath.hpp>
+#include <latus/com/bom/SegmentCabin.hpp>
 #include <latus/com/service/Logger.hpp>
 
 namespace LATUS {
@@ -37,23 +40,46 @@ namespace LATUS {
       // Store current formatting flags of std::cout
       std::ios::fmtflags oldFlags = std::cout.flags();
 
-      std::cout << describeKey() << std::endl;
-
+      std::cout << describeKey() << ", Availability :" << _tSAvailability << std::endl;
       // Reset formatting flags of std::cout
       std::cout.flags (oldFlags);
     }
 
      // //////////////////////////////////////////////////////////////////////
-    bool TravelSolution::buildCheapestSolution (const SeatNumber_T& lSeatNumber) {     
-      
-      bool availability = getOutboundPath()->buildCheapestSolution(_classStructList, lSeatNumber );
-      return availability;
+    bool TravelSolution::buildCheapestAvailableSolution (const SeatNumber_T& lSeatNumber) {           
+      return getOutboundPath()->buildCheapestAvailableSolution(_classStructList, lSeatNumber );
     }
 
      // //////////////////////////////////////////////////////////////////////
-    void TravelSolution::calculateAvailabilities () {     
+    void TravelSolution::calculateAvailabilities () {
+      Availability_T lAvailability = std::numeric_limits<int>::max();
+      for (ClassStructList_T::const_iterator itClassStruct =
+             _classStructList.begin();
+           itClassStruct != _classStructList.end(); ++itClassStruct) {
+        const ClassStruct_T& lClassStruct = itClassStruct->second;
+        if (lClassStruct.getAvailability() < lAvailability) {
+          lAvailability = lClassStruct.getAvailability();
+        }
+      }
+      setTSAvailability (lAvailability);
     }
 
+     // //////////////////////////////////////////////////////////////////////
+    bool TravelSolution::sell (const BookingNumber_T& iBookingNumber) const {
+      bool sellProduct = true;
+      for (ClassStructList_T::const_iterator itClassStruct =
+             _classStructList.begin();
+           itClassStruct != _classStructList.end(); ++itClassStruct) {
+         const ClassStruct_T& lClassStruct = itClassStruct->second;
+         SegmentCabin* lSegmentCabin_ptr = lClassStruct.getSegmentCabin();
+         bool updateAvailable = lSegmentCabin_ptr->updateInventory(iBookingNumber, lClassStruct.getClassKey());
+         if (!updateAvailable) {
+           sellProduct = false;
+         }
+       }
+      return sellProduct;
+    }
+    
     // //////////////////////////////////////////////////////////////////////
     void TravelSolution::fareQuote () {     
     }

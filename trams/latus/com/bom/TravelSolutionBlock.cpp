@@ -15,8 +15,8 @@ namespace LATUS {
   namespace COM {
 
     // //////////////////////////////////////////////////////////////////////
-    TravelSolutionBlock::TravelSolutionBlock (const TravelSolutionBlockKey_T& iKey)
-      : _airportDate (NULL), _key (iKey), _travelSolutionNumber (0) {
+    TravelSolutionBlock::TravelSolutionBlock (const TravelSolutionBlockKey_T& iKey, const WTP* iWTP_ptr)
+      : _airportDate_ptr (NULL), _wTP_ptr (iWTP_ptr), _key (iKey), _travelSolutionNumber (0) {
     }
     
     // //////////////////////////////////////////////////////////////////////
@@ -32,7 +32,6 @@ namespace LATUS {
     const std::string TravelSolutionBlock::describeShortKey() const {
       return _key.describeShort();
     }
-    
     // //////////////////////////////////////////////////////////////////////
     void TravelSolutionBlock::display() const {
 
@@ -56,20 +55,21 @@ namespace LATUS {
     }
 
     // //////////////////////////////////////////////////////////////////////
-    void TravelSolutionBlock::getBestTravelSolution (TravelSolution* lbTS, const SeatNumber_T& lPartSize) const {
+   TravelSolution* TravelSolutionBlock::getBestTravelSolution (const SeatNumber_T& iPartSize) const {
       bool lProductSell = false;
       TravelSolutionList_T:: const_iterator itTravelSolution
         = _travelSolutionList.begin();
+      TravelSolution* lTravelSolution = NULL;
 
-      while ((lProductSell != true) && (itTravelSolution != _travelSolutionList.end())) {
-        lbTS = itTravelSolution->second;
-        assert (lbTS != NULL);
-        Availability_T travelSolAvailability = lbTS->getTSAvailability();
-        if (travelSolAvailability > (lPartSize - COM::DEFAULT_EPSILON_VALUE)) {
+      while (!lProductSell && itTravelSolution != _travelSolutionList.end()) {
+        lTravelSolution = itTravelSolution->second;
+        Availability_T travelSolAvailability = lTravelSolution->getTSAvailability();
+        if (travelSolAvailability >= (iPartSize - COM::DEFAULT_EPSILON_VALUE)) {
           lProductSell = true;
         }
         itTravelSolution++;
       }
+      return lTravelSolution;
     }
     
   }

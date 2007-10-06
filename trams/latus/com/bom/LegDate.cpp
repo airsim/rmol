@@ -3,6 +3,8 @@
 // //////////////////////////////////////////////////////////////////////
 // C
 #include <assert.h>
+// STL
+#include <stdexcept>
 // LATUS COM
 #include <latus/com/bom/LegDate.hpp>
 #include <latus/com/bom/LegCabin.hpp>
@@ -53,6 +55,30 @@ namespace LATUS {
       
       // Reset formatting flags of std::cout
       std::cout.flags (oldFlags);
+    }
+
+    // //////////////////////////////////////////////////////////////////////
+    void LegDate::exportInformations(std::ofstream& iOutFile) const {
+      try {
+        iOutFile << describeKey()
+                << " - " << _offPoint
+                << ", " << _boardDate << " --> " << _offDate
+                << ", " << _boardTime << " --> " << _offTime
+                << "/ " << _elapsedTime << std::endl;
+      }
+      catch (const std::exception& lde){
+        std::cout << "Error (LegDate) in exporting the output file: " << lde.what() << std::endl;
+      }
+
+      for (LegCabinOrderedList_T::const_iterator itLegCabin =
+             _legCabinOrderedList.begin();
+           itLegCabin != _legCabinOrderedList.end(); itLegCabin++) {
+        const LegCabin* lLegCabin_ptr = *itLegCabin;
+        assert (lLegCabin_ptr != NULL);
+
+        lLegCabin_ptr->exportInformations (iOutFile);
+      }
+      
     }
 
     // //////////////////////////////////////////////////////////////////////

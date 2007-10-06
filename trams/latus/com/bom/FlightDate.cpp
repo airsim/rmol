@@ -3,6 +3,8 @@
 // //////////////////////////////////////////////////////////////////////
 // C
 #include <assert.h>
+// STL
+#include <stdexcept>
 // LATUS COM
 #include <latus/com/bom/Inventory.hpp>
 #include <latus/com/bom/FlightDate.hpp>
@@ -60,6 +62,35 @@ namespace LATUS {
       
       // Reset formatting flags of std::cout
       std::cout.flags (oldFlags);
+    }
+
+    // //////////////////////////////////////////////////////////////////////
+    void FlightDate::exportInformations(std::ofstream& iOFile) const {
+      try {
+        iOFile << describeKey() << std::endl;
+      }
+      catch (const std::exception& fde){
+        std::cout << "Error (FlightDate) in exporting the output file: " << fde.what() << std::endl;
+      }
+
+      for (LegDateOrderedList_T::const_iterator itLegDate =
+             _legDateOrderedList.begin();
+           itLegDate != _legDateOrderedList.end(); ++itLegDate) {
+        const LegDate* lLegDate_ptr = *itLegDate;
+        assert (lLegDate_ptr != NULL);
+
+        lLegDate_ptr->exportInformations (iOFile);
+      }
+      
+      for (SegmentDateOrderedList_T::const_iterator itSegmentDate =
+             _segmentDateOrderedList.begin();
+           itSegmentDate != _segmentDateOrderedList.end(); ++itSegmentDate) {
+        const SegmentDate* lSegmentDate_ptr = *itSegmentDate;
+        assert (lSegmentDate_ptr != NULL);
+
+        lSegmentDate_ptr->exportInformations (iOFile);
+      }
+      
     }
 
     // //////////////////////////////////////////////////////////////////////

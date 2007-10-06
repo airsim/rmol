@@ -35,6 +35,9 @@ namespace LATUS {
     /** Set the schedule input filename (for test purposes). */
     void setScheduleInputFilename (const std::string&);
 
+    /** Set the worldSchedule output filename (for test purposes). */
+    void setWorldScheduleOutputFilename (const std::string&);
+
     /** Set the start date of the simulation. */
     void setStartDate (const boost::gregorian::date&);
 

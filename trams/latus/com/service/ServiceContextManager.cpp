@@ -261,6 +261,14 @@ namespace LATUS {
     }
 
     // //////////////////////////////////////////////////////////////////////
+    const std::string& ServiceContextManager::getWorldScheduleOutputFilename () {
+      const ModuleDescription lSimModule (ModuleDescription::SIM,
+                                          DEFAULT_LATUS_SIM_MODULE_NAME);
+      ServiceContext& lSimServiceContext = getSpecificContext (lSimModule);
+      return lSimServiceContext.getWorldScheduleOutputFilename();
+    }
+
+    // //////////////////////////////////////////////////////////////////////
     const DateTime_T& ServiceContextManager::getStartDate () {
       const ModuleDescription lSimModule (ModuleDescription::SIM,
                                           DEFAULT_LATUS_SIM_MODULE_NAME);
@@ -348,6 +356,15 @@ namespace LATUS {
                                           DEFAULT_LATUS_SIM_MODULE_NAME);
       ServiceContext& lSimServiceContext = getSpecificContext (lSimModule);
       lSimServiceContext.setDemandInputFilename (iInputFilename);
+    }
+
+    // //////////////////////////////////////////////////////////////////////
+    void ServiceContextManager::
+    setWorldScheduleOutputFilename (const std::string& iOutputFilename) {
+      const ModuleDescription lSimModule (ModuleDescription::SIM,
+                                          DEFAULT_LATUS_SIM_MODULE_NAME);
+      ServiceContext& lSimServiceContext = getSpecificContext (lSimModule);
+      lSimServiceContext.setWorldScheduleOutputFilename (iOutputFilename);
     }
 
     // //////////////////////////////////////////////////////////////////////

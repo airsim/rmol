@@ -80,6 +80,12 @@ namespace LATUS {
   }
 
   // //////////////////////////////////////////////////////////////////////
+  void LATUS_Service::
+  setWorldScheduleOutputFilename (const std::string& iOutputFilename) {
+    COM::LATUS_ServiceAbstract::setWorldScheduleOutputFilename (iOutputFilename);
+  }
+
+  // //////////////////////////////////////////////////////////////////////
   void LATUS_Service::setStartDate (const boost::gregorian::date& iStartDate) {
     COM::LATUS_ServiceAbstract::setStartDate (iStartDate);
   }

@@ -4,7 +4,10 @@
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
+// STL
+#include <fstream>
 // LATUS Common
+#include <latus/com/basic/BasComTypes.hpp>
 #include <latus/com/bom/BomAbstract.hpp>
 #include <latus/com/bom/LegCabinKey.hpp>
 #include <latus/com/bom/SegmentCabinList.hpp>
@@ -111,8 +114,11 @@ namespace LATUS {
       /** Get a string describing the short key. */
       const std::string describeShortKey() const;
 
-      /** Display the full BookingDay context. */
+      /** Display the full LegCabin context. */
       void display() const;
+
+      /** Write in a file the full LegCabin context. */
+      void exportInformations(std::ofstream& iOutpFile) const;
 
       // ///////// Counting Method //////////
       /** Update the booked seats. */
@@ -126,6 +132,10 @@ namespace LATUS {
 
        /** Update all availabilities for every buckets. */
       void updateAllAvailabilities();
+
+      // ///////// Business Methods //////////
+      /** Update the bookingNumber . */
+      bool updateBookings (const BookingNumber_T&);
       
     private:
       /** Constructors are private so as to force the usage of the Factory

@@ -5,6 +5,7 @@
 #include <assert.h>
 // STL
 #include <iostream> // DEBUG
+#include <stdexcept>
 // LATUS COM
 #include <latus/com/bom/WorldSchedule.hpp>
 #include <latus/com/bom/Inventory.hpp>
@@ -52,6 +53,27 @@ namespace LATUS {
     }
 
     // //////////////////////////////////////////////////////////////////////
+    void WorldSchedule::exportInformations(std::ofstream& iOutputFile) const {
+      try {
+        iOutputFile << _updateDate << std::endl;
+      }
+      catch (const std::exception& we){
+        std::cout << "Error (WorldSchedule) in exporting the output file: " << we.what() << std::endl;
+      }
+      
+      int j = 1;
+      for (InventoryList_T::const_iterator itInventory =
+             _inventoryList.begin();
+           itInventory != _inventoryList.end(); ++itInventory, ++j) {
+        const Inventory* lInventory_ptr = itInventory->second;
+        assert (lInventory_ptr != NULL);
+
+        lInventory_ptr->exportInformations (iOutputFile);
+      }
+      
+    }
+
+    // //////////////////////////////////////////////////////////////////////
     void WorldSchedule::updateBookingAndSeatCounters() const {
       
       for (InventoryList_T::const_iterator itInventory =
@@ -89,7 +111,7 @@ namespace LATUS {
       }
     }
 
-     // //////////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////////////
     void WorldSchedule::updateAllAvailabilities() const {
       for (InventoryList_T::const_iterator itInventory =
              _inventoryList.begin();
@@ -99,6 +121,14 @@ namespace LATUS {
 
          lInventory_ptr->updateAllAvailabilities ();
       }
+    }
+
+    // //////////////////////////////////////////////////////////////////////
+    void WorldSchedule::recalculateAvailabilities() const {
+      updateBookingAndSeatCounters ();
+      updateCommitedSpaces ();
+      updateAvailabilityPools ();
+      updateAllAvailabilities ();
     }
     
     // //////////////////////////////////////////////////////////////////////

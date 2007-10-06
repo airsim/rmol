@@ -43,6 +43,11 @@ namespace LATUS {
       const std::string& getScheduleInputFilename () const {
         return _scheduleInputFilename;
       }
+
+      /** Get the worldSchedule output filename. */
+      const std::string& getWorldScheduleOutputFilename () const {
+        return _worldScheduleOutputFilename;
+      }
       
       /** Get the number of simulations to be run. */
       const int getSimulationRunNumber () const {
@@ -74,6 +79,11 @@ namespace LATUS {
       /** Set the schedule input filename. */
       void setScheduleInputFilename (const std::string& iInputFilename) {
         _scheduleInputFilename = iInputFilename;
+      }
+
+      /** Set the worldSchedule output filename. */
+      void setWorldScheduleOutputFilename (const std::string& iOutputFilename) {
+        _worldScheduleOutputFilename = iOutputFilename;
       }
       
       /** Set the number of simulations to be run. */
@@ -168,6 +178,9 @@ namespace LATUS {
 
       /** (TSP Service Context) Schedule input filename. */
       std::string _scheduleInputFilename;
+
+      /** (SIM Service Context) WorldSchedule Output filename. */
+      std::string _worldScheduleOutputFilename;
 
       /** (SIM Service Context) Number of simulations to be run. */
       int _simulationRunNumber;

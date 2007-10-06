@@ -27,7 +27,7 @@ namespace LATUS {
       /** Create a new TravelSolutionBlock object.
           <br>This new object is added to the list of instantiated objects.
           @return TravelSolutionBlock& The newly created object. */
-      TravelSolutionBlock& create (const TravelSolutionBlockKey_T&);
+      TravelSolutionBlock& create (const TravelSolutionBlockKey_T&, const WTP*);
 
     protected:
       /** Default Constructor.

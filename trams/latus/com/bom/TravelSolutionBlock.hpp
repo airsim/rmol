@@ -8,6 +8,7 @@
 #include <latus/com/basic/BasComTypes.hpp>
 #include <latus/com/bom/BomAbstract.hpp>
 #include <latus/com/bom/TravelSolutionList.hpp>
+#include <latus/com/bom/WTP.hpp>
 #include <latus/com/bom/TravelSolutionBlockKey.hpp>
 
 namespace LATUS {
@@ -29,9 +30,14 @@ namespace LATUS {
       friend class CRS::LATUS_CRS;
     public:
       // /////////// Getters //////////////
-      /** Get the AirportDate (parent class). */
+      /** Get the AirportDate. */
       AirportDate* getAirportDate() const {
-        return _airportDate;
+        return _airportDate_ptr;
+      }
+
+      /** Get the Willingness To Pay. */
+      const WTP* getWTP() const {
+        return _wTP_ptr;
       }
 
       /** Get the primary key. */
@@ -44,13 +50,22 @@ namespace LATUS {
         return _travelSolutionNumber;
       }
 
+      /** Get the origin (part of the primary key). */
+      const AirportCode_T& getOrigin() const {
+        return _key.origin;
+      }
+      
       /** Get the destination (part of the primary key). */
       const AirportCode_T& getDestination() const {
         return _key.destination;
       }
 
-       /** Get the number of seats required by the demand
-           (part of the primary key). */
+       /** Get the departure date (part of the primary key). */
+      const DateTime_T& getDepartureDate() const {
+        return _key.dateTime;
+      }
+
+       /** Get the number of seats required by the demand. */
       const SeatNumber_T& getSeatNumber() const {
         return _key.seatNumber;
       }
@@ -61,11 +76,11 @@ namespace LATUS {
       }
 
       // ///////// Setters //////////
-      /** Set the AirportDate (parent class). */
+      /** Set the AirportDate. */
       void setAirportDate (AirportDate* ioAirportDatePtr) {
-        _airportDate = ioAirportDatePtr;
+        _airportDate_ptr = ioAirportDatePtr;
       }
-
+      
        /** Calculation of the number of  travel solutions. */
       void incrementTravelSolutionNumber () {
         _travelSolutionNumber +=1;
@@ -73,7 +88,7 @@ namespace LATUS {
 
       // ///////// Busines methods //////////
       /** Get the Best travel solution for the demand. */
-      void getBestTravelSolution (TravelSolution* bTS, const SeatNumber_T& iPartSize) const;
+      TravelSolution* getBestTravelSolution (const SeatNumber_T&) const;
       
       // ///////// Display Methods //////////
       /** Get a string describing the key. */
@@ -89,7 +104,7 @@ namespace LATUS {
     private:
       /** Constructors are private so as to force the usage of the Factory
           layer. */
-      TravelSolutionBlock (const TravelSolutionBlockKey_T&); 
+      TravelSolutionBlock (const TravelSolutionBlockKey_T&, const WTP*); 
 
       /** Default constructors. */
       TravelSolutionBlock ();
@@ -103,14 +118,17 @@ namespace LATUS {
 
       // Parent
       /** AirportDate associated to this travel solution block. */
-      AirportDate* _airportDate;
+      AirportDate* _airportDate_ptr;
 
       // Primary Key
       /**  Key is composed of the origin airportDateKey, destination airport code
            and the travel solution number. */
       TravelSolutionBlockKey_T _key;
 
-      /*Number of travel solutions.*/
+      /** The pointer on the willingness to pay object. */
+      const WTP* _wTP_ptr;
+
+      /* Number of travel solutions.*/
       TravelSolutionNumber_T _travelSolutionNumber;
 
 

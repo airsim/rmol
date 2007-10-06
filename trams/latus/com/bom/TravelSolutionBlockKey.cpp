@@ -16,7 +16,8 @@ namespace LATUS {
                               const AirportCode_T& iDestination,
                               const DateTime_T& iDateTime,
                               const SeatNumber_T& iSeatNumber)
-      : origin (iOrigin), destination (iDestination), dateTime (iDateTime), seatNumber (iSeatNumber) {
+      : origin (iOrigin), destination (iDestination),
+        dateTime (iDateTime), seatNumber (iSeatNumber) {
     }
     
     // //////////////////////////////////////////////////////////////////////

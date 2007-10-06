@@ -68,6 +68,10 @@ namespace LATUS {
       static const std::string&
       getScheduleInputFilename ();
 
+      /** Get the worldSchedule output filename (for test purposes). */
+      static const std::string&
+      getWorldScheduleOutputFilename ();
+
       /** Get the start date of the simulation. */
       static const DateTime_T& getStartDate ();
 
@@ -88,6 +92,9 @@ namespace LATUS {
 
       /** Set the schedule input filename (for test purposes). */
       static void setScheduleInputFilename (const std::string&);
+
+      /** Set the worldSchedule output filename (for test purposes). */
+      static void setWorldScheduleOutputFilename (const std::string&);
 
       /** Set the start date of the simulation. */
       static void setStartDate (const DateTime_T&);

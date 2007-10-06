@@ -38,7 +38,7 @@ namespace LATUS {
                             const COM::DateTime_T& iStartDate,
                             const COM::DateTime_T& iEndDate);
 
-      
+
       // ///////// DISPLAY METHODS /////////
       /** Display the BOM objects. */
       void display () const;
@@ -57,7 +57,9 @@ namespace LATUS {
           <br>The reservation / event object contains both the time of the
           event and the reservation details (city pair description,
           departure date, class-path). */
-      static void playEvent (const COM::Event_T& iEvent);
+      static void playEvent (const COM::Event_T& iEvent,
+                             COM::BookingNumber_T&,
+                             COM::BookingNumber_T&);
       
       /** Generate and play the reservations / events for the current
           booking date.
@@ -79,7 +81,9 @@ namespace LATUS {
 			<li>Insert that newly generated event in the dedicated 
 			  queue / list.</li>
 		  </ol> */
-      static void generateAndPlayForCurrentDay (COM::BookingDay&);
+      static void generateAndPlayForCurrentDay (COM::BookingDay&,
+                                                COM::BookingNumber_T&,
+                                                COM::BookingNumber_T&);
       
     private:
       // BOM (the BookingDay class is the entry point to the BOM)

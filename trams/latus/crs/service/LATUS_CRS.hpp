@@ -21,10 +21,7 @@ namespace LATUS {
       /** Calculate the availabilities corresponding to a given
           list of products and return Travel Solutions matching the booking number.
           @return The vector of Travel Solutions (TS). */
-      static void provideTravelSolution (const COM::AirportCode_T& iOrigin,
-                                         const COM::AirportCode_T& iDestination,
-                                         const COM::DateTime_T& iDate,
-                                         COM::TravelSolutionBlock& ioTSL);
+      static void provideTravelSolution (COM::TravelSolutionBlock& ioTSL);
 
       /** Organize the list of Travel Solution according to the UCM preferences. */
       static void  arrangeTravelSolutions (COM::TravelSolutionBlock& iTSL);

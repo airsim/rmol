@@ -4,6 +4,8 @@
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
+// STL
+#include <fstream>
 // LATUS Common
 #include <latus/com/basic/BasComTypes.hpp>
 #include <latus/com/bom/BomAbstract.hpp>
@@ -144,8 +146,11 @@ namespace LATUS {
       /** Get a string describing the short key. */
       const std::string describeShortKey() const;
 
-      /** Display the full BookingDay context. */
+      /** Display the full SegmentDate context. */
       void display() const;
+
+      /** Write in a file the full SegmentDate context. */
+      void exportInformations(std::ofstream& iOuFile) const;
 
        // ///////// Counting Methods //////////
       /** update the cabin counters  */
@@ -162,7 +167,7 @@ namespace LATUS {
 
       // ////////// Business Methods /////////
       /** Method which returns the cheapest available solution for that segmentDate. */
-      bool buildCheapestSolution (ClassStructList_T&,
+      bool buildCheapestAvailableSolution (ClassStructList_T&,
                                   const SeatNumber_T&) const;
 
 

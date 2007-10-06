@@ -41,6 +41,9 @@ namespace LATUS {
     /** Default over-booking rate for ClassStruct_T. */
     extern const OverbookingRate_T DEFAULT_CLASS_OVERBOOKING_RATE;
 
+    /** Default epsilon value. */
+    extern const double DEFAULT_EPSILON_VALUE;
+
   }
 }
 #endif // __LATUS_COM_BAS_BASCONST_CLASSSTRUCT_HPP
