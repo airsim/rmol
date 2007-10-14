@@ -1,8 +1,0 @@
-# Multinomial Logit (MNL)
-a1=0.6; b1=1; c1=200; alpha=0.030; beta=0.0301
-
-# Weibull
-a2=2; b2=3; c2=2.0/365.0
-plot [0:365] a1*exp(alpha*(x-c1))/(1+b1*exp(beta*(x-c1))), \
-			b2*(c2*x)**(b2-1) * exp(-(x*c2/a2)**b2) / a2**b2
-
