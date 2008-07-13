@@ -1,0 +1,79 @@
+# Configure path for the @PACKAGE_NAME@ library.
+# Denis Arnaud <denis_arnaud@users.sourceforge.net>, May 2007
+
+
+AC_DEFUN([AM_PATH_@PACKAGE_NAME@],
+[
+
+AC_ARG_WITH(@PACKAGE@,
+	[ --with-@PACKAGE@=PFX   Prefix where @PACKAGE_NAME@ is installed (optional)],
+    @PACKAGE@_dir="$withval",
+	@PACKAGE@_dir="")
+
+  if test "x${@PACKAGE_NAME@_CONFIG+set}" != xset ; then
+     if test "x$@PACKAGE@_dir" != x ; then
+         @PACKAGE_NAME@_CONFIG="$@PACKAGE@_dir/bin/@PACKAGE@-config"
+     fi
+  fi
+
+  AC_PATH_PROG(@PACKAGE_NAME@_CONFIG, @PACKAGE@-config, no)
+
+  min_@PACKAGE@_version=ifelse([$1], ,0.11.0,$1)
+  AC_MSG_CHECKING(for @PACKAGE_NAME@ - version >= $min_@PACKAGE@_version)
+  no_@PACKAGE@=""
+  if test "$@PACKAGE_NAME@_CONFIG" = "no" ; then
+    no_@PACKAGE@=yes
+	AC_MSG_RESULT([no])
+  else
+	@PACKAGE_NAME@_VERSION=`$@PACKAGE_NAME@_CONFIG --version`
+    @PACKAGE_NAME@_CFLAGS=`$@PACKAGE_NAME@_CONFIG --cflags`
+    @PACKAGE_NAME@_LIBS=`$@PACKAGE_NAME@_CONFIG --libs`
+
+	AC_SUBST([@PACKAGE_NAME@_VERSION])
+	AC_SUBST([@PACKAGE_NAME@_CFLAGS])
+	AC_SUBST([@PACKAGE_NAME@_LIBS])
+
+    @PACKAGE@_major_version=`echo $@PACKAGE_NAME@_VERSION | sed 's/^\([[0-9]]*\).*/\1/'`
+    if test "x${@PACKAGE@_major_version}" = "x" ; then
+       @PACKAGE@_major_version=0
+    fi
+
+    @PACKAGE@_minor_version=`echo $@PACKAGE_NAME@_VERSION | \
+						sed 's/^\([[0-9]]*\)\.\{0,1\}\([[0-9]]*\).*/\2/'`
+    if test "x${@PACKAGE@_minor_version}" = "x" ; then
+       @PACKAGE@_minor_version=0
+    fi
+
+    @PACKAGE@_micro_version=`echo $@PACKAGE_NAME@_VERSION | \
+          sed 's/^\([[0-9]]*\)\.\{0,1\}\([[0-9]]*\)\.\{0,1\}\([[0-9]]*\).*/\3/'`
+    if test "x${@PACKAGE@_micro_version}" = "x" ; then
+       @PACKAGE@_micro_version=0
+    fi
+
+
+	SAVED_CPPFLAGS="$CPPFLAGS"
+	SAVED_LDFLAGS="$LDFLAGS"
+	CPPFLAGS="$CPPFLAGS $@PACKAGE_NAME@_CFLAGS"
+	LDFLAGS="$LDFLAGS $@PACKAGE_NAME@_LIBS"
+
+
+   	AC_COMPILE_IFELSE(
+		AC_LANG_PROGRAM([[
+				#include <@PACKAGE@/@PACKAGE_NAME@.hpp> 
+				]],
+				[[int i=0;]]
+		)
+		,
+
+    	[AC_MSG_RESULT([yes ($@PACKAGE_NAME@_VERSION)])],
+
+		[
+		AC_MSG_ERROR([We could not compile a simple @PACKAGE_NAME@ example. See config.log.])
+		]
+	)
+
+	CPPFLAGS="$SAVED_CPPFLAGS"
+	LDFLAGS="$SAVED_LDFLAGS"
+
+  fi
+])

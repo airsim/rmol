@@ -13,7 +13,7 @@
 #include <rmol/factory/FacServiceContext.hpp>
 #include <rmol/command/Optimiser.hpp>
 #include <rmol/service/ServiceContext.hpp>
-#include <rmol/RMOL_Service.hpp>
+#include <rmol/RMOL.hpp>
 
 namespace RMOL {
 

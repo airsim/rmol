@@ -294,6 +294,7 @@ AC_CONFIG_FILES(
 	rmol-config
 	rmol.pc
 	rmol.spec
+	rmol.m4
 	rmol/Makefile
 	rmol/basic/Makefile
 	rmol/field/Makefile
