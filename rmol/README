@@ -9,6 +9,8 @@ but names may vary according to distributions):
   * libtool, autoconf, automake
   * gettext-devel
   * gcc-c++
+  * gsl-devel
+  * boost-devel
   * doxygen
   * tetex-latex (optional)
   * rpm-build
@@ -19,11 +21,11 @@ The latest source tarball (rmol*.tar.gz or .bz2) can be found here:
 http://sourceforge.net/project/showfiles.php?group_id=177703
 
 Then, as usual, you can just type the following sequence:
-"./configure --prefix=~/dev && make && make check && cd test && ./testLibsh"
+"./configure --prefix=~/dev/deliveries/rmol-0.2.0 && make && make check && cd test && ./testLibsh"
 Of course, if you want to install the library (librmol*.so*), 
 just type: "make install".
 
 See the INSTALL file for more details.
 
-Denis Arnaud (February 2007)
+Denis Arnaud (February 2007, revised July 2008)
 

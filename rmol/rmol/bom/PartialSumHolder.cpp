@@ -5,6 +5,7 @@
 #include <assert.h>
 // STL
 #include <iostream>
+#include <algorithm>
 // RMOL
 #include <rmol/bom/PartialSumHolder.hpp>
 

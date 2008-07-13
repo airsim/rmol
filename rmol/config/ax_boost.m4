@@ -54,7 +54,7 @@ AC_DEFUN([AX_BOOST],
             		ac_boost_path="$withval"
 		        fi
             	],
-                [want_boost="no"])
+                [want_boost="yes"])
 
     AC_CANONICAL_BUILD
 	if test "x$want_boost" = "xyes"; then

@@ -1,8 +1,8 @@
 # Process this file with autoconf to produce a configure script
 #-------------------------------------------------------------------
 AC_PREREQ(2.59)
-AC_COPYRIGHT([Copyright (C) 2007  Denis Arnaud <denis_arnaud@users.sourceforge.net>])
-AC_INIT([RMOL],[0.12.0],[denis_arnaud@users.sourceforge.net],[rmol])
+AC_COPYRIGHT([Copyright (C) 2007-2008  Denis Arnaud <denis_arnaud@users.sourceforge.net>])
+AC_INIT([RMOL],[0.13.0],[denis_arnaud@users.sourceforge.net],[rmol])
 AC_CONFIG_HEADER([rmol/config.h])
 AC_CONFIG_SRCDIR([rmol/basic/BasConst.cpp])
 AC_CONFIG_AUX_DIR([config])
@@ -12,12 +12,8 @@ AM_INIT_AUTOMAKE
 RPM_RELEASE="1"
 AC_SUBST(RPM_RELEASE)
 
-# RMOL External version
-RMOL_EXTERNAL_VERSION="1.00.1"
-AC_SUBST(RMOL_EXTERNAL_VERSION)
-
 # Shared library versioning
-GENERIC_LIBRARY_VERSION="0:0:0"
+GENERIC_LIBRARY_VERSION="0:13:0"
 #                        | | |
 #                 +------+ | +---+
 #                 |        |     |
@@ -72,10 +68,10 @@ AM_CONDITIONAL([ENABLE_DEBUG], [test "x$enable_debug" = xyes])
 # Check for exceptions switch
 AC_ARG_ENABLE(exceptions,
               [AS_HELP_STRING([--enable-exceptions],
-                              [enable exceptions handling mechanizm])],
+                              [enable exceptions handling mechanism])],
               [AC_DEFINE([RMOL_EXCEPTIONS], [1],
                          [Define if you want exceptions handling])])
-test "x$enable_exceptions" != xyes && enable_exceptions=no
+test "x$enable_exceptions" != xno && enable_exceptions=yes
 
 # Check for info pages
 AC_ARG_ENABLE(info-doc, 
@@ -137,19 +133,23 @@ else
 fi
 AC_SUBST(CXXFLAGS_OPT)
 
-# -----------------------------------------------
-# Support for the GSL (GNU Scientific Library)
-# -----------------------------------------------
+# ---------------------------------------------------------
+# GSL (GNU Scientific Library: http://gnu.org/projects/gsl)
+# ---------------------------------------------------------
 # Provide --with-gsl
 AM_PATH_GSL([1.8])
 GSL_VERSION=`${GSL_CONFIG} --version`
 AC_SUBST(GSL_CFLAGS)
 AC_SUBST(GSL_LIBS)
 
+# --------------------------------------------------------
+# Boost (STL Extensions: http://www.boost.org)
+# --------------------------------------------------------
 AX_BOOST([1.33])
 AC_SUBST(BOOST_CPPFLAGS)
 AC_SUBST(BOOST_LDFLAGS)
 AC_SUBST(BOOST_DATE_TIME_LIB)
+
 
 # Checks for documentation build tools
 #AC_CHECK_PROG([texinfo_ok], [texinfo], [yes], [no])
