@@ -54,7 +54,6 @@ namespace RMOL {
     // Copy the EMSR sorted values to the BPV.
     EmsrValueList_T::iterator currentValue = lEmsrValueList.begin();
     for (int j = 0; j < lCabinCapacity; ++j, ++currentValue) {
-      assert (*currentValue != NULL);
       const double bidPrice = *currentValue;
       ioBidPriceVector.push_back(bidPrice);
     }

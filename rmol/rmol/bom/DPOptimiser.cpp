@@ -57,6 +57,13 @@ namespace RMOL {
         const double MERValue = MERVectorHolder.at(currentBucketIndex-1).at(x);
         currentMERVector.push_back(MERValue);
       }
+      // Vector of gaussian pdf values.
+      std::vector<double> pdfVector;
+      for (int s = 0; s <= maxValue - currentProtection; ++s) {
+        const double pdfValue =
+          gsl_ran_gaussian_pdf (s/DEFAULT_PRECISION - meanDemand, SDDemand);
+        pdfVector.push_back(pdfValue);
+      }
       
       // Compute V_j(x) for x > currentProtection (y_(j-1)).
       for (int x = currentProtection + 1; x <= maxValue; ++x) {
@@ -78,19 +85,20 @@ namespace RMOL {
         for (int s = 0; s < lowerBound; ++s) {
           const double partialResult =
             2 * MERVectorHolder.at(currentBucketIndex-1).at(x-s) *
-            gsl_ran_gaussian_pdf (s/DEFAULT_PRECISION - meanDemand, SDDemand);
+            pdfVector.at(s);
           
           integralResult2 += partialResult;
         }
         integralResult2 -= MERVectorHolder.at(currentBucketIndex-1).at(x) *
-          gsl_ran_gaussian_pdf (-meanDemand, SDDemand);
-          
+          pdfVector.at(0);
+        
+        const int intLowerBound = static_cast<int>(lowerBound);
         integralResult2 += 
           MERVectorHolder.at(currentBucketIndex-1).at(x - lowerBound) *
-          gsl_ran_gaussian_pdf (lowerBound - meanDemand, SDDemand);
-             
+          pdfVector.at(intLowerBound);
+        
         integralResult2 /= 2 * DEFAULT_PRECISION;
-               
+        
         const double firstElement =
           (integralResult1 + integralResult2) / errorFactor;
         
@@ -101,10 +109,9 @@ namespace RMOL {
           MERVectorHolder.at(currentBucketIndex-1).at(currentProtection);
         const double secondElement = constCoefOfSecondElement * 
           gsl_cdf_gaussian_Q(lowerBound - meanDemand, SDDemand) / errorFactor;
-
-        const double MERValue = firstElement + secondElement;
-        currentMERVector.push_back (MERValue);
         
+        const double MERValue = firstElement + secondElement;
+        currentMERVector.push_back (MERValue); 
       }
       
       MERVectorHolder.push_back (currentMERVector);
