@@ -104,6 +104,15 @@ namespace RMOL {
       _cumulatedBookingLimit = iBookingLimit;
     }
 
+    /** Set the demand. */
+    void setDemand (Demand& iDemand);
+
+    /** Set the yield range. */
+    void setYieldRange (const double iYield);
+
+    /** Set the demand mean and standard deviation. */
+    void setDemandParameters (const double, const double);
+
     /** Dump a Business Object into an output stream.
         @param ostream& the output stream
         @return ostream& the output stream. */
@@ -123,17 +132,14 @@ namespace RMOL {
     Bucket (const FldYieldRange&);
 
     /** Getter for the demand. */
-    const Demand& getDemand() const;
-
-    /** Set the demand. */
-    void setDemand (const Demand& iDemand);
+    Demand& getDemand() const;
 
   private:
     /** Yield range, defined by upper and average yield. */
-    const FldYieldRange _yieldRange;
+    FldYieldRange _yieldRange;
 
     /** Demand, defined by (mean, standard deviation) and yield range. */
-    const Demand* _demand;
+    Demand* _demand;
 
     /** Protection. */
     double _protection;

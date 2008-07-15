@@ -4,6 +4,9 @@
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
+// STL
+#include <vector>
+#include <list>
 
 namespace RMOL {
 
@@ -14,6 +17,13 @@ namespace RMOL {
   /** Define the Booking Limit.
       <br>It is a double, as it allows for overbooking. */
   typedef double BookingLimit_T;
+
+  /** Define the Bid-Price Vector.
+      <br> It is a vector of double. */
+  typedef std::vector<double> BidPriceVector_T;
+
+  /** Define the list of EMSR values for the EMSR algorith. */
+  typedef std::list<double> EmsrValueList_T;
 
 }
 #endif // __RMOL_RMOLTYPES_HPP

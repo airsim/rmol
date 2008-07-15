@@ -4,25 +4,24 @@
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
-// RMOL
-#include <rmol/bom/BucketList.hpp>
-#include <rmol/bom/BucketHolder.hpp>
 
 namespace RMOL {
-
-  /** Utility methods for the Monte-Carlo algorithms. */
+  
+  /** Forward declarations. */
+  // Class Resource;
+  class Bucket;
+  
   class EmsrUtils {
   public:
-    
-    /** 
-	Calculate the optimal protections for the set of buckets/classes
-	given in input, and update those buckets accordingly.
-	
-	<br>The cabin capacity is used to a double to allow for some
-	overbooking.
-     */
-    static void heuristicOptimisationByEmsrA (const double iCabCapacity,
-                                              BucketHolder& iBucketHolder);
+    /** Compute the aggregated class/bucket of classes/buckets 1,..,j
+        for EMSR-b algorithm. */
+    static void computeAggregatedBucket (Bucket&, Bucket&);
+
+    /** Compute the protection level using the Little-Wood formular. */
+    static const double computeProtectionLevel (Bucket&, Bucket&);
+
+    /** Compute the EMSR value of a class/bucket. */
+    static const double computeEmsrValue (double, Bucket&);
   };
 }
 #endif

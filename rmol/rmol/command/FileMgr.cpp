@@ -67,10 +67,10 @@ namespace RMOL {
       }
 
       if (hasAllPArams && i == 1) {
-        const Demand& aDemand = 
-	  FacDemand::instance().create (aDistribParams, aYieldRange);
+        Demand& aDemand = 
+          FacDemand::instance().create (aDistribParams, aYieldRange);
         Bucket& aBucket = FacBucket::instance().create (aYieldRange, aDemand);
-	FacBucketHolder::instance().addBucket (ioBucketHolder, aBucket);
+        FacBucketHolder::instance().addBucket (ioBucketHolder, aBucket);
       }
 
     }

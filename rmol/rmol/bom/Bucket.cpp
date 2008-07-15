@@ -64,14 +64,27 @@ namespace RMOL {
   }
 
   // //////////////////////////////////////////////////////////////////////
-  const Demand& Bucket::getDemand() const {
+  Demand& Bucket::getDemand() const {
     assert (_demand != NULL);
     return *_demand;
   }
 
   // //////////////////////////////////////////////////////////////////////
-  void Bucket::setDemand (const Demand& iDemand) {
+  void Bucket::setDemand (Demand& iDemand) {
     _demand = &iDemand;
+  }
+
+  // //////////////////////////////////////////////////////////////////////
+  void Bucket::setYieldRange (const double iYield) {
+    _yieldRange.setUpperYield (iYield);
+    _yieldRange.setAverageYield (iYield);
+    _yieldRange.setLowerYield (iYield);
+  }
+
+  // //////////////////////////////////////////////////////////////////////
+  void Bucket::setDemandParameters (const double iMean, const double iSD) {
+    _demand->setMean (iMean);
+    _demand->setSD (iSD);
   }
 
   // //////////////////////////////////////////////////////////////////////

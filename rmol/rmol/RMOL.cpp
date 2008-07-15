@@ -18,32 +18,32 @@
 namespace RMOL {
 
   // //////////////////////////////////////////////////////////////////////
-  RMOL_Service::RMOL_Service () :
+  RMOL::RMOL () :
     _context (NULL) {
   }
 
   // //////////////////////////////////////////////////////////////////////
-  RMOL_Service::RMOL_Service (const RMOL_Service& iService) :
+  RMOL::RMOL (const RMOL& iService) :
     _context (NULL) {
   }
 
   // //////////////////////////////////////////////////////////////////////
-  RMOL_Service::RMOL_Service (const ResourceCapacity_T iResourceCapacity) {
+  RMOL::RMOL (const ResourceCapacity_T iResourceCapacity) {
     // Initialise the context
     initContext (iResourceCapacity);
   }
 
   // //////////////////////////////////////////////////////////////////////
-  RMOL_Service::~RMOL_Service () {
+  RMOL::~RMOL () {
   }
 
   // //////////////////////////////////////////////////////////////////////
-  void RMOL_Service::initContext (const ResourceCapacity_T iResourceCapacity) {
+  void RMOL::initContext (const ResourceCapacity_T iResourceCapacity) {
     _context = &FacServiceContext::instance().create (iResourceCapacity);
   }
 
   // //////////////////////////////////////////////////////////////////////
-  void RMOL_Service::addBucket (const double iYieldRange, 
+  void RMOL::addBucket (const double iYieldRange, 
                                 const double iDemandMean,
                                 const double iDemandStandardDev) {
     assert (_context != NULL);
@@ -51,13 +51,13 @@ namespace RMOL {
   }
 
   // //////////////////////////////////////////////////////////////////////
-  void RMOL_Service::readFromInputFile (const std::string& iInputFileName) {
+  void RMOL::readFromInputFile (const std::string& iInputFileName) {
     assert (_context != NULL);
     _context->readFromInputFile (iInputFileName);
   }
 
   // //////////////////////////////////////////////////////////////////////
-  void RMOL_Service::
+  void RMOL::
   optimalOptimisationByMCIntegration (const int K) {
     
     assert (_context != NULL);
@@ -67,6 +67,60 @@ namespace RMOL {
 
     Optimiser::optimalOptimisationByMCIntegration (K, iCapacity, 
                                                    *ioBucketHolder_ptr);
+
+    // Display
+    ioBucketHolder_ptr->display();
+  }
+
+  // //////////////////////////////////////////////////////////////////////
+  void RMOL::
+  optimalOptimisationByDP () {
+    
+    assert (_context != NULL);
+    const double iCapacity = _context->getCapacity();
+    BucketHolder* ioBucketHolder_ptr = _context->getBucketHolder();
+    assert (ioBucketHolder_ptr != NULL);
+
+    Optimiser::optimalOptimisationByDP (iCapacity, *ioBucketHolder_ptr);
+
+    // Display
+    ioBucketHolder_ptr->display();
+  }
+  
+  // //////////////////////////////////////////////////////////////////////
+  void RMOL::heuristicOptimisationByEmsr () {
+    assert (_context != NULL);
+    const double iCapacity = _context->getCapacity();
+    BucketHolder* ioBucketHolder_ptr = _context->getBucketHolder();
+    assert (ioBucketHolder_ptr != NULL);
+
+    Optimiser::heuristicOptimisationByEmsr (iCapacity, *ioBucketHolder_ptr);
+
+    // Display
+    ioBucketHolder_ptr->display();
+  }
+
+  // //////////////////////////////////////////////////////////////////////
+  void RMOL::heuristicOptimisationByEmsrA () {
+    assert (_context != NULL);
+    const double iCapacity = _context->getCapacity();
+    BucketHolder* ioBucketHolder_ptr = _context->getBucketHolder();
+    assert (ioBucketHolder_ptr != NULL);
+
+    Optimiser::heuristicOptimisationByEmsrA (iCapacity, *ioBucketHolder_ptr);
+
+    // Display
+    ioBucketHolder_ptr->display();
+  }
+  
+  // //////////////////////////////////////////////////////////////////////
+  void RMOL::heuristicOptimisationByEmsrB () {
+    assert (_context != NULL);
+    const double iCapacity = _context->getCapacity();
+    BucketHolder* ioBucketHolder_ptr = _context->getBucketHolder();
+    assert (ioBucketHolder_ptr != NULL);
+
+    Optimiser::heuristicOptimisationByEmsrB (iCapacity, *ioBucketHolder_ptr);
 
     // Display
     ioBucketHolder_ptr->display();

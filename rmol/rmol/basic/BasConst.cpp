@@ -10,6 +10,19 @@ namespace RMOL {
   /** Default value for the number of draws within the Monte-Carlo
       Integration algorithm. */
   const int DEFAULT_NUMBER_OF_DRAWS_FOR_MC_SIMULATION = 100000;
+
+  /** Default value for the precision of the integral computation in
+      the Dynamic Programming algorithm (100 means that the precision
+      will be 0.01). */
+  const int DEFAULT_PRECISION = 100;
+
+  /** Default value for the lower bound of the integral (theorically
+      -infinite) in DP. */
+  const double DEFAULT_LOWER_BOUND = -100;
+
+  /** Default value for the upper bound of the integral (theorically
+      +infinite) in DP. */
+  const double DEFAULT_UPPER_BOUND = 10000;
   
   /** Default value for the load factor used for overbooking calculation. */
   const double DEFAULT_OVERBOOKING_LOAD_FACTOR = 0.0;

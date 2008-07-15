@@ -32,6 +32,38 @@ namespace RMOL {
     static void optimalOptimisationByMCIntegration (const int K, 
 						    const ResourceCapacity_T,
 						    BucketHolder&);
+    
+    /**
+       Dynamic Programming.
+       <br>The cabin capacity is used to a double to allow for some
+	overbooking.
+     */
+    static void optimalOptimisationByDP (const ResourceCapacity_T,
+                                         BucketHolder&);
+    
+    /**
+       EMRS-a algorithm.
+       <br>The cabin capacity is used to a double to allow for some
+	overbooking.
+     */
+    static void heuristicOptimisationByEmsr (const ResourceCapacity_T,
+                                             BucketHolder&);
+
+    /**
+       EMRS-a algorithm.
+       <br>The cabin capacity is used to a double to allow for some
+	overbooking.
+     */
+    static void heuristicOptimisationByEmsrA (const ResourceCapacity_T,
+                                              BucketHolder&);
+    
+    /**
+       EMRS-b algorithm.
+       <br>The cabin capacity is used to a double to allow for some
+	overbooking.
+     */
+    static void heuristicOptimisationByEmsrB (const ResourceCapacity_T,
+                                              BucketHolder&);
   };
 }
 #endif // __RMOL_COMMAND_OPTIMISER_HPP

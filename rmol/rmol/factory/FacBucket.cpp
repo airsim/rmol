@@ -44,7 +44,7 @@ namespace RMOL {
 
   // //////////////////////////////////////////////////////////////////////
   Bucket& FacBucket::create (const FldYieldRange& iYieldRange,
-                             const Demand& iDemand) {
+                             Demand& iDemand) {
     Bucket* aBucket_ptr = NULL;
 
     aBucket_ptr = new Bucket (iYieldRange);
@@ -60,7 +60,7 @@ namespace RMOL {
   }
 
   // //////////////////////////////////////////////////////////////////////
-  void FacBucket::createDemandLink (Bucket& ioBucket, const Demand& iDemand) {
+  void FacBucket::createDemandLink (Bucket& ioBucket, Demand& iDemand) {
     ioBucket.setDemand (iDemand);
   }
 

@@ -15,12 +15,12 @@ namespace RMOL {
   class ServiceContext;
 
   /** Interface for the RMOL Services. */
-  class RMOL_Service {
+  class RMOL {
   public:
     /** Constructor. */
-    RMOL_Service (const ResourceCapacity_T iResourceCapacity);
+    RMOL (const ResourceCapacity_T iResourceCapacity);
     /** Destructor. */
-    ~RMOL_Service();
+    ~RMOL();
 
     /** Add a bucket to the context. */
     void addBucket (const double iYieldRange, const double iDemandMean,
@@ -32,10 +32,22 @@ namespace RMOL {
     /** */
     void optimalOptimisationByMCIntegration (const int K);
 
+    /** */
+    void optimalOptimisationByDP ();
+
+    /** */
+    void heuristicOptimisationByEmsr ();
+    
+    /** */
+    void heuristicOptimisationByEmsrA ();
+    
+    /** */
+    void heuristicOptimisationByEmsrB ();
+
   private:
     /** Default Constructors. */
-    RMOL_Service ();
-    RMOL_Service (const RMOL_Service&);
+    RMOL ();
+    RMOL (const RMOL&);
 
     /** Initialiser. */
     void initContext (const ResourceCapacity_T iResourceCapacity);

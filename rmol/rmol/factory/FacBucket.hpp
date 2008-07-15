@@ -36,10 +36,10 @@ namespace RMOL {
     /** Create a new Bucket object.
         <br>This new object is added to the list of instantiated objects.
         @return Bucket& The newly created object. */
-    Bucket& create (const FldYieldRange&, const Demand&);
+    Bucket& create (const FldYieldRange&, Demand&);
 
     /** Create the link between a Bucket (parent) and a Demand (child). */
-    static void createDemandLink (Bucket&, const Demand&);
+    static void createDemandLink (Bucket&, Demand&);
 
   protected:
     /** Default Constructor.

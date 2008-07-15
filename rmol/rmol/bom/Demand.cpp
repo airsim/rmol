@@ -59,4 +59,13 @@ namespace RMOL {
     return _distributionParameters.getVariance();
   }
 
+  // //////////////////////////////////////////////////////////////////////
+  void Demand::setMean (const double iMean) {
+    _distributionParameters.setMean (iMean);
+  }
+
+  // /////////////////////////////////////////////////////////////////////
+  void Demand::setSD (const double iSD) {
+    _distributionParameters.setStandardDeviation (iSD);
+  }
 }

@@ -54,7 +54,7 @@ namespace RMOL {
     const FldYieldRange aYieldRange (iYieldRange);
     const FldDistributionParameters aDistribParams (iDemandMean, 
 						    iDemandStandardDev);
-    const Demand& aDemand = 
+    Demand& aDemand = 
       FacDemand::instance().create (aDistribParams, aYieldRange);
     Bucket& aBucket = FacBucket::instance().create (aYieldRange, aDemand);
 

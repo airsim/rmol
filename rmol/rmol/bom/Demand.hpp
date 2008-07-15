@@ -43,6 +43,13 @@ namespace RMOL {
     double getStandardDeviation() const;
     /** Getter for the variance value. */
     double getVariance() const;
+
+    // Setters
+    /** Set the mean value. */
+    void setMean (const double);
+
+    /** set the standard deviation. */
+    void setSD (const double);
     
     /** Destructors. */
     virtual ~Demand();

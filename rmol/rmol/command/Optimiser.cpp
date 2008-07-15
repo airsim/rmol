@@ -6,12 +6,19 @@
 // STL
 #include <iostream>
 #include <cmath>
+#include <iomanip>
 // RMOL
 #include <rmol/bom/BucketHolder.hpp>
 //#include <rmol/bom/Resource.hpp>
 #include <rmol/bom/MCOptimiser.hpp>
+#include <rmol/bom/Emsr.hpp>
+#include <rmol/bom/DPOptimiser.hpp>
+#include <rmol/field/FldYieldRange.hpp>
+#include <rmol/field/FldDistributionParameters.hpp>
 #include <rmol/factory/FacPartialSumHolder.hpp>
 #include <rmol/factory/FacPartialSumHolderHolder.hpp>
+#include <rmol/factory/FacDemand.hpp>
+#include <rmol/factory/FacBucket.hpp>
 #include <rmol/command/Optimiser.hpp>
 
 namespace RMOL {
@@ -51,4 +58,64 @@ namespace RMOL {
 						     aPartialSumHolderHolder);
   }
 
+  // //////////////////////////////////////////////////////////////////////
+  void Optimiser::
+  optimalOptimisationByDP (const ResourceCapacity_T iCabinCapacity,
+                           BucketHolder& ioBucketHolder) {
+    BidPriceVector_T lBidPriceVector;
+    DPOptimiser::optimalOptimisationByDP (iCabinCapacity,
+                                          ioBucketHolder,
+                                          lBidPriceVector);
+    std::cout << "BVP: ";
+    unsigned int size = lBidPriceVector.size();
+
+    for (unsigned int i = 0; i < size; ++i) {
+      const double bidPrice = lBidPriceVector.at(i);
+      std::cout << std::fixed << std::setprecision (2) << bidPrice << " ";
+    }
+    std::cout << std::endl;
+  }
+
+  // //////////////////////////////////////////////////////////////////////
+  void Optimiser::
+  heuristicOptimisationByEmsr (const ResourceCapacity_T iCabinCapacity,
+                               BucketHolder& ioBucketHolder) {
+    BidPriceVector_T lBidPriceVector;
+    Emsr::heuristicOptimisationByEmsr (iCabinCapacity,
+                                       ioBucketHolder,
+                                       lBidPriceVector);
+    std::cout << "BVP: ";
+    unsigned int size = lBidPriceVector.size();
+
+    for (unsigned int i = 0; i < size; ++i) {
+      const double bidPrice = lBidPriceVector.at(i);
+      std::cout << std::fixed << std::setprecision (2) << bidPrice << " ";
+    }
+    std::cout << std::endl;
+  }
+
+  // //////////////////////////////////////////////////////////////////////
+  void Optimiser::
+  heuristicOptimisationByEmsrA (const ResourceCapacity_T iCabinCapacity,
+                                BucketHolder& ioBucketHolder) {
+    Emsr::heuristicOptimisationByEmsrA (iCabinCapacity, ioBucketHolder);
+  }
+  
+  // //////////////////////////////////////////////////////////////////////
+  void Optimiser::
+  heuristicOptimisationByEmsrB (const ResourceCapacity_T iCabinCapacity,
+                                BucketHolder& ioBucketHolder) {
+    
+    // Create the aggregated class/bucket.
+    FldYieldRange aYieldRange = FldYieldRange::FldYieldRange (0);
+    FldDistributionParameters aDistribParams =
+      FldDistributionParameters::FldDistributionParameters (0,0);
+    Demand& aDemand =
+      FacDemand::instance().create (aDistribParams, aYieldRange);
+    Bucket& aBucket = FacBucket::instance().create (aYieldRange, aDemand);
+    
+    Emsr::heuristicOptimisationByEmsrB (iCabinCapacity,
+                                        ioBucketHolder,
+                                        aBucket);
+  }
 }

@@ -1,50 +1,71 @@
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
+// GSL Random Number Generation (GSL Reference Manual, version 1.7, Chapter 19)
+#include <gsl/gsl_cdf.h>
 // C
-#include <assert.h>
-// STL
-#include <iostream>
-#include <cmath>
+#include <math.h>
 // RMOL
-#include <rmol/factory/FacPartialSumHolder.hpp>
-#include <rmol/bom/VariateList.hpp>
-#include <rmol/bom/Gaussian.hpp>
 #include <rmol/bom/EmsrUtils.hpp>
+#include <rmol/bom/Bucket.hpp>
 
 namespace RMOL {
+  // ////////////////////////////////////////////////////////////////////
+  void EmsrUtils::computeAggregatedBucket (Bucket& ioAggregatedBucket,
+                                              Bucket& ioCurrentBucket) {
+    // Retrieve the demand mean, demand standard deviation and average
+    // yield of the classes/buckets.
+    const double lAggregatedMean = ioAggregatedBucket.getMean();
+    const double lCurrentMean = ioCurrentBucket.getMean();
+    const double lAggregatedSD = ioAggregatedBucket.getStandardDeviation();
+    const double lCurrentSD = ioCurrentBucket.getStandardDeviation();
+    const double lAggregatedAverageYield = ioAggregatedBucket.getAverageYield();
+    const double lCurrentAverageYield = ioCurrentBucket.getAverageYield();
 
-  // //////////////////////////////////////////////////////////////////////
-  void EmsrUtils::
-  heuristicOptimisationByEmsrA (       const double iCabinCapacity,
-                                       BucketHolder& ioBucketHolder) {
+    // Compute the new demand mean, new demand standard deviation and
+    // new average yield for the new aggregated class/bucket.
+    const double lNewMean = lAggregatedMean + lCurrentMean;
+    const double lNewSD =
+      sqrt(lAggregatedSD*lAggregatedSD + lCurrentSD*lCurrentSD);
+    const double lNewAverageYield = (lAggregatedAverageYield*lAggregatedMean +
+                                     lCurrentAverageYield*lCurrentMean)/lNewMean;
 
-    // Number of classes/buckets: n
-    const short nbOfClasses = ioBucketHolder.getSize();
-    for (int s=1 ; s <=iCabinCapacity ; s++){
-      double maxEmsrValue=0.0;
-      int highestBucket=1;
-      
-      for(ioBucketHolder.begin(); ioBucketHolder.hasNotReachedEnd(); ioBucketHolder.iterate()){
-        Bucket& currentBucket = ioBucketHolder.getCurrentBucket();
+    // Set the new yield range for the new aggregated class/bucket.
+    ioAggregatedBucket.setYieldRange(lNewAverageYield);
 
-        // Compute EMSR value of the seat #s for class j
-        double emsrForsj=0;
-        /** Evaluate if this class j has the highest EMSR value for seat #s.
-            If so, maxEMSRValue is the EMSR value of j, and j becomes temporarily the highest class.
-        */ 
-        if(emsrForsj>=maxEMSRValue){
-          maxemsrvalue=emsrForsj;
-          ioBucketHolder.tag();
-        }
-
-      }
-      
-      Bucket& theHighestBucket=ioBucketHolder.getTaggedBucket();
-      theHighestBucket._protection+=1.0;
-    }
-
-    
+    // Set the new demand for the new aggregated class/bucket.
+    ioAggregatedBucket.setDemandParameters (lNewMean, lNewSD);
   }
 
+  // ////////////////////////////////////////////////////////////////////
+  const double EmsrUtils::computeProtectionLevel (Bucket& ioAggregatedBucket,
+                                                  Bucket& ioNextBucket) {
+    // Retrive the mean & standard deviation of the aggregated
+    // class/bucket and the average yield of all the two
+    // classes/buckets.
+    const double lMean = ioAggregatedBucket.getMean();
+    const double lSD = ioAggregatedBucket.getStandardDeviation();
+    const double lAggreatedYield = ioAggregatedBucket.getAverageYield();
+    const double lNextYield = ioNextBucket.getAverageYield();
+    
+    // Compute the protection for the aggregated class/bucket
+    const double lProtection = 
+      lMean + gsl_cdf_gaussian_Qinv (lNextYield/lAggreatedYield, lSD);
+
+    return lProtection;
+  }
+
+  // ////////////////////////////////////////////////////////////////////
+  const double EmsrUtils::computeEmsrValue (double iCapacity, Bucket& ioBucket) {
+    // Retrive the average yield, mean and standard deviation of the
+    // demand of the class/bucket.
+    const double lMean = ioBucket.getMean();
+    const double lSD = ioBucket.getStandardDeviation();
+    const double lYield = ioBucket.getAverageYield();
+
+    // Compute the EMSR value = lYield * Pr (demand >= iCapacity).
+    const double emsrValue = lYield * gsl_cdf_gaussian_Q(iCapacity-lMean, lSD);
+
+    return emsrValue;
+  }
 }
