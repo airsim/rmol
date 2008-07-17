@@ -2,7 +2,7 @@
 #-------------------------------------------------------------------
 AC_PREREQ(2.59)
 AC_COPYRIGHT([Copyright (C) 2007-2008  Denis Arnaud <denis_arnaud@users.sourceforge.net>])
-AC_INIT([RMOL],[0.13.0],[denis_arnaud@users.sourceforge.net],[rmol])
+AC_INIT([RMOL],[0.14.0],[denis_arnaud@users.sourceforge.net],[rmol])
 AC_CONFIG_HEADER([rmol/config.h])
 AC_CONFIG_SRCDIR([rmol/basic/BasConst.cpp])
 AC_CONFIG_AUX_DIR([config])
@@ -13,7 +13,7 @@ RPM_RELEASE="1"
 AC_SUBST(RPM_RELEASE)
 
 # Shared library versioning
-GENERIC_LIBRARY_VERSION="0:13:0"
+GENERIC_LIBRARY_VERSION="0:14:0"
 #                        | | |
 #                 +------+ | +---+
 #                 |        |     |
