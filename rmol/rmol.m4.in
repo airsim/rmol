@@ -35,6 +35,7 @@ AC_ARG_WITH(@PACKAGE@,
 	AC_MSG_RESULT([ok (set to ${GSL_CFLAGS})])
   fi
 
+  AC_MSG_CHECKING(for GSL_LIBS environment variable)
   if test x"${GSL_LIBS}" = x; then
 	AC_MSG_RESULT([Warning: @PACKAGE_NAME@ needs the GSL library, and the GSL_LIBS environment variable does not appears to be set. The @PACKAGE_NAME@ may fail to link.])
 	else
@@ -58,44 +59,44 @@ AC_ARG_WITH(@PACKAGE@,
   min_@PACKAGE@_version=ifelse([$1], ,0.11.0,$1)
   AC_MSG_CHECKING(for @PACKAGE_NAME@ - version >= $min_@PACKAGE@_version)
   no_@PACKAGE@=""
-  if test "$@PACKAGE_NAME@_CONFIG" = "no" ; then
+  if test "${@PACKAGE_NAME@_CONFIG}" = "no" ; then
     no_@PACKAGE@=yes
 	AC_MSG_RESULT([no])
   else
-	@PACKAGE_NAME@_VERSION=`$@PACKAGE_NAME@_CONFIG --version`
-    @PACKAGE_NAME@_CFLAGS=`$@PACKAGE_NAME@_CONFIG --cflags`
-    @PACKAGE_NAME@_CFLAGS="${GSL_CFLAGS} @PACKAGE_NAME@_CFLAGS"
-#    @PACKAGE_NAME@_CFLAGS="${BOOST_CFLAGS} @PACKAGE_NAME@_CFLAGS"
-    @PACKAGE_NAME@_LIBS=`$@PACKAGE_NAME@_CONFIG --libs`
-    @PACKAGE_NAME@_LIBS="${GSL_LIBS} @PACKAGE_NAME@_LIBS"
-#    @PACKAGE_NAME@_LIBS="${BOOST_LIBS} ${BOOST_DATE_TIME_LIB} @PACKAGE_NAME@_LIBS"
+	@PACKAGE_NAME@_VERSION=`${@PACKAGE_NAME@_CONFIG} --version`
+    @PACKAGE_NAME@_CFLAGS=`${@PACKAGE_NAME@_CONFIG} --cflags`
+    @PACKAGE_NAME@_CFLAGS="${GSL_CFLAGS} ${@PACKAGE_NAME@_CFLAGS}"
+#    @PACKAGE_NAME@_CFLAGS="${BOOST_CFLAGS} ${@PACKAGE_NAME@_CFLAGS}"
+    @PACKAGE_NAME@_LIBS=`${@PACKAGE_NAME@_CONFIG} --libs`
+    @PACKAGE_NAME@_LIBS="${GSL_LIBS} ${@PACKAGE_NAME@_LIBS}"
+#    @PACKAGE_NAME@_LIBS="${BOOST_LIBS} ${BOOST_DATE_TIME_LIB} ${@PACKAGE_NAME@_LIBS}"
 
 	AC_SUBST([@PACKAGE_NAME@_VERSION])
 	AC_SUBST([@PACKAGE_NAME@_CFLAGS])
 	AC_SUBST([@PACKAGE_NAME@_LIBS])
 
-    @PACKAGE@_major_version=`echo $@PACKAGE_NAME@_VERSION | sed 's/^\([[0-9]]*\).*/\1/'`
+    @PACKAGE@_major_version=`echo ${@PACKAGE_NAME@_VERSION} | sed 's/^\([[0-9]]*\).*/\1/'`
     if test "x${@PACKAGE@_major_version}" = "x" ; then
        @PACKAGE@_major_version=0
     fi
 
-    @PACKAGE@_minor_version=`echo $@PACKAGE_NAME@_VERSION | \
+    @PACKAGE@_minor_version=`echo ${@PACKAGE_NAME@_VERSION} | \
 						sed 's/^\([[0-9]]*\)\.\{0,1\}\([[0-9]]*\).*/\2/'`
     if test "x${@PACKAGE@_minor_version}" = "x" ; then
        @PACKAGE@_minor_version=0
     fi
 
-    @PACKAGE@_micro_version=`echo $@PACKAGE_NAME@_VERSION | \
+    @PACKAGE@_micro_version=`echo ${@PACKAGE_NAME@_VERSION} | \
           sed 's/^\([[0-9]]*\)\.\{0,1\}\([[0-9]]*\)\.\{0,1\}\([[0-9]]*\).*/\3/'`
     if test "x${@PACKAGE@_micro_version}" = "x" ; then
        @PACKAGE@_micro_version=0
     fi
 
 
-	SAVED_CPPFLAGS="$CPPFLAGS"
-	SAVED_LDFLAGS="$LDFLAGS"
-	CPPFLAGS="$CPPFLAGS ${GSL_CFLAGS} ${BOOST_CFLAGS} $@PACKAGE_NAME@_CFLAGS"
-	LDFLAGS="$LDFLAGS ${GSL_LIBS} $@PACKAGE_NAME@_LIBS"
+	SAVED_CPPFLAGS="${CPPFLAGS}"
+	SAVED_LDFLAGS="${LDFLAGS}"
+	CPPFLAGS="${CPPFLAGS} ${GSL_CFLAGS} ${BOOST_CFLAGS} ${@PACKAGE_NAME@_CFLAGS}"
+	LDFLAGS="${LDFLAGS} ${GSL_LIBS} ${@PACKAGE_NAME@_LIBS}"
 
 
    	AC_COMPILE_IFELSE(
@@ -106,15 +107,15 @@ AC_ARG_WITH(@PACKAGE@,
 		)
 		,
 
-    	[AC_MSG_RESULT([yes ($@PACKAGE_NAME@_VERSION)])],
+    	[AC_MSG_RESULT([yes (${@PACKAGE_NAME@_VERSION})])],
 
 		[
 		AC_MSG_ERROR([We could not compile a simple @PACKAGE_NAME@ example. See config.log.])
 		]
 	)
 
-	CPPFLAGS="$SAVED_CPPFLAGS"
-	LDFLAGS="$SAVED_LDFLAGS"
+	CPPFLAGS="${SAVED_CPPFLAGS}"
+	LDFLAGS="${SAVED_LDFLAGS}"
 
   fi
 
