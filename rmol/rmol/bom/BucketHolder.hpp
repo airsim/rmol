@@ -7,6 +7,7 @@
 // STL
 #include <iostream>
 // RMOL
+#include <rmol/RmolTypes.hpp>
 #include <rmol/bom/BomAbstract.hpp>
 #include <rmol/bom/BucketList.hpp>
 
@@ -50,6 +51,9 @@ namespace RMOL {
     /** Display on standard output. */
     void display () const;
 
+    /** Fill up the vector of cumulated booking limits. */
+    void fillup (BookingLimitVector_T&) const;
+    
     /** Destructor. */
     virtual ~BucketHolder();
 

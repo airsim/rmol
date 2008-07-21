@@ -25,5 +25,9 @@ namespace RMOL {
   /** Define the list of EMSR values for the EMSR algorith. */
   typedef std::list<double> EmsrValueList_T;
 
+  /** Define the vector of booking limits.
+      <br> It is a vector of double. */
+  typedef std::vector<double> BookingLimitVector_T;
+
 }
 #endif // __RMOL_RMOLTYPES_HPP

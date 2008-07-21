@@ -188,4 +188,19 @@ namespace RMOL {
     calculateMeanDemandAndOptimalRevenue();
   }
 
+  // //////////////////////////////////////////////////////////////////////
+  void BucketHolder::
+  fillup (BookingLimitVector_T& ioBookingLimitVector) const {
+    BucketList_T::const_iterator itBucket = _bucketList.begin();
+    for (short j=1; itBucket != _bucketList.end(); itBucket++, j++) {
+      const Bucket* currentBucket_ptr = *itBucket;
+      assert (currentBucket_ptr != NULL);
+      
+      const double lCumulatedBookingLimit =
+        currentBucket_ptr->getCumulatedBookingLimit();
+      ioBookingLimitVector.push_back(lCumulatedBookingLimit);
+    }
+
+  }
+
 }

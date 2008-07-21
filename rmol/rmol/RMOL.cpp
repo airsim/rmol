@@ -125,5 +125,18 @@ namespace RMOL {
     // Display
     ioBucketHolder_ptr->display();
   }
+
+  // //////////////////////////////////////////////////////////////////////
+  void RMOL::heuristicOptimisationByEmsrB (BookingLimitVector_T& ioBookingLimitVector) {
+    assert (_context != NULL);
+    const double iCapacity = _context->getCapacity();
+    BucketHolder* ioBucketHolder_ptr = _context->getBucketHolder();
+    assert (ioBucketHolder_ptr != NULL);
+
+    Optimiser::heuristicOptimisationByEmsrB (iCapacity, *ioBucketHolder_ptr);
+
+    // Fill up booking vector
+    ioBucketHolder_ptr->fillup(ioBookingLimitVector);
+  }
   
 }

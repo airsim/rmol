@@ -44,6 +44,9 @@ namespace RMOL {
     /** */
     void heuristicOptimisationByEmsrB ();
 
+    /** */
+    void heuristicOptimisationByEmsrB (BookingLimitVector_T&);
+
   private:
     /** Default Constructors. */
     RMOL ();
