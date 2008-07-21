@@ -2,7 +2,7 @@
 Building the library and test binary from Subversion repository:
 ----------------------------------------------------------------
 The Sourceforge Subversion repository is to be found here:
- svn co https://rmol.svn.sourceforge.net/svnroot/rmol/trunk rmolsvn
+svn co https://rmol.svn.sourceforge.net/svnroot/rmol/trunk rmolsvn
 
 Then, you need the following packages (Fedora Core 6 names here, 
 but names may vary according to distributions):
@@ -17,11 +17,11 @@ but names may vary according to distributions):
 
 Building the library and test binary from the tarball:
 ------------------------------------------------------
-The latest source tarball (rmol*.tar.gz or .bz2) can be found here:
+The latest stable source tarball (rmol*.tar.gz or .bz2) can be found here:
 http://sourceforge.net/project/showfiles.php?group_id=177703
 
 Then, as usual, you can just type the following sequence:
-"./configure --prefix=~/dev/deliveries/rmol-0.2.0 && make && make check && cd test && ./testLibsh"
+"./configure --prefix=~/dev/deliveries/rmol-0.14.0 && make && make check && cd test && ./testLibsh"
 Of course, if you want to install the library (librmol*.so*), 
 just type: "make install".
 
