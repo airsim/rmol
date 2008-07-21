@@ -146,8 +146,8 @@ AC_SUBST(GSL_LIBS)
 # Boost (STL Extensions: http://www.boost.org)
 # --------------------------------------------------------
 AX_BOOST([1.33])
-AC_SUBST(BOOST_CPPFLAGS)
-AC_SUBST(BOOST_LDFLAGS)
+AC_SUBST(BOOST_CFLAGS)
+AC_SUBST(BOOST_LIBS)
 AC_SUBST(BOOST_DATE_TIME_LIB)
 
 
@@ -366,9 +366,9 @@ External libraries:
 
   - Boost .......... :
     o BOOST_VERSION. : ${boost_lib_version_shorten}
-    o BOOST_CPPFLAGS : ${BOOST_CPPFLAGS}
-    o BOOST_LDFLAGS. : ${BOOST_LDFLAGS}
-    o BOOST_DT_LIB.. : ${BOOST_DATE_TIME_LIB}
+    o BOOST_CFLAGS . : ${BOOST_CFLAGS}
+    o BOOST_LIBS ... : ${BOOST_LIBS}
+    o BOOST_DT_LIB . : ${BOOST_DATE_TIME_LIB}
 
 ------------------------------------------------------------------------------
 Now type 'make && make install' to build and install $PACKAGE-$VERSION library

@@ -8,7 +8,7 @@ dnl $BOOST_ROOT environment variable.
 dnl
 dnl This macro calls:
 dnl
-dnl   AC_SUBST(BOOST_CPPFLAGS) / AC_SUBST(BOOST_LDFLAGS)
+dnl   AC_SUBST(BOOST_CFLAGS) / AC_SUBST(BOOST_LIBS)
 dnl   AC_SUBST(BOOST_FILESYSTEM_LIB)
 dnl   AC_SUBST(BOOST_PROGRAM_OPTIONS_LIB)
 dnl   AC_SUBST(BOOST_THREAD_LIB)
@@ -56,7 +56,7 @@ AC_DEFUN([AX_BOOST],
             	],
                 [want_boost="yes"])
 
-    AC_CANONICAL_BUILD
+#    AC_CANONICAL_BUILD
 	if test "x$want_boost" = "xyes"; then
 		boost_lib_version_req=ifelse([$1], ,1.20.0,$1)
 		boost_lib_version_req_shorten=`expr $boost_lib_version_req : '\([[0-9]]*\.[[0-9]]*\)'`
@@ -80,23 +80,31 @@ AC_DEFUN([AX_BOOST],
 			BOOST_LIBDIRTYPE="lib"
 		fi
 		if test "$ac_boost_path" != ""; then
-			BOOST_LDFLAGS="-L$ac_boost_path/$BOOST_LIBDIRTYPE"
-			BOOST_CPPFLAGS="-I$ac_boost_path/include"
+			if test "$BOOST_LIBDIRTYPE" == "lib64"; then
+				if test -d "$ac_boost_path/$BOOST_LIBDIRTYPE" && test -r "$ac_boost_path/$BOOST_LIBDIRTYPE"; then
+	                BOOST_LIBS="-L$ac_boost_path/$BOOST_LIBDIRTYPE"
+				else
+                    BOOST_LIBS="-L$ac_boost_path/lib"
+				fi
+			else
+				BOOST_LIBS="-L$ac_boost_path/lib"
+			fi
+			BOOST_CFLAGS="-I$ac_boost_path/include"
 		else
 			for ac_boost_path_tmp in /usr /usr/local /opt /nastools/boost ; do
 				if test -d "$ac_boost_path_tmp/include/boost" && test -r "$ac_boost_path_tmp/include/boost"; then
-					BOOST_LDFLAGS="-L$ac_boost_path_tmp/$BOOST_LIBDIRTYPE"
-					BOOST_CPPFLAGS="-I$ac_boost_path_tmp/include"
+					BOOST_LIBS="-L$ac_boost_path_tmp/$BOOST_LIBDIRTYPE"
+					BOOST_CFLAGS="-I$ac_boost_path_tmp/include"
 					break;
 				fi
 				if test -d "$ac_boost_path_tmp/include/boost-1_33_1/boost" && test -r "$ac_boost_path_tmp/include/boost-1_33_1/boost"; then
-					BOOST_LDFLAGS="-L$ac_boost_path_tmp/$BOOST_LIBDIRTYPE"
-					BOOST_CPPFLAGS="-I$ac_boost_path_tmp/include/boost-1_33_1"
+					BOOST_LIBS="-L$ac_boost_path_tmp/$BOOST_LIBDIRTYPE"
+					BOOST_CFLAGS="-I$ac_boost_path_tmp/include/boost-1_33_1"
 			
 					dnl Hack for wrongly installed Boost libraries (AMD64 libraries installed in boost/lib directory)
 					if test -d "$ac_boost_path_tmp/lib" && test -r "$ac_boost_path_tmp/lib" && test ! -d "$ac_boost_path_tmp/lib64"; then
-						BOOST_LDFLAGS="-L$ac_boost_path_tmp/lib"
-						echo "Hack: $BOOST_LDFLAGS"
+						BOOST_LIBS="-L$ac_boost_path_tmp/lib"
+						echo "Hack: $BOOST_LIBS"
 					fi
 					break;
 				fi
@@ -104,11 +112,11 @@ AC_DEFUN([AX_BOOST],
 		fi
 
 		CPPFLAGS_SAVED="$CPPFLAGS"
-		CPPFLAGS="$CPPFLAGS $BOOST_CPPFLAGS"
+		CPPFLAGS="$CPPFLAGS $BOOST_CFLAGS"
 		export CPPFLAGS
 
 		LDFLAGS_SAVED="$LDFLAGS"
-		LDFLAGS="$LDFLAGS $BOOST_LDFLAGS"
+		LDFLAGS="$LDFLAGS $BOOST_LIBS"
 		export LDFLAGS
 
      	AC_TRY_COMPILE(
@@ -137,7 +145,7 @@ AC_DEFUN([AX_BOOST],
 		if test "x$succeeded" != "xyes"; then
 			_version=0
 			if test "$ac_boost_path" != ""; then
-                BOOST_LDFLAGS="-L$ac_boost_path/$BOOST_LIBDIRTYPE"
+                BOOST_LIBS="-L$ac_boost_path/$BOOST_LIBDIRTYPE"
 				if test -d "$ac_boost_path" && test -r "$ac_boost_path"; then
 					for i in `ls -d $ac_boost_path/include/boost-* 2>/dev/null`; do
 						_version_tmp=`echo $i | sed "s#$ac_boost_path##" | sed 's/\/include\/boost-//' | sed 's/_/./'`
@@ -146,7 +154,7 @@ AC_DEFUN([AX_BOOST],
 							_version=$_version_tmp
 						fi
 						VERSION_UNDERSCORE=`echo $_version | sed 's/\./_/'`
-						BOOST_CPPFLAGS="-I$ac_boost_path/include/boost-$VERSION_UNDERSCORE"
+						BOOST_CFLAGS="-I$ac_boost_path/include/boost-$VERSION_UNDERSCORE"
 					done
 				fi
 			else
@@ -164,8 +172,8 @@ AC_DEFUN([AX_BOOST],
 				done
 
 				VERSION_UNDERSCORE=`echo $_version | sed 's/\./_/'`
-				BOOST_CPPFLAGS="-I$best_path/include/boost-$VERSION_UNDERSCORE"
-				BOOST_LDFLAGS="-L$best_path/$BOOST_LIBDIRTYPE"
+				BOOST_CFLAGS="-I$best_path/include/boost-$VERSION_UNDERSCORE"
+				BOOST_LIBS="-L$best_path/$BOOST_LIBDIRTYPE"
 
 	    		if test "x$BOOST_ROOT" != "x"; then
 					if test -d "$BOOST_ROOT" && test -r "$BOOST_ROOT"; then
@@ -175,16 +183,16 @@ AC_DEFUN([AX_BOOST],
 						V_CHECK=`expr $stage_version_shorten \>\= $_version`
 						if test "$V_CHECK" = "1" ; then
 							AC_MSG_NOTICE(We will use a staged boost library from $BOOST_ROOT)
-							BOOST_CPPFLAGS="-I$BOOST_ROOT"
-							BOOST_LDFLAGS="-L$BOOST_ROOT/stage/$BOOST_LIBDIRTYPE"
+							BOOST_CFLAGS="-I$BOOST_ROOT"
+							BOOST_LIBS="-L$BOOST_ROOT/stage/$BOOST_LIBDIRTYPE"
 						fi
 					fi
 	    		fi
 			fi
 
-			CPPFLAGS="$CPPFLAGS $BOOST_CPPFLAGS"
+			CPPFLAGS="$CPPFLAGS $BOOST_CFLAGS"
 			export CPPFLAGS
-			LDFLAGS="$LDFLAGS $BOOST_LDFLAGS"
+			LDFLAGS="$LDFLAGS $BOOST_LIBS"
 			export LDFLAGS
 
      		AC_TRY_COMPILE(
@@ -217,8 +225,8 @@ AC_DEFUN([AX_BOOST],
 				AC_MSG_ERROR('Your boost libraries seems to old (version $_version).  We need at least $boost_lib_version_shorten')
 			fi
 		else
-			AC_SUBST(BOOST_CPPFLAGS)
-			AC_SUBST(BOOST_LDFLAGS)
+			AC_SUBST(BOOST_CFLAGS)
+			AC_SUBST(BOOST_LIBS)
 			AC_DEFINE(HAVE_BOOST,,[define if the Boost library is available])
 
 			AC_CACHE_CHECK([whether the Boost::Filesystem library is available],
@@ -294,14 +302,14 @@ AC_DEFUN([AX_BOOST],
 			])
 			if test "x$ax_cv_boost_thread" = "xyes"; then
                if test "x$build_os" = "xsolaris" ; then
- 				  BOOST_CPPFLAGS="-pthreads $BOOST_CPPFLAGS"
+ 				  BOOST_CFLAGS="-pthreads $BOOST_CFLAGS"
 			   elif test "x$build_os" = "xming32" ; then
- 				  BOOST_CPPFLAGS="-mthreads $BOOST_CPPFLAGS"
+ 				  BOOST_CFLAGS="-mthreads $BOOST_CFLAGS"
 			   else
-				  BOOST_CPPFLAGS="-pthread $BOOST_CPPFLAGS"
+				  BOOST_CFLAGS="-pthread $BOOST_CFLAGS"
 			   fi
 
-				AC_SUBST(BOOST_CPPFLAGS)
+				AC_SUBST(BOOST_CFLAGS)
 				AC_DEFINE(HAVE_BOOST_THREAD,,[define if the Boost::THREAD library is available])
 				BN=boost_thread
 				for ax_lib in $BN $BN-$CC $BN-$CC-mt $BN-$CC-mt-s $BN-$CC-s \

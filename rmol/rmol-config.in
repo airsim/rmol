@@ -9,7 +9,7 @@ includedir=@includedir@
 usage()
 {
   cat <<EOF
-Usage: rmol-config [OPTION]
+Usage: reac-config [OPTION]
 
 Known values for OPTION are:
 
@@ -61,22 +61,22 @@ while test $# -gt 0; do
       usage 0
       ;;
     --cflags)
-      echo -I${includedir}
+      echo @GSL_CFLAGS@ -I${includedir}
       ;;
     --cflags-opt)
-      echo -I${includedir} @CXXFLAGS_OPT@
+      echo @GSL_CFLAGS@ -I${includedir} @CXXFLAGS_OPT@
       ;;
     --cflags-debug)
-      echo -I${includedir} @CXXFLAGS_DEBUG@
+      echo @GSL_CFLAGS@ -I${includedir} @CXXFLAGS_DEBUG@
       ;;
     --libs)
-      echo -L${libdir} -l@PACKAGE@ @LDFLAGS@ @LIBS@
+      echo @GSL_LIBS@ -L${libdir} -l@PACKAGE@ @LDFLAGS@ @LIBS@
       ;;
     --libs-opt)
-      echo -L${libdir} -l@PACKAGE@ @LDFLAGS@ @LIBS@
+      echo @GSL_LIBS@ -L${libdir} -l@PACKAGE@ @LDFLAGS@ @LIBS@
       ;;
     --libs-debug)
-      echo -L${libdir} -l@PACKAGE_DEBUG@ @LDFLAGS@ @LIBS@
+      echo @GSL_LIBS@ -L${libdir} -l@PACKAGE_DEBUG@ @LDFLAGS@ @LIBS@
       ;;
     *)
       echo "${usage}" 1>&2
