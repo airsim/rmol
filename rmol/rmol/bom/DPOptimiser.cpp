@@ -17,6 +17,7 @@
 #include <rmol/bom/BucketHolder.hpp>
 
 namespace RMOL {
+  
   // ////////////////////////////////////////////////////////////////////
   void DPOptimiser::
   optimalOptimisationByDP (const ResourceCapacity_T iCabinCapacity,
@@ -26,8 +27,7 @@ namespace RMOL {
     const short nbOfClasses = ioBucketHolder.getSize();
 
     // Number of values of x to compute for each Vj(x).
-    const int maxValue =
-      1 + static_cast<int> (iCabinCapacity * DEFAULT_PRECISION);
+    const int maxValue = static_cast<int> (iCabinCapacity * DEFAULT_PRECISION);
 
     // Vector of the Expected Maximal Revenue (Vj).
     std::vector< std::vector<double> > MERVectorHolder;
@@ -43,26 +43,42 @@ namespace RMOL {
     int currentBucketIndex = 1;
     ioBucketHolder.begin();
     
-    while (currentProtection < maxValue && currentBucketIndex <= nbOfClasses) {
+    while (currentProtection < maxValue && currentBucketIndex < nbOfClasses) {
+    //while (currentBucketIndex == 1) {
+      bool protectionChanged = false;
+      double nextProtection = 0.0;
       std::vector<double> currentMERVector;
+      double testGradient = 10000;
       
       Bucket& currentBucket = ioBucketHolder.getCurrentBucket();
       const double meanDemand = currentBucket.getMean();
       const double SDDemand = currentBucket.getStandardDeviation();
       const double currentYield = currentBucket.getAverageYield();
-      const double errorFactor = gsl_cdf_gaussian_Q (-meanDemand, SDDemand);
+      const double errorFactor = 1;//gsl_cdf_gaussian_Q (-meanDemand, SDDemand);
+
+      Bucket& nextBucket = ioBucketHolder.getNextBucket();
+      const double nextYield = nextBucket.getAverageYield();
       
       // For x <= currentProtection (y_(j-1)), V_j(x) = V_(j-1)(x).
       for (int x = 0; x <= currentProtection; ++x) {
         const double MERValue = MERVectorHolder.at(currentBucketIndex-1).at(x);
         currentMERVector.push_back(MERValue);
       }
+      
       // Vector of gaussian pdf values.
       std::vector<double> pdfVector;
       for (int s = 0; s <= maxValue - currentProtection; ++s) {
         const double pdfValue =
           gsl_ran_gaussian_pdf (s/DEFAULT_PRECISION - meanDemand, SDDemand);
         pdfVector.push_back(pdfValue);
+      }
+
+      // Vector of gaussian cdf values.
+      std::vector<double> cdfVector;
+      for (int s = 0; s <= maxValue - currentProtection; ++s) {
+        const double cdfValue =
+          cdfGaussianQ (s/DEFAULT_PRECISION - meanDemand, SDDemand);
+        cdfVector.push_back(cdfValue);
       }
       
       // Compute V_j(x) for x > currentProtection (y_(j-1)).
@@ -75,13 +91,23 @@ namespace RMOL {
           (SDDemand * SDDemand);
         const double e1 = exp (power1);
         const double power2 = 
-          - 0.5 * (lowerBound - meanDemand) * (lowerBound - meanDemand) /
+          - 0.5 * (lowerBound / DEFAULT_PRECISION - meanDemand) *
+          (lowerBound / DEFAULT_PRECISION - meanDemand) /
           (SDDemand * SDDemand);
         const double e2 = exp (power2);
-        const double integralResult1 =
-          currentYield * (e1 - e2) * SDDemand / sqrt (2 * 3.14159265);
+        /*
+        const double integralResult1 = currentYield * 
+          ((e1 - e2) * SDDemand / sqrt (2 * 3.14159265) +
+           meanDemand * gsl_cdf_gaussian_Q (-meanDemand, SDDemand) -
+           meanDemand * gsl_cdf_gaussian_Q (lowerBound / DEFAULT_PRECISION - meanDemand, SDDemand));
+        */
+        const double integralResult1 = currentYield * 
+          ((e1 - e2) * SDDemand / sqrt (2 * 3.14159265) +
+           meanDemand * cdfGaussianQ (-meanDemand, SDDemand) -
+           meanDemand * cdfGaussianQ (lowerBound / DEFAULT_PRECISION - meanDemand, SDDemand));
         
         double integralResult2 = 0.0;
+        
         for (int s = 0; s < lowerBound; ++s) {
           const double partialResult =
             2 * MERVectorHolder.at(currentBucketIndex-1).at(x-s) *
@@ -94,13 +120,20 @@ namespace RMOL {
         
         const int intLowerBound = static_cast<int>(lowerBound);
         integralResult2 += 
-          MERVectorHolder.at(currentBucketIndex-1).at(x - lowerBound) *
+          MERVectorHolder.at(currentBucketIndex-1).at(x - intLowerBound) *
           pdfVector.at(intLowerBound);
         
         integralResult2 /= 2 * DEFAULT_PRECISION;
-        
-        const double firstElement =
-          (integralResult1 + integralResult2) / errorFactor;
+        /*
+        for (int s = 0; s < lowerBound; ++s) {
+          const double partialResult =
+            (MERVectorHolder.at(currentBucketIndex-1).at(x-s) +
+             MERVectorHolder.at(currentBucketIndex-1).at(x-s-1)) *
+            (cdfVector.at(s+1) - cdfVector.at(s)) / 2;
+          integralResult2 += partialResult;
+        }
+        */
+        const double firstElement = integralResult1 + integralResult2;
         
         // Compute the second integral in the V_j(x) formulation (see
         // the memo of Jerome Contant).
@@ -108,18 +141,73 @@ namespace RMOL {
           currentYield * lowerBound / DEFAULT_PRECISION +
           MERVectorHolder.at(currentBucketIndex-1).at(currentProtection);
         const double secondElement = constCoefOfSecondElement * 
-          gsl_cdf_gaussian_Q(lowerBound - meanDemand, SDDemand) / errorFactor;
+          //gsl_cdf_gaussian_Q(lowerBound / DEFAULT_PRECISION - meanDemand, SDDemand);
+          cdfGaussianQ (lowerBound / DEFAULT_PRECISION - meanDemand, SDDemand);
+        const double MERValue = (firstElement + secondElement) / errorFactor;
+
         
-        const double MERValue = firstElement + secondElement;
+        assert (currentMERVector.size() > 0);
+        const double lastMERValue = currentMERVector.back();
+
+        const double currentGradient = 
+          (MERValue - lastMERValue) * DEFAULT_PRECISION;
+
+        //assert (currentGradient >= 0);
+        if (currentGradient < -0) {
+          std::cout << currentGradient << std::endl
+                    << "x = " << x << std::endl
+                    << "class: " << currentBucketIndex << std::endl;
+        }
+          
+        /*
+        assert (currentGradient <= testGradient);
+        testGradient = currentGradient;
+        */
+        if (!protectionChanged && currentGradient <= nextYield) {
+          nextProtection = x - 1;
+          protectionChanged = true;
+        }
+
+         if (protectionChanged && currentGradient > nextYield) {
+          protectionChanged = false;
+        }
+        
+        if (!protectionChanged && x == maxValue) {
+          nextProtection = maxValue;
+        }
+        
         currentMERVector.push_back (MERValue); 
       }
-      
+      std::cout << "Vmaxindex = " << currentMERVector.back() << std::endl;
+        
       MERVectorHolder.push_back (currentMERVector);
+     
+      const double realProtection = nextProtection / DEFAULT_PRECISION;
+      const double bookingLimit = iCabinCapacity - realProtection;
+
+      currentBucket.setCumulatedProtection (realProtection);
+      nextBucket.setCumulatedBookingLimit (bookingLimit);
+
+      currentProtection = nextProtection;
       
       ioBucketHolder.iterate();
       ++currentBucketIndex;
     }
     
-    
   }
+
+  // ////////////////////////////////////////////////////////////////////
+  double DPOptimiser::cdfGaussianQ (const double c, const double sd) {
+    const double power = - c * c * 0.625 / (sd * sd);
+    const double e = sqrt (1-exp(power));
+    double result;
+    if (c >= 0) {
+      result = 0.5 * (1 - e);
+    }
+    else {
+      result = 0.5 * (1 + e);
+    }
+    return result;
+  }
+  
 }

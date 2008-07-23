@@ -27,6 +27,11 @@ namespace RMOL {
     static void optimalOptimisationByDP (const ResourceCapacity_T,
                                          BucketHolder&,
                                          BidPriceVector_T&);
+
+    /**
+     Compute the cdf_Q of a gaussian.
+     */
+    static double cdfGaussianQ (const double, const double);
   };
 }
 #endif // __RMOL_BOM_DPOPTIMISER_HPP
