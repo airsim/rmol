@@ -5,6 +5,7 @@
 #include <gsl/gsl_cdf.h>
 // C
 #include <math.h>
+#include <assert.h>
 // RMOL
 #include <rmol/bom/EmsrUtils.hpp>
 #include <rmol/bom/Bucket.hpp>
@@ -27,9 +28,11 @@ namespace RMOL {
     const double lNewMean = lAggregatedMean + lCurrentMean;
     const double lNewSD =
       sqrt(lAggregatedSD*lAggregatedSD + lCurrentSD*lCurrentSD);
-    const double lNewAverageYield = (lAggregatedAverageYield*lAggregatedMean +
-                                     lCurrentAverageYield*lCurrentMean)/lNewMean;
-
+    double lNewAverageYield = lCurrentAverageYield;
+    if (lNewMean > 0) {
+      lNewAverageYield = (lAggregatedAverageYield*lAggregatedMean +
+                          lCurrentAverageYield*lCurrentMean)/lNewMean;
+    } 
     // Set the new yield range for the new aggregated class/bucket.
     ioAggregatedBucket.setYieldRange(lNewAverageYield);
 
@@ -47,11 +50,12 @@ namespace RMOL {
     const double lSD = ioAggregatedBucket.getStandardDeviation();
     const double lAggreatedYield = ioAggregatedBucket.getAverageYield();
     const double lNextYield = ioNextBucket.getAverageYield();
+    assert (lAggreatedYield != 0);
     
     // Compute the protection for the aggregated class/bucket
     const double lProtection = 
       lMean + gsl_cdf_gaussian_Qinv (lNextYield/lAggreatedYield, lSD);
-
+    
     return lProtection;
   }
 
