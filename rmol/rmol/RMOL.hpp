@@ -29,22 +29,40 @@ namespace RMOL {
     /** Read the input data from a file. */
     void readFromInputFile (const std::string& iInputFileName);
 
-    /** */
+    /** Single resource optimization using the Monte Carlo algorithm. */
     void optimalOptimisationByMCIntegration (const int K);
 
-    /** */
+    /** Single resource optimization that uses Monte-Carlo algorithm and
+        returns a vector of cumulated booking limits. */
+    void optimalOptimisationByMCIntegration (const int K,
+                                               BookingLimitVector_T&);
+
+    /** Single resource optimization using dynamic programming. */
     void optimalOptimisationByDP ();
 
-    /** */
+    /** Single resource optimization that uses dynamic programming and
+        returns a vector of cumulated booking limits. */
+    void optimalOptimisationByDP (BookingLimitVector_T&);
+
+    /** Single resource optimization using EMSR heuristic. */
     void heuristicOptimisationByEmsr ();
+
+    /** Single resource optimization that uses EMSR heuristic and
+        returns a vector of cumulated booking limits. */
+    void heuristicOptimisationByEmsr (BookingLimitVector_T&);
     
-    /** */
+    /** Single resource optimization using EMSR-a heuristic. */
     void heuristicOptimisationByEmsrA ();
+
+    /** Single resource optimization that uses EMSR-a heuristic and
+        returns a vector of cumulated booking limits. */
+    void heuristicOptimisationByEmsrA (BookingLimitVector_T&);
     
-    /** */
+    /** Single resource optimization using EMSR-b heuristic. */
     void heuristicOptimisationByEmsrB ();
 
-    /** */
+    /** Single resource optimization that uses EMSR-b heuristic and
+        returns a vector of cumulated booking limits. */
     void heuristicOptimisationByEmsrB (BookingLimitVector_T&);
 
   private:

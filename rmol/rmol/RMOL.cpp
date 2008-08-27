@@ -74,6 +74,23 @@ namespace RMOL {
 
   // //////////////////////////////////////////////////////////////////////
   void RMOL::
+  optimalOptimisationByMCIntegration (const int K,
+                                      BookingLimitVector_T& ioBookingLimitVector) {
+    
+    assert (_context != NULL);
+    const double iCapacity = _context->getCapacity();
+    BucketHolder* ioBucketHolder_ptr = _context->getBucketHolder();
+    assert (ioBucketHolder_ptr != NULL);
+
+    Optimiser::optimalOptimisationByMCIntegration (K, iCapacity, 
+                                                   *ioBucketHolder_ptr);
+
+    // Fill up booking vector
+    ioBucketHolder_ptr->fillup(ioBookingLimitVector);
+  }
+
+  // //////////////////////////////////////////////////////////////////////
+  void RMOL::
   optimalOptimisationByDP () {
     
     assert (_context != NULL);
@@ -85,6 +102,21 @@ namespace RMOL {
 
     // Display
     ioBucketHolder_ptr->display();
+  }
+
+  // //////////////////////////////////////////////////////////////////////
+  void RMOL::
+  optimalOptimisationByDP (BookingLimitVector_T& ioBookingLimitVector) {
+    
+    assert (_context != NULL);
+    const double iCapacity = _context->getCapacity();
+    BucketHolder* ioBucketHolder_ptr = _context->getBucketHolder();
+    assert (ioBucketHolder_ptr != NULL);
+
+    Optimiser::optimalOptimisationByDP (iCapacity, *ioBucketHolder_ptr);
+
+    // Fill up booking vector
+    ioBucketHolder_ptr->fillup(ioBookingLimitVector);
   }
   
   // //////////////////////////////////////////////////////////////////////
@@ -101,6 +133,19 @@ namespace RMOL {
   }
 
   // //////////////////////////////////////////////////////////////////////
+  void RMOL::heuristicOptimisationByEmsr (BookingLimitVector_T& ioBookingLimitVector) {
+    assert (_context != NULL);
+    const double iCapacity = _context->getCapacity();
+    BucketHolder* ioBucketHolder_ptr = _context->getBucketHolder();
+    assert (ioBucketHolder_ptr != NULL);
+
+    Optimiser::heuristicOptimisationByEmsr (iCapacity, *ioBucketHolder_ptr);
+
+    // Fill up booking vector
+    ioBucketHolder_ptr->fillup(ioBookingLimitVector);
+  }
+
+  // //////////////////////////////////////////////////////////////////////
   void RMOL::heuristicOptimisationByEmsrA () {
     assert (_context != NULL);
     const double iCapacity = _context->getCapacity();
@@ -111,6 +156,19 @@ namespace RMOL {
 
     // Display
     ioBucketHolder_ptr->display();
+  }
+
+  // //////////////////////////////////////////////////////////////////////
+  void RMOL::heuristicOptimisationByEmsrA (BookingLimitVector_T& ioBookingLimitVector) {
+    assert (_context != NULL);
+    const double iCapacity = _context->getCapacity();
+    BucketHolder* ioBucketHolder_ptr = _context->getBucketHolder();
+    assert (ioBucketHolder_ptr != NULL);
+
+    Optimiser::heuristicOptimisationByEmsrA (iCapacity, *ioBucketHolder_ptr);
+
+    // Fill up booking vector
+    ioBucketHolder_ptr->fillup(ioBookingLimitVector);
   }
   
   // //////////////////////////////////////////////////////////////////////
