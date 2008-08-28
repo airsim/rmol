@@ -90,6 +90,8 @@ namespace RMOL {
         i.e., n corresponds to the number of classes/buckets.
     */
     ioBucketHolder.begin();
+    Bucket& firstBucket = ioBucketHolder.getCurrentBucket();
+    firstBucket.setCumulatedBookingLimit (iCabinCapacity);
     for (short j = 1; j <= nbOfClasses - 1; j++, ioBucketHolder.iterate()) {
       Bucket& nextBucket = ioBucketHolder.getNextBucket();
 
@@ -160,6 +162,8 @@ namespace RMOL {
         i.e., n corresponds to the number of classes/buckets.
     */
     ioBucketHolder.begin();
+    Bucket& firstBucket = ioBucketHolder.getCurrentBucket();
+    firstBucket.setCumulatedBookingLimit (iCabinCapacity);
     for (short j = 1; j <= nbOfClasses - 1; j++, ioBucketHolder.iterate()) {
       Bucket& currentBucket = ioBucketHolder.getCurrentBucket();
       Bucket& nextBucket = ioBucketHolder.getNextBucket();

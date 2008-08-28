@@ -35,7 +35,7 @@ namespace RMOL {
     /** Single resource optimization that uses Monte-Carlo algorithm and
         returns a vector of cumulated booking limits. */
     void optimalOptimisationByMCIntegration (const int K,
-                                               BookingLimitVector_T&);
+                                             BookingLimitVector_T&);
 
     /** Single resource optimization using dynamic programming. */
     void optimalOptimisationByDP ();
