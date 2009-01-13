@@ -50,6 +50,7 @@ AC_ARG_WITH(@PACKAGE@,
 #	AC_MSG_RESULT([ok (set to ${BOOST_CFLAGS})])
 #  fi
 
+#  AC_MSG_CHECKING(for BOOST_DATE_TIME_LIB environment variable)
 #  if test x"${BOOST_DATE_TIME_LIB}" = x; then
 #	AC_MSG_RESULT([Warning: @PACKAGE_NAME@ needs Boost Date-Time library, and the BOOST_DATE_TIME_LIB environment variable does not appears to be set. The @PACKAGE_NAME@ may fail to link.])
 #	else

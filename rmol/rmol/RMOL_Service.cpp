@@ -13,37 +13,37 @@
 #include <rmol/factory/FacServiceContext.hpp>
 #include <rmol/command/Optimiser.hpp>
 #include <rmol/service/ServiceContext.hpp>
-#include <rmol/RMOL.hpp>
+#include <rmol/RMOL_Service.hpp>
 
 namespace RMOL {
 
   // //////////////////////////////////////////////////////////////////////
-  RMOL::RMOL () :
+  RMOL_Service::RMOL_Service () :
     _context (NULL) {
   }
 
   // //////////////////////////////////////////////////////////////////////
-  RMOL::RMOL (const RMOL& iService) :
+  RMOL_Service::RMOL_Service (const RMOL_Service& iService) :
     _context (NULL) {
   }
 
   // //////////////////////////////////////////////////////////////////////
-  RMOL::RMOL (const ResourceCapacity_T iResourceCapacity) {
+  RMOL_Service::RMOL_Service (const ResourceCapacity_T iResourceCapacity) {
     // Initialise the context
     initContext (iResourceCapacity);
   }
 
   // //////////////////////////////////////////////////////////////////////
-  RMOL::~RMOL () {
+  RMOL_Service::~RMOL_Service () {
   }
 
   // //////////////////////////////////////////////////////////////////////
-  void RMOL::initContext (const ResourceCapacity_T iResourceCapacity) {
+  void RMOL_Service::initContext (const ResourceCapacity_T iResourceCapacity) {
     _context = &FacServiceContext::instance().create (iResourceCapacity);
   }
 
   // //////////////////////////////////////////////////////////////////////
-  void RMOL::addBucket (const double iYieldRange, 
+  void RMOL_Service::addBucket (const double iYieldRange, 
                                 const double iDemandMean,
                                 const double iDemandStandardDev) {
     assert (_context != NULL);
@@ -51,13 +51,13 @@ namespace RMOL {
   }
 
   // //////////////////////////////////////////////////////////////////////
-  void RMOL::readFromInputFile (const std::string& iInputFileName) {
+  void RMOL_Service::readFromInputFile (const std::string& iInputFileName) {
     assert (_context != NULL);
     _context->readFromInputFile (iInputFileName);
   }
 
   // //////////////////////////////////////////////////////////////////////
-  void RMOL::
+  void RMOL_Service::
   optimalOptimisationByMCIntegration (const int K) {
     
     assert (_context != NULL);
@@ -73,7 +73,7 @@ namespace RMOL {
   }
 
   // //////////////////////////////////////////////////////////////////////
-  void RMOL::
+  void RMOL_Service::
   optimalOptimisationByMCIntegration (const int K,
                                       BookingLimitVector_T& ioBookingLimitVector) {
     
@@ -90,7 +90,7 @@ namespace RMOL {
   }
 
   // //////////////////////////////////////////////////////////////////////
-  void RMOL::
+  void RMOL_Service::
   optimalOptimisationByDP () {
     
     assert (_context != NULL);
@@ -105,7 +105,7 @@ namespace RMOL {
   }
 
   // //////////////////////////////////////////////////////////////////////
-  void RMOL::
+  void RMOL_Service::
   optimalOptimisationByDP (BookingLimitVector_T& ioBookingLimitVector) {
     
     assert (_context != NULL);
@@ -120,7 +120,7 @@ namespace RMOL {
   }
   
   // //////////////////////////////////////////////////////////////////////
-  void RMOL::heuristicOptimisationByEmsr () {
+  void RMOL_Service::heuristicOptimisationByEmsr () {
     assert (_context != NULL);
     const double iCapacity = _context->getCapacity();
     BucketHolder* ioBucketHolder_ptr = _context->getBucketHolder();
@@ -133,7 +133,8 @@ namespace RMOL {
   }
 
   // //////////////////////////////////////////////////////////////////////
-  void RMOL::heuristicOptimisationByEmsr (BookingLimitVector_T& ioBookingLimitVector) {
+  void RMOL_Service::
+  heuristicOptimisationByEmsr (BookingLimitVector_T& ioBookingLimitVector) {
     assert (_context != NULL);
     const double iCapacity = _context->getCapacity();
     BucketHolder* ioBucketHolder_ptr = _context->getBucketHolder();
@@ -146,7 +147,7 @@ namespace RMOL {
   }
 
   // //////////////////////////////////////////////////////////////////////
-  void RMOL::heuristicOptimisationByEmsrA () {
+  void RMOL_Service::heuristicOptimisationByEmsrA () {
     assert (_context != NULL);
     const double iCapacity = _context->getCapacity();
     BucketHolder* ioBucketHolder_ptr = _context->getBucketHolder();
@@ -159,7 +160,8 @@ namespace RMOL {
   }
 
   // //////////////////////////////////////////////////////////////////////
-  void RMOL::heuristicOptimisationByEmsrA (BookingLimitVector_T& ioBookingLimitVector) {
+  void RMOL_Service::
+  heuristicOptimisationByEmsrA (BookingLimitVector_T& ioBookingLimitVector) {
     assert (_context != NULL);
     const double iCapacity = _context->getCapacity();
     BucketHolder* ioBucketHolder_ptr = _context->getBucketHolder();
@@ -172,7 +174,7 @@ namespace RMOL {
   }
   
   // //////////////////////////////////////////////////////////////////////
-  void RMOL::heuristicOptimisationByEmsrB () {
+  void RMOL_Service::heuristicOptimisationByEmsrB () {
     assert (_context != NULL);
     const double iCapacity = _context->getCapacity();
     BucketHolder* ioBucketHolder_ptr = _context->getBucketHolder();
@@ -185,7 +187,8 @@ namespace RMOL {
   }
 
   // //////////////////////////////////////////////////////////////////////
-  void RMOL::heuristicOptimisationByEmsrB (BookingLimitVector_T& ioBookingLimitVector) {
+  void RMOL_Service::
+  heuristicOptimisationByEmsrB (BookingLimitVector_T& ioBookingLimitVector) {
     assert (_context != NULL);
     const double iCapacity = _context->getCapacity();
     BucketHolder* ioBucketHolder_ptr = _context->getBucketHolder();

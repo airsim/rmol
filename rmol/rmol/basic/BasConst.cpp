@@ -14,7 +14,7 @@ namespace RMOL {
   /** Default value for the precision of the integral computation in
       the Dynamic Programming algorithm (100 means that the precision
       will be 0.01). */
-  const int DEFAULT_PRECISION = 100;
+  const int DEFAULT_PRECISION = 10;
   
   /** Default value for the load factor used for overbooking calculation. */
   const double DEFAULT_OVERBOOKING_LOAD_FACTOR = 0.0;

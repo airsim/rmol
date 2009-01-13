@@ -188,7 +188,7 @@ namespace RMOL {
       currentBucket.setCumulatedProtection (realProtection);
       nextBucket.setCumulatedBookingLimit (bookingLimit);
 
-      currentProtection = nextProtection;
+      currentProtection = static_cast<int> (std::floor (nextProtection));
       
       ioBucketHolder.iterate();
       ++currentBucketIndex;

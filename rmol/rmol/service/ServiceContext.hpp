@@ -20,7 +20,7 @@ namespace RMOL {
     /** The RMOL_Service class should be the sole class to get access to
         ServiceContext content: general users do not want to bother
         with a context interface. */
-    friend class RMOL;
+    friend class RMOL_Service;
     friend class FacServiceContext;
 
   private:
