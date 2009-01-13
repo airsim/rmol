@@ -2,7 +2,7 @@
 #include <iostream>
 #include <sstream>
 // RMOL
-#include <rmol/RMOL.hpp>
+#include <rmol/RMOL_Service.hpp>
 
 
 // M A I N
@@ -45,7 +45,7 @@ int main (int argc, char* argv[]) {
     }
     
     // Initialise the list of classes/buckets
-    RMOL::RMOL rmolService (cabinCapacity);
+    RMOL::RMOL_Service rmolService (cabinCapacity);
     
     if (hasInputFile) {
       // Read the input file
