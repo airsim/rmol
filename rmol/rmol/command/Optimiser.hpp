@@ -47,7 +47,8 @@ namespace RMOL {
 	overbooking.
      */
     static void heuristicOptimisationByEmsr (const ResourceCapacity_T,
-                                             BucketHolder&);
+                                             BucketHolder&,
+                                             BidPriceVector_T&);
 
     /**
        EMRS-a algorithm.

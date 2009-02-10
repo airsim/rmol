@@ -3,6 +3,8 @@
 // //////////////////////////////////////////////////////////////////////
 // C
 #include <assert.h>
+// STL
+#include <iomanip>
 // RMOL
 #include <rmol/basic/BasConst_RMOL_Service.hpp>
 #include <rmol/field/FldYieldRange.hpp>
@@ -125,25 +127,35 @@ namespace RMOL {
     const double iCapacity = _context->getCapacity();
     BucketHolder* ioBucketHolder_ptr = _context->getBucketHolder();
     assert (ioBucketHolder_ptr != NULL);
+    BidPriceVector_T lBidPriceVector;
 
-    Optimiser::heuristicOptimisationByEmsr (iCapacity, *ioBucketHolder_ptr);
+    Optimiser::heuristicOptimisationByEmsr (iCapacity, *ioBucketHolder_ptr,
+                                            lBidPriceVector);
 
     // Display
     ioBucketHolder_ptr->display();
+    
+    std::cout << "BVP: ";
+    unsigned int size = lBidPriceVector.size();
+
+    for (unsigned int i = 0; i < size; ++i) {
+      const double bidPrice = lBidPriceVector.at(i);
+      std::cout << std::fixed << std::setprecision (2) << bidPrice << " ";
+    }
+    std::cout << std::endl;
+    
   }
 
   // //////////////////////////////////////////////////////////////////////
   void RMOL_Service::
-  heuristicOptimisationByEmsr (BookingLimitVector_T& ioBookingLimitVector) {
+  heuristicOptimisationByEmsr (BidPriceVector_T& ioBidPriceVector) {
     assert (_context != NULL);
     const double iCapacity = _context->getCapacity();
     BucketHolder* ioBucketHolder_ptr = _context->getBucketHolder();
     assert (ioBucketHolder_ptr != NULL);
 
-    Optimiser::heuristicOptimisationByEmsr (iCapacity, *ioBucketHolder_ptr);
-
-    // Fill up booking vector
-    ioBucketHolder_ptr->fillup(ioBookingLimitVector);
+    Optimiser::heuristicOptimisationByEmsr (iCapacity, *ioBucketHolder_ptr,
+                                            ioBidPriceVector);
   }
 
   // //////////////////////////////////////////////////////////////////////

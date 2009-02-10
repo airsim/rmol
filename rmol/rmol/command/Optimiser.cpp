@@ -79,19 +79,11 @@ namespace RMOL {
   // //////////////////////////////////////////////////////////////////////
   void Optimiser::
   heuristicOptimisationByEmsr (const ResourceCapacity_T iCabinCapacity,
-                               BucketHolder& ioBucketHolder) {
-    BidPriceVector_T lBidPriceVector;
+                               BucketHolder& ioBucketHolder,
+                               BidPriceVector_T& ioBidPriceVector) {
     Emsr::heuristicOptimisationByEmsr (iCabinCapacity,
                                        ioBucketHolder,
-                                       lBidPriceVector);
-    std::cout << "BVP: ";
-    unsigned int size = lBidPriceVector.size();
-
-    for (unsigned int i = 0; i < size; ++i) {
-      const double bidPrice = lBidPriceVector.at(i);
-      std::cout << std::fixed << std::setprecision (2) << bidPrice << " ";
-    }
-    std::cout << std::endl;
+                                       ioBidPriceVector);
   }
 
   // //////////////////////////////////////////////////////////////////////
