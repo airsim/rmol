@@ -7,27 +7,26 @@ namespace RMOL {
 
   // //////////////////////////////////////////////////////////////////////
   Demand::Demand () :
-    _distributionParameters (FldDistributionParameters()), 
-    _yieldRange (FldYieldRange()) {
+    _yieldRange (FldYieldRange()),
+    _distributionParameters (FldDistributionParameters()) {
   }
 
   // //////////////////////////////////////////////////////////////////////
   Demand::Demand (const Demand& iDemand) :
-    _distributionParameters (iDemand.getDistributionParameters()),
-    _yieldRange (iDemand.getYieldRange()) {
+    _yieldRange (iDemand.getYieldRange()),
+    _distributionParameters (iDemand.getDistributionParameters()) {
   }
 
   // //////////////////////////////////////////////////////////////////////
   Demand::Demand (const FldDistributionParameters& iDistributionParameters,
 		  const FldYieldRange& iYieldRange) :
-    _distributionParameters (iDistributionParameters),
-    _yieldRange (iYieldRange) {
+    _yieldRange (iYieldRange),
+    _distributionParameters (iDistributionParameters) {
   }
 
   // //////////////////////////////////////////////////////////////////////
   Demand::~Demand() {
   }
-  
 
   // //////////////////////////////////////////////////////////////////////
   double Demand::getUpperYield() const {

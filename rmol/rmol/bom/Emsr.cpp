@@ -49,7 +49,9 @@ namespace RMOL {
     lEmsrValueList.sort();
     lEmsrValueList.reverse();
 
-    assert (lEmsrValueList.size() >= lCabinCapacity);
+    // Sanity check
+    const int lEmsrValueListSize = lEmsrValueList.size();
+    assert (lEmsrValueListSize >= lCabinCapacity);
 
     // Copy the EMSR sorted values to the BPV.
     EmsrValueList_T::iterator currentValue = lEmsrValueList.begin();

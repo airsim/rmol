@@ -1,30 +1,21 @@
-Name: @PACKAGE@
-Summary: @PACKAGE_NAME@ is a C++ library of Revenue Management and Optimisation classes and functions. Typically, the service providers (like, e.g., airlines, hotels or car rental companies) may use that library to help them optimise their revenues from their seat capacities.
-Packager: Denis Arnaud <denis_arnaud@users.sourceforge.net>
-%define version @VERSION@
-%define release @RPM_RELEASE@
-Version: %{version}
-Release: %{release}
-License: LGPL
-Vendor: The RMOL Team
-Distribution: Research Software
-Source: http://download.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
-Group: System Environment/Libraries
-URL: http://%{name}.sourceforge.net/
-Requires: gsl-devel >= 1.8
-#Requires: gsl >= 1.8
+Name:           @PACKAGE@
+Version:        0.17.0
+Release:        0.dev.1
+Summary:        @PACKAGE_NAME@ is a C++ library of Revenue Management and Optimisation classes and functions. Typically, the service providers (like, e.g., airlines, hotels or car rental companies) may use that library to help them optimise their revenues from their seat capacities. 
 
-Prefix: %{_prefix}
+Group:          System Environment/Libraries 
+License:        LGPL
+URL:            http://%{name}.sourceforge.net
+Source0:        http://download.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRoot: %{_tmppath}/%{name}-%{version}-buildroot
-BuildRequires: gsl-devel >= 1.8
-BuildRequires: gettext, autoconf >= 2.58, automake >= 1.8
+BuildRequires:  gsl-devel >= 1.8
+BuildRequires:  boost-devel >= 1.34
+#Requires:       
 
-Prereq: /sbin/install-info
-
-%description 
-RMOL is a C++ library of Revenue Management and Optimisation classes and
-functions. Typically, that library may be used by service providers
+%description
+@PACKAGE_NAME@ is a C++ library of Revenue Management and Optimisation classes 
+and functions. Typically, that library may be used by service providers
 (e.g., airlines offering flight seats, hotels offering rooms, rental car
 companies offering rental days, broadcasting company offering advertisement 
 slots, theaters offering seats, etc.).
@@ -33,59 +24,45 @@ book:
 The Theory and practice of Revenue Management, by Kalyan T. Talluri and
 Garrett J. van Ryzin, Kluwer Academic Publishers, 2004, ISBN 1-4020-7701-7
 
-Install the rmol package if you need a library for high-level
+Install the @PACKAGE@ package if you need a library for high-level
 revenue management functionality.
 
-%package devel
-Summary: Static libraries and header files for RMOL development.
-Group: Development/Libraries
-Requires: %{name} = %{version}
+%package        devel
+Summary:        Headers and libraries for building apps that use @PACKAGE_NAME@
+Group:          Development/Libraries
+Requires:       %{name} = %{version}-%{release}
 
-%description devel
-
-The rmol-devel package contains the header files and static libraries
-necessary for developing programs using the GSL (GNU Scientific
-Library).
+%description    devel
+This package contains headers and libraries required to build applications that
+use @PACKAGE_NAME@.
 
 %package html-doc
 Summary: HTML documentation for the @PACKAGE_NAME@ library
 Group: System Environment/Libraries
 
 %description html-doc
-This package contains the documentation in the HTML format of the RMOL
-library. The documentation is the same as at the RMOL web page.
+This package contains the documentation in the HTML format of the @PACKAGE_NAME@
+library. The documentation is the same as at the @PACKAGE_NAME@ web page.
+
 
 %prep
 %setup -q
 
+
 %build
-%configure --enable-static --with-gsl-prefix=/nastools/gsl --with-docdir=%{_docdir}/%{name}-html-doc
-make
+%configure --enable-static --with-docdir=%{_docdir}/%{name}-%{version}-html-doc
+make %{?_smp_mflags}
+
 
 %install
-[ "$RPM_BUILD_ROOT" != "/" ] && rm -rf $RPM_BUILD_ROOT
-make DESTDIR=$RPM_BUILD_ROOT install
-%find_lang %{name}
-
+rm -rf $RPM_BUILD_ROOT
+make install DESTDIR=$RPM_BUILD_ROOT
+#%find_lang %{name}
 # remove unpackaged files from the buildroot
 rm -f $RPM_BUILD_ROOT%{_infodir}/dir
-rm -rf $RPM_BUILD_ROOT%{_mandir}
-rm -rf $RPM_BUILD_ROOT%{_sysconfdir}
-rm -rf $RPM_BUILD_ROOT%{_libdir}/pkgconfig
 
-rmolcsuffix=`echo "%{_libdir}" | sed s,/usr/,,`
-mv $RPM_BUILD_ROOT%{_bindir}/%{name}-config $RPM_BUILD_ROOT%{_bindir}/%{name}-config-$rmolcsuffix
-cat > $RPM_BUILD_ROOT%{_bindir}/%{name}-config << EOF
-#!/bin/sh
-if [ -e %{_bindir}/%{name}-config-lib64 ]; then
-  exec %{_bindir}/%{name}-config-lib64 "\$@"
-elif [ -e %{_bindir}/%{name}-config-* ]; then
-  rmolcfile="\`ls %{_bindir}/%{name}-config-* | head -n1\`"
-  exec \$rmolcfile "\$@" 
-fi
-EOF
-chmod 755 $RPM_BUILD_ROOT%{_bindir}/%{name}-config
-
+%clean
+rm -rf $RPM_BUILD_ROOT
 
 %post -p /sbin/ldconfig
 
@@ -96,37 +73,35 @@ chmod 755 $RPM_BUILD_ROOT%{_bindir}/%{name}-config
 
 %preun devel 
 if [ "$1" = 0 ]; then
-    /sbin/install-info --delete %{_infodir}/%{name}-ref.info.gz %{_infodir}/dir
+   /sbin/install-info --delete %{_infodir}/%{name}-ref.info.gz %{_infodir}/dir
 fi
 
-%clean
-rm -rf $RPM_BUILD_ROOT
-
-%files -f %{name}.lang
-%defattr(-,root,root)
-%doc ABOUT-NLS AUTHORS COPYING ChangeLog INSTALL NEWS README TODO
-%{_libdir}/*so.*
-#%{_datadir}/locale/*/LC_*/*.mo
+%files
+#-f %{name}.lang
+%defattr(-,root,root,-)
+%doc AUTHORS ChangeLog COPYING INSTALL NEWS README
+%{_bindir}/*
+%{_libdir}/lib*.so.*
+#%{_docdir}/%{name}-%{version}/html
+#%{_datadir}/info/dir
+%{_datadir}/man/man3/%{name}.3.gz
 
 %files devel
-%defattr(-,root,root)
-%doc AUTHORS COPYING
-%{_libdir}/*.la
-%{_libdir}/*.a
-%{_libdir}/*.so
-%{_bindir}/%{name}-config*
-%{_datadir}/aclocal/*
+%defattr(-,root,root,-)
+%doc
 %{_includedir}/%{name}
-%{_infodir}/*info*
-# The pkgconfig file cannot be installed. I don't understand why. Help needed!
-#%{_libdir}/pkgconfig/%{name}.pc
-# If you find a way to install the man pages from within rpmbuild, don't
-# hesitate!
-#%{_mandir}/man*/*
+%{_libdir}/lib*.a
+%{_libdir}/lib*.la
+%{_libdir}/lib*.so
+%{_libdir}/pkgconfig/%{name}.pc
+%{_datadir}/aclocal/%{name}.m4
+%{_datadir}/info/%{name}-ref.info.gz
+%{_datadir}/man/man1/%{name}-config.1.gz
 
 %files html-doc
-%doc %{_docdir}/%{name}-html-doc
+%doc %{_docdir}/%{name}-%{version}-html-doc
 
 %changelog
-* Sat Jan 27 2007  Denis Arnaud <denis_arnaud@users.sourceforge.net>
-- Initial spec file prepared
+ * Wed Mar  4 2009 Denis Arnaud <denis.arnaud_fedora@m4x.org> %{version}.dev.1
+ - Second RPM release
+

@@ -48,7 +48,7 @@ namespace RMOL {
       bool protectionChanged = false;
       double nextProtection = 0.0;
       std::vector<double> currentMERVector;
-      double testGradient = 10000;
+      // double testGradient = 10000;
       
       Bucket& currentBucket = ioBucketHolder.getCurrentBucket();
       const double meanDemand = currentBucket.getMean();
