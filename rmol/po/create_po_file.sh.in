@@ -1,0 +1,5 @@
+#!/bin/sh
+
+find ../rmol -name '*.[ch]pp' > sources_for_po.txt
+xgettext -d rmol -a -f sources_for_po.txt
+

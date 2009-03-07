@@ -9,8 +9,10 @@ URL:            http://%{name}.sourceforge.net
 Source0:        http://download.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:  gsl-devel >= 1.8
-BuildRequires:  boost-devel >= 1.34
+BuildRequires:	gsl-devel >= 1.8
+BuildRequires:	boost-devel >= 1.34
+BuildRequires:	gettext >= 0.14
+BuildRequires:	gettext-devel >= 0.14
 #Requires:       
 
 %description
@@ -79,7 +81,7 @@ fi
 %files -f %{name}.lang
 %defattr(-,root,root,-)
 %doc AUTHORS ChangeLog COPYING INSTALL NEWS README
-%{_bindir}/*
+%{_bindir}/%{name}
 %{_libdir}/lib*.so.*
 #%{_docdir}/%{name}-%{version}/html
 #%{_datadir}/info/dir
@@ -89,6 +91,7 @@ fi
 %defattr(-,root,root,-)
 %doc
 %{_includedir}/%{name}
+%{_bindir}/%{name}-config
 %{_libdir}/lib*.a
 %{_libdir}/lib*.la
 %{_libdir}/lib*.so

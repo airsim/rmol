@@ -135,7 +135,7 @@ namespace RMOL {
     // Display
     ioBucketHolder_ptr->display();
     
-    std::cout << "BVP: ";
+    std::cout << "Bid-Price Vector (BPV): ";
     unsigned int size = lBidPriceVector.size();
 
     for (unsigned int i = 0; i < size; ++i) {

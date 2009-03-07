@@ -146,9 +146,12 @@ AC_SUBST(GSL_LIBS)
 # Boost (STL Extensions: http://www.boost.org)
 # --------------------------------------------------------
 AX_BOOST([1.33])
+AC_SUBST(BOOST_VERSION)
 AC_SUBST(BOOST_CFLAGS)
 AC_SUBST(BOOST_LIBS)
 AC_SUBST(BOOST_DATE_TIME_LIB)
+AC_SUBST(BOOST_PROGRAM_OPTIONS_LIB)
+AC_SUBST(BOOST_FILESYSTEM_LIB)
 
 
 # Checks for documentation build tools
@@ -313,6 +316,7 @@ AC_CONFIG_FILES(
 	doc/doxygen_html.cfg
 	doc/sourceforge/howto_release_rmol.html
 	po/Makefile.in
+	po/create_po_file.sh
 	test/Makefile
 	win32/Makefile)
 AC_OUTPUT
@@ -323,52 +327,54 @@ $PACKAGE-$VERSION library configuration:
 ------------------------------------------------------------------------------
 
 Directories:
-  - prefix ......... : ${prefix}
-  - exec_prefix .... : ${exec_prefix}
-  - includedir ..... : ${includedir}
-  - libdir ......... : ${libdir}
-  - docdir ......... : ${docdir}
-  - mandir ......... : ${mandir}
-  - infodir ........ : ${infodir}
+  - prefix ............ : ${prefix}
+  - exec_prefix ....... : ${exec_prefix}
+  - includedir ........ : ${includedir}
+  - libdir ............ : ${libdir}
+  - docdir ............ : ${docdir}
+  - mandir ............ : ${mandir}
+  - infodir ........... : ${infodir}
 
 Switches:
-  - debug .......... : ${enable_debug}
-  - exceptions ..... : ${enable_exceptions}
-  - info-doc ....... : ${enable_info_doc}
-  - html-doc ....... : ${enable_html_doc}
-  - shared ......... : ${enable_shared}
-  - static ......... : ${enable_static}
+  - debug ............. : ${enable_debug}
+  - exceptions ........ : ${enable_exceptions}
+  - info-doc .......... : ${enable_info_doc}
+  - html-doc .......... : ${enable_html_doc}
+  - shared ............ : ${enable_shared}
+  - static ............ : ${enable_static}
 
 Documentation tools:
-  - texinfo ........ : ${texinfo_ok}
-  - doxygen ........ : ${doxygen_ok}
-  - latex .......... : ${latex_ok}
-  - dvips .......... : ${dvips_ok}
-  - ghostscript .... : ${gs_ok}
+  - texinfo ........... : ${texinfo_ok}
+  - doxygen ........... : ${doxygen_ok}
+  - latex ............. : ${latex_ok}
+  - dvips ............. : ${dvips_ok}
+  - ghostscript ....... : ${gs_ok}
 
 Testing tools:
-  - diff ........... : ${diff_ok}
-  - sed ............ : ${sed_ok}
+  - diff .............. : ${diff_ok}
+  - sed ............... : ${sed_ok}
 
 Compiler/linker flags/libs/defs:
-  - CXX ............ : ${CXX}
-  - CXXFLAGS ....... : ${CXXFLAGS_OPT}
-  - CXXFLAGS_DEBUG . : ${CXXFLAGS_DEBUG}
-  - CPPFLAGS ....... : ${CPPFLAGS}
-  - LDFLAGS ........ : ${LDFLAGS}
-  - LIBS ........... : ${LIBS}
+  - CXX ............... : ${CXX}
+  - CXXFLAGS .......... : ${CXXFLAGS_OPT}
+  - CXXFLAGS_DEBUG .... : ${CXXFLAGS_DEBUG}
+  - CPPFLAGS .......... : ${CPPFLAGS}
+  - LDFLAGS ........... : ${LDFLAGS}
+  - LIBS .............. : ${LIBS}
 
 External libraries:
-  - GSL ............ : ${GSL_CONFIG}
-    o GSL_VERSION .. : ${GSL_VERSION}
-    o GSL_CFLAGS ... : ${GSL_CFLAGS}
-    o GSL_LIBS ..... : ${GSL_LIBS}
+  - GSL ............... : ${GSL_CONFIG}
+    o GSL_VERSION ..... : ${GSL_VERSION}
+    o GSL_CFLAGS ...... : ${GSL_CFLAGS}
+    o GSL_LIBS ........ : ${GSL_LIBS}
 
-  - Boost .......... :
-    o BOOST_VERSION. : ${boost_lib_version_shorten}
-    o BOOST_CFLAGS . : ${BOOST_CFLAGS}
-    o BOOST_LIBS ... : ${BOOST_LIBS}
-    o BOOST_DT_LIB . : ${BOOST_DATE_TIME_LIB}
+  - Boost ............. :
+    o BOOST_VERSION ... : ${BOOST_VERSION}
+    o BOOST_CFLAGS .... : ${BOOST_CFLAGS}
+    o BOOST_LIBS ...... : ${BOOST_LIBS}
+    o BOOST_DT_LIB .... : ${BOOST_DATE_TIME_LIB}
+    o BOOST_PO_LIB .... : ${BOOST_PROGRAM_OPTIONS_LIB}
+    o BOOST_FS_LIB .... : ${BOOST_FILESYSTEM_LIB}
 
 ------------------------------------------------------------------------------
 Now type 'make && make install' to build and install $PACKAGE-$VERSION library
