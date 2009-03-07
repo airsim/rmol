@@ -287,10 +287,6 @@ AH_BOTTOM([
 ])
 
 
-# I18n
-AM_GNU_GETTEXT([external], [need-formatstring-macros])
-AM_GNU_GETTEXT_VERSION([0.14])
-
 # Define configured files
 AC_CONFIG_FILES(
 	Makefile
@@ -316,7 +312,6 @@ AC_CONFIG_FILES(
 	doc/doxygen_html.cfg
 	doc/sourceforge/howto_release_rmol.html
 	po/Makefile.in
-	po/create_po_file.sh
 	test/Makefile
 	win32/Makefile)
 AC_OUTPUT

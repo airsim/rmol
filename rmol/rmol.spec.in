@@ -1,7 +1,7 @@
 Name:           @PACKAGE@
 Version:        0.17.0
 Release:        0.dev.1
-Summary:        @PACKAGE_NAME@ is a C++ library of Revenue Management and Optimisation classes and functions. Typically, the service providers (like, e.g., airlines, hotels or car rental companies) may use that library to help them optimise their revenues from their seat capacities. 
+Summary:        @PACKAGE_NAME@ is a C++ library of Revenue Management and Optimisation classes and functions.
 
 Group:          System Environment/Libraries 
 License:        LGPL
@@ -11,16 +11,17 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:	gsl-devel >= 1.8
 BuildRequires:	boost-devel >= 1.34
-BuildRequires:	gettext >= 0.14
-BuildRequires:	gettext-devel >= 0.14
 #Requires:       
+
+ Typically, the service providers (like, e.g., airlines, hotels or car rental companies) may use that library to help them 
 
 %description
 @PACKAGE_NAME@ is a C++ library of Revenue Management and Optimisation classes 
 and functions. Typically, that library may be used by service providers
 (e.g., airlines offering flight seats, hotels offering rooms, rental car
 companies offering rental days, broadcasting company offering advertisement 
-slots, theaters offering seats, etc.).
+slots, theaters offering seats, etc.) to help in optimising their revenues from
+seat capacities.
 Most of the algorithms implemented are public and documented in the following
 book:
 The Theory and practice of Revenue Management, by Kalyan T. Talluri and
@@ -59,7 +60,7 @@ make %{?_smp_mflags}
 %install
 rm -rf $RPM_BUILD_ROOT
 make install DESTDIR=$RPM_BUILD_ROOT
-%find_lang %{name}
+#%find_lang %{name}
 # remove unpackaged files from the buildroot
 rm -f $RPM_BUILD_ROOT%{_infodir}/dir
 
@@ -78,7 +79,8 @@ if [ "$1" = 0 ]; then
    /sbin/install-info --delete %{_infodir}/%{name}-ref.info.gz %{_infodir}/dir
 fi
 
-%files -f %{name}.lang
+%files
+# -f %{name}.lang
 %defattr(-,root,root,-)
 %doc AUTHORS ChangeLog COPYING INSTALL NEWS README
 %{_bindir}/%{name}
