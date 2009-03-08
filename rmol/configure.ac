@@ -311,7 +311,6 @@ AC_CONFIG_FILES(
 	doc/local/index.doc
 	doc/doxygen_html.cfg
 	doc/sourceforge/howto_release_rmol.html
-	po/Makefile.in
 	test/Makefile
 	win32/Makefile)
 AC_OUTPUT
