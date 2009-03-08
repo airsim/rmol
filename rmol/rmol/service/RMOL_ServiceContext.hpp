@@ -1,5 +1,5 @@
-#ifndef __RMOL_SVC_SERVICE_CONTEXT_HPP
-#define __RMOL_SVC_SERVICE_CONTEXT_HPP
+#ifndef __RMOL_SVC_RMOL_SERVICE_CONTEXT_HPP
+#define __RMOL_SVC_RMOL_SERVICE_CONTEXT_HPP
 
 // //////////////////////////////////////////////////////////////////////
 // Import section
@@ -16,21 +16,21 @@ namespace RMOL {
   class BucketHolder;
 
   /** Inner class holding the context for the RMOL Service object. */
-  class ServiceContext : public ServiceAbstract {
+  class RMOL_ServiceContext : public ServiceAbstract {
     /** The RMOL_Service class should be the sole class to get access to
         ServiceContext content: general users do not want to bother
         with a context interface. */
     friend class RMOL_Service;
-    friend class FacServiceContext;
+    friend class FacRmolServiceContext;
 
   private:
     /** Constructors. */
-    ServiceContext ();
-    ServiceContext (const ServiceContext&);
-    ServiceContext (const ResourceCapacity_T iResourceCapacity);
+    RMOL_ServiceContext ();
+    RMOL_ServiceContext (const RMOL_ServiceContext&);
+    RMOL_ServiceContext (const ResourceCapacity_T iResourceCapacity);
     void init (const ResourceCapacity_T iResourceCapacity);
     /** Destructor. */
-    ~ServiceContext();
+    ~RMOL_ServiceContext();
 
     /** Set the BucketHolder. */
     void setBucketHolder (BucketHolder* ioBucketHolderPtr) {
@@ -63,4 +63,4 @@ namespace RMOL {
   };
 
 }
-#endif // __RMOL_SVC_SERVICE_CONTEXT_HPP
+#endif // __RMOL_SVC_RMOL_SERVICE_CONTEXT_HPP

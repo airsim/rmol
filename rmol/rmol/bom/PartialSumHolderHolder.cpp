@@ -4,7 +4,8 @@
 // C
 #include <assert.h>
 // STL
-#include <iostream>
+#include <istream>
+#include <ostream>
 // RMOL
 #include <rmol/bom/PartialSumHolder.hpp>
 #include <rmol/bom/PartialSumHolderHolder.hpp>
@@ -21,36 +22,65 @@ namespace RMOL {
   }
 
   // //////////////////////////////////////////////////////////////////////
+  const std::string PartialSumHolderHolder::describeShortKey() const {
+    std::ostringstream oStr;
+    return oStr.str();
+  }
+  
+  // //////////////////////////////////////////////////////////////////////
+  const std::string PartialSumHolderHolder::describeKey() const {
+    return describeShortKey();
+  }
+
+  // //////////////////////////////////////////////////////////////////////
+  std::string PartialSumHolderHolder::toString() const {
+    std::ostringstream oStr;
+    return oStr.str();
+  }   
+
+  // //////////////////////////////////////////////////////////////////////
+  void PartialSumHolderHolder::toStream (std::ostream& ioOut) const {
+    ioOut << toString();
+  }
+  
+  // //////////////////////////////////////////////////////////////////////
+  void PartialSumHolderHolder::fromStream (std::istream& ioIn) {
+  }
+  
+  // //////////////////////////////////////////////////////////////////////
+  const std::string PartialSumHolderHolder::shortDisplay() const {
+    std::ostringstream oStr;
+    oStr << describeKey();
+    return oStr.str();
+  }
+  
+  // //////////////////////////////////////////////////////////////////////
+  const std::string PartialSumHolderHolder::display() const {
+    std::ostringstream oStr;
+    oStr << shortDisplay();
+
+    PartialSumHolderList_T::const_iterator itPartialSumHolder = 
+      _partialSumHolderList.begin();
+    for (short j = 1; itPartialSumHolder != _partialSumHolderList.end(); 
+         itPartialSumHolder++, j++) {
+      const PartialSumHolder* currentPartialSumHolder_ptr = *itPartialSumHolder;
+      assert (currentPartialSumHolder_ptr != NULL);
+      
+      oStr << j << "; " << currentPartialSumHolder_ptr->display();
+    }
+    return oStr.str();
+  }
+
+  // //////////////////////////////////////////////////////////////////////
   const short PartialSumHolderHolder::getSize () const {
     return _partialSumHolderList.size();
   }
 
   // //////////////////////////////////////////////////////////////////////
-  void PartialSumHolderHolder::toStream (std::ostream& ioOut) const {
-    PartialSumHolderList_T::const_iterator itPartialSumHolder = 
-      _partialSumHolderList.begin();
-    for (short j=1; itPartialSumHolder != _partialSumHolderList.end(); 
-	 itPartialSumHolder++, j++) {
-      const PartialSumHolder* currentPartialSumHolder_ptr =
-	*itPartialSumHolder;
-      assert (currentPartialSumHolder_ptr != NULL);
-
-      ioOut << j << "; " << (*currentPartialSumHolder_ptr);
-    }
-  }
-
-  // //////////////////////////////////////////////////////////////////////
-  void PartialSumHolderHolder::display () const {
-    toStream (std::cout);
-  }
-
-  // //////////////////////////////////////////////////////////////////////
   PartialSumHolder& PartialSumHolderHolder::
   getPreviousPartialSumHolder () const {
-    PartialSumHolder* resultPartialSumHolder_ptr = 
-      *_itPreviousPartialSumHolder;
+    PartialSumHolder* resultPartialSumHolder_ptr=  *_itPreviousPartialSumHolder;
     assert (resultPartialSumHolder_ptr != NULL);
-
     return (*resultPartialSumHolder_ptr);
   }
 
@@ -59,7 +89,6 @@ namespace RMOL {
   getCurrentPartialSumHolder () const {
     PartialSumHolder* resultPartialSumHolder_ptr = *_itCurrentPartialSumHolder;
     assert (resultPartialSumHolder_ptr != NULL);
-
     return (*resultPartialSumHolder_ptr);
   }
 

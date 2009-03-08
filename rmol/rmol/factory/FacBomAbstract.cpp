@@ -5,17 +5,17 @@
 #include <assert.h>
 // RMOL
 #include <rmol/bom/BomAbstract.hpp>
-#include <rmol/factory/FacAbstract.hpp>
+#include <rmol/factory/FacBomAbstract.hpp>
 
 namespace RMOL {
   
   // //////////////////////////////////////////////////////////////////////
-  FacAbstract::~FacAbstract() {
+  FacBomAbstract::~FacBomAbstract() {
     clean ();
   }
 
   // //////////////////////////////////////////////////////////////////////
-  void FacAbstract::clean() {
+  void FacBomAbstract::clean() {
     for (BomPool_T::iterator itBom = _pool.begin();
 	 itBom != _pool.end(); itBom++) {
       BomAbstract* currentBom_ptr = *itBom;

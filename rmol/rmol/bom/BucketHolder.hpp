@@ -43,20 +43,9 @@ namespace RMOL {
     /** Get the size of list of buckets/classes. */
     const short getSize () const;
 
-    /** Dump a Business Object into an output stream.
-        @param ostream& the output stream
-        @return ostream& the output stream. */
-    void toStream (std::ostream& ioOut) const;
-
-    /** Display on standard output. */
-    void display () const;
-
     /** Fill up the vector of cumulated booking limits. */
     void fillup (BookingLimitVector_T&) const;
     
-    /** Destructor. */
-    virtual ~BucketHolder();
-
     /** Get the current element (bucket/class). */
     Bucket& getCurrentBucket () const;
 
@@ -88,6 +77,34 @@ namespace RMOL {
         - the booking limits and cumulated booking limits. */
     void recalculate ();
 
+  public:
+    // ///////// Display methods ////////
+    /** Dump a Business Object into an output stream.
+        @param ostream& the output stream. */
+    void toStream (std::ostream&) const;
+
+    /** Read a Business Object from an input stream.
+        @param istream& the input stream. */
+    void fromStream (std::istream&);
+
+    /** Get the serialised version of the Place object. */
+    std::string toString() const;
+
+    /** Get a string describing the whole key (differentiating two objects
+        at any level). */
+    const std::string describeKey() const;
+
+    /** Get a string describing the short key (differentiating two objects
+        at the same level). */
+    const std::string describeShortKey() const;
+    
+    /** Display the full Place context. */
+    const std::string display() const;
+
+    /** Display a short Place context. */
+    const std::string shortDisplay() const;
+
+
   private:
     /** Constructor.
 	<br>Protected to force the use of the Factory. */
@@ -97,6 +114,10 @@ namespace RMOL {
 	<br>Set the cabin capacity.
 	<br>Protected to force the use of the Factory. */
     BucketHolder (const double iCabinCapacity);
+
+    /** Destructor. */
+    virtual ~BucketHolder();
+
 
   private:
     /** The capacity of the cabin associated to the bucket/class list. */

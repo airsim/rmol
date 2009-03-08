@@ -24,9 +24,6 @@ namespace RMOL {
     friend class FacOverbooking;
 
   public:
-    /** Destructor. */
-    virtual ~Overbooking();
-
     // ///////// Getters /////////
     /** Get the overbooking calculation policy. */
     const FldOverbookingPolicy& getPolicy () const {
@@ -52,6 +49,7 @@ namespace RMOL {
     unsigned int getNetBookings () const {
       return _netBookings;
     }
+
 
     /** Get the No-Show Distribution Parameters. */
     FldDistributionParameters getNoShowDistributionParameters () const {
@@ -116,23 +114,56 @@ namespace RMOL {
     }
 
     /** Set the net bookings. */
-    void getNetBookings (const unsigned int iNetBookings) {
+    void setNetBookings (const unsigned int iNetBookings) {
       _netBookings = iNetBookings;
     }
 
-
+    
     // ///////////
     /** This function return the OB% with its standard deviation
         following the given choice of method*/
     FldDistributionParameters getOverbookingCalculation () const;
+    
     /** This function calculates the OB% by the heuristic method */
     FldDistributionParameters calculateHeuristic() const;
+    
     /** This function calculates the OB% by the cost-based method */
     FldDistributionParameters calculateRiskBased() const;
+    
     /** This function calculates the OB% by the service level policies */
     FldDistributionParameters calculateServiceLevel() const;
+    
     /** This function calculates the OB% by the Hybrid policy*/
     FldDistributionParameters calculateHybridPolicy() const;
+
+
+  public:
+    // ///////// Display methods ////////
+    /** Dump a Business Object into an output stream.
+        @param ostream& the output stream. */
+    void toStream (std::ostream&) const;
+
+    /** Read a Business Object from an input stream.
+        @param istream& the input stream. */
+    void fromStream (std::istream&);
+
+    /** Get the serialised version of the Place object. */
+    std::string toString() const;
+
+    /** Get a string describing the whole key (differentiating two objects
+        at any level). */
+    const std::string describeKey() const;
+
+    /** Get a string describing the short key (differentiating two objects
+        at the same level). */
+    const std::string describeShortKey() const;
+    
+    /** Display the full Place context. */
+    const std::string display() const;
+
+    /** Display a short Place context. */
+    const std::string shortDisplay() const;
+
 
   private:
     /** Constructors. 
@@ -141,19 +172,29 @@ namespace RMOL {
     Overbooking (const Overbooking&);
     Overbooking (const FldOverbookingPolicy&);
 
-    /** */
+    /** Destructor. */
+    virtual ~Overbooking();
+
+    
+  private:
+    /** Calculate the booking limit. */
     double calculateBookingLimit () const;
-    /** */
+    
+    /** Calculate the normal probability. */
     double probabilityNormal (const int, const double, const double) const;
-    /** */
+    
+    /** Calculate the binomial probability. */
     double binomialProbability_F_b_s (const double, 
                                       const int, const int) const;
-    /** */
+    /** Calculate the first service level. */
     double serviceLevel1 (const double, const int, const int) const;
-    /** */
+    
+    /** Calculate the fraction of service level 2. */
     double fractionServiceLevel2 (const double ,  const int , const int) const;
 
+    
   private:
+    // /////// Attributes //////////
     /** Overbooking Calculation Policy. */
     FldOverbookingPolicy _policy;
 

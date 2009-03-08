@@ -4,9 +4,10 @@
 // C
 #include <assert.h>
 // RMOL
-#include <rmol/factory/FacAbstract.hpp>
+#include <rmol/factory/FacBomAbstract.hpp>
 #include <rmol/factory/FacServiceAbstract.hpp>
 #include <rmol/factory/FacSupervisor.hpp>
+#include <rmol/service/Logger.hpp>
 
 namespace RMOL {
 
@@ -22,7 +23,7 @@ namespace RMOL {
   }
 
   // //////////////////////////////////////////////////////////////////////
-  void FacSupervisor::registerBomFactory (FacAbstract* ioFacAbstract_ptr) {
+  void FacSupervisor::registerBomFactory (FacBomAbstract* ioFacAbstract_ptr) {
     _bomPool.push_back (ioFacAbstract_ptr);
   }
 
@@ -33,16 +34,22 @@ namespace RMOL {
   }
 
   // //////////////////////////////////////////////////////////////////////
+  void FacSupervisor::registerLoggerService (Logger* ioLogger_ptr) {
+    _logger = ioLogger_ptr;
+  }
+
+  // //////////////////////////////////////////////////////////////////////
   FacSupervisor::~FacSupervisor() {
     cleanBomLayer();
     cleanServiceLayer();
-  }
+    cleanLoggerService();
+ }
 
   // //////////////////////////////////////////////////////////////////////
   void FacSupervisor::cleanBomLayer() {
     for (BomFactoryPool_T::const_iterator itFactory = _bomPool.begin();
          itFactory != _bomPool.end(); itFactory++) {
-      const FacAbstract* currentFactory_ptr = *itFactory;
+      const FacBomAbstract* currentFactory_ptr = *itFactory;
       assert (currentFactory_ptr != NULL);
 
       delete (currentFactory_ptr); currentFactory_ptr = NULL;
@@ -67,11 +74,17 @@ namespace RMOL {
   }
 
   // //////////////////////////////////////////////////////////////////////
+  void FacSupervisor::cleanLoggerService() {
+    delete _logger; _logger = NULL;
+  }
+  
+  // //////////////////////////////////////////////////////////////////////
   void FacSupervisor::cleanFactory () {
 	if (_instance != NULL) {
 		_instance->cleanBomLayer();
 		_instance->cleanServiceLayer();
-	}
+        _instance->cleanLoggerService();
+ 	}
     delete (_instance); _instance = NULL;
   }
 

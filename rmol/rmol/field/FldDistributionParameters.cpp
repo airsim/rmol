@@ -29,6 +29,15 @@ namespace RMOL {
   }
   
   // //////////////////////////////////////////////////////////////////////
+  void FldDistributionParameters::toStream (std::ostream& ioOut) const {
+    ioOut << "N (" << _mean << ", " << _standardDeviation << ")";
+  }
+  
+  // //////////////////////////////////////////////////////////////////////
+  void FldDistributionParameters::fromStream (std::istream& ioIn) {
+  }
+  
+  // //////////////////////////////////////////////////////////////////////
   double FldDistributionParameters::getVariance() const {
     return _standardDeviation * _standardDeviation;
   }

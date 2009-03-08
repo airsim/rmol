@@ -47,4 +47,14 @@ namespace RMOL {
   FldYieldRange::~FldYieldRange() {
   }
   
+  // //////////////////////////////////////////////////////////////////////
+  void FldYieldRange::toStream (std::ostream& ioOut) const {
+    ioOut << _averageYield << "([" << _lowerYield << ", "
+          << _upperYield << "])";
+  }
+  
+  // //////////////////////////////////////////////////////////////////////
+  void FldYieldRange::fromStream (std::istream& ioIn) {
+  }
+  
 }

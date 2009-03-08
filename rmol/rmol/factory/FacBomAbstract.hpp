@@ -1,5 +1,5 @@
-#ifndef __RMOL_FAC_FACABSTRACT_HPP
-#define __RMOL_FAC_FACABSTRACT_HPP
+#ifndef __RMOL_FAC_FACBOMABSTRACT_HPP
+#define __RMOL_FAC_FACBOMABSTRACT_HPP
 
 // //////////////////////////////////////////////////////////////////////
 // Import section
@@ -13,14 +13,14 @@ namespace RMOL {
   class BomAbstract;
 
   /** Base class for Factory layer. */
-  class FacAbstract {
+  class FacBomAbstract {
   public:
 
     /** Define the list (pool) of Bom objects. */
     typedef std::vector<BomAbstract*> BomPool_T;
 
     /** Destructor. */
-    virtual ~FacAbstract();
+    virtual ~FacBomAbstract();
 
     /** Destroyed all the object instantiated by this factory. */
     void clean();
@@ -28,10 +28,10 @@ namespace RMOL {
   protected:
     /** Default Constructor.
         <br>This constructor is protected to ensure the class is abstract. */
-    FacAbstract() {}
+    FacBomAbstract() {}
 
     /** List of instantiated Business Objects*/
     BomPool_T _pool;
   };
 }
-#endif // __RMOL_FAC_FACABSTRACT_HPP
+#endif // __RMOL_FAC_FACBOMABSTRACT_HPP

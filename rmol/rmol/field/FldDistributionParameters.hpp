@@ -4,13 +4,14 @@
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
-
+// RMOL
+#include <rmol/field/FldAbstract.hpp>
 
 namespace RMOL {
 
   /** Class wrapping the parameters of a distribution:
       mean and standard deviation. */
-  class FldDistributionParameters {
+  class FldDistributionParameters : public FldAbstract {
   public:
     /** Constructors. */
     FldDistributionParameters ();
@@ -18,7 +19,11 @@ namespace RMOL {
     FldDistributionParameters (const double iMean,
                                const double iStandardDeviation);
 
-    // Getters
+    /** Destructors. */
+    virtual ~FldDistributionParameters();
+    
+
+    // /////////// Getters ////////////
     /** Getter for the mean value. */
     double getMean() const {
       return _mean;
@@ -30,7 +35,8 @@ namespace RMOL {
     /** Getter for the variance value. */
     double getVariance() const;
     
-    // Setters
+
+    // //////// Setters /////////
     /** Setter for the mean value. */
     void setMean (const double iMean) {
       _mean = iMean;
@@ -39,11 +45,20 @@ namespace RMOL {
     void setStandardDeviation (const double iStandardDeviation) {
       _standardDeviation = iStandardDeviation;
     }
+
     
-    /** Destructors. */
-    virtual ~FldDistributionParameters();
+    // ///////// Display methods ////////
+    /** Dump a Business Object into an output stream.
+        @param ostream& the output stream. */
+    void toStream (std::ostream&) const;
+
+    /** Read a Business Object from an input stream.
+        @param istream& the input stream. */
+    void fromStream (std::istream&);
+
     
   private:
+    // ////////// Attributes /////////
     /** Mean. */
     double _mean;
     

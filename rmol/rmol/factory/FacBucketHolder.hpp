@@ -5,7 +5,7 @@
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // RMOL
-#include <rmol/factory/FacAbstract.hpp>
+#include <rmol/factory/FacBomAbstract.hpp>
 
 namespace RMOL {
 
@@ -14,7 +14,7 @@ namespace RMOL {
   class Bucket;
 
   /** Factory for Bucket. */
-  class FacBucketHolder : public FacAbstract {
+  class FacBucketHolder : public FacBomAbstract {
   public:
 
     /** Provide the unique instance.

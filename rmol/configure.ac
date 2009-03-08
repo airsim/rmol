@@ -7,6 +7,8 @@ AC_CONFIG_HEADER([rmol/config.h])
 AC_CONFIG_SRCDIR([rmol/basic/BasConst.cpp])
 AC_CONFIG_AUX_DIR([config])
 AM_INIT_AUTOMAKE
+AM_PATH_CPPUNIT(1.10)
+AM_CONDITIONAL([HAVE_CPPUNIT], [test "x$CPPUNIT_LIBS" != x])
 
 # RPM release number
 RPM_RELEASE="1"
@@ -286,10 +288,18 @@ AH_BOTTOM([
 #endif /* #ifndef CONFIG_H */
 ])
 
+
+# --------------------------------------------------------
+# I18n (internationalisation) with GNU Gettext
+# --------------------------------------------------------
 AM_GNU_GETTEXT([external], [need-formatstring-macros])
 AM_GNU_GETTEXT_VERSION([0.14])
-
+# Force the usage of the i18n feature: on 64bit architecture,
+# as gettext uses conversions from int to char*, there may be
+# some issues. However, for regular translation (e.g., to German 
+# or French), the PO files are correctly transformed into GMO.
 USE_NLS=yes
+
 
 # Define configured files
 AC_CONFIG_FILES(
@@ -317,6 +327,7 @@ AC_CONFIG_FILES(
 	doc/sourceforge/howto_release_rmol.html
 	po/Makefile.in
 	test/Makefile
+	test/com/Makefile
 	win32/Makefile)
 AC_OUTPUT
 
@@ -375,6 +386,11 @@ External libraries:
     o BOOST_DT_LIB .... : ${BOOST_DATE_TIME_LIB}
     o BOOST_PO_LIB .... : ${BOOST_PROGRAM_OPTIONS_LIB}
     o BOOST_FS_LIB .... : ${BOOST_FILESYSTEM_LIB}
+
+  - CPPUNIT ........... :
+    o CPPUNIT_VERSION . : ${CPPUNIT_VERSION}
+    o CPPUNIT_CFLAGS .. : ${CPPUNIT_CFLAGS}
+    o CPPUNIT_LIBS .... : ${CPPUNIT_LIBS}
 
 ------------------------------------------------------------------------------
 Now type 'make && make install' to build and install $PACKAGE-$VERSION library

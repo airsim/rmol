@@ -12,13 +12,14 @@
 namespace RMOL {
 
   /** Forward declaration. */
-  class ServiceContext;
+  class RMOL_ServiceContext;
 
   /** Interface for the RMOL Services. */
   class RMOL_Service {
   public:
     /** Constructor. */
-    RMOL_Service (const ResourceCapacity_T iResourceCapacity);
+    RMOL_Service (std::ostream& ioLogStream,
+                  const ResourceCapacity_T iResourceCapacity);
     /** Destructor. */
     ~RMOL_Service();
 
@@ -70,11 +71,20 @@ namespace RMOL {
     RMOL_Service ();
     RMOL_Service (const RMOL_Service&);
 
-    /** Initialiser. */
-    void initContext (const ResourceCapacity_T iResourceCapacity);
+    /** Initialise. */
+    void init (std::ostream& ioLogStream,
+               const ResourceCapacity_T iResourceCapacity);
     
+    /** Initilise the log. */
+    void logInit (const LOG::EN_LogLevel iLogLevel, std::ostream& ioLogStream);
+
+    /** Finaliser. */
+    void finalise ();
+
+  private:
+    // ////////// Service Context //////////
     /** Service Context. */
-    ServiceContext* _context;
+    RMOL_ServiceContext* _rmolServiceContext;
   };
 }
 #endif // __RMOL_SVC_RMOL_SERVICE_HPP

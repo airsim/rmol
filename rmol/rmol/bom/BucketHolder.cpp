@@ -35,9 +35,50 @@ namespace RMOL {
   }
 
   // //////////////////////////////////////////////////////////////////////
+  const std::string BucketHolder::describeShortKey() const {
+    std::ostringstream oStr;
+    oStr << _cabinCapacity;
+    return oStr.str();
+  }
+  
+  // //////////////////////////////////////////////////////////////////////
+  const std::string BucketHolder::describeKey() const {
+    return describeShortKey();
+  }
+
+  // //////////////////////////////////////////////////////////////////////
+  std::string BucketHolder::toString() const {
+    std::ostringstream oStr;
+    oStr << describeShortKey()
+         << ", " << _totalMeanDemand
+         << ", " << _demandFactor  << ", " << _optimalRevenue
+         << std::endl;
+    
+    return oStr.str();
+  }   
+
+  // //////////////////////////////////////////////////////////////////////
   void BucketHolder::toStream (std::ostream& ioOut) const {
+    ioOut << toString();
+  }
+  
+  // //////////////////////////////////////////////////////////////////////
+  void BucketHolder::fromStream (std::istream& ioIn) {
+  }
+  
+  // //////////////////////////////////////////////////////////////////////
+  const std::string BucketHolder::shortDisplay() const {
+    std::ostringstream oStr;
+    oStr << describeKey();
+    return oStr.str();
+  }
+  
+  // //////////////////////////////////////////////////////////////////////
+  const std::string BucketHolder::display() const {
+    std::ostringstream oStr;
+    oStr << shortDisplay();
     // Generate a CSV (Comma Separated Values) output
-    ioOut << "Class; Price; Mean; Std Dev; Protection; Cum. Protection; Cum. Bkg Limit; "
+    oStr << "Class; Price; Mean; Std Dev; Protection; Cum. Protection; Cum. Bkg Limit; "
           << std::endl;
 
     BucketList_T::const_iterator itBucket = _bucketList.begin();
@@ -45,19 +86,14 @@ namespace RMOL {
       const Bucket* currentBucket_ptr = *itBucket;
       assert (currentBucket_ptr != NULL);
       
-      ioOut << j << "; " << *currentBucket_ptr;
+      oStr << j << "; " << currentBucket_ptr->display();
     }
 
-    ioOut << "Cabin Capacity = " << _cabinCapacity
-          << "; Total Mean Demand = " << _totalMeanDemand
-          << "; Demand Factor = " << _demandFactor
-          << "; Optimal Revenue = " << _optimalRevenue << std::endl;
-
-  }
-
-  // //////////////////////////////////////////////////////////////////////
-  void BucketHolder::display () const {
-    toStream (std::cout);
+    oStr << "Cabin Capacity = " << _cabinCapacity
+         << "; Total Mean Demand = " << _totalMeanDemand
+         << "; Demand Factor = " << _demandFactor
+         << "; Optimal Revenue = " << _optimalRevenue << std::endl;
+    return oStr.str();
   }
 
   // //////////////////////////////////////////////////////////////////////

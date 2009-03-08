@@ -5,7 +5,7 @@
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // RMOL
-#include <rmol/factory/FacAbstract.hpp>
+#include <rmol/factory/FacBomAbstract.hpp>
 
 namespace RMOL {
 
@@ -14,7 +14,7 @@ namespace RMOL {
   class Overbooking;
 
   /** Factory for Overbooking. */
-  class FacOverbooking : public FacAbstract {
+  class FacOverbooking : public FacBomAbstract {
   public:
 
     /** Provide the unique instance.

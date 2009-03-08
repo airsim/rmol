@@ -8,6 +8,10 @@
 // GSL Random Number Distributions (GSL Reference Manual, version 1.7,
 // Chapter 19)
 #include <gsl/gsl_randist.h>
+// CPPUNIT
+#include <test/com/CppUnitCore.hpp>
+// RMOL Test Suite
+#include <test/SimulateTestSuite.hpp>
 
 // Random Generator Type
 const gsl_rng_type* _rngTypePtr = NULL;
@@ -15,7 +19,6 @@ const gsl_rng_type* _rngTypePtr = NULL;
 // Random Generator
 gsl_rng* _rngExponentialPtr = NULL;
 gsl_rng* _rngPoissonPtr = NULL;
-
 
 // ///////////////////////////////////////////////////
 void init () {
@@ -49,9 +52,12 @@ void finalise () {
   gsl_rng_free (_rngPoissonPtr);
 }
 
-// /////////////// M A I N /////////////////
-int main (int argc, char* argv[]) {
+// //////////////////////////////////////////////////////////////////////
+void testSimulateHelper() {
   try {
+    
+    // Output log File
+    std::string lLogFilename ("SimulateTestSuite.log");
     
     // Time duration representing a full day
     // (i.e., 24h or 1,440 minutes or 86,400 seconds)
@@ -61,28 +67,18 @@ int main (int argc, char* argv[]) {
     const int kSimulationLength = 365;
     
     // Number of draws
-    int K = 1000;
+    const int K = 1000;
 
     // Rate, expressed as a number of events per day
     // (lambda => mu = 1/ lambda)
-    double lambda = 10.0;
+    const double lambda = 10.0;
     // mu = 0.1 (= 2.4h, i.e., in average, an event occurs every 2.4h)
-
-    if (argc >= 1 && argv[1] != NULL) {
-      std::istringstream istr (argv[1]);
-      istr >> K;
-    }
-
-    if (argc >= 2 && argv[1] != NULL) {
-      std::istringstream istr (argv[2]);
-      istr >> lambda;
-    }
 
     // Initialisation of random generators
     init();
 
     // Generate k draws
-    std::cout << "Event#; Time; " << std::endl;
+    // std::cout << "Event#; Time; " << std::endl;
     for (int i=1; i != kSimulationLength; i++) {
 
       // Current time
@@ -108,20 +104,38 @@ int main (int argc, char* argv[]) {
         
         // const double lPoissonVariate = generatePoissonVariate (lambda);
         
-        std::cout << lEventNumber << "; " << lCurrentTime << "; " << std::endl;
+        // std::cout << lEventNumber << "; " << lCurrentTime << "; " << std::endl;
       }
     }
     
     // Cleaning of random generators
     finalise();
+
+    // TODO: check that the average number of events corresponds to the given
+    // input
     
   } catch (const std::exception& stde) {
     std::cerr << "Standard exception: " << stde.what() << std::endl;
-    return -1;
     
   } catch (...) {
-    return -1;
+    std::cerr << "Unknown exception" << std::endl;
   }
-  
-  return 0;	
 }
+
+// //////////////////////////////////////////////////////////////////////
+void SimulateTestSuite::testSimulate() {
+  CPPUNIT_ASSERT_NO_THROW (testSimulateHelper(););
+}
+
+// //////////////////////////////////////////////////////////////////////
+// void SimulateTestSuite::errorCase () {
+//  CPPUNIT_ASSERT (false);
+// }
+
+// //////////////////////////////////////////////////////////////////////
+SimulateTestSuite::SimulateTestSuite () {
+  _describeKey << "Running test on RMOL Simulation function";  
+}
+
+// /////////////// M A I N /////////////////
+CPPUNIT_MAIN()

@@ -70,6 +70,67 @@ namespace RMOL {
   Overbooking::~Overbooking() {
   }
 
+  // //////////////////////////////////////////////////////////////////////
+  const std::string Overbooking::describeShortKey() const {
+    std::ostringstream oStr;
+    oStr << _policy;
+    return oStr.str();
+  }
+  
+  // //////////////////////////////////////////////////////////////////////
+  const std::string Overbooking::describeKey() const {
+    return describeShortKey();
+  }
+
+  // //////////////////////////////////////////////////////////////////////
+  std::string Overbooking::toString() const {
+    std::ostringstream oStr;
+    oStr << describeShortKey()
+         << ", " << _policy << ", " << _overbookingPercentage
+         << ", " << _capacity  << ", " << _netBookings
+         << ", " << _loadFactor
+         << ", " << _noShowDistributionParameters
+         << ", " << _cancellationDistributionParameters
+         << ", " << _remainingCancellationDistributionParameters
+         << ", " << _demandDistributionParameters
+         << std::endl;
+    
+    return oStr.str();
+  }   
+
+  // //////////////////////////////////////////////////////////////////////
+  void Overbooking::toStream (std::ostream& ioOut) const {
+    ioOut << toString();
+  }
+  
+  // //////////////////////////////////////////////////////////////////////
+  void Overbooking::fromStream (std::istream& ioIn) {
+  }
+  
+  // //////////////////////////////////////////////////////////////////////
+  const std::string Overbooking::shortDisplay() const {
+    std::ostringstream oStr;
+    oStr << describeKey();
+    return oStr.str();
+  }
+  
+  // //////////////////////////////////////////////////////////////////////
+  const std::string Overbooking::display() const {
+    std::ostringstream oStr;
+    oStr << shortDisplay();
+    oStr << "Policy = " << _policy
+         << "; OB% = " << _overbookingPercentage
+         << "; Capacity = " << _capacity
+         << "; Net Bookings = " << _netBookings
+         << "; Load Factor (LF) = " << _loadFactor
+         << "; No-Show Distrib. Params = " << _noShowDistributionParameters
+         << "; Cx Distrib. Params = " << _cancellationDistributionParameters
+         << "; Rem. Cx Distrib. Params = " << _remainingCancellationDistributionParameters
+         << "; Demand Distrib. Params = " << _demandDistributionParameters
+         << std::endl;
+    return oStr.str();
+  }
+
 
   // ////////////// TODO: REMOVE THOSE CONSTANTS //////////
   //Parameters given by RMS User , for the prototype we set at

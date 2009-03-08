@@ -6,11 +6,13 @@
 // //////////////////////////////////////////////////////////////////////
 // STL
 #include <string>
+// RMOL
+#include <rmol/field/FldAbstract.hpp>
 
 namespace RMOL {
 
   /** Class wrapping the policy for the overbooking calculation. */
-  class FldOverbookingPolicy {
+  class FldOverbookingPolicy : public FldAbstract {
   public:
     typedef enum {
       HEUR = 0,    // Heuristic
@@ -21,10 +23,9 @@ namespace RMOL {
       LAST_VALUE
     } EN_Policy;
 
-    /** Constructors. */
-    FldOverbookingPolicy (const FldOverbookingPolicy&);
-    FldOverbookingPolicy (const EN_Policy iPolicy = HEUR);
-
+    /** Get the label (BOM type) as a string. */
+    static const std::string& getLabel (const EN_Policy&);
+    
     // Getters
     /** Getter for the mean value. */
     EN_Policy getPolicy() const {
@@ -37,10 +38,27 @@ namespace RMOL {
       _policy = iPolicy;
     }
     
+
+    /** Constructors. */
+    FldOverbookingPolicy (const FldOverbookingPolicy&);
+    FldOverbookingPolicy (const EN_Policy iPolicy = HEUR);
+
     /** Destructors. */
     virtual ~FldOverbookingPolicy();
+
+
+    // ///////// Display methods ////////
+    /** Dump a Business Object into an output stream.
+        @param ostream& the output stream. */
+    void toStream (std::ostream&) const;
+
+    /** Read a Business Object from an input stream.
+        @param istream& the input stream. */
+    void fromStream (std::istream&);
+
     
   private:
+    // ///////// Attributes //////////
     /** Overbooking Calculation Policy. */
     EN_Policy _policy;
 

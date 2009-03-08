@@ -52,7 +52,7 @@ namespace RMOL {
     friend class FacBucketHolder;
     
   public:
-    // Getters
+    // ///////// Getters ////////
     /** Getter for the yield range. */
     const FldYieldRange& getYieldRange() const {
       return _yieldRange;
@@ -73,32 +73,42 @@ namespace RMOL {
     double getBookingLimit() const {
       return _bookingLimit;
     }
+
     /** Getter for the distribution parameters of the demand. */
     const FldDistributionParameters& getDistributionParameters() const;
+    
     /** Getter for the demand mean. */
     const double getMean() const;
+    
     /** Getter for the demand standard deviation. */
     const double getStandardDeviation() const;
+    
     /** Getter for the upper yield. */
     const double getUpperYield() const;
+    
     /** Getter for the average yield. */
     const double getAverageYield() const;
+    
     /** Getter for the lower yield. */
     const double getLowerYield() const;
 
-    // Setters
+
+    // ///////// Setters ////////
     /** Setter for the protection. */
     void setProtection (const double iProtection) {
       _protection = iProtection;
     }
+    
     /** Setter for the cumulated protection. */
     void setCumulatedProtection (const double iProtection) {
       _cumulatedProtection = iProtection;
     }
+    
     /** Setter for the booking limit. */
     void setBookingLimit (const double iBookingLimit) {
       _bookingLimit = iBookingLimit;
     }
+    
     /** Setter for the cumulated booking limit. */
     void setCumulatedBookingLimit (const double iBookingLimit) {
       _cumulatedBookingLimit = iBookingLimit;
@@ -113,34 +123,53 @@ namespace RMOL {
     /** Set the demand mean and standard deviation. */
     void setDemandParameters (const double, const double);
 
+  public:
+    // ///////// Display methods ////////
     /** Dump a Business Object into an output stream.
-        @param ostream& the output stream
-        @return ostream& the output stream. */
-    void toStream (std::ostream& ioOut) const;
+        @param ostream& the output stream. */
+    void toStream (std::ostream&) const;
 
-    /** Display on standard output. */
-    void display () const;
+    /** Read a Business Object from an input stream.
+        @param istream& the input stream. */
+    void fromStream (std::istream&);
 
-    /** Destructors. */
-    virtual ~Bucket();
+    /** Get the serialised version of the Place object. */
+    std::string toString() const;
 
+    /** Get a string describing the whole key (differentiating two objects
+        at any level). */
+    const std::string describeKey() const;
+
+    /** Get a string describing the short key (differentiating two objects
+        at the same level). */
+    const std::string describeShortKey() const;
+    
+    /** Display the full Place context. */
+    const std::string display() const;
+
+    /** Display a short Place context. */
+    const std::string shortDisplay() const;
+
+    
   private:
     /** Constructors.
 	<br>Protected to force the use of the Factory. */
     Bucket ();
     Bucket (const Bucket&);
     Bucket (const FldYieldRange&);
+    /** Destructors. */
+    virtual ~Bucket();
 
     /** Getter for the demand. */
     Demand& getDemand() const;
 
   private:
-    /** Yield range, defined by upper and average yield. */
-    FldYieldRange _yieldRange;
-
     /** Demand, defined by (mean, standard deviation) and yield range. */
     Demand* _demand;
 
+    /** Yield range, defined by upper and average yield. */
+    FldYieldRange _yieldRange;
+    
     /** Protection. */
     double _protection;
 

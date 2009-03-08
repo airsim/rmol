@@ -1,5 +1,5 @@
-#ifndef __RMOL_FAC_FACSERVICECONTEXT_HPP
-#define __RMOL_FAC_FACSERVICECONTEXT_HPP
+#ifndef __RMOL_FAC_FACRMOLSERVICECONTEXT_HPP
+#define __RMOL_FAC_FACRMOLSERVICECONTEXT_HPP
 
 // //////////////////////////////////////////////////////////////////////
 // Import section
@@ -11,43 +11,43 @@
 namespace RMOL {
 
   /** Forward declarations. */
-  class ServiceContext;
+  class RMOL_ServiceContext;
 
   /** Factory for Bucket. */
-  class FacServiceContext : public FacServiceAbstract {
+  class FacRmolServiceContext : public FacServiceAbstract {
   public:
 
     /** Provide the unique instance.
         <br> The singleton is instantiated when first used
         @return FacServiceContext& */
-    static FacServiceContext& instance();
+    static FacRmolServiceContext& instance();
 
     /** Destructor.
         <br> The Destruction put the _instance to NULL
         in order to be clean for the next FacServiceContext::instance() */
-    virtual ~FacServiceContext();
+    virtual ~FacRmolServiceContext();
 
     /** Create a new ServiceContext object.
         <br>This new object is added to the list of instantiated objects.
         @return ServiceContext& The newly created object. */
-    ServiceContext& create ();
+    RMOL_ServiceContext& create ();
 
     /** Create a new ServiceContext object.
         <br>This new object is added to the list of instantiated objects.
         @return ServiceContext& The newly created object. */
-    ServiceContext& create (const ResourceCapacity_T iResourceCapacity);
+    RMOL_ServiceContext& create (const ResourceCapacity_T iResourceCapacity);
 
     
   protected:
     /** Default Constructor.
         <br>This constructor is protected in order to ensure the singleton
         pattern.*/
-    FacServiceContext () {}
+    FacRmolServiceContext () {}
 
   private:
     /** The unique instance.*/
-    static FacServiceContext* _instance;
+    static FacRmolServiceContext* _instance;
 
   };
 }
-#endif // __RMOL_FAC_FACSERVICECONTEXT_HPP
+#endif // __RMOL_FAC_FACRMOLSERVICECONTEXT_HPP

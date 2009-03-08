@@ -5,7 +5,7 @@
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // RMOL
-#include <rmol/factory/FacAbstract.hpp>
+#include <rmol/factory/FacBomAbstract.hpp>
 
 namespace RMOL {
 
@@ -13,7 +13,7 @@ namespace RMOL {
   class PartialSumHolderHolder;
 
   /** Factory for PartialSum. */
-  class FacPartialSumHolderHolder : public FacAbstract {
+  class FacPartialSumHolderHolder : public FacBomAbstract {
   public:
 
     /** Provide the unique instance.

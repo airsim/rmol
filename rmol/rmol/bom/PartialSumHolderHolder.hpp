@@ -21,21 +21,11 @@ namespace RMOL {
     friend class FacPartialSumHolderHolder;
     
   public:
+    // ///////// Getters /////////
     /** Get the size of the internal list (i.e., number of partial sum
 	lists). */
     const short getSize () const;
     
-    /** Dump a Business Object into an output stream.
-        @param ostream& the output stream
-        @return ostream& the output stream. */
-    void toStream (std::ostream& ioOut) const;
-
-    /** Display on standard output. */
-    void display () const;
-
-    /** Destructor. */
-    virtual ~PartialSumHolderHolder();
-
     /** Get the previous element (partial sum holder/list). */
     PartialSumHolder& getPreviousPartialSumHolder () const;
 
@@ -55,19 +45,54 @@ namespace RMOL {
 	list has been reached. */
     bool hasNotReachedEnd () const;
 
+  public:
+    // ///////// Display methods ////////
+    /** Dump a Business Object into an output stream.
+        @param ostream& the output stream. */
+    void toStream (std::ostream&) const;
+
+    /** Read a Business Object from an input stream.
+        @param istream& the input stream. */
+    void fromStream (std::istream&);
+
+    /** Get the serialised version of the Place object. */
+    std::string toString() const;
+
+    /** Get a string describing the whole key (differentiating two objects
+        at any level). */
+    const std::string describeKey() const;
+
+    /** Get a string describing the short key (differentiating two objects
+        at the same level). */
+    const std::string describeShortKey() const;
+    
+    /** Display the full Place context. */
+    const std::string display() const;
+
+    /** Display a short Place context. */
+    const std::string shortDisplay() const;
+
+    
   private:
     /** Constructors. */
     PartialSumHolderHolder();
     /** Reserve the space for iSize elements (partial sum holders). */
     PartialSumHolderHolder (const int iSize);
 
+    /** Destructor. */
+    virtual ~PartialSumHolderHolder();
+
+    
+  private:
     /** Add an element (partial sum holder/list).
         <br>Note that the Bucket object may be altered by subsequent
         operations.
 	<br>Protected to force the use of the Factory. */
     void addPartialSumHolder (PartialSumHolder&);
 
+    
   private:
+    // //////// Attributes /////////
     /** The vector of (K) partial sums. */
     PartialSumHolderList_T _partialSumHolderList;
 

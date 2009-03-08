@@ -5,6 +5,7 @@
 
 namespace RMOL {
 
+  // //////////////////////////////////////////////////////////////////////
   const std::string FldOverbookingPolicy::
   _labels[FldOverbookingPolicy::LAST_VALUE] = {"HEUR", "RISK", "SL1", "SL2",
                                                "HYBRID"};
@@ -23,6 +24,21 @@ namespace RMOL {
 
   // //////////////////////////////////////////////////////////////////////
   FldOverbookingPolicy::~FldOverbookingPolicy() {
+  }
+  
+  // //////////////////////////////////////////////////////////////////////
+  const std::string& FldOverbookingPolicy::
+  getLabel (const FldOverbookingPolicy::EN_Policy& iPolicy) {
+    return FldOverbookingPolicy::_labels[iPolicy];
+  }
+
+  // //////////////////////////////////////////////////////////////////////
+  void FldOverbookingPolicy::toStream (std::ostream& ioOut) const {
+    ioOut << getLabel (_policy);
+  }
+  
+  // //////////////////////////////////////////////////////////////////////
+  void FldOverbookingPolicy::fromStream (std::istream& ioIn) {
   }
   
 }

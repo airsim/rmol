@@ -1,6 +1,7 @@
 // STL
 #include <iostream>
 #include <sstream>
+#include <fstream>
 // RMOL
 #include <rmol/RMOL_Service.hpp>
 
@@ -8,6 +9,9 @@
 // ///////// M A I N ////////////
 int main (int argc, char* argv[]) {
   try {
+    
+    // Output log File
+    std::string lLogFilename ("rmol.log");
     
     // Number of random draws to be generated (best if greater than 100)
     int K = 100000;
@@ -25,27 +29,38 @@ int main (int argc, char* argv[]) {
     
     if (argc >= 1 && argv[1] != NULL) {
       std::istringstream istr (argv[1]);
-      istr >> K;
+      istr >> lLogFilename;
     }
     
     if (argc >= 2 && argv[2] != NULL) {
       std::istringstream istr (argv[2]);
-      istr >> cabinCapacity;
+      istr >> K;
     }
     
     if (argc >= 3 && argv[3] != NULL) {
       std::istringstream istr (argv[3]);
-      istr >> inputFileName;
-      hasInputFile = true;
+      istr >> cabinCapacity;
     }
     
     if (argc >= 4 && argv[4] != NULL) {
       std::istringstream istr (argv[4]);
+      istr >> inputFileName;
+      hasInputFile = true;
+    }
+    
+    if (argc >= 5 && argv[5] != NULL) {
+      std::istringstream istr (argv[5]);
       istr >> METHOD_FLAG;
     }
     
+    // Set the log parameters
+    std::ofstream logOutputFile;
+    // open and clean the log outputfile
+    logOutputFile.open (lLogFilename.c_str());
+    logOutputFile.clear();
+    
     // Initialise the list of classes/buckets
-    RMOL::RMOL_Service rmolService (cabinCapacity);
+    RMOL::RMOL_Service rmolService (logOutputFile, cabinCapacity);
     
     if (hasInputFile) {
       // Read the input file

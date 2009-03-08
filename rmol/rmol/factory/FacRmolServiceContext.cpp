@@ -4,24 +4,24 @@
 // C
 #include <assert.h>
 // RMOL
-#include <rmol/service/ServiceContext.hpp>
+#include <rmol/service/RMOL_ServiceContext.hpp>
 #include <rmol/factory/FacSupervisor.hpp>
-#include <rmol/factory/FacServiceContext.hpp>
+#include <rmol/factory/FacRmolServiceContext.hpp>
 
 namespace RMOL {
 
-  FacServiceContext* FacServiceContext::_instance = NULL;
+  FacRmolServiceContext* FacRmolServiceContext::_instance = NULL;
 
   // //////////////////////////////////////////////////////////////////////
-  FacServiceContext::~FacServiceContext () {
+  FacRmolServiceContext::~FacRmolServiceContext () {
     _instance = NULL;
   }
 
   // //////////////////////////////////////////////////////////////////////
-  FacServiceContext& FacServiceContext::instance () {
+  FacRmolServiceContext& FacRmolServiceContext::instance () {
 
     if (_instance == NULL) {
-      _instance = new FacServiceContext();
+      _instance = new FacRmolServiceContext();
       assert (_instance != NULL);
       
       FacSupervisor::instance().registerServiceFactory (_instance);
@@ -30,10 +30,10 @@ namespace RMOL {
   }
 
   // //////////////////////////////////////////////////////////////////////
-  ServiceContext& FacServiceContext::create () {
-    ServiceContext* aServiceContext_ptr = NULL;
+  RMOL_ServiceContext& FacRmolServiceContext::create () {
+    RMOL_ServiceContext* aServiceContext_ptr = NULL;
 
-    aServiceContext_ptr = new ServiceContext ();
+    aServiceContext_ptr = new RMOL_ServiceContext ();
     assert (aServiceContext_ptr != NULL);
 
     // The new object is added to the Bom pool
@@ -43,11 +43,11 @@ namespace RMOL {
   }
 
   // //////////////////////////////////////////////////////////////////////
-  ServiceContext& FacServiceContext::
+  RMOL_ServiceContext& FacRmolServiceContext::
   create (const ResourceCapacity_T iResourceCapacity) {
-    ServiceContext* aServiceContext_ptr = NULL;
+    RMOL_ServiceContext* aServiceContext_ptr = NULL;
 
-    aServiceContext_ptr = new ServiceContext (iResourceCapacity);
+    aServiceContext_ptr = new RMOL_ServiceContext (iResourceCapacity);
     assert (aServiceContext_ptr != NULL);
 
     // The new object is added to the Bom pool

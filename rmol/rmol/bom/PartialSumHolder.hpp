@@ -21,11 +21,12 @@ namespace RMOL {
     friend class FacPartialSumHolder;
     
   public:
-    /** Reserve the space for K elements (partial sums). */
-    void initSize (const int K);
-
+    // ///////// Getters /////////
     /** Get the k-th element (partial sum). */
     const double getPartialSum (const int k) const;
+
+    /** Reserve the space for K elements (partial sums). */
+    void initSize (const int K);
 
     /** Add an element (partial sum). */
     void addPartialSum (const double iPartialSum);
@@ -35,22 +36,45 @@ namespace RMOL {
 	complexity of O (N log N): http://www.sgi.com/tech/stl/sort.html . */
     void sort ();
 
+  public:
+    // ///////// Display methods ////////
     /** Dump a Business Object into an output stream.
-        @param ostream& the output stream
-        @return ostream& the output stream. */
-    void toStream (std::ostream& ioOut) const;
+        @param ostream& the output stream. */
+    void toStream (std::ostream&) const;
 
-    /** Display on standard output. */
-    void display () const;
+    /** Read a Business Object from an input stream.
+        @param istream& the input stream. */
+    void fromStream (std::istream&);
 
-    /** Destructor. */
-    virtual ~PartialSumHolder();
+    /** Get the serialised version of the Place object. */
+    std::string toString() const;
 
+    /** Get a string describing the whole key (differentiating two objects
+        at any level). */
+    const std::string describeKey() const;
+
+    /** Get a string describing the short key (differentiating two objects
+        at the same level). */
+    const std::string describeShortKey() const;
+    
+    /** Display the full Place context. */
+    const std::string display() const;
+
+    /** Display a short Place context. */
+    const std::string shortDisplay() const;
+
+    
   private:
     /** Constructors. */
     PartialSumHolder ();
     PartialSumHolder (const PartialSumHolder&);
 
+    /** Destructor. */
+    virtual ~PartialSumHolder();
+
+    
+  private:
+    // ///////// Attributes /////////
     /** The vector of (K) partial sums. */
     PartialSumList_T _partialSumList;
   };

@@ -2,7 +2,7 @@
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // RMOL
-#include <rmol/bom/BomAbstract.hpp>
+#include <rmol/field/FldAbstract.hpp>
 
 namespace RMOL {
 

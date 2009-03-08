@@ -4,7 +4,8 @@
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
-
+// RMOL
+#include <rmol/field/FldAbstract.hpp>
 
 namespace RMOL {
 
@@ -18,7 +19,7 @@ namespace RMOL {
       <br>Note that the lower yield is generally not defined, as it
       corresponds to the upper yield of the lower yield range.
   */
-  class FldYieldRange {
+  class FldYieldRange : public FldAbstract {
   public:
     /** Constructors. */
     FldYieldRange ();
@@ -31,7 +32,8 @@ namespace RMOL {
     /** Constructors. */
     virtual ~FldYieldRange();
     
-    // Getters
+
+    // /////////// Getters ////////////
     /** Getter for the upper yield of the range. */
     double getUpperYield() const {
       return _upperYield;
@@ -45,7 +47,7 @@ namespace RMOL {
       return _lowerYield;
     }
     
-    // Setters
+    // //////// Setters /////////
     /** Setter for the upper yield of the range. */
     void setUpperYield (const double iUpperYield) {
       _upperYield = iUpperYield;
@@ -59,7 +61,19 @@ namespace RMOL {
       _lowerYield = iLowerYield;
     }
     
+
+    // ///////// Display methods ////////
+    /** Dump a Business Object into an output stream.
+        @param ostream& the output stream. */
+    void toStream (std::ostream&) const;
+
+    /** Read a Business Object from an input stream.
+        @param istream& the input stream. */
+    void fromStream (std::istream&);
+
+
   private:
+    // ////////// Attributes /////////
     /** Upper yield. */
     double _upperYield;
 

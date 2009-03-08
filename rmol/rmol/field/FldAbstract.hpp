@@ -1,5 +1,5 @@
-#ifndef __RMOL_BOM_BOMABSTRACT_HPP
-#define __RMOL_BOM_BOMABSTRACT_HPP
+#ifndef __RMOL_FLD_FLDABSTRACT_HPP
+#define __RMOL_FLD_FLDABSTRACT_HPP
 
 // //////////////////////////////////////////////////////////////////////
 // Import section
@@ -13,8 +13,7 @@
 namespace RMOL {
 
   /** Base class for the Business Object Model (BOM) layer. */
-  class BomAbstract {
-    friend class FacBomAbstract;
+  class FldAbstract {
   public:
     // /////////// Display support methods /////////
     /** Dump a Business Object into an output stream.
@@ -24,26 +23,14 @@ namespace RMOL {
     /** Read a Business Object from an input stream.
         @param istream& the input stream. */
     virtual void fromStream (std::istream& ioIn) = 0;
-
-   /** Get the serialised version of the Business Object. */
-    virtual std::string toString() const = 0;
-    
-    /** Get a string describing the whole key (differentiating two objects
-        at any level). */
-    virtual const std::string describeKey() const = 0;
-
-    /** Get a string describing the short key (differentiating two objects
-        at the same level). */
-    virtual const std::string describeShortKey() const = 0;
-
     
   protected:
     /** Protected Default Constructor to ensure this class is abtract. */
-    BomAbstract() {}
-    BomAbstract(const BomAbstract&) {}
+    FldAbstract() {}
+    FldAbstract(const FldAbstract&) {}
 
     /** Destructor. */
-    virtual ~BomAbstract() {}
+    virtual ~FldAbstract() {}
  };
 }
 
@@ -56,7 +43,7 @@ template <class charT, class traits>
 inline
 std::basic_ostream<charT, traits>&
 operator<< (std::basic_ostream<charT, traits>& ioOut,
-            const RMOL::BomAbstract& iBom) {
+            const RMOL::FldAbstract& iBom) {
   /**
      string stream:
       - with same format
@@ -84,10 +71,10 @@ template <class charT, class traits>
 inline
 std::basic_istream<charT, traits>&
 operator>> (std::basic_istream<charT, traits>& ioIn,
-            RMOL::BomAbstract& ioBom) {
+            RMOL::FldAbstract& ioBom) {
   // Fill Bom object with input stream
   ioBom.fromStream (ioIn);
   return ioIn;
 }
 
-#endif // __RMOL_BOM_BOMABSTRACT_HPP
+#endif // __RMOL_FLD_FLDABSTRACT_HPP

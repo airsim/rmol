@@ -5,7 +5,7 @@
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // RMOL
-#include <rmol/factory/FacAbstract.hpp>
+#include <rmol/factory/FacBomAbstract.hpp>
 
 namespace RMOL {
 
@@ -15,7 +15,7 @@ namespace RMOL {
   class Demand;
 
   /** Factory for Demand. */
-  class FacDemand : public FacAbstract {
+  class FacDemand : public FacBomAbstract {
   public:
 
     /** Provide the unique instance.

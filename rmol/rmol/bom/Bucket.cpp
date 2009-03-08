@@ -13,15 +13,16 @@
 namespace RMOL {
 
   // //////////////////////////////////////////////////////////////////////
-  Bucket::Bucket () : _yieldRange (), _demand (NULL), 
-                      _protection (0.0), _cumulatedProtection (0.0),
-                      _bookingLimit (0.0), _cumulatedBookingLimit (0.0) {
+  Bucket::Bucket ()
+    : _demand (NULL),
+      _yieldRange (), _protection (0.0), _cumulatedProtection (0.0),
+      _bookingLimit (0.0), _cumulatedBookingLimit (0.0) {
   }
   
   // //////////////////////////////////////////////////////////////////////
   Bucket::Bucket (const Bucket& iBucket) :
-    _yieldRange (iBucket.getYieldRange()), 
     _demand (&iBucket.getDemand()), 
+    _yieldRange (iBucket.getYieldRange()), 
     _protection (iBucket.getProtection()),
     _cumulatedProtection (iBucket.getCumulatedProtection()),
     _bookingLimit (iBucket.getBookingLimit()),
@@ -30,8 +31,8 @@ namespace RMOL {
 
   // //////////////////////////////////////////////////////////////////////
   Bucket::Bucket (const FldYieldRange& iYieldRange) :
-    _yieldRange (iYieldRange), _demand (NULL), 
-    _protection (0.0), _cumulatedProtection (0.0),
+    _demand (NULL),
+    _yieldRange (iYieldRange), _protection (0.0), _cumulatedProtection (0.0),
     _bookingLimit (0.0), _cumulatedBookingLimit (0.0) {
   }
   
@@ -40,21 +41,70 @@ namespace RMOL {
   }
 
   // //////////////////////////////////////////////////////////////////////
-  void Bucket::toStream (std::ostream& ioOut) const {
+  const std::string Bucket::describeShortKey() const {
+    std::ostringstream oStr;
+    oStr << _yieldRange;
+    return oStr.str();
+  }
+  
+  // //////////////////////////////////////////////////////////////////////
+  const std::string Bucket::describeKey() const {
+    return describeShortKey();
+  }
+
+  // //////////////////////////////////////////////////////////////////////
+  std::string Bucket::toString() const {
+    std::ostringstream oStr;
+    oStr << describeShortKey() << ", ";
     const double pj = getUpperYield();
     const double mj = getMean();
     const double sj = getStandardDeviation();
     const double proj = getProtection();
     const double yj = getCumulatedProtection();
     const double bj = getCumulatedBookingLimit();
-    ioOut << std::fixed << std::setprecision (2)
-          << pj << "; " << mj << "; " << sj << "; " << proj << "; " << yj
-          << "; " << bj << std::endl;
+    oStr << std::fixed << std::setprecision (2)
+         << pj << "; " << mj << "; " << sj << "; " << proj << "; " << yj
+         << "; " << bj << std::endl;
+    
+    return oStr.str();
+  }   
+
+  // //////////////////////////////////////////////////////////////////////
+  void Bucket::toStream (std::ostream& ioOut) const {
+    ioOut << toString();
   }
   
   // //////////////////////////////////////////////////////////////////////
-  void Bucket::display () const {
-    toStream (std::cout);
+  void Bucket::fromStream (std::istream& ioIn) {
+  }
+  
+  // //////////////////////////////////////////////////////////////////////
+  const std::string Bucket::shortDisplay() const {
+    std::ostringstream oStr;
+    oStr << describeKey();
+    const double pj = getUpperYield();
+    const double mj = getMean();
+    const double sj = getStandardDeviation();
+    const double proj = getProtection();
+    const double yj = getCumulatedProtection();
+    const double blj = getBookingLimit();
+    const double bj = getCumulatedBookingLimit();
+    oStr << std::fixed << std::setprecision (2)
+         << ", upper yield = " << pj << "; "
+         << ", mean = " << mj << "; " << ", std_dev = " << sj << "; "
+         << ", protection = " << proj << "; "
+         << ", cumulative protection = " << yj << "; "
+         << ", booking limit = " << blj
+         << ", cumulative booking limit = " << bj << std::endl;
+
+    return oStr.str();
+  }
+  
+  // //////////////////////////////////////////////////////////////////////
+  const std::string Bucket::display() const {
+    std::ostringstream oStr;
+    oStr << shortDisplay();
+    return oStr.str();
   }
 
   // //////////////////////////////////////////////////////////////////////

@@ -26,21 +26,52 @@ namespace RMOL {
   }
 
   // //////////////////////////////////////////////////////////////////////
+  const std::string PartialSumHolder::describeShortKey() const {
+    std::ostringstream oStr;
+    return oStr.str();
+  }
+  
+  // //////////////////////////////////////////////////////////////////////
+  const std::string PartialSumHolder::describeKey() const {
+    return describeShortKey();
+  }
+
+  // //////////////////////////////////////////////////////////////////////
+  std::string PartialSumHolder::toString() const {
+    std::ostringstream oStr;
+    oStr << _partialSumList.size();
+    return oStr.str();
+  }   
+
+  // //////////////////////////////////////////////////////////////////////
   void PartialSumHolder::toStream (std::ostream& ioOut) const {
+    ioOut << toString();
+  }
+  
+  // //////////////////////////////////////////////////////////////////////
+  void PartialSumHolder::fromStream (std::istream& ioIn) {
+  }
+  
+  // //////////////////////////////////////////////////////////////////////
+  const std::string PartialSumHolder::shortDisplay() const {
+    std::ostringstream oStr;
+    oStr << describeKey();
     // Generate a CSV (Comma Separated Values) output
-    ioOut << "Partial Sum (K = " << _partialSumList.size() << "); " 
-	  << std::endl;
+    oStr << "Partial Sum (K = " << _partialSumList.size() << ")" << std::endl;
+    return oStr.str();
+  }
+  
+  // //////////////////////////////////////////////////////////////////////
+  const std::string PartialSumHolder::display() const {
+    std::ostringstream oStr;
+    oStr << shortDisplay();
 
     PartialSumList_T::const_iterator itPartialSum = _partialSumList.begin();
     for (short k=1; itPartialSum != _partialSumList.end(); itPartialSum++,k++){
       const double currentPartialSum = *itPartialSum;
-      ioOut << k << "; " << currentPartialSum;
+      oStr << k << "; " << currentPartialSum;
     }
-  }
-
-  // //////////////////////////////////////////////////////////////////////
-  void PartialSumHolder::display () const {
-    toStream (std::cout);
+    return oStr.str();
   }
 
   // //////////////////////////////////////////////////////////////////////

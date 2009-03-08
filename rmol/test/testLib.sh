@@ -1,7 +1,7 @@
 #!/bin/sh
 
 INSTALL_DIR=`grep "^prefix =" ../Makefile | cut -d"=" -d" " -f3`
-TST_PROG=./optimise
+TST_PROG=../rmol/rmol
 RMOL_API_VERSION=`grep "^PACKAGE_VERSION =" ../Makefile | cut -d"=" -d" " -f3`
 RMOL_LIBRARY_NAME=`grep "^PACKAGE =" ../Makefile | cut -d"=" -d" " -f3`
 RMOL_LIB=lib${RMOL_LIBRARY_NAME}-${RMOL_API_VERSION}.so

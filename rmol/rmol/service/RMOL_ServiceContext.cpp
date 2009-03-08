@@ -15,42 +15,42 @@
 #include <rmol/factory/FacBucket.hpp>
 #include <rmol/factory/FacBucketHolder.hpp>
 #include <rmol/command/FileMgr.hpp>
-#include <rmol/service/ServiceContext.hpp>
+#include <rmol/service/RMOL_ServiceContext.hpp>
 
 namespace RMOL {
 
   // //////////////////////////////////////////////////////////////////////
-  ServiceContext::
-  ServiceContext (const ResourceCapacity_T iResourceCapacity) :
+  RMOL_ServiceContext::
+  RMOL_ServiceContext (const ResourceCapacity_T iResourceCapacity) :
     _bucketHolder (NULL), _capacity (iResourceCapacity) {
     init (iResourceCapacity);
   }
   
   // //////////////////////////////////////////////////////////////////////
-  ServiceContext::ServiceContext () : 
+  RMOL_ServiceContext::RMOL_ServiceContext () : 
     _bucketHolder (NULL), _capacity (DEFAULT_RMOL_SERVICE_CAPACITY) {
     init (DEFAULT_RMOL_SERVICE_CAPACITY);
   }
   
   // //////////////////////////////////////////////////////////////////////
-  ServiceContext::ServiceContext (const ServiceContext&) :
+  RMOL_ServiceContext::RMOL_ServiceContext (const RMOL_ServiceContext&) :
     _bucketHolder (NULL), _capacity (DEFAULT_RMOL_SERVICE_CAPACITY) {
     init (DEFAULT_RMOL_SERVICE_CAPACITY);
   }
 
   // //////////////////////////////////////////////////////////////////////
-  ServiceContext::~ServiceContext() {
+  RMOL_ServiceContext::~RMOL_ServiceContext() {
   }
 
   // //////////////////////////////////////////////////////////////////////
-  void ServiceContext::init (const ResourceCapacity_T iResourceCapacity) {
+  void RMOL_ServiceContext::init (const ResourceCapacity_T iResourceCapacity) {
     _bucketHolder = &FacBucketHolder::instance().create (iResourceCapacity);
   }
 
   // //////////////////////////////////////////////////////////////////////
-  void ServiceContext::addBucket (const double iYieldRange, 
-                                  const double iDemandMean,
-                                  const double iDemandStandardDev) {
+  void RMOL_ServiceContext::addBucket (const double iYieldRange, 
+                                       const double iDemandMean,
+                                       const double iDemandStandardDev) {
     const FldYieldRange aYieldRange (iYieldRange);
     const FldDistributionParameters aDistribParams (iDemandMean, 
 						    iDemandStandardDev);
@@ -63,7 +63,8 @@ namespace RMOL {
   }
 
   // //////////////////////////////////////////////////////////////////////
-  void ServiceContext::readFromInputFile (const std::string& iInputFileName) {
+  void RMOL_ServiceContext::
+  readFromInputFile (const std::string& iInputFileName) {
     assert (_bucketHolder != NULL);
     FileMgr::readAndProcessInputFile (iInputFileName, *_bucketHolder);
   }

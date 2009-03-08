@@ -1,51 +1,43 @@
 // STL
 #include <iostream>
-#include <sstream>
+#include <string>
+// CPPUNIT
+#include <test/com/CppUnitCore.hpp>
 // RMOL
 #include <rmol/RMOL_Service.hpp>
+// RMOL Test Suite
+#include <test/OptimiseTestSuite.hpp>
 
+// //////////////////////////////////////////////////////////////////////
+void testOptimiseHelper() {
 
-// M A I N
-int main (int argc, char* argv[]) {
   try {
     
+    // Output log File
+    std::string lLogFilename ("OptimiseTestSuite.log");
+    
     // Number of random draws to be generated (best if greater than 100)
-    int K = 100000;
+    const int K = 100000;
     
     // Methods of optimisation (0 = Monte-Carlo, 1 = Dynamic Programming, 
     // 2 = EMSR, 3 = EMSR-a, 4 = EMSR-b)
-    short METHOD_FLAG = 0;
+    const short METHOD_FLAG = 0;
     
     // Cabin Capacity (it must be greater then 100 here)
-    double cabinCapacity = 500.0;
+    const double cabinCapacity = 500.0;
     
     // Input file name
-    std::string inputFileName ("class.csv");
-    bool hasInputFile = false;
+    const std::string inputFileName ("class.csv");
+    const bool hasInputFile = false;
     
-    if (argc >= 1 && argv[1] != NULL) {
-      std::istringstream istr (argv[1]);
-      istr >> K;
-    }
-    
-    if (argc >= 2 && argv[2] != NULL) {
-      std::istringstream istr (argv[2]);
-      istr >> cabinCapacity;
-    }
-    
-    if (argc >= 3 && argv[3] != NULL) {
-      std::istringstream istr (argv[3]);
-      istr >> inputFileName;
-      hasInputFile = true;
-    }
-    
-    if (argc >= 4 && argv[4] != NULL) {
-      std::istringstream istr (argv[4]);
-      istr >> METHOD_FLAG;
-    }
+    // Set the log parameters
+    std::ofstream logOutputFile;
+    // open and clean the log outputfile
+    logOutputFile.open (lLogFilename.c_str());
+    logOutputFile.clear();
     
     // Initialise the list of classes/buckets
-    RMOL::RMOL_Service rmolService (cabinCapacity);
+    RMOL::RMOL_Service rmolService (logOutputFile, cabinCapacity);
     
     if (hasInputFile) {
       // Read the input file
@@ -95,11 +87,26 @@ int main (int argc, char* argv[]) {
     
   } catch (const std::exception& stde) {
     std::cerr << "Standard exception: " << stde.what() << std::endl;
-    return -1;
     
   } catch (...) {
-    return -1;
+    std::cerr << "Unknown exception" << std::endl;
   }
-  
-  return 0;	
 }
+
+// //////////////////////////////////////////////////////////////////////
+void OptimiseTestSuite::testOptimise() {
+  CPPUNIT_ASSERT_NO_THROW (testOptimiseHelper(););
+}
+
+// //////////////////////////////////////////////////////////////////////
+// void OptimiseTestSuite::errorCase () {
+//  CPPUNIT_ASSERT (false);
+// }
+
+// //////////////////////////////////////////////////////////////////////
+OptimiseTestSuite::OptimiseTestSuite () {
+  _describeKey << "Running test on RMOL Optimisation function";  
+}
+
+// /////////////// M A I N /////////////////
+CPPUNIT_MAIN()
