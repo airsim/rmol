@@ -286,6 +286,10 @@ AH_BOTTOM([
 #endif /* #ifndef CONFIG_H */
 ])
 
+AM_GNU_GETTEXT([external], [need-formatstring-macros])
+AM_GNU_GETTEXT_VERSION([0.14])
+
+USE_NLS=yes
 
 # Define configured files
 AC_CONFIG_FILES(
@@ -311,6 +315,7 @@ AC_CONFIG_FILES(
 	doc/local/index.doc
 	doc/doxygen_html.cfg
 	doc/sourceforge/howto_release_rmol.html
+	po/Makefile.in
 	test/Makefile
 	win32/Makefile)
 AC_OUTPUT
@@ -332,6 +337,7 @@ Directories:
 Switches:
   - debug ............. : ${enable_debug}
   - exceptions ........ : ${enable_exceptions}
+  - use-nls ........... : ${USE_NLS}
   - info-doc .......... : ${enable_info_doc}
   - html-doc .......... : ${enable_html_doc}
   - shared ............ : ${enable_shared}

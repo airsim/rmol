@@ -58,7 +58,7 @@ make %{?_smp_mflags}
 %install
 rm -rf $RPM_BUILD_ROOT
 make install DESTDIR=$RPM_BUILD_ROOT
-#%find_lang %{name}
+%find_lang %{name}
 # remove unpackaged files from the buildroot
 rm -f $RPM_BUILD_ROOT%{_infodir}/dir
 
@@ -77,8 +77,7 @@ if [ "$1" = 0 ]; then
    /sbin/install-info --delete %{_infodir}/%{name}-ref.info.gz %{_infodir}/dir
 fi
 
-%files
-# -f %{name}.lang
+%files -f %{name}.lang
 %defattr(-,root,root,-)
 %doc AUTHORS ChangeLog COPYING INSTALL NEWS README
 %{_bindir}/%{name}
