@@ -1,18 +1,12 @@
 #
-%define version @VERSION@
-%define release @RPM_RELEASE@
-
-#
 Name:           @PACKAGE@
-Version:        %{version}
-Release:        %{release}
-Vendor:         The RMOL Team
-Distribution:   Research Software
+Version:        @VERSION@
+Release:        @RPM_RELEASE@%{?dist}
 
 Summary:        @PACKAGE_NAME@ is a C++ library of Revenue Management and Optimisation classes and functions.
 
 Group:          System Environment/Libraries 
-License:        LGPL
+License:        LGPLv2
 URL:            http://%{name}.sourceforge.net
 Source0:        http://download.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
@@ -114,5 +108,7 @@ fi
 %doc %{_docdir}/%{name}-%{version}
 
 %changelog
+* Sun Mar  8 2009 Denis Arnaud <denis.arnaud_fedora@m4x.org> @RPM_RELEASE@
+- RPM release for Fedora 10
 * Wed Mar  4 2009 Denis Arnaud <denis.arnaud_fedora@m4x.org> @RPM_RELEASE@
 - Second RPM release
