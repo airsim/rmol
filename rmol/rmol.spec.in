@@ -13,8 +13,6 @@ BuildRequires:	gsl-devel >= 1.8
 BuildRequires:	boost-devel >= 1.34
 #Requires:       
 
- Typically, the service providers (like, e.g., airlines, hotels or car rental companies) may use that library to help them 
-
 %description
 @PACKAGE_NAME@ is a C++ library of Revenue Management and Optimisation classes 
 and functions. Typically, that library may be used by service providers
