@@ -21,7 +21,7 @@ The latest stable source tarball (rmol*.tar.gz or .bz2) can be found here:
 http://sourceforge.net/project/showfiles.php?group_id=177703
 
 Then, as usual, you can just type the following sequence:
-"./configure --prefix=~/dev/deliveries/rmol-0.15 && make && make check && cd test && ./testLibsh"
+"./configure --prefix=/projects/sim/deliveries/rmol-0.19.0 && make && make check && cd test && ./testLibsh"
 Of course, if you want to install the library (librmol*.so*), 
 just type: "make install".
 
