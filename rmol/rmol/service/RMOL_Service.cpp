@@ -92,8 +92,8 @@ namespace RMOL {
 
   // //////////////////////////////////////////////////////////////////////
   void RMOL_Service::
-  optimalOptimisationByMCIntegration (const int K,
-                                      BookingLimitVector_T& ioBookingLimitVector) {
+  optimalOptimisationByMCIntegration(const int K,
+                                     BookingLimitVector_T& ioBookingLimitVector){
     
     assert (_rmolServiceContext != NULL);
     const double iCapacity = _rmolServiceContext->getCapacity();
@@ -163,7 +163,8 @@ namespace RMOL {
 
   // //////////////////////////////////////////////////////////////////////
   void RMOL_Service::
-  heuristicOptimisationByEmsr (BidPriceVector_T& ioBidPriceVector) {
+  heuristicOptimisationByEmsr (BidPriceVector_T& ioBidPriceVector,
+                               BookingLimitVector_T& ioBookingLimitVector) {
     assert (_rmolServiceContext != NULL);
     const double iCapacity = _rmolServiceContext->getCapacity();
     BucketHolder* ioBucketHolder_ptr = _rmolServiceContext->getBucketHolder();
@@ -171,6 +172,15 @@ namespace RMOL {
 
     Optimiser::heuristicOptimisationByEmsr (iCapacity, *ioBucketHolder_ptr,
                                             ioBidPriceVector);
+
+    // Update the booking limit vector.
+    for (ioBucketHolder_ptr->begin(); ioBucketHolder_ptr->hasNotReachedEnd();
+         ioBucketHolder_ptr->iterate()) {
+      Bucket& currentBucket = ioBucketHolder_ptr->getCurrentBucket();
+      const double lBookingLimit = currentBucket.getCumulatedBookingLimit();
+      ioBookingLimitVector.push_back (lBookingLimit);
+    }
+    
   }
 
   // //////////////////////////////////////////////////////////////////////

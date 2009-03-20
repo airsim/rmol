@@ -49,8 +49,8 @@ namespace RMOL {
     void heuristicOptimisationByEmsr ();
 
     /** Single resource optimization that uses EMSR heuristic and
-        returns a vector of cumulated booking limits. */
-    void heuristicOptimisationByEmsr (BookingLimitVector_T&);
+        returns a bid-price vector and a vector of cumulated booking limits. */
+    void heuristicOptimisationByEmsr (BidPriceVector_T&, BookingLimitVector_T&);
     
     /** Single resource optimization using EMSR-a heuristic. */
     void heuristicOptimisationByEmsrA ();
