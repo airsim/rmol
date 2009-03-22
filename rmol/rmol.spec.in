@@ -36,6 +36,8 @@ Summary:        Header files, libraries and development documentation for %{name
 Group:          Development/Libraries
 Requires:       %{name} = %{version}-%{release}
 Requires:       pkgconfig
+Requires(post): info
+Requires(preun): info
 
 %description    devel
 This package contains the header files, static libraries and
@@ -45,6 +47,7 @@ programs using %{name}, you will need to install %{name}-devel.
 %package doc
 Summary:        HTML documentation for the @PACKAGE_NAME@ library
 Group:          Documentation
+BuildRequires:  doxygen, texlive-latex, texlive-dvips, ghostscript
 
 %description doc
 This package contains the documentation in the HTML format of the @PACKAGE_NAME@
@@ -82,11 +85,11 @@ rm -rf $RPM_BUILD_ROOT
 %postun -p /sbin/ldconfig
 
 %post devel
-/sbin/install-info %{_infodir}/%{name}-ref.info.* %{_infodir}/dir
+/sbin/install-info %{_infodir}/%{name}-ref.info.* %{_infodir}/dir || :
 
 %preun devel 
 if [ "$1" = 0 ]; then
-   /sbin/install-info --delete %{_infodir}/%{name}-ref.info.* %{_infodir}/dir
+   /sbin/install-info --delete %{_infodir}/%{name}-ref.info.* %{_infodir}/dir || :
 fi
 
 %files -f %{name}.lang
