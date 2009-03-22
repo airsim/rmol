@@ -6,7 +6,7 @@ rmol/service/ServiceAbstract.hpp
 rmol/service/ServiceAbstract.cpp
 rmol/service/RMOL_ServiceContext.hpp
 rmol/service/Logger.hpp
-rmol/RmolTypes.hpp
+rmol/RMOL_Types.hpp
 rmol/RMOL_Service.hpp
 rmol/field/FldYieldRange.hpp
 rmol/field/FldOverbookingPolicy.hpp
