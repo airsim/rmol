@@ -11,7 +11,7 @@
 #include <sstream>
 #include <string>
 // RMOL
-#include <rmol/RmolTypes.hpp>
+#include <rmol/RMOL_Types.hpp>
 
 // /////////////// LOG MACROS /////////////////
 #define RMOL_LOG_CORE(iLevel, iToBeLogged) \

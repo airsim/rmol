@@ -7,7 +7,7 @@
 // STL
 #include <string>
 // RMOL
-#include <rmol/RmolTypes.hpp>
+#include <rmol/RMOL_Types.hpp>
 #include <rmol/service/ServiceAbstract.hpp>
 
 namespace RMOL {

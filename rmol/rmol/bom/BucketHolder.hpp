@@ -7,7 +7,7 @@
 // STL
 #include <iostream>
 // RMOL
-#include <rmol/RmolTypes.hpp>
+#include <rmol/RMOL_Types.hpp>
 #include <rmol/bom/BomAbstract.hpp>
 #include <rmol/bom/BucketList.hpp>
 

@@ -1,5 +1,5 @@
-#ifndef __RMOL_RMOLTYPES_HPP
-#define __RMOL_RMOLTYPES_HPP
+#ifndef __RMOL_RMOL_TYPES_HPP
+#define __RMOL_RMOL_TYPES_HPP
 
 // //////////////////////////////////////////////////////////////////////
 // Import section
@@ -65,4 +65,4 @@ namespace RMOL {
   typedef std::vector<double> BookingLimitVector_T;
 
 }
-#endif // __RMOL_RMOLTYPES_HPP
+#endif // __RMOL_RMOL_TYPES_HPP

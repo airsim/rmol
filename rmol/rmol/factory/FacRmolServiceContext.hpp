@@ -5,7 +5,7 @@
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // RMOL
-#include <rmol/RmolTypes.hpp>
+#include <rmol/RMOL_Types.hpp>
 #include <rmol/factory/FacServiceAbstract.hpp>
 
 namespace RMOL {

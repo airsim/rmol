@@ -21,7 +21,8 @@ endif
 MAINTAINERCLEANFILES = Makefile.in aclocal.m4 configure \
 			config-h.in sic/stamp-h.in autogen.sh bootstrap
 
-EXTRA_DIST = @PACKAGE@.spec @PACKAGE@.m4 @PACKAGE@.pc Makefile.common 
+#EXTRA_DIST = @PACKAGE@.spec @PACKAGE@.m4 @PACKAGE@.pc Makefile.common 
+EXTRA_DIST =
 
 # Build in these directories:
 SUBDIRS = rmol win32 po man $(INFO_DOC_DIR) $(HTML_DOC_DIR) $(TEST_DIR)

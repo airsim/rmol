@@ -3,7 +3,7 @@ Name:           @PACKAGE@
 Version:        @VERSION@
 Release:        @RPM_RELEASE@%{?dist}
 
-Summary:        @PACKAGE_NAME@ is a C++ library of Revenue Management and Optimisation classes and functions.
+Summary:        C++ library of Revenue Management and Optimisation classes and functions
 
 Group:          System Environment/Libraries 
 License:        LGPLv2
@@ -11,7 +11,6 @@ URL:            http://%{name}.sourceforge.net
 Source0:        http://download.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:  automake, autoconf, libtool, gettext
 BuildRequires:  gsl-devel >= 1.8
 BuildRequires:  boost-devel >= 1.34
 BuildRequires:  cppunit-devel >= 1.10
@@ -29,33 +28,40 @@ book:
 The Theory and practice of Revenue Management, by Kalyan T. Talluri and
 Garrett J. van Ryzin, Kluwer Academic Publishers, 2004, ISBN 1-4020-7701-7
 
-Install the @PACKAGE@ package if you need a library for high-level
+Install the %{name} package if you need a library for high-level
 revenue management functionality.
 
 %package        devel
-Summary:        Headers and libraries for building apps that use @PACKAGE_NAME@
+Summary:        Header files, libraries and development documentation for %{name}
 Group:          Development/Libraries
 Requires:       %{name} = %{version}-%{release}
+Requires:       pkgconfig
 
 %description    devel
-This package contains headers and libraries required to build applications that
-use @PACKAGE_NAME@.
+This package contains the header files, static libraries and
+development documentation for %{name}. If you would like to develop
+programs using %{name}, you will need to install %{name}-devel.
 
-%package html-doc
+%package doc
 Summary:        HTML documentation for the @PACKAGE_NAME@ library
-Group:          System Environment/Libraries
+Group:          Documentation
 
-%description html-doc
+%description doc
 This package contains the documentation in the HTML format of the @PACKAGE_NAME@
 library. The documentation is the same as at the @PACKAGE_NAME@ web page.
 
 
 %prep
 %setup -q
+# find ./doc -type f -perm 755 -exec chmod 644 {} \;
+# Fix some permissions and formats
+rm -f INSTALL
+chmod -x ABOUT-NLS AUTHORS ChangeLog COPYING NEWS README TODO
+find . -type f -name '*.[hc]pp' -exec chmod 644 {} \;
 
 
 %build
-%configure --enable-static --with-docdir=%{_docdir}/%{name}-%{version}
+%configure --with-docdir=%{_docdir}/%{name}-%{version}
 make %{?_smp_mflags}
 
 
@@ -64,7 +70,9 @@ rm -rf $RPM_BUILD_ROOT
 make install DESTDIR=$RPM_BUILD_ROOT
 %find_lang %{name}
 # remove unpackaged files from the buildroot
+rm -f $RPM_BUILD_ROOT%{_includedir}/%{name}/config.h
 rm -f $RPM_BUILD_ROOT%{_infodir}/dir
+rm -f $RPM_BUILD_ROOT%{_libdir}/lib%{name}.la
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -74,41 +82,40 @@ rm -rf $RPM_BUILD_ROOT
 %postun -p /sbin/ldconfig
 
 %post devel
-/sbin/install-info %{_infodir}/%{name}-ref.info.gz %{_infodir}/dir
+/sbin/install-info %{_infodir}/%{name}-ref.info.* %{_infodir}/dir
 
 %preun devel 
 if [ "$1" = 0 ]; then
-   /sbin/install-info --delete %{_infodir}/%{name}-ref.info.gz %{_infodir}/dir
+   /sbin/install-info --delete %{_infodir}/%{name}-ref.info.* %{_infodir}/dir
 fi
 
 %files -f %{name}.lang
 %defattr(-,root,root,-)
-%doc AUTHORS ChangeLog COPYING INSTALL NEWS README
+%doc AUTHORS ChangeLog COPYING NEWS README
 %{_bindir}/%{name}
 %{_libdir}/lib*.so.*
 #%{_docdir}/%{name}-%{version}/html
 #%{_datadir}/info/dir
-%{_datadir}/man/man3/%{name}.3.gz
+%{_mandir}/man3/%{name}.3.*
 
 %files devel
 %defattr(-,root,root,-)
-%doc
-%{_includedir}/%{name}
+%{_includedir}/%{name}/@PACKAGE_NAME@_Service.hpp
+%{_includedir}/%{name}/@PACKAGE_NAME@_Types.hpp
 %{_bindir}/%{name}-config
-%{_libdir}/lib*.a
-%{_libdir}/lib*.la
-%{_libdir}/lib*.so
+%{_libdir}/lib%{name}.so
 %{_libdir}/pkgconfig/%{name}.pc
 %{_datadir}/aclocal/%{name}.m4
-%{_datadir}/info/%{name}-ref.info.gz
-%{_datadir}/man/man1/%{name}-config.1.gz
+%{_infodir}/%{name}-ref.info.*
+%{_mandir}/man1/%{name}-config.1.*
 
-%files html-doc
+%files doc
 %defattr(-,root,root,-)
 %doc %{_docdir}/%{name}-%{version}
 
 %changelog
-* Sun Mar  8 2009 Denis Arnaud <denis.arnaud_fedora@m4x.org> @RPM_RELEASE@
+* Sun Mar  8 2009 Denis Arnaud <denis.arnaud_fedora@m4x.org> 0.19.0-1
 - RPM release for Fedora 10
-* Wed Mar  4 2009 Denis Arnaud <denis.arnaud_fedora@m4x.org> @RPM_RELEASE@
+
+* Wed Mar  4 2009 Denis Arnaud <denis.arnaud_fedora@m4x.org> 0.18.0-1
 - Second RPM release
