@@ -64,7 +64,8 @@ find . -type f -name '*.[hc]pp' -exec chmod 644 {} \;
 
 
 %build
-%configure --with-docdir=%{_docdir}/%{name}-%{version}
+#%configure --with-docdir=%{_docdir}/%{name}-%{version}
+%configure
 make %{?_smp_mflags}
 
 
@@ -76,6 +77,10 @@ make install DESTDIR=$RPM_BUILD_ROOT
 rm -f $RPM_BUILD_ROOT%{_includedir}/%{name}/config.h
 rm -f $RPM_BUILD_ROOT%{_infodir}/dir
 rm -f $RPM_BUILD_ROOT%{_libdir}/lib%{name}.la
+mkdir -p $RPM_BUILD_ROOT%{_datadir}/%{name}-%{version}
+cp -r $RPM_BUILD_ROOT%{_docdir}/%{name}-%{version}/html $RPM_BUILD_ROOT%{_datadir}/%{name}-%{version}
+chmod 755 $RPM_BUILD_ROOT%{_datadir}/%{name}-%{version}/html/installdox
+#cp -r doc/html $RPM_BUILD_ROOT%{_datadir}/%{name}-%{version}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -97,7 +102,6 @@ fi
 %doc AUTHORS ChangeLog COPYING NEWS README
 %{_bindir}/%{name}
 %{_libdir}/lib*.so.*
-#%{_docdir}/%{name}-%{version}/html
 #%{_datadir}/info/dir
 %{_mandir}/man3/%{name}.3.*
 
@@ -114,7 +118,9 @@ fi
 
 %files doc
 %defattr(-,root,root,-)
-%doc %{_docdir}/%{name}-%{version}
+#%doc %{_docdir}/%{name}-%{version}/html
+%doc AUTHORS ChangeLog COPYING NEWS README
+%{_datadir}/%{name}-%{version}/html
 
 %changelog
 * Sun Mar  8 2009 Denis Arnaud <denis.arnaud_fedora@m4x.org> 0.19.0-1
