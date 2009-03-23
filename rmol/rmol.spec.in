@@ -77,10 +77,7 @@ make install DESTDIR=$RPM_BUILD_ROOT
 rm -f $RPM_BUILD_ROOT%{_includedir}/%{name}/config.h
 rm -f $RPM_BUILD_ROOT%{_infodir}/dir
 rm -f $RPM_BUILD_ROOT%{_libdir}/lib%{name}.la
-mkdir -p $RPM_BUILD_ROOT%{_datadir}/%{name}-%{version}
-cp -r $RPM_BUILD_ROOT%{_docdir}/%{name}-%{version}/html $RPM_BUILD_ROOT%{_datadir}/%{name}-%{version}
-chmod 755 $RPM_BUILD_ROOT%{_datadir}/%{name}-%{version}/html/installdox
-#cp -r doc/html $RPM_BUILD_ROOT%{_datadir}/%{name}-%{version}
+chmod 644 doc/html/installdox doc/html/*.png doc/html/*.ico
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -118,9 +115,7 @@ fi
 
 %files doc
 %defattr(-,root,root,-)
-#%doc %{_docdir}/%{name}-%{version}/html
-%doc AUTHORS ChangeLog COPYING NEWS README
-%{_datadir}/%{name}-%{version}/html
+%doc AUTHORS ChangeLog COPYING NEWS README doc/html
 
 %changelog
 * Sun Mar  8 2009 Denis Arnaud <denis.arnaud_fedora@m4x.org> 0.19.0-1
