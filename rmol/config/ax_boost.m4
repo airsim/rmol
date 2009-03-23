@@ -10,6 +10,7 @@ dnl This macro calls:
 dnl
 dnl   AC_SUBST(BOOST_CFLAGS) / AC_SUBST(BOOST_LIBS)
 dnl   AC_SUBST(BOOST_FILESYSTEM_LIB)
+dnl   AC_SUBST(BOOST_SYSTEM_LIB)
 dnl   AC_SUBST(BOOST_PROGRAM_OPTIONS_LIB)
 dnl   AC_SUBST(BOOST_THREAD_LIB)
 dnl   AC_SUBST(BOOST_IOSTREAMS_LIB)
@@ -24,6 +25,7 @@ dnl And sets:
 dnl
 dnl   HAVE_BOOST
 dnl   HAVE_BOOST_FILESYSTEM
+dnl   HAVE_BOOST_SYSTEM
 dnl   HAVE_BOOST_PROGRAM_OPTIONS
 dnl   HAVE_BOOST_THREAD
 dnl   HAVE_BOOST_IOSTREAMS
@@ -57,6 +59,9 @@ AC_DEFUN([AX_BOOST],
                 [want_boost="yes"])
 
 #    AC_CANONICAL_BUILD
+BOOST_MDW_VERSION="1-33-1"
+BOOSTLIB_MDW_VERSION="1_33_1"
+
 	if test "x$want_boost" = "xyes"; then
 		boost_lib_version_req=ifelse([$1], ,1.20.0,$1)
 		boost_lib_version_req_shorten=`expr $boost_lib_version_req : '\([[0-9]]*\.[[0-9]]*\)'`
@@ -97,9 +102,9 @@ AC_DEFUN([AX_BOOST],
 					BOOST_CFLAGS="-I$ac_boost_path_tmp/include"
 					break;
 				fi
-				if test -d "$ac_boost_path_tmp/include/boost-1_33_1/boost" && test -r "$ac_boost_path_tmp/include/boost-1_33_1/boost"; then
+				if test -d "$ac_boost_path_tmp/include/boost-$BOOST_MDW_VERSION/boost" && test -r "$ac_boost_path_tmp/include/boost-$BOOST_MDW_VERSION/boost"; then
 					BOOST_LIBS="-L$ac_boost_path_tmp/$BOOST_LIBDIRTYPE"
-					BOOST_CFLAGS="-I$ac_boost_path_tmp/include/boost-1_33_1"
+					BOOST_CFLAGS="-I$ac_boost_path_tmp/include/boost-$BOOST_MDW_VERSION"
 			
 					dnl Hack for wrongly installed Boost libraries (AMD64 libraries installed in boost/lib directory)
 					if test -d "$ac_boost_path_tmp/lib" && test -r "$ac_boost_path_tmp/lib" && test ! -d "$ac_boost_path_tmp/lib64"; then
@@ -244,8 +249,9 @@ AC_DEFUN([AX_BOOST],
 				AC_DEFINE(HAVE_BOOST_FILESYSTEM,,[define if the Boost::FILESYSTEM library is available])
 				BN=boost_filesystem
 				for ax_lib in $BN $BN-$CC $BN-$CC-mt $BN-$CC-mt-s $BN-$CC-s \
-                              lib$BN lib$BN-$CC lib$BN-$CC-mt lib$BN-$CC-mt-s lib$BN-$CC-s \
-                              $BN-mgw $BN-mgw $BN-mgw-mt $BN-mgw-mt-s $BN-mgw-s ; do
+                              lib$BN lib$BN-$CC lib$BN-$CC-mt lib$BN-$CC-mt-s \
+                              lib$BN-$CC-s $BN-mgw $BN-mgw-mt $BN-mgw-mt-s \
+                              $BN-mgw-s $BN-$CC-mt-$BOOSTLIB_MDW_VERSION ; do
 				    AC_CHECK_LIB($ax_lib, main,
                                  [BOOST_FILESYSTEM_LIB="-l$ax_lib" AC_SUBST(BOOST_FILESYSTEM_LIB) link_filesystem="yes" break],
                                  [link_filesystem="no"])
@@ -254,6 +260,32 @@ AC_DEFUN([AX_BOOST],
 					AC_MSG_NOTICE(Could not link against $ax_lib !)
 				fi
 			fi
+
+            AC_CACHE_CHECK([whether the Boost::System library is available],
+                           ax_cv_boost_system,
+                           [AC_LANG_SAVE
+            AC_LANG_CPLUSPLUS
+            AC_COMPILE_IFELSE(AC_LANG_PROGRAM([[@%:@include <boost/system/error_code.hpp>]],
+                                   [[using namespace boost::system;
+                                   error_code myErrorCode();
+                                   return 0;]]),
+                                   ax_cv_boost_system=yes, ax_cv_boost_system=no)
+                                    AC_LANG_RESTORE
+            ])
+            if test "$ax_cv_boost_system" = "yes"; then
+                 AC_DEFINE(HAVE_BOOST_SYSTEM,,[define if the Boost::SYSTEM library is available])
+                 BN=boost_system
+                 for ax_lib in $BN $BN-$CC $BN-$CC-mt $BN-$CC-mt-s $BN-$CC-s \
+                              lib$BN lib$BN-$CC lib$BN-$CC-mt lib$BN-$CC-mt-s lib$BN-$CC-s \
+                              $BN-mgw $BN-mgw $BN-mgw-mt $BN-mgw-mt-s $BN-mgw-s ; do
+                     AC_CHECK_LIB($ax_lib, main,
+                                 [BOOST_SYSTEM_LIB="-l$ax_lib" AC_SUBST(BOOST_SYSTEM_LIB) link_system="yes" break],
+                                 [link_system="no"])
+                 done
+                 if test "x$link_system" = "xno"; then
+                     AC_MSG_NOTICE(Could not link against $ax_lib !)
+                 fi
+            fi
 
 			AC_CACHE_CHECK([whether the Boost::Program_Options library is available],
 						   ax_cv_boost_program_options,
@@ -269,8 +301,10 @@ AC_DEFUN([AX_BOOST],
 				AC_DEFINE(HAVE_BOOST_PROGRAM_OPTIONS,,[define if the Boost::PROGRAM_OPTIONS library is available])
 				BN=boost_program_options
 				for ax_lib in $BN $BN-$CC $BN-$CC-mt $BN-$CC-mt-s $BN-$CC-s \
-                              lib$BN lib$BN-$CC lib$BN-$CC-mt lib$BN-$CC-mt-s lib$BN-$CC-s \
-                              $BN-mgw $BN-mgw $BN-mgw-mt $BN-mgw-mt-s $BN-mgw-s ; do
+                              lib$BN lib$BN-$CC lib$BN-$CC-mt lib$BN-$CC-mt-s \
+                              lib$BN-$CC-s $BN-mgw $BN-mgw-mt \
+                              $BN-mgw-mt-s $BN-mgw-s \
+                              $BN-$CC-mt-$BOOSTLIB_MDW_VERSION; do
 				    AC_CHECK_LIB($ax_lib, main,
                                  [BOOST_PROGRAM_OPTIONS_LIB="-l$ax_lib" AC_SUBST(BOOST_PROGRAM_OPTIONS_LIB) link_program_options="yes" break],
                                  [link_program_options="no"])
@@ -313,8 +347,10 @@ AC_DEFUN([AX_BOOST],
 				AC_DEFINE(HAVE_BOOST_THREAD,,[define if the Boost::THREAD library is available])
 				BN=boost_thread
 				for ax_lib in $BN $BN-$CC $BN-$CC-mt $BN-$CC-mt-s $BN-$CC-s \
-                              lib$BN lib$BN-$CC lib$BN-$CC-mt lib$BN-$CC-mt-s lib$BN-$CC-s \
-                              $BN-mgw $BN-mgw $BN-mgw-mt $BN-mgw-mt-s $BN-mgw-s ; do
+                              lib$BN lib$BN-$CC lib$BN-$CC-mt lib$BN-$CC-mt-s \
+                              lib$BN-$CC-s $BN-mgw $BN-mgw-mt \
+                              $BN-mgw-mt-s $BN-mgw-s  \
+                              $BN-$CC-mt-$BOOSTLIB_MDW_VERSION ; do
 				    AC_CHECK_LIB($ax_lib, main, [BOOST_THREAD_LIB="-l$ax_lib" AC_SUBST(BOOST_THREAD_LIB) link_thread="yes" break],
                                  [link_thread="no"])
   				done
@@ -342,8 +378,10 @@ AC_DEFUN([AX_BOOST],
 				AC_DEFINE(HAVE_BOOST_IOSTREAMS,,[define if the Boost::IOStreams library is available])
 				BN=boost_iostreams
 				for ax_lib in $BN $BN-$CC $BN-$CC-mt $BN-$CC-mt-s $BN-$CC-s \
-                              lib$BN lib$BN-$CC lib$BN-$CC-mt lib$BN-$CC-mt-s lib$BN-$CC-s \
-                              $BN-mgw $BN-mgw $BN-mgw-mt $BN-mgw-mt-s $BN-mgw-s ; do
+                              lib$BN lib$BN-$CC lib$BN-$CC-mt lib$BN-$CC-mt-s \
+                              lib$BN-$CC-s $BN-mgw $BN-mgw-mt \
+                              $BN-mgw-mt-s $BN-mgw-s  \
+                              $BN-$CC-mt-$BOOSTLIB_MDW_VERSION ; do
 				    AC_CHECK_LIB($ax_lib, main, [BOOST_IOSTREAMS_LIB="-l$ax_lib" AC_SUBST(BOOST_IOSTREAMS_LIB) link_thread="yes" break],
                                  [link_thread="no"])
   				done
@@ -371,16 +409,20 @@ AC_DEFUN([AX_BOOST],
 				AC_DEFINE(HAVE_BOOST_SERIALIZATION,,[define if the Boost::Serialization library is available])
 				BN=boost_serialization
 				for ax_lib in $BN $BN-$CC $BN-$CC-mt $BN-$CC-mt-s $BN-$CC-s \
-                              lib$BN lib$BN-$CC lib$BN-$CC-mt lib$BN-$CC-mt-s lib$BN-$CC-s \
-                              $BN-mgw $BN-mgw $BN-mgw-mt $BN-mgw-mt-s $BN-mgw-s ; do
+                              lib$BN lib$BN-$CC lib$BN-$CC-mt lib$BN-$CC-mt-s \
+                              lib$BN-$CC-s $BN-mgw $BN-mgw-mt \
+                              $BN-mgw-mt-s $BN-mgw-s  \
+                              $BN-$CC-mt-$BOOSTLIB_MDW_VERSION ; do
 				    AC_CHECK_LIB($ax_lib, main,
                                  [BOOST_SERIALIZATION_LIB="-l$ax_lib" AC_SUBST(BOOST_SERIALIZATION_LIB) link_thread="yes" break],
                                  [link_thread="no"])
   				done
 				BN=boost_wserialization
 				for ax_lib in $BN $BN-$CC $BN-$CC-mt $BN-$CC-mt-s $BN-$CC-s \
-                              lib$BN lib$BN-$CC lib$BN-$CC-mt lib$BN-$CC-mt-s lib$BN-$CC-s \
-                              $BN-mgw $BN-mgw $BN-mgw-mt $BN-mgw-mt-s $BN-mgw-s ; do
+                              lib$BN lib$BN-$CC lib$BN-$CC-mt lib$BN-$CC-mt-s \
+                              lib$BN-$CC-s $BN-mgw $BN-mgw-mt \
+                              $BN-mgw-mt-s $BN-mgw-s  \
+                              $BN-$CC-mt-$BOOSTLIB_MDW_VERSION ; do
 				    AC_CHECK_LIB($ax_lib, main,
                                  [BOOST_WSERIALIZATION_LIB="-l$ax_lib" AC_SUBST(BOOST_WSERIALIZATION_LIB) link_thread="yes" break],
                                  [link_thread="no"])
@@ -406,8 +448,10 @@ AC_DEFUN([AX_BOOST],
 				AC_DEFINE(HAVE_BOOST_SIGNALS,,[define if the Boost::Signals library is available])
 				BN=boost_signals
 				for ax_lib in $BN $BN-$CC $BN-$CC-mt $BN-$CC-mt-s $BN-$CC-s \
-                              lib$BN lib$BN-$CC lib$BN-$CC-mt lib$BN-$CC-mt-s lib$BN-$CC-s \
-                              $BN-mgw $BN-mgw $BN-mgw-mt $BN-mgw-mt-s $BN-mgw-s ; do
+                              lib$BN lib$BN-$CC lib$BN-$CC-mt lib$BN-$CC-mt-s \
+                              lib$BN-$CC-s $BN-mgw $BN-mgw-mt \
+                              $BN-mgw-mt-s $BN-mgw-s  \
+                              $BN-$CC-mt-$BOOSTLIB_MDW_VERSION ; do
 				    AC_CHECK_LIB($ax_lib, main, [BOOST_SIGNALS_LIB="-l$ax_lib" AC_SUBST(BOOST_SIGNALS_LIB) link_thread="yes" break],
                                  [link_thread="no"])
   				done
@@ -432,8 +476,10 @@ AC_DEFUN([AX_BOOST],
 				AC_DEFINE(HAVE_BOOST_DATE_TIME,,[define if the Boost::Date_Time library is available])
 				BN=boost_date_time
 				for ax_lib in $BN $BN-$CC $BN-$CC-mt $BN-$CC-mt-s $BN-$CC-s \
-                              lib$BN lib$BN-$CC lib$BN-$CC-mt lib$BN-$CC-mt-s lib$BN-$CC-s \
-                              $BN-mgw $BN-mgw $BN-mgw-mt $BN-mgw-mt-s $BN-mgw-s ; do
+                              lib$BN lib$BN-$CC lib$BN-$CC-mt lib$BN-$CC-mt-s \
+                              lib$BN-$CC-s $BN-mgw $BN-mgw-mt \
+                              $BN-mgw-mt-s $BN-mgw-s  \
+                              $BN-$CC-mt-$BOOSTLIB_MDW_VERSION ; do
 				    AC_CHECK_LIB($ax_lib, main, [BOOST_DATE_TIME_LIB="-l$ax_lib" AC_SUBST(BOOST_DATE_TIME_LIB) link_thread="yes" break],
                                  [link_thread="no"])
   				done
@@ -456,8 +502,10 @@ AC_DEFUN([AX_BOOST],
 				AC_DEFINE(HAVE_BOOST_REGEX,,[define if the Boost::Regex library is available])
 				BN=boost_regex
 				for ax_lib in $BN $BN-$CC $BN-$CC-mt $BN-$CC-mt-s $BN-$CC-s \
-                              lib$BN lib$BN-$CC lib$BN-$CC-mt lib$BN-$CC-mt-s lib$BN-$CC-s \
-                              $BN-mgw $BN-mgw $BN-mgw-mt $BN-mgw-mt-s $BN-mgw-s ; do
+                              lib$BN lib$BN-$CC lib$BN-$CC-mt lib$BN-$CC-mt-s \
+                              lib$BN-$CC-s $BN-mgw $BN-mgw-mt \
+                              $BN-mgw-mt-s $BN-mgw-s  \
+                              $BN-$CC-mt-$BOOSTLIB_MDW_VERSION ; do
 				    AC_CHECK_LIB($ax_lib, main, [BOOST_REGEX_LIB="-l$ax_lib" AC_SUBST(BOOST_REGEX_LIB) link_thread="yes" break],
                                  [link_thread="no"])
   				done
@@ -481,8 +529,9 @@ AC_DEFUN([AX_BOOST],
 			BN=boost_unit_test_framework
     		saved_ldflags="${LDFLAGS}"
 			for ax_lib in $BN $BN-$CC $BN-$CC-mt $BN-$CC-mt-s $BN-$CC-s \
-                          lib$BN lib$BN-$CC lib$BN-$CC-mt lib$BN-$CC-mt-s lib$BN-$CC-s \
-                          $BN-mgw $BN-mgw $BN-mgw-mt $BN-mgw-mt-s $BN-mgw-s ; do
+                          lib$BN lib$BN-$CC lib$BN-$CC-mt lib$BN-$CC-mt-s \
+                          lib$BN-$CC-s $BN-mgw $BN-mgw-mt $BN-mgw-mt-s \
+                          $BN-mgw-s $BN-$CC-mt-$BOOSTLIB_MDW_VERSION ; do
                 LDFLAGS="${LDFLAGS} -l$ax_lib"
     			AC_CACHE_CHECK(the name of the Boost::UnitTestFramework library,
 	      					   ax_cv_boost_unit_test_framework,
