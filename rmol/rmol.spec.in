@@ -47,6 +47,7 @@ programs using %{name}, you will need to install %{name}-devel.
 %package doc
 Summary:        HTML documentation for the @PACKAGE_NAME@ library
 Group:          Documentation
+BuildArch:      noarch
 BuildRequires:  doxygen, texlive-latex, texlive-dvips, ghostscript
 
 %description doc
