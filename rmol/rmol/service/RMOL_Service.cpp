@@ -154,10 +154,10 @@ namespace RMOL {
     // std::cout << "Bid-Price Vector (BPV): ";
     unsigned int size = lBidPriceVector.size();
 
-    for (unsigned int i = 0; i < size; ++i) {
-      const double bidPrice = lBidPriceVector.at(i);
+    // for (unsigned int i = 0; i < size; ++i) {
+      // const double bidPrice = lBidPriceVector.at(i);
       // std::cout << std::fixed << std::setprecision (2) << bidPrice << " ";
-    }
+    // }
     // std::cout << std::endl;
   }
 

@@ -70,7 +70,6 @@ find . -type f -name '*.[hc]pp' -exec chmod 644 {} \;
 %configure --disable-static
 make %{?_smp_mflags}
 
-
 %install
 rm -rf $RPM_BUILD_ROOT
 make install DESTDIR=$RPM_BUILD_ROOT
@@ -79,9 +78,9 @@ make install DESTDIR=$RPM_BUILD_ROOT
 rm -f $RPM_BUILD_ROOT%{_includedir}/%{name}/config.h
 rm -f $RPM_BUILD_ROOT%{_infodir}/dir
 rm -f $RPM_BUILD_ROOT%{_libdir}/lib%{name}.la
-chmod 644 doc/html/installdox doc/html/*.png doc/html/*.ico
+# chmod 644 doc/html/installdox doc/html/*.png doc/html/*.ico
 rm -rf %{mydocs} && mkdir -p %{mydocs}
-mv $RPM_BUILD_ROOT/%{_docdir}/%{name}-%{version}/*  %{mydocs}
+mv $RPM_BUILD_ROOT%{_docdir}/%{name}-%{version}/html %{mydocs}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -107,9 +106,7 @@ fi
 
 %files devel
 %defattr(-,root,root,-)
-%dir %{_includedir}/%{name}
-%{_includedir}/%{name}/@PACKAGE_NAME@_Service.hpp
-%{_includedir}/%{name}/@PACKAGE_NAME@_Types.hpp
+%{_includedir}/%{name}
 %{_bindir}/%{name}-config
 %{_libdir}/lib%{name}.so
 %{_libdir}/pkgconfig/%{name}.pc
@@ -119,11 +116,12 @@ fi
 
 %files doc
 %defattr(-,root,root,-)
-%doc %{mydocs}/*
-%doc AUTHORS ChangeLog COPYING NEWS README doc/html
+%doc %{mydocs}/html
+%doc AUTHORS ChangeLog COPYING NEWS README
+
 
 %changelog
-* Sun Mar  8 2009 Denis Arnaud <denis.arnaud_fedora@m4x.org> 0.19.0-1
+* Sun Mar 25 2009 Denis Arnaud <denis.arnaud_fedora@m4x.org> 0.19.0-1
 - RPM release for Fedora 10
 
 * Wed Mar  4 2009 Denis Arnaud <denis.arnaud_fedora@m4x.org> 0.18.0-1

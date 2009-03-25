@@ -80,8 +80,8 @@ namespace RMOL {
                 << "\"" << std::endl;
     } else {
       if (i == 2) {
-        const Demand& aDemand = 
-	  FacDemand::instance().create (aDistribParams, aYieldRange);
+        //const Demand& aDemand = 
+	//  FacDemand::instance().create (aDistribParams, aYieldRange);
         Bucket& aBucket = FacBucket::instance().create (aYieldRange);
 	FacBucketHolder::instance().addBucket (ioBucketHolder, aBucket);
       }
