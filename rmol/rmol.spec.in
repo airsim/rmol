@@ -1,4 +1,6 @@
 #
+%define mydocs __tmp_docdir
+#
 Name:           @PACKAGE@
 Version:        @VERSION@
 Release:        @RPM_RELEASE@%{?dist}
@@ -8,7 +10,7 @@ Summary:        C++ library of Revenue Management and Optimisation classes and f
 Group:          System Environment/Libraries 
 License:        LGPLv2
 URL:            http://%{name}.sourceforge.net
-Source0:        http://download.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
+Source0:        http://downloads.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  gsl-devel >= 1.8
@@ -65,7 +67,6 @@ find . -type f -name '*.[hc]pp' -exec chmod 644 {} \;
 
 
 %build
-#%configure --with-docdir=%{_docdir}/%{name}-%{version}
 %configure
 make %{?_smp_mflags}
 
@@ -79,6 +80,8 @@ rm -f $RPM_BUILD_ROOT%{_includedir}/%{name}/config.h
 rm -f $RPM_BUILD_ROOT%{_infodir}/dir
 rm -f $RPM_BUILD_ROOT%{_libdir}/lib%{name}.la
 chmod 644 doc/html/installdox doc/html/*.png doc/html/*.ico
+rm -rf %{mydocs} && mkdir -p %{mydocs}
+mv $RPM_BUILD_ROOT/%{_docdir}/%{name}-%{version}/*  %{mydocs}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -100,11 +103,11 @@ fi
 %doc AUTHORS ChangeLog COPYING NEWS README
 %{_bindir}/%{name}
 %{_libdir}/lib*.so.*
-#%{_datadir}/info/dir
 %{_mandir}/man3/%{name}.3.*
 
 %files devel
 %defattr(-,root,root,-)
+%dir %{_includedir}/%{name}
 %{_includedir}/%{name}/@PACKAGE_NAME@_Service.hpp
 %{_includedir}/%{name}/@PACKAGE_NAME@_Types.hpp
 %{_bindir}/%{name}-config
@@ -116,6 +119,7 @@ fi
 
 %files doc
 %defattr(-,root,root,-)
+%doc %{mydocs}/*
 %doc AUTHORS ChangeLog COPYING NEWS README doc/html
 
 %changelog
