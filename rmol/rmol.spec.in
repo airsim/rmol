@@ -67,7 +67,7 @@ find . -type f -name '*.[hc]pp' -exec chmod 644 {} \;
 
 
 %build
-%configure
+%configure --disable-static
 make %{?_smp_mflags}
 
 
