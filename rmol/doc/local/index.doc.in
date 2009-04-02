@@ -45,6 +45,7 @@
 <b>External Libraries:</b>
 <ul>
 <li><a href="http://www.gnu.org/software/gsl">GSL</a></li>
+<li><a href="http://www.boost.org">Boost</a></li>
 </ul>
 
 </div>
@@ -59,7 +60,8 @@ and functions.
 RMOL makes an extensive use of existing open-source libraries for
 increased functionality, speed and accuracy. In particular <a
 href="http://www.gnu.org/software/gsl">GSL</a> (<em>GNU Scientific
-Library</em>) library is used.
+Library</em>) and <a href="http://www.boost.org">Boost</a> (<em>C++
+Standard Extensions</em>) libraries are used.
 
 The RMOL library originates from the department of Operational
 Research and Innovation at <a
