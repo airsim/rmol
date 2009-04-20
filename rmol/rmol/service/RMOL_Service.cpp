@@ -82,17 +82,30 @@ namespace RMOL {
     const double iCapacity = _rmolServiceContext->getCapacity();
     BucketHolder* ioBucketHolder_ptr = _rmolServiceContext->getBucketHolder();
     assert (ioBucketHolder_ptr != NULL);
+    BidPriceVector_T lBidPriceVector;
 
     Optimiser::optimalOptimisationByMCIntegration (K, iCapacity, 
-                                                   *ioBucketHolder_ptr);
+                                                   *ioBucketHolder_ptr,
+                                                   lBidPriceVector);
 
     // DEBUG
     RMOL_LOG_DEBUG (ioBucketHolder_ptr->display());
+    /*
+    std::cout << "Bid-Price Vector (BPV): ";
+    unsigned int size = lBidPriceVector.size();
+    
+    for (unsigned int i = 0; i < size; ++i) {
+      const double bidPrice = lBidPriceVector.at(i);
+      std::cout << std::fixed << std::setprecision (2) << bidPrice << " ";
+    }
+    std::cout << std::endl;
+    */
   }
 
   // //////////////////////////////////////////////////////////////////////
   void RMOL_Service::
   optimalOptimisationByMCIntegration(const int K,
+                                     BidPriceVector_T& ioBidPriceVector,
                                      BookingLimitVector_T& ioBookingLimitVector){
     
     assert (_rmolServiceContext != NULL);
@@ -101,7 +114,8 @@ namespace RMOL {
     assert (ioBucketHolder_ptr != NULL);
 
     Optimiser::optimalOptimisationByMCIntegration (K, iCapacity, 
-                                                   *ioBucketHolder_ptr);
+                                                   *ioBucketHolder_ptr,
+                                                   ioBidPriceVector);
 
     // Fill up booking vector
     ioBucketHolder_ptr->fillup (ioBookingLimitVector);
@@ -152,7 +166,7 @@ namespace RMOL {
     RMOL_LOG_DEBUG (ioBucketHolder_ptr->display());
     
     // std::cout << "Bid-Price Vector (BPV): ";
-    unsigned int size = lBidPriceVector.size();
+    // unsigned int size = lBidPriceVector.size();
 
     // for (unsigned int i = 0; i < size; ++i) {
       // const double bidPrice = lBidPriceVector.at(i);
@@ -198,7 +212,8 @@ namespace RMOL {
 
   // //////////////////////////////////////////////////////////////////////
   void RMOL_Service::
-  heuristicOptimisationByEmsrA (BookingLimitVector_T& ioBookingLimitVector) {
+  heuristicOptimisationByEmsrA (BidPriceVector_T& ioBidPriceVector,
+                                BookingLimitVector_T& ioBookingLimitVector) {
     assert (_rmolServiceContext != NULL);
     const double iCapacity = _rmolServiceContext->getCapacity();
     BucketHolder* ioBucketHolder_ptr = _rmolServiceContext->getBucketHolder();
@@ -225,7 +240,8 @@ namespace RMOL {
 
   // //////////////////////////////////////////////////////////////////////
   void RMOL_Service::
-  heuristicOptimisationByEmsrB (BookingLimitVector_T& ioBookingLimitVector) {
+  heuristicOptimisationByEmsrB (BidPriceVector_T& ioBidPriceVector,
+                                BookingLimitVector_T& ioBookingLimitVector) {
     assert (_rmolServiceContext != NULL);
     const double iCapacity = _rmolServiceContext->getCapacity();
     BucketHolder* ioBucketHolder_ptr = _rmolServiceContext->getBucketHolder();

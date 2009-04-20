@@ -31,8 +31,9 @@ namespace RMOL {
 	overbooking.
      */
     static void optimalOptimisationByMCIntegration (const int K, 
-						    const ResourceCapacity_T,
-						    BucketHolder&);
+                                                    const ResourceCapacity_T,
+                                                    BucketHolder&,
+                                                    BidPriceVector_T&);
     
     /**
        Dynamic Programming.

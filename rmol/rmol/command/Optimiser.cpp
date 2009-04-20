@@ -26,8 +26,9 @@ namespace RMOL {
   // //////////////////////////////////////////////////////////////////////
   void Optimiser::
   optimalOptimisationByMCIntegration (const int K, 
-				      const ResourceCapacity_T iCabinCapacity,
-				      BucketHolder& ioBucketHolder) {
+                                      const ResourceCapacity_T iCabinCapacity,
+                                      BucketHolder& ioBucketHolder,
+                                      BidPriceVector_T& ioBidPriceVector) {
     // Retrieve the BucketHolder
     // BucketHolder& ioBucketHolder = ioResource.getBucketHolder();
 
@@ -44,7 +45,7 @@ namespace RMOL {
         Note that n-1 corresponds to the size of the parameter list,
         i.e., n corresponds to the number of classes/buckets.
     */
-    for (short j=0 ; j <= nbOfClasses - 1; j++) {
+    for (short j = 0 ; j <= nbOfClasses; ++j) {
       PartialSumHolder& aPartialSumList = 
 	FacPartialSumHolder::instance().create ();
 
@@ -54,8 +55,9 @@ namespace RMOL {
 
     // Call the class performing the actual algorithm
     MCOptimiser::optimalOptimisationByMCIntegration (K, iCabinCapacity, 
-						     ioBucketHolder,
-						     aPartialSumHolderHolder);
+                                                     ioBucketHolder,
+                                                     aPartialSumHolderHolder,
+                                                     ioBidPriceVector);
   }
 
   // //////////////////////////////////////////////////////////////////////

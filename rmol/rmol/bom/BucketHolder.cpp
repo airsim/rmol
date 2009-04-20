@@ -151,6 +151,22 @@ namespace RMOL {
   }
 
   // //////////////////////////////////////////////////////////////////////
+  const double BucketHolder::getPreviousCumulatedProtection () const {
+    // Get the cumulated protection of the previous bucket. If the
+    // current bucket is the first one, the function returns 0.0
+    if (_itCurrentBucket == _bucketList.begin()) {
+      return 0.0;
+    } else {
+      BucketList_T::iterator itPreviousBucket = _itCurrentBucket;
+      --itPreviousBucket;
+      Bucket* lPreviousBucket_ptr = *itPreviousBucket;
+      const double oPreviousCumulatedProtection =
+        lPreviousBucket_ptr->getCumulatedProtection();
+      return oPreviousCumulatedProtection;
+    }
+  }
+
+  // //////////////////////////////////////////////////////////////////////
   void BucketHolder::calculateMeanDemandAndOptimalRevenue () {
     _totalMeanDemand = 0.0;
     _optimalRevenue = 0.0;

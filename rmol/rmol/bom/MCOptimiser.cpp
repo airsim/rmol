@@ -21,9 +21,10 @@ namespace RMOL {
   // //////////////////////////////////////////////////////////////////////
   void MCOptimiser::
   optimalOptimisationByMCIntegration(const int K, 
-				     const ResourceCapacity_T iCabinCapacity,
-				     BucketHolder& ioBucketHolder,
-				     PartialSumHolderHolder& ioPSHolderHolder){
+                                     const ResourceCapacity_T iCabinCapacity,
+                                     BucketHolder& ioBucketHolder,
+                                     PartialSumHolderHolder& ioPSHolderHolder,
+                                     BidPriceVector_T& ioBidPriceVector){
     // Retrieve the BucketHolder
     // BucketHolder& ioBucketHolder = ioResource.getBucketHolder();
 
@@ -55,8 +56,9 @@ namespace RMOL {
     ioPSHolderHolder.iterate();
     int Kj = K;
     int lj = 0;
-    for (short j=1 ; j <= nbOfClasses - 1; 
-	 j++, ioBucketHolder.iterate(), ioPSHolderHolder.iterate()) {
+    const int cabinCapacityInt = static_cast<int> (iCabinCapacity);
+    for (short j = 1 ; j <= nbOfClasses - 1; 
+	 ++j, ioBucketHolder.iterate(), ioPSHolderHolder.iterate()) {
       /** Retrieve Bucket(j) (current) and Bucket(j+1) (next). */
       Bucket& currentBucket = ioBucketHolder.getCurrentBucket();
       Bucket& nextBucket = ioBucketHolder.getNextBucket();
@@ -83,9 +85,9 @@ namespace RMOL {
       VariateList_T aVariateList;
 
       PartialSumHolder& previousPartialSumList = 
-	ioPSHolderHolder.getPreviousPartialSumHolder();
+        ioPSHolderHolder.getPreviousPartialSumHolder();
       PartialSumHolder& currentPartialSumList = 
-	ioPSHolderHolder.getCurrentPartialSumHolder();
+        ioPSHolderHolder.getCurrentPartialSumHolder();
       currentPartialSumList.initSize (Kj);
       for (int k=1; k <= Kj; k++) {
         const double djk = gaussianDemandGenerator.generateVariate();
@@ -142,9 +144,6 @@ namespace RMOL {
       /** Consistency check. */
       assert (lj >= 1 && lj < Kj);
 
-      /** Update Kj for the next loop. */
-      Kj = Kj - lj;
-
       /** 
           The optimal protection is defined as:
           y(j) = 1/2 [S(j,lj) + S(j, lj+1)]
@@ -161,6 +160,37 @@ namespace RMOL {
       // Set the cumulated protection for Bucket(j) (j ranging from 1 to n-1)
       currentBucket.setCumulatedProtection (yj);
 
+      /** Compute the Bid-Price (Opportunity Cost) at index x
+          (capacity) for x between y(j-1) et y(j). This OC can be
+          proven to be equal to p(j)*Proba(D1+...+Dk>=x | D1 > y1,
+          D1+D2 > y2, ..., D1+...+D(k-1) > y(k-1)). */
+      
+      // Get the previous cumulated protection y(j-1).
+      const double yjm1 = ioBucketHolder.getPreviousCumulatedProtection ();
+      const int yjm1int = static_cast<int> (yjm1);
+      const int yjint = static_cast<int> (yj);
+      int currentIndex = 0;
+      double currentPartialSum = 
+        currentPartialSumList.getPartialSum (currentIndex);
+      int x = 0;
+      
+      for (x = yjm1int + 1; x <= yjint && x <= cabinCapacityInt; ++x) {
+        while (currentPartialSum < x) {
+          ++currentIndex;
+          if (currentIndex < Kj) {
+            currentPartialSum =
+              currentPartialSumList.getPartialSum (currentIndex);
+          } else {
+            currentPartialSum = x;
+          }
+        }
+        const double bidPriceAtX = pj * (Kj - currentIndex) / Kj;
+        ioBidPriceVector.push_back (bidPriceAtX);
+      }   
+
+      /** Update Kj for the next loop. */
+      Kj = Kj - lj;
+
       /** S'(j,k) = S(j,k). 
 	  <br>The previousPartialSumList (S') now becomes equal to the 
 	  currentPartialSumList (S) (by iteration on ioPSHolderHolder). */
@@ -170,6 +200,61 @@ namespace RMOL {
     Bucket& currentBucket = ioBucketHolder.getCurrentBucket();
     currentBucket.setCumulatedProtection (iCabinCapacity);
 
+    /** Compute the Bid-Price (Opportunity Cost) at index x
+          (capacity) for x between y(n-1) et cabin capacity. This OC can be
+          proven to be equal to p(n)*Proba(D1+...+Dn>=x | D1 > y1,
+          D1+D2 > y2, ..., D1+...+D(n-1) > y(n-1)). */
+         
+    // Get the previous cumulated protection y(n-1).
+    const double ynm1 = ioBucketHolder.getPreviousCumulatedProtection ();
+
+    if (ynm1 < iCabinCapacity) {
+      // STEP 1.
+      const FldDistributionParameters& aDistribParams = 
+        currentBucket.getDistributionParameters();
+      const Gaussian gaussianDemandGenerator (aDistribParams);
+      
+      VariateList_T aVariateList;
+      
+      PartialSumHolder& previousPartialSumList = 
+        ioPSHolderHolder.getPreviousPartialSumHolder();
+      PartialSumHolder& currentPartialSumList = 
+        ioPSHolderHolder.getCurrentPartialSumHolder();
+      currentPartialSumList.initSize (Kj);
+      
+      for (int k = 1; k <= Kj; ++k) {
+        const double djk = gaussianDemandGenerator.generateVariate();
+        aVariateList.push_back (djk);
+        
+        const double spjm1lpk = 
+          previousPartialSumList.getPartialSum (lj + k - 1);
+        const double sjk = spjm1lpk + djk;
+        currentPartialSumList.addPartialSum (sjk);
+      }
+      
+      // STEP 2.
+      currentPartialSumList.sort ();
+      
+      const int ynm1int = static_cast<int> (ynm1);
+      const double pn = currentBucket.getAverageYield();
+      int currentIndex = 0;
+      double currentPartialSum = 
+        currentPartialSumList.getPartialSum (currentIndex);
+      for (int x = ynm1int + 1; x <= cabinCapacityInt; ++x) {
+        while (currentPartialSum < x) {
+          ++currentIndex;
+          if (currentIndex < Kj) {
+            currentPartialSum =
+              currentPartialSumList.getPartialSum (currentIndex);
+          } else {
+            currentPartialSum = x;
+          }
+        }
+        const double bidPriceAtX = pn * (Kj - currentIndex) / Kj;
+        ioBidPriceVector.push_back (bidPriceAtX);
+      } 
+    }
+    
     /**
        Re-calculate the values (protections, bkg limits and cumulated
        booking limits, the optimal revenue.

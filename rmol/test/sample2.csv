@@ -1,6 +1,0 @@
-../../rmol/service/RMOL_Service.cpp:90: 500Class; Price; Mean; Std Dev; Protection; Cum. Protection; Cum. Bkg Limit; 
-1; 100([2.22507e-308, 100]), upper yield = 100.00; , mean = 20.00; , std_dev = 9.00; , protection = 15.23; , cumulative protection = 15.23; , booking limit = 0.00, cumulative booking limit = 500.00
-2; 70([2.22507e-308, 70]), upper yield = 70.00; , mean = 45.00; , std_dev = 12.00; , protection = 50.57; , cumulative protection = 65.80; , booking limit = 0.00, cumulative booking limit = 484.77
-3; 42([2.22507e-308, 42]), upper yield = 42.00; , mean = 0.00; , std_dev = 0.00; , protection = 434.20; , cumulative protection = 500.00; , booking limit = 0.00, cumulative booking limit = 434.20
-Cabin Capacity = 500; Total Mean Demand = 65; Demand Factor = 0.13; Optimal Revenue = 23299.5
-

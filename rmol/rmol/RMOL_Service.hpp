@@ -36,6 +36,7 @@ namespace RMOL {
     /** Single resource optimization that uses Monte-Carlo algorithm and
         returns a vector of cumulated booking limits. */
     void optimalOptimisationByMCIntegration (const int K,
+                                             BidPriceVector_T&,
                                              BookingLimitVector_T&);
 
     /** Single resource optimization using dynamic programming. */
@@ -57,14 +58,14 @@ namespace RMOL {
 
     /** Single resource optimization that uses EMSR-a heuristic and
         returns a vector of cumulated booking limits. */
-    void heuristicOptimisationByEmsrA (BookingLimitVector_T&);
+    void heuristicOptimisationByEmsrA (BidPriceVector_T&, BookingLimitVector_T&);
     
     /** Single resource optimization using EMSR-b heuristic. */
     void heuristicOptimisationByEmsrB ();
 
     /** Single resource optimization that uses EMSR-b heuristic and
         returns a vector of cumulated booking limits. */
-    void heuristicOptimisationByEmsrB (BookingLimitVector_T&);
+    void heuristicOptimisationByEmsrB (BidPriceVector_T&, BookingLimitVector_T&);
 
   private:
     /** Default Constructors. */

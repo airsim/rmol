@@ -31,9 +31,10 @@ namespace RMOL {
 	overbooking.
      */
     static void optimalOptimisationByMCIntegration (const int K, 
-						    const ResourceCapacity_T,
-						    BucketHolder&,
-						    PartialSumHolderHolder&);
+                                                    const ResourceCapacity_T,
+                                                    BucketHolder&,
+                                                    PartialSumHolderHolder&,
+                                                    BidPriceVector_T&);
   };
 }
 #endif // __RMOL_BOM_MCUTILS_HPP

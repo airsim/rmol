@@ -43,6 +43,10 @@ namespace RMOL {
     /** Get the size of list of buckets/classes. */
     const short getSize () const;
 
+    /** Get the cumulated protection of the previous bucket. If the
+        current bucket is the first one, the function returns 0.0. */
+    const double getPreviousCumulatedProtection () const;
+
     /** Fill up the vector of cumulated booking limits. */
     void fillup (BookingLimitVector_T&) const;
     

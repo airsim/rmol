@@ -24,11 +24,11 @@ void testOptimiseHelper() {
     const short METHOD_FLAG = 0;
     
     // Cabin Capacity (it must be greater then 100 here)
-    const double cabinCapacity = 500.0;
+    const double cabinCapacity = 100.0;
     
     // Input file name
-    const std::string inputFileName ("class.csv");
-    const bool hasInputFile = false;
+    const std::string inputFileName ("samples/sample2.csv");
+    const bool hasInputFile = true;
     
     // Set the log parameters
     std::ofstream logOutputFile;
