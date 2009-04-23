@@ -23,6 +23,9 @@ namespace RMOL {
     /** Destructor. */
     ~RMOL_Service();
 
+    /** Set up the StudyStatManager. */
+    void setUpStudyStatManager ();
+
     /** Add a bucket to the context. */
     void addBucket (const double iYieldRange, const double iDemandMean,
                     const double iDemandStandardDev);

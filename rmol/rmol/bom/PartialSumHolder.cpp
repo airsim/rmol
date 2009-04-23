@@ -94,4 +94,12 @@ namespace RMOL {
     std::sort (_partialSumList.begin(), _partialSumList.end());
   }
 
+  // //////////////////////////////////////////////////////////////////////
+  const int PartialSumHolder::getLowerBound (const double& value) const {
+    PartialSumList_T::const_iterator itLowerBound =
+      std::lower_bound (_partialSumList.begin(), _partialSumList.end() , value);
+    const int position = itLowerBound - _partialSumList.begin();
+    return position;
+  }
+
 }

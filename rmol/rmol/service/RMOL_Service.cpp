@@ -5,6 +5,8 @@
 #include <assert.h>
 // STL
 #include <iomanip>
+#include <sstream>
+#include <iostream>
 // RMOL
 #include <rmol/basic/BasConst_RMOL_Service.hpp>
 #include <rmol/field/FldYieldRange.hpp>
@@ -12,6 +14,7 @@
 #include <rmol/bom/Demand.hpp>
 #include <rmol/bom/Bucket.hpp>
 #include <rmol/bom/BucketHolder.hpp>
+#include <rmol/bom/StudyStatManager.hpp>
 #include <rmol/factory/FacRmolServiceContext.hpp>
 #include <rmol/command/Optimiser.hpp>
 #include <rmol/service/RMOL_ServiceContext.hpp>
@@ -60,6 +63,12 @@ namespace RMOL {
   }
 
   // //////////////////////////////////////////////////////////////////////
+  void RMOL_Service::setUpStudyStatManager () {
+    assert (_rmolServiceContext != NULL);
+    _rmolServiceContext->setUpStudyStatManager ();
+  }
+
+  // //////////////////////////////////////////////////////////////////////
   void RMOL_Service::addBucket (const double iYieldRange, 
                                 const double iDemandMean,
                                 const double iDemandStandardDev) {
@@ -84,22 +93,35 @@ namespace RMOL {
     assert (ioBucketHolder_ptr != NULL);
     BidPriceVector_T lBidPriceVector;
 
-    Optimiser::optimalOptimisationByMCIntegration (K, iCapacity, 
-                                                   *ioBucketHolder_ptr,
-                                                   lBidPriceVector);
+    StudyStatManager* lStudyStatManager_ptr =
+      _rmolServiceContext->getStudyStatManager();
 
+    if (lStudyStatManager_ptr == NULL) {
+      Optimiser::optimalOptimisationByMCIntegration (K, iCapacity, 
+                                                     *ioBucketHolder_ptr,
+                                                     lBidPriceVector);
+    } else {
+      Optimiser::optimalOptimisationByMCIntegration (K, iCapacity, 
+                                                     *ioBucketHolder_ptr,
+                                                     lBidPriceVector,
+                                                     *lStudyStatManager_ptr);
+    }
     // DEBUG
     RMOL_LOG_DEBUG (ioBucketHolder_ptr->display());
-    /*
-    std::cout << "Bid-Price Vector (BPV): ";
+
+    std::ostringstream logStream;
+    logStream << "Bid-Price Vector (BPV): ";
     unsigned int size = lBidPriceVector.size();
     
     for (unsigned int i = 0; i < size; ++i) {
       const double bidPrice = lBidPriceVector.at(i);
-      std::cout << std::fixed << std::setprecision (2) << bidPrice << " ";
+      logStream << std::fixed << std::setprecision (2) << bidPrice << " ";
     }
-    std::cout << std::endl;
-    */
+    RMOL_LOG_DEBUG (logStream.str());
+
+    if (lStudyStatManager_ptr != NULL) {
+      RMOL_LOG_DEBUG (lStudyStatManager_ptr->describe());
+    }
   }
 
   // //////////////////////////////////////////////////////////////////////

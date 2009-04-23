@@ -61,6 +61,7 @@ int main (int argc, char* argv[]) {
     
     // Initialise the list of classes/buckets
     RMOL::RMOL_Service rmolService (logOutputFile, cabinCapacity);
+    rmolService.setUpStudyStatManager();
     
     if (hasInputFile) {
       // Read the input file

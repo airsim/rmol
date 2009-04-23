@@ -12,6 +12,7 @@ namespace RMOL {
   /** Forward declarations. */
   //class Resource;
   class BucketHolder;
+  class StudyStatManager;
 
   /** Class wrapping the optimisation algorithms. */
   class Optimiser {
@@ -34,6 +35,15 @@ namespace RMOL {
                                                     const ResourceCapacity_T,
                                                     BucketHolder&,
                                                     BidPriceVector_T&);
+
+    /**
+       Monte Carlo Integartion algorithm with StudyStatManager.
+    */
+    static void optimalOptimisationByMCIntegration (const int K, 
+                                                    const ResourceCapacity_T,
+                                                    BucketHolder&,
+                                                    BidPriceVector_T&,
+                                                    StudyStatManager&);
     
     /**
        Dynamic Programming.

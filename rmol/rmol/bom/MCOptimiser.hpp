@@ -13,7 +13,8 @@ namespace RMOL {
   //class Resource;
   class BucketHolder;
   class PartialSumHolderHolder;
-
+  class StudyStatManager;
+  
   /** Utility methods for the Monte-Carlo algorithms. */
   class MCOptimiser {
   public:
@@ -35,6 +36,15 @@ namespace RMOL {
                                                     BucketHolder&,
                                                     PartialSumHolderHolder&,
                                                     BidPriceVector_T&);
+    /**
+       Monte Carlo algorithm with StudyStatManager.
+     */
+    static void optimalOptimisationByMCIntegration (const int K, 
+                                                    const ResourceCapacity_T,
+                                                    BucketHolder&,
+                                                    PartialSumHolderHolder&,
+                                                    BidPriceVector_T&,
+                                                    StudyStatManager&);
   };
 }
 #endif // __RMOL_BOM_MCUTILS_HPP

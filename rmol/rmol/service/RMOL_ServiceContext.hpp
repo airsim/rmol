@@ -14,6 +14,7 @@ namespace RMOL {
 
   /** Forward declaration. */
   class BucketHolder;
+  class StudyStatManager;
 
   /** Inner class holding the context for the RMOL Service object. */
   class RMOL_ServiceContext : public ServiceAbstract {
@@ -29,6 +30,8 @@ namespace RMOL {
     RMOL_ServiceContext (const RMOL_ServiceContext&);
     RMOL_ServiceContext (const ResourceCapacity_T iResourceCapacity);
     void init (const ResourceCapacity_T iResourceCapacity);
+    /** Initialise the StudyStatManager. */
+    void initStudyStatManager ();
     /** Destructor. */
     ~RMOL_ServiceContext();
 
@@ -49,17 +52,29 @@ namespace RMOL {
       return _bucketHolder;
     }
 
+    /** Get the StudyStatManager. */
+    StudyStatManager* getStudyStatManager () const {
+      return _studyStatManager;
+    }
+
     /** Get the capacity. */
     ResourceCapacity_T getCapacity() const {
       return _capacity;
     }
 
+  public:
+    /** Set up the StudyStatManager. */
+    void setUpStudyStatManager ();
+    
   private:
     /** Internal pointer on BucketHolder. */
     BucketHolder* _bucketHolder;
 
     /** Resource Capacity. */
     ResourceCapacity_T _capacity;
+
+    /** Statistic Manager. */
+    StudyStatManager* _studyStatManager;
   };
 
 }

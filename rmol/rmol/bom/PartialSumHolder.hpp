@@ -25,6 +25,10 @@ namespace RMOL {
     /** Get the k-th element (partial sum). */
     const double getPartialSum (const int k) const;
 
+    /** Get the position of the first element that is equal or greater
+        than the given value. */
+    const int getLowerBound (const double& value) const;
+
     /** Reserve the space for K elements (partial sums). */
     void initSize (const int K);
 

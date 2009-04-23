@@ -15,7 +15,10 @@ bom_h_sources = $(top_srcdir)/rmol/bom/BomAbstract.hpp \
 		$(top_srcdir)/rmol/bom/Overbooking.hpp \
 		$(top_srcdir)/rmol/bom/MCOptimiser.hpp \
 		$(top_srcdir)/rmol/bom/DPOptimiser.hpp \
-		$(top_srcdir)/rmol/bom/MAForecast.hpp
+		$(top_srcdir)/rmol/bom/MAForecast.hpp \
+		$(top_srcdir)/rmol/bom/StatAggregatorStruct.hpp \
+		$(top_srcdir)/rmol/bom/StatAggregatorStructList.hpp \
+		$(top_srcdir)/rmol/bom/StudyStatManager.hpp
 bom_cc_sources = $(top_srcdir)/rmol/bom/BomAbstract.cpp \
 		$(top_srcdir)/rmol/bom/Bucket.cpp \
 		$(top_srcdir)/rmol/bom/BucketHolder.cpp \
@@ -28,5 +31,7 @@ bom_cc_sources = $(top_srcdir)/rmol/bom/BomAbstract.cpp \
 		$(top_srcdir)/rmol/bom/Overbooking.cpp \
 		$(top_srcdir)/rmol/bom/MCOptimiser.cpp \
 		$(top_srcdir)/rmol/bom/DPOptimiser.cpp \
-		$(top_srcdir)/rmol/bom/MAForecast.cpp
+		$(top_srcdir)/rmol/bom/MAForecast.cpp \
+		$(top_srcdir)/rmol/bom/StatAggregatorStruct.cpp \
+		$(top_srcdir)/rmol/bom/StudyStatManager.cpp
 
