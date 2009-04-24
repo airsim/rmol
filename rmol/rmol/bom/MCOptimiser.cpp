@@ -258,7 +258,7 @@ namespace RMOL {
     // Retrieve the BucketHolder
     // BucketHolder& ioBucketHolder = ioResource.getBucketHolder();
 
-    BasChronometer lWithdrawBasChronometer;
+    BasChronometer lDrawBasChronometer;
     BasChronometer lSortBasChronometer;
     BasChronometer lBVPCalculationBasChronometer;
 
@@ -323,7 +323,7 @@ namespace RMOL {
       PartialSumHolder& currentPartialSumList = 
         ioPSHolderHolder.getCurrentPartialSumHolder();
       currentPartialSumList.initSize (Kj);
-      lWithdrawBasChronometer.start();
+      lDrawBasChronometer.start();
       for (int k=1; k <= Kj; k++) {
         const double djk = gaussianDemandGenerator.generateVariate();
         aVariateList.push_back (djk);
@@ -349,8 +349,8 @@ namespace RMOL {
         */
       }
 
-      const double lWithdrawTimeValue = lWithdrawBasChronometer.elapsed();
-      ioStudyStatManager.addMeasure ("WithdrawTime", lWithdrawTimeValue);
+      const double lDrawTimeValue = lDrawBasChronometer.elapsed();
+      ioStudyStatManager.addMeasure ("DrawTime", lDrawTimeValue);
       
       // STEP 2.
       /**
@@ -459,7 +459,7 @@ namespace RMOL {
         ioPSHolderHolder.getCurrentPartialSumHolder();
       currentPartialSumList.initSize (Kj);
       
-      lWithdrawBasChronometer.start();
+      lDrawBasChronometer.start();
       for (int k = 1; k <= Kj; ++k) {
         const double djk = gaussianDemandGenerator.generateVariate();
         aVariateList.push_back (djk);
@@ -470,8 +470,8 @@ namespace RMOL {
         currentPartialSumList.addPartialSum (sjk);
       }
       
-      const double lWithdrawTimeValue = lWithdrawBasChronometer.elapsed();
-      ioStudyStatManager.addMeasure ("WithdrawTime", lWithdrawTimeValue);
+      const double lDrawTimeValue = lDrawBasChronometer.elapsed();
+      ioStudyStatManager.addMeasure ("DrawTime", lDrawTimeValue);
       
       // STEP 2.
       lSortBasChronometer.start();
