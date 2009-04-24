@@ -7,6 +7,7 @@
 #include <iostream>
 #include <cmath>
 #include <list>
+#include <algorithm>
 // RMOL
 #include <rmol/bom/VariateList.hpp>
 #include <rmol/bom/Gaussian.hpp>
@@ -46,15 +47,14 @@ namespace RMOL {
     }
 
     // Sort the EMSR values from high to low.
-    lEmsrValueList.sort();
-    lEmsrValueList.reverse();
+    std::sort(lEmsrValueList.rbegin(), lEmsrValueList.rend());
 
     // Sanity check
     const int lEmsrValueListSize = lEmsrValueList.size();
     assert (lEmsrValueListSize >= lCabinCapacity);
 
     // Copy the EMSR sorted values to the BPV.
-    EmsrValueList_T::iterator currentValue = lEmsrValueList.begin();
+    EmsrValueList_T::const_iterator currentValue = lEmsrValueList.begin();
     for (int j = 0; j < lCabinCapacity; ++j, ++currentValue) {
       const double bidPrice = *currentValue;
       ioBidPriceVector.push_back(bidPrice);
@@ -119,35 +119,6 @@ namespace RMOL {
       // Set the booking limit for class/bucket j+1.
       nextBucket.setCumulatedBookingLimit (lBookingLimit);   
     }
-    
-    /*
-    // Number of classes/buckets: n
-    const short nbOfClasses = ioBucketHolder.getSize();
-    for (int s = 1; s <= iCabinCapacity; s++){
-      double maxEmsrValue = 0.0;
-      int highestBucket = 1;
-      
-      for(ioBucketHolder.begin();
-          ioBucketHolder.hasNotReachedEnd();
-          ioBucketHolder.iterate()){
-        Bucket& currentBucket = ioBucketHolder.getCurrentBucket();
-        
-        // Compute EMSR value of the seat #s for class j
-        double emsrForsj=0;
-        // Evaluate if this class j has the highest EMSR value for
-        // seat #s.  If so, maxEMSRValue is the EMSR value of j, and
-        // j becomes temporarily the highest class.
-        
-        if(emsrForsj >= maxEmsrValue){
-          maxEmsrValue = emsrForsj;
-          ioBucketHolder.tag();
-        }
-      }
-      
-      Bucket& theHighestBucket = ioBucketHolder.getTaggedBucket();
-      theHighestBucket._protection += 1.0;
-    }
-    */
   }
 
   // //////////////////////////////////////////////////////////////////

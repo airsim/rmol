@@ -54,7 +54,7 @@ namespace RMOL {
                                          BucketHolder&);
     
     /**
-       EMRS-a algorithm.
+       EMRS algorithm.
        <br>The cabin capacity is used to a double to allow for some
 	overbooking.
      */
@@ -63,13 +63,20 @@ namespace RMOL {
                                              BidPriceVector_T&);
 
     /**
+       EMRS algorithm with StudyStatManager.
+     */
+    static void heuristicOptimisationByEmsr (const ResourceCapacity_T,
+                                             BucketHolder&, BidPriceVector_T&,
+                                             StudyStatManager&);
+
+    /**
        EMRS-a algorithm.
        <br>The cabin capacity is used to a double to allow for some
 	overbooking.
      */
     static void heuristicOptimisationByEmsrA (const ResourceCapacity_T,
                                               BucketHolder&);
-    
+
     /**
        EMRS-b algorithm.
        <br>The cabin capacity is used to a double to allow for some

@@ -8,6 +8,8 @@
 #include <cmath>
 #include <iomanip>
 // RMOL
+#include <rmol/basic/BasChronometer.hpp>
+#include <rmol/bom/StudyStatManager.hpp>
 #include <rmol/bom/BucketHolder.hpp>
 //#include <rmol/bom/Resource.hpp>
 #include <rmol/bom/MCOptimiser.hpp>
@@ -67,6 +69,8 @@ namespace RMOL {
                                       BucketHolder& ioBucketHolder,
                                       BidPriceVector_T& ioBidPriceVector,
                                       StudyStatManager& ioStudyStatManager) {
+    BasChronometer lMCIntegrationBasChrono;
+    lMCIntegrationBasChrono.start();
     // Retrieve the BucketHolder
     // BucketHolder& ioBucketHolder = ioResource.getBucketHolder();
 
@@ -97,6 +101,9 @@ namespace RMOL {
                                                      aPartialSumHolderHolder,
                                                      ioBidPriceVector,
                                                      ioStudyStatManager);
+    const double lMCIntegrationTime = lMCIntegrationBasChrono.elapsed();
+    ioStudyStatManager.addMeasure ("MCIntegrationRunningTime",
+                                   lMCIntegrationTime);
   }
 
   // //////////////////////////////////////////////////////////////////////
@@ -125,6 +132,21 @@ namespace RMOL {
     Emsr::heuristicOptimisationByEmsr (iCabinCapacity,
                                        ioBucketHolder,
                                        ioBidPriceVector);
+  }
+
+  // //////////////////////////////////////////////////////////////////////
+  void Optimiser::
+  heuristicOptimisationByEmsr (const ResourceCapacity_T iCabinCapacity,
+                               BucketHolder& ioBucketHolder,
+                               BidPriceVector_T& ioBidPriceVector,
+                               StudyStatManager& ioStudyStatManager) {
+    BasChronometer lEMRSBasChrono;
+    lEMRSBasChrono.start();
+    Emsr::heuristicOptimisationByEmsr (iCabinCapacity,
+                                       ioBucketHolder,
+                                       ioBidPriceVector);
+    const double lEMRSTime = lEMRSBasChrono.elapsed();
+    ioStudyStatManager.addMeasure ("EMSRRunningTime", lEMRSTime);
   }
 
   // //////////////////////////////////////////////////////////////////////

@@ -180,21 +180,34 @@ namespace RMOL {
     BucketHolder* ioBucketHolder_ptr = _rmolServiceContext->getBucketHolder();
     assert (ioBucketHolder_ptr != NULL);
     BidPriceVector_T lBidPriceVector;
-
-    Optimiser::heuristicOptimisationByEmsr (iCapacity, *ioBucketHolder_ptr,
-                                            lBidPriceVector);
-
+    
+    StudyStatManager* lStudyStatManager_ptr =
+      _rmolServiceContext->getStudyStatManager();
+    
+    if (lStudyStatManager_ptr == NULL) {
+      Optimiser::heuristicOptimisationByEmsr (iCapacity, *ioBucketHolder_ptr,
+                                              lBidPriceVector);
+    } else {      
+      Optimiser::heuristicOptimisationByEmsr (iCapacity, *ioBucketHolder_ptr,
+                                              lBidPriceVector,
+                                              *lStudyStatManager_ptr);
+    }
+    
     // DEBUG
     RMOL_LOG_DEBUG (ioBucketHolder_ptr->display());
+    std::ostringstream logStream;
+    logStream << "Bid-Price Vector (BPV): ";
+    unsigned int size = lBidPriceVector.size();
     
-    // std::cout << "Bid-Price Vector (BPV): ";
-    // unsigned int size = lBidPriceVector.size();
+    for (unsigned int i = 0; i < size; ++i) {
+      const double bidPrice = lBidPriceVector.at(i);
+      logStream << std::fixed << std::setprecision (2) << bidPrice << " ";
+    }
+    RMOL_LOG_DEBUG (logStream.str());
 
-    // for (unsigned int i = 0; i < size; ++i) {
-      // const double bidPrice = lBidPriceVector.at(i);
-      // std::cout << std::fixed << std::setprecision (2) << bidPrice << " ";
-    // }
-    // std::cout << std::endl;
+    if (lStudyStatManager_ptr != NULL) {
+      RMOL_LOG_DEBUG (lStudyStatManager_ptr->describe());
+    }
   }
 
   // //////////////////////////////////////////////////////////////////////
