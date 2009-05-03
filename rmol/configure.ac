@@ -288,6 +288,7 @@ AC_CONFIG_FILES(
 	rmol/core/Makefile
 	rmol/config/Makefile
 	rmol/batches/Makefile
+	samples/Makefile
 	man/Makefile
 	info/Makefile
 	doc/Makefile
@@ -300,7 +301,6 @@ AC_CONFIG_FILES(
 	doc/sourceforge/howto_release_rmol.html
 	po/Makefile.in
 	test/Makefile
-	test/samples/Makefile
 	test/com/Makefile
 	win32/Makefile)
 AC_OUTPUT

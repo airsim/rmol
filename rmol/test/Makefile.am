@@ -4,7 +4,7 @@ include $(top_srcdir)/Makefile.common
 MAINTAINERCLEANFILES = Makefile.in
 
 ##
-SUBDIRS = samples com
+SUBDIRS = com
 
 EXTRA_DIST = testLib.sh
 ##
