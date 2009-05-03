@@ -5,11 +5,11 @@ Name:             R-%{packname}
 Version:          0.0
 Release:          1%{?dist}
 Source0:          ftp://cran.r-project.org/pub/R/contrib/main/%{packname}_%{version}.tar.gz
-License:          GPL
+License:          GPLv3
 URL:              http://cran.r-project.org/src/contrib
 Group:            Applications/Engineering
 Summary:          Revenue Management and Pricing for R
-BuildRequires:    R-devel, tetex-latex
+BuildRequires:    R-devel, tetex-latex, R-msm
 BuildRoot:        %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:        noarch
 Requires(post):   R
@@ -47,19 +47,19 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-, root, root, -)
 %dir %{_datadir}/R/library/%{packname}
-#%%doc %{_datadir}/R/library/%{packname}/latex
+%doc %{_datadir}/R/library/%{packname}/latex
 #%%doc %{_datadir}/R/library/%{packname}/doc
-#%%doc %{_datadir}/R/library/%{packname}/html
+%doc %{_datadir}/R/library/%{packname}/html
 %doc %{_datadir}/R/library/%{packname}/man
 %doc %{_datadir}/R/library/%{packname}/DESCRIPTION
 #%%doc %{_datadir}/R/library/%{packname}/NEWS
-#%%{_datadir}/R/library/%{packname}/CONTENTS
-#%%{_datadir}/R/library/%{packname}/INDEX
+%{_datadir}/R/library/%{packname}/CONTENTS
+%{_datadir}/R/library/%{packname}/INDEX
 %{_datadir}/R/library/%{packname}/NAMESPACE
-#%%{_datadir}/R/library/%{packname}/Meta
+%{_datadir}/R/library/%{packname}/Meta
 %{_datadir}/R/library/%{packname}/R
-#%%{_datadir}/R/library/%{packname}/R-ex
-#%%{_datadir}/R/library/%{packname}/help
+%{_datadir}/R/library/%{packname}/R-ex
+%{_datadir}/R/library/%{packname}/help
 
 %changelog
 * Sun May 03 2009 Denis Arnaud <denis.arnaud_fedora@m4x.org> 0.0-1
