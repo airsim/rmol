@@ -60,13 +60,6 @@ AC_PROG_MAKE_SET
 # Set default language to C++
 AC_LANG([C++])
 
-# Check for debug switch
-AC_ARG_ENABLE(debug,
-              [AS_HELP_STRING([--enable-debug],
-                              [build additional debugging library])])
-test "x$enable_debug" != xyes && enable_debug=no
-AM_CONDITIONAL([ENABLE_DEBUG], [test "x$enable_debug" = xyes])
-
 # Check for exceptions switch
 AC_ARG_ENABLE(exceptions,
               [AS_HELP_STRING([--enable-exceptions],
@@ -103,37 +96,11 @@ fi
 AC_SUBST(docdir)
 
 
-PACKAGE_DEBUG="$PACKAGE"
-# Set debug flags
-if test "x$enable_debug" = xyes; then
-  PACKAGE_DEBUG="$PACKAGE"_debug
-  CXXFLAGS_DEBUG="-DASSERT_LEVEL=2 -g"
-  # Only for GCC compiler 
-  if test "x$GXX" = xyes; then
-    if test "x$enable_exceptions" = xno; then
-      CXXFLAGS_DEBUG="$CXXFLAGS_DEBUG -fno-exceptions"
-    fi
-    CXXFLAGS_DEBUG="$CXXFLAGS_DEBUG -Wall -pipe"
-  fi
+# Default compilation flags
+if test -z "${CXXFLAGS}"; then
+   CXXFLAGS="-g -Wall"
 fi
-AC_SUBST(CXXFLAGS_DEBUG)
-AC_SUBST(PACKAGE_DEBUG)
 
-# Set optimised flags
-if test "x$CXXFLAGS" = x; then
-  CXXFLAGS_OPT="-DASSERT_LEVEL=1 -O3" 
-  # Only for GCC compiler 
-  if test "x$GXX" = xyes; then
-    if test "x$enable_exceptions" = xno; then
-      CXXFLAGS_OPT="$CXXFLAGS_OPT -fno-exceptions"
-    fi
-    CXXFLAGS_OPT="$CXXFLAGS_OPT -pipe"
-  fi
-else
-  CXXFLAGS_OPT="$CXXFLAGS"
-  CXXFLAGS=""
-fi
-AC_SUBST(CXXFLAGS_OPT)
 
 # ---------------------------------------------------------
 # GSL (GNU Scientific Library: http://gnu.org/projects/gsl)
@@ -156,6 +123,9 @@ AC_SUBST(BOOST_PROGRAM_OPTIONS_LIB)
 AC_SUBST(BOOST_FILESYSTEM_LIB)
 
 
+# -------------------------------------------------------------------
+# Support for documentation
+# -------------------------------------------------------------------
 # Checks for documentation build tools
 #AC_CHECK_PROG([texinfo_ok], [texinfo], [yes], [no])
 #if test "x$enable_info_doc" != xno; then
@@ -315,6 +285,9 @@ AC_CONFIG_FILES(
 	rmol/factory/Makefile
 	rmol/command/Makefile
 	rmol/service/Makefile
+	rmol/core/Makefile
+	rmol/config/Makefile
+	rmol/batches/Makefile
 	man/Makefile
 	info/Makefile
 	doc/Makefile
@@ -327,6 +300,7 @@ AC_CONFIG_FILES(
 	doc/sourceforge/howto_release_rmol.html
 	po/Makefile.in
 	test/Makefile
+	test/samples/Makefile
 	test/com/Makefile
 	win32/Makefile)
 AC_OUTPUT
@@ -346,7 +320,6 @@ Directories:
   - infodir ........... : ${infodir}
 
 Switches:
-  - debug ............. : ${enable_debug}
   - exceptions ........ : ${enable_exceptions}
   - use-nls ........... : ${USE_NLS}
   - info-doc .......... : ${enable_info_doc}
@@ -367,8 +340,7 @@ Testing tools:
 
 Compiler/linker flags/libs/defs:
   - CXX ............... : ${CXX}
-  - CXXFLAGS .......... : ${CXXFLAGS_OPT}
-  - CXXFLAGS_DEBUG .... : ${CXXFLAGS_DEBUG}
+  - CXXFLAGS .......... : ${CXXFLAGS}
   - CPPFLAGS .......... : ${CPPFLAGS}
   - LDFLAGS ........... : ${LDFLAGS}
   - LIBS .............. : ${LIBS}

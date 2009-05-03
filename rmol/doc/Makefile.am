@@ -1,13 +1,14 @@
 include $(top_srcdir)/doc/local/sources.mk
 include $(top_srcdir)/doc/tutorial/sources.mk
 include $(top_srcdir)/doc/tutorial/src/sources.mk
-include $(top_srcdir)/@PACKAGE@/sources.mk
 include $(top_srcdir)/@PACKAGE@/basic/sources.mk
 include $(top_srcdir)/@PACKAGE@/field/sources.mk
 include $(top_srcdir)/@PACKAGE@/bom/sources.mk
 include $(top_srcdir)/@PACKAGE@/factory/sources.mk
 include $(top_srcdir)/@PACKAGE@/command/sources.mk
 include $(top_srcdir)/@PACKAGE@/service/sources.mk
+include $(top_srcdir)/@PACKAGE@/core/sources.mk
+include $(top_srcdir)/@PACKAGE@/batches/sources.mk
 
 SUBDIRS = images tutorial local
 

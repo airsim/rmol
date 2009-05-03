@@ -66,9 +66,6 @@ void testSimulateHelper() {
     // Length of the Simulation (time-length)
     const int kSimulationLength = 365;
     
-    // Number of draws
-    const int K = 1000;
-
     // Rate, expressed as a number of events per day
     // (lambda => mu = 1/ lambda)
     const double lambda = 10.0;

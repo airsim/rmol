@@ -74,7 +74,8 @@ rmol/bom/PartialSumHolderHolder.cpp
 rmol/bom/BucketHolder.cpp
 rmol/bom/DistributionParameterList.hpp
 rmol/bom/Gaussian.hpp
-rmol/rmol.cpp
+rmol/config/rmol-paths.hpp
+rmol/batches/rmol.cpp
 rmol/command/Optimiser.hpp
 rmol/command/Optimiser.cpp
 rmol/command/FileMgr.hpp
