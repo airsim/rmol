@@ -11,7 +11,7 @@ AM_PATH_CPPUNIT(1.10)
 AM_CONDITIONAL([HAVE_CPPUNIT], [test "x$CPPUNIT_LIBS" != x])
 
 # RPM release number
-RPM_RELEASE="1"
+RPM_RELEASE="3"
 AC_SUBST(RPM_RELEASE)
 
 # Shared library versioning

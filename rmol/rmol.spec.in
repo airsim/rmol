@@ -16,6 +16,7 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:  gsl-devel >= 1.8
 BuildRequires:  boost-devel >= 1.34
 BuildRequires:  cppunit-devel >= 1.10
+BuildRequires:  libicu
 #Requires:       
 
 %description
@@ -75,7 +76,7 @@ rm -rf $RPM_BUILD_ROOT
 make install DESTDIR=$RPM_BUILD_ROOT
 %find_lang %{name}
 # remove unpackaged files from the buildroot
-rm -f $RPM_BUILD_ROOT%{_includedir}/%{name}/config.h
+#rm -f $RPM_BUILD_ROOT%{_includedir}/%{name}/config.h
 rm -f $RPM_BUILD_ROOT%{_infodir}/dir
 rm -f $RPM_BUILD_ROOT%{_libdir}/lib%{name}.la
 # chmod 644 doc/html/installdox doc/html/*.png doc/html/*.ico
@@ -103,6 +104,8 @@ fi
 %{_bindir}/%{name}
 %{_libdir}/lib*.so.*
 %{_mandir}/man3/%{name}.3.*
+%dir %{_datadir}/%{name}
+%{_datadir}/%{name}/samples/*.csv
 
 %files devel
 %defattr(-,root,root,-)
@@ -121,6 +124,12 @@ fi
 
 
 %changelog
+* Sun May 03 2009 Denis Arnaud <denis.arnaud_fedora@m4x.org> 0.20.0-3
+- Added dependency on libicu for Boost 1.37 (Fedora 11)
+
+* Sun May 03 2009 Denis Arnaud <denis.arnaud_fedora@m4x.org> 0.20.0-2
+- Added dependency on libicu-devel for Boost 1.37 (Fedora 11)
+
 * Sun May 03 2009 Denis Arnaud <denis.arnaud_fedora@m4x.org> 0.20.0-1
 - Upstream integration
 

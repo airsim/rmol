@@ -12,4 +12,4 @@ EXTRA_DIST = config_msvc.h
 
 # Header files
 nobase_pkginclude_HEADERS = $(service_h_sources)
-nobase_nodist_pkginclude_HEADERS = $(top_builddir)/@PACKAGE@/config.h
+#nobase_nodist_pkginclude_HEADERS = $(top_builddir)/@PACKAGE@/config.h
