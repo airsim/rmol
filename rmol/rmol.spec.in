@@ -124,6 +124,9 @@ fi
 
 
 %changelog
+* Mon May 04 2009 Denis Arnaud <denis.arnaud_fedora@m4x.org> 0.21.0-1
+- Upstream integration
+
 * Sun May 03 2009 Denis Arnaud <denis.arnaud_fedora@m4x.org> 0.20.0-3
 - Added dependency on libicu for Boost 1.37 (Fedora 11)
 
