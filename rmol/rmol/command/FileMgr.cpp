@@ -16,6 +16,7 @@
 #include <rmol/factory/FacBucket.hpp>
 #include <rmol/factory/FacBucketHolder.hpp>
 #include <rmol/command/FileMgr.hpp>
+#include <rmol/service/Logger.hpp>
 
 namespace RMOL {
 
@@ -26,9 +27,8 @@ namespace RMOL {
     // Open the input file
     std::ifstream inputFile (iInputFileName.c_str());
     if (! inputFile) {
-      std::cerr << "Can not open input file \"" << iInputFileName << "\""
-                << std::endl;
-      return;
+      RMOL_LOG_ERROR ("Can not open input file \"" << iInputFileName << "\"");
+      throw new FileNotFoundException();
     }
     
     char buffer[80];
