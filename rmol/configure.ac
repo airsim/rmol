@@ -48,10 +48,14 @@ case $host in
 esac
 
 # Checks for programs
+save_CFLAGS="$CFLAGS"
 save_CXXFLAGS="$CXXFLAGS"
+save_FFLAGS="$FFLAGS"
 AC_PROG_CXX
 AC_PROG_CXXCPP
 CXXFLAGS="$save_CXXFLAGS"
+CFLAGS="$save_CFLAGS"
+FFLAGS="$save_FFLAGS"
 AC_PROG_INSTALL
 AC_PROG_LIBTOOL
 AC_PROG_LN_S
@@ -97,6 +101,10 @@ AC_SUBST(docdir)
 
 
 # Default compilation flags
+if test -z "${CFLAGS}"; then
+   CFLAGS="-g -Wall"
+fi
+
 if test -z "${CXXFLAGS}"; then
    CXXFLAGS="-g -Wall"
 fi
@@ -340,8 +348,10 @@ Testing tools:
 
 Compiler/linker flags/libs/defs:
   - CXX ............... : ${CXX}
+  - CFLAGS ............ : ${CFLAGS}
   - CXXFLAGS .......... : ${CXXFLAGS}
   - CPPFLAGS .......... : ${CPPFLAGS}
+  - FFLAGS ............ : ${FFLAGS}
   - LDFLAGS ........... : ${LDFLAGS}
   - LIBS .............. : ${LIBS}
 
