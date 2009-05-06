@@ -157,6 +157,16 @@ namespace RMOL {
   }
   
   // //////////////////////////////////////////////////////////////////////
+  void Optimiser::heuristicOptimisationByEmsrAwithSellup 
+  (const ResourceCapacity_T iCabinCapacity, 
+   BucketHolder& ioBucketHolder,
+   SellupProbabilityVector_T& iSellupProbabilityVector) {
+    Emsr::heuristicOptimisationByEmsrAwithSellup (iCabinCapacity, 
+                                                ioBucketHolder, 
+                                                iSellupProbabilityVector);
+  }
+
+  // //////////////////////////////////////////////////////////////////////
   void Optimiser::
   heuristicOptimisationByEmsrB (const ResourceCapacity_T iCabinCapacity,
                                 BucketHolder& ioBucketHolder) {

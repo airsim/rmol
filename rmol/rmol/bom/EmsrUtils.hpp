@@ -20,6 +20,9 @@ namespace RMOL {
     /** Compute the protection level using the Little-Wood formular. */
     static const double computeProtectionLevel (Bucket&, Bucket&);
 
+    /** Compute the protection level with sell up factor */
+    static const double computeProtectionLevelwithSellup (Bucket&, Bucket&, double);
+
     /** Compute the EMSR value of a class/bucket. */
     static const double computeEmsrValue (double, Bucket&);
   };

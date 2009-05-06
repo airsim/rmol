@@ -15,6 +15,9 @@ namespace RMOL {
       the Dynamic Programming algorithm (100 means that the precision
       will be 0.01). */
   const int DEFAULT_PRECISION = 10;
+
+  /** Default epsilon value to qualify a denominator */
+  const double DEFAULT_EPSILON = 0.0001;
   
   /** Default value for the load factor used for overbooking calculation. */
   const double DEFAULT_OVERBOOKING_LOAD_FACTOR = 0.0;

@@ -77,6 +77,16 @@ namespace RMOL {
     static void heuristicOptimisationByEmsrA (const ResourceCapacity_T,
                                               BucketHolder&);
 
+    /** EMSR-a with sellup probability algorithm. 
+        It is an implementation of the algorithm given by 
+        Belobaba & Weatherford in the article 
+        "Comparing decision rules that incorporate customer diversion in 
+        perishable asset revenue management situations", Decision Sciences,
+        1996.
+     */
+    static void heuristicOptimisationByEmsrAwithSellup (const ResourceCapacity_T,
+                                                        BucketHolder&,
+                                                        SellupProbabilityVector_T&);
     /**
        EMRS-b algorithm.
        <br>The cabin capacity is used to a double to allow for some

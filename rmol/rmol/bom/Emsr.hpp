@@ -44,6 +44,13 @@ namespace RMOL {
                                               BucketHolder&);
 
     /**
+     Compute the optimal booking limits & protection limits for a set of 
+     buckets/classes
+     */
+    static void heuristicOptimisationByEmsrAwithSellup 
+    (const ResourceCapacity_T, BucketHolder&, SellupProbabilityVector_T&);
+
+    /**
     Complute the protection levels and booking limites by using
     the EMSR-b algorithm.
 

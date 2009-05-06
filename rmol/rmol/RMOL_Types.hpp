@@ -64,5 +64,7 @@ namespace RMOL {
       <br> It is a vector of double. */
   typedef std::vector<double> BookingLimitVector_T;
 
+  /** Define the sellup probability vector applicable to EMSR*/
+  typedef std::vector<double> SellupProbabilityVector_T;
 }
 #endif // __RMOL_RMOL_TYPES_HPP

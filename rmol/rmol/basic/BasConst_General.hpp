@@ -14,5 +14,8 @@ namespace RMOL {
   /** Default value for the precision of the integral computation in
       the Dynamic Programming algorithm. */
   extern const int DEFAULT_PRECISION;  
+
+  /** Default epsilon value to qualify a denominator */
+  extern const double DEFAULT_EPSILON;
 }
 #endif // __RMOL_BAS_BASCONST_GENERAL_HPP

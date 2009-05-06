@@ -9,6 +9,7 @@
 // RMOL
 #include <rmol/bom/EmsrUtils.hpp>
 #include <rmol/bom/Bucket.hpp>
+#include <rmol/basic/BasConst_General.hpp>
 
 namespace RMOL {
   // ////////////////////////////////////////////////////////////////////
@@ -57,6 +58,29 @@ namespace RMOL {
       lMean + gsl_cdf_gaussian_Qinv (lNextYield/lAggreatedYield, lSD);
     
     return lProtection;
+  }
+
+  // ////////////////////////////////////////////////////////////////////
+  const double EmsrUtils::computeProtectionLevelwithSellup (Bucket& iHigherBucket,
+                                                            Bucket& iBucket,
+                                                            double iSellupFactor){
+    // Retrieve the mean and the standard deviation of the higher 
+    // class(es)/bucket(s) depending EMSR-a or EMSR-b
+    // and the average yield of each input classes/buckets
+    const double lMean = iHigherBucket.getMean();
+    const double lSD = iHigherBucket.getStandardDeviation();
+    const double lHigherBucketYield = iHigherBucket.getAverageYield();
+    const double lBucketYield = iBucket.getAverageYield();
+    assert (lHigherBucketYield > DEFAULT_EPSILON);
+    assert (1-iSellupFactor > DEFAULT_EPSILON);
+
+    // compute the protection level for the higher class/bucket
+    const double lProtectionLevel = 
+      lMean + 
+      gsl_cdf_gaussian_Pinv((lHigherBucketYield-lBucketYield)/
+                            lHigherBucketYield*(1-iSellupFactor),lSD);
+    
+    return lProtectionLevel;
   }
 
   // ////////////////////////////////////////////////////////////////////

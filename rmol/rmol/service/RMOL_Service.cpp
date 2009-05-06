@@ -261,6 +261,46 @@ namespace RMOL {
   }
   
   // //////////////////////////////////////////////////////////////////////
+  void RMOL_Service::heuristicOptimisationByEmsrAwithSellup 
+  (SellupProbabilityVector_T& iSellupProbabilityVector) {
+
+    assert (_rmolServiceContext != NULL);
+    const double iCapacity = _rmolServiceContext->getCapacity();
+    BucketHolder* ioBucketHolder_ptr = 
+      _rmolServiceContext->getBucketHolder();
+    assert (ioBucketHolder_ptr != NULL);
+
+    Optimiser::
+      heuristicOptimisationByEmsrAwithSellup (iCapacity, 
+                                              *ioBucketHolder_ptr,
+                                              iSellupProbabilityVector);
+
+    // DEBUG
+    RMOL_LOG_DEBUG (ioBucketHolder_ptr->display());
+  }
+
+  // //////////////////////////////////////////////////////////////////////
+  void RMOL_Service::heuristicOptimisationByEmsrAwithSellup 
+  (SellupProbabilityVector_T& iSellupProbabilityVector,
+   BidPriceVector_T& ioBidPriceVector,
+   BookingLimitVector_T& ioBookingLimitVector) {
+    
+    assert (_rmolServiceContext != NULL);
+    const double iCapacity = _rmolServiceContext->getCapacity();
+    BucketHolder* ioBucketHolder_ptr = 
+      _rmolServiceContext->getBucketHolder();
+    assert (ioBucketHolder_ptr != NULL);
+
+    Optimiser::
+      heuristicOptimisationByEmsrAwithSellup (iCapacity, 
+                                              *ioBucketHolder_ptr,
+                                              iSellupProbabilityVector);
+
+    // Fill up booking limit vector
+    ioBucketHolder_ptr->fillup (ioBookingLimitVector);
+  }
+
+  // //////////////////////////////////////////////////////////////////////
   void RMOL_Service::heuristicOptimisationByEmsrB () {
     assert (_rmolServiceContext != NULL);
     const double iCapacity = _rmolServiceContext->getCapacity();

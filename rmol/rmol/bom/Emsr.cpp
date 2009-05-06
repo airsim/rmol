@@ -122,6 +122,64 @@ namespace RMOL {
   }
 
   // //////////////////////////////////////////////////////////////////
+  void Emsr::heuristicOptimisationByEmsrAwithSellup 
+  (const ResourceCapacity_T iCabinCapacity,
+   BucketHolder& ioBucketHolder,
+   SellupProbabilityVector_T& iSellupProbabilityVector){
+   
+    // Number of classes/Buckets: n
+    const short nbOfBuckets = ioBucketHolder.getSize();
+
+    // Set the booking limit of the highest class to the cabin capacity
+    ioBucketHolder.begin();
+    Bucket& highestBucket = ioBucketHolder.getCurrentBucket();
+    highestBucket.setCumulatedBookingLimit (iCabinCapacity);
+    
+    // Set the booking limit for the rest n-1 classes
+    // by iterating on the classes/Buckets from 1 to n-1
+    for (short j=1; j <= nbOfBuckets-1; j++, ioBucketHolder.iterate()) {
+      // Get the next class/bucket  (the next high fare class)
+      Bucket& nextBucket = ioBucketHolder.getNextBucket();
+      
+      // Get the probability of sell-up from nextBucket to the next higher
+      double sellupProbability = iSellupProbabilityVector[j];
+
+      // Initialize protection level for the current class j
+      double lProtectionLevel = 0.0;
+      
+      // Sum the protection levels for each higher fare class
+      ioBucketHolder.begin();
+      for (short k=1; k<=j; k++) {
+        Bucket& higherBucket = ioBucketHolder.getCurrentBucket();
+
+        double lPRotectionLevelAgainstAHigherBucket = 0.0;
+
+        if (k == j) {
+          lPRotectionLevelAgainstAHigherBucket =
+            EmsrUtils::computeProtectionLevelwithSellup 
+            (higherBucket, nextBucket, sellupProbability);
+        } else {
+          lPRotectionLevelAgainstAHigherBucket =
+            EmsrUtils::computeProtectionLevel (higherBucket, nextBucket);
+          ioBucketHolder.iterate();
+        }
+      
+        lProtectionLevel += lPRotectionLevelAgainstAHigherBucket;
+      }
+
+      // Set cumulated protection level for class j
+      Bucket& currentBucket = ioBucketHolder.getCurrentBucket();
+      currentBucket.setCumulatedProtection (lProtectionLevel);
+
+      // Compute the booking limit for the class j+1 (can be negative) 
+      const double lBookingLimit = iCabinCapacity - lProtectionLevel;
+
+      // Set the booking limit for class j+1
+      nextBucket.setCumulatedBookingLimit (lBookingLimit);
+    }  
+  }
+
+  // //////////////////////////////////////////////////////////////////
   void Emsr::
   heuristicOptimisationByEmsrB (const ResourceCapacity_T iCabinCapacity,
                                 BucketHolder& ioBucketHolder,
