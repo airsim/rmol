@@ -129,6 +129,9 @@ fi
 
 
 %changelog
+* Mon May 11 2009 Denis Arnaud <denis.arnaud_fedora@m4x.org> 0.22.0-1
+- Upstream integration
+
 * Sun May 10 2009 Denis Arnaud <denis.arnaud_fedora@m4x.org> 0.21.0-3
 - Removed dependencies on specific versions (for EL 5)
 

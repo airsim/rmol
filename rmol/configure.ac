@@ -2,7 +2,7 @@
 #-------------------------------------------------------------------
 AC_PREREQ(2.59)
 AC_COPYRIGHT([Copyright (C) 2007-2009  Denis Arnaud <denis_arnaud@users.sourceforge.net>])
-AC_INIT([RMOL],[0.21.0],[denis_arnaud@users.sourceforge.net],[rmol])
+AC_INIT([RMOL],[0.22.0],[denis_arnaud@users.sourceforge.net],[rmol])
 AC_CONFIG_HEADER([rmol/config.h])
 AC_CONFIG_SRCDIR([rmol/basic/BasConst.cpp])
 AC_CONFIG_AUX_DIR([config])
@@ -11,11 +11,11 @@ AM_PATH_CPPUNIT(1.10)
 AM_CONDITIONAL([HAVE_CPPUNIT], [test "x$CPPUNIT_LIBS" != x])
 
 # RPM release number
-RPM_RELEASE="3"
+RPM_RELEASE="1"
 AC_SUBST(RPM_RELEASE)
 
 # Shared library versioning
-GENERIC_LIBRARY_VERSION="0:21:0"
+GENERIC_LIBRARY_VERSION="0:22:0"
 #                        | | |
 #                 +------+ | +---+
 #                 |        |     |
