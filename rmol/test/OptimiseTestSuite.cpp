@@ -5,11 +5,12 @@
 #include <test/com/CppUnitCore.hpp>
 // RMOL
 #include <rmol/RMOL_Service.hpp>
+#include <rmol/RMOL_Types.hpp>
 // RMOL Test Suite
 #include <test/OptimiseTestSuite.hpp>
 
 // //////////////////////////////////////////////////////////////////////
-void testOptimiseHelper() {
+void testOptimiseHelper(const unsigned short optimisationMethodFlag) {
 
   try {
     
@@ -20,14 +21,14 @@ void testOptimiseHelper() {
     const int K = 100000;
     
     // Methods of optimisation (0 = Monte-Carlo, 1 = Dynamic Programming, 
-    // 2 = EMSR, 3 = EMSR-a, 4 = EMSR-b)
-    const short METHOD_FLAG = 0;
+    // 2 = EMSR, 3 = EMSR-a, 4 = EMSR-b, 5 = EMSR-a with sellup prob.)
+    const unsigned short METHOD_FLAG = optimisationMethodFlag;
     
     // Cabin Capacity (it must be greater then 100 here)
     const double cabinCapacity = 100.0;
     
     // Input file name
-    const std::string inputFileName ("samples/sample2.csv");
+    const std::string inputFileName ("../samples/sample2.csv");
     const bool hasInputFile = true;
     
     // Set the log parameters
@@ -82,6 +83,20 @@ void testOptimiseHelper() {
       rmolService.heuristicOptimisationByEmsrB ();
       break;
 
+    case 5 : // Calculate the protection by EMSR-a with sellup
+      {
+        std::vector<double> sampleVector; 
+        double sampleProbability = 0.2;
+        // NOTE: size of sellup vector should be equal to no of buckets
+        short nbOfSampleBucket = 4;
+        for (short i = 1; i <= nbOfSampleBucket - 1; i++)
+          sampleVector.push_back(sampleProbability);
+        RMOL::SellupProbabilityVector_T& sellupProbabilityVector 
+          = sampleVector;
+        rmolService.heuristicOptimisationByEmsrAwithSellup (sellupProbabilityVector);
+        break;
+      }
+
     default : rmolService.optimalOptimisationByMCIntegration (K);
     }
     
@@ -95,7 +110,12 @@ void testOptimiseHelper() {
 
 // //////////////////////////////////////////////////////////////////////
 void OptimiseTestSuite::testOptimise() {
-  CPPUNIT_ASSERT_NO_THROW (testOptimiseHelper(););
+  CPPUNIT_ASSERT_NO_THROW (testOptimiseHelper(0););
+  CPPUNIT_ASSERT_NO_THROW (testOptimiseHelper(1););
+  CPPUNIT_ASSERT_NO_THROW (testOptimiseHelper(2););
+  CPPUNIT_ASSERT_NO_THROW (testOptimiseHelper(3););
+  CPPUNIT_ASSERT_NO_THROW (testOptimiseHelper(4););
+  CPPUNIT_ASSERT_NO_THROW (testOptimiseHelper(5););
 }
 
 // //////////////////////////////////////////////////////////////////////
