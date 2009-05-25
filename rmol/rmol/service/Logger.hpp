@@ -7,7 +7,6 @@
 // C
 #include <assert.h>
 // STL
-#include <iostream>
 #include <sstream>
 #include <string>
 // RMOL

@@ -4,6 +4,7 @@
 // C
 #include <assert.h>
 // STL
+#include <sstream>
 #include <limits>
 // RMOL Common
 #include <rmol/service/Logger.hpp>
@@ -40,8 +41,10 @@ namespace RMOL {
   // //////////////////////////////////////////////////////////////////////
   void StudyStatManager::display() const {
     
-    // Store current formatting flags of std::cout
-    std::ios::fmtflags oldFlags = std::cout.flags();
+    // DEBUG
+    std::ostringstream ostr;
+    // Store current formatting flags of the stream
+    std::ios::fmtflags oldFlags = ostr.flags();
     
     for (StatAggregatorStructList_T::const_iterator itStatAggregatorStruct =
            _statAggregatorStructList.begin();
@@ -50,11 +53,13 @@ namespace RMOL {
       const StatAggregatorStruct_T& lStatAggregatorStruct =
         itStatAggregatorStruct->second;
       
-      std::cout << lStatAggregatorStruct.describeCurrentSimu() << std::endl;
+      ostr << lStatAggregatorStruct.describeCurrentSimu() << std::endl;
     }
     
-    // Reset formatting flags of std::cout
-    std::cout.flags (oldFlags);
+    // Reset formatting flags of stream
+    ostr.flags (oldFlags);
+
+    RMOL_LOG_DEBUG (ostr.str());
   }
 
   // //////////////////////////////////////////////////////////////////////

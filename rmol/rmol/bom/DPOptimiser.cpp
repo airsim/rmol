@@ -7,14 +7,15 @@
 // C
 #include <assert.h>
 // STL
-#include <iostream>
-#include <cmath>
+#include <sstream>
 #include <vector>
+#include <cmath>
 // RMOL
 #include <rmol/basic/BasConst_General.hpp>
 #include <rmol/bom/DPOptimiser.hpp>
 #include <rmol/bom/Bucket.hpp>
 #include <rmol/bom/BucketHolder.hpp>
+#include <rmol/service/Logger.hpp>
 
 namespace RMOL {
   
@@ -89,7 +90,7 @@ namespace RMOL {
         // the memo of Jerome Contant).
         const double power1 = - 0.5 * meanDemand * meanDemand /
           (SDDemand * SDDemand);
-        const double e1 = exp (power1);
+        const double e1 = std::exp (power1);
         const double power2 = 
           - 0.5 * (lowerBound / DEFAULT_PRECISION - meanDemand) *
           (lowerBound / DEFAULT_PRECISION - meanDemand) /
@@ -141,7 +142,7 @@ namespace RMOL {
           currentYield * lowerBound / DEFAULT_PRECISION +
           MERVectorHolder.at(currentBucketIndex-1).at(currentProtection);
         const double secondElement = constCoefOfSecondElement * 
-          //gsl_cdf_gaussian_Q(lowerBound / DEFAULT_PRECISION - meanDemand, SDDemand);
+    //gsl_cdf_gaussian_Q(lowerBound / DEFAULT_PRECISION - meanDemand, SDDemand);
           cdfGaussianQ (lowerBound / DEFAULT_PRECISION - meanDemand, SDDemand);
         const double MERValue = (firstElement + secondElement) / errorFactor;
 
@@ -154,31 +155,35 @@ namespace RMOL {
 
         //assert (currentGradient >= 0);
         if (currentGradient < -0) {
-          std::cout << currentGradient << std::endl
-                    << "x = " << x << std::endl
-                    << "class: " << currentBucketIndex << std::endl;
+          std::ostringstream ostr;
+          ostr << currentGradient  << std::endl
+               << "x = " << x << std::endl
+               << "class: " << currentBucketIndex << std::endl;
+          RMOL_LOG_DEBUG (ostr.str());
         }
           
         /*
         assert (currentGradient <= testGradient);
         testGradient = currentGradient;
         */
-        if (!protectionChanged && currentGradient <= nextYield) {
+        if (protectionChanged == false && currentGradient <= nextYield) {
           nextProtection = x - 1;
           protectionChanged = true;
         }
 
-         if (protectionChanged && currentGradient > nextYield) {
+         if (protectionChanged == true && currentGradient > nextYield) {
           protectionChanged = false;
         }
         
-        if (!protectionChanged && x == maxValue) {
+        if (protectionChanged == false && x == maxValue) {
           nextProtection = maxValue;
         }
         
         currentMERVector.push_back (MERValue); 
       }
-      std::cout << "Vmaxindex = " << currentMERVector.back() << std::endl;
+
+      // DEBUG
+      RMOL_LOG_DEBUG ("Vmaxindex = " << currentMERVector.back());
         
       MERVectorHolder.push_back (currentMERVector);
      
@@ -193,20 +198,21 @@ namespace RMOL {
       ioBucketHolder.iterate();
       ++currentBucketIndex;
     }
-    
   }
 
   // ////////////////////////////////////////////////////////////////////
   double DPOptimiser::cdfGaussianQ (const double c, const double sd) {
     const double power = - c * c * 0.625 / (sd * sd);
-    const double e = sqrt (1-exp(power));
-    double result;
+    const double e = std::sqrt (1 - std::exp (power));
+    double result = 0.0;
+    
     if (c >= 0) {
       result = 0.5 * (1 - e);
-    }
-    else {
+
+    } else {
       result = 0.5 * (1 + e);
     }
+    
     return result;
   }
   

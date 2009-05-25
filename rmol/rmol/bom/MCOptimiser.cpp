@@ -6,7 +6,7 @@
 // STL
 #include <string>
 #include <fstream>
-#include <iostream>
+#include <sstream>
 #include <cmath>
 // RMOL
 #include <rmol/basic/BasChronometer.hpp>
@@ -19,6 +19,7 @@
 #include <rmol/bom/PartialSumHolderHolder.hpp>
 //#include <rmol/bom/Resource.hpp>
 #include <rmol/bom/MCOptimiser.hpp>
+#include <rmol/service/Logger.hpp>
 
 namespace RMOL {
 
@@ -77,9 +78,9 @@ namespace RMOL {
       const Gaussian gaussianDemandGenerator (aDistribParams);
 
       /** DEBUG
-          std::cout << "[" << j << "]: " << Kj << " values with N ( " 
+          RMOL_LOG_DEBUG ("[" << j << "]: " << Kj << " values with N ( " 
           << aDistribParams.getMean() << ", "
-          << aDistribParams.getStandardDeviation() << ")." << std::endl;
+          << aDistribParams.getStandardDeviation() << ").");
       */
 
       /**
@@ -112,9 +113,9 @@ namespace RMOL {
         currentPartialSumList.addPartialSum (sjk);
 
         /* DEBUG
-           std::cout << "d(" << j << ", " << k << "); " << djk 
+           RMOL_LOG_DEBUG ("d(" << j << ", " << k << "); " << djk 
            << "; S'(" << j-1 << ", " << lj+k << "); " << spjm1lpk
-           << "; S(" << j << ", " << k << "); " << sjk << std::endl;
+           << "; S(" << j << ", " << k << "); " << sjk);
         */
       }
 
@@ -140,9 +141,8 @@ namespace RMOL {
       lj = static_cast<int> (ljdouble);
 
       /** DEBUG
-          std::cout << "p(j+1)/p(j) = " << pj1 / pj << ", lj = " << lj 
-          << ", Kj = " << Kj << " => " << Kj - lj << " points above y(j)" 
-          << std::endl;
+          RMOL_LOG_DEBUG ("p(j+1)/p(j) = " << pj1 / pj << ", lj = " << lj 
+          << ", Kj = " << Kj << " => " << Kj - lj << " points above y(j)");
       */
 
       /** Consistency check. */
@@ -157,8 +157,8 @@ namespace RMOL {
       const double yj = (sjl + sjlp1) / 2;
 
       /** DEBUG
-          std::cout << "S(j,l) = " << sjl << ", S(j,l+1) = " << sjlp1 
-          << ", y(j) = " << yj << std::endl;
+          RMOL_LOG_DEBUG ("S(j,l) = " << sjl << ", S(j,l+1) = " << sjlp1 
+          << ", y(j) = " << yj);
       */
 
       // Set the cumulated protection for Bucket(j) (j ranging from 1 to n-1)
@@ -307,9 +307,9 @@ namespace RMOL {
       const Gaussian gaussianDemandGenerator (aDistribParams);
 
       /** DEBUG
-          std::cout << "[" << j << "]: " << Kj << " values with N ( " 
+          RMOL_LOG_DEBUG ("[" << j << "]: " << Kj << " values with N ( " 
           << aDistribParams.getMean() << ", "
-          << aDistribParams.getStandardDeviation() << ")." << std::endl;
+          << aDistribParams.getStandardDeviation() << ").");
       */
 
       /**
@@ -343,9 +343,9 @@ namespace RMOL {
         currentPartialSumList.addPartialSum (sjk);
 
         /* DEBUG
-           std::cout << "d(" << j << ", " << k << "); " << djk 
+           RMOL_LOG_DEBUG ("d(" << j << ", " << k << "); " << djk 
            << "; S'(" << j-1 << ", " << lj+k << "); " << spjm1lpk
-           << "; S(" << j << ", " << k << "); " << sjk << std::endl;
+           << "; S(" << j << ", " << k << "); " << sjk);
         */
       }
 
@@ -377,9 +377,8 @@ namespace RMOL {
       lj = static_cast<int> (ljdouble);
 
       /** DEBUG
-          std::cout << "p(j+1)/p(j) = " << pj1 / pj << ", lj = " << lj 
-          << ", Kj = " << Kj << " => " << Kj - lj << " points above y(j)" 
-          << std::endl;
+          RMOL_LOG_DEBUG ("p(j+1)/p(j) = " << pj1 / pj << ", lj = " << lj 
+          << ", Kj = " << Kj << " => " << Kj - lj << " points above y(j)");
       */
 
       /** Consistency check. */
@@ -394,8 +393,8 @@ namespace RMOL {
       const double yj = (sjl + sjlp1) / 2;
 
       /** DEBUG
-          std::cout << "S(j,l) = " << sjl << ", S(j,l+1) = " << sjlp1 
-          << ", y(j) = " << yj << std::endl;
+          RMOL_LOG_DEBUG ("S(j,l) = " << sjl << ", S(j,l+1) = " << sjlp1 
+          << ", y(j) = " << yj);
       */
 
       // Set the cumulated protection for Bucket(j) (j ranging from 1 to n-1)

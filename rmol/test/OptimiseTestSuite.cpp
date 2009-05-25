@@ -1,5 +1,5 @@
 // STL
-#include <iostream>
+#include <fstream>
 #include <string>
 // CPPUNIT
 #include <test/com/CppUnitCore.hpp>
@@ -108,13 +108,40 @@ void testOptimiseHelper(const unsigned short optimisationMethodFlag) {
   }
 }
 
+
 // //////////////////////////////////////////////////////////////////////
-void OptimiseTestSuite::testOptimise() {
+// Monte-Carlo (MC)
+void OptimiseTestSuite::testOptimiseMC() {
   CPPUNIT_ASSERT_NO_THROW (testOptimiseHelper(0););
+}
+
+// //////////////////////////////////////////////////////////////////////
+// Dynamic Programming (DP)
+void OptimiseTestSuite::testOptimiseDP() {
   CPPUNIT_ASSERT_NO_THROW (testOptimiseHelper(1););
+}
+
+// //////////////////////////////////////////////////////////////////////
+// EMSR
+void OptimiseTestSuite::testOptimiseEMSR() {
   CPPUNIT_ASSERT_NO_THROW (testOptimiseHelper(2););
+}
+
+// //////////////////////////////////////////////////////////////////////
+// EMSR-a
+void OptimiseTestSuite::testOptimiseEMSRa() {
   CPPUNIT_ASSERT_NO_THROW (testOptimiseHelper(3););
+}
+
+// //////////////////////////////////////////////////////////////////////
+// EMSR-b
+void OptimiseTestSuite::testOptimiseEMSRb() {
   CPPUNIT_ASSERT_NO_THROW (testOptimiseHelper(4););
+}
+
+// //////////////////////////////////////////////////////////////////////
+// EMSR-a with sell-up
+void OptimiseTestSuite::testOptimiseEMSRaWithSU() {
   CPPUNIT_ASSERT_NO_THROW (testOptimiseHelper(5););
 }
 

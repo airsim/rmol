@@ -3,6 +3,8 @@
 // //////////////////////////////////////////////////////////////////////
 // C
 #include <assert.h>
+// STL
+#include <iostream>
 // Rmol Logger
 #include <rmol/factory/FacSupervisor.hpp>
 #include <rmol/service/Logger.hpp>

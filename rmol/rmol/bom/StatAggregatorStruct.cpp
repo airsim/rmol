@@ -4,11 +4,12 @@
 // C
 #include <assert.h>
 // STL
+#include <sstream>
 #include <limits>
 #include <stdexcept>
 // RMOL
-#include <rmol/service/Logger.hpp>
 #include <rmol/bom/StatAggregatorStruct.hpp>
+#include <rmol/service/Logger.hpp>
 
 namespace RMOL {
   
@@ -61,11 +62,11 @@ namespace RMOL {
   
     // //////////////////////////////////////////////////////////////////////
   void StatAggregatorStruct_T::display() const {
-    std::cout << describe() << std::endl;
+    RMOL_LOG_DEBUG (describe());
   }
 
   // //////////////////////////////////////////////////////////////////////
-  void StatAggregatorStruct_T::addMeasure(const double iMeasure) {
+  void StatAggregatorStruct_T::addMeasure (const double iMeasure) {
     // Set a new minimal value if the measure is lower than the minimum
     if (iMeasure < _minimal) {
       _minimal = iMeasure;

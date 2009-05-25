@@ -14,7 +14,7 @@ SUBDIRS = images tutorial local
 
 docdir = @docdir@
 
-html_tarname = @PACKAGE_TARNAME@-html-doc-@PACKAGE_VERSION@
+html_tarname = @PACKAGE_TARNAME@-doc-@PACKAGE_VERSION@
 
 noinst_DATA = sourceforge/howto_release_rmol.html.in
 EXTRA_DIST = $(noinst_DATA)
@@ -28,6 +28,7 @@ html/index.html: doxygen_html.cfg \
 	$(doc_local_sources) $(html_local_sources) \
 	$(doc_tutorial_sources) $(cpp_tutorial_sources) \
 	$(service_h_sources) $(service_cc_sources) \
+	$(batches_h_sources) $(batches_cc_sources) \
 	$(bas_h_sources) $(bas_cc_sources) \
 	$(fld_h_sources) $(fld_cc_sources) \
 	$(bom_h_sources) $(bom_cc_sources) \

@@ -4,24 +4,25 @@
 // C
 #include <assert.h>
 // STL
-#include <iostream>
-#include <cmath>
+//#include <cmath>
+#include <sstream>
 #include <iomanip>
 // RMOL
 #include <rmol/basic/BasChronometer.hpp>
+#include <rmol/field/FldYieldRange.hpp>
+#include <rmol/field/FldDistributionParameters.hpp>
 #include <rmol/bom/StudyStatManager.hpp>
 #include <rmol/bom/BucketHolder.hpp>
 //#include <rmol/bom/Resource.hpp>
 #include <rmol/bom/MCOptimiser.hpp>
 #include <rmol/bom/Emsr.hpp>
 #include <rmol/bom/DPOptimiser.hpp>
-#include <rmol/field/FldYieldRange.hpp>
-#include <rmol/field/FldDistributionParameters.hpp>
 #include <rmol/factory/FacPartialSumHolder.hpp>
 #include <rmol/factory/FacPartialSumHolderHolder.hpp>
 #include <rmol/factory/FacDemand.hpp>
 #include <rmol/factory/FacBucket.hpp>
 #include <rmol/command/Optimiser.hpp>
+#include <rmol/service/Logger.hpp>
 
 namespace RMOL {
 
@@ -114,14 +115,26 @@ namespace RMOL {
     DPOptimiser::optimalOptimisationByDP (iCabinCapacity,
                                           ioBucketHolder,
                                           lBidPriceVector);
-    std::cout << "BVP: ";
-    unsigned int size = lBidPriceVector.size();
 
-    for (unsigned int i = 0; i < size; ++i) {
-      const double bidPrice = lBidPriceVector.at(i);
-      std::cout << std::fixed << std::setprecision (2) << bidPrice << " ";
+    // DEBUG
+    std::ostringstream ostr;
+    // Store current formatting flags of the stream
+    std::ios::fmtflags oldFlags = ostr.flags();
+
+    ostr << "BPV: " << std::fixed << std::setprecision (2);
+    
+    unsigned int i = 0;
+
+    for (BidPriceVector_T::const_iterator itBP = lBidPriceVector.begin();
+         itBP != lBidPriceVector.end(); ++itBP, ++i) {
+      const double bidPrice = *itBP;
+      ostr << "[" << i << "]: " << bidPrice << ", ";
     }
-    std::cout << std::endl;
+
+    // Reset formatting flags of stream
+    ostr.flags (oldFlags);
+
+    RMOL_LOG_DEBUG (ostr.str());
   }
 
   // //////////////////////////////////////////////////////////////////////
