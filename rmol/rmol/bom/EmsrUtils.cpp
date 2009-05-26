@@ -78,7 +78,7 @@ namespace RMOL {
     const double lProtectionLevel = 
       lMean + 
       gsl_cdf_gaussian_Pinv((lHigherBucketYield-lBucketYield)/
-                            lHigherBucketYield*(1-iSellupFactor),lSD);
+                            (lHigherBucketYield*(1-iSellupFactor)),lSD);
     
     return lProtectionLevel;
   }

@@ -142,7 +142,7 @@ namespace RMOL {
       Bucket& nextBucket = ioBucketHolder.getNextBucket();
       
       // Get the probability of sell-up from nextBucket to the next higher
-      double sellupProbability = iSellupProbabilityVector[j];
+      double sellupProbability = iSellupProbabilityVector[j-1];
 
       // Initialize protection level for the current class j
       double lProtectionLevel = 0.0;
