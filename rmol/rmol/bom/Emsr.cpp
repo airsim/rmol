@@ -160,7 +160,8 @@ namespace RMOL {
             (higherBucket, nextBucket, sellupProbability);
         } else {
           lPRotectionLevelAgainstAHigherBucket =
-            EmsrUtils::computeProtectionLevel (higherBucket, nextBucket);
+            EmsrUtils::computeProtectionLevelwithSellup 
+            (higherBucket, nextBucket, 0);
           ioBucketHolder.iterate();
         }
       

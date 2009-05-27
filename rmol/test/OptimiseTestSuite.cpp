@@ -10,10 +10,12 @@
 #include <test/OptimiseTestSuite.hpp>
 
 // //////////////////////////////////////////////////////////////////////
-void testOptimiseHelper(const unsigned short optimisationMethodFlag) {
+int testOptimiseHelper(const unsigned short optimisationMethodFlag) {
+
+  // Return value
+  int valueToBeTested = 0;
 
   try {
-    
     // Output log File
     std::string lLogFilename ("OptimiseTestSuite.log");
     
@@ -37,9 +39,13 @@ void testOptimiseHelper(const unsigned short optimisationMethodFlag) {
     logOutputFile.open (lLogFilename.c_str());
     logOutputFile.clear();
     
-    // Initialise the list of classes/buckets
+    // Initialise the RMOL service
     RMOL::RMOL_Service rmolService (logOutputFile, cabinCapacity);
     
+    // Define bid price and booking Limit vectors
+    RMOL::BidPriceVector_T lBidPriceVector;
+    RMOL::BookingLimitVector_T lBookingLimitVector;
+
     if (hasInputFile) {
       // Read the input file
       rmolService.readFromInputFile (inputFileName);
@@ -76,7 +82,11 @@ void testOptimiseHelper(const unsigned short optimisationMethodFlag) {
       break;
 
     case 3 : // Calculate the protections by EMSR-a
-      rmolService.heuristicOptimisationByEmsrA ();
+      // Test the algorithm
+      rmolService.heuristicOptimisationByEmsrA 
+        (lBidPriceVector, lBookingLimitVector);
+      // Return a cumulated booking limit value to test
+      valueToBeTested = static_cast<int>(lBookingLimitVector[2]);
       break;
       
     case 4 : // Calculate the protections by EMSR-b
@@ -85,31 +95,46 @@ void testOptimiseHelper(const unsigned short optimisationMethodFlag) {
 
     case 5 : // Calculate the protection by EMSR-a with sellup
       {
-        std::vector<double> sampleVector; 
+        // Create a sell-up probability vector
+        std::vector<double> sampleSellupProbabilityVector; 
         double sampleProbability = 0.2;
-        // NOTE: size of sellup vector should be equal to no of buckets
+        // NOTE: size of sellup vector should be equal to no of buckets - 1
         short nbOfSampleBucket = 4;
         for (short i = 1; i <= nbOfSampleBucket - 1; i++)
-          sampleVector.push_back(sampleProbability);
+          sampleSellupProbabilityVector.push_back(sampleProbability);
         RMOL::SellupProbabilityVector_T& sellupProbabilityVector 
-          = sampleVector;
-        rmolService.heuristicOptimisationByEmsrAwithSellup (sellupProbabilityVector);
+          = sampleSellupProbabilityVector;
+        // Test the algorithm with the sample sell-up vector
+        rmolService.heuristicOptimisationByEmsrAwithSellup 
+          (sellupProbabilityVector, lBidPriceVector, lBookingLimitVector);
+        // Return a cumulated booking limit value to test
+        valueToBeTested = static_cast<int>(lBookingLimitVector[2]);
         break;
       }
 
     default : rmolService.optimalOptimisationByMCIntegration (K);
     }
-    
+        
   } catch (const std::exception& stde) {
     std::cerr << "Standard exception: " << stde.what() << std::endl;
     
   } catch (...) {
     std::cerr << "Unknown exception" << std::endl;
   }
+
+  return valueToBeTested;
 }
 
 
 // //////////////////////////////////////////////////////////////////////
+// Test is based on the following inputs values
+// price; mean; standard deviation;
+// 1050; 17.3; 5.8;
+// 567; 45.1; 15.0;
+// 534; 39.6; 13.2;
+// 520; 34.0; 11.3;
+// //////////////////////////////////////////////////////////////////////
+
 // Monte-Carlo (MC)
 void OptimiseTestSuite::testOptimiseMC() {
   CPPUNIT_ASSERT_NO_THROW (testOptimiseHelper(0););
@@ -130,7 +155,8 @@ void OptimiseTestSuite::testOptimiseEMSR() {
 // //////////////////////////////////////////////////////////////////////
 // EMSR-a
 void OptimiseTestSuite::testOptimiseEMSRa() {
-  CPPUNIT_ASSERT_NO_THROW (testOptimiseHelper(3););
+  int valueInTest = testOptimiseHelper(3);
+   CPPUNIT_ASSERT(valueInTest==61);
 }
 
 // //////////////////////////////////////////////////////////////////////
@@ -142,7 +168,8 @@ void OptimiseTestSuite::testOptimiseEMSRb() {
 // //////////////////////////////////////////////////////////////////////
 // EMSR-a with sell-up
 void OptimiseTestSuite::testOptimiseEMSRaWithSU() {
-  CPPUNIT_ASSERT_NO_THROW (testOptimiseHelper(5););
+  int valueInTest = testOptimiseHelper(5);
+  CPPUNIT_ASSERT(valueInTest==59);
 }
 
 // //////////////////////////////////////////////////////////////////////
