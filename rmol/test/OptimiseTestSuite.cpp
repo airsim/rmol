@@ -10,12 +10,13 @@
 #include <test/OptimiseTestSuite.hpp>
 
 // //////////////////////////////////////////////////////////////////////
-int testOptimiseHelper(const unsigned short optimisationMethodFlag) {
+int testOptimiseHelper (const unsigned short optimisationMethodFlag) {
 
   // Return value
-  int valueToBeTested = 0;
+  int oExpectedBookingLimit = 0;
 
   try {
+
     // Output log File
     std::string lLogFilename ("OptimiseTestSuite.log");
     
@@ -35,7 +36,7 @@ int testOptimiseHelper(const unsigned short optimisationMethodFlag) {
     
     // Set the log parameters
     std::ofstream logOutputFile;
-    // open and clean the log outputfile
+    // Open and clean the log outputfile
     logOutputFile.open (lLogFilename.c_str());
     logOutputFile.clear();
     
@@ -70,45 +71,57 @@ int testOptimiseHelper(const unsigned short optimisationMethodFlag) {
 
     case 0 : // Calculate the optimal protections by the Monte Carlo
              // Integration approach
-      rmolService.optimalOptimisationByMCIntegration (K);
-      break;
-
+	  {
+      	rmolService.optimalOptimisationByMCIntegration (K);
+      	break;
+	  }
     case 1 : // Calculate the optimal protections by DP.
-      rmolService.optimalOptimisationByDP ();
-      break;
-      
+	  {
+      	rmolService.optimalOptimisationByDP ();
+      	break;
+      }
     case 2 : // Calculate the Bid-Price Vector by EMSR
-      rmolService.heuristicOptimisationByEmsr ();
-      break;
-
+	  {
+      	rmolService.heuristicOptimisationByEmsr ();
+      	break;
+	  }
     case 3 : // Calculate the protections by EMSR-a
-      // Test the algorithm
-      rmolService.heuristicOptimisationByEmsrA 
-        (lBidPriceVector, lBookingLimitVector);
-      // Return a cumulated booking limit value to test
-      valueToBeTested = static_cast<int>(lBookingLimitVector[2]);
-      break;
-      
-    case 4 : // Calculate the protections by EMSR-b
-      rmolService.heuristicOptimisationByEmsrB ();
-      break;
+	  {
+      	// Test the EMSR-a algorithm implementation
+      	rmolService.heuristicOptimisationByEmsrA (lBidPriceVector, 
+												  lBookingLimitVector);
 
+      	// Return a cumulated booking limit value to test
+      	oExpectedBookingLimit = static_cast<int> (lBookingLimitVector.at(2));
+      	break;
+      }
+    case 4 : // Calculate the protections by EMSR-b
+	  {
+      	rmolService.heuristicOptimisationByEmsrB ();
+	    break;
+	  }
     case 5 : // Calculate the protection by EMSR-a with sellup
       {
-        // Create a sell-up probability vector
-        std::vector<double> sampleSellupProbabilityVector; 
-        double sampleProbability = 0.2;
+        // Create an empty sell-up probability vector
+        std::vector<double> sellupProbabilityVector; 
+
+		// Define the sell-up probability to be 20%
+        const double sampleProbability = 0.2;
+
         // NOTE: size of sellup vector should be equal to no of buckets - 1
-        short nbOfSampleBucket = 4;
-        for (short i = 1; i <= nbOfSampleBucket - 1; i++)
-          sampleSellupProbabilityVector.push_back(sampleProbability);
-        RMOL::SellupProbabilityVector_T& sellupProbabilityVector 
-          = sampleSellupProbabilityVector;
+        // TODO: check that with an assertion
+        const short nbOfSampleBucket = 4;
+        for (short i = 1; i <= nbOfSampleBucket - 1; i++) {
+          sellupProbabilityVector.push_back (sampleProbability);
+	    }
+
         // Test the algorithm with the sample sell-up vector
         rmolService.heuristicOptimisationByEmsrAwithSellup 
           (sellupProbabilityVector, lBidPriceVector, lBookingLimitVector);
+
         // Return a cumulated booking limit value to test
-        valueToBeTested = static_cast<int>(lBookingLimitVector[2]);
+        oExpectedBookingLimit = static_cast<int> (lBookingLimitVector.at(2));
+
         break;
       }
 
@@ -122,7 +135,7 @@ int testOptimiseHelper(const unsigned short optimisationMethodFlag) {
     std::cerr << "Unknown exception" << std::endl;
   }
 
-  return valueToBeTested;
+  return oExpectedBookingLimit;
 }
 
 
@@ -155,8 +168,8 @@ void OptimiseTestSuite::testOptimiseEMSR() {
 // //////////////////////////////////////////////////////////////////////
 // EMSR-a
 void OptimiseTestSuite::testOptimiseEMSRa() {
-  int valueInTest = testOptimiseHelper(3);
-   CPPUNIT_ASSERT(valueInTest==61);
+  const int lExpectedBookingLimit = testOptimiseHelper(3);
+  CPPUNIT_ASSERT(lExpectedBookingLimit == 61);
 }
 
 // //////////////////////////////////////////////////////////////////////
@@ -168,8 +181,8 @@ void OptimiseTestSuite::testOptimiseEMSRb() {
 // //////////////////////////////////////////////////////////////////////
 // EMSR-a with sell-up
 void OptimiseTestSuite::testOptimiseEMSRaWithSU() {
-  int valueInTest = testOptimiseHelper(5);
-  CPPUNIT_ASSERT(valueInTest==59);
+  const int lExpectedBookingLimit = testOptimiseHelper(5);
+  CPPUNIT_ASSERT(lExpectedBookingLimit == 59);
 }
 
 // //////////////////////////////////////////////////////////////////////
@@ -184,3 +197,4 @@ OptimiseTestSuite::OptimiseTestSuite () {
 
 // /////////////// M A I N /////////////////
 CPPUNIT_MAIN()
+
