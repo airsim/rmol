@@ -27,6 +27,10 @@ const int K_RMOL_DEFAULT_RANDOM_DRAWS = 100000;
 /** Default value for the capacity of the resource (e.g., a flight cabin). */
 const double K_RMOL_DEFAULT_CAPACITY = 500.0;
 
+/** Default probability that a demand group buys the next higher fare products 
+when the products which they came for are not available. */
+// const std::vector<double> K_RMOL_DEFAULT_SELLUP_PROBABILITY;
+
 /** Default name and location for the Revenue Management method to be used.
     <br>
     <ul>
@@ -35,6 +39,7 @@ const double K_RMOL_DEFAULT_CAPACITY = 500.0;
       <li>2 = EMSR</li>
       <li>3 = EMSR-a</li>
       <li>4 = EMSR-b</li>
+      <li>5 = EMSR-a with sell up
     </ul> */
 const short K_RMOL_DEFAULT_METHOD = 0;
 
@@ -51,9 +56,12 @@ template<class T> std::ostream& operator<< (std::ostream& os,
 const int K_RMOL_EARLY_RETURN_STATUS = 99;
 
 /** Read and parse the command line options. */
-int readConfiguration (int argc, char* argv[], int& lRandomDraws, 
-		       double& lCapacity, short& lMethod,
-		       std::string& lInputFilename, std::string& lLogFilename) {
+int readConfiguration (int argc, char* argv[], 
+                       int& lRandomDraws, double& lCapacity, 
+                       std::vector<double>& lSellupProbabilityVector,
+                       short& lMethod,
+                       std::string& lInputFilename, 
+                       std::string& lLogFilename) {
   
     
   // Declare a group of options that will be allowed only on command line
@@ -73,9 +81,12 @@ int readConfiguration (int argc, char* argv[], int& lRandomDraws,
     ("capacity,c",
      boost::program_options::value<double>(&lCapacity)->default_value(K_RMOL_DEFAULT_CAPACITY), 
      "Resource capacity (e.g., for a flight leg)")
+    ("sellup,s",
+     boost::program_options::value< std::vector<double> >(&lSellupProbabilityVector)->multitoken(),
+     "Sell-up proability vector (e.g. j-th element implies the sell up probability of class j+1 to class j where class 1 yields the highest value")
     ("method,m",
      boost::program_options::value<short>(&lMethod)->default_value(K_RMOL_DEFAULT_METHOD), 
-     "Revenue Management method to be used (0 = Monte-Carlo, 1 = Dynamic Programming, 2 = EMSR, 3 = EMSR-a, 4 = EMSR-b)")
+     "Revenue Management method to be used (0 = Monte-Carlo, 1 = Dynamic Programming, 2 = EMSR, 3 = EMSR-a, 4 = EMSR-b, 5 = EMSR-a with sell up probability)")
     ("input,i",
      boost::program_options::value< std::string >(&lInputFilename)->default_value(K_RMOL_DEFAULT_INPUT_FILENAME),
      "(CVS) input file for the demand distributions")
@@ -154,12 +165,17 @@ int main (int argc, char* argv[]) {
     // Number of random draws to be generated (best if greater than 100)
     int lRandomDraws = 0;
     
-    // Methods of optimisation (0 = Monte-Carlo, 1 = Dynamic Programming, 
-    // 2 = EMSR, 3 = EMSR-a, 4 = EMSR-b)
-    short lMethod = 0;
-    
     // Cabin Capacity (it must be greater then 100 here)
     double lCapacity = 0.0;
+
+    /** Default probability that a demand group buys the next higher fare products 
+        when the products which they came for are not available. */
+    std::vector<double> lSellupProbabilityVector;
+    lSellupProbabilityVector.push_back(0.2);
+
+    // Methods of optimisation (0 = Monte-Carlo, 1 = Dynamic Programming, 
+    // 2 = EMSR, 3 = EMSR-a, 4 = EMSR-b, 5 = EMSR-a with sell up probability)
+    short lMethod = 0;   
     
     // Input file name
     std::string lInputFilename;
@@ -169,8 +185,8 @@ int main (int argc, char* argv[]) {
 
     // Call the command-line option parser
     const int lOptionParserStatus = 
-      readConfiguration (argc, argv, lRandomDraws, lCapacity, lMethod,
-			 lInputFilename, lLogFilename);
+      readConfiguration (argc, argv, lRandomDraws, lCapacity, lSellupProbabilityVector, 
+                         lMethod, lInputFilename, lLogFilename);
 
     if (lOptionParserStatus == K_RMOL_EARLY_RETURN_STATUS) {
       return 0;
@@ -237,6 +253,12 @@ int main (int argc, char* argv[]) {
     case 4: {
       // Calculate the protections by EMSR-b
       rmolService.heuristicOptimisationByEmsrB ();
+      break;
+    }
+    case 5: {
+      // Calculate the protections by EMSR-a with sell up probability
+      rmolService.heuristicOptimisationByEmsrAwithSellup 
+        (lSellupProbabilityVector);
       break;
     }
     default: {
