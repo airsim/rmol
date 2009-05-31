@@ -51,11 +51,12 @@ Summary:        HTML documentation for the @PACKAGE_NAME@ library
 Group:          Documentation
 %if 0%{?fedora} >= 10
 BuildArch:      noarch
-BuildRequires:  texlive-latex, texlive-dvips
+BuildRequires:  texlive-latex
 %endif
 %if 0%{?fedora} < 10
-BuildRequires:  tetex-latex, tetex-dvips
+BuildRequires:  tetex-latex
 %endif
+%{?el5:BuildRequires: tetex-latex}
 BuildRequires:  doxygen, ghostscript
 
 %description doc
