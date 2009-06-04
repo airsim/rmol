@@ -5,6 +5,7 @@
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // RMOL
+#include <rmol/RMOL_Types.hpp>
 #include <rmol/field/FldYieldRange.hpp>
 #include <rmol/field/FldDistributionParameters.hpp>
 #include <rmol/bom/BomAbstract.hpp>
@@ -92,6 +93,11 @@ namespace RMOL {
     /** Getter for the lower yield. */
     const double getLowerYield() const;
 
+    /** Getter for the genrated demand vector. */
+    const GeneratedDemandVector_T& getGeneratedDemandVector () const {
+      return *_generatedDemandVector;
+    }
+
 
     // ///////// Setters ////////
     /** Setter for the protection. */
@@ -122,6 +128,9 @@ namespace RMOL {
 
     /** Set the demand mean and standard deviation. */
     void setDemandParameters (const double, const double);
+
+    /** Set the generated demand vector. */
+    void setGeneratedDemandVector (GeneratedDemandVector_T*);
 
   public:
     // ///////// Display methods ////////
@@ -181,6 +190,9 @@ namespace RMOL {
 
     /** Cumulated Booking limit. */
     double _cumulatedBookingLimit;
+
+    /** Generated demand vector. */
+    GeneratedDemandVector_T* _generatedDemandVector;
   };
 }
 #endif // __RMOL_BOM_BUCKET_HPP

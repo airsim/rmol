@@ -280,6 +280,13 @@ int main (int argc, char* argv[]) {
         (lSellupProbabilityVector);
       break;
     }
+    case 6: {
+      // Calculate the optimal protections by the Monte Carlo
+      // Integration approach
+      rmolService.buildContextForMC (lRandomDraws);
+      rmolService.legOptimisationByMC ();
+      break;
+    }
     default: {
       rmolService.optimalOptimisationByMCIntegration (lRandomDraws);
     }

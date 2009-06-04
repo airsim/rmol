@@ -64,6 +64,13 @@ namespace RMOL {
       <br> It is a vector of double. */
   typedef std::vector<double> BookingLimitVector_T;
 
+  /** Define the vector of generated demand (for MC integration use).
+      <br> It is a vector of double. */
+  typedef std::vector<double> GeneratedDemandVector_T;
+
+  /** Define the holder of the generated demand vectors. */
+  typedef std::vector<GeneratedDemandVector_T> GeneratedDemandVectorHolder_T;
+
   /** Define the sellup probability vector applicable to EMSR*/
   typedef std::vector<double> SellupProbabilityVector_T;
 }

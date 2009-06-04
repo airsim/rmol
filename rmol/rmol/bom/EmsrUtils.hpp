@@ -27,4 +27,4 @@ namespace RMOL {
     static const double computeEmsrValue (double, Bucket&);
   };
 }
-#endif //__RMOL_EMSRUTILS_HPP
+#endif // __RMOL_EMSRUTILS_HPP

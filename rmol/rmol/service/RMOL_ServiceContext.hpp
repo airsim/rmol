@@ -35,6 +35,9 @@ namespace RMOL {
     /** Destructor. */
     ~RMOL_ServiceContext();
 
+    /** Set the cabin availability. */
+    void setResourceCapacity (const ResourceCapacity_T iResourceCapacity);
+    
     /** Set the BucketHolder. */
     void setBucketHolder (BucketHolder* ioBucketHolderPtr) {
       _bucketHolder = ioBucketHolderPtr;
@@ -44,8 +47,29 @@ namespace RMOL {
     void addBucket (const double iYieldRange, const double iDemandMean,
                     const double iDemandStandardDev);
 
+    /** Add a bucket to the context. */
+    void addBucket (const double iYieldRange, const double iDemandMean,
+                    const double iDemandStandardDev,
+                    GeneratedDemandVector_T* ioGeneratedDemandVector);
+
+    /** Generate demand for a given (Gaussian) distribution. */
+    GeneratedDemandVector_T* generateDemand (const int K,
+                                             const double& iMean,
+                                             const double& iDeviation);
+
+    /** Sum the two generated demand vectors . */
+    GeneratedDemandVector_T* generateDemand (GeneratedDemandVector_T*,
+                                             GeneratedDemandVector_T*);
+    
     /** Read the input data from a file. */
     void readFromInputFile (const std::string& iInputFileName);
+
+    /** Build the context with the generated demand for Monte-Carlo
+       Integration algorithm. */
+    void buildContextForMC (const int K);
+
+    /** Clear the context (cabin capacity, bucket holder). */
+    void reset ();
     
     /** Get the internal BucketHolder. */
     BucketHolder* getBucketHolder() const {
@@ -75,6 +99,9 @@ namespace RMOL {
 
     /** Statistic Manager. */
     StudyStatManager* _studyStatManager;
+
+    /** Holder of the generated demand vectors. */
+    GeneratedDemandVectorHolder_T _generatedDemandVectorHolder;
   };
 
 }

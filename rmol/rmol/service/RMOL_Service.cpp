@@ -69,6 +69,13 @@ namespace RMOL {
   }
 
   // //////////////////////////////////////////////////////////////////////
+  void RMOL_Service::
+  setResourceCapacity (const ResourceCapacity_T iResourceCapacity) {
+    assert (_rmolServiceContext != NULL);
+    _rmolServiceContext->setResourceCapacity (iResourceCapacity);
+  }
+
+  // //////////////////////////////////////////////////////////////////////
   void RMOL_Service::addBucket (const double iYieldRange, 
                                 const double iDemandMean,
                                 const double iDemandStandardDev) {
@@ -78,19 +85,54 @@ namespace RMOL {
   }
 
   // //////////////////////////////////////////////////////////////////////
+  void RMOL_Service::addBucket(const double iYieldRange, 
+                               const double iDemandMean,
+                               const double iDemandStandardDev,
+                               GeneratedDemandVector_T* ioGeneratedDemandVector){
+    assert (_rmolServiceContext != NULL);
+    _rmolServiceContext->addBucket (iYieldRange, iDemandMean,
+                                    iDemandStandardDev, ioGeneratedDemandVector);
+  }
+
+  // //////////////////////////////////////////////////////////////////////
+  GeneratedDemandVector_T* RMOL_Service::
+  generateDemand (const int K, const double& iMean, const double& iDeviation) {
+    return _rmolServiceContext->generateDemand (K, iMean, iDeviation);
+  }
+
+  // //////////////////////////////////////////////////////////////////////
+  GeneratedDemandVector_T* RMOL_Service::
+  generateDemand (GeneratedDemandVector_T* ioFirstVector,
+                  GeneratedDemandVector_T* ioSecondVector) {
+    return _rmolServiceContext->generateDemand (ioFirstVector, ioSecondVector);
+  }
+
+  // //////////////////////////////////////////////////////////////////////
   void RMOL_Service::readFromInputFile (const std::string& iInputFileName) {
     assert (_rmolServiceContext != NULL);
     _rmolServiceContext->readFromInputFile (iInputFileName);
   }
 
   // //////////////////////////////////////////////////////////////////////
+  void RMOL_Service::buildContextForMC (const int K) {
+    assert (_rmolServiceContext != NULL);
+    _rmolServiceContext->buildContextForMC (K);
+  }
+
+  // //////////////////////////////////////////////////////////////////////
+  void RMOL_Service::reset () {
+    assert (_rmolServiceContext != NULL);
+    _rmolServiceContext->reset ();
+  }
+  
+  // //////////////////////////////////////////////////////////////////////
   void RMOL_Service::
   optimalOptimisationByMCIntegration (const int K) {
     
     assert (_rmolServiceContext != NULL);
     const double iCapacity = _rmolServiceContext->getCapacity();
-    BucketHolder* ioBucketHolder_ptr = _rmolServiceContext->getBucketHolder();
-    assert (ioBucketHolder_ptr != NULL);
+    BucketHolder* oBucketHolder_ptr = _rmolServiceContext->getBucketHolder();
+    assert (oBucketHolder_ptr != NULL);
     BidPriceVector_T lBidPriceVector;
 
     StudyStatManager* lStudyStatManager_ptr =
@@ -98,16 +140,16 @@ namespace RMOL {
 
     if (lStudyStatManager_ptr == NULL) {
       Optimiser::optimalOptimisationByMCIntegration (K, iCapacity, 
-                                                     *ioBucketHolder_ptr,
+                                                     *oBucketHolder_ptr,
                                                      lBidPriceVector);
     } else {
       Optimiser::optimalOptimisationByMCIntegration (K, iCapacity, 
-                                                     *ioBucketHolder_ptr,
+                                                     *oBucketHolder_ptr,
                                                      lBidPriceVector,
                                                      *lStudyStatManager_ptr);
     }
     // DEBUG
-    RMOL_LOG_DEBUG (ioBucketHolder_ptr->display());
+    RMOL_LOG_DEBUG (oBucketHolder_ptr->display());
 
     std::ostringstream logStream;
     logStream << "Bid-Price Vector (BPV): ";
@@ -132,15 +174,15 @@ namespace RMOL {
     
     assert (_rmolServiceContext != NULL);
     const double iCapacity = _rmolServiceContext->getCapacity();
-    BucketHolder* ioBucketHolder_ptr = _rmolServiceContext->getBucketHolder();
-    assert (ioBucketHolder_ptr != NULL);
+    BucketHolder* oBucketHolder_ptr = _rmolServiceContext->getBucketHolder();
+    assert (oBucketHolder_ptr != NULL);
 
     Optimiser::optimalOptimisationByMCIntegration (K, iCapacity, 
-                                                   *ioBucketHolder_ptr,
+                                                   *oBucketHolder_ptr,
                                                    ioBidPriceVector);
 
     // Fill up booking vector
-    ioBucketHolder_ptr->fillup (ioBookingLimitVector);
+    oBucketHolder_ptr->fillup (ioBookingLimitVector);
   }
 
   // //////////////////////////////////////////////////////////////////////
@@ -149,13 +191,13 @@ namespace RMOL {
     
     assert (_rmolServiceContext != NULL);
     const double iCapacity = _rmolServiceContext->getCapacity();
-    BucketHolder* ioBucketHolder_ptr = _rmolServiceContext->getBucketHolder();
-    assert (ioBucketHolder_ptr != NULL);
+    BucketHolder* oBucketHolder_ptr = _rmolServiceContext->getBucketHolder();
+    assert (oBucketHolder_ptr != NULL);
 
-    Optimiser::optimalOptimisationByDP (iCapacity, *ioBucketHolder_ptr);
+    Optimiser::optimalOptimisationByDP (iCapacity, *oBucketHolder_ptr);
 
     // DEBUG
-    RMOL_LOG_DEBUG (ioBucketHolder_ptr->display());
+    RMOL_LOG_DEBUG (oBucketHolder_ptr->display());
   }
 
   // //////////////////////////////////////////////////////////////////////
@@ -164,37 +206,37 @@ namespace RMOL {
     
     assert (_rmolServiceContext != NULL);
     const double iCapacity = _rmolServiceContext->getCapacity();
-    BucketHolder* ioBucketHolder_ptr = _rmolServiceContext->getBucketHolder();
-    assert (ioBucketHolder_ptr != NULL);
+    BucketHolder* oBucketHolder_ptr = _rmolServiceContext->getBucketHolder();
+    assert (oBucketHolder_ptr != NULL);
 
-    Optimiser::optimalOptimisationByDP (iCapacity, *ioBucketHolder_ptr);
+    Optimiser::optimalOptimisationByDP (iCapacity, *oBucketHolder_ptr);
 
     // Fill up booking vector
-    ioBucketHolder_ptr->fillup (ioBookingLimitVector);
+    oBucketHolder_ptr->fillup (ioBookingLimitVector);
   }
   
   // //////////////////////////////////////////////////////////////////////
   void RMOL_Service::heuristicOptimisationByEmsr () {
     assert (_rmolServiceContext != NULL);
     const double iCapacity = _rmolServiceContext->getCapacity();
-    BucketHolder* ioBucketHolder_ptr = _rmolServiceContext->getBucketHolder();
-    assert (ioBucketHolder_ptr != NULL);
+    BucketHolder* oBucketHolder_ptr = _rmolServiceContext->getBucketHolder();
+    assert (oBucketHolder_ptr != NULL);
     BidPriceVector_T lBidPriceVector;
     
     StudyStatManager* lStudyStatManager_ptr =
       _rmolServiceContext->getStudyStatManager();
     
     if (lStudyStatManager_ptr == NULL) {
-      Optimiser::heuristicOptimisationByEmsr (iCapacity, *ioBucketHolder_ptr,
+      Optimiser::heuristicOptimisationByEmsr (iCapacity, *oBucketHolder_ptr,
                                               lBidPriceVector);
     } else {      
-      Optimiser::heuristicOptimisationByEmsr (iCapacity, *ioBucketHolder_ptr,
+      Optimiser::heuristicOptimisationByEmsr (iCapacity, *oBucketHolder_ptr,
                                               lBidPriceVector,
                                               *lStudyStatManager_ptr);
     }
     
     // DEBUG
-    RMOL_LOG_DEBUG (ioBucketHolder_ptr->display());
+    RMOL_LOG_DEBUG (oBucketHolder_ptr->display());
     std::ostringstream logStream;
     logStream << "Bid-Price Vector (BPV): ";
     unsigned int size = lBidPriceVector.size();
@@ -216,16 +258,16 @@ namespace RMOL {
                                BookingLimitVector_T& ioBookingLimitVector) {
     assert (_rmolServiceContext != NULL);
     const double iCapacity = _rmolServiceContext->getCapacity();
-    BucketHolder* ioBucketHolder_ptr = _rmolServiceContext->getBucketHolder();
-    assert (ioBucketHolder_ptr != NULL);
+    BucketHolder* oBucketHolder_ptr = _rmolServiceContext->getBucketHolder();
+    assert (oBucketHolder_ptr != NULL);
 
-    Optimiser::heuristicOptimisationByEmsr (iCapacity, *ioBucketHolder_ptr,
+    Optimiser::heuristicOptimisationByEmsr (iCapacity, *oBucketHolder_ptr,
                                             ioBidPriceVector);
 
     // Update the booking limit vector.
-    for (ioBucketHolder_ptr->begin(); ioBucketHolder_ptr->hasNotReachedEnd();
-         ioBucketHolder_ptr->iterate()) {
-      Bucket& currentBucket = ioBucketHolder_ptr->getCurrentBucket();
+    for (oBucketHolder_ptr->begin(); oBucketHolder_ptr->hasNotReachedEnd();
+         oBucketHolder_ptr->iterate()) {
+      Bucket& currentBucket = oBucketHolder_ptr->getCurrentBucket();
       const double lBookingLimit = currentBucket.getCumulatedBookingLimit();
       ioBookingLimitVector.push_back (lBookingLimit);
     }
@@ -236,13 +278,13 @@ namespace RMOL {
   void RMOL_Service::heuristicOptimisationByEmsrA () {
     assert (_rmolServiceContext != NULL);
     const double iCapacity = _rmolServiceContext->getCapacity();
-    BucketHolder* ioBucketHolder_ptr = _rmolServiceContext->getBucketHolder();
-    assert (ioBucketHolder_ptr != NULL);
+    BucketHolder* oBucketHolder_ptr = _rmolServiceContext->getBucketHolder();
+    assert (oBucketHolder_ptr != NULL);
 
-    Optimiser::heuristicOptimisationByEmsrA (iCapacity, *ioBucketHolder_ptr);
+    Optimiser::heuristicOptimisationByEmsrA (iCapacity, *oBucketHolder_ptr);
 
     // DEBUG
-    RMOL_LOG_DEBUG (ioBucketHolder_ptr->display());
+    RMOL_LOG_DEBUG (oBucketHolder_ptr->display());
   }
 
   // //////////////////////////////////////////////////////////////////////
@@ -251,13 +293,13 @@ namespace RMOL {
                                 BookingLimitVector_T& ioBookingLimitVector) {
     assert (_rmolServiceContext != NULL);
     const double iCapacity = _rmolServiceContext->getCapacity();
-    BucketHolder* ioBucketHolder_ptr = _rmolServiceContext->getBucketHolder();
-    assert (ioBucketHolder_ptr != NULL);
+    BucketHolder* oBucketHolder_ptr = _rmolServiceContext->getBucketHolder();
+    assert (oBucketHolder_ptr != NULL);
 
-    Optimiser::heuristicOptimisationByEmsrA (iCapacity, *ioBucketHolder_ptr);
+    Optimiser::heuristicOptimisationByEmsrA (iCapacity, *oBucketHolder_ptr);
 
     // Fill up booking vector
-    ioBucketHolder_ptr->fillup (ioBookingLimitVector);
+    oBucketHolder_ptr->fillup (ioBookingLimitVector);
   }
   
   // //////////////////////////////////////////////////////////////////////
@@ -304,13 +346,13 @@ namespace RMOL {
   void RMOL_Service::heuristicOptimisationByEmsrB () {
     assert (_rmolServiceContext != NULL);
     const double iCapacity = _rmolServiceContext->getCapacity();
-    BucketHolder* ioBucketHolder_ptr = _rmolServiceContext->getBucketHolder();
-    assert (ioBucketHolder_ptr != NULL);
+    BucketHolder* oBucketHolder_ptr = _rmolServiceContext->getBucketHolder();
+    assert (oBucketHolder_ptr != NULL);
 
-    Optimiser::heuristicOptimisationByEmsrB (iCapacity, *ioBucketHolder_ptr);
+    Optimiser::heuristicOptimisationByEmsrB (iCapacity, *oBucketHolder_ptr);
 
     // DEBUG
-    RMOL_LOG_DEBUG (ioBucketHolder_ptr->display());
+    RMOL_LOG_DEBUG (oBucketHolder_ptr->display());
   }
 
   // //////////////////////////////////////////////////////////////////////
@@ -319,13 +361,53 @@ namespace RMOL {
                                 BookingLimitVector_T& ioBookingLimitVector) {
     assert (_rmolServiceContext != NULL);
     const double iCapacity = _rmolServiceContext->getCapacity();
-    BucketHolder* ioBucketHolder_ptr = _rmolServiceContext->getBucketHolder();
-    assert (ioBucketHolder_ptr != NULL);
+    BucketHolder* oBucketHolder_ptr = _rmolServiceContext->getBucketHolder();
+    assert (oBucketHolder_ptr != NULL);
 
-    Optimiser::heuristicOptimisationByEmsrB (iCapacity, *ioBucketHolder_ptr);
+    Optimiser::heuristicOptimisationByEmsrB (iCapacity, *oBucketHolder_ptr);
 
     // Fill up booking vector
-    ioBucketHolder_ptr->fillup (ioBookingLimitVector);
+    oBucketHolder_ptr->fillup (ioBookingLimitVector);
+  }
+
+  // ///////////////////////////////////////////////////////////////////////
+  void RMOL_Service:: legOptimisationByMC () {
+    assert (_rmolServiceContext != NULL);
+    const ResourceCapacity_T iCapacity = _rmolServiceContext->getCapacity();
+    BucketHolder* oBucketHolder_ptr = _rmolServiceContext->getBucketHolder();
+    assert (oBucketHolder_ptr != NULL);
+
+    BidPriceVector_T lBidPriceVector;
+    Optimiser::legOptimisationByMC (iCapacity, *oBucketHolder_ptr,
+                                    lBidPriceVector);
+    
+    // DEBUG
+    RMOL_LOG_DEBUG (oBucketHolder_ptr->display());
+    std::ostringstream logStream;
+    logStream << "Bid-Price Vector (BPV): ";
+    unsigned int size = lBidPriceVector.size();
+    
+    for (unsigned int i = 0; i < size; ++i) {
+      const double bidPrice = lBidPriceVector.at(i);
+      logStream << std::fixed << std::setprecision (2) << bidPrice << " ";
+    }
+    RMOL_LOG_DEBUG (logStream.str());
+  }
+
+  // ///////////////////////////////////////////////////////////////////////
+  void RMOL_Service::
+  legOptimisationByMC (BidPriceVector_T& ioBidPriceVector,
+                       BookingLimitVector_T& ioBookingLimitVector) {
+    assert (_rmolServiceContext != NULL);
+    const ResourceCapacity_T iCapacity = _rmolServiceContext->getCapacity();
+    BucketHolder* oBucketHolder_ptr = _rmolServiceContext->getBucketHolder();
+    assert (oBucketHolder_ptr != NULL);
+    
+    Optimiser::legOptimisationByMC (iCapacity, *oBucketHolder_ptr,
+                                    ioBidPriceVector);
+
+    // Fill up booking vector
+    oBucketHolder_ptr->fillup (ioBookingLimitVector);
   }
   
 }

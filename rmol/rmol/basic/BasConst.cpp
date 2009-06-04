@@ -38,4 +38,10 @@ namespace RMOL {
       calculation. */
   const double DEFAULT_OVERBOOKING_STANDARD_DEVIATION = 1.0;
 
+  /** Default generated demand vector. */
+  const GeneratedDemandVector_T DEFAULT_GENERATED_DEMAND_VECTOR = std::vector<double>();
+
+  /** Default generated demand vector holder. */
+  const GeneratedDemandVectorHolder_T DEFAULT_GENERATED_DEMAND_VECTOR_HOLDER = std::vector<GeneratedDemandVector_T>();
+
 }

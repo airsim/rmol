@@ -16,7 +16,8 @@ namespace RMOL {
   Bucket::Bucket ()
     : _demand (NULL),
       _yieldRange (), _protection (0.0), _cumulatedProtection (0.0),
-      _bookingLimit (0.0), _cumulatedBookingLimit (0.0) {
+      _bookingLimit (0.0), _cumulatedBookingLimit (0.0),
+      _generatedDemandVector (NULL) {
   }
   
   // //////////////////////////////////////////////////////////////////////
@@ -26,14 +27,16 @@ namespace RMOL {
     _protection (iBucket.getProtection()),
     _cumulatedProtection (iBucket.getCumulatedProtection()),
     _bookingLimit (iBucket.getBookingLimit()),
-    _cumulatedBookingLimit (iBucket.getCumulatedBookingLimit()) {
+    _cumulatedBookingLimit (iBucket.getCumulatedBookingLimit()),
+    _generatedDemandVector (NULL) {
   }
 
   // //////////////////////////////////////////////////////////////////////
   Bucket::Bucket (const FldYieldRange& iYieldRange) :
     _demand (NULL),
     _yieldRange (iYieldRange), _protection (0.0), _cumulatedProtection (0.0),
-    _bookingLimit (0.0), _cumulatedBookingLimit (0.0) {
+    _bookingLimit (0.0), _cumulatedBookingLimit (0.0),
+    _generatedDemandVector (NULL) {
   }
   
   // //////////////////////////////////////////////////////////////////////
@@ -162,6 +165,12 @@ namespace RMOL {
   // //////////////////////////////////////////////////////////////////////
   const double Bucket::getLowerYield() const {
     return _yieldRange.getLowerYield();
+  }
+
+  // //////////////////////////////////////////////////////////////////////
+  void Bucket::
+  setGeneratedDemandVector (GeneratedDemandVector_T* iVector) {
+    _generatedDemandVector = iVector;
   }
 
 }

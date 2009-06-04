@@ -26,12 +26,36 @@ namespace RMOL {
     /** Set up the StudyStatManager. */
     void setUpStudyStatManager ();
 
+    /** Set the cabin availability. */
+    void setResourceCapacity (const ResourceCapacity_T iResourceCapacity);
+
     /** Add a bucket to the context. */
     void addBucket (const double iYieldRange, const double iDemandMean,
                     const double iDemandStandardDev);
 
+    /** Add a bucket to the context. */
+    void addBucket (const double iYieldRange, const double iDemandMean,
+                    const double iDemandStandardDev,
+                    GeneratedDemandVector_T* ioGeneratedDemandVector);
+
+    /** Generate demand for a given (Gaussian) distribution. */
+    GeneratedDemandVector_T* generateDemand (const int K,
+                                             const double& iMean,
+                                             const double& iDeviation);
+
+    /** Sum the two generated demand vectors . */
+    GeneratedDemandVector_T* generateDemand (GeneratedDemandVector_T*,
+                                             GeneratedDemandVector_T*);
+
     /** Read the input data from a file. */
     void readFromInputFile (const std::string& iInputFileName);
+
+    /** Build the context with the generated demand for Monte-Carlo
+       Integration algorithm. */
+    void buildContextForMC (const int K);
+
+    /** Clear the context (cabin capacity, bucket holder). */
+    void reset ();
 
     /** Single resource optimization using the Monte Carlo algorithm. */
     void optimalOptimisationByMCIntegration (const int K);
@@ -78,6 +102,14 @@ namespace RMOL {
     /** Single resource optimization that uses EMSR-b heuristic and
         returns a vector of cumulated booking limits. */
     void heuristicOptimisationByEmsrB (BidPriceVector_T&, BookingLimitVector_T&);
+
+    /** Leg optimisation using Monte-Carlo Integration as a step in
+        network optimisation. */
+    void legOptimisationByMC ();
+    
+    /** Leg optimisation using Monte-Carlo Integration as a step in
+        network optimisation. */
+    void legOptimisationByMC (BidPriceVector_T&, BookingLimitVector_T&);
 
   private:
     /** Default Constructors. */

@@ -94,6 +94,12 @@ namespace RMOL {
      */
     static void heuristicOptimisationByEmsrB (const ResourceCapacity_T,
                                               BucketHolder&);
+
+    /** Leg optimisation using Monte-Carlo Integration as a step in
+        network optimisation. */
+    static void legOptimisationByMC (const ResourceCapacity_T,
+                                     BucketHolder&, BidPriceVector_T&);
+
   };
 }
 #endif // __RMOL_COMMAND_OPTIMISER_HPP

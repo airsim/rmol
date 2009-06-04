@@ -45,6 +45,13 @@ namespace RMOL {
                                                     PartialSumHolderHolder&,
                                                     BidPriceVector_T&,
                                                     StudyStatManager&);
+    /** 
+        Leg optimisation using Monte-Carlo Integration as a step in
+        network optimisation. 
+    */
+    static void legOptimisationByMC (const ResourceCapacity_T,
+                                     BucketHolder&, BidPriceVector_T&);
+    
   };
 }
 #endif // __RMOL_BOM_MCUTILS_HPP

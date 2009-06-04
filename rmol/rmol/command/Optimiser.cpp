@@ -196,4 +196,14 @@ namespace RMOL {
                                         ioBucketHolder,
                                         aBucket);
   }
+
+  // //////////////////////////////////////////////////////////////////////
+  void Optimiser::
+  legOptimisationByMC (const ResourceCapacity_T iCabinCapacity,
+                       BucketHolder& ioBucketHolder,
+                       BidPriceVector_T& ioBidPriceVector) {
+    MCOptimiser::legOptimisationByMC (iCabinCapacity, ioBucketHolder,
+                                      ioBidPriceVector);
+  }
+  
 }

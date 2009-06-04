@@ -293,6 +293,9 @@ namespace RMOL {
     const int cabinCapacityInt = static_cast<int> (iCabinCapacity);
     for (short j = 1 ; j <= nbOfClasses - 1; 
 	 ++j, ioBucketHolder.iterate(), ioPSHolderHolder.iterate()) {
+      // DEBUG
+      std::cout << "K" << j << " = " << Kj << std::endl;
+
       /** Retrieve Bucket(j) (current) and Bucket(j+1) (next). */
       Bucket& currentBucket = ioBucketHolder.getCurrentBucket();
       Bucket& nextBucket = ioBucketHolder.getNextBucket();
@@ -375,6 +378,9 @@ namespace RMOL {
       */
       const double ljdouble = std::floor (Kj * (pj - pj1) / pj);
       lj = static_cast<int> (ljdouble);
+      
+      // DEBUG
+      std::cout << "l" << j << " = " << lj << std::endl;
 
       /** DEBUG
           RMOL_LOG_DEBUG ("p(j+1)/p(j) = " << pj1 / pj << ", lj = " << lj 
@@ -494,6 +500,107 @@ namespace RMOL {
                                      lBVPCalculationTimeValue);
     }
     
+    /**
+       Re-calculate the values (protections, bkg limits and cumulated
+       booking limits, the optimal revenue.
+    */
+    ioBucketHolder.recalculate ();
+  }
+
+  // ////////////////////////////////////////////////////////////////////////
+  void MCOptimiser::
+  legOptimisationByMC (const ResourceCapacity_T iCabinCapacity,
+                       BucketHolder& ioBucketHolder,
+                       BidPriceVector_T& ioBidPriceVector) {
+
+    ioBucketHolder.begin();
+
+    // Get the first bucket (the one with the highest average yield).
+    Bucket& lFirstBucket = ioBucketHolder.getCurrentBucket();
+
+    GeneratedDemandVector_T lPartialSumVector =
+      lFirstBucket.getGeneratedDemandVector ();
+
+    // Sort the vector from high to low.
+    std::sort (lPartialSumVector.begin(), lPartialSumVector.end(),
+               std::greater<double>());
+
+    // Get the number of draws (K).
+    const unsigned int K = lPartialSumVector.size();
+
+    // Number of classes/buckets: n
+    const short nbOfClasses = ioBucketHolder.getSize();
+    
+    /** 
+        Iterate on the classes/buckets, from 1 to n-1.
+        Note that n-1 corresponds to the size of the parameter list,
+        i.e., n corresponds to the number of classes/buckets.
+    */
+    unsigned int Kj = K;
+    const int cabinCapacityInt = static_cast<int> (iCabinCapacity);
+    for (short j = 1 ; j <= nbOfClasses - 1; ++j, ioBucketHolder.iterate()) {
+      // DEBUG
+      std::cout << "K" << j << " = " << Kj << std::endl;
+      
+      /** Retrieve Bucket(j) (current) and Bucket(j+1) (next). */
+      Bucket& currentBucket = ioBucketHolder.getCurrentBucket();
+      Bucket& nextBucket = ioBucketHolder.getNextBucket();
+
+      /** Retrieve the prices for Bucket(j) and Bucket(j+1). */
+      const double pj = currentBucket.getAverageYield();
+      const double pj1 = nextBucket.getAverageYield();
+
+      /** 
+          The optimal index is defined as: 
+          lj = floor {[p(j+1)/p(j)] . K}
+      */
+      const unsigned int lj = Kj - std::floor (Kj * (pj - pj1) / pj);
+
+      // DEBUG
+      std::cout << "l" << j << " = " << lj << std::endl;
+
+      /*
+      std::cout << "p(j+1) = " << pj1 << std::endl
+                << "p(j) = " << pj << std::endl
+                << "Kj = " << Kj << std::endl;
+      */
+      
+      /** Consistency check. */
+      assert (lj >= 1 && lj < Kj);
+
+      /** 
+          The optimal protection is defined as:
+          y(j) = 1/2 [S(j,lj) + S(j, lj+1)]
+      */
+      const double sjl = lPartialSumVector.at (lj - 1);
+      const double sjlp1 = lPartialSumVector.at (lj + 1 - 1);
+      const double yj = (sjl + sjlp1) / 2;
+
+      // Set the cumulated protection for Bucket(j) (j ranging from 1 to n-1)
+      currentBucket.setCumulatedProtection (yj);
+
+      /** Update Kj for the next loop. */
+      Kj = lj;
+      lPartialSumVector.resize (Kj);
+
+      // Generated demand of the (j+1)th bucket for the next iteration.
+      const GeneratedDemandVector_T& lNextGeneratedDemandVector =
+        nextBucket.getGeneratedDemandVector ();
+
+      for (unsigned int i = 0; i < Kj; ++i) {
+        const double lGeneratedDemand = lNextGeneratedDemandVector.at(i);
+        lPartialSumVector.at(i) += lGeneratedDemand;
+      }
+
+      // Sort the vector from high to low.
+      std::sort (lPartialSumVector.begin(), lPartialSumVector.end(),
+                 std::greater<double>());
+    }
+
+    // Set the protection of Bucket(n) to be equal to the capacity
+    Bucket& currentBucket = ioBucketHolder.getCurrentBucket();
+    currentBucket.setCumulatedProtection (iCabinCapacity);
+
     /**
        Re-calculate the values (protections, bkg limits and cumulated
        booking limits, the optimal revenue.
