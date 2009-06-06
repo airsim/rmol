@@ -3,10 +3,11 @@
 
 Name:             R-%{packname}
 Version:          0.8.2
-Release:          1%{?dist}
+Release:          2%{?dist}
 Source0:          ftp://cran.r-project.org/pub/R/contrib/main/%{packname}_%{version}.tar.gz
-License:          GPLv2
-URL:              http://cran.r-project.org/src/contrib
+Source1:          README_License_msm
+License:          GPLv2+
+URL:              http://cran.r-project.org/web/packages/msm/
 Group:            Applications/Engineering
 Summary:          Multi-state Markov and hidden Markov models in continuous time
 BuildRequires:    R-devel, tetex-latex, R-mvtnorm
@@ -28,6 +29,7 @@ and censored states.
 # Fix some permissions and formats
 # find . -type f -perm 755 -exec chmod 644 {} \;
 find . -type f -name '*.[hc]' -exec chmod 644 {} \;
+
 # Fix the encoding of the NEWS file
 chmod 644 %{packname}/inst/NEWS
 iconv -f ISO88591 -t UTF8 -o NEWS %{packname}/inst/NEWS
@@ -37,11 +39,20 @@ mv -f NEWS %{packname}/inst
 
 %install
 rm -rf $RPM_BUILD_ROOT
+
+# Specific installation procedure for R
 mkdir -p $RPM_BUILD_ROOT%{_libdir}/R/library
 %{_bindir}/R CMD INSTALL -l $RPM_BUILD_ROOT%{_libdir}/R/library %{packname}
+
+# Temporary fix for the license issue (https://bugzilla.redhat.com/show_bug.cgi?id=498845#c1)
+install -m 644 %{SOURCE1} $RPM_BUILD_ROOT%{_libdir}/R/library/%{packname}
+
+# Remove the temporary object files
 test -d %{packname}/src && (cd %{packname}/src; rm -f *.o *.so)
+
+# Remove the generic cascading style sheet for R
 rm -rf $RPM_BUILD_ROOT%{_libdir}/R/library/R.css
-# find ./doc -type f -perm 755 -exec chmod 644 {} \;
+
 
 %check
 %{_bindir}/R CMD check %{packname}
@@ -58,6 +69,7 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-, root, root, -)
 %dir %{_libdir}/R/library/%{packname}
+%doc %{_libdir}/R/library/%{packname}/README_License_msm
 %doc %{_libdir}/R/library/%{packname}/latex
 %doc %{_libdir}/R/library/%{packname}/data
 %doc %{_libdir}/R/library/%{packname}/doc
@@ -75,5 +87,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/R/library/%{packname}/libs/%{packname}.so
 
 %changelog
+* Sat Jun 06 2009 Denis Arnaud <denis.arnaud_fedora@m4x.org> 0.8.2-2
+- Altered the license so as to reflect upstream, after clarification with them
+
 * Sun May 03 2009 Denis Arnaud <denis.arnaud_fedora@m4x.org> 0.8.2-1
 - Initial package creation
