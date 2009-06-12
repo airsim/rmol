@@ -3,8 +3,7 @@
 \title{Total length of stay}
 \description{
   Estimate the expected total length of stay in each set of states,
-  for a given period of evolution of a multi-state model. This assumes that the
-  transition rates do not change with time. 
+  for a given period of evolution of a multi-state model.
 }
 \usage{
 totlos.msm(x, start=1, end=NULL, fromt=0, tot=Inf, covariates="mean",
@@ -99,6 +98,11 @@ totlos.msm(x, start=1, end=NULL, fromt=0, tot=Inf, covariates="mean",
   expected total time diseased is a forecast for a healthy
   individual,  who may die before getting the disease. 
 
+  The only time-inhomogeneous models handled by this function are those
+  specified using the \code{pci} option to \code{\link{msm}}.
+  For any other inhomogeneous models, the function assumes that
+  covariates are constant on the forecasted interval.
+  
 }
 \seealso{
   \code{\link{sojourn.msm}}, \code{\link{pmatrix.msm}}, \code{\link{integrate}}, \code{\link{boot.msm}}.

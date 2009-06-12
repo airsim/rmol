@@ -21,6 +21,10 @@ lrtest.msm(...)
   they are fitted to the same dataset. This may be a problem if
   there are missing values and R's default of 'na.action = na.omit'
   is used.
+
+  The likelihood ratio statistic only has the indicated chi-squared
+  distribution if the models are nested. An alternative for comparing
+  non-nested models is Akaike's information criterion.
 }
 \seealso{\code{\link{logLik.msm}},\code{\link{msm}}}
 \keyword{models}

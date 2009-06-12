@@ -75,7 +75,9 @@ plot.survfit.msm(x, from=1, to=NULL, range=NULL, covariates="mean",
   the first occurrence of the absorbing state in the data will usually
   be greater than the actual first transition time to that state.
   Therefore the Kaplan-Meier estimate of the survival probability will
-  be an overestimate. 
+  be an overestimate.
+
+  This currently only handles time-homogeneous models. 
 }
 \seealso{\code{\link{survfit}}, \code{\link{plot.survfit}}, \code{\link{plot.prevalence.msm}}}
 \keyword{models}

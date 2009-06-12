@@ -3,8 +3,41 @@
 USER-VISIBLE CHANGES (for detailed changes see ChangeLog in the source package)
 --------------------
 
+Version 0.9.1 (2009-06-12)
+-------------
 
-Version 0.8.2 (2008-04-08)
+o Minor update to the test suite to allow build on Fedora / Red Hat
+  Linux. 
+
+
+Version 0.9 (2009-06-09)
+-----------
+
+o Time-inhomogeneous models fitted with the "pci" argument to msm are
+  now fully supported in all output functions. 
+
+  pmatrix.msm can now compute transition probabilities over any given
+  time interval for time-inhomogeneous models fitted with "pci".  A
+  new argument "t1" to pmatrix.msm specifies the starting time, while
+  "t" still specifies the interval length.
+
+  All functions which call on pmatrix.msm, such as plot.msm,
+  plot.survfit.msm, prevalence.msm and totlos.msm, now account for
+  time-inhomogeneity in models fitted using "pci".
+
+o Extractor functions are now more tolerant.  If a list of covariate
+  values is supplied, unknown covariates are ignored and covariates
+  with unspecified values are set to zero. Factor values can be
+  specified either by factor levels or by 0/1 contrasts.
+
+o Bug fix - score residuals were being calculated wrongly for models
+  with covariates.
+
+o Licence clarified as GPL-2 or later, to enable packaging of msm for
+  Fedora/Red Hat Linux.
+
+
+Version 0.8.2 (2009-04-08)
 -------------
 
 o Bug fix - extractor functions were not being calculated for models

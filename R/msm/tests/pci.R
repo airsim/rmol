@@ -16,23 +16,23 @@ ematrix <- rbind(c(0, 0.1, 0, 0),c(0.1, 0, 0.1, 0),c(0, 0.1, 0, 0),c(0, 0, 0, 0)
 cav5.msm <- msm( state ~ years, subject=PTNUM, data = cav,
                qmatrix = twoway4.q, death = TRUE, fixedpars=TRUE, pci = c(5), covinits = list("timeperiod[5,Inf)"=rep(0.01,7)),
                )
-stopifnot(isTRUE(all.equal(4905.58684722393, cav5.msm$minus2loglik, tol=1e-06)))
+stopifnot(isTRUE(all.equal(4905.59585756786, cav5.msm$minus2loglik, tol=1e-06)))
 cav10.msm <- msm( state ~ years, subject=PTNUM, data = cav,
                  qmatrix = twoway4.q, death = TRUE, pci = c(5,10), fixedpars=TRUE, 
                  covinits = list("timeperiod[5,10)"=rep(0.01,7), "timeperiod[10,Inf)"=rep(0.01,7)), 
                  )
-stopifnot(isTRUE(all.equal(4905.27634460236, cav10.msm$minus2loglik, tol=1e-06)))
+stopifnot(isTRUE(all.equal(4905.28758421853, cav10.msm$minus2loglik, tol=1e-06)))
 
 if (developer.local) {
     cav5.msm <- msm( state ~ years, subject=PTNUM, data = cav,
                     qmatrix = twoway4.q, death = TRUE, pci = c(5), covinits = list("timeperiod[5,Inf)"=rep(0.01,7)), 
                     method="BFGS", control=list(trace=5, REPORT=1))
-    stopifnot(isTRUE(all.equal(3919.99601337682, cav5.msm$minus2loglik, tol=1e-06)))
+    stopifnot(isTRUE(all.equal(3919.99601396194, cav5.msm$minus2loglik, tol=1e-06)))
     cav10.msm <- msm( state ~ years, subject=PTNUM, data = cav,
                      qmatrix = twoway4.q, death = TRUE, pci = c(5,10),
                      covinits = list("timeperiod[5,10)"=rep(0.01,7), "timeperiod[10,Inf)"=rep(0.01,7)), 
                      method="BFGS", control=list(trace=5, REPORT=1))
-    stopifnot(isTRUE(all.equal(3882.08842673942, cav10.msm$minus2loglik, tol=1e-06)))
+    stopifnot(isTRUE(all.equal(3882.08834017773, cav10.msm$minus2loglik, tol=1e-06)))
 }
 
 ## Compare with old method - create artificial covariate
@@ -72,8 +72,8 @@ stopifnot(isTRUE(all.equal(4905.27634460236, cav10.msm$minus2loglik, tol=1e-06))
 ## Make sure works for pci outside time range, with warning
 cav5.msm <- msm( state ~ years, subject=PTNUM, data = cav,
                  qmatrix = twoway4.q, death = TRUE, fixedpars=TRUE, pci = c(-1,5,50,60), covinits = list("timeperiod[5,Inf)"=rep(0.01,7)), 
-                 method="BFGS", control=list(trace=5, REPORT=1))
-stopifnot(isTRUE(all.equal(4905.58684722393, cav5.msm$minus2loglik, tol=1e-06)))
+                method="BFGS", control=list(trace=5, REPORT=1))
+stopifnot(isTRUE(all.equal(4905.59585756786, cav5.msm$minus2loglik, tol=1e-06)))
 
 ## No cuts left , degrades to time homogeneous model 
 cav.msm <- msm( state ~ years, subject=PTNUM, data = cav,
@@ -137,7 +137,7 @@ cav5cens.msm <- msm(state ~ years, subject=PTNUM, data = cav.cens,
                     qmatrix = twoway4.q, death = TRUE, censor=99, pci = 5,
                     covinits=list("timeperiod[5,Inf)"=rep(0.02,7)), fixedpars=TRUE, 
                     method="BFGS", control=list(trace=5, REPORT=1))
-stopifnot(isTRUE(all.equal(4753.51295496850, cav5cens.msm$minus2loglik, tol=1e-06)))
+stopifnot(isTRUE(all.equal(4753.53207003774, cav5cens.msm$minus2loglik, tol=1e-06)))
 
 cav2.cens <- cav2[cav2$state!=999,]
 cav2.cens$state[cav2.cens$state==4][1:50] <- 998
@@ -146,7 +146,7 @@ cav52cens.msm <- msm(state ~ years, subject=PTNUM, data = cav2.cens,
                      covinits=list(after510=rep(0.02,7)), fixedpars=TRUE, center=FALSE, 
                      censor=c(99,998), censor.states=list(1:4,1:3),
                      method="BFGS", control=list(trace=5, REPORT=1))
-stopifnot(isTRUE(all.equal(4753.51295496850, cav5cens.msm$minus2loglik, tol=1e-06)))
+stopifnot(isTRUE(all.equal(4753.53207003774, cav5cens.msm$minus2loglik, tol=1e-06)))
 
 
 ## test bootstrap with factor / other covs
@@ -177,7 +177,7 @@ misccov.msm <- msm(state ~ years, subject = PTNUM, data = cav,
                    pci = 5, covinits=list("timeperiod[5,Inf)"=rep(0.0001,5)),
                    misccovariates = ~dage + sex, misccovinits = list(dage=c(0.01,0.02,0.03,0.04), sex=c(-0.013,-0.014,-0.015,-0.016)),
                    control = list(trace=1, REPORT=1), method="BFGS")
-stopifnot(isTRUE(all.equal(4305.0433878252, misccov.msm$minus2loglik, tol=1e-06)))
+stopifnot(isTRUE(all.equal(4305.03335375452, misccov.msm$minus2loglik, tol=1e-06)))
 
 ## hcovs 
 data(fev)

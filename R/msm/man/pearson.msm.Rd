@@ -36,7 +36,7 @@ pearson.msm(x, transitions=NULL, timegroups=3, intervalgroups=3,
     the process.}
   \item{intervalgroups}{Number of groups based on quantiles of the time interval between
     observations.}
-  \item{covgroups}{Number of groups based on quantiles of \eqn{sum_r 
+  \item{covgroups}{Number of groups based on quantiles of \eqn{\sum_r q_{irr}}{sum_r 
       q_{irr}}, where \eqn{q_{irr}} are the diagonal entries of the
     transition intensity matrix for the \emph{i}th transition.  These are
     a function of the covariate effects and the covariate values at the
@@ -46,10 +46,15 @@ pearson.msm(x, transitions=NULL, timegroups=3, intervalgroups=3,
     
     Thus \code{covgroups} summarises the impact of covariates at each
     observation, by calculating the overall rate of progression through
-    states at that observation.  
+    states at that observation.
+
+    For time-inhomogeneous models specified using the \code{pci}
+    argument to \code{\link{msm}}, if the only covariate is the time
+    period, \code{covgroups} is set to 1, since \code{timegroups}
+    ensures that transitions are grouped by time.     
   }
   \item{groups}{A vector of arbitrary groups in which to categorise each
-    observation in the data. This can be an integer vector or a factor.
+    transition. This can be an integer vector or a factor.
     This can be used to diagnose specific areas of poor fit.
     For example, the contingency table might be grouped by arbitrary
     combinations of covariates to detect types of individual for whom
@@ -57,7 +62,11 @@ pearson.msm(x, transitions=NULL, timegroups=3, intervalgroups=3,
 
     The length of \code{groups} should be \code{x$data$n}, the number of
     observations used in the model fit, which is the number of observations
-    in the original dataset with any missing values excluded.}
+    in the original dataset with any missing values excluded.  The value
+    of \code{groups} at observation \eqn{i} is used to categorise the 
+    transition which \emph{ends} at observation i. Values of
+    \code{groups} at the first observation for each subject are
+    ignored. }
   
   \item{boot}{Estimate an exact p-value using a parametric bootstrap.
 
@@ -73,7 +82,7 @@ pearson.msm(x, transitions=NULL, timegroups=3, intervalgroups=3,
   \item{next.obstime}{This is a vector of length \code{x$data$n} (the
     number of observations used in the model fit) giving the time to the
     next \emph{scheduled} observation following each time point.
-    This is ignored unless times to death are known exactly. 
+    This is only used when times to death are known exactly. 
     
     For individuals who died (entered an absorbing state) before the
     next scheduled observation, and the time of death is known exactly,  
@@ -164,7 +173,7 @@ pearson.msm(x, transitions=NULL, timegroups=3, intervalgroups=3,
 
   When times of death are known exactly, states are
   misclassified, or an individual's final observation is a censored
-  state, the modification by Titman and Sharples (2007) is
+  state, the modification by Titman and Sharples (2008) is
   used. The only form of censoring supported is a state at the end
   of an individual's series which represents an unknown transient state
   (i.e. the individual is only known to be alive at this time). Other
@@ -173,7 +182,7 @@ pearson.msm(x, transitions=NULL, timegroups=3, intervalgroups=3,
   
   See these references for further details of the methods.
   The method used for censored states is a modification of the method
-  in the appendix to Titman and Sharples (2007), described at
+  in the appendix to Titman and Sharples (2008), described at
   \url{http://www.mrc-bsu.cam.ac.uk/personal/chris/papers/robustcensoring.pdf}
   (Titman, 2007).
   
@@ -202,9 +211,8 @@ pearson.msm(x, transitions=NULL, timegroups=3, intervalgroups=3,
   goodness-of-fit test for stationary and time-continuous Markov
   regression models. \emph{Statistics in Medicine} 21:1899-1911.
 
-  Titman, A. and Sharples, L. (2007) A general goodness-of-fit test for
-  Markov and hidden Markov models. \emph{Statistics in Medicine}
-  (available online in advance of print)
+  Titman, A. and Sharples, L. (2008) A general goodness-of-fit test for
+  Markov and hidden Markov models. \emph{Statistics in Medicine} 27(12):2177-2195
 
   Titman, A. (2008) Model diagnostics in multi-state models of biological
   systems. PhD thesis, University of Cambridge. 

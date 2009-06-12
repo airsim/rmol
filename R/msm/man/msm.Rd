@@ -19,7 +19,7 @@ msm ( formula, subject=NULL, data = list(), qmatrix, gen.inits = FALSE,
       est.initprobs=FALSE, initcovariates = NULL, initcovinits = NULL, 
       death = FALSE, exacttimes = FALSE, censor=NULL, 
       censor.states=NULL, pci=NULL, cl = 0.95, fixedpars = NULL, center=TRUE,
-      opt.method=c("optim","nlm"), hessian=TRUE, use.deriv=FALSE,
+      opt.method=c("optim","nlm"), hessian=TRUE, use.deriv=TRUE,
       analyticp=TRUE, ... )
 }
 \arguments{
@@ -444,7 +444,8 @@ msm ( formula, subject=NULL, data = list(), qmatrix, gen.inits = FALSE,
     piecewise constant covariate is known to change, then censored
     states can be inserted in the data on those occasions.
     The covariate may represent time itself, or some other
-    time-dependent variable. 
+    time-dependent variable.  The \code{pci} option to msm can be used
+    to perform this trick automatically.
   }
 
   \item{censor.states}{

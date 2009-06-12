@@ -49,6 +49,7 @@ struct msmdata {
     int *whichcovi;
 
     int nobs;
+    int n;
     int npts;
 };
 

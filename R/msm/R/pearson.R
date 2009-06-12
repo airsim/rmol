@@ -1,5 +1,7 @@
 ### Pearson-type goodness-of fit test (Aguirre-Hernandez and Farewell, 2002; Titman and Sharples, 2007)
 
+### TODO for pci models, don't group by 
+
 pearson.msm <- function(x, transitions=NULL, timegroups=3, intervalgroups=3, covgroups=3, groups=NULL,
                         boot=FALSE, B=500, 
                         next.obstime=NULL, # user-supplied next observation times, if known.
@@ -19,7 +21,11 @@ pearson.msm <- function(x, transitions=NULL, timegroups=3, intervalgroups=3, cov
     if (!is.numeric(covgroups) || length(covgroups) != 1) stop ("expected \"covgroups\" to be a single number")
     if (!is.numeric(B) || length(B) != 1) stop ("expected \"B\" to be a single number")
     if (!is.numeric(N) || length(N) != 1) stop ("expected \"N\" to be a single number")
-    
+
+    ## Use only one covariate group for pci models with no other covariates
+    if (!is.null(x$pci) && length(grep("timeperiod\\[([0-9]+|Inf),([0-9]+|Inf)\\)", x$qcmodel$covlabels)) == x$qcmodel$ncovs)
+        covgroups <- 1
+
     ## Label various constants 
     nst <- x$qmodel$nstates
     exact.death <- any(dat$obstype == 3)
@@ -97,10 +103,10 @@ pearson.msm <- function(x, transitions=NULL, timegroups=3, intervalgroups=3, cov
     ## Determine unique Q matrices determined by covariate combinations
     ncovs <- x$qcmodel$ncovs
     if (ncovs>0) {
-        uniq <- unique(od$cov[dat$covdata$whichcov.orig])
+        uniq <- unique(as.data.frame(od$cov[,dat$covdata$whichcov.orig,drop=FALSE]))
         nouniq <- dim(uniq)[1]
         pastedu <- do.call("paste",uniq)
-        pastedc <- do.call("paste",od$cov[dat$covdata$whichcov.orig])
+        pastedc <- do.call("paste",as.data.frame(od$cov[,dat$covdata$whichcov.orig,drop=FALSE]))
         qmatindex <- match(pastedc,pastedu)
         qmat <- array(0,dim=c(nst,nst,nouniq))
         for (i in 1:nouniq)

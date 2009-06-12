@@ -36,7 +36,7 @@ msm <- function(formula,   # formula with  observed Markov states   ~  observati
                 center = TRUE, # center covariates at their means
                 opt.method = c("optim","nlm"),
                 hessian = TRUE,
-                use.deriv = FALSE,
+                use.deriv = TRUE,
                 analyticp = TRUE,
                 ... # options to optim or nlm
                 )
@@ -296,6 +296,7 @@ msm <- function(formula,   # formula with  observed Markov states   ~  observati
                        ecmodel = ecmodel,
                        hmodel = hmodel,
                        cmodel = cmodel,
+                       pci = pci,
                        paramdata=p
                        )
     attr(msmobject, "fixed") <- p$fixed
@@ -1194,7 +1195,8 @@ likderiv.msm <- function(params, deriv=0, msmdata, qmodel, qcmodel, cmodel, hmod
               as.integer(qmodel$npars),
               as.integer(qmodel$ndpars),
               as.integer(qcmodel$ndpars),
-              as.integer(msmdata$nobs),
+              as.integer(msmdata$nobs), # number of aggregated observations 
+              as.integer(msmdata$n), # number of observations
               as.integer(msmdata$npts),  # HMM only
               as.integer(rep(qcmodel$ncovs, qmodel$npars)),
 
@@ -1426,6 +1428,16 @@ msm.pci <- function(tcut, dat, qmodel, cmodel, center)
     maxtime <- tapply(old$time, old$subject, max)[as.character(unique(old$subject))]
     nobspt <- as.numeric(table(new$subject)[as.character(unique(new$subject))])
     new <- new[new$time >= rep(mintime, nobspt) & new$time <= rep(maxtime, nobspt), ]
+
+    ## drop imputed observations at times when there was already an observation
+    ## assumes there wasn't already duplicated obs times 
+    prevsubj <- c(NA,new$subject[1:(nrow(new)-1)]); nextsubj <- c(new$subject[2:nrow(new)], NA)
+    prevtime <- c(NA,new$time[1:(nrow(new)-1)]); nexttime <- c(new$time[2:nrow(new)], NA)
+    prevstate <- c(NA,new$state[1:(nrow(new)-1)]); nextstate <- c(new$state[2:nrow(new)], NA)
+    new <- new[!((new$subject==prevsubj & new$time==prevtime & new$state==label & prevstate!=label) |
+                 (new$subject==nextsubj & new$time==nexttime & new$state==label & nextstate!=label))
+               ,]
+    
     ## Carry last value forward for other covariates
     if (dat$ncovs > 0) {
         eind <- which(is.na(new$covmat[,1]))
@@ -1467,9 +1479,8 @@ msm.pci <- function(tcut, dat, qmodel, cmodel, center)
         assign(tcovlabel, tcov)
         mm <- model.matrix(as.formula(paste("~", tcovlabel)))[,-1,drop=FALSE]
         new$covmat <- cbind(new$covmat, mm)
-        new$covmat.orig <- cbind(new$covmat.orig, timeperiod=tcov)
-        covmeans <- colMeans(new$covmat)
-        if (center) new$covmat <- sweep(new$covmat, 2, covmeans)
+        new$covmat.orig <- if(is.null(new$covmat.orig)) data.frame(timeperiod=tcov) else cbind(new$covmat.orig, timeperiod=tcov)
+        if (center) new$covmat <- sweep(new$covmat, 2, colMeans(new$covmat))
         
         ## new censoring model 
         cmodel$ncens <- cmodel$ncens + 1
@@ -1484,7 +1495,7 @@ msm.pci <- function(tcut, dat, qmodel, cmodel, center)
         new$covlabels.orig <- c(dat$covlabels.orig, tcovlabel)
         new$covdata$covlabels <- c(dat$covdata$covlabels, colnames(mm))
         new$covdata$ncovs <- dat$covdata$ncovs + ntcut
-        new$covdata$covmeans <- c(dat$covdata$covmeans, covmeans)
+        new$covdata$covmeans <- c(dat$covdata$covmeans, colMeans(mm))
         new$covdata$covfactor <- c(dat$covdata$covfactor, timeperiod=TRUE)
         new$covdata$covfactorlevels <- c(dat$covdata$covfactorlevels, list(timeperiod=levels(tcov)))
         new$covdata$covlabels.orig <- c(dat$covdata$covlabels.orig, tcovlabel)

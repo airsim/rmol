@@ -6,7 +6,7 @@
   model for a given time interval, at a given set of covariate values. 
 }
 \usage{
-pmatrix.msm(x, t=1, covariates="mean", ci=c("none","normal","bootstrap"), cl=0.95, B=1000)
+pmatrix.msm(x, t=1, t1=0, covariates="mean", ci=c("none","normal","bootstrap"), cl=0.95, B=1000)
 }
 \arguments{
 
@@ -14,6 +14,10 @@ pmatrix.msm(x, t=1, covariates="mean", ci=c("none","normal","bootstrap"), cl=0.9
 
   \item{t}{The time interval to estimate the transition probabilities
   for, by default one unit. }
+
+\item{t1}{The starting time of
+  the interval. Used for models \code{x} with piecewise-constant intensities fitted
+  using the \code{pci} option to \code{\link{msm}}. The probabilities will be computed on the interval [t1, t1+t].}
 
   \item{covariates}{
     The covariate values at which to estimate the transition
@@ -33,6 +37,11 @@ pmatrix.msm(x, t=1, covariates="mean", ci=c("none","normal","bootstrap"), cl=0.9
     originally given in the model formula, or a named list, 
 
     \code{list (age = 60, sex = 1)}
+
+    For time-inhomogeneous models fitted using the \code{pci} option to
+    \code{msm}, the covariate \code{timeperiod} will 
+    
+    the time periods according to the time interval given 
   }
 
   \item{ci}{If \code{"normal"}, then calculate a confidence interval for

@@ -112,8 +112,8 @@ qratio.ci.msm <- function(x, ind1, ind2, covariates="mean", cl=0.95, B=1000) {
     c(quantile(q.vec, c(0.5 - cl/2, 0.5 + cl/2)), sd(q.vec))
 }
 
-pmatrix.ci.msm <- function(x, t, covariates="mean", cl=0.95, B=1000) {
-    p.list <- boot.msm(x, function(x)pmatrix.msm(x=x, t=t, covariates=covariates,ci="none"), B)
+pmatrix.ci.msm <- function(x, t, t1, covariates="mean", cl=0.95, B=1000) {
+    p.list <- boot.msm(x, function(x)pmatrix.msm(x=x, t=t, t1=t1, covariates=covariates,ci="none"), B)
     p.array <- array(unlist(p.list), dim=c(dim(p.list[[1]]), length(p.list)))
     p.ci <- apply(p.array, c(1,2), function(x)(quantile(x, c(0.5 - cl/2, 0.5 + cl/2))))
     aperm(p.ci, c(2,3,1))
@@ -203,8 +203,8 @@ qratio.normci.msm <- function(x, ind1, ind2, covariates="mean", cl=0.95, B=1000)
     c(quantile(q.vec, c(0.5 - cl/2, 0.5 + cl/2)), sd(q.vec))
 }
 
-pmatrix.normci.msm <- function(x, t, covariates="mean", cl=0.95, B=1000) {
-    p.list <- normboot.msm(x, function(x)pmatrix.msm(x=x, t=t, covariates=covariates, ci="none"), B)
+pmatrix.normci.msm <- function(x, t, t1, covariates="mean", cl=0.95, B=1000) {
+    p.list <- normboot.msm(x, function(x)pmatrix.msm(x=x, t=t, t1=t1, covariates=covariates, ci="none"), B)
     p.array <- array(unlist(p.list), dim=c(dim(p.list[[1]]), length(p.list)))
     p.ci <- apply(p.array, c(1,2), function(x)(quantile(x, c(0.5 - cl/2, 0.5 + cl/2))))
     aperm(p.ci, c(2,3,1))

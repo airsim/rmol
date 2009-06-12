@@ -2,10 +2,9 @@
 %global packrel 1
 
 Name:             R-%{packname}
-Version:          0.8.2
-Release:          2%{?dist}
+Version:          0.9.1
+Release:          1%{?dist}
 Source0:          ftp://cran.r-project.org/pub/R/contrib/main/%{packname}_%{version}.tar.gz
-Source1:          README_License_msm
 License:          GPLv2+
 URL:              http://cran.r-project.org/web/packages/msm/
 Group:            Applications/Engineering
@@ -44,9 +43,6 @@ rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT%{_libdir}/R/library
 %{_bindir}/R CMD INSTALL -l $RPM_BUILD_ROOT%{_libdir}/R/library %{packname}
 
-# Temporary fix for the license issue (https://bugzilla.redhat.com/show_bug.cgi?id=498845#c1)
-install -m 644 %{SOURCE1} $RPM_BUILD_ROOT%{_libdir}/R/library/%{packname}
-
 # Remove the temporary object files
 test -d %{packname}/src && (cd %{packname}/src; rm -f *.o *.so)
 
@@ -69,7 +65,6 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-, root, root, -)
 %dir %{_libdir}/R/library/%{packname}
-%doc %{_libdir}/R/library/%{packname}/README_License_msm
 %doc %{_libdir}/R/library/%{packname}/latex
 %doc %{_libdir}/R/library/%{packname}/data
 %doc %{_libdir}/R/library/%{packname}/doc
@@ -87,6 +82,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/R/library/%{packname}/libs/%{packname}.so
 
 %changelog
+* Fri Jun 12 2009 Denis Arnaud <denis.arnaud_fedora@m4x.org> 0.9.1-1
+- Integrated the new upstream (0.9.1) version
+
 * Sat Jun 06 2009 Denis Arnaud <denis.arnaud_fedora@m4x.org> 0.8.2-2
 - Altered the license so as to reflect upstream, after clarification with them
 

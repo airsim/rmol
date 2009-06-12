@@ -1,3 +1,69 @@
+2009-06-12 Chris Jackson  <chris.jackson@mrc-bsu.cam.ac.uk>	
+
+	* tests/simple.R: Removed a couple of tests which fail due to
+	floating point fuzz on Fedora/Red Hat PPC Linux. 
+	
+	* DESCRIPTION: Version 0.9.1 released.
+	
+2009-06-09 Chris Jackson  <chris.jackson@mrc-bsu.cam.ac.uk>	
+
+	* R/pearson.R: Covariate grouping fixed to 1 for pci models with
+	no other covariates, as the covariate group is equivalent to the
+	time group.
+	
+	* DESCRIPTION: Version 0.9 released.
+	
+2009-06-05 Chris Jackson  <chris.jackson@mrc-bsu.cam.ac.uk>	
+
+	* DESCRIPTION: Licence altered from GPLv2 to GPL v2 or later.
+	Licence text removed from src/pijt.c.
+
+	* R/msm.R(msm): Default changed to use.deriv=TRUE. 
+
+	* R/msm.R(msm.pci): Don't impute observations for pci models at
+	times when there is already an observation.  This fixes "times not
+	ordered" errors when bootstrap resampling for Pearson test.
+	
+2009-04-29 Chris Jackson  <chris.jackson@mrc-bsu.cam.ac.uk>	
+
+	* R/outputs.R(factorcov2numeric.msm): Extractor functions now set
+	unspecified covariate values in covariate lists to 0, and ignore
+	unknown covariates.
+		
+	* R/outputs.R(factorcov2numeric.msm): All extractor functions can
+	now accept covariate values as numeric contrasts as well as factor
+	levels.
+	
+	* R/outputs.R(plot.survfit.msm): Call to survfit fixed for
+	compatibility with R version 2.9.0.
+	
+	* R/outputs.R(pmatrix.msm): Adapted to automatically handle "pci"
+	models with piecewise constant intensities, with new "t1" argument
+	representing start time.  New internal function
+	"msm.fill.pci.covs" to enable time-constant covariates to be
+	passed through this facility properly.  Arguments of all calls to
+	pmatrix.msm changed.  As a result, functions which call
+	pmatrix.msm (prevalence.msm, expected.msm, totlos.msm,
+	plot.survfit.msm) now handle time-inhomogeneous models specified
+	using "pci".
+ 	
+	* R/msm.R(msm.pci): Bug fix - covmeans calculated wrong in pci
+	models with other covariates, leading to error in qmatrix.msm for
+	covariates=0.
+	
+2009-04-29 Chris Jackson  <chris.jackson@mrc-bsu.cam.ac.uk>	
+
+	* src/lik.c: Bug fix - score residuals were being calculated
+	wrongly for models with covariates.
+	
+2009-04-24 Chris Jackson  <chris.jackson@mrc-bsu.cam.ac.uk>	
+
+	* R/pearson.R: Fixed "second argument must be a list" bug. 
+	
+	* R/outputs.R: Order of effects in hazard.msm and odds.msm changed
+	to read across rows of the transition/misclassification
+	matrix. This is for consistency with, e.g. fixedpars.
+ 	
 2009-04-08 Chris Jackson  <chris.jackson@mrc-bsu.cam.ac.uk>	
 
 	* man/msm.Rd: Documentation for qconstraint clarified. 

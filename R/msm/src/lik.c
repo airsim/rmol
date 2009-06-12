@@ -92,8 +92,8 @@ void AddCovs(int obs, int nobs, int npars, int *ncovs,
 		newpars[i] = link(newpars[i]);
 		for (j = 0; j < ncovs[i]; ++j) {
 			x =  cov[MI(obs, whichcov[j]-1, nobs)];
-		    newpars[i] += coveffect[k] * x;
-		    ++k;
+			newpars[i] += coveffect[k] * x;
+			++k;
 		}
 		newpars[i] = invlink(newpars[i]);
 		*totcovs += ncovs[i];
@@ -673,9 +673,10 @@ void derivsimple_subj(msmdata *d, qmodel *qm, qcmodel *qcm,
 		    for (p = 0; p < ndp+ndc; ++p) {
 			deriv[MI(pt,p,d->npts)] = 0;
 		    }
-		    GetCovData(i, d->covobs, d->whichcov, x, qcm->ncovs[0], d->nobs);
-		    AddCovs(i, d->nobs, np, qcm->ncovs, qm->intens, newintens,
+		    GetCovData(i, d->covobs, d->whichcov, x, qcm->ncovs[0], d->n);
+		    AddCovs(i, d->n, np, qcm->ncovs, qm->intens, newintens,
 			    qcm->coveffect, d->covobs, d->whichcov, &totcovs, log, exp);
+		    
 		    dt = d->time[i] - d->time[i-1];
 		    from = fprec(d->obs[i-1] - 1, 0); /* convert state outcome to integer */
 		    to = fprec(d->obs[i] - 1, 0);
@@ -692,12 +693,9 @@ void derivsimple_subj(msmdata *d, qmodel *qm, qcmodel *qcm,
 			for (p = 0; p < ndp+ndc; ++p)
 			    dcontrib[p] = dpmat[MI3(from, to, p, qm->nst, qm->nst)];		
 		    }
-/*  		    printf("pt=%d,obs=%d,from=%d,to=%d,dt=%4.3lf,contrib=%lf,",pt,i,from,to,dt,contrib); */
 		    for (p = 0; p < ndp+ndc; ++p) {
-/*  			printf("d%d = %4.3f,",p,dcontrib[p]); */
-			deriv[MI(pt,p,d->npts)] += dcontrib[p] / contrib; /* on loglik scale not -2*loglik */
+		      deriv[MI(pt,p,d->npts)] += dcontrib[p] / contrib; /* on loglik scale not -2*loglik */
 		    }
-/*  		    printf("\n"); */
 		}
 		for (p = 0; p < ndp+ndc; ++p)
 		    deriv[MI(pt,p,d->npts)] *= -2;
@@ -778,7 +776,8 @@ void msmCEntry(
 	       int *nintens,      /* number of intensity parameters */
 	       int *ndintens,      /* number of distinct intensity parameters */
 	       int *ndcovpars,      /* number of distinct covariate parameters */
-	       int *nobs,         /* number of observations in data set */
+	       int *nobs,         /* number of observations in data set (hmm/cens) or number of aggregated transitions (standard) */
+	       int *n,         /* number of observations in data set (used for derivs by individual in standard models. no of rows of covobsvec) */
 	       int *npts,         /* number of individuals in data set */
 	       int *ncovs,        /* number of covariates on transition rates */
 
@@ -800,7 +799,7 @@ void msmCEntry(
   d.cov = covvec;  d.covobs = covobsvec;  d.nocc = nocc;  d.whicha = whicha; d.obstype = obstype;  d.obstrue = obstrue; 
   d.whichcov = whichcov;  d.whichcovh = whichcovh;  d.whichcovi=whichcovi;
   d.subject = subjvec; d.time = timevec; d.obs = obsvec; d.firstobs = firstobs;
-  d.nobs = *nobs;  d.npts = *npts;
+  d.nobs = *nobs;  d.n = *n; d.npts = *npts;
 
   qm.nst = *nst; qm.npars = *nintens; qm.ndpars = *ndintens; qm.ivector = qvector; qm.intens = intens; 
   qm.analyticp = *analyticp; qm.iso = *iso; qm.perm = perm; qm.qperm = qperm; qm.constr = qconstraint;    

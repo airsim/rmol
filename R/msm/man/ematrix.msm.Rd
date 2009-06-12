@@ -60,7 +60,8 @@ ematrix.msm(x, covariates="mean", ci=c("delta","normal","bootstrap","none"), cl=
 \value{
   A list with components:
 
-  \item{estimate}{Estimated misclassification probability matrix.}  
+  \item{estimate}{Estimated misclassification probability matrix. The
+    rows correspond to true states, and columns observed states.}  
   \item{SE}{Corresponding approximate standard errors.}
   \item{L}{Lower confidence limits.}
   \item{U}{Upper confidence limits.}

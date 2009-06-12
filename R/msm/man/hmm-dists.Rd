@@ -135,7 +135,9 @@ the truncated Normal distribution.
 \details{
   See the PDF manual  \file{msm-manual.pdf} in the \file{doc}
   subdirectory for algebraic definitions of all these distributions.
-
+  New hidden Markov model response distributions can be added to
+  \pkg{msm} by following the instructions in Section 2.18.1.
+  
   Parameters which can be modelled in terms of covariates, on the scale
   of a link function, are as follows.
 

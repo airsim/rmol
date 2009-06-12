@@ -1,4 +1,4 @@
-%\VignetteIndexEntry{Multi-state modelling with R: the msm package}
+%%\VignetteIndexEntry{User guide to msm with worked examples}
 %\VignettePackage{msm}
 \documentclass{article}
 
@@ -125,12 +125,12 @@ introduction to the theory of continuous-time Markov chains.
 
 In a continuous-time Markov model, a single period of occupancy (or
 \emph{sojourn time}) in state $r$ has an exponential distribution,
-with rate given by $q_{rr}$, the $r$th diagonal element of $Q$ (or
-mean $1 / q_{rr}$).  The remaining elements of the $r$th row of $Q$
+with rate given by $-q_{rr}$, (or
+mean $-1 / q_{rr}$).  The remaining elements of the $r$th row of $Q$
 are \emph{proportional to} the probabilities governing the next state
 after $r$ to which the individual makes a transition.  The probability
 that the individual occupies state $s$ immediately after state $r$ is
-$q_{rs} / q_{rr}$.
+$-q_{rs} / q_{rr}$.
 
 
 \subsection{Disease progression models}
@@ -431,14 +431,14 @@ In observational studies of chronic diseases, it is common that the
 time of death is known, but the state on the previous instant before
 death is unknown. If $S(t_{j+1}) = D $ is such a death state, then the
 contribution to the likelihood is summed over the unknown state $m$ on
-the day before death:
+the instant before death:
 
 \begin{equation}
   \label{eq:multi:lik:death}
   L_{i, j} =  \sum_{m \neq D} p_{S(t_j),m}(t_{j+1} - t_j) q_{m, D}
 \end{equation}
-assuming a time unit of days. The sum is taken over all possible
-states $m$ which can be visited between $S(t_j)$ and $D$.
+The sum is taken over all possible states $m$ which can be visited
+between $S(t_j)$ and $D$.
 
 \paragraph{Exactly observed transition times}
 If the times $(t_{i1}, \ldots, t_{in_i})$ had been the {\em exact}
@@ -451,10 +451,12 @@ observation times, then the contributions would be of the form
 \end{equation}
 since the state is assumed to be $S(t_j)$ throughout the interval
 between $t_j$ and $t_{j+1}$ with a known transition to state
-$S(t_{j+1})$ at $t_{j+1}$.  Note that much richer models are possible
-for this type of data, for example semi-parametric models based on Cox
-regression, as reviewed by Putter \etal~\cite{putter:mstate}.  The
-Markov assumption is restrictive but necessary in general to compute a
+$S(t_{j+1})$ at $t_{j+1}$.  \Rpackage{msm} is restricted to Markov
+models, but much richer models are possible for this type of data. For
+example, Putter \etal~\cite{putter:mstate} discussed the
+\Rpackage{mstate} software for semi-parametric multi-state models with
+non-parametric baseline hazards and Cox regression.  The Markov
+assumption is restrictive but necessary in general to compute a
 likelihood for intermittently-observed processes.
 
 \paragraph{Censored states}
@@ -540,10 +542,13 @@ changes, it could be considered as a "censored" state (as in
 Section~\ref{sec:multi:likelihood}).
 
 The \Rpackage{msm} package allows individual-specific or time
-dependent covariates to be fitted to transition intensities.
-Time-dependent covariates are assumed to be piecewise-constant,
-changing only at the observation (or censoring) times of the main
-response.
+dependent covariates to be fitted to transition intensities.  In order
+to calculate transition probabilities $P(t)$ on which the likelihood
+depends, time-dependent covariates are assumed to be
+piecewise-constant.  Models whose intensities change with time are
+called \emph{time-inhomogeneous}. An important special case handled by
+\Rpackage{msm} is the model in which intensities change at a series of
+times common to each individual.
 
 Marshall and Jones~\cite{retino2} described likelihood ratio and Wald
 tests for covariate selection and testing hypotheses, for example
@@ -730,8 +735,7 @@ Then subject $i$'s likelihood contribution is
 If $S(t_{j}) = D$ is an absorbing state such as death, measured
 without error, whose entry time is known exactly, then the
 contribution to the likelihood is summed over the unknown state at the
-previous instant before death.  the day before entry.  The $(r,s)$
-entry of $T_{ij}$ is then
+previous instant before death.  The $(r,s)$ entry of $T_{ij}$ is then
 \[
 p_{rs}(t_{j} - t_{j-1}) q_{s, D}
 \]
@@ -1484,7 +1488,9 @@ maximum likelihood, or it may be close to the maximum.
 \begin{description}
 \item[Initial values] Make sure that a sensible set of initial values
   have been chosen. The optimisation may only converge within a
-  limited range of `informative' initial values.
+  limited range of `informative' initial values.  It is also sensible
+  to run the model for several different initial values to ensure that
+  the estimation has converged to a global rather than a local optimum.
 
 \item[Scaling] It is often necessary to apply a scaling factor to
   normalise the likelihood (\Rfunarg{fnscale}), or certain individual
@@ -2472,42 +2478,9 @@ documentation, and a link to this manual in PDF format.
 
 For a detailed list of the changes in recent versions of
 \Rpackage{msm}, see the \texttt{NEWS} file in the top-level directory
-of the installed package.
-
-Version 0.5 (March 2005) was a major update to \Rpackage{msm},
-introducing hidden Markov models with general responses.  Much of the
-underlying R and C code was re-organised or re-written.  Some syntax
-changes were made to simplify the process of specifying models.
-
-To convert code written for previous versions of \Rpackage{msm} to run in 0.5 or later,
-the following changes will need to be made.
-\begin{itemize}
-\item Replace the \Rfunarg{qmatrix} of ones and zeroes with a
-  \Rfunarg{qmatrix} containing initial values for transition
-  intensities.
-\item Replace the \Rfunarg{ematrix} of ones and zeroes with a
-  \Rfunarg{ematrix} containing initial values for misclassification
-  probabilities.
-\item Put any initial values for covariate effects in
-  \Rfunarg{covinits} or \Rfunarg{misccovinits} arguments. These are
-  set to zero if not specified.
-\item Remove the \Rfunarg{inits} argument.
-\item Remove unnecessary \Rfunarg{misc = TRUE} for misclassification models.
-\item Replace any \Rfunarg{fromto}-style datasets with proper
-  longitudinal datasets with one row per observation time.
-  \Rfunarg{fromto} support has been withdrawn.
-\item \Rfunarg{covmatch} has been abolished. If you were using
-  \Rfunarg{covmatch='next'}, covariates will need to be matched
-  with observations by moving covariates one row back in the data.
-\item \Rfunction{crudeinits.msm} now takes an formula \Rfunarg{state $\sim$
-    time} instead of two arguments \Rfunarg{state}, \Rfunarg{time}
-\item \Rfunction{simmulti.msm} takes an argument \Rfunarg{covariates}
-  instead of \Rfunarg{beta}, for consistency with \Rfunction{msm}.
-\end{itemize}
-
-Saved model objects from previous versions will need to be generated
-again under 0.5 to work with the post-processing functions from 0.5.
-
+of the installed package.  The \texttt{Changelog} file in the
+top-level directory of the source package contains more technical
+detail about these changes. 
 
 \section{Get in touch}
 

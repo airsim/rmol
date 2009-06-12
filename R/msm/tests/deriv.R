@@ -173,7 +173,7 @@ psor2$months[psor2$ptnum==5] <- psor2$months[psor2$ptnum==5]*20
 system.time(psor.msm <- msm(state ~ months, subject=ptnum, data=psor2,
                             qmatrix = psor.q, covariates = ~ollwsdrt+hieffusn, # covinits=list(hieffusn = c(0.5, 0.1, 0), ollwsdrt=c(0.2, 0.1, -0.1)),
                             constraint = list(hieffusn=c(1,1,1),ollwsdrt=c(1,1,2)),
-                            fixedpars=FALSE, control = list(REPORT=1,trace=2), method="BFGS"))
+                            fixedpars=FALSE, use.deriv=FALSE, control = list(REPORT=1,trace=2), method="BFGS"))
 sres <- scoreresid.msm(psor.msm)
 if (interactive()) { 
     sres <- scoreresid.msm(psor.msm, plot=TRUE)
