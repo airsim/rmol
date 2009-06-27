@@ -1,20 +1,20 @@
 %global packname RM2
-%global packrel 1
+%global packrel 2
 
 Name:             R-%{packname}
 Version:          0.0
-Release:          1%{?dist}
+Release:          %{packrel}%{?dist}
 Source0:          ftp://cran.r-project.org/pub/R/contrib/main/%{packname}_%{version}.tar.gz
 License:          GPLv3
-URL:              http://cran.r-project.org/src/contrib
+URL:              http://cran.r-project.org/web/packages/RM2/
 Group:            Applications/Engineering
 Summary:          Revenue Management and Pricing for R
-BuildRequires:    R-devel, tetex-latex, R-msm
+BuildRequires:    R-devel, tetex-latex, R-msm, R-mvtnorm
 BuildRoot:        %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:        noarch
 Requires(post):   R
 Requires(postun): R
-Requires:         R
+Requires:         R, R-msm, R-mvtnorm
 
 %description
 RM2 is a simple package that implements functions 
@@ -62,5 +62,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/R/library/%{packname}/help
 
 %changelog
+* Sat Jun 27 2009 Denis Arnaud <denis.arnaud_fedora@m4x.org> 0.0-2
+- Integrated the dependency on R-msm and R-mvtnorm
+
 * Sun May 03 2009 Denis Arnaud <denis.arnaud_fedora@m4x.org> 0.0-1
 - Initial package creation
+
