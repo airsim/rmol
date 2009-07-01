@@ -9,7 +9,7 @@
 #include <test/StandardAirlineITTestSuite.hpp>
 
 // //////////////////////////////////////////////////////////////////////
-void testStandardAirlineIT() {
+void testStandardAirlineITHelper() {
 
   try {
     
@@ -36,7 +36,7 @@ void testStandardAirlineIT() {
 
 // //////////////////////////////////////////////////////////////////////
 void StandardAirlineITTestSuite::testStandardAirlineIT() {
-  CPPUNIT_ASSERT_NO_THROW (testStandardAirlineIT(););
+  CPPUNIT_ASSERT_NO_THROW (testStandardAirlineITHelper(););
 }
 
 // //////////////////////////////////////////////////////////////////////
