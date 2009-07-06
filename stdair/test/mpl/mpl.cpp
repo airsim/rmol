@@ -76,7 +76,7 @@ int main (int argc, char* argv[]) {
   }
 
   BOOST_MPL_ASSERT ((boost::is_same<boost::mpl::at_c<types, 1>::type,
-                     STDAIR::Cabin>::value));
+                     STDAIR::Cabin>));
 
   return 0;
 }
