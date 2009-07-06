@@ -1,11 +1,11 @@
 %global packname RM2
-%global packrel 2
+%global packrel 1
 
 Name:             R-%{packname}
 Version:          0.0
-Release:          %{packrel}%{?dist}
+Release:          3%{?dist}
 Source0:          ftp://cran.r-project.org/pub/R/contrib/main/%{packname}_%{version}.tar.gz
-License:          GPLv3
+License:          GPLv3+
 URL:              http://cran.r-project.org/web/packages/RM2/
 Group:            Applications/Engineering
 Summary:          Revenue Management and Pricing for R
@@ -62,6 +62,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/R/library/%{packname}/help
 
 %changelog
+* Mon Jul 06 2009 Denis Arnaud <denis.arnaud_fedora@m4x.org> 0.0-3
+- No longer use packrel for RPM release version, and updated 
+  the license from GPLv3 to GPLv3+
+
 * Sat Jun 27 2009 Denis Arnaud <denis.arnaud_fedora@m4x.org> 0.0-2
 - Integrated the dependency on R-msm and R-mvtnorm
 
