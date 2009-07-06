@@ -1,4 +1,3 @@
-// Marginal Revenue Transformation (method from T. Fiig & K. Isler)
 // STL
 #include <iostream>
 #include <sstream>

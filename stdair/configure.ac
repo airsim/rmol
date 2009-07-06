@@ -193,7 +193,8 @@ AC_CONFIG_FILES(
 	stdair/config/Makefile
 	test/Makefile
 	test/com/Makefile
-	test/mpl/Makefile)
+	test/mpl/Makefile
+	test/mpl/book/Makefile)
 AC_OUTPUT
 
 echo "

@@ -3,6 +3,8 @@ include $(top_srcdir)/Makefile.common
 
 MAINTAINERCLEANFILES = Makefile.in
 
+SUBDIRS = book
+
 check_PROGRAMS = mpl
 
 mpl_SOURCES = mpl.cpp
