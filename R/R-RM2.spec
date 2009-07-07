@@ -1,9 +1,8 @@
 %global packname RM2
-%global packrel 1
 
 Name:             R-%{packname}
 Version:          0.0
-Release:          3%{?dist}
+Release:          4%{?dist}
 Source0:          ftp://cran.r-project.org/pub/R/contrib/main/%{packname}_%{version}.tar.gz
 License:          GPLv3+
 URL:              http://cran.r-project.org/web/packages/RM2/
@@ -48,11 +47,9 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-, root, root, -)
 %dir %{_datadir}/R/library/%{packname}
 %doc %{_datadir}/R/library/%{packname}/latex
-#%%doc %{_datadir}/R/library/%{packname}/doc
 %doc %{_datadir}/R/library/%{packname}/html
 %doc %{_datadir}/R/library/%{packname}/man
 %doc %{_datadir}/R/library/%{packname}/DESCRIPTION
-#%%doc %{_datadir}/R/library/%{packname}/NEWS
 %{_datadir}/R/library/%{packname}/CONTENTS
 %{_datadir}/R/library/%{packname}/INDEX
 %{_datadir}/R/library/%{packname}/NAMESPACE
@@ -62,6 +59,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/R/library/%{packname}/help
 
 %changelog
+* Tue Jul 07 2009 Denis Arnaud <denis.arnaud_fedora@m4x.org> 0.0-4
+- Removed commented lines and unused variables/macros
+
 * Mon Jul 06 2009 Denis Arnaud <denis.arnaud_fedora@m4x.org> 0.0-3
 - No longer use packrel for RPM release version, and updated 
   the license from GPLv3 to GPLv3+
