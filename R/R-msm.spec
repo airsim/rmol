@@ -1,9 +1,8 @@
 %global packname msm
-%global packrel 1
 
 Name:             R-%{packname}
 Version:          0.9.1
-Release:          1%{?dist}
+Release:          2%{?dist}
 Source0:          ftp://cran.r-project.org/pub/R/contrib/main/%{packname}_%{version}.tar.gz
 License:          GPLv2+
 URL:              http://cran.r-project.org/web/packages/msm/
@@ -82,6 +81,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/R/library/%{packname}/libs/%{packname}.so
 
 %changelog
+* Tue Jul 14 2009 Denis Arnaud <denis.arnaud_fedora@m4x.org> 0.9.1-2
+- Suppressed the unused definition of the packrel variable
+
 * Fri Jun 12 2009 Denis Arnaud <denis.arnaud_fedora@m4x.org> 0.9.1-1
 - Integrated the new upstream (0.9.1) version
 
