@@ -1,19 +1,19 @@
-%define packname mvtnorm
-%define packrel  2
+%define packname	mvtnorm
+%define packrel		7
 
 Summary:	Multivariate normal and T distribution R Package
 Name:		R-%{packname}
 Version:	0.9
-Release:	2%{?dist}
+Release:	7%{?dist}
 License:	GPLv2
 Group:		Applications/Engineering
 Source0:	http://cran.r-project.org/src/contrib/%{packname}_%{version}-%{packrel}.tar.gz
 URL:		http://cran.r-project.org/contrib/main/Descriptions/mvtnorm.html
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:	R-devel, tetex-latex, gcc-gfortran
-Requires(post):   R
-Requires(postun): R
-Requires:         R
+Requires(post):		R
+Requires(postun):	R
+Requires:		R
 
 
 %description
@@ -62,6 +62,7 @@ rm -rf %{buildroot}
 %doc %{_libdir}/R/library/%{packname}/man
 %doc %{_libdir}/R/library/%{packname}/CHANGES
 %doc %{_libdir}/R/library/%{packname}/DESCRIPTION
+%doc %{_libdir}/R/library/%{packname}/CITATION
 %{_libdir}/R/library/%{packname}/CONTENTS
 %{_libdir}/R/library/%{packname}/INDEX
 %{_libdir}/R/library/%{packname}/NAMESPACE
@@ -73,6 +74,9 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Tue Jul 14 2009 Denis Arnaud <denis.arnaud_fedora@m4x.org> - 0.9-7
+- Update to 0.9-7
+
 * Mon Feb 23 2009 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.9-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_11_Mass_Rebuild
 
@@ -97,3 +101,4 @@ rm -rf %{buildroot}
 
 * Mon Mar 19 2007 Orion Poplawski <orion@cora.nwra.com> - 0.7-1
 - Initial package
+
