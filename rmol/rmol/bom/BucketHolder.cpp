@@ -14,14 +14,14 @@ namespace RMOL {
 
   // //////////////////////////////////////////////////////////////////////
   BucketHolder::BucketHolder () :
-    _cabinCapacity (100.0),
-    _totalMeanDemand (0.0), _demandFactor (0.0), _optimalRevenue (0.0) {
+    _cabinCapacity (100.0), _totalMeanDemand (0.0), _demandFactor (0.0),
+    _optimalRevenue (0.0) {
   }
 
   // //////////////////////////////////////////////////////////////////////
   BucketHolder::BucketHolder (const double iCabinCapacity) :
-    _cabinCapacity (iCabinCapacity),
-    _totalMeanDemand (0.0), _demandFactor (0.0), _optimalRevenue (0.0) {
+    _cabinCapacity (iCabinCapacity), _totalMeanDemand (0.0), 
+    _demandFactor (0.0), _optimalRevenue (0.0) {
   }
 
   // //////////////////////////////////////////////////////////////////////
@@ -51,7 +51,8 @@ namespace RMOL {
     std::ostringstream oStr;
     oStr << describeShortKey()
          << ", " << _totalMeanDemand
-         << ", " << _demandFactor  << ", " << _optimalRevenue
+         << ", " << _demandFactor  
+         << ", " << _optimalRevenue
          << std::endl;
     
     return oStr.str();
@@ -92,7 +93,8 @@ namespace RMOL {
     oStr << "Cabin Capacity = " << _cabinCapacity
          << "; Total Mean Demand = " << _totalMeanDemand
          << "; Demand Factor = " << _demandFactor
-         << "; Optimal Revenue = " << _optimalRevenue << std::endl;
+         << "; Optimal Revenue = " << _optimalRevenue 
+         << std::endl;
     return oStr.str();
   }
 
@@ -229,6 +231,27 @@ namespace RMOL {
       const double yj = nextBucket.getCumulatedProtection();
       nextBucket.setProtection (yj - yjm1);
     }
+  }
+
+  // //////////////////////////////////////////////////////////////////////
+  const double BucketHolder::getLowestAverageYield () {
+    double oLowestAvgYield = 0.0;
+
+    const short nbOfBuckets = getSize();
+    assert (nbOfBuckets != 0);
+
+    begin();
+    Bucket& lFirstBucket = getCurrentBucket();
+    oLowestAvgYield = lFirstBucket.getAverageYield();
+
+    for (short j = 1; j < nbOfBuckets; ++j, iterate()) {
+      Bucket& lNextBucket = getNextBucket();
+      double lNextBucketAvgYield = lNextBucket.getAverageYield();
+      if (lNextBucketAvgYield < oLowestAvgYield){
+        oLowestAvgYield = lNextBucketAvgYield;
+      }
+    }
+    return oLowestAvgYield;
   }
 
   // //////////////////////////////////////////////////////////////////////

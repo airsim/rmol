@@ -73,5 +73,20 @@ namespace RMOL {
 
   /** Define the sellup probability vector applicable to EMSR*/
   typedef std::vector<double> SellupProbabilityVector_T;
+
+  /** Define the holder of sellup factors (used for computing Q-eq bookings)*/
+  typedef std::vector<double> SellupFactorHolder_T;
+
+  /** Define the historical booking data of a flight date in the order of
+      the classes in the BucketHolder
+      eg. 
+      BucketHolder=[Q;M;B;Y], OrderedHistoricalBookingVector_T=[10;5;0;0] 
+      5 corresponds to bookings of class M of a similar flight */
+  typedef std::vector<double> OrderedHistoricalBookingVector_T;
+
+  /** Define the holder of historical booking vectors */
+  typedef std::vector<OrderedHistoricalBookingVector_T> 
+                                             HistoricalBookingVectorHolder_T;
+
 }
 #endif // __RMOL_RMOL_TYPES_HPP

@@ -81,6 +81,8 @@ namespace RMOL {
         - the booking limits and cumulated booking limits. */
     void recalculate ();
 
+    const double getLowestAverageYield ();
+
   public:
     // ///////// Display methods ////////
     /** Dump a Business Object into an output stream.
