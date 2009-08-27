@@ -6,11 +6,12 @@
 // //////////////////////////////////////////////////////////////////////
 // RMOL
 #include <rmol/RMOL_Types.hpp>
-
+#include <rmol/bom/HistoricalBookingHolderHolder.hpp>
 namespace RMOL {
 
   /** Forward declarations. */
   class BucketHolder;
+  struct HistoricalBookingHolderHolder;
   //  class StudyStatManager;
 
   /** Class wrapping the principal forecasting algorithms and 
@@ -35,7 +36,8 @@ namespace RMOL {
     static void qEquivalentBookingCalculation
                                 (BucketHolder&, 
                                  SellupFactorHolder_T&,
-                                 HistoricalBookingVectorHolder_T&);
+                                 HistoricalBookingHolderHolder&,
+                                 HolderOfQEquivalentBookingsPerSimilarFlight_T&);
   };
 }
 #endif // __RMOL_COMMAND_FORECASTER_HPP

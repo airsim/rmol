@@ -34,6 +34,12 @@ namespace RMOL {
   }
 
   // //////////////////////////////////////////////////////////////////////
+  RMOL_Service::RMOL_Service (std::ostream& ioLogStream) {
+    // Initialise the context
+    init (ioLogStream);
+  }
+
+  // //////////////////////////////////////////////////////////////////////
   RMOL_Service::RMOL_Service (std::ostream& ioLogStream,
                               const ResourceCapacity_T iResourceCapacity) {
     // Initialise the context
@@ -42,6 +48,17 @@ namespace RMOL {
 
   // //////////////////////////////////////////////////////////////////////
   RMOL_Service::~RMOL_Service () {
+  }
+
+  // //////////////////////////////////////////////////////////////////////
+  void RMOL_Service::init (std::ostream& ioLogStream) {
+    // Set the log file
+    logInit (LOG::DEBUG, ioLogStream);
+
+    // Initialise the context
+    RMOL_ServiceContext& lRMOL_ServiceContext = 
+                         FacRmolServiceContext::instance().create ();
+    _rmolServiceContext = &lRMOL_ServiceContext;
   }
 
   // //////////////////////////////////////////////////////////////////////

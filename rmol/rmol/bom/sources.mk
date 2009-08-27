@@ -1,10 +1,14 @@
 bom_h_sources = $(top_srcdir)/rmol/bom/BomAbstract.hpp \
+        $(top_srcdir)/rmol/bom/StructAbstract.hpp \
 		$(top_srcdir)/rmol/bom/Bucket.hpp \
 		$(top_srcdir)/rmol/bom/BucketList.hpp \
 		$(top_srcdir)/rmol/bom/BucketHolder.hpp \
 		$(top_srcdir)/rmol/bom/Demand.hpp \
 		$(top_srcdir)/rmol/bom/DistributionParameterList.hpp \
 		$(top_srcdir)/rmol/bom/Gaussian.hpp \
+		$(top_srcdir)/rmol/bom/HistoricalBooking.hpp \
+		$(top_srcdir)/rmol/bom/HistoricalBookingHolder.hpp \
+		$(top_srcdir)/rmol/bom/HistoricalBookingHolderHolder.hpp \
 		$(top_srcdir)/rmol/bom/PartialSumList.hpp \
 		$(top_srcdir)/rmol/bom/VariateList.hpp \
 		$(top_srcdir)/rmol/bom/PartialSumHolder.hpp \
@@ -24,6 +28,9 @@ bom_cc_sources = $(top_srcdir)/rmol/bom/BomAbstract.cpp \
 		$(top_srcdir)/rmol/bom/BucketHolder.cpp \
 		$(top_srcdir)/rmol/bom/Demand.cpp \
 		$(top_srcdir)/rmol/bom/Gaussian.cpp \
+		$(top_srcdir)/rmol/bom/HistoricalBooking.cpp \
+		$(top_srcdir)/rmol/bom/HistoricalBookingHolder.cpp \
+		$(top_srcdir)/rmol/bom/HistoricalBookingHolderHolder.cpp \
 		$(top_srcdir)/rmol/bom/PartialSumHolder.cpp \
 		$(top_srcdir)/rmol/bom/PartialSumHolderHolder.cpp \
 		$(top_srcdir)/rmol/bom/Emsr.cpp \

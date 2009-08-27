@@ -18,6 +18,8 @@ namespace RMOL {
   class RMOL_Service {
   public:
     /** Constructor. */
+    RMOL_Service (std::ostream& ioLogStream);
+
     RMOL_Service (std::ostream& ioLogStream,
                   const ResourceCapacity_T iResourceCapacity);
     /** Destructor. */
@@ -117,6 +119,8 @@ namespace RMOL {
     RMOL_Service (const RMOL_Service&);
 
     /** Initialise. */
+    void init (std::ostream& ioLogStream);
+
     void init (std::ostream& ioLogStream,
                const ResourceCapacity_T iResourceCapacity);
     
