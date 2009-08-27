@@ -17,6 +17,7 @@
 #include <rmol/bom/StudyStatManager.hpp>
 #include <rmol/factory/FacRmolServiceContext.hpp>
 #include <rmol/command/Optimiser.hpp>
+#include <rmol/command/Forecaster.hpp>
 #include <rmol/service/RMOL_ServiceContext.hpp>
 #include <rmol/service/Logger.hpp>
 #include <rmol/RMOL_Service.hpp>
@@ -425,6 +426,34 @@ namespace RMOL {
 
     // Fill up booking vector
     oBucketHolder_ptr->fillup (ioBookingLimitVector);
+  }
+
+  // ///////////////////////////////////////////////////////////////////////
+  void demandUnconstrainingByExpectationMaximization () {
+
+    // DEBUG
+    std::ostringstream logStream;
+    logStream << "Testing demand unconstraining by Expectation Maximization";
+    RMOL_LOG_DEBUG (logStream.str());
+
+  }
+
+  // ///////////////////////////////////////////////////////////////////////
+  void RMOL_Service::demandForecastByQForecasting () {
+    assert (_rmolServiceContext != NULL);
+    const BucketHolder* oBucketHolder_ptr = _rmolServiceContext->getBucketHolder();
+    assert (oBucketHolder_ptr != NULL);
+
+    // TO-DO
+    Forecaster::demandForecastByQForecasting ();
+    
+    // DEBUG
+    RMOL_LOG_DEBUG (oBucketHolder_ptr->display());
+
+    std::ostringstream logStream;
+    logStream << "Testing Demand Forecasting by Q-Forecasting";
+    RMOL_LOG_DEBUG (logStream.str());
+    
   }
   
 }

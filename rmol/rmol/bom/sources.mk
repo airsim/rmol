@@ -22,7 +22,9 @@ bom_h_sources = $(top_srcdir)/rmol/bom/BomAbstract.hpp \
 		$(top_srcdir)/rmol/bom/MAForecast.hpp \
 		$(top_srcdir)/rmol/bom/StatAggregatorStruct.hpp \
 		$(top_srcdir)/rmol/bom/StatAggregatorStructList.hpp \
-		$(top_srcdir)/rmol/bom/StudyStatManager.hpp
+		$(top_srcdir)/rmol/bom/StudyStatManager.hpp \
+		$(top_srcdir)/rmol/bom/SellupProbabilityCalculator.hpp \
+		$(top_srcdir)/rmol/bom/QEquivalentBookingCalculator.hpp
 bom_cc_sources = $(top_srcdir)/rmol/bom/BomAbstract.cpp \
 		$(top_srcdir)/rmol/bom/Bucket.cpp \
 		$(top_srcdir)/rmol/bom/BucketHolder.cpp \
@@ -40,5 +42,6 @@ bom_cc_sources = $(top_srcdir)/rmol/bom/BomAbstract.cpp \
 		$(top_srcdir)/rmol/bom/DPOptimiser.cpp \
 		$(top_srcdir)/rmol/bom/MAForecast.cpp \
 		$(top_srcdir)/rmol/bom/StatAggregatorStruct.cpp \
-		$(top_srcdir)/rmol/bom/StudyStatManager.cpp
-
+		$(top_srcdir)/rmol/bom/StudyStatManager.cpp \
+		$(top_srcdir)/rmol/bom/SellupProbabilityCalculator.cpp \
+		$(top_srcdir)/rmol/bom/QEquivalentBookingCalculator.cpp

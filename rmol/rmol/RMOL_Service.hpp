@@ -113,6 +113,12 @@ namespace RMOL {
         network optimisation. */
     void legOptimisationByMC (BidPriceVector_T&, BookingLimitVector_T&);
 
+    /** Demand unconstraining by Expectation Maximization */
+    void demandUnconstrainingByExpectationMaximization ();
+
+    /** Demand forecast using Q-Forecasting */
+    void demandForecastByQForecasting ();
+
   private:
     /** Default Constructors. */
     RMOL_Service ();

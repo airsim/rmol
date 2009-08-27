@@ -6,7 +6,7 @@
 // //////////////////////////////////////////////////////////////////////
 // RMOL
 #include <rmol/RMOL_Types.hpp>
-#include <rmol/bom/HistoricalBookingHolderHolder.hpp>
+
 namespace RMOL {
 
   /** Forward declarations. */
@@ -38,6 +38,12 @@ namespace RMOL {
                                  SellupFactorHolder_T&,
                                  HistoricalBookingHolderHolder&,
                                  HolderOfQEquivalentBookingsPerSimilarFlight_T&);
+
+    /** A forecasting method developed by Belobaba and Hopperstad:
+        Algorithms for Revenue Management in Unrestricted Fare Markets, 
+        AGIFORS, Auckland, New Zealand, Jan 2004
+     */
+    static void demandForecastByQForecasting ();
   };
 }
 #endif // __RMOL_COMMAND_FORECASTER_HPP
