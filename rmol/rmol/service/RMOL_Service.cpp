@@ -439,21 +439,61 @@ namespace RMOL {
   }
 
   // ///////////////////////////////////////////////////////////////////////
-  void RMOL_Service::demandForecastByQForecasting () {
-    assert (_rmolServiceContext != NULL);
-    const BucketHolder* oBucketHolder_ptr = _rmolServiceContext->getBucketHolder();
-    assert (oBucketHolder_ptr != NULL);
+  void RMOL_Service::demandForecastByQForecasting 
+                     (SimilarFlightsDemandList_T& iSimilarFlightsDemandList) {
+//     assert (_rmolServiceContext != NULL);
+//     const BucketHolder* oBucketHolder_ptr = _rmolServiceContext->getBucketHolder();
+//     assert (oBucketHolder_ptr != NULL);
 
-    // TO-DO
-    Forecaster::demandForecastByQForecasting ();
+    // Declare forecaster output holder
+    ForecastedDemandParameterList_T lForecastedDemandParameterList;
+
+    // Make an element of a ForecastedDemandParameterList_T. It is needed 
+    // to use the reference of lForecastedDemandParameterList as an 
+    // input argument.
+    double lMean = 0.0; 
+    double lSD = 0.0;
+    std::vector<double> lForecastedDemandParameters;
+    lForecastedDemandParameters.push_back(lMean);
+    lForecastedDemandParameters.push_back(lSD);
+
+    // Instantiate the forecaster output holder with the element created above
+    lForecastedDemandParameterList.insert
+                      (std::map<std::string, std::vector<double> >::
+                       value_type("YNCELHR", lForecastedDemandParameters));
+
+    ForecastedDemandParameterList_T& lForecastedDemandParameterList_ref = 
+                                              lForecastedDemandParameterList;
+ 
+    // Run Q-Forecasting algorithm
+    Forecaster::demandForecastByQForecasting (iSimilarFlightsDemandList,
+                                              lForecastedDemandParameterList_ref);
     
     // DEBUG
-    RMOL_LOG_DEBUG (oBucketHolder_ptr->display());
-
+//     RMOL_LOG_DEBUG (oBucketHolder_ptr->display());
     std::ostringstream logStream;
     logStream << "Testing Demand Forecasting by Q-Forecasting";
     RMOL_LOG_DEBUG (logStream.str());
     
   }
+
+  // ///////////////////////////////////////////////////////////////////////
+  void RMOL_Service::demandForecastByQForecasting 
+         (SimilarFlightsDemandList_T& iSimilarFlightsDemandList, 
+          ForecastedDemandParameterList_T& oForecastedDemandParameterList) {
+    assert (_rmolServiceContext != NULL);
+    const BucketHolder* oBucketHolder_ptr = 
+                                     _rmolServiceContext->getBucketHolder();
+    assert (oBucketHolder_ptr != NULL);
+
+    // TO-DO
+    Forecaster::demandForecastByQForecasting (iSimilarFlightsDemandList,
+                                              oForecastedDemandParameterList);
+    
+    // Fill in the forecasted demand parameters
+
+    
+  }
+
   
 }

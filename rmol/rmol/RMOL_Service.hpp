@@ -8,6 +8,7 @@
 #include <string>
 // RMOL
 #include <rmol/RMOL_Types.hpp>
+#include <rmol/RMOL_FORECASTER_Types.hpp>
 
 namespace RMOL {
 
@@ -116,8 +117,12 @@ namespace RMOL {
     /** Demand unconstraining by Expectation Maximization */
     void demandUnconstrainingByExpectationMaximization ();
 
+    /** Demand forecast using Q-Forecasting [used in unit tests] */
+    void demandForecastByQForecasting (SimilarFlightsDemandList_T&);
+
     /** Demand forecast using Q-Forecasting */
-    void demandForecastByQForecasting ();
+    void demandForecastByQForecasting (SimilarFlightsDemandList_T&, 
+                                       ForecastedDemandParameterList_T&);
 
   private:
     /** Default Constructors. */

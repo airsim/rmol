@@ -6,6 +6,7 @@
 // //////////////////////////////////////////////////////////////////////
 // RMOL
 #include <rmol/RMOL_Types.hpp>
+#include <rmol/RMOL_FORECASTER_Types.hpp>
 
 namespace RMOL {
 
@@ -43,7 +44,8 @@ namespace RMOL {
         Algorithms for Revenue Management in Unrestricted Fare Markets, 
         AGIFORS, Auckland, New Zealand, Jan 2004
      */
-    static void demandForecastByQForecasting ();
+    static void demandForecastByQForecasting (SimilarFlightsDemandList_T&, 
+                                              ForecastedDemandParameterList_T&);
   };
 }
 #endif // __RMOL_COMMAND_FORECASTER_HPP
