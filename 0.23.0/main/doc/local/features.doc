@@ -1,0 +1,33 @@
+/*!
+\page features Main features of RMOL
+
+A short list of the main features of RMOL is given below sorted in different
+categories. Some more features and functions exist and for these we refer to
+the reference documentation.
+
+\section rmo_features Optimisation features
+- Dynamic Programming (DP)
+- EMSRa and EMSRb
+- Network optimisation with Linear Programming (LP)
+
+
+\section rmf_features Forecasting features
+- Exponential Smoothing
+- Moving Average
+
+
+\section rmc_features Overbooking features
+- Cancellations and No-Shows
+- Cost-based optimisation
+- Service-based optimisation
+
+
+\section rmu_features Unconstraining
+- Inventory censorflag and guillotine
+- E-M (Expectation Maximisation)
+
+
+\section other_features Other features
+- CSV input file parsing
+
+*/

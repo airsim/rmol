@@ -1,0 +1,615 @@
+/*!
+\page verification RMOL Supported Systems
+
+\section toc Table of Contents
+- \ref intro
+- \ref rmol_3_10
+  - \ref linux
+    - \ref fedora_atlas
+    - \ref gentoo_acml
+    - \ref gentoo_atlas
+    - \ref gentoo_mkl
+    - \ref gentoo_netlib
+    - \ref rhel
+    - \ref suse_netlib
+    - \ref suse_mkl
+  - \ref windows
+    - \ref cygwin
+    - \ref cygwin_atlas
+    - \ref cygwin_acml
+    - \ref mingw_acml
+    - \ref mingw_netlib
+    - \ref msvc_mkl
+  - \ref unix
+    - \ref sunos59
+- \ref rmol_3_9_1
+- \ref rmol_3_9_0
+- \ref rmol_3_8_1
+
+
+\section intro Introdution
+
+This page is intended to provide a list of RMOL supported systems, i.e. the
+systems on which configuration, installation and testing process of the RMOL
+library has been sucessful. Results are grouped based on minor release
+number. Therefore, only the latest tests for bug-fix releases are included.
+Besides, the information on this page is divided into sections dependent on
+the operating system.
+
+Where necessary, some extra information is given for each tested
+configuration, e.g. external libraries installed, configuration commands
+used, etc.
+
+If you manage to compile, install and test the RMOL library on a system not
+mentioned below, please let us know, so we could update this database.
+
+
+\section rmol_3_10 RMOL 3.10.x
+
+\subsection linux Linux Systems
+
+\subsubsection fedora_atlas Fedora Core 4 with ATLAS
+
+- <b>Platform</b>: Intel Pentium 4
+- <b>Operating System</b>: Fedora Core 4 (x86)
+- <b>Compiler</b>: g++ (GCC) 4.0.2 20051125
+- <b>RMOL release</b>: 3.10.0
+- <b>External Libraries</b>: From FC4 distribution:
+  - <tt>fftw3.i386-3.0.1-3</tt>
+  - <tt>fftw3-devel.i386-3.0.1-3</tt>
+  - <tt>atlas-sse2.i386-3.6.0-8.fc4</tt>
+  - <tt>atlas-sse2-devel.i386-3.6.0-8.fc4</tt>
+  - <tt>blas.i386-3.0-35.fc4</tt>
+  - <tt>lapack.i386-3.0-35.fc4</tt>
+- <b>Tests Status</b>: All tests PASSED
+- <b>Comments</b>: RMOL configured with:
+\code
+% CXXFLAGS="-O3 -pipe -march=pentium4" ./configure
+\endcode
+- <b>Date</b>: March 7, 2006
+- <b>Tester</b>: Tony Ottosson
+
+
+\subsubsection gentoo_acml Gentoo Linux with ACML
+
+- <b>Platform</b>: AMD Sempron 3000+
+- <b>Operating System</b>: Gentoo Linux 2006.0 (x86 arch)
+- <b>Compiler(s)</b>: g++ (GCC) 3.4.5
+- <b>RMOL release</b>: 3.10.1
+- <b>External Libraries</b>: Compiled and installed from portage tree: 
+  - <tt>sci-libs/acml-3.0.0</tt>
+- <b>Tests Status</b>: All tests PASSED
+- <b>Comments</b>: BLAS and LAPACK libs set by using the following system 
+  commands:
+\code
+% eselect blas set ACML
+% eselect lapack set ACML
+\endcode
+  RMOL configured with:
+\code
+% export CPPFLAGS="-I/usr/include/acml"
+% ./configure --with-blas="-lblas"
+\endcode
+- <b>Date</b>: March 31, 2006
+- <b>Tester</b>: Adam Piatyszek (ediap)
+
+
+\subsubsection gentoo_atlas Gentoo Linux with ATLAS
+
+- <b>Platform</b>: Intel Pentium M Centrino
+- <b>Operating System</b>: Gentoo Linux 2006.0 (x86)
+- <b>Compiler</b>: g++ (GCC) 3.4.5
+- <b>RMOL release</b>: 3.10.1
+- <b>External Libraries</b>: Compiled and installed from portage tree:
+  - <tt>sci-libs/fftw-3.1</tt>
+  - <tt>sci-libs/blas-atlas-3.6.0-r1</tt>
+  - <tt>sci-libs/lapack-atlas-3.6.0</tt>
+- <b>Tests Status</b>: All tests PASSED
+- <b>Comments</b>: BLAS and LAPACK libs set by using the following system 
+  commands:
+\code
+% eselect blas set ATLAS
+% eselect lapack set ATLAS
+\endcode
+  RMOL configured with:
+\code
+% ./configure --with-blas="-lblas"
+\endcode
+- <b>Date</b>: March 31, 2006
+- <b>Tester</b>: Adam Piatyszek (ediap)
+
+
+\subsubsection gentoo_mkl Gentoo Linux with MKL
+
+- <b>Platform</b>: Intel Pentium M Centrino
+- <b>Operating System</b>: Gentoo Linux 2006.0 (x86 arch)
+- <b>Compiler</b>: g++ (GCC) 3.4.5
+- <b>RMOL release</b>: 3.10.0
+- <b>External Libraries</b>: Intel Math Kernel Library (MKL) 8.0.1
+  installed manually in the following directory: <tt>/opt/intel/mkl/8.0.1</tt>
+- <b>Tests Status</b>: All tests PASSED
+- <b>Comments</b>: RMOL configured using the following commands:
+\code 
+% export LDFLAGS="-L/opt/intel/mkl/8.0.1/lib/32"
+% export CPPFLAGS="-I/opt/intel/mkl/8.0.1/include"
+% ./configure
+\endcode
+- <b>Date</b>: February 28, 2006
+- <b>Tester</b>: Adam Piatyszek (ediap)
+
+
+\subsubsection gentoo_netlib Gentoo Linux with NetLib's BLAS and LAPACK
+
+- <b>Platform</b>: Intel Pentium M Centrino
+- <b>Operating System</b>: Gentoo Linux 2006.0 (x86)
+- <b>Compiler</b>: g++ (GCC) 3.4.5
+- <b>RMOL release</b>: 3.10.1
+- <b>External Libraries</b>: Compiled and installed from portage tree:
+  - <tt>sci-libs/fftw-3.1</tt>
+  - <tt>sci-libs/blas-reference-19940131-r2</tt>
+  - <tt>sci-libs/cblas-reference-20030223</tt>
+  - <tt>sci-libs/lapack-reference-3.0-r2</tt>
+- <b>Tests Status</b>: All tests PASSED
+- <b>Comments</b>: BLAS and LAPACK libs set by using the following system 
+  commands:
+\code
+% blas-config reference
+% lapack-config reference
+\endcode
+  RMOL configured with:
+\code
+% ./configure --with-blas="-lblas"
+\endcode
+- <b>Date</b>: March 31, 2006
+- <b>Tester</b>: Adam Piatyszek (ediap)
+
+
+\subsubsection rhel Red Hat Enterprise Linux with RMOL External
+
+- <b>Platform</b>: Intel Pentium 4
+- <b>Operating System</b>: Red Hat Enterprise Linux AS release 4 (Nahant
+  Update 2)  
+- <b>Compiler</b>: g++ (GCC) 3.4.4 20050721 (Red Hat 3.4.4-2)
+- <b>RMOL release</b>: 3.10.0
+- <b>External Libraries</b>: BLAS, CBLAS, LAPACK and FFTW libraries from
+  RMOL External 2.1.1 package
+- <b>Tests Status</b>: All tests PASSED
+- <b>Date</b>: March 7, 2006
+- <b>Tester</b>: Erik G. Larsson
+
+
+\subsubsection suse_netlib SUSE Linux 10.0 with NetLib's BLAS and LAPACK
+
+- <b>Platform</b>: Intel Pentium 4 CPU 3.20GHz (64-bit)
+- <b>Operating System</b>: SUSE Linux 10.0 (x86_64)
+- <b>Compiler(s)</b>: g++ (GCC) 4.0.2
+- <b>RMOL release</b>: 3.10.0
+- <b>External Libraries</b>: BLAS, LAPACK and FFTW libraries installed from 
+  OpenSuse 10.0 RPM repository:
+  - <tt>blas-3.0-926</tt>
+  - <tt>lapack-3.0-926</tt>
+  - <tt>fftw3-3.0.1-114</tt>
+  - <tt>fftw3-threads-3.0.1-114</tt>
+  - <tt>fftw3-devel-3.0.1-114</tt>
+- <b>Tests Status</b>: All tests PASSED
+- <b>Comments</b>: RMOL configured with:
+\code
+% export CXXFLAGS="-m64 -march=nocona -O3 -pipe"
+% ./configure --with-lapack="/usr/lib64/liblapack.so.3"
+\endcode
+- <b>Date</b>: March 1, 2006
+- <b>Tester</b>: Adam Piatyszek (ediap)
+
+
+\subsubsection suse_mkl SUSE Linux 10.0 with MKL
+
+- <b>Platform</b>: Intel Pentium 4 CPU 3.20GHz (64-bit)
+- <b>Operating System</b>: SUSE Linux 10.0 (x86_64)
+- <b>Compiler(s)</b>: g++ (GCC) 4.0.2
+- <b>RMOL release</b>: 3.10.0
+- <b>External Libraries</b>: Intel Math Kernel Library (MKL) 8.0.1
+  installed manually in the following directory: <tt>/opt/intel/mkl/8.0.1</tt>
+- <b>Tests Status</b>: All tests PASSED
+- <b>Comments</b>: RMOL configured with:
+\code
+% export CXXFLAGS="-m64 -march=nocona -O3 -pipe"
+% export LDFLAGS="-L/opt/intel/mkl/8.0.1/lib/em64t"
+% export CPPFLAGS="-I/opt/intel/mkl/8.0.1/include"
+% ./configure
+\endcode
+- <b>Date</b>: March 1, 2006
+- <b>Tester</b>: Adam Piatyszek (ediap)
+
+
+\subsection windows Windows Systems
+
+\subsubsection cygwin Microsoft Windows XP with Cygwin
+
+- <b>Platform</b>: AMD Sempron 3000+
+- <b>Operating System</b>: Microsoft Windows XP SP2, Cygwin 1.5.19-4
+- <b>Compiler(s)</b>: g++ (GCC) 3.4.4 (cygming special)
+- <b>RMOL release</b>: 3.10.1
+- <b>External Libraries</b>: Installed from Cygwin's repository: 
+  - <tt>fftw-3.0.1-2</tt>
+  - <tt>fftw-dev-3.0.1-1</tt>
+  - <tt>lapack-3.0-4</tt>
+- <b>Tests Status</b>: All tests PASSED
+- <b>Comments</b>: Only static library can be built. RMOL configured with:
+\code
+% ./configure
+\endcode
+- <b>Date</b>: March 31, 2006
+- <b>Tester</b>: Adam Piatyszek (ediap)
+
+
+\subsubsection cygwin_atlas Microsoft Windows XP with Cygwin and ATLAS
+
+- <b>Platform</b>: AMD Sempron 3000+
+- <b>Operating System</b>: Microsoft Windows XP SP2, Cygwin 1.5.19-4
+- <b>Compiler(s)</b>: g++ (GCC) 3.4.4 (cygming special)
+- <b>RMOL release</b>: 3.10.1
+- <b>External Libraries</b>: Installed from Cygwin's repository: 
+  - <tt>fftw-3.0.1-2</tt>
+  - <tt>fftw-dev-3.0.1-1</tt>
+  .
+  ATLAS BLAS and LAPACK libraries from RMOL External 2.1.1 package
+  configured using:
+\code
+% ./configure --enable-atlas --disable-fftw
+\endcode
+- <b>Tests Status</b>: All tests PASSED
+- <b>Comments</b>: Only static library can be built. RMOL configured with:
+\code
+% export LDFLAGS="-L/usr/local/lib"
+% ./configure
+\endcode
+- <b>Date</b>: March 31, 2006
+- <b>Tester</b>: Adam Piatyszek (ediap)
+
+
+\subsubsection cygwin_acml Microsoft Windows XP with Cygwin and ACML
+
+- <b>Platform</b>: AMD Sempron 3000+
+- <b>Operating System</b>: Microsoft Windows XP SP2, Cygwin 1.5.19-4
+- <b>Compiler(s)</b>: g++ (GCC) 3.4.4 (cygming special)
+- <b>RMOL release</b>: 3.10.2
+- <b>External Libraries</b>:  ACML version 3.1.0 
+  (<tt>acml3.1.0-32-win32-g77.exe</tt>) installed into a default directory, 
+  i.e. <tt>"c:\Program Files\AMD\acml3.1.0"</tt>
+- <b>Tests Status</b>: All tests PASSED
+- <b>Comments</b>: Only static library can be built. RMOL configured with:
+\code
+% export LDFLAGS="-L/cygdrive/c/Progra~1/AMD/acml3.1.0/gnu32/lib"
+% export CPPFLAGS="-I/cygdrive/c/Progra~1/AMD/acml3.1.0/gnu32/include"
+% ./configure --enable-debug
+\endcode
+- <b>Date</b>: May 15, 2006
+- <b>Tester</b>: Adam Piatyszek (ediap)
+
+
+\subsubsection mingw_acml Microsoft Windows XP with MinGW, MSYS and ACML
+
+- <b>Platform</b>: AMD Sempron 3000+
+- <b>Operating System</b>: Microsoft Windows XP SP2, MinGW 5.0.2, MSYS 1.0.10
+- <b>Compiler(s)</b>: g++ (GCC) 3.4.4 (mingw special)
+- <b>RMOL release</b>: 3.10.2
+- <b>External Libraries</b>: ACML version 3.1.0 
+  (<tt>acml3.1.0-32-win32-g77.exe</tt>) installed into a default directory, 
+  i.e. <tt>"c:\Program Files\AMD\acml3.1.0"</tt>
+- <b>Tests Status</b>: All tests PASSED
+- <b>Comments</b>: Only static library can be built. RMOL configured with:
+\code
+% export LDFLAGS="-L/c/Progra~1/AMD/acml3.1.0/gnu32/lib"
+% export CPPFLAGS="-I/c/Progra~1/AMD/acml3.1.0/gnu32/include"
+% ./configure --enable-debug
+\endcode
+- <b>Date</b>: May 15, 2006
+- <b>Tester</b>: Adam Piatyszek (ediap)
+
+
+\subsubsection mingw_netlib Microsoft Windows XP with MinGW, MSYS and RMOL External
+
+- <b>Platform</b>: AMD Sempron 3000+
+- <b>Operating System</b>: Microsoft Windows XP SP2, MinGW 5.0.2, MSYS 1.0.10
+- <b>Compiler(s)</b>: g++ (GCC) 3.4.4 (mingw special)
+- <b>RMOL release</b>: 3.10.5
+- <b>External Libraries</b>: BLAS, CBLAS, LAPACK and FFTW libraries from
+  RMOL External 2.2.0 package
+- <b>Tests Status</b>: All tests PASSED
+- <b>Comments</b>: Only static library can be built. RMOL configured with:
+\code
+% export LDFLAGS="-L/usr/local/lib"
+% export CPPFLAGS="-I/usr/local/include"
+% export CXXFLAGS="-Wall -O3 -march=athlon-tbird -pipe"
+% ./configure --disable-html-doc
+\endcode
+- <b>Date</b>: August 11, 2006
+- <b>Tester</b>: Adam Piatyszek (ediap)
+
+
+\subsubsection msvc_mkl Microsoft Windows XP with MS Visual C++ and Intel MKL
+
+- <b>Platform</b>: AMD Sempron 3000+
+- <b>Operating System</b>: Microsoft Windows XP SP2
+- <b>Compiler(s)</b>: Microsoft Visual C++ 2005 .NET
+- <b>RMOL release</b>: 3.10.5
+- <b>External Libraries</b>: Intel Math Kernel Library (MKL) 8.1 installed
+  manually in the following directory:
+  <tt>"C:\Program Files\Intel\MKL\8.1"</tt>
+- <b>Tests Status</b>: Not fully tested. Some RMOL based programs compiled
+  and run with success.
+- <b>Comments</b>: Only static library can be built. RMOL built by opening 
+  the <tt>"win32\rmol.vcproj"</tt> project file in MSVC++ and executing
+  <tt>"Build -> Build Solution"</tt> command from menu.
+- <b>Date</b>: August 11, 2006
+- <b>Tester</b>: Adam Piatyszek (ediap)
+
+
+\subsection unix Unix Systems
+
+\subsubsection sunos59 SunOS 5.9 with RMOL External
+
+- <b>Platform</b>: SUNW, Sun-Blade-100 (SPARC)
+- <b>Operating System</b>: SunOS 5.9 Generic_112233-10
+- <b>Compiler(s)</b>: g++ (GCC) 3.4.5
+- <b>RMOL release</b>: 3.10.2
+- <b>External Libraries</b>: BLAS, CBLAS, LAPACK and FFTW libraries from
+  RMOL External 2.1.1 package. The following configuration command has been
+  used:
+\code
+% export CFLAGS="-mcpu=ultrasparc -O2 -pipe -funroll-all-loops"
+% ./configure
+\endcode
+- <b>Tests Status</b>: All tests PASSED
+- <b>Comments</b>: RMOL configured with:
+\code
+% export LDFLAGS="-L/usr/local/lib"
+% export CPPFLAGS="-I/usr/local/include"
+% export CXXFLAGS="-mcpu=ultrasparc -O2 -pipe"
+% ./configure --enable-debug
+\endcode
+- <b>Date</b>: May 15, 2006
+- <b>Tester</b>: Adam Piatyszek (ediap)
+
+*/
+
+
+/*!
+\page verification_old RMOL Supported Systems (Previous Releases)
+
+\section rmol_3_9_1 RMOL 3.9.1
+
+\htmlonly
+
+<p> This version has been compiled, installed and tested on the following
+platforms: </p>
+
+<table cellpadding="2" cellspacing="2" border="1" width="100%">
+
+<tr>
+  <td valign="top" bgcolor="yellow"><b>Platform&nbsp;(OS,&nbsp;CPU):</b></td>
+  <td valign="top" bgcolor="yellow"><b>Compiler:</b></td>
+  <td valign="top" bgcolor="yellow"><b>Date:</b></td>
+  <td valign="top" bgcolor="yellow"><b>External Libraries:</b></td>
+  <td valign="top" bgcolor="yellow"><b>Status:</b></td>
+  <td valign="top" bgcolor="yellow"><b>Comments:</b></td>
+  <td valign="top" bgcolor="yellow"><b>Tester(s):</b></td>
+</tr>
+
+<tr>
+  <td valign="top">Gentoo Linux, Intel Pentium&nbsp;M Centrino</td>
+  <td valign="top">g++ (GCC) 3.4.4</td>
+  <td valign="top">January 25, 2006</td>
+  <td valign="top">Compiled from Gentoo's portage: <tt>fftw-3.0.1-r2</tt>, 
+    <tt>blas-atlas-3.6.0-r1</tt>, <tt>lapack-atlas-3.6.0</tt></td>
+  <td valign="top">OK</td>
+  <td valign="top">-</td>
+  <td valign="top">Adam Piatyszek</td>
+</tr>
+
+<tr>
+  <td valign="top">Gentoo Linux, Intel Pentium&nbsp;M Centrino</td>
+  <td valign="top">g++ (GCC) 3.4.4</td>
+  <td valign="top">January 25, 2006</td>
+  <td valign="top">Intel's Math Kernel Library (MKL) 8.0.1</td>
+  <td valign="top">OK</td>
+  <td valign="top">Configured using: 
+    <tt>./configure --with-mkl-dir=/opt/intel/mkl/8.0.1 
+    --with-mkl=&quot;-lmkl_p3 -lmkl_lapack -lguide&quot;</tt></td>
+  <td valign="top">Adam Piatyszek</td>
+</tr>
+
+<tr>
+  <td valign="top">SUSE Linux 10.0, Intel Pentium&nbsp;M Centrino</td>
+  <td valign="top">g++ (GCC) 4.0.2 (20050901-3)</td>
+  <td valign="top">January 26, 2006</td>
+  <td valign="top">From SUSE distribution: <tt>fftw3-3.0.1-114.i586</tt>,
+    <tt>fftw3-devel-3.0.1-114.i586</tt>;<br>
+    From <tt>rmol-external-2.0.0</tt>: <tt>CBLAS</tt>, <tt>LAPACK</tt></td>
+  <td valign="top">OK</td>
+  <td valign="top">Could not compile atlas-3.6.0</td>
+  <td valign="top">Zbigniew Dlugaszewski</td>
+</tr>
+
+<tr>
+  <td valign="top">MS Windows XP, Cygwin, AMD Sempron 3000+</td>
+  <td valign="top">g++ (GCC) 3.4.4 (cygming special)</td>
+  <td valign="top">January 26, 2006</td>
+  <td valign="top">From Cygwin's repository: <tt>fftw-3.0.1-1</tt>, 
+    <tt>fftw-dev-3.0.1-1</tt>, <tt>lapack-3.0-3</tt></td>
+  <td valign="top">OK</td>
+  <td valign="top">-</td>
+  <td valign="top">Adam Piatyszek</td>
+</tr>
+
+</table>
+
+\endhtmlonly
+
+\section rmol_3_9_0 RMOL 3.9.0
+
+\htmlonly
+
+<p> This version has been compiled, installed and tested on the following
+platforms: </p>
+
+<table cellpadding="2" cellspacing="2" border="1" width="100%">
+
+<tr>
+  <td valign="top" bgcolor="yellow"><b>Platform&nbsp;(OS,&nbsp;CPU):</b></td>
+  <td valign="top" bgcolor="yellow"><b>Compiler:</b></td>
+  <td valign="top" bgcolor="yellow"><b>Date:</b></td>
+  <td valign="top" bgcolor="yellow"><b>External Libraries:</b></td>
+  <td valign="top" bgcolor="yellow"><b>Status:</b></td>
+  <td valign="top" bgcolor="yellow"><b>Comments:</b></td>
+  <td valign="top" bgcolor="yellow"><b>Tester(s):</b></td>
+</tr>
+
+<tr>
+  <td valign="top">Linux Fedora Core 4.0, Intel Pentium&nbsp;4</td>
+  <td valign="top">g++ (GCC) 4.0.2</td>
+  <td valign="top">December 21, 2005</td>
+  <td valign="top">From FC4 distribution: <tt>fftw3.i386-3.0.1-3</tt>, 
+    <tt>fftw3-devel.i386-3.0.1-3</tt>, <tt>atlas-sse2.i386-3.6.0-8.fc4</tt>, 
+    <tt>atlas-sse2-devel.i386-3.6.0-8.fc4</tt>, <tt>blas.i386-3.0-35.fc4</tt>, 
+    <tt>lapack.i386-3.0-35.fc4</tt></td>
+  <td valign="top">OK</td>
+  <td valign="top">-</td>
+  <td valign="top">Tony Ottosson</td>
+</tr>
+
+<tr>
+  <td valign="top">Gentoo Linux, Intel Pentium&nbsp;M Centrino</td>
+  <td valign="top">g++ (GCC) 3.4.4</td>
+  <td valign="top">December 21, 2005</td>
+  <td valign="top">Compiled from Gentoo's portage: <tt>fftw-3.0.1-r2</tt>, 
+    <tt>blas-atlas-3.6.0</tt>, <tt>lapack-atlas-3.6.0</tt></td>
+  <td valign="top">OK</td>
+  <td valign="top">-</td>
+  <td valign="top">Adam Piatyszek</td>
+</tr>
+
+<tr>
+  <td valign="top">Gentoo Linux, Intel Pentium&nbsp;M Centrino</td>
+  <td valign="top">g++ (GCC) 3.4.4</td>
+  <td valign="top">December 23, 2005</td>
+  <td valign="top">Intel's Math Kernel Library (MKL) 8.0.1</td>
+  <td valign="top">OK</td>
+  <td valign="top">Configured using: 
+    <tt>./configure --with-mkl-dir=/opt/intel/mkl/8.0.1 
+    --with-mkl=&quot;-lmkl_p3 -lmkl_lapack -lguide&quot;</tt></td>
+  <td valign="top">Adam Piatyszek</td>
+</tr>
+
+<tr>
+  <td valign="top">SUSE Linux 10.0, Intel Pentium&nbsp;M Centrino</td>
+  <td valign="top">g++ (GCC) 4.0.2 (20050901-3)</td>
+  <td valign="top">December 22, 2005</td>
+  <td valign="top">From SUSE distribution: <tt>fftw3-3.0.1-114.i586</tt>,
+    <tt>fftw3-devel-3.0.1-114.i586</tt>;<br>
+    Compiled from sources: <tt>atlas-3.7.11</tt>, <tt>lapack-3.0</tt></td> 
+  <td valign="top">OK</td>
+  <td valign="top">Could not compile atlas-3.6.0</td>
+  <td valign="top">Zbigniew Dlugaszewski</td>
+</tr>
+
+<tr>
+  <td valign="top">MS Windows XP, Cygwin, AMD Sempron 3000+</td>
+  <td valign="top">g++ (GCC) 3.4.4 (cygming special)</td>
+  <td valign="top">December 23, 2005</td>
+  <td valign="top">From Cygwin's repository: <tt>fftw-3.0.1-1</tt>, 
+    <tt>fftw-dev-3.0.1-1</tt>, <tt>lapack-3.0-3</tt></td>
+  <td valign="top">OK</td>
+  <td valign="top">-</td>
+  <td valign="top">Adam Piatyszek</td>
+</tr>
+
+<tr>
+  <td valign="top">MS Windows XP, Intel Pentium&nbsp;4</td>
+  <td valign="top">MS Visual C++ .Net 2003</td>
+  <td valign="top">December 22, 2005</td>
+  <td valign="top">Intel's Math Kernel Library (MKL) 8.0.0</td>
+  <td valign="top">OK</td>
+  <td valign="top">Test programs' outputs differ from the reference files
+    due to a different end-of-line character in Windows and Linux/Unix</td> 
+  <td valign="top">Thomas Eriksson</td>
+</tr>
+
+</table>
+
+\endhtmlonly
+
+\section rmol_3_8_1 RMOL 3.8.1
+
+\htmlonly
+
+<p> This version has been compiled, installed and tested on the following
+platforms: </p>  
+
+<table cellpadding="2" cellspacing="2" border="1" width="100%">
+
+<tr>
+  <td valign="top" bgcolor="yellow"><b>Platform&nbsp;(OS,&nbsp;CPU):</b></td>
+  <td valign="top" bgcolor="yellow"><b>Compiler:</b></td>
+  <td valign="top" bgcolor="yellow"><b>Date:</b></td>
+  <td valign="top" bgcolor="yellow"><b>External libraries:</b></td>
+  <td valign="top" bgcolor="yellow"><b>Status:</b></td>
+  <td valign="top" bgcolor="yellow"><b>Comments:</b></td>
+  <td valign="top" bgcolor="yellow"><b>Tester(s):</b></td>
+</tr>
+
+<tr>
+  <td valign="top">Linux Fedora Core 2.0, Intel Pentium&nbsp;4</td>
+  <td valign="top">g++ (GCC) 3.3.3 20040412</td>
+  <td valign="top">May 18, 2005</td>
+  <td valign="top"><tt>rmolexternal-1.0.1</tt> (FFTW, ATLAS)</td>
+  <td valign="top">OK</td>
+  <td valign="top">-</td>
+  <td valign="top">Tony Ottosson</td>
+</tr>
+
+<tr>
+  <td valign="top">Linux Fedora Core 2.0, Intel Pentium&nbsp;4</td>
+  <td valign="top">g++ (GCC) 3.3.3 20040412</td>
+  <td valign="top">May 18, 2005</td>
+  <td valign="top">Intel's Math Kernel Library (MKL) 7.2</td>
+  <td valign="top">OK</td>
+  <td valign="top">-</td>
+  <td valign="top">Tony Ottosson</td>
+</tr>
+
+<tr>
+  <td valign="top">Gentoo Linux, Intel Pentium&nbsp;M Centrino</td>
+  <td valign="top">g++ (GCC) 3.3.5-20050130</td>
+  <td valign="top">May 20, 2005</td>
+  <td valign="top">Compiled from Gentoo' portage: <tt>fftw-3.0.1</tt>,
+    <tt>blas-atlas-3.6.0</tt>, <tt>lapack-atlas-3.6.0</tt></td>
+  <td valign="top">OK</td>
+  <td valign="top">-</td>
+  <td valign="top">Adam Piatyszek</td>
+</tr>
+
+<tr>
+  <td valign="top">Solaris SunOS 5.9, SPARC</td>
+  <td valign="top">g++ (GCC) 3.4.4</td>
+  <td valign="top">June 22, 2005</td>
+  <td valign="top"><tt>rmolexternal-1.0.1</tt> (FFTW, LAPACK, CBLAS)</td>
+  <td valign="top">OK</td>
+  <td valign="top">-</td>
+  <td valign="top">Adam Piatyszek</td>
+</tr>
+
+<tr>
+  <td valign="top">MS Windows XP, Intel Pentium&nbsp;4</td>
+  <td valign="top">Visual C++ .Net 2003</td>
+  <td valign="top">May 18, 2005</td>
+  <td valign="top">Intel's Math Kernel Library (MKL) 7.2</td>
+  <td valign="top">OK</td>
+  <td valign="top">-</td>
+  <td valign="top">Thomas Eriksson</td>
+</tr>
+
+</table>
+
+\endhtmlonly
+*/

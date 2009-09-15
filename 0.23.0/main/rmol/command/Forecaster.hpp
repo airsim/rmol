@@ -1,0 +1,72 @@
+#ifndef __RMOL_COMMAND_FORECASTER_HPP
+#define __RMOL_COMMAND_FORECASTER_HPP
+
+// //////////////////////////////////////////////////////////////////////
+// Import section
+// //////////////////////////////////////////////////////////////////////
+// RMOL
+#include <rmol/RMOL_Types.hpp>
+#include <rmol/RMOL_FORECASTER_Types.hpp>
+
+namespace RMOL {
+
+  /** Forward declarations. */
+  class BucketHolder;
+  struct HistoricalBookingHolderHolder;
+  //  class StudyStatManager;
+
+  /** Class wrapping the principal forecasting algorithms and 
+      some accessory algorithms for demand forecasting. */
+  class Forecaster {
+  public:
+    
+    /** 
+    An accessory algorithm for demand forecasting.
+
+    Calculate Q-equivalent bookings for the given group of 
+    classes/buckets/fare points using the given 
+    sell-up factors.
+
+    Q-equivalent bookings are, by definition, 
+    
+       SUM_{buckets} histBooking_{bucket i} / ProbSellup_{bucket i} 
+            where 
+         ProbSellup_{bucket i} = 
+         EXP(-sellupfactor*(yield_{bucket i}/lowest yield_{buckets}))
+    */
+    static void qEquivalentBookingCalculation
+                                (BucketHolder&, 
+                                 SellupFactorHolder_T&,
+                                 HistoricalBookingHolderHolder&,
+                                 HolderOfQEquivalentBookingsPerSimilarFlight_T&);
+
+    /** 
+    An accessory algorithm for demand forecasting.
+
+    Calculate Q-equivalent demands for the given group of 
+    classes/buckets/fare points using the given 
+    sell-up factors.
+
+    Q-equivalent demands are, by definition, 
+    
+       SUM_{buckets} histBooking_{bucket i} / ProbSellup_{bucket i} 
+            where 
+         ProbSellup_{bucket i} = 
+         EXP(-sellupfactor*(yield_{bucket i}/lowest yield_{buckets}))
+    static void qEquivalentBookingCalculation
+                                (BucketHolder&, 
+                                 SellupFactorHolder_T&,
+                                 HistoricalBookingHolderHolder&,
+                                 HolderOfQEquivalentDemandsPerSimilarFlight_T&);
+     */
+
+    /** A forecasting method developed by Belobaba and Hopperstad:
+        Algorithms for Revenue Management in Unrestricted Fare Markets, 
+        AGIFORS, Auckland, New Zealand, Jan 2004
+     */
+    static void demandForecastByQForecasting (ForecastedDemandParameterList_T, 
+                                              HistoricalDataHolderHolder_T&,
+                                              PriceHolder_T&);
+  };
+}
+#endif // __RMOL_COMMAND_FORECASTER_HPP
