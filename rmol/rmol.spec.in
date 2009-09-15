@@ -130,6 +130,9 @@ fi
 
 
 %changelog
+* Tue Sep 15 2009 Denis Arnaud <denis.arnaud_fedora@m4x.org> 0.23.0-1
+- Upstream integration
+
 * Mon May 11 2009 Denis Arnaud <denis.arnaud_fedora@m4x.org> 0.22.0-1
 - Upstream integration
 

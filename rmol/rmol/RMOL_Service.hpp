@@ -118,11 +118,13 @@ namespace RMOL {
     void demandUnconstrainingByExpectationMaximization ();
 
     /** Demand forecast using Q-Forecasting [used in unit tests] */
-    void demandForecastByQForecasting (SimilarFlightsDemandList_T&);
+    void demandForecastByQForecasting (HistoricalDataHolderHolder_T&, 
+                                       PriceHolder_T&);
 
     /** Demand forecast using Q-Forecasting */
-    void demandForecastByQForecasting (SimilarFlightsDemandList_T&, 
-                                       ForecastedDemandParameterList_T&);
+    void demandForecastByQForecasting (ForecastedDemandParameterList_T, 
+                                       HistoricalDataHolderHolder_T&, 
+                                       PriceHolder_T&);
 
   private:
     /** Default Constructors. */

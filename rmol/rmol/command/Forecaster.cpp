@@ -41,13 +41,15 @@ namespace RMOL {
 
   // //////////////////////////////////////////////////////////////////////  
   void Forecaster::demandForecastByQForecasting 
-       (SimilarFlightsDemandList_T& iSimilarFlightsDemandList, 
-        ForecastedDemandParameterList_T& oForecastedDemandParameterList) {
+       (ForecastedDemandParameterList_T oForecastedDemandParameterList,
+        HistoricalDataHolderHolder_T& iHistoricalDataHolderHolder,
+        PriceHolder_T& iPriceHolder) {
     // Run Q-Forecasting algorithm
     // 1. Obtain forecasted Q-eqivalent demand mean and s.d.(mu_Q, sigma_Q)
     // 2. Partition to each class
     //    E(alpha x Q)=alpha x mu_Q, S.D.(alpha x Q) = |alpha| X sigma_Q
 
+    //qEquivalentDemandCalculation();
 
   }
 }

@@ -33,19 +33,40 @@ namespace RMOL {
             where 
          ProbSellup_{bucket i} = 
          EXP(-sellupfactor*(yield_{bucket i}/lowest yield_{buckets}))
-     */
+    */
     static void qEquivalentBookingCalculation
                                 (BucketHolder&, 
                                  SellupFactorHolder_T&,
                                  HistoricalBookingHolderHolder&,
                                  HolderOfQEquivalentBookingsPerSimilarFlight_T&);
 
+    /** 
+    An accessory algorithm for demand forecasting.
+
+    Calculate Q-equivalent demands for the given group of 
+    classes/buckets/fare points using the given 
+    sell-up factors.
+
+    Q-equivalent demands are, by definition, 
+    
+       SUM_{buckets} histBooking_{bucket i} / ProbSellup_{bucket i} 
+            where 
+         ProbSellup_{bucket i} = 
+         EXP(-sellupfactor*(yield_{bucket i}/lowest yield_{buckets}))
+    static void qEquivalentBookingCalculation
+                                (BucketHolder&, 
+                                 SellupFactorHolder_T&,
+                                 HistoricalBookingHolderHolder&,
+                                 HolderOfQEquivalentDemandsPerSimilarFlight_T&);
+     */
+
     /** A forecasting method developed by Belobaba and Hopperstad:
         Algorithms for Revenue Management in Unrestricted Fare Markets, 
         AGIFORS, Auckland, New Zealand, Jan 2004
      */
-    static void demandForecastByQForecasting (SimilarFlightsDemandList_T&, 
-                                              ForecastedDemandParameterList_T&);
+    static void demandForecastByQForecasting (ForecastedDemandParameterList_T, 
+                                              HistoricalDataHolderHolder_T&,
+                                              PriceHolder_T&);
   };
 }
 #endif // __RMOL_COMMAND_FORECASTER_HPP

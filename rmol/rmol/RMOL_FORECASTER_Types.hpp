@@ -22,5 +22,14 @@ namespace RMOL {
   typedef std::map<std::string, std::vector<double> > 
                                            ForecastedDemandParameterList_T;
 
+  /** Define a vector of fares. */
+  typedef std::vector<double> PriceHolder_T;
+
+//   /** Define historical data vector*/
+//   typedef std::vector<double> HistoricalDataHolder_T;
+
+  /** Define vector of historical data vector*/
+  typedef std::vector< std::vector<double> > HistoricalDataHolderHolder_T;
+
 }
 #endif // __RMOL_RMOL_FORECASTER_TYPES_HPP
