@@ -1,5 +1,5 @@
-#ifndef __RMOL_BOM_SELLUPPROBABILITYCALCULATOR_HPP
-#define __RMOL_BOM_SELLUPPROBABILITYCALCULATOR_HPP
+#ifndef __RMOL_BOM_QFORECASTER_HPP
+#define __RMOL_BOM_QFORECASTER_HPP
 
 // //////////////////////////////////////////////////////////////////////
 // Import section
@@ -13,7 +13,7 @@ namespace RMOL {
   class BucketHolder;
 
   /** Accessary Class for Sellup considered forecast methods. */
-  class SellupProbabilityCalculator : public BomAbstract {
+  class QForecaster : public BomAbstract {
 
   public:
 
@@ -29,4 +29,4 @@ namespace RMOL {
   };
 
 }
-#endif // __RMOL_BOM_SELLUPPROBABILITYCALCULATOR_HPP
+#endif // __RMOL_BOM_QFORECASTER_HPP

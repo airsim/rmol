@@ -6,12 +6,12 @@
 // RMOL Bom
 #include <rmol/bom/Bucket.hpp>
 #include <rmol/bom/BucketHolder.hpp>
-#include <rmol/bom/SellupProbabilityCalculator.hpp>
+#include <rmol/bom/QForecaster.hpp>
 
 namespace RMOL {
 
   // //////////////////////////////////////////////////////////////////////
-  void SellupProbabilityCalculator::calculateSellupProbability 
+  void QForecaster::calculateSellupProbability 
   (BucketHolder& iBucketHolder,
    const double iQYield,
    const SellupFactorHolder_T& iSellupFactorHolder, 

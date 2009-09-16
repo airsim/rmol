@@ -18,9 +18,9 @@ namespace RMOL {
                                            SimilarFlightsDemandList_T;
 
   /** Define the holder of forecasted demand parameters (mean, std. deviation) 
-      per booking class. Each row contains [class key, [mean, s.d.]] */
-  typedef std::map<std::string, std::vector<double> > 
-                                           ForecastedDemandParameterList_T;
+      per booking class. The order of the parameters corresponds to the vector 
+      inputs resulted the parameters themselves.*/
+  typedef std::vector<double> ForecastedDemandParameterList_T;
 
   /** Define a vector of fares. */
   typedef std::vector<double> PriceHolder_T;

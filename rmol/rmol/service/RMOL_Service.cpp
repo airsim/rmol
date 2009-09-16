@@ -480,7 +480,8 @@ namespace RMOL {
   void RMOL_Service::demandForecastByQForecasting 
          (ForecastedDemandParameterList_T oForecastedDemandParameterList, 
           HistoricalDataHolderHolder_T& iHistoricalDataHolderHolder, 
-          PriceHolder_T& iPriceHolder) {
+          PriceHolder_T& iPriceHolder,
+          SellupFactorHolder_T& iSellupFactorHolder) {
 //     assert (_rmolServiceContext != NULL);
 //     const BucketHolder* oBucketHolder_ptr = 
 //                                      _rmolServiceContext->getBucketHolder();
@@ -489,7 +490,8 @@ namespace RMOL {
     // TO-DO
     Forecaster::demandForecastByQForecasting (oForecastedDemandParameterList,
                                               iHistoricalDataHolderHolder,
-                                              iPriceHolder);
+                                              iPriceHolder,
+                                              iSellupFactorHolder);
     
     // Fill in the forecasted demand parameters
 

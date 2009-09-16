@@ -53,20 +53,23 @@ namespace RMOL {
             where 
          ProbSellup_{bucket i} = 
          EXP(-sellupfactor*(yield_{bucket i}/lowest yield_{buckets}))
-    static void qEquivalentBookingCalculation
-                                (BucketHolder&, 
-                                 SellupFactorHolder_T&,
-                                 HistoricalBookingHolderHolder&,
+
+    static void qEquivalentDemandCalculation
+                                (SellupFactorHolder_T&,
+                                 HistoricalDataHolderHolder&,
                                  HolderOfQEquivalentDemandsPerSimilarFlight_T&);
-     */
+    */
 
     /** A forecasting method developed by Belobaba and Hopperstad:
         Algorithms for Revenue Management in Unrestricted Fare Markets, 
         AGIFORS, Auckland, New Zealand, Jan 2004
-     */
+          NOTES: Inputs are supposed to be appropriately ordered so that 
+          i-th element of the PriceHolder is the price associated to the 
+          i-th element of the HistoricalDataHolderHolder.   */
     static void demandForecastByQForecasting (ForecastedDemandParameterList_T, 
                                               HistoricalDataHolderHolder_T&,
-                                              PriceHolder_T&);
+                                              PriceHolder_T&,
+                                              SellupFactorHolder_T&);
   };
 }
 #endif // __RMOL_COMMAND_FORECASTER_HPP
