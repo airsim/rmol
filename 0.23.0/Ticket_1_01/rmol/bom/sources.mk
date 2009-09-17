@@ -22,6 +22,9 @@ bom_h_sources = $(top_srcdir)/rmol/bom/BomAbstract.hpp \
 		$(top_srcdir)/rmol/bom/StatAggregatorStruct.hpp \
 		$(top_srcdir)/rmol/bom/StatAggregatorStructList.hpp \
 		$(top_srcdir)/rmol/bom/StudyStatManager.hpp \
+		$(top_srcdir)/rmol/bom/HistoricalBooking.hpp \
+		$(top_srcdir)/rmol/bom/HistoricalBookingHolder.hpp \
+		$(top_srcdir)/rmol/bom/HistoricalBookingHolderHolder.hpp \
 		$(top_srcdir)/rmol/bom/SellupProbabilityCalculator.hpp \
 		$(top_srcdir)/rmol/bom/QEquivalentBookingCalculator.hpp
 bom_cc_sources = $(top_srcdir)/rmol/bom/BomAbstract.cpp \
