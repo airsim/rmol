@@ -1,0 +1,48 @@
+/*! 
+\page test Test Rules
+
+This section describes rules how the functionality of the IT++
+library should be verified. In the \c `tests' subdirectory test files
+are provided. All functionality should be tested using these test
+files.
+
+
+\section test_file The Test File
+
+Each new IT++ module/class should be accompanied with a test file. The
+test file is an implementation in C++ that tests the functionality of
+a function/class or a group of functions/classes called modules. The
+test file should test relevant parameter settings and input/output
+relations to guarantee correct functionality of the corresponding
+classes/functions. The test files should be maintained using version
+control and updated whenever new functionality is added to the IT++
+library.
+
+The test file should print relevant data to a standard output that can
+be used to verify the functionality. All relevant parameter settings
+should be tested.
+
+The test file should be placed in the \c `tests' subdirectory and
+should have a name ending with <tt>`_test.cpp'</tt>.
+
+
+\section reference_file The Reference File
+
+Consider a test file named <tt>`module_test.cpp'</tt>. A reference
+file named <tt>`module_test.ref'</tt> should accompany the test
+file. The reference file contains a reference printout of the standard
+output generated when running the test program. The reference file
+should be maintained using version control and updated according to
+the test file.
+
+
+\section testing_using_make Testing IT++ Library
+
+One can compile and execute all test programs from \c `tests'
+subdirectory by typing
+\verbatim 
+% make check 
+\endverbatim after
+successful compilation of the IT++ library.
+
+*/

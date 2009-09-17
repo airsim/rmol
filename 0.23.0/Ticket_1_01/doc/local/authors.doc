@@ -1,0 +1,35 @@
+/*!
+\page authors RMOL People
+
+
+\section admins Project Admins
+
+- Denis Arnaud <denis_arnaud@users.sourceforge.net> (\ref N)
+- Patrick Grandjean <pgrandjean@users.sourceforge.net> (\ref N)
+
+
+\section developers Developers
+
+- Anh Quan Nguyen <quannaus@users.sourceforge.net> (\ref N)
+- Benoit Lardeux <benlardeux@users.sourceforge.net> (\ref N)
+
+
+\section retired Retired Developers
+
+- Karim Duval <duvalkarim@users.sourceforge.net> (\ref N)
+
+
+\section contributors Contributors
+
+- Ngoc-Thach Hoang <hoangngocthach@users.sourceforge.net> (\ref N)
+
+
+\section distributors Distribution Maintainers
+
+- Denis Arnaud <denis_arnaud@users.sourceforge.net> (\ref N)
+
+\note
+\anchor N
+(N) - <a href="http://www.amadeus.com">Amadeus</a> employees.
+ 
+*/
