@@ -6,6 +6,7 @@
 // //////////////////////////////////////////////////////////////////////
 // RMOL Bom
 #include <rmol/bom/BomAbstract.hpp>
+#include <rmol/RMOL_FORECASTER_Types.hpp>
 
 namespace RMOL {
 
@@ -26,7 +27,21 @@ namespace RMOL {
                                             const double iQYield, 
                                             const SellupFactorHolder_T&, 
                                             SellupProbabilityVector_T&);
-  };
 
+    /** The same method as the above but taking price data directly 
+        instead of through BucketHolder. */
+    static void calculateSellupProbability (SellupProbabilityVector_T&, 
+                                            const double iQYield, 
+                                            PriceHolder_T&, 
+                                            SellupFactorHolder_T&);
+
+    /** Calculate Q-equivalent demand distribution parameters and 
+        partition it to each class/bucket. */
+    static void calculateQEquivalentDemandParametersAndPartition 
+                                       (ForecastedDemandParameterList_T, 
+                                        HistoricalDataHolderHolder_T&, 
+                                        SellupProbabilityVector_T&);
+
+  };
 }
 #endif // __RMOL_BOM_QFORECASTER_HPP

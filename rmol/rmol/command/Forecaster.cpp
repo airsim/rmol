@@ -50,20 +50,22 @@ namespace RMOL {
     // 2. Partition to each class
     //    E(alpha x Q)=alpha x mu_Q, S.D.(alpha x Q) = |alpha| X sigma_Q
 
-    // TODO: Find the class with the lowest yield
-    const double iQYield = Utilities::minimumElementOfAVector(iPriceHolder);
+    // Find the class with the lowest yield
+    double lQYield;
+    Utilities::getMinimumElement (lQYield, iPriceHolder);
 
-    // // TODO: Initialize a vector for sell-up probabilities
-    // std::vector<double> lSellupProbabilityVector;
+    // Initialize a vector for sell-up probabilities
+    std::vector<double> lSellupProbabilityVector;
 
-    // // TODO: Compute sell-up probability for each class/bucket & store it in a vector
-    // QForecaster::calculateSellupProbability
-    //   (lSellupProbabilityVector, iQYield, iPriceHolder, iSellupFactorHolder);
+    // Compute sell-up probability for each class/bucket & store it in a vector
+    QForecaster::calculateSellupProbability
+      (lSellupProbabilityVector, lQYield, iPriceHolder, iSellupFactorHolder);
 
-    // // TODO: Q-equivalent demand calculation
-    // QForecaster::calculateQEquivalentDemandParametersAndPartition 
-    //   (oForecastedDemandParameterList, 
-    //    iHistoricalDataHolderHolder, lSellupProbabilityVector);
+    // Calculate Q-equivalent demand distribution parameters and 
+    // partition it to each class/bucket
+    QForecaster::calculateQEquivalentDemandParametersAndPartition 
+      (oForecastedDemandParameterList, 
+       iHistoricalDataHolderHolder, lSellupProbabilityVector);
 
   }
 }
