@@ -11,15 +11,19 @@ namespace RMOL {
   struct Utilities {
 
     /** Returns the minimum element of a given vector*/
-    static void getMinimumElement (double oMinValue, std::vector<double>&); 
+    static void getMinimumElement (double* oMinValue, std::vector<double>&); 
 
     /** Return mean for the given elements of a vector. */
-    static void getMean (double oMean, std::vector<double>&);
+    static void getMean (double& oMean, std::vector<double>&);
 
     /** Return standard deviation for the given elements of a vector and  
-        the precomputed mean. */
-    static void getStandardDeviation (double oSD, std::vector<double>&,
-                                      double iMean);
+        precomputed mean. */
+    static void getStandardDeviation (double& oSD, std::vector<double>&,
+                                      double& iMean);
+
+    /** Return mean & standard deviation for given elements of a vector. */
+    static void getMeanAndStandardDeviation (std::vector<double>* ioMean_SD,
+                                             std::vector<double>&);
 
     /** Return the input vector after adding a value. */
     static void AddAValueToAVector (std::vector<double>& ioVector, 
@@ -29,7 +33,7 @@ namespace RMOL {
     static void MultiplyAValueToAVector (std::vector<double>& ioVector, 
                                          double iValue);
 
-    /** Return an input vector after adding the other input vector. */
+    /** Return first input vector after adding 2nd input vector to it. */
     static void AddTwoVectors (std::vector<double>& ioVector, 
                                std::vector<double>& iVector);
     

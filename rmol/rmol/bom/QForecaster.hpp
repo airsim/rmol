@@ -18,29 +18,36 @@ namespace RMOL {
 
   public:
 
-    /** Calculate sell-up probability for given sell-up factor,
-        and yield ratio between the sell-up occurs.<br> 
-        The formular was proposed by Belobaba and Hopperstad:
-        Algorithms for Revenue Management in Unrestricted Fare Markets, 
-        AGIFORS, Auckland, New Zealand, Jan 2004    */
-    static void calculateSellupProbability (BucketHolder&, 
-                                            const double iQYield, 
-                                            const SellupFactorHolder_T&, 
-                                            SellupProbabilityVector_T&);
+    // /** Calculate sell-up probability for given sell-up factor,
+    //     and yield ratio between the sell-up occurs.<br> 
+    //     The formular was proposed by Belobaba and Hopperstad:
+    //     Algorithms for Revenue Management in Unrestricted Fare Markets, 
+    //     AGIFORS, Auckland, New Zealand, Jan 2004    */
+    // static void calculateSellupProbability (BucketHolder&, 
+    //                                         const double iQYield, 
+    //                                         const SellupFactorHolder_T&, 
+    //                                         SellupProbabilityVector_T&);
 
     /** The same method as the above but taking price data directly 
         instead of through BucketHolder. */
-    static void calculateSellupProbability (SellupProbabilityVector_T&, 
-                                            const double iQYield, 
+    static void calculateSellupProbability (SellupProbabilityVector_T*, 
+                                            double* iPtrQYield, 
                                             PriceHolder_T&, 
                                             SellupFactorHolder_T&);
 
     /** Calculate Q-equivalent demand distribution parameters and 
         partition it to each class/bucket. */
-    static void calculateQEquivalentDemandParametersAndPartition 
-                                       (ForecastedDemandParameterList_T, 
-                                        HistoricalDataHolderHolder_T&, 
-                                        SellupProbabilityVector_T&);
+    static void calculateQEquivalentDemandParameters 
+                                   (QEquivalentDemandParameterHolder_T*, 
+                                    HistoricalDataHolderHolder_T&, 
+                                    SellupProbabilityVector_T*);
+
+    /** Calculate Q-equivalent demand distribution parameters and 
+        partition it to each class/bucket. */
+    static void partitionQEquivalentDemandParameters 
+                                       (ForecastedDemandParameterList_T,
+                                        QEquivalentDemandParameterHolder_T*,
+                                        SellupProbabilityVector_T*);
 
   };
 }

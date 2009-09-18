@@ -30,6 +30,9 @@ namespace RMOL {
 
   /** Define vector of historical data vector*/
   typedef std::vector< std::vector<double> > HistoricalDataHolderHolder_T;
+  
+  /** Define a holder for Q-equivalent demand parameters. */
+  typedef std::vector<double> QEquivalentDemandParameterHolder_T;
 
 }
 #endif // __RMOL_RMOL_FORECASTER_TYPES_HPP

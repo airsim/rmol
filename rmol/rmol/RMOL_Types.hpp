@@ -88,8 +88,8 @@ namespace RMOL {
 //   typedef std::vector<HistoricalBookingHolder> 
 //                                              HistoricalBookingHolderHolder_T;
 
-  /** Define the holder of Q-equivalent booking values*/
-  typedef std::vector<double> HolderOfQEquivalentBookingsPerSimilarFlight_T;
+  // /** Define the holder of Q-equivalent booking values*/
+  // typedef std::vector<double> HolderOfQEquivalentBookingsPerSimilarFlight_T;
 
 }
 #endif // __RMOL_RMOL_TYPES_HPP

@@ -14,30 +14,30 @@
 
 namespace RMOL {
 
-  // //////////////////////////////////////////////////////////////////////
-  void Forecaster::qEquivalentBookingCalculation 
-       (BucketHolder& ioBucketHolder,
-        SellupFactorHolder_T& iSellupFactorHolder,
-        HistoricalBookingHolderHolder& iHistoricalBookingHolderHolder,
-        HolderOfQEquivalentBookingsPerSimilarFlight_T& 
-                                      oQEquivalentBookingsPerSimilarFlight){
+  // // //////////////////////////////////////////////////////////////////////
+  // void Forecaster::qEquivalentBookingCalculation 
+  //      (BucketHolder& ioBucketHolder,
+  //       SellupFactorHolder_T& iSellupFactorHolder,
+  //       HistoricalBookingHolderHolder& iHistoricalBookingHolderHolder,
+  //       HolderOfQEquivalentBookingsPerSimilarFlight_T& 
+  //                                     oQEquivalentBookingsPerSimilarFlight){
 
-    // Get the lowest yield of the given buckets
-    const double qYield = ioBucketHolder.getLowestAverageYield ();
+  //   // Get the lowest yield of the given buckets
+  //   const double qYield = ioBucketHolder.getLowestAverageYield ();
 
-    // Initialize a vector for sell-up probabilities
-    std::vector<double> lSellupProbabilityVector;
+  //   // Initialize a vector for sell-up probabilities
+  //   std::vector<double> lSellupProbabilityVector;
 
-    // Compute sell-up probability for each bucket and store it in a vector
-    QForecaster::calculateSellupProbability
-      (ioBucketHolder, qYield, iSellupFactorHolder, lSellupProbabilityVector);
+  //   // Compute sell-up probability for each bucket and store it in a vector
+  //   QForecaster::calculateSellupProbability
+  //     (ioBucketHolder, qYield, iSellupFactorHolder, lSellupProbabilityVector);
     
-    // Compute total Q-equivalent bookings
-    // QEquivalentBookingCalculator::calculateQEquivalentBooking 
-    //   (iHistoricalBookingHolderHolder, 
-    //    lSellupProbabilityVector, 
-    //    oQEquivalentBookingsPerSimilarFlight);
-  }
+  //   // Compute total Q-equivalent bookings
+  //   // QEquivalentBookingCalculator::calculateQEquivalentBooking 
+  //   //   (iHistoricalBookingHolderHolder, 
+  //   //    lSellupProbabilityVector, 
+  //   //    oQEquivalentBookingsPerSimilarFlight);
+  // }
 
   // //////////////////////////////////////////////////////////////////////  
   void Forecaster::demandForecastByQForecasting 
@@ -51,21 +51,29 @@ namespace RMOL {
     //    E(alpha x Q)=alpha x mu_Q, S.D.(alpha x Q) = |alpha| X sigma_Q
 
     // Find the class with the lowest yield
-    double lQYield;
-    Utilities::getMinimumElement (lQYield, iPriceHolder);
+    double* ptrQYield;
+    Utilities::getMinimumElement (ptrQYield, iPriceHolder);
 
-    // Initialize a vector for sell-up probabilities
-    std::vector<double> lSellupProbabilityVector;
+    // Initialize a holder for sell-up probabilities
+    SellupProbabilityVector_T* lSellupProbabilityVector;
 
     // Compute sell-up probability for each class/bucket & store it in a vector
     QForecaster::calculateSellupProbability
-      (lSellupProbabilityVector, lQYield, iPriceHolder, iSellupFactorHolder);
+      (lSellupProbabilityVector, ptrQYield, iPriceHolder, iSellupFactorHolder);
+
+    // Initialize a holder for Q-equivalent Demand Parameters
+    QEquivalentDemandParameterHolder_T* lQEquivalentDemandParameterHolder;
+    
+    // Calculate Q-equivalent demand distribution parameters.
+    QForecaster::calculateQEquivalentDemandParameters 
+      (lQEquivalentDemandParameterHolder, iHistoricalDataHolderHolder,
+       lSellupProbabilityVector);
 
     // Calculate Q-equivalent demand distribution parameters and 
     // partition it to each class/bucket
-    QForecaster::calculateQEquivalentDemandParametersAndPartition 
-      (oForecastedDemandParameterList, 
-       iHistoricalDataHolderHolder, lSellupProbabilityVector);
+    QForecaster::partitionQEquivalentDemandParameters 
+      (oForecastedDemandParameterList, lQEquivalentDemandParameterHolder, 
+       lSellupProbabilityVector);
 
   }
 }
