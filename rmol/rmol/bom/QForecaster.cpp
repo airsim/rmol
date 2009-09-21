@@ -3,6 +3,8 @@
 // //////////////////////////////////////////////////////////////////////
 // STL
 #include <cmath>
+#include <algorithm>
+#include <numeric>
 // RMOL Bom
 #include <rmol/bom/Bucket.hpp>
 #include <rmol/bom/BucketHolder.hpp>
@@ -77,11 +79,52 @@ namespace RMOL {
 
   // //////////////////////////////////////////////////////////////////////
   void QForecaster::partitionQEquivalentDemandParameters 
-                                          (ForecastedDemandParameterList_T, 
-                                           QEquivalentDemandParameterHolder_T*, 
-                                           SellupProbabilityVector_T*) {
-    
+   (ForecastedDemandParameterList_T oForecastedDemandParameterList, 
+    QEquivalentDemandParameterHolder_T* iQEquivalentDemandParameterHolder, 
+    SellupProbabilityVector_T* iSellupProbabilityVector) {
 
+    unsigned int noOfClasses = iSellupProbabilityVector->size();
+
+    // Sort sellup probabilities in increasing order and copy into a vector
+    std::vector<double> lSortedSellupProbabilityVector(noOfClasses);
+    std::partial_sort_copy (iSellupProbabilityVector->begin(), 
+                       iSellupProbabilityVector->end(),
+                       lSortedSellupProbabilityVector.begin(),
+                       lSortedSellupProbabilityVector.end());
+
+    // Compute the probability to sell-up to class i but not i-1 (class 
+    // with the next higher fare) and copy into a vector
+    std::vector<double> lSellupProbabilityDifferenceVector(noOfClasses);
+    adjacent_difference (lSortedSellupProbabilityVector.begin(),
+                              lSortedSellupProbabilityVector.end(),
+                              lSellupProbabilityDifferenceVector.begin());
+
+    // Partition Q-equivalent demand mean and S.D. into each class
+    oForecastedDemandParameterList.clear();
+    for (unsigned short k=0; k < noOfClasses; k++) {
+      // Locate the current sell-up probability in the sorted one
+      std::vector<double>::iterator pos = 
+                 std::lower_bound (lSortedSellupProbabilityVector.begin(),
+                                   lSortedSellupProbabilityVector.end(),
+                                   iSellupProbabilityVector->at(k));
+      int posOfCurrentSellupProbInSortedVector = 
+               std::distance(lSortedSellupProbabilityVector.begin(), pos);
+
+      // Find the corresponding sell-up probability difference
+      double correspondingSellupProbability = 
+        lSellupProbabilityDifferenceVector.at(
+                                    posOfCurrentSellupProbInSortedVector);
+      
+      // Compute mean and S.D. of each class
+      // class mean = Q-eq mean * sell-up prob difference
+      // class S.D. = Q-eq S.D. * sell-up prob difference
+      oForecastedDemandParameterList.push_back
+                                     (*iQEquivalentDemandParameterHolder);
+      std::vector<double>& forecastedDemandParameters = 
+                                     oForecastedDemandParameterList.at(k);
+      Utilities::MultiplyAValueToAVector (forecastedDemandParameters,
+                                     correspondingSellupProbability);
+    }
   }
 
 

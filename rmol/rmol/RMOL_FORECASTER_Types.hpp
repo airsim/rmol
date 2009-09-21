@@ -12,15 +12,15 @@ namespace RMOL {
 
   // //////// Type definitions /////////
 
-  /** Define the map of a class code - segment (origine/destination)
-      and a vector of (unconstrained) demand of the similar flight-dates. */
-  typedef std::map<std::string, std::vector<double> > 
-                                           SimilarFlightsDemandList_T;
+  // /** Define the map of a class code - segment (origine/destination)
+  //     and a vector of (unconstrained) demand of the similar flight-dates. */
+  // typedef std::map<std::string, std::vector<double> > 
+  //                                          SimilarFlightsDemandList_T;
 
   /** Define the holder of forecasted demand parameters (mean, std. deviation) 
       per booking class. The order of the parameters corresponds to the vector 
       inputs resulted the parameters themselves.*/
-  typedef std::vector<double> ForecastedDemandParameterList_T;
+  typedef std::vector< std::vector<double> > ForecastedDemandParameterList_T;
 
   /** Define a vector of fares. */
   typedef std::vector<double> PriceHolder_T;
