@@ -14,13 +14,13 @@
 namespace RMOL {
 
   // /////////////////////////////////////////////////////////////////////
-  void Utilities::getMinimumElement (double* oMinValue,
+  void Utilities::getMinimumElement (double& oMinValue,
                                      std::vector<double>& iVector) {
 
     assert(!iVector.empty());
     std::vector<double>::iterator pos = min_element (iVector.begin(), 
                                                      iVector.end());
-    *oMinValue = *pos;
+    oMinValue = *pos;
 
   }
 
@@ -51,17 +51,17 @@ namespace RMOL {
   }
 
   // /////////////////////////////////////////////////////////////////////
-  void Utilities::getMeanAndStandardDeviation (std::vector<double>* ioMean_SD,
+  void Utilities::getMeanAndStandardDeviation (std::vector<double>& ioMean_SD,
                                            std::vector<double>& iVector) {
     const unsigned int lSize = iVector.size();
     assert(lSize > 0);
 
-    ioMean_SD->clear();
+    ioMean_SD.clear();
 
     // Mean
     double lSum = std::accumulate(iVector.begin(), iVector.end(), 0);
     double lMean = lSum/lSize;
-    ioMean_SD->push_back(lMean);
+    ioMean_SD.push_back(lMean);
 
     //Standard Deviation
     double lSD = 0;
@@ -70,7 +70,7 @@ namespace RMOL {
       lSD += lDeviation * lDeviation;
     }
     lSD /= (lSize - 1);
-    ioMean_SD->push_back(sqrt(lSD));
+    ioMean_SD.push_back(sqrt(lSD));
   }
 
   // /////////////////////////////////////////////////////////////////////

@@ -51,29 +51,29 @@ namespace RMOL {
     //    E(alpha x Q)=alpha x mu_Q, S.D.(alpha x Q) = |alpha| X sigma_Q
 
     // Find the class with the lowest yield
-    double* ptrQYield;
-    Utilities::getMinimumElement (ptrQYield, iPriceHolder);
+    double lQYield;
+    Utilities::getMinimumElement (lQYield, iPriceHolder);
 
     // Initialize a holder for sell-up probabilities
-    SellupProbabilityVector_T* lSellupProbabilityVector;
+    SellupProbabilityVector_T lSellupProbabilityVector;
 
     // Compute sell-up probability for each class/bucket & store it in a vector
     QForecaster::calculateSellupProbability
-      (lSellupProbabilityVector, ptrQYield, iPriceHolder, iSellupFactorHolder);
+      (lSellupProbabilityVector, lQYield, iPriceHolder, iSellupFactorHolder);
 
     // Initialize a holder for Q-equivalent Demand Parameters
-    QEquivalentDemandParameterHolder_T* lQEquivalentDemandParameterHolder;
+    QEquivalentDemandParameterHolder_T lQEquivalentDemandParameterHolder;
     
     // Calculate Q-equivalent demand distribution parameters.
     QForecaster::calculateQEquivalentDemandParameters 
-      (lQEquivalentDemandParameterHolder, iHistoricalDataHolderHolder,
-       lSellupProbabilityVector);
+     (lQEquivalentDemandParameterHolder, iHistoricalDataHolderHolder,
+      lSellupProbabilityVector);
 
     // Calculate Q-equivalent demand distribution parameters and 
     // partition it to each class/bucket
-    QForecaster::partitionQEquivalentDemandParameters 
-      (oForecastedDemandParameterList, lQEquivalentDemandParameterHolder, 
-       lSellupProbabilityVector);
+    //QForecaster::partitionQEquivalentDemandParameters 
+    //  (oForecastedDemandParameterList, lQEquivalentDemandParameterHolder, 
+    //   lSellupProbabilityVector);
 
   }
 }

@@ -30,24 +30,24 @@ namespace RMOL {
 
     /** The same method as the above but taking price data directly 
         instead of through BucketHolder. */
-    static void calculateSellupProbability (SellupProbabilityVector_T*, 
-                                            double* iPtrQYield, 
+    static void calculateSellupProbability (SellupProbabilityVector_T&, 
+                                            double& iQYield, 
                                             PriceHolder_T&, 
                                             SellupFactorHolder_T&);
 
     /** Calculate Q-equivalent demand distribution parameters and 
         partition it to each class/bucket. */
     static void calculateQEquivalentDemandParameters 
-                                   (QEquivalentDemandParameterHolder_T*, 
+                                   (QEquivalentDemandParameterHolder_T&, 
                                     HistoricalDataHolderHolder_T&, 
-                                    SellupProbabilityVector_T*);
+                                    SellupProbabilityVector_T&);
 
     /** Calculate Q-equivalent demand distribution parameters and 
         partition it to each class/bucket. */
     static void partitionQEquivalentDemandParameters 
-                                       (ForecastedDemandParameterList_T,
-                                        QEquivalentDemandParameterHolder_T*,
-                                        SellupProbabilityVector_T*);
+                                       (ForecastedDemandParameterList_T&,
+                                        QEquivalentDemandParameterHolder_T&,
+                                        SellupProbabilityVector_T&);
 
   };
 }
