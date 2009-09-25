@@ -19,29 +19,6 @@ namespace RMOL {
   class Forecaster {
   public:
     
-  //   // /** 
-  //   // An accessory algorithm for demand forecasting.
-
-  //   // Calculate Q-equivalent bookings for the given group of 
-  //   // classes/buckets/fare points using the given 
-  //   // sell-up factors.
-
-  //   // Q-equivalent bookings are, by definition, 
-    
-  //   //    SUM_{buckets} histBooking_{bucket i} / ProbSellup_{bucket i} 
-  //   //         where 
-  //   //      ProbSellup_{bucket i} = 
-  //   //      EXP(-sellupfactor*(yield_{bucket i}/lowest yield_{buckets}))
-  //   // */
-  //   // static void qEquivalentBookingCalculation
-  //   //                             (BucketHolder&, 
-  //   //                              SellupFactorHolder_T&,
-  //   //                              HistoricalBookingHolderHolder&,
-  //   //                              HolderOfQEquivalentBookingsPerSimilarFlight_T&);
-
-  //   /** 
-  //   An accessory algorithm for demand forecasting.
-
   //   Calculate Q-equivalent demands for the given group of 
   //   classes/buckets/fare points using the given 
   //   sell-up factors.
@@ -65,7 +42,7 @@ namespace RMOL {
           NOTES: Inputs are supposed to be appropriately ordered so that 
           i-th element of the PriceHolder is the price associated to the 
           i-th element of the HistoricalDataHolderHolder.   */
-    static void demandForecastByQForecasting (ForecastedDemandParameterList_T, 
+    static void demandForecastByQForecasting (ForecastedDemandParameterList_T&, 
                                               HistoricalDataHolderHolder_T&,
                                               PriceHolder_T&,
                                               SellupFactorHolder_T&);

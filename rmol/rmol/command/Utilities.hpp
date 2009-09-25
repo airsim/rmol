@@ -26,17 +26,20 @@ namespace RMOL {
                                              std::vector<double>&);
 
     /** Return the input vector after adding a value. */
-    static void AddAValueToAVector (std::vector<double>& ioVector, 
+    static void addAValueToAVector (std::vector<double>& ioVector, 
                                     double iValue);
 
     /** Return the input vector after multiplying a value. */
-    static void MultiplyAValueToAVector (std::vector<double>& ioVector, 
+    static void multiplyAValueToAVector (std::vector<double>& ioVector, 
                                          double iValue);
 
     /** Return first input vector after adding 2nd input vector to it. */
-    static void AddTwoVectors (std::vector<double>& ioVector, 
+    static void addTwoVectors (std::vector<double>& ioVector, 
                                std::vector<double>& iVector);
-    
+
+    /** Return a string constructed by the elements of a vector. */
+    static std::string vectorToString (std::vector<double>& iVector);
+
   };
 
 }

@@ -53,6 +53,12 @@ namespace RMOL {
       <br>It is a double, as it allows for overbooking. */
   typedef double BookingLimit_T;
 
+  /** Define the number of products.*/
+  typedef const unsigned int NumberOfProducts_T;
+
+  /** Define the number of products similar to a product.*/
+  typedef const unsigned int NumberOfProductsSimilarToAProduct_T;
+
   /** Define the Bid-Price Vector.
       <br> It is a vector of double. */
   typedef std::vector<double> BidPriceVector_T;
@@ -71,8 +77,11 @@ namespace RMOL {
   /** Define the holder of the generated demand vectors. */
   typedef std::vector<GeneratedDemandVector_T> GeneratedDemandVectorHolder_T;
 
-  /** Define the sellup probability vector applicable to EMSR*/
-  typedef std::vector<double> SellupProbabilityVector_T;
+  /** Define the sellup probability.*/
+  typedef double SellupProbability_T;
+
+  /** Define the sellup probability vector.*/
+  typedef std::vector<SellupProbability_T> SellupProbabilityVector_T;
 
   /** Define the holder of sellup factors (used for computing Q-eq bookings)*/
   typedef std::vector<double> SellupFactorHolder_T;

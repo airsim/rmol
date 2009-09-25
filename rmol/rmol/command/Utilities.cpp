@@ -4,6 +4,8 @@
 // //////////////////////////////////////////////////////////////////////
 //STL
 #include <algorithm>
+#include <string>
+#include <sstream>
 #include <numeric>
 #include <math.h>
 #include <assert.h>
@@ -59,14 +61,17 @@ namespace RMOL {
     ioMean_SD.clear();
 
     // Mean
-    double lSum = std::accumulate(iVector.begin(), iVector.end(), 0);
-    double lMean = lSum/lSize;
+    double lMean = 0;
+    for (unsigned int k = 0; k < lSize; k++) {
+      lMean += iVector.at(k);
+    }
+    lMean /= lSize;
     ioMean_SD.push_back(lMean);
 
     //Standard Deviation
     double lSD = 0;
     for (unsigned int j = 0; j < lSize; j++) {
-      const double lDeviation = iVector.at(j);
+      const double lDeviation = iVector.at(j) - lMean;
       lSD += lDeviation * lDeviation;
     }
     lSD /= (lSize - 1);
@@ -74,7 +79,7 @@ namespace RMOL {
   }
 
   // /////////////////////////////////////////////////////////////////////
-  void Utilities::AddAValueToAVector (std::vector<double>& ioVector, 
+  void Utilities::addAValueToAVector (std::vector<double>& ioVector, 
                                       double iValue){
     const unsigned int lSize = ioVector.size();
     assert(lSize > 0); 
@@ -85,7 +90,7 @@ namespace RMOL {
   }
 
   // /////////////////////////////////////////////////////////////////////
-  void Utilities::MultiplyAValueToAVector (std::vector<double>& ioVector, 
+  void Utilities::multiplyAValueToAVector (std::vector<double>& ioVector, 
                                            double iValue) {
     const unsigned int lSize = ioVector.size();
     assert(lSize > 0); 
@@ -96,12 +101,21 @@ namespace RMOL {
   }
 
   // /////////////////////////////////////////////////////////////////////
-  void Utilities::AddTwoVectors (std::vector<double>& ioVector, 
-                               std::vector<double>& iVector) {
-      std::transform (ioVector.begin(), ioVector.end(), 
-                      iVector.begin(), 
-                      ioVector.begin(), 
-                      std::plus<double>());
-    }
+  void Utilities::addTwoVectors (std::vector<double>& ioVector, 
+                                 std::vector<double>& iVector) {
+    unsigned int lSize = ioVector.size();
+    // assert(lSize == iVector.size());
 
+    for (unsigned int k = 0; k < lSize; k++) {
+      ioVector.at(k) = ioVector.at(k) + iVector.at(k);
+    }
+  }
+  // /////////////////////////////////////////////////////////////////////
+  std::string Utilities::vectorToString (std::vector<double>& iVector) {
+    std::ostringstream oStr;
+    for (unsigned int k = 0; k < iVector.size(); k++) {
+      oStr << iVector.at(k) << ", ";
+    }
+    return oStr.str() + "\n";
+  }
 }

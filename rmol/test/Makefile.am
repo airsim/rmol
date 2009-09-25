@@ -9,7 +9,7 @@ SUBDIRS = com
 EXTRA_DIST = testLib.sh
 ##
 
-check_PROGRAMS = OptimiseTestSuite SimulateTestSuite
+check_PROGRAMS = OptimiseTestSuite SimulateTestSuite ForecasterTestSuite
 TESTS = $(check_PROGRAMS)
 XFAIL_TESTS = #IndexBuildingTestSuite
 
@@ -25,3 +25,10 @@ SimulateTestSuite_CXXFLAGS = $(BOOST_CFLAGS) $(GSL_CFLAGS) $(CPPUNIT_CFLAGS)
 SimulateTestSuite_LDADD =
 SimulateTestSuite_LDFLAGS = $(BOOST_LIBS) $(GSL_LIBS) $(CPPUNIT_LIBS) \
 	$(top_builddir)/test/com/libcppunitcore.la
+
+ForecasterTestSuite_SOURCES = ForecasterTestSuite.hpp ForecasterTestSuite.cpp
+ForecasterTestSuite_CXXFLAGS= $(BOOST_CFLAGS) $(CPPUNIT_CFLAGS)
+ForecasterTestSuite_LDADD = 
+ForecasterTestSuite_LDFLAGS = $(BOOST_LIBS) $(CPPUNIT_LIBS) \
+	$(top_builddir)/test/com/libcppunitcore.la \
+	$(top_builddir)/@PACKAGE@/core/lib@PACKAGE@.la
