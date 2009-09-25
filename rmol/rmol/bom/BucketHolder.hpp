@@ -47,8 +47,9 @@ namespace RMOL {
         current bucket is the first one, the function returns 0.0. */
     const double getPreviousCumulatedProtection () const;
 
-    /** Fill up the vector of cumulated booking limits. */
-    void fillup (BookingLimitVector_T&) const;
+    /** Fill up the vector of cumulated booking limits and the vector
+        of cumulated protection levels. */
+    void fillup (ProtectionLevelVector_T&, BookingLimitVector_T&) const;
     
     /** Get the current element (bucket/class). */
     Bucket& getCurrentBucket () const;

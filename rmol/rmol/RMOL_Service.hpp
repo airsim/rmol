@@ -66,6 +66,7 @@ namespace RMOL {
     /** Single resource optimization that uses Monte-Carlo algorithm and
         returns a vector of cumulated booking limits. */
     void optimalOptimisationByMCIntegration (const int K,
+                                             ProtectionLevelVector_T&,
                                              BidPriceVector_T&,
                                              BookingLimitVector_T&);
 
@@ -74,21 +75,25 @@ namespace RMOL {
 
     /** Single resource optimization that uses dynamic programming and
         returns a vector of cumulated booking limits. */
-    void optimalOptimisationByDP (BookingLimitVector_T&);
+    void optimalOptimisationByDP(ProtectionLevelVector_T&,BookingLimitVector_T&);
 
     /** Single resource optimization using EMSR heuristic. */
     void heuristicOptimisationByEmsr ();
 
     /** Single resource optimization that uses EMSR heuristic and
         returns a bid-price vector and a vector of cumulated booking limits. */
-    void heuristicOptimisationByEmsr (BidPriceVector_T&, BookingLimitVector_T&);
+    void heuristicOptimisationByEmsr (BidPriceVector_T&, 
+                                      ProtectionLevelVector_T&,
+                                      BookingLimitVector_T&);
     
     /** Single resource optimization using EMSR-a heuristic. */
     void heuristicOptimisationByEmsrA ();
 
     /** Single resource optimization that uses EMSR-a heuristic and
         returns a vector of cumulated booking limits. */
-    void heuristicOptimisationByEmsrA (BidPriceVector_T&, BookingLimitVector_T&);
+    void heuristicOptimisationByEmsrA (BidPriceVector_T&, 
+                                       ProtectionLevelVector_T&,
+                                       BookingLimitVector_T&);
 
     /** Single resource optimization with sellup using EMSR-a heuristic. */
     void heuristicOptimisationByEmsrAwithSellup (SellupProbabilityVector_T&);
@@ -96,6 +101,7 @@ namespace RMOL {
     /** Single resource optimization with sellup that uses EMSR-a heuristic and
         returns a vector of cumulated booking limits. */
     void heuristicOptimisationByEmsrAwithSellup (SellupProbabilityVector_T&,
+                                                 ProtectionLevelVector_T&,
                                                  BidPriceVector_T&, 
                                                  BookingLimitVector_T&);
     
@@ -104,7 +110,9 @@ namespace RMOL {
 
     /** Single resource optimization that uses EMSR-b heuristic and
         returns a vector of cumulated booking limits. */
-    void heuristicOptimisationByEmsrB (BidPriceVector_T&, BookingLimitVector_T&);
+    void heuristicOptimisationByEmsrB (BidPriceVector_T&, 
+                                       ProtectionLevelVector_T&,
+                                       BookingLimitVector_T&);
 
     /** Leg optimisation using Monte-Carlo Integration as a step in
         network optimisation. */
@@ -112,7 +120,9 @@ namespace RMOL {
     
     /** Leg optimisation using Monte-Carlo Integration as a step in
         network optimisation. */
-    void legOptimisationByMC (BidPriceVector_T&, BookingLimitVector_T&);
+    void legOptimisationByMC (BidPriceVector_T&, 
+                              ProtectionLevelVector_T&,
+                              BookingLimitVector_T&);
 
     /** Demand unconstraining by Expectation Maximization */
     void demandUnconstrainingByExpectationMaximization ();

@@ -185,10 +185,10 @@ namespace RMOL {
   }
 
   // //////////////////////////////////////////////////////////////////////
-  void RMOL_Service::
-  optimalOptimisationByMCIntegration(const int K,
-                                     BidPriceVector_T& ioBidPriceVector,
-                                     BookingLimitVector_T& ioBookingLimitVector){
+  void RMOL_Service::optimalOptimisationByMCIntegration
+  (const int K, ProtectionLevelVector_T& ioProtectionLevelVector,
+   BidPriceVector_T& ioBidPriceVector,
+   BookingLimitVector_T& ioBookingLimitVector){
     
     assert (_rmolServiceContext != NULL);
     const double iCapacity = _rmolServiceContext->getCapacity();
@@ -200,7 +200,7 @@ namespace RMOL {
                                                    ioBidPriceVector);
 
     // Fill up booking vector
-    oBucketHolder_ptr->fillup (ioBookingLimitVector);
+    oBucketHolder_ptr->fillup (ioProtectionLevelVector, ioBookingLimitVector);
   }
 
   // //////////////////////////////////////////////////////////////////////
@@ -220,7 +220,8 @@ namespace RMOL {
 
   // //////////////////////////////////////////////////////////////////////
   void RMOL_Service::
-  optimalOptimisationByDP (BookingLimitVector_T& ioBookingLimitVector) {
+  optimalOptimisationByDP (ProtectionLevelVector_T& ioProtectionLevelVector,
+                           BookingLimitVector_T& ioBookingLimitVector) {
     
     assert (_rmolServiceContext != NULL);
     const double iCapacity = _rmolServiceContext->getCapacity();
@@ -230,7 +231,7 @@ namespace RMOL {
     Optimiser::optimalOptimisationByDP (iCapacity, *oBucketHolder_ptr);
 
     // Fill up booking vector
-    oBucketHolder_ptr->fillup (ioBookingLimitVector);
+    oBucketHolder_ptr->fillup (ioProtectionLevelVector, ioBookingLimitVector);
   }
   
   // //////////////////////////////////////////////////////////////////////
@@ -273,6 +274,7 @@ namespace RMOL {
   // //////////////////////////////////////////////////////////////////////
   void RMOL_Service::
   heuristicOptimisationByEmsr (BidPriceVector_T& ioBidPriceVector,
+                               ProtectionLevelVector_T& ioProtectionLevelVector,
                                BookingLimitVector_T& ioBookingLimitVector) {
     assert (_rmolServiceContext != NULL);
     const double iCapacity = _rmolServiceContext->getCapacity();
@@ -282,14 +284,7 @@ namespace RMOL {
     Optimiser::heuristicOptimisationByEmsr (iCapacity, *oBucketHolder_ptr,
                                             ioBidPriceVector);
 
-    // Update the booking limit vector.
-    for (oBucketHolder_ptr->begin(); oBucketHolder_ptr->hasNotReachedEnd();
-         oBucketHolder_ptr->iterate()) {
-      Bucket& currentBucket = oBucketHolder_ptr->getCurrentBucket();
-      const double lBookingLimit = currentBucket.getCumulatedBookingLimit();
-      ioBookingLimitVector.push_back (lBookingLimit);
-    }
-    
+    oBucketHolder_ptr->fillup (ioProtectionLevelVector, ioBookingLimitVector); 
   }
 
   // //////////////////////////////////////////////////////////////////////
@@ -308,6 +303,7 @@ namespace RMOL {
   // //////////////////////////////////////////////////////////////////////
   void RMOL_Service::
   heuristicOptimisationByEmsrA (BidPriceVector_T& ioBidPriceVector,
+                                ProtectionLevelVector_T& ioProtectionLevelVector,
                                 BookingLimitVector_T& ioBookingLimitVector) {
     assert (_rmolServiceContext != NULL);
     const double iCapacity = _rmolServiceContext->getCapacity();
@@ -317,7 +313,7 @@ namespace RMOL {
     Optimiser::heuristicOptimisationByEmsrA (iCapacity, *oBucketHolder_ptr);
 
     // Fill up booking vector
-    oBucketHolder_ptr->fillup (ioBookingLimitVector);
+    oBucketHolder_ptr->fillup (ioProtectionLevelVector, ioBookingLimitVector);
   }
   
   // //////////////////////////////////////////////////////////////////////
@@ -343,6 +339,7 @@ namespace RMOL {
   void RMOL_Service::heuristicOptimisationByEmsrAwithSellup 
   (SellupProbabilityVector_T& iSellupProbabilityVector,
    BidPriceVector_T& ioBidPriceVector,
+   ProtectionLevelVector_T& ioProtectionLevelVector,
    BookingLimitVector_T& ioBookingLimitVector) {
     
     assert (_rmolServiceContext != NULL);
@@ -357,7 +354,7 @@ namespace RMOL {
                                               iSellupProbabilityVector);
 
     // Fill up booking limit vector
-    ioBucketHolder_ptr->fillup (ioBookingLimitVector);
+    ioBucketHolder_ptr->fillup (ioProtectionLevelVector, ioBookingLimitVector);
   }
 
   // //////////////////////////////////////////////////////////////////////
@@ -376,6 +373,7 @@ namespace RMOL {
   // //////////////////////////////////////////////////////////////////////
   void RMOL_Service::
   heuristicOptimisationByEmsrB (BidPriceVector_T& ioBidPriceVector,
+                                ProtectionLevelVector_T& ioProtectionLevelVector,
                                 BookingLimitVector_T& ioBookingLimitVector) {
     assert (_rmolServiceContext != NULL);
     const double iCapacity = _rmolServiceContext->getCapacity();
@@ -385,7 +383,7 @@ namespace RMOL {
     Optimiser::heuristicOptimisationByEmsrB (iCapacity, *oBucketHolder_ptr);
 
     // Fill up booking vector
-    oBucketHolder_ptr->fillup (ioBookingLimitVector);
+    oBucketHolder_ptr->fillup (ioProtectionLevelVector, ioBookingLimitVector);
   }
 
   // ///////////////////////////////////////////////////////////////////////
@@ -415,6 +413,7 @@ namespace RMOL {
   // ///////////////////////////////////////////////////////////////////////
   void RMOL_Service::
   legOptimisationByMC (BidPriceVector_T& ioBidPriceVector,
+                       ProtectionLevelVector_T& ioProtectionLevelVector,
                        BookingLimitVector_T& ioBookingLimitVector) {
     assert (_rmolServiceContext != NULL);
     const ResourceCapacity_T iCapacity = _rmolServiceContext->getCapacity();
@@ -425,7 +424,7 @@ namespace RMOL {
                                     ioBidPriceVector);
 
     // Fill up booking vector
-    oBucketHolder_ptr->fillup (ioBookingLimitVector);
+    oBucketHolder_ptr->fillup (ioProtectionLevelVector, ioBookingLimitVector);
   }
 
   // ///////////////////////////////////////////////////////////////////////

@@ -140,9 +140,10 @@ namespace RMOL {
       const double ljdouble = std::floor (Kj * (pj - pj1) / pj);
       lj = static_cast<int> (ljdouble);
 
-      /** DEBUG
-          RMOL_LOG_DEBUG ("p(j+1)/p(j) = " << pj1 / pj << ", lj = " << lj 
-          << ", Kj = " << Kj << " => " << Kj - lj << " points above y(j)");
+      /** DEBUG 
+      RMOL_LOG_DEBUG ("p(j+1)/p(j) = " << pj1 / pj << ", lj = " << lj 
+                      << ", Kj = " << Kj << " => " << Kj - lj
+                      << " points above y(j)");
       */
 
       /** Consistency check. */
@@ -379,14 +380,11 @@ namespace RMOL {
       const double ljdouble = std::floor (Kj * (pj - pj1) / pj);
       lj = static_cast<int> (ljdouble);
       
-      // DEBUG
-      std::cout << "l" << j << " = " << lj << std::endl;
-
-      /** DEBUG
+      /** DEBUG 
           RMOL_LOG_DEBUG ("p(j+1)/p(j) = " << pj1 / pj << ", lj = " << lj 
           << ", Kj = " << Kj << " => " << Kj - lj << " points above y(j)");
       */
-
+          
       /** Consistency check. */
       assert (lj >= 1 && lj < Kj);
 

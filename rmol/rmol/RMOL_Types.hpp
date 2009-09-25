@@ -53,6 +53,10 @@ namespace RMOL {
       <br>It is a double, as it allows for overbooking. */
   typedef double BookingLimit_T;
 
+  /** Define the Protection Level.
+      <br>It is a double, as it allows for overbooking. */
+  typedef double ProtectionLevel_T;
+
   /** Define the number of products.*/
   typedef const unsigned int NumberOfProducts_T;
 
@@ -69,6 +73,10 @@ namespace RMOL {
   /** Define the vector of booking limits.
       <br> It is a vector of double. */
   typedef std::vector<double> BookingLimitVector_T;
+
+  /** Define the vector of protection levels.
+      <br> It is a vector of double. */
+  typedef std::vector<double> ProtectionLevelVector_T;
 
   /** Define the vector of generated demand (for MC integration use).
       <br> It is a vector of double. */
