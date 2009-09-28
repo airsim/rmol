@@ -45,6 +45,7 @@ int testOptimiseHelper (const unsigned short optimisationMethodFlag) {
     
     // Define bid price and booking Limit vectors
     RMOL::BidPriceVector_T lBidPriceVector;
+    RMOL::ProtectionLevelVector_T lProtectionLevelVector;
     RMOL::BookingLimitVector_T lBookingLimitVector;
 
     if (hasInputFile) {
@@ -89,6 +90,7 @@ int testOptimiseHelper (const unsigned short optimisationMethodFlag) {
 	  {
       	// Test the EMSR-a algorithm implementation
       	rmolService.heuristicOptimisationByEmsrA (lBidPriceVector, 
+                                                  lProtectionLevelVector,
 												  lBookingLimitVector);
 
       	// Return a cumulated booking limit value to test
@@ -117,7 +119,8 @@ int testOptimiseHelper (const unsigned short optimisationMethodFlag) {
 
         // Test the algorithm with the sample sell-up vector
         rmolService.heuristicOptimisationByEmsrAwithSellup 
-          (sellupProbabilityVector, lBidPriceVector, lBookingLimitVector);
+          (sellupProbabilityVector, lProtectionLevelVector, 
+           lBidPriceVector, lBookingLimitVector);
 
         // Return a cumulated booking limit value to test
         oExpectedBookingLimit = static_cast<int> (lBookingLimitVector.at(2));

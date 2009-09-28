@@ -58,10 +58,10 @@ namespace RMOL {
   typedef double ProtectionLevel_T;
 
   /** Define the number of products.*/
-  typedef const unsigned int NumberOfProducts_T;
+  typedef unsigned int NumberOfProducts_T;
 
   /** Define the number of products similar to a product.*/
-  typedef const unsigned int NumberOfProductsSimilarToAProduct_T;
+  typedef unsigned int NumberOfProductsSimilarToAProduct_T;
 
   /** Define the Bid-Price Vector.
       <br> It is a vector of double. */
