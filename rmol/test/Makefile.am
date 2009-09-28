@@ -9,8 +9,10 @@ SUBDIRS = com
 EXTRA_DIST = testLib.sh
 ##
 
-check_PROGRAMS = OptimiseTestSuite SimulateTestSuite ForecasterTestSuite
-TESTS = $(check_PROGRAMS)
+EXTRA_TESTS = valarrays
+STD_CHECKS = OptimiseTestSuite SimulateTestSuite ForecasterTestSuite
+check_PROGRAMS = $(STD_CHECKS) $(EXTRA_TESTS)
+TESTS = $(STD_CHECKS)
 XFAIL_TESTS = #IndexBuildingTestSuite
 
 OptimiseTestSuite_SOURCES = OptimiseTestSuite.hpp OptimiseTestSuite.cpp
@@ -32,3 +34,8 @@ ForecasterTestSuite_LDADD =
 ForecasterTestSuite_LDFLAGS = $(BOOST_LIBS) $(CPPUNIT_LIBS) \
 	$(top_builddir)/test/com/libcppunitcore.la \
 	$(top_builddir)/@PACKAGE@/core/lib@PACKAGE@.la
+
+valarrays_SOURCES = valarrays.cpp
+valarrays_CXXFLAGS= $(BOOST_CFLAGS) $(CPPUNIT_CFLAGS)
+valarrays_LDADD = 
+valarrays_LDFLAGS = $(BOOST_LIBS)
