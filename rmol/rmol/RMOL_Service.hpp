@@ -124,8 +124,8 @@ namespace RMOL {
                               ProtectionLevelVector_T&,
                               BookingLimitVector_T&);
 
-    /** Demand unconstraining by Expectation Maximization */
-    void demandUnconstrainingByExpectationMaximization ();
+    /** Data unconstraining by Expectation Maximization */
+    void dataUnconstrainingByExpectationMaximization ();
 
     /** Demand forecast using Q-Forecasting */
     void demandForecastByQForecasting (ForecastedDemandParameterList_T&, 

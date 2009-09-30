@@ -5,6 +5,7 @@
 // //////////////////////////////////////////////////////////////////////
 // STL
 #include <vector>
+#include <string>
 
 namespace RMOL {
 
@@ -13,8 +14,16 @@ namespace RMOL {
     /** Returns the minimum element of a given vector*/
     static void getMinimumElement (double& oMinValue, std::vector<double>&); 
 
+    /** Return the sum of all elements of a given vector*/
+    static void sumUpElements (double& oSum, std::vector<double>&);
+
     /** Return mean for the given elements of a vector. */
     static void getMean (double& oMean, std::vector<double>&);
+
+    /** Return squared error. */
+    static void getSquaredError (double& oSquaredError, 
+                                 std::vector<double>&,
+                                 double& iMean);
 
     /** Return standard deviation for the given elements of a vector and  
         precomputed mean. */
@@ -36,6 +45,10 @@ namespace RMOL {
     /** Return first input vector after adding 2nd input vector to it. */
     static void addTwoVectors (std::vector<double>& ioVector, 
                                std::vector<double>& iVector);
+
+    /** Return a vector after appending another vector at the end. */
+    static void appendAVectorToAnother (std::vector<double>& ioVector,
+                                        std::vector<double>& iVector);
 
     /** Return a string constructed by the elements of a vector. */
     static std::string vectorToString (std::vector<double>& iVector);

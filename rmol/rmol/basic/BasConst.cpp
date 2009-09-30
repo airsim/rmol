@@ -18,7 +18,13 @@ namespace RMOL {
 
   /** Default epsilon value to qualify a denominator */
   const double DEFAULT_EPSILON = 0.0001;
+
+  /** Default stopping value for an iterative algorithm. */
+  const double DEFAULT_STOPPING_CRITERION = 0.01;
   
+  /** Default negative value used to initialze a double variable. */
+  const double DEFAULT_INITIALIZER_DOUBLE_NEGATIVE = -10.0;
+
   /** Default value for the load factor used for overbooking calculation. */
   const double DEFAULT_OVERBOOKING_LOAD_FACTOR = 0.0;
 

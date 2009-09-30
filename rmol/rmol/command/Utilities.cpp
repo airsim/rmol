@@ -12,7 +12,7 @@
 #include <functional>
 // RMOL
 #include <rmol/command/Utilities.hpp>
-
+#include <rmol/service/Logger.hpp>
 namespace RMOL {
 
   // /////////////////////////////////////////////////////////////////////
@@ -27,11 +27,39 @@ namespace RMOL {
   }
 
   // /////////////////////////////////////////////////////////////////////
+  void Utilities::sumUpElements (double& oSum, std::vector<double>& iVector) 
+  {
+    const unsigned int lSize = iVector.size();
+    if (lSize > 0) {
+      oSum = std::accumulate(iVector.begin(), iVector.end(),0);
+    }
+    else {RMOL_LOG_ERROR ("There is no element to sum up.");}
+  }
+
+  // /////////////////////////////////////////////////////////////////////
   void Utilities::getMean (double& oMean, std::vector<double>& iVector) {
     assert(!iVector.empty());
     double lSum = std::accumulate(iVector.begin(), iVector.end(),0);
     oMean = lSum/iVector.size();
 
+  }
+
+  // /////////////////////////////////////////////////////////////////////
+  void Utilities::getSquaredError (double& oSquaredError, 
+                               std::vector<double>& iVector,
+                               double& iMean) {
+    if (iMean < 0) {RMOL_LOG_ERROR ("Negative mean is not expected.");}
+    else {
+      const unsigned int lSize = iVector.size();
+      if (lSize > 0) {
+        oSquaredError = 0.0;
+        for (unsigned int j = 0; j < lSize; j++) {
+          const double lError = iVector.at(j) - iMean;
+          oSquaredError += lError * lError;
+        }
+      } 
+      else {RMOL_LOG_ERROR ("No value to compute the squared error");}
+    }
   }
 
   // /////////////////////////////////////////////////////////////////////
@@ -110,6 +138,21 @@ namespace RMOL {
       ioVector.at(k) = ioVector.at(k) + iVector.at(k);
     }
   }
+
+  // /////////////////////////////////////////////////////////////////////
+  static void appendAVectorToAnother (std::vector<double>& ioVector,
+                                      std::vector<double>& iVector) {
+    ioVector.insert(ioVector.end(), iVector.begin(), iVector.end());
+  }
+
+  // // /////////////////////////////////////////////////////////////////////
+  // static void overwriteAVectorWithAnotherFromAPosition 
+  //                       (std::vector<double>& ioVector,
+  //                        std::vector<double>& iVector, 
+  //                        std::vector<double>::iterator fromThisPosition) {
+  //   ioVector.insert(ioVector.end(), iVector.begin(), iVector.end());
+  // }
+
   // /////////////////////////////////////////////////////////////////////
   std::string Utilities::vectorToString (std::vector<double>& iVector) {
     std::ostringstream oStr;

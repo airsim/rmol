@@ -428,11 +428,11 @@ namespace RMOL {
   }
 
   // ///////////////////////////////////////////////////////////////////////
-  void demandUnconstrainingByExpectationMaximization () {
+  void dataUnconstrainingByExpectationMaximization () {
 
     // DEBUG
     std::ostringstream logStream;
-    logStream << "Testing demand unconstraining by Expectation Maximization";
+    logStream << "Testing data unconstraining by Expectation Maximization";
     RMOL_LOG_DEBUG (logStream.str());
 
   }
