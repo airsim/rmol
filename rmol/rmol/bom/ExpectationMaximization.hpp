@@ -13,13 +13,16 @@ namespace RMOL {
 
   class ExpectationMaximization {
   public :
+
+    /** Return the input constrained data holder after unconstraining. */
     static void unconstrainData 
     (ConstrainedDataHolder_T& ioConstrainedDataHolder, 
      UnconstrainedDataHolder_T& iUnconstrainedDataHolder,
      StoppingCriterion_T& iStoppingCriterion);
 
     static void expectedValueOfNormallyDistributedConstrainedData
-    (ConstrainedDataHolder_T& ioConstrainedDataHolder, 
+    (UnconstrainedDataHolder_T& ioUnconstrainedDataHolder,
+     ConstrainedDataHolder_T& iConstrainedDataHolder, 
      Mean_T&, StandardDeviation_T&);
 
   };

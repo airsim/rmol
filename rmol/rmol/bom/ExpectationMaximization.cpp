@@ -1,8 +1,10 @@
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
+//GSL
+#include <gsl/gsl_cdf.h>
 // STL
-# include <math.h>
+#include <math.h>
 // RMOL
 #include <rmol/service/Logger.hpp>
 #include <rmol/basic/BasConst_General.hpp>
@@ -47,30 +49,40 @@ namespace RMOL {
         double lEstimatedMean, lEstimatedSD, lSqErrorOfConstrainedData = 
           DEFAULT_INITIALIZER_DOUBLE_NEGATIVE;
         
+        // A holder for unconstrained results at each iteration
+        UnconstrainedDataHolder_T lUnconstrainedDataDuringIteration; 
         do {
           if (lEstimatedMean != DEFAULT_INITIALIZER_DOUBLE_NEGATIVE) { 
             lCompleteDataMean = lEstimatedMean;
             lCompleteDataSD = lEstimatedSD;
           }
 
-          // TO-DO: Expectation step
+          // Expectation step
           expectedValueOfNormallyDistributedConstrainedData 
-            (ioConstrainedDataHolder, lCompleteDataMean, lCompleteDataSD);
+            (lUnconstrainedDataDuringIteration, ioConstrainedDataHolder, 
+             lCompleteDataMean, lCompleteDataSD);
+
           // Maximization step
           // Mean
-          Utilities::sumUpElements (lEstimatedMean, ioConstrainedDataHolder);
+          Utilities::sumUpElements (lEstimatedMean, 
+                                    lUnconstrainedDataDuringIteration);
           lEstimatedMean = (lEstimatedMean + lSumOfUnconstrainedData) / 
-            lTotalNumberOfData;
+                           lTotalNumberOfData;
           // S.D.
           Utilities::getSquaredError (lSqErrorOfUnconstrainedData,
                                       iUnconstrainedDataHolder, lEstimatedMean);
           Utilities::getSquaredError (lSqErrorOfConstrainedData,
-                                      ioConstrainedDataHolder, lEstimatedMean);
+                                      lUnconstrainedDataDuringIteration, 
+                                      lEstimatedMean);
           lEstimatedSD = sqrt((lSqErrorOfUnconstrainedData + 
                           lSqErrorOfConstrainedData) / (lTotalNumberOfData-1));          
-        }  while ( fabs(lCompleteDataMean - lEstimatedMean ) > iStoppingCriterion );
-        // If should mean and s.d. of unconstrained data be outputed 
+
+        } while(fabs(lCompleteDataMean - lEstimatedMean ) > iStoppingCriterion);
+        // Should mean and s.d. of unconstrained data be outputed: 
         // lCompleteDataMean = lEstimatedMean; lCompleteDataSD = lEstimatedSD;
+
+        // Update constrained data with unconstrained ones
+        ioConstrainedDataHolder = lUnconstrainedDataDuringIteration;
       }
       // Job finished as all are unconstrained or nothing to be unconstrained
     }
@@ -85,9 +97,31 @@ namespace RMOL {
   // //////////////////////////////////////////////////////////////////////  
   void ExpectationMaximization::
   expectedValueOfNormallyDistributedConstrainedData
-  (ConstrainedDataHolder_T& ioConstrainedDataHolder, 
+  (UnconstrainedDataHolder_T& ioUnconstrainedDataHolder,
+   ConstrainedDataHolder_T& iConstrainedDataHolder, 
    Mean_T& iMean, StandardDeviation_T& iSD) {
-    
+    for (unsigned int k = 0; iConstrainedDataHolder.size(); ++k) {
+      const double kthCensoredData = iConstrainedDataHolder.at(k);
+
+      /* Compute E[X | X >= d] where X ~ N(mu, sigma)
+                         integral_B^infinity f(x) dx 
+         E[X | X >= B] =  ----------------------------  
+                         integral_B^infinity xf(x) dx 
+                       = mu + d2 / d1
+      */
+      double e, d1, d2;
+      const double lerror = kthCensoredData - iMean;
+      d1 = gsl_cdf_gaussian_Q (lerror, iSD);
+      e = - (lerror) * (lerror) * 0.5 / (iSD * iSD);
+      d2 = exp(e) * iSD / sqrt(2 * 3.14159265);
+      if (d1 < DEFAULT_EPSILON) {
+        ioUnconstrainedDataHolder.push_back(iConstrainedDataHolder.at(k));
+      }
+      else {
+        ioUnconstrainedDataHolder.push_back(iMean + d2/d1);
+      }
+    }
   }
 
+  // //////////////////////////////////////////////////////////////////////  
 }
