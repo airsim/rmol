@@ -33,45 +33,20 @@ namespace stdair {
   }
 
   // //////////////////////////////////////////////////////////////////////
-  void FacBomContent::setContent (BomStructure& ioBomStructure,
-                                  BomContent& ioBomContent) {
-    ioBomStructure._content = &ioBomContent;
-  }
-  
-  // //////////////////////////////////////////////////////////////////////
   void FacBomContent::clean() {
-    for (StructureMapFromContent_T::iterator itBom = _structureMap.begin();
-	 itBom != _structureMap.end(); itBom++) {
-      const BomContent* currentBom_ptr = itBom->first;
+    for (BomContentPool_T::iterator itBom = _contentPool.begin();
+	 itBom != _contentPool.end(); itBom++) {
+      BomContent* currentBom_ptr = *itBom;
       assert (currentBom_ptr != NULL);
-      
-      _structureMap.erase (currentBom_ptr);
+
       delete currentBom_ptr; currentBom_ptr = NULL;
     }
 
     // Empty the pool of Factories
-    _structureMap.clear();
+    _contentPool.clear();
 
     // Reset the static instance
     _instance = NULL;
-  }
-
-  // //////////////////////////////////////////////////////////////////////
-  BomContentRoot& FacBomContent::createBomRoot () {
-
-    // Create the BOM root object.
-    // Note that its object key has got no importance, as that BOM root class
-    // is actually (only) a marker.
-    BomStructureRootKey lBomStructureRootKey;
-    BomContentRoot& lBomContentRoot =
-      createInternal<BomContentRoot> (lBomStructureRootKey);
-
-    // Retrieve the BOM root structure object
-    BomStructureRoot* lBomStructureRoot_ptr =
-      getBomStructure<BomContentRoot> (lBomContentRoot);
-    assert (lBomStructureRoot_ptr != NULL);
-
-    return lBomContentRoot;
   }
 
 }

@@ -14,13 +14,7 @@
 
 namespace stdair {
 
-  // Forward declarations
-  class BomContent;
-
-  /** Base class for the Business Object Model (BOM) tree structure.
-      <br>That class is just a holder of, on one hand, a key and, on the
-      other hand, a pointer on the functional (Business) object, which is
-      the actual content. */
+  /** Base class for the Business Object Model (BOM) tree structure. */
   class BomStructure {
     friend class FacBomStructure;
     friend class FacBomContent;
@@ -45,32 +39,28 @@ namespace stdair {
     /** Get a string describing the short key (differentiating two objects
         at the same level). */
     virtual const std::string describeShortKey() const = 0;
-
-    /** Retrieve the actual functional (Business Object) content. */
-    template<typename T>
-    T& getContent() const {
-      T* oBom_ptr = NULL;
-      oBom_ptr = dynamic_cast<T*> (_content);
-      assert (oBom_ptr != NULL);
-      return *oBom_ptr;
-    }
-
     
   protected:
     /** Protected Default Constructor to ensure this class is abtract. */
-    BomStructure() : _content (NULL) {}
-    BomStructure(const BomStructure&) : _content (NULL) {}
+    BomStructure() {}
+    BomStructure(const BomStructure&) {}
 
     /** Destructor. */
     virtual ~BomStructure() {}
-
-  protected:
-    // Attributes
-    /** The actual functional (Business Object) content. */
-    BomContent* _content;
- };
+    
+  public:
+    /**
+       Template function aimed at retrieving the bom content pointer from a
+       bom structure.
+    */
+    template <typename BOM_CONTENT>
+    static BOM_CONTENT* getBomContentPtr (const typename BOM_CONTENT::BomStructure_T& iBomStructure) {
+      return iBomStructure._content;
+    }
+    
+  };
+  
 }
-
 /**
    Piece of code given by Nicolai M. Josuttis, Section 13.12.1 "Implementing
    Output Operators" (p653) of his book "The C++ Standard Library: A Tutorial

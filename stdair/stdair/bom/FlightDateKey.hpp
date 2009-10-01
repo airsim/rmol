@@ -11,9 +11,11 @@
 namespace stdair {
 
   // Forward declarations
+  template <typename BOM_CONTENT>
   class FlightDate;
 
   /** Key of flight-date. */
+  template <typename BOM_CONTENT>
   class FlightDateKey : public BomKey {
     friend class FacBomStructure;
     friend class FacBomContent;
@@ -21,7 +23,7 @@ namespace stdair {
   private:
     // Type definitions
     /** Definition allowing to retrieve the associated BOM structure type. */
-    typedef FlightDate BomStructure_T;
+    typedef FlightDate<BOM_CONTENT> BomStructure_T;
 
   public:
     // /////////// Construction ///////////
@@ -32,8 +34,7 @@ namespace stdair {
     }
 
     /** Destructor. */
-    ~FlightDateKey () {
-    }
+    ~FlightDateKey () { }
     
     // /////////// Getters //////////
     /** Get the flight number. */
@@ -49,19 +50,24 @@ namespace stdair {
     // /////////// Display support methods /////////
     /** Dump a Business Object Key into an output stream.
         @param ostream& the output stream. */
-    void toStream (std::ostream& ioOut) const;
+    void toStream (std::ostream& ioOut) const {
+      ioOut << "FlightDateKey: " << toString() << std::endl;
+    }
 
     /** Read a Business Object Key from an input stream.
         @param istream& the input stream. */
-    void fromStream (std::istream& ioIn);
+    void fromStream (std::istream& ioIn) { }
 
    /** Get the serialised version of the Business Object Key.
        <br>That string is unique, at the level of a given Business Object,
        when among children of a given parent Business Object.
        <br>For instance, "H" and "K" allow to differentiate among two
        marketing classes for the same segment-date. */
-    std::string toString() const;
-
+    std::string toString() const {
+      std::ostringstream oStr;
+      oStr << _flightNumber << ", " << _flightDate;
+      return oStr.str();
+    }
     
   private:
     // Attributes

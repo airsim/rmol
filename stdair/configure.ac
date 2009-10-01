@@ -187,10 +187,19 @@ AC_CONFIG_FILES(
 	stdair.spec
 	stdair.m4
 	stdair/Makefile
+	stdair/basic/Makefile
 	stdair/bom/Makefile
 	stdair/factory/Makefile
 	stdair/core/Makefile
 	stdair/config/Makefile
+	doc/Makefile
+	doc/images/Makefile
+	doc/tutorial/Makefile
+	doc/tutorial/src/Makefile
+	doc/local/Makefile
+	doc/local/index.doc
+	doc/doxygen_html.cfg
+	doc/sourceforge/howto_release_stdair.html
 	test/Makefile
 	test/com/Makefile
 	test/mpl/Makefile

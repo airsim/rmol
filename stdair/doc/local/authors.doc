@@ -1,0 +1,35 @@
+/*!
+\page authors StdAir People
+
+
+\section admins Project Admins
+
+- Denis Arnaud <denis_arnaud@users.sourceforge.net> (\ref N)
+- Anh Quan Nguyen <quannaus@users.sourceforge.net> (\ref N)
+
+
+\section developers Developers
+
+- Daniel Perez <daniperez@users.sourceforge.net> (\ref N)
+- Christophe Lacombe <ddtof@users.sourceforge.net> (\ref N)
+
+
+\section retired Retired Developers
+
+- Rémi Casacci (\ref N)
+
+
+\section contributors Contributors
+
+- Emmanuel Bastien (\ref N)
+
+
+\section distributors Distribution Maintainers
+
+-  Denis Arnaud <denis_arnaud@users.sourceforge.net> 
+
+\note
+\anchor N
+(N) - <a href="http://www.amadeus.com">Amadeus</a> employees.
+ 
+*/

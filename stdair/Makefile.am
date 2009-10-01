@@ -25,7 +25,7 @@ MAINTAINERCLEANFILES = Makefile.in aclocal.m4 configure \
 EXTRA_DIST =
 
 # Build in these directories:
-SUBDIRS = stdair @PACKAGE@ $(TEST_DIR)
+SUBDIRS = stdair @PACKAGE@ $(HTML_DOC_DIR) $(TEST_DIR)
 
 
 # Configuration helpers

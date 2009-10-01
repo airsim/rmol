@@ -20,7 +20,7 @@ namespace stdair {
     /** Define the pool (list) of factories. */
     typedef std::vector<FacBomStructure*> BomStructureFactoryPool_T;
     typedef std::vector<FacBomContent*> BomContentFactoryPool_T;
-
+    
     /** Provides the unique instance.
         <br>The singleton is instantiated when first used.
         @return FacSupervisor& */

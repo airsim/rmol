@@ -6,8 +6,14 @@
 // //////////////////////////////////////////////////////////////////////
 // STL
 #include <map>
+// MPL
+#include <boost/mpl/vector.hpp>
 // STDAIR
 #include <stdair/STDAIR_Types.hpp>
+#include <stdair/bom/BomStructure.hpp>
+#include <stdair/bom/BomContentRoot.hpp>
+#include <stdair/bom/BomStructureRoot.hpp>
+#include <stdair/bom/BomStructureRootKey.hpp>
 #include <stdair/factory/FacBomStructure.hpp>
 
 namespace stdair {
@@ -15,38 +21,44 @@ namespace stdair {
   // Forward declarations
   class BomStructure;
   class BomContent;
-  class BomContentRoot;
   
   /** Base class for Factory layer. */
   class FacBomContent {
     friend class FacSupervisor;
   public:
-
     /** Define the list (pool) of Bom objects. */
-    typedef std::map<const stdair::BomContent*,
-                     stdair::BomStructure*> StructureMapFromContent_T;
-
+    typedef std::vector<BomContent*> BomContentPool_T;
   public:
     /** Create the root of the BOM tree, i.e., a pair of linked
         BomStructureRoot and BomContentRoot objects. */
-    BomContentRoot& createBomRoot ();
+    template <typename BOM_CONTENT_CHILD>
+    BomContentRoot<BOM_CONTENT_CHILD>& createBomRoot () {
+
+      // Type for the BomContentRoot.
+      typedef BomContentRoot<BOM_CONTENT_CHILD> BOM_CONTENT_ROOT_T;
+      // Create the BOM root object.
+      // Note that its object key has got no importance, as that BOM root class
+      // is actually (only) a marker.
+      BomStructureRootKey<BOM_CONTENT_ROOT_T> lBomStructureRootKey;
+      BOM_CONTENT_ROOT_T& lBomContentRoot =
+        createInternal<BOM_CONTENT_ROOT_T>(lBomStructureRootKey);
+            
+      return lBomContentRoot;
+    }
     
     /** Create a (child) content object, given a key.
         <br>A structure object is created, under the hood, with the given key.
         That structure object then gets a pointer on the content object. */
     template <typename BOM_CONTENT_CHILD>
-    BOM_CONTENT_CHILD& create (typename BOM_CONTENT_CHILD::ParentBomContent_T& ioContentParent,
-                               const typename BOM_CONTENT_CHILD::BomKey_T& iKey) {
-
+    BOM_CONTENT_CHILD& create (typename BOM_CONTENT_CHILD::ParentBomContent_T& ioContentParent, const typename BOM_CONTENT_CHILD::BomKey_T& iKey) {
       
       // Create the child structure object for the given key
       BOM_CONTENT_CHILD& lBomContentChild =
         createInternal<BOM_CONTENT_CHILD> (iKey);
 
       // Retrieve the child structure object
-      typename BOM_CONTENT_CHILD::BomStructure_T* lBomStructureChild_ptr =
-        getBomStructure<BOM_CONTENT_CHILD> (lBomContentChild);
-      assert (lBomStructureChild_ptr != NULL);
+      typename BOM_CONTENT_CHILD::BomStructure_T& lBomStructureChild =
+        lBomContentChild.getBomStructure ();
 
       // Type for the parent Bom content
       typedef typename BOM_CONTENT_CHILD::ParentBomContent_T PARENT_CONTENT_T;
@@ -55,21 +67,16 @@ namespace stdair {
       typedef typename PARENT_CONTENT_T::BomStructure_T PARENT_STRUCTURE_T;
       
       // Retrieve the parent structure object
-      PARENT_STRUCTURE_T* lBomStructureParent_ptr =
-        getBomStructure<PARENT_CONTENT_T> (ioContentParent);
-      assert (lBomStructureParent_ptr != NULL);
-
-      // Type for the children Bom structure
-      typedef typename PARENT_STRUCTURE_T::ChildrenBomList_T CHILDREN_LIST_T;
-      
+      PARENT_STRUCTURE_T& lBomStructureParent =
+        ioContentParent.getBomStructure ();
+           
       // Type for the child Bom structure
       typedef typename BOM_CONTENT_CHILD::BomStructure_T CHILD_STRUCTURE_T;
       
       // Link both the parent and child structure objects
       const bool hasLinkBeenSuccessful = FacBomStructure::
-        linkBomParentWithBomChild<CHILD_STRUCTURE_T,
-                                  CHILDREN_LIST_T> (*lBomStructureParent_ptr,
-                                                    *lBomStructureChild_ptr);
+        linkBomParentWithBomChild<CHILD_STRUCTURE_T> (lBomStructureParent,
+                                                      lBomStructureChild);
 
       if (hasLinkBeenSuccessful == false) {
         throw new MemoryAllocationException();
@@ -87,7 +94,8 @@ namespace stdair {
     BOM_CONTENT& createInternal (const typename BOM_CONTENT::BomKey_T& iKey) {
     
       // Create the structure/holder object
-      typename BOM_CONTENT::BomStructure_T& lBomStructure =
+      typedef typename BOM_CONTENT::BomStructure_T BOM_STRUCTURE_T;
+      BOM_STRUCTURE_T& lBomStructure =
         FacBomStructure::instance().
         create<typename BOM_CONTENT::BomKey_T> (iKey);
 
@@ -96,34 +104,14 @@ namespace stdair {
       BOM_CONTENT* aBomContent_ptr = new BOM_CONTENT (lBomStructure);
       assert (aBomContent_ptr != NULL);
 
-      // Link the structure/holder object with its corresponding content object
-      setContent (lBomStructure, *aBomContent_ptr);
+      // The new object is added to the pool of content objects
+      _contentPool.push_back (aBomContent_ptr);
 
-      // The new content object is added to the pool of content objects
-      const bool hasInsertBeenSuccessful = _structureMap.
-        insert (StructureMapFromContent_T::value_type (aBomContent_ptr,
-                                                       &lBomStructure)).second;
-      if (hasInsertBeenSuccessful == false) {
-        throw new MemoryAllocationException();
-      }
-    
+      // Link the structure/holder object with its corresponding content object
+      setContent<BOM_STRUCTURE_T, BOM_CONTENT> (lBomStructure, *aBomContent_ptr);
+
       return *aBomContent_ptr;
     }
-
-    /** Retrieve the structure object associated to the given content object. */
-    template <typename BOM_CONTENT>
-    typename BOM_CONTENT::BomStructure_T* getBomStructure (const BOM_CONTENT& iBomContent) {
-      typename BOM_CONTENT::BomStructure_T* oBomStructure_ptr = NULL;
-    
-      StructureMapFromContent_T::iterator itBomStructure =
-        _structureMap.find (&iBomContent);
-      if (itBomStructure != _structureMap.end()) {
-        oBomStructure_ptr =
-          dynamic_cast<typename BOM_CONTENT::BomStructure_T*> (itBomStructure->second);
-      }
-      return oBomStructure_ptr;
-    }
-  
 
   public:
     /** Provide the unique instance.
@@ -147,17 +135,19 @@ namespace stdair {
   private:
     /** Link the structure/holder object with its corresponding content
         object. */
-    static void setContent (BomStructure&, BomContent&);
-
+    template<typename BOM_STRUCTURE, typename BOM_CONTENT>
+    static void setContent (BOM_STRUCTURE& ioBomStructure,
+                            BOM_CONTENT& ioBomContent) {
+      ioBomStructure._content = &ioBomContent;
+    }
     
   private:
     /** The unique instance.*/
     static FacBomContent* _instance;
     
   private:
-    /** Map of the structure objects corresponding to content objects (they
-        both get a copy of the same key). */
-    StructureMapFromContent_T _structureMap;
+    /** List of instantiated Business Objects*/
+    BomContentPool_T _contentPool;
   };
 }
 #endif // __STDAIR_FAC_FACBOMCONTENT_HPP
