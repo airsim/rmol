@@ -120,7 +120,7 @@ namespace stdair {
     
     /** Default copy constructor. */
     BomConstIterator_T (const BomConstIterator_T& iBomIterator)
-      : Parent_T (iBomIterator._itBomStructureObject) { }
+      : Parent_T (iBomIterator.Parent_T::_itBomStructureObject) { }
     
     /** Destructor. */
     ~BomConstIterator_T() { }
@@ -226,7 +226,7 @@ namespace stdair {
     
     /** Default copy constructor. */
     BomIterator_T (const BomIterator_T& iBomIterator)
-      : Parent_T (iBomIterator._itBomStructureObject) { }
+      : Parent_T (iBomIterator.Parent_T::_itBomStructureObject) { }
     
     /** Destructor. */
     ~BomIterator_T() { }
