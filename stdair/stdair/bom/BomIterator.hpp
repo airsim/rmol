@@ -56,6 +56,21 @@ namespace stdair {
       return _itBomStructureObject != iIt._itBomStructureObject;
     }
 
+    /** Relational operators. */
+    bool operator< (const BomIteratorAbstract& iIt) {
+      return _itBomStructureObject < iIt._itBomStructureObject;
+    }
+    bool operator> (const BomIteratorAbstract& iIt) {
+      return _itBomStructureObject > iIt._itBomStructureObject;
+    }
+    bool operator<= (const BomIteratorAbstract& iIt) {
+      return _itBomStructureObject <= iIt._itBomStructureObject;
+    }
+    bool operator>= (const BomIteratorAbstract& iIt) {
+      return _itBomStructureObject >= iIt._itBomStructureObject;
+    }
+
+
   public:
     ///////////// Attributes //////////////
     /** Iterator for the current BOM structure on the non-ordered list. */
@@ -74,7 +89,7 @@ namespace stdair {
             const BomIteratorAbstract<ITERATOR>& r) {
     return l._itBomStructureObject - r._itBomStructureObject;
   }
-  
+
   
   /** Template class aimed at iterating a list or a map of children BOM
       structure of a dedicated type using const iterators.
@@ -169,6 +184,20 @@ namespace stdair {
     value_type _intermediateValue;
     
   };
-  
+
+  /**
+     Operators for BomConstIterator_T that need to be implemented outside
+     of BomConstIterator_T scope.
+   */
+  template<typename BOM_CONTENT, typename ITERATOR>
+  inline BomConstIterator_T<BOM_CONTENT, ITERATOR>
+  operator+(const typename ITERATOR::difference_type n, 
+            const BomConstIterator_T<BOM_CONTENT, ITERATOR>& r) {
+    // Definition allowing to retrieve the Parent_T of BomConstIterator_T.
+    typedef typename BomConstIterator_T<BOM_CONTENT,ITERATOR>::Parent_T Parent_T;
+    return BomConstIterator_T<BOM_CONTENT, ITERATOR>
+      (n+r.Parent_T::_itBomStructureObject);
+  }
+
 }
 #endif // __STDAIR_BOM_BOMITERATOR_T_HPP
