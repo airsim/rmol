@@ -56,11 +56,17 @@ namespace stdair {
     /** Define the  children bom holder type. */
     typedef BomChildrenHolderImp<ContentChild_T> ChildrenBomHolder_T;
 
-    /** Define the iterator of the flight-date list. */
+    /** Define the iterators of the flight-date list. */
     typedef typename ChildrenBomHolder_T::ListConstIterator_T FlightDateListConstIterator_T;
+    typedef typename ChildrenBomHolder_T::ListConstReverseIterator_T FlightDateListConstReverseIterator_T;
+    typedef typename ChildrenBomHolder_T::ListIterator_T FlightDateListIterator_T;
+    typedef typename ChildrenBomHolder_T::ListReverseIterator_T FlightDateListReverseIterator_T;
 
-    /** Define the iterator of the flight-date map. */
+    /** Define the iterators of the flight-date map. */
     typedef typename ChildrenBomHolder_T::MapConstIterator_T FlightDateMapConstIterator_T;
+    typedef typename ChildrenBomHolder_T::MapConstReverseIterator_T FlightDateMapConstReverseIterator_T;
+    typedef typename ChildrenBomHolder_T::MapIterator_T FlightDateMapIterator_T;
+    typedef typename ChildrenBomHolder_T::MapReverseIterator_T FlightDateMapReverseIterator_T;
   
   public:
     // /////////// Getters /////////////
@@ -158,6 +164,48 @@ namespace stdair {
       assert (_childrenList != NULL);
       return _childrenList->listConstIteratorEnd ();
     }
+    
+    /** Initialise the internal const reverse iterator on flight date:
+        return the const reverse iterator at the rbegining of the list. */
+    FlightDateListConstReverseIterator_T flightDateListConstIteratorRBegin () const {
+      assert (_childrenList != NULL);
+      return _childrenList->listConstIteratorRBegin ();
+    }
+    
+    /** Initialise the internal const reverse iterator on flight date:
+        return the const reverse iterator at the rend of the list. */
+    FlightDateListConstReverseIterator_T flightDateListConstIteratorREnd () const {
+      assert (_childrenList != NULL);
+      return _childrenList->listConstIteratorREnd ();
+    }
+
+    /** Initialise the internal iterator on flight date:
+        return the iterator at the begining of the list. */
+    FlightDateListIterator_T flightDateListIteratorBegin () const {
+      assert (_childrenList != NULL);
+      return _childrenList->listIteratorBegin ();
+    }
+    
+    /** Initialise the internal iterator on flight date:
+        return the iterator at the end of the list. */
+    FlightDateListIterator_T flightDateListIteratorEnd () const {
+      assert (_childrenList != NULL);
+      return _childrenList->listIteratorEnd ();
+    }
+    
+    /** Initialise the internal reverse iterator on flight date:
+        return the reverse iterator at the rbegining of the list. */
+    FlightDateListReverseIterator_T flightDateListIteratorRBegin () const {
+      assert (_childrenList != NULL);
+      return _childrenList->listIteratorRBegin ();
+    }
+    
+    /** Initialise the internal reverse iterator on flight date:
+        return the reverse iterator at the rend of the list. */
+    FlightDateListReverseIterator_T flightDateListIteratorREnd () const {
+      assert (_childrenList != NULL);
+      return _childrenList->listIteratorREnd ();
+    }
 
     /** Initialise the internal const iteratorson flight date:
         return the const iterator at the begining of the map. */
@@ -171,7 +219,49 @@ namespace stdair {
     FlightDateMapConstIterator_T flightDateMapConstIteratorEnd () const {
       assert (_childrenList != NULL);
       return _childrenList->mapConstIteratorEnd ();
-    } 
+    }
+
+    /** Initialise the internal const reverse iterator on flight date:
+        return the const reverse iterator at the rbegining of the map. */
+    FlightDateMapConstReverseIterator_T flightDateMapConstIteratorRBegin () const {
+      assert (_childrenList != NULL);
+      return _childrenList->mapConstIteratorRBegin ();
+    }
+    
+    /** Initialise the internal const reverse iterator on flight date:
+        return the const reverse iterator at the rend of the map. */
+    FlightDateMapConstReverseIterator_T flightDateMapConstIteratorREnd () const {
+      assert (_childrenList != NULL);
+      return _childrenList->mapConstIteratorREnd ();
+    }
+
+    /** Initialise the internal iterator on flight date:
+        return the iterator at the begining of the map. */
+    FlightDateMapIterator_T flightDateMapIteratorBegin () const {
+      assert (_childrenList != NULL);
+      return _childrenList->mapIteratorBegin ();
+    }
+    
+    /** Initialise the internal iterator on flight date:
+        return the iterator at the end of the map. */
+    FlightDateMapIterator_T flightDateMapIteratorEnd () const {
+      assert (_childrenList != NULL);
+      return _childrenList->mapIteratorEnd ();
+    }
+    
+    /** Initialise the internal reverse iterator on flight date:
+        return the reverse iterator at the rbegining of the map. */
+    FlightDateMapReverseIterator_T flightDateMapIteratorRBegin () const {
+      assert (_childrenList != NULL);
+      return _childrenList->mapIteratorRBegin ();
+    }
+    
+    /** Initialise the internal reverse iterator on flight date:
+        return the reverse iterator at the rend of the map. */
+    FlightDateMapReverseIterator_T flightDateMapIteratorREnd () const {
+      assert (_childrenList != NULL);
+      return _childrenList->mapIteratorREnd ();
+    }
     
   private:
     /** Constructors are private so as to force the usage of the Factory
