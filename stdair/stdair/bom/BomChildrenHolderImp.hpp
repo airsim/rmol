@@ -114,7 +114,7 @@ namespace stdair {
     ListIterator_T listIteratorBegin () const {
       typename BomChildrenOrderedList_T::iterator it =
         _bomChildrenOrderedList.begin();
-      return it;
+      return ListIterator_T (it);
     }
     
     /** Initialise the internal iterators on bom objects:
