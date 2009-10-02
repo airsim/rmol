@@ -112,8 +112,7 @@ namespace stdair {
 
   public:
     /** Normal constructor. */
-    BomConstIterator_T (ITERATOR iIterator)
-      : Parent_T (iIterator) { }
+    BomConstIterator_T (ITERATOR iIterator) : Parent_T (iIterator) { }
 
     /** Default constructor. */
     BomConstIterator_T () { }
@@ -218,8 +217,7 @@ namespace stdair {
 
   public:
     /** Normal constructor. */
-    BomIterator_T (ITERATOR iIterator)
-      : Parent_T (iIterator) { }
+    BomIterator_T (ITERATOR iIterator) : Parent_T (iIterator) { }
 
     /** Default constructor. */
     BomIterator_T () { }
