@@ -120,19 +120,19 @@ namespace stdair {
     /** Initialise the internal iterators on bom objects:
         return the iterator past the end of the list. */
     ListIterator_T listIteratorEnd () const {
-      return ListIterator_T(_bomChildrenOrderedList.end());
+      return _bomChildrenOrderedList.end();
     }
 
     /** Initialise the internal reverse iterators on bom objects:
         return the reverse iterator at the rbegining of the list. */
     ListReverseIterator_T listIteratorRBegin () const {
-      return ListReverseIterator_T(_bomChildrenOrderedList.rbegin());
+      return _bomChildrenOrderedList.rbegin();
     }
     
     /** Initialise the internal reverse iterators on bom objects:
         return the reverse iterator past the rend of the list. */
     ListReverseIterator_T listIteratorREnd () const {
-      return ListReverseIterator_T(_bomChildrenOrderedList.rend());
+      return _bomChildrenOrderedList.rend();
     }
 
     /** Initialise the internal const iterators on bom objects:
@@ -162,25 +162,25 @@ namespace stdair {
     /** Initialise the internal iterators on bom objects:
         return the iterator at the begining of the map. */
     MapIterator_T mapIteratorBegin () const {
-      return MapIterator_T(_bomChildrenList.begin());
+      return _bomChildrenList.begin();
     }
     
     /** Initialise the internal iterators on bom objects:
         return the iterator past the end of the map. */
     MapIterator_T mapIteratorEnd () const {
-      return MapIterator_T(_bomChildrenList.end());
+      return _bomChildrenList.end();
     }
 
     /** Initialise the internal reverse iterators on bom objects:
         return the reverse iterator at the rbegining of the map. */
     MapReverseIterator_T mapIteratorRBegin () const {
-      return MapReverseIterator_T(_bomChildrenList.rbegin());
+      return _bomChildrenList.rbegin();
     }
     
     /** Initialise the internal reverse iterators on bom objects:
         return the reverse iterator past the rend of the map. */
     MapReverseIterator_T mapIteratorREnd () const {
-      return MapReverseIterator_T(_bomChildrenList.rend());
+      return _bomChildrenList.rend();
     }
 
   private:
