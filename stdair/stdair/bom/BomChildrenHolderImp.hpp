@@ -38,7 +38,7 @@ namespace stdair {
     typedef BomIterator_T<BOM_CONTENT_CHILD,
                           typename BomChildrenOrderedList_T::iterator> ListIterator_T;
     typedef BomIterator_T<BOM_CONTENT_CHILD,
-                          typename BomChildrenOrderedList_T::_reverse_iterator> ListReverseIterator_T;
+                          typename BomChildrenOrderedList_T::reverse_iterator> ListReverseIterator_T;
     typedef BomConstIterator_T<BOM_CONTENT_CHILD,
                                typename BomChildrenList_T::const_iterator> MapConstIterator_T;
     typedef BomConstIterator_T<BOM_CONTENT_CHILD,
@@ -46,7 +46,7 @@ namespace stdair {
     typedef BomIterator_T<BOM_CONTENT_CHILD,
                           typename BomChildrenList_T::iterator> MapIterator_T;
     typedef BomIterator_T<BOM_CONTENT_CHILD,
-                          typename BomChildrenList_T::_reverse_iterator> MapReverseIterator_T;
+                          typename BomChildrenList_T::reverse_iterator> MapReverseIterator_T;
 
   public:
     // /////////// Display support methods /////////
