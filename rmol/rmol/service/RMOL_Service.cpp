@@ -17,6 +17,7 @@
 #include <rmol/bom/StudyStatManager.hpp>
 #include <rmol/factory/FacRmolServiceContext.hpp>
 #include <rmol/command/Optimiser.hpp>
+#include <rmol/command/Unconstrainer.hpp>
 #include <rmol/command/Forecaster.hpp>
 #include <rmol/service/RMOL_ServiceContext.hpp>
 #include <rmol/service/Logger.hpp>
@@ -428,12 +429,13 @@ namespace RMOL {
   }
 
   // ///////////////////////////////////////////////////////////////////////
-  void dataUnconstrainingByExpectationMaximization () {
-
-    // DEBUG
-    std::ostringstream logStream;
-    logStream << "Testing data unconstraining by Expectation Maximization";
-    RMOL_LOG_DEBUG (logStream.str());
+  void RMOL_Service::dataUnconstrainingByExpectationMaximization 
+                     (ConstrainedDataHolder_T& ioConstrainedDataHolder, 
+                      UnconstrainedDataHolder_T& iUnconstrainedDataHolder, 
+                      StoppingCriterion_T& iStoppingCriterion) {
+    
+    Unconstrainer::dataUnconstrainByExpectationMaximization 
+    (ioConstrainedDataHolder, iUnconstrainedDataHolder, iStoppingCriterion);
 
   }
 

@@ -99,11 +99,9 @@ int testForecasterHelper (const unsigned short forecastingMethodFlag) {
         // Verify the known mean is returned
         oDebugStr << "Case 0: Tested Q-Forecasting algorithm for the given example\n"
                   << "Before the test, the flag is " << passedTests << "\n";
-        for (unsigned int k = 0; k < lForecastedDemandParameterList.size(); k++) {
-          std::vector<double> demandParametersOfAClass = 
-                              lForecastedDemandParameterList.at(k);
-          if (k == 1 && demandParametersOfAClass.at(0) == 10.8125) {passedTests = 1;};
-        }
+        std::vector<double> demandParametersOfAClass = 
+                                      lForecastedDemandParameterList.at(1);
+        if (demandParametersOfAClass.at(0) == 10.8125) {passedTests = 1;};
         oDebugStr << "After the test, the flag is " << passedTests << "\n";
       	break;
 	  }
@@ -125,11 +123,9 @@ int testForecasterHelper (const unsigned short forecastingMethodFlag) {
                                                   lSellupFactorHolder);
         oDebugStr << "Default case Tested Q-Forecasting algorithm for the given example\n"
                   << "Before the test, the flag is " << passedTests << "\n";
-        for (unsigned int k = 0; k < lForecastedDemandParameterList.size(); k++) {
-          std::vector<double> demandParametersOfAClass = 
-            lForecastedDemandParameterList.at(k);
-          if (k == 1 && demandParametersOfAClass.at(0) == 10.8125) {passedTests = 1;};
-        }
+        std::vector<double> demandParametersOfAClass = 
+          lForecastedDemandParameterList.at(1);
+        if (demandParametersOfAClass.at(0) == 10.8125) {passedTests = 1;};
         oDebugStr << "After the test, the flag is " << passedTests << "\n";
       }
     }

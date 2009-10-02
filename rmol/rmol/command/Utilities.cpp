@@ -31,7 +31,7 @@ namespace RMOL {
   {
     const unsigned int lSize = iVector.size();
     if (lSize > 0) {
-      oSum = std::accumulate(iVector.begin(), iVector.end(),0);
+      oSum = std::accumulate(iVector.begin(), iVector.end(), 0.0);
     }
     else {RMOL_LOG_ERROR ("There is no element to sum up.");}
   }
@@ -157,7 +157,7 @@ namespace RMOL {
   std::string Utilities::vectorToString (std::vector<double>& iVector) {
     std::ostringstream oStr;
     for (unsigned int k = 0; k < iVector.size(); k++) {
-      oStr << iVector.at(k) << ", ";
+      oStr << iVector.at(k) << " ";
     }
     return oStr.str() + "\n";
   }

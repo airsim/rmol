@@ -21,19 +21,18 @@ namespace RMOL {
     
     // Debug message
     std::ostringstream oDebugStr;
-    oDebugStr << "Before unconstraining, the constrained Data are "
-              << Utilities::vectorToString(ioConstrainedDataHolder) << "."
-              << "Unconstrained Data are "
-              << Utilities::vectorToString(iUnconstrainedDataHolder) 
-              << "." ;
+    oDebugStr << "\nProvided unconstrained data:  "
+              << Utilities::vectorToString(iUnconstrainedDataHolder)
+              << "Constrained data: "
+              << Utilities::vectorToString(ioConstrainedDataHolder);
 
     // Unconstrain
     ExpectationMaximization::unconstrainData 
       (ioConstrainedDataHolder, iUnconstrainedDataHolder, iStoppingCriterion);
     
     // Debug message
-    oDebugStr << "After unconstraining, the constrained Data are "
-              << Utilities::vectorToString(ioConstrainedDataHolder) << ".";
+    oDebugStr << "After unconstraining, the constrained data became "
+              << Utilities::vectorToString(ioConstrainedDataHolder);
 
     RMOL_LOG_DEBUG (oDebugStr.str());
  

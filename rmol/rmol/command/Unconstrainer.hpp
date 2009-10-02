@@ -20,7 +20,8 @@ namespace RMOL {
         Reference: K.T. Talluri and G.Van Ryzin, 
         The Theory and Practice of Revenue Management. */
     static void dataUnconstrainByExpectationMaximization 
-    (ConstrainedDataHolder_T&, UnconstrainedDataHolder_T&, StoppingCriterion_T&);
+    (ConstrainedDataHolder_T&, UnconstrainedDataHolder_T&, 
+     StoppingCriterion_T&);
 
   };
 }

@@ -10,7 +10,7 @@ EXTRA_DIST = testLib.sh
 ##
 
 EXTRA_TESTS = valarrays
-STD_CHECKS = OptimiseTestSuite SimulateTestSuite ForecasterTestSuite
+STD_CHECKS = OptimiseTestSuite SimulateTestSuite ForecasterTestSuite UnconstrainerTestSuite
 check_PROGRAMS = $(STD_CHECKS) $(EXTRA_TESTS)
 TESTS = $(STD_CHECKS)
 XFAIL_TESTS = #IndexBuildingTestSuite
@@ -35,7 +35,15 @@ ForecasterTestSuite_LDFLAGS = $(BOOST_LIBS) $(CPPUNIT_LIBS) \
 	$(top_builddir)/test/com/libcppunitcore.la \
 	$(top_builddir)/@PACKAGE@/core/lib@PACKAGE@.la
 
+UnconstrainerTestSuite_SOURCES = UnconstrainerTestSuite.hpp UnconstrainerTestSuite.cpp
+UnconstrainerTestSuite_CXXFLAGS= $(CPPUNIT_CFLAGS)
+UnconstrainerTestSuite_LDADD = 
+UnconstrainerTestSuite_LDFLAGS = $(CPPUNIT_LIBS) \
+	$(top_builddir)/test/com/libcppunitcore.la \
+	$(top_builddir)/@PACKAGE@/core/lib@PACKAGE@.la
+
 valarrays_SOURCES = valarrays.cpp
 valarrays_CXXFLAGS= $(BOOST_CFLAGS) $(CPPUNIT_CFLAGS)
 valarrays_LDADD = 
 valarrays_LDFLAGS = $(BOOST_LIBS)
+

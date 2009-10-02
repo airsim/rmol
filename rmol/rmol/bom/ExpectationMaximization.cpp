@@ -10,6 +10,7 @@
 #include <rmol/basic/BasConst_General.hpp>
 #include <rmol/command/Utilities.hpp>
 #include <rmol/bom/ExpectationMaximization.hpp>
+#include <rmol/service/Logger.hpp>
 
 namespace RMOL {
 
@@ -46,13 +47,13 @@ namespace RMOL {
       
       // If there are constrained data
       if (NoOfConstrainededData > 0) {
-        double lEstimatedMean, lEstimatedSD, lSqErrorOfConstrainedData = 
-          DEFAULT_INITIALIZER_DOUBLE_NEGATIVE;
+        double lEstimatedMean, lEstimatedSD;
+        double lSqErrorOfConstrainedData = DEFAULT_INITIALIZER_DOUBLE_NEGATIVE;
         
         // A holder for unconstrained results at each iteration
         UnconstrainedDataHolder_T lUnconstrainedDataDuringIteration; 
         do {
-          if (lEstimatedMean != DEFAULT_INITIALIZER_DOUBLE_NEGATIVE) { 
+          if (lSqErrorOfConstrainedData != DEFAULT_INITIALIZER_DOUBLE_NEGATIVE) { 
             lCompleteDataMean = lEstimatedMean;
             lCompleteDataSD = lEstimatedSD;
           }
@@ -62,6 +63,10 @@ namespace RMOL {
             (lUnconstrainedDataDuringIteration, ioConstrainedDataHolder, 
              lCompleteDataMean, lCompleteDataSD);
 
+          // Debug
+          RMOL_LOG_DEBUG ("\nUnconstrained data: " 
+                          << Utilities::vectorToString
+                          (lUnconstrainedDataDuringIteration));
           // Maximization step
           // Mean
           Utilities::sumUpElements (lEstimatedMean, 
@@ -77,7 +82,12 @@ namespace RMOL {
           lEstimatedSD = sqrt((lSqErrorOfUnconstrainedData + 
                           lSqErrorOfConstrainedData) / (lTotalNumberOfData-1));          
 
-        } while(fabs(lCompleteDataMean - lEstimatedMean ) > iStoppingCriterion);
+          // Debug
+          RMOL_LOG_DEBUG ("\nEstimated Mean: " << lEstimatedMean 
+                          << "\nnEstimated s.d.: " << lEstimatedSD);
+
+        } while(fabs(lCompleteDataMean - lEstimatedMean ) > iStoppingCriterion
+                || fabs(lCompleteDataSD - lEstimatedSD ) > iStoppingCriterion);
         // Should mean and s.d. of unconstrained data be outputed: 
         // lCompleteDataMean = lEstimatedMean; lCompleteDataSD = lEstimatedSD;
 
@@ -100,7 +110,9 @@ namespace RMOL {
   (UnconstrainedDataHolder_T& ioUnconstrainedDataHolder,
    ConstrainedDataHolder_T& iConstrainedDataHolder, 
    Mean_T& iMean, StandardDeviation_T& iSD) {
-    for (unsigned int k = 0; iConstrainedDataHolder.size(); ++k) {
+
+    ioUnconstrainedDataHolder.clear();
+    for (unsigned int k = 0; k < iConstrainedDataHolder.size(); ++k) {
       const double kthCensoredData = iConstrainedDataHolder.at(k);
 
       /* Compute E[X | X >= d] where X ~ N(mu, sigma)
@@ -115,12 +127,13 @@ namespace RMOL {
       e = - (lerror) * (lerror) * 0.5 / (iSD * iSD);
       d2 = exp(e) * iSD / sqrt(2 * 3.14159265);
       if (d1 < DEFAULT_EPSILON) {
-        ioUnconstrainedDataHolder.push_back(iConstrainedDataHolder.at(k));
+        ioUnconstrainedDataHolder.push_back(kthCensoredData);
       }
       else {
         ioUnconstrainedDataHolder.push_back(iMean + d2/d1);
       }
     }
+
   }
 
   // //////////////////////////////////////////////////////////////////////  

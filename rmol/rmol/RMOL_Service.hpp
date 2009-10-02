@@ -9,6 +9,8 @@
 // RMOL
 #include <rmol/RMOL_Types.hpp>
 #include <rmol/RMOL_FORECASTER_Types.hpp>
+#include <rmol/RMOL_UNCONSTRAINER_Types.hpp>
+#include <rmol/RMOL_UTILITY_Types.hpp>
 
 namespace RMOL {
 
@@ -125,7 +127,10 @@ namespace RMOL {
                               BookingLimitVector_T&);
 
     /** Data unconstraining by Expectation Maximization */
-    void dataUnconstrainingByExpectationMaximization ();
+    void dataUnconstrainingByExpectationMaximization 
+                      (ConstrainedDataHolder_T& ioConstrainedDataHolder, 
+                       UnconstrainedDataHolder_T& iUnconstrainedDataHolder, 
+                       StoppingCriterion_T& iStoppingCriterion);
 
     /** Demand forecast using Q-Forecasting */
     void demandForecastByQForecasting (ForecastedDemandParameterList_T&, 
