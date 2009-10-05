@@ -36,17 +36,17 @@ namespace stdair {
     typedef BomConstIterator_T<BOM_CONTENT_CHILD,
                                typename BomChildrenOrderedList_T::const_reverse_iterator> ListConstReverseIterator_T;
     typedef BomIterator_T<BOM_CONTENT_CHILD,
-                          typename BomChildrenOrderedList_T::iterator> ListIterator_T;
+                          typename BomChildrenOrderedList_T::const_iterator> ListIterator_T;
     typedef BomIterator_T<BOM_CONTENT_CHILD,
-                          typename BomChildrenOrderedList_T::reverse_iterator> ListReverseIterator_T;
+                          typename BomChildrenOrderedList_T::const_reverse_iterator> ListReverseIterator_T;
     typedef BomConstIterator_T<BOM_CONTENT_CHILD,
                                typename BomChildrenList_T::const_iterator> MapConstIterator_T;
     typedef BomConstIterator_T<BOM_CONTENT_CHILD,
                                typename BomChildrenList_T::const_reverse_iterator> MapConstReverseIterator_T;
     typedef BomIterator_T<BOM_CONTENT_CHILD,
-                          typename BomChildrenList_T::iterator> MapIterator_T;
+                          typename BomChildrenList_T::const_iterator> MapIterator_T;
     typedef BomIterator_T<BOM_CONTENT_CHILD,
-                          typename BomChildrenList_T::reverse_iterator> MapReverseIterator_T;
+                          typename BomChildrenList_T::const_reverse_iterator> MapReverseIterator_T;
 
   public:
     // /////////// Display support methods /////////
@@ -112,11 +112,7 @@ namespace stdair {
     /** Initialise the internal iterators on bom objects:
         return the iterator at the begining of the list. */
     ListIterator_T listIteratorBegin () {
-      typename BomChildrenOrderedList_T::iterator it =
-        _bomChildrenOrderedList.begin();
-      typename BomChildrenOrderedList_T::const_iterator it2 =
-        _bomChildrenOrderedList.begin();
-      return ListIterator_T (it);
+      return _bomChildrenOrderedList.begin();
     }
     
     /** Initialise the internal iterators on bom objects:

@@ -144,7 +144,7 @@ namespace stdair {
     // ////////////// Dereferencing Operators //////////////
     /** Dereferencing operator for iterators on a list. */
     const BOM_CONTENT& operator* () {
-      BomStructure_T* lBomStruct_ptr = *Parent_T::_itBomStructureObject;
+      const BomStructure_T* lBomStruct_ptr = *Parent_T::_itBomStructureObject;
       assert (lBomStruct_ptr != NULL);
       BOM_CONTENT* lBomContent_ptr = 
         BomStructure::getBomContentPtr<BOM_CONTENT> (*lBomStruct_ptr);
@@ -155,7 +155,8 @@ namespace stdair {
     /** Dereferencing operator for iterators on a map. */
     value_type* operator-> () {
       const MapKey_T& lKey = Parent_T::_itBomStructureObject->first;
-      BomStructure_T* lBomStruct_ptr = Parent_T::_itBomStructureObject->second;
+      const BomStructure_T* lBomStruct_ptr =
+        Parent_T::_itBomStructureObject->second;
       assert (lBomStruct_ptr != NULL);
       BOM_CONTENT* lBomContent_ptr = 
         BomStructure::getBomContentPtr<BOM_CONTENT> (*lBomStruct_ptr);
@@ -249,7 +250,7 @@ namespace stdair {
     // ////////////// Dereferencing Operators //////////////
     /** Dereferencing operator for iterators on a list. */
     BOM_CONTENT& operator* () {
-      BomStructure_T* lBomStruct_ptr = *Parent_T::_itBomStructureObject;
+      const BomStructure_T* lBomStruct_ptr = *Parent_T::_itBomStructureObject;
       assert (lBomStruct_ptr != NULL);
       BOM_CONTENT* lBomContent_ptr = 
         BomStructure::getBomContentPtr<BOM_CONTENT> (*lBomStruct_ptr);
@@ -260,7 +261,8 @@ namespace stdair {
     /** Dereferencing operator for iterators on a map. */
     value_type* operator-> () {
       const MapKey_T& lKey = Parent_T::_itBomStructureObject->first;
-      BomStructure_T* lBomStruct_ptr = Parent_T::_itBomStructureObject->second;
+      const BomStructure_T* lBomStruct_ptr =
+        Parent_T::_itBomStructureObject->second;
       assert (lBomStruct_ptr != NULL);
       BOM_CONTENT* lBomContent_ptr = 
         BomStructure::getBomContentPtr<BOM_CONTENT> (*lBomStruct_ptr);
