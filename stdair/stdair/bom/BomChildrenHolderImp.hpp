@@ -36,7 +36,7 @@ namespace stdair {
     typedef BomConstIterator_T<BOM_CONTENT_CHILD,
                                typename BomChildrenOrderedList_T::const_reverse_iterator> ListConstReverseIterator_T;
     typedef BomIterator_T<BOM_CONTENT_CHILD,
-                          typename BomChildrenOrderedList_T::const_iterator> ListIterator_T;
+                          typename BomChildrenOrderedList_T::iterator> ListIterator_T;
     typedef BomIterator_T<BOM_CONTENT_CHILD,
                           typename BomChildrenOrderedList_T::const_reverse_iterator> ListReverseIterator_T;
     typedef BomConstIterator_T<BOM_CONTENT_CHILD,
