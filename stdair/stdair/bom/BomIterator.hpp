@@ -211,7 +211,7 @@ namespace stdair {
     typedef typename BOM_CONTENT::BomStructure_T BomStructure_T;
     
     // Define the pair of string and pointer of BOM_CONTENT.
-    typedef typename std::pair<std::string, BOM_CONTENT*> value_type;
+    typedef typename std::pair<std::string, const BOM_CONTENT*> value_type;
 
     // Definition allowing the retrieve the difference type of the ITERATOR.
     typedef typename ITERATOR::difference_type difference_type;
@@ -249,7 +249,7 @@ namespace stdair {
     
     // ////////////// Dereferencing Operators //////////////
     /** Dereferencing operator for iterators on a list. */
-    BOM_CONTENT& operator* () {
+    const BOM_CONTENT& operator* () {
       const BomStructure_T* lBomStruct_ptr = *Parent_T::_itBomStructureObject;
       assert (lBomStruct_ptr != NULL);
       BOM_CONTENT* lBomContent_ptr = 
