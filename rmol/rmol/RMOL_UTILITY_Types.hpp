@@ -18,6 +18,7 @@ namespace RMOL {
   /** Define a standard deviation type. */
   typedef double StandardDeviation_T;
 
-
+  /** Define a position in a vector. */
+  typedef int PositionInAVector_T;
 }
 #endif // __RMOL_RMOL_UTILITY_TYPES_HPP

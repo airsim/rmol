@@ -5,11 +5,10 @@
 #include <cmath>
 #include <algorithm>
 #include <numeric>
-#include <iostream>
+#include <sstream>
 #include <fstream>
 // RMOL
-// #include <rmol/bom/Bucket.hpp>
-// #include <rmol/bom/BucketHolder.hpp>
+#include <rmol/RMOL_UTILITY_Types.hpp>
 #include <rmol/bom/QForecaster.hpp>
 #include <rmol/command/Utilities.hpp>
 #include <rmol/service/Logger.hpp>
@@ -44,7 +43,7 @@ namespace RMOL {
     for (unsigned short j = 0; j < iPriceHolder.size(); j++){ 
       const double lYield = iPriceHolder.at(j);
       const double probSellup = 
-        exp(-iSellupFactorHolder.at(j) * (lYield / iQYield - 1));
+        std::exp(-iSellupFactorHolder.at(j) * (lYield / iQYield - 1));
       ioSellupProbabilityVector.push_back(probSellup);
     }
   }
@@ -61,22 +60,27 @@ namespace RMOL {
 
     // 1. Calculate Q-equivalent demand parameters
     // Initialize a holder for Q-equivalent Demands
-    // std::vector<double> aZeroVector (iSellupProbabilityVector.size(), 0);
-    // std::vector<double>& lQEquivalentDemandHolder = aZeroVector;
-
-    // Initialize 0 vector with the size of a data holder
+    // 0 vector with the size of a data holder
+    HistoricalDataHolder_T aHistoricalDataHolder = 
+                                          iHistoricalDataHolderHolder.at(0);
     QEquivalentDemandHolder_T lQEquivalentDemandHolder 
-      (iHistoricalDataHolderHolder.at(0).size(), 0);
-    for (unsigned int j = 0; j < iHistoricalDataHolderHolder.size(); j++) {
+                                          (aHistoricalDataHolder.size(), 0);
+    // Index 
+    unsigned int j = 0;
+    std::vector<HistoricalDataHolder_T>::iterator itHDHolderHolder;
+    for (itHDHolderHolder = iHistoricalDataHolderHolder.begin(); 
+         itHDHolderHolder != iHistoricalDataHolderHolder.end(); 
+         ++itHDHolderHolder, ++j) {
       // Retrieve HistoricalDataHolder which are the data of the same product
       // over different dates
-      HistoricalDataHolder_T lHistoricalDataHolder = 
-                           iHistoricalDataHolderHolder.at(j);
-      double lSellupProbability = iSellupProbabilityVector.at(j);
+      HistoricalDataHolder_T lHistoricalDataHolder = *itHDHolderHolder;
+      const SellupProbability_T lSellupProbability = 
+                                              iSellupProbabilityVector.at(j);
+      const double lQDemandRate = static_cast<double> (1/lSellupProbability);
 
       // Apply sellup probability to historical data
       Utilities::multiplyAValueToAVector (lHistoricalDataHolder, 
-                                          1/lSellupProbability);
+                                          lQDemandRate);
       oDebugStr << "Q-equivalent demand of a product for each date " 
                 << Utilities::vectorToString (lHistoricalDataHolder);
 
@@ -88,7 +92,7 @@ namespace RMOL {
               << Utilities::vectorToString (lQEquivalentDemandHolder);
 
     // 2. Compute Q-equivalent demand mean and standard deviation
-    Utilities::getMeanAndStandardDeviation (ioQEquivalentDemandParameterHolder,
+    Utilities::updateMeanAndStandardDeviation (ioQEquivalentDemandParameterHolder,
                                             lQEquivalentDemandHolder);  
     RMOL_LOG_DEBUG (oDebugStr.str());
   }
@@ -99,7 +103,7 @@ namespace RMOL {
     QEquivalentDemandParameterHolder_T& iQEquivalentDemandParameterHolder, 
     SellupProbabilityVector_T& iSellupProbabilityVector) {
 
-    NumberOfProducts_T noOfClasses = iSellupProbabilityVector.size();
+    const NumberOfProducts_T noOfClasses = iSellupProbabilityVector.size();
 
     // Sort sellup probabilities in increasing order and copy into a vector
     SellupProbabilityVector_T lSortedSellupProbabilityVector(noOfClasses);
@@ -111,23 +115,29 @@ namespace RMOL {
     // Compute the probability to sell-up to class i but not i-1 (class 
     // with the next higher fare) and copy into a vector
     SellupProbabilityVector_T lSellupProbabilityDifferenceVector(noOfClasses);
-    adjacent_difference (lSortedSellupProbabilityVector.begin(),
+    std::adjacent_difference (lSortedSellupProbabilityVector.begin(),
                          lSortedSellupProbabilityVector.end(),
                          lSellupProbabilityDifferenceVector.begin());
 
     // Partition Q-equivalent demand mean and S.D. into each class
+    unsigned int k = 0;
     ioForecastedDemandParameterList.clear();
-    for (unsigned int k=0; k < noOfClasses; k++) {
+    SellupProbabilityVector_T::iterator itSellupProbabilityVector;
+    for (itSellupProbabilityVector = iSellupProbabilityVector.begin(); 
+         itSellupProbabilityVector != iSellupProbabilityVector.end();
+         ++itSellupProbabilityVector, ++k) {
       // Locate the current sell-up probability in the sorted one
+      SellupProbability_T sellupProbabilityInUnsortedVector = 
+                                              *itSellupProbabilityVector;
       SellupProbabilityVector_T::iterator pos = 
                  std::lower_bound (lSortedSellupProbabilityVector.begin(),
                                    lSortedSellupProbabilityVector.end(),
-                                   iSellupProbabilityVector.at(k));
-      const int posOfCurrentSellupProbInSortedVector = 
+                                   sellupProbabilityInUnsortedVector);
+      const PositionInAVector_T posOfCurrentSellupProbInSortedVector = 
                std::distance(lSortedSellupProbabilityVector.begin(), pos);
 
       // Find the corresponding sell-up probability difference
-      SellupProbability_T correspondingSellupProbability = 
+      const SellupProbability_T correspondingSellupProbability = 
         lSellupProbabilityDifferenceVector.at(
                                     posOfCurrentSellupProbInSortedVector);
       
@@ -137,7 +147,7 @@ namespace RMOL {
       ioForecastedDemandParameterList.push_back
                                      (iQEquivalentDemandParameterHolder);
       ForecastedDemandParameters_T& lForecastedDemandParameters = 
-                                   ioForecastedDemandParameterList.at(k);
+                                    ioForecastedDemandParameterList.at(k);
       Utilities::multiplyAValueToAVector (lForecastedDemandParameters,
                                           correspondingSellupProbability);
     }

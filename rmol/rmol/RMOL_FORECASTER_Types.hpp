@@ -32,7 +32,7 @@ namespace RMOL {
   typedef std::vector<double> HistoricalDataHolder_T;
 
   /** Define vector of historical data vector*/
-  typedef std::vector< std::vector<double> > HistoricalDataHolderHolder_T;
+  typedef std::vector<HistoricalDataHolder_T> HistoricalDataHolderHolder_T;
   
   /** Define a holder for Q-equivalent demand parameters. */
   typedef std::vector<double> QEquivalentDemandParameterHolder_T;

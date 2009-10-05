@@ -7,8 +7,8 @@
 #include <string>
 #include <sstream>
 #include <numeric>
-#include <math.h>
-#include <assert.h>
+#include <cmath>
+#include <cassert>
 #include <functional>
 // RMOL
 #include <rmol/command/Utilities.hpp>
@@ -16,7 +16,7 @@
 namespace RMOL {
 
   // /////////////////////////////////////////////////////////////////////
-  void Utilities::getMinimumElement (double& oMinValue,
+  void Utilities::updateMinimumElement (double& oMinValue,
                                      std::vector<double>& iVector) {
 
     assert(!iVector.empty());
@@ -37,7 +37,7 @@ namespace RMOL {
   }
 
   // /////////////////////////////////////////////////////////////////////
-  void Utilities::getMean (double& oMean, std::vector<double>& iVector) {
+  void Utilities::updateMean (double& oMean, std::vector<double>& iVector) {
     assert(!iVector.empty());
     double lSum = std::accumulate(iVector.begin(), iVector.end(),0);
     oMean = lSum/iVector.size();
@@ -45,25 +45,31 @@ namespace RMOL {
   }
 
   // /////////////////////////////////////////////////////////////////////
-  void Utilities::getSquaredError (double& oSquaredError, 
+  void Utilities::updateSquaredError (double& oSquaredError, 
                                std::vector<double>& iVector,
                                double& iMean) {
-    if (iMean < 0) {RMOL_LOG_ERROR ("Negative mean is not expected.");}
-    else {
+    if (iMean < 0) {
+      RMOL_LOG_ERROR ("Negative mean is not expected.");
+
+    } else {
       const unsigned int lSize = iVector.size();
+
       if (lSize > 0) {
         oSquaredError = 0.0;
+
         for (unsigned int j = 0; j < lSize; j++) {
           const double lError = iVector.at(j) - iMean;
           oSquaredError += lError * lError;
         }
-      } 
-      else {RMOL_LOG_ERROR ("No value to compute the squared error");}
+
+      } else {
+        RMOL_LOG_ERROR ("No value to compute the squared error");
+      }
     }
   }
 
   // /////////////////////////////////////////////////////////////////////
-  void Utilities::getStandardDeviation (double& oSD, 
+  void Utilities::updateStandardDeviation (double& oSD, 
                                         std::vector<double>& iVector,
                                         double& iMean) {
     assert(iMean > 0);
@@ -81,7 +87,8 @@ namespace RMOL {
   }
 
   // /////////////////////////////////////////////////////////////////////
-  void Utilities::getMeanAndStandardDeviation (std::vector<double>& ioMean_SD,
+  void Utilities::updateMeanAndStandardDeviation 
+                                          (std::vector<double>& ioMean_SD,
                                            std::vector<double>& iVector) {
     const unsigned int lSize = iVector.size();
     assert(lSize > 0);

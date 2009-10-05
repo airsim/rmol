@@ -12,27 +12,28 @@ namespace RMOL {
   struct Utilities {
 
     /** Returns the minimum element of a given vector*/
-    static void getMinimumElement (double& oMinValue, std::vector<double>&); 
+    static void updateMinimumElement (double& oMinValue, 
+                                      std::vector<double>&); 
 
     /** Return the sum of all elements of a given vector*/
     static void sumUpElements (double& oSum, std::vector<double>&);
 
     /** Return mean for the given elements of a vector. */
-    static void getMean (double& oMean, std::vector<double>&);
+    static void updateMean (double& oMean, std::vector<double>&);
 
     /** Return squared error. */
-    static void getSquaredError (double& oSquaredError, 
-                                 std::vector<double>&,
-                                 double& iMean);
+    static void updateSquaredError (double& oSquaredError, 
+                                    std::vector<double>&,
+                                    double& iMean);
 
     /** Return standard deviation for the given elements of a vector and  
         precomputed mean. */
-    static void getStandardDeviation (double& oSD, std::vector<double>&,
-                                      double& iMean);
+    static void updateStandardDeviation (double& oSD, std::vector<double>&,
+                                         double& iMean);
 
     /** Return mean & standard deviation for given elements of a vector. */
-    static void getMeanAndStandardDeviation (std::vector<double>& ioMean_SD,
-                                             std::vector<double>&);
+    static void updateMeanAndStandardDeviation (std::vector<double>& ioMean_SD,
+                                                std::vector<double>&);
 
     /** Return the input vector after adding a value. */
     static void addAValueToAVector (std::vector<double>& ioVector, 

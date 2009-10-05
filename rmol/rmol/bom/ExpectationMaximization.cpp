@@ -40,8 +40,9 @@ namespace RMOL {
       Utilities::sumUpElements (lSumOfUnconstrainedData, 
                                 iUnconstrainedDataHolder);
       lCompleteDataMean = lSumOfUnconstrainedData / NoOfUnconstrainedData;
-      Utilities::getSquaredError (lSqErrorOfUnconstrainedData, 
-                                  iUnconstrainedDataHolder, lCompleteDataMean);
+      Utilities::updateSquaredError (lSqErrorOfUnconstrainedData, 
+                                     iUnconstrainedDataHolder, 
+                                     lCompleteDataMean);
       lCompleteDataSD = sqrt(lSqErrorOfUnconstrainedData / 
                              (NoOfUnconstrainedData-1));
       
@@ -74,11 +75,12 @@ namespace RMOL {
           lEstimatedMean = (lEstimatedMean + lSumOfUnconstrainedData) / 
                            lTotalNumberOfData;
           // S.D.
-          Utilities::getSquaredError (lSqErrorOfUnconstrainedData,
-                                      iUnconstrainedDataHolder, lEstimatedMean);
-          Utilities::getSquaredError (lSqErrorOfConstrainedData,
-                                      lUnconstrainedDataDuringIteration, 
-                                      lEstimatedMean);
+          Utilities::updateSquaredError (lSqErrorOfUnconstrainedData,
+                                         iUnconstrainedDataHolder, 
+                                         lEstimatedMean);
+          Utilities::updateSquaredError (lSqErrorOfConstrainedData,
+                                         lUnconstrainedDataDuringIteration, 
+                                         lEstimatedMean);
           lEstimatedSD = sqrt((lSqErrorOfUnconstrainedData + 
                           lSqErrorOfConstrainedData) / (lTotalNumberOfData-1));          
 

@@ -1,16 +1,12 @@
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
-#include <math.h>
+// STL
+#include <cmath>
 #include <string>
-#include <iostream>
+#include <sstream>
 #include <fstream>
 // RMOL
-// #include <rmol/bom/Bucket.hpp>
-// #include <rmol/bom/BucketHolder.hpp>
-// #include <rmol/bom/HistoricalBooking.hpp>
-// #include <rmol/bom/HistoricalBookingHolder.hpp>
-// #include <rmol/bom/HistoricalBookingHolderHolder.hpp>
 #include <rmol/bom/QForecaster.hpp>
 #include <rmol/command/Forecaster.hpp>
 #include <rmol/command/Utilities.hpp>
@@ -57,15 +53,15 @@ namespace RMOL {
     // Debug 
     std::ostringstream oDebugStr;
     oDebugStr << "Prices are "
-              << Utilities::vectorToString(iPriceHolder) << "\n"
+              << Utilities::vectorToString(iPriceHolder) << std::endl
               << "Sell up factors are "
-              << Utilities::vectorToString(iSellupFactorHolder) << "\n";
+              << Utilities::vectorToString(iSellupFactorHolder) << std::endl;
               
     // Find the class with the lowest yield
     double lQYield;
-    Utilities::getMinimumElement (lQYield, iPriceHolder);
+    Utilities::updateMinimumElement (lQYield, iPriceHolder);
     // Debug
-    oDebugStr << "The minimum yield is " << lQYield << "\n";
+    oDebugStr << "The minimum yield is " << lQYield << std::endl;
 
     // Initialize a holder for sell-up probabilities
     SellupProbabilityVector_T lSellupProbabilityVector;
@@ -74,7 +70,7 @@ namespace RMOL {
       (lSellupProbabilityVector, lQYield, iPriceHolder, iSellupFactorHolder);
     // Debug
     oDebugStr << "Sell-up Probabilities are " 
-              << Utilities::vectorToString (lSellupProbabilityVector) << "\n";
+              << Utilities::vectorToString (lSellupProbabilityVector) << std::endl;
 
     // Initialize a holder for Q-equivalent Demand Parameters
     QEquivalentDemandParameterHolder_T lQEquivalentDemandParameterHolder;
@@ -85,7 +81,7 @@ namespace RMOL {
     // Debug
     oDebugStr << "Q-equivalent demand parameters [mean, SD] = " 
               << Utilities::vectorToString (lQEquivalentDemandParameterHolder)
-              << "\n";
+              << std::endl;
 
     // Calculate Q-equivalent demand distribution parameters and 
     // partition it to each class/bucket
@@ -93,8 +89,11 @@ namespace RMOL {
      (ioForecastedDemandParameterList, lQEquivalentDemandParameterHolder, 
       lSellupProbabilityVector);
     // debug
-    for (unsigned int k = 0; k < ioForecastedDemandParameterList.size(); k++) {
-      std::vector<double> lMeanAndSDOfAClass = ioForecastedDemandParameterList.at(k);
+    ForecastedDemandParameterList_T::iterator itForecastedDemandParameterList;
+    for (itForecastedDemandParameterList = ioForecastedDemandParameterList.begin(); 
+         itForecastedDemandParameterList != ioForecastedDemandParameterList.end();
+         ++itForecastedDemandParameterList) {
+      std::vector<double> lMeanAndSDOfAClass = *itForecastedDemandParameterList;
       oDebugStr << "Q-equivalent distribution parameters per class " 
                 << Utilities::vectorToString (lMeanAndSDOfAClass);
     }
