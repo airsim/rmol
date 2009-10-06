@@ -28,12 +28,15 @@ namespace stdair {
     // Define the pair of string and pointer of BOM_CONTENT.
     typedef typename std::pair<std::string, BOM_CONTENT*> value_type;
 
+    // Definition allowing the retrieve the ITERATOR type.
+    typedef ITERATOR iterator_type;
+    
     // Definition allowing the retrieve the difference type of the ITERATOR.
     typedef typename ITERATOR::difference_type difference_type;
 
   public:
     /** Normal constructor. */
-    BomIterator_T (ITERATOR iIterator)
+    BomIterator_T (iterator_type iIterator)
       : _itBomStructureObject (iIterator) { }
 
     /** Default constructor. */
@@ -45,6 +48,10 @@ namespace stdair {
     
     /** Destructor. */
     ~BomIterator_T() { }
+
+  public:
+    /** Return _itBomStructureObject, used for underlying work. */
+      iterator_type  base() const { return _itBomStructureObject; }
 
   public:
     // ///////////// Operators //////////////
@@ -126,7 +133,7 @@ namespace stdair {
   private:
     ///////////// Attributes //////////////
     /** Iterator for the current BOM structure on the non-ordered list. */
-    ITERATOR _itBomStructureObject;
+    iterator_type _itBomStructureObject;
 
     /** Helper attribute.
         <br>It is necessary to define that value at the attribute
@@ -147,7 +154,7 @@ namespace stdair {
   inline typename ITERATOR::difference_type
   operator-(const BomIterator_T<BOM_CONTENT, ITERATOR>& l, 
             const BomIterator_T<BOM_CONTENT, ITERATOR>& r) {
-    return l._itBomStructureObject - r._itBomStructureObject;
+    return l.base() - r.base();
   }
 
   template<typename BOM_CONTENT, typename ITERATOR>
@@ -156,8 +163,7 @@ namespace stdair {
             const BomIterator_T<BOM_CONTENT, ITERATOR>& r) {
     // Definition allowing to retrieve the Parent_T of BomIterator_T.
     typedef typename BomIterator_T<BOM_CONTENT,ITERATOR>::Parent_T Parent_T;
-    return BomIterator_T<BOM_CONTENT, ITERATOR>
-      (n+r._itBomStructureObject);
+    return BomIterator_T<BOM_CONTENT, ITERATOR> (n+r.base());
   }
   
 }
