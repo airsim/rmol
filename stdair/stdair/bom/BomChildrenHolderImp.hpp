@@ -80,7 +80,7 @@ namespace stdair {
     /** Initialise the internal iterators on bom objects:
         return the iterator at the begining of the list. */
     ListIterator_T listBegin () {
-      return _bomChildrenOrderedList.begin();
+      return ListIterator_T(_bomChildrenOrderedList.begin());
     }
     
     /** Initialise the internal iterators on bom objects:
