@@ -31,18 +31,10 @@ namespace stdair {
     typedef std::map<const std::string, BomStructure_T*> BomChildrenList_T;
 
     /** Define the different types of iterators. */
-    typedef BomConstIterator_T<BOM_CONTENT_CHILD,
-                               typename BomChildrenOrderedList_T::const_iterator> ListConstIterator_T;
-    typedef BomConstIterator_T<BOM_CONTENT_CHILD,
-                               typename BomChildrenOrderedList_T::const_reverse_iterator> ListConstReverseIterator_T;
     typedef BomIterator_T<BOM_CONTENT_CHILD,
                           typename BomChildrenOrderedList_T::const_iterator> ListIterator_T;
     typedef BomIterator_T<BOM_CONTENT_CHILD,
                           typename BomChildrenOrderedList_T::const_reverse_iterator> ListReverseIterator_T;
-    typedef BomConstIterator_T<BOM_CONTENT_CHILD,
-                               typename BomChildrenList_T::const_iterator> MapConstIterator_T;
-    typedef BomConstIterator_T<BOM_CONTENT_CHILD,
-                               typename BomChildrenList_T::const_reverse_iterator> MapConstReverseIterator_T;
     typedef BomIterator_T<BOM_CONTENT_CHILD,
                           typename BomChildrenList_T::const_iterator> MapIterator_T;
     typedef BomIterator_T<BOM_CONTENT_CHILD,
@@ -85,99 +77,51 @@ namespace stdair {
     }
 
     // /////////// Iteration methods //////////
-    /** Initialise the internal const iterators on bom objects:
+    /** Initialise the internal iterators on bom objects:
         return the iterator at the begining of the list. */
-    ListConstIterator_T listConstIteratorBegin () const {
+    ListIterator_T listBegin () {
       return _bomChildrenOrderedList.begin();
     }
     
-    /** Initialise the internal const iterators on bom objects:
-        return the iterator past the end of the list. */
-    ListConstIterator_T listConstIteratorEnd () const {
-      return _bomChildrenOrderedList.end();
-    }
-
-    /** Initialise the internal const reverse iterators on bom objects:
-        return the reverse iterator at the rbegining of the list. */
-    ListConstReverseIterator_T listConstIteratorRBegin () const {
-      return _bomChildrenOrderedList.rbegin();
-    }
-    
-    /** Initialise the internal const reverse iterators on bom objects:
-        return the reverse iterator past the rend of the list. */
-    ListConstReverseIterator_T listConstIteratorREnd () const {
-      return _bomChildrenOrderedList.rend();
-    }
-
-    /** Initialise the internal iterators on bom objects:
-        return the iterator at the begining of the list. */
-    ListIterator_T listIteratorBegin () {
-      return ListIterator_T(_bomChildrenOrderedList.begin());
-    }
-    
     /** Initialise the internal iterators on bom objects:
         return the iterator past the end of the list. */
-    ListIterator_T listIteratorEnd () const {
+    ListIterator_T listEnd () const {
       return _bomChildrenOrderedList.end();
     }
 
     /** Initialise the internal reverse iterators on bom objects:
         return the reverse iterator at the rbegining of the list. */
-    ListReverseIterator_T listIteratorRBegin () const {
+    ListReverseIterator_T listRBegin () const {
       return _bomChildrenOrderedList.rbegin();
     }
     
     /** Initialise the internal reverse iterators on bom objects:
         return the reverse iterator past the rend of the list. */
-    ListReverseIterator_T listIteratorREnd () const {
+    ListReverseIterator_T listREnd () const {
       return _bomChildrenOrderedList.rend();
     }
 
-    /** Initialise the internal const iterators on bom objects:
-        return the iterator at the begining of the map. */
-    MapConstIterator_T mapConstIteratorBegin () const {
-      return _bomChildrenList.begin();
-    }
-    
-    /** Initialise the internal const iterators on bom objects:
-        return the iterator past the end of the map. */
-    MapConstIterator_T mapConstIteratorEnd () const {
-      return _bomChildrenList.end();
-    }
-
-    /** Initialise the internal const reverse iterators on bom objects:
-        return the reverse iterator at the rbegining of the map. */
-    MapConstReverseIterator_T mapConstIteratorRBegin () const {
-      return _bomChildrenList.rbegin();
-    }
-    
-    /** Initialise the internal const reverse iterators on bom objects:
-        return the reverse iterator past the rend of the map. */
-    MapConstReverseIterator_T mapConstIteratorREnd () const {
-      return _bomChildrenList.rend();
-    }
-
     /** Initialise the internal iterators on bom objects:
         return the iterator at the begining of the map. */
-    MapIterator_T mapIteratorBegin () const {
+    MapIterator_T mapBegin () const {
       return _bomChildrenList.begin();
     }
     
     /** Initialise the internal iterators on bom objects:
         return the iterator past the end of the map. */
-    MapIterator_T mapIteratorEnd () const {
+    MapIterator_T mapEnd () const {
       return _bomChildrenList.end();
     }
 
     /** Initialise the internal reverse iterators on bom objects:
         return the reverse iterator at the rbegining of the map. */
-    MapReverseIterator_T mapIteratorRBegin () const {
+    MapReverseIterator_T mapRBegin () const {
       return _bomChildrenList.rbegin();
     }
     
     /** Initialise the internal reverse iterators on bom objects:
         return the reverse iterator past the rend of the map. */
-    MapReverseIterator_T mapIteratorREnd () const {
+    MapReverseIterator_T mapREnd () const {
       return _bomChildrenList.rend();
     }
 

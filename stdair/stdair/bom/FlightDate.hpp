@@ -62,26 +62,18 @@ namespace stdair {
     typedef BomChildrenHolderImp<SecondContentChild_T> SecondChildrenBomHolder_T;
 
     /** Define the iterators of the segment-date list. */
-    typedef typename ChildrenBomHolder_T::ListConstIterator_T SegmentDateListConstIterator_T;
-    typedef typename ChildrenBomHolder_T::ListConstReverseIterator_T SegmentDateListConstReverseIterator_T;
     typedef typename ChildrenBomHolder_T::ListIterator_T SegmentDateListIterator_T;
     typedef typename ChildrenBomHolder_T::ListReverseIterator_T SegmentDateListReverseIterator_T;
 
     /** Define the iterators of the segment-date map. */
-    typedef typename ChildrenBomHolder_T::MapConstIterator_T SegmentDateMapConstIterator_T;
-    typedef typename ChildrenBomHolder_T::MapConstReverseIterator_T SegmentDateMapConstReverseIterator_T;
     typedef typename ChildrenBomHolder_T::MapIterator_T SegmentDateMapIterator_T;
     typedef typename ChildrenBomHolder_T::MapReverseIterator_T SegmentDateMapReverseIterator_T;
 
     /** Define the iterators of the leg-date list. */
-    typedef typename SecondChildrenBomHolder_T::ListConstIterator_T LegDateListConstIterator_T;
-    typedef typename SecondChildrenBomHolder_T::ListConstReverseIterator_T LegDateListConstReverseIterator_T;
     typedef typename SecondChildrenBomHolder_T::ListIterator_T LegDateListIterator_T;
     typedef typename SecondChildrenBomHolder_T::ListReverseIterator_T LegDateListReverseIterator_T;
 
     /** Define the iterators of the leg-date map. */
-    typedef typename SecondChildrenBomHolder_T::MapConstIterator_T LegDateMapConstIterator_T;
-    typedef typename SecondChildrenBomHolder_T::MapConstReverseIterator_T LegDateMapConstReverseIterator_T;
     typedef typename SecondChildrenBomHolder_T::MapIterator_T LegDateMapIterator_T;
     typedef typename SecondChildrenBomHolder_T::MapReverseIterator_T LegDateMapReverseIterator_T;
 
@@ -193,229 +185,117 @@ namespace stdair {
 
   public:
     // /////////// Iteration methods //////////
-    /** Initialise the internal const iterator on segment date:
-        return the const iterator at the begining of the list. */
-    SegmentDateListConstIterator_T segmentDateListConstIteratorBegin () const {
-      assert (_childrenList != NULL);
-      return _childrenList->listConstIteratorBegin ();
-    }
-    
-    /** Initialise the internal const iterator on segment date:
-        return the const iterator at the end of the list. */
-    SegmentDateListConstIterator_T segmentDateListConstIteratorEnd () const {
-      assert (_childrenList != NULL);
-      return _childrenList->listConstIteratorEnd ();
-    }
-    
-    /** Initialise the internal const reverse iterator on segment date:
-        return the const reverse iterator at the rbegining of the list. */
-    SegmentDateListConstReverseIterator_T segmentDateListConstIteratorRBegin () const {
-      assert (_childrenList != NULL);
-      return _childrenList->listConstIteratorRBegin ();
-    }
-    
-    /** Initialise the internal const reverse iterator on segment date:
-        return the const reverse iterator at the rend of the list. */
-    SegmentDateListConstReverseIterator_T segmentDateListConstIteratorREnd () const {
-      assert (_childrenList != NULL);
-      return _childrenList->listConstIteratorREnd ();
-    }
-
     /** Initialise the internal iterator on segment date:
         return the iterator at the begining of the list. */
-    SegmentDateListIterator_T segmentDateListIteratorBegin () const {
+    SegmentDateListIterator_T segmentDateListBegin () const {
       assert (_childrenList != NULL);
-      return _childrenList->listIteratorBegin ();
+      return _childrenList->listBegin ();
     }
     
     /** Initialise the internal iterator on segment date:
         return the iterator at the end of the list. */
-    SegmentDateListIterator_T segmentDateListIteratorEnd () const {
+    SegmentDateListIterator_T segmentDateListEnd () const {
       assert (_childrenList != NULL);
-      return _childrenList->listIteratorEnd ();
+      return _childrenList->listEnd ();
     }
     
     /** Initialise the internal reverse iterator on segment date:
         return the reverse iterator at the rbegining of the list. */
-    SegmentDateListReverseIterator_T segmentDateListIteratorRBegin () const {
+    SegmentDateListReverseIterator_T segmentDateListRBegin () const {
       assert (_childrenList != NULL);
-      return _childrenList->listIteratorRBegin ();
+      return _childrenList->listRBegin ();
     }
     
     /** Initialise the internal reverse iterator on segment date:
         return the reverse iterator at the rend of the list. */
-    SegmentDateListReverseIterator_T segmentDateListIteratorREnd () const {
+    SegmentDateListReverseIterator_T segmentDateListREnd () const {
       assert (_childrenList != NULL);
-      return _childrenList->listIteratorREnd ();
-    }
-
-    /** Initialise the internal const iteratorson segment date:
-        return the const iterator at the begining of the map. */
-    SegmentDateMapConstIterator_T segmentDateMapConstIteratorBegin () const {
-      assert (_childrenList != NULL);
-      return _childrenList->mapConstIteratorBegin ();
-    }
-    
-    /** Initialise the internal const iterator on segment date:
-        return the const iterator at the end of the map. */
-    SegmentDateMapConstIterator_T segmentDateMapConstIteratorEnd () const {
-      assert (_childrenList != NULL);
-      return _childrenList->mapConstIteratorEnd ();
-    }
-
-    /** Initialise the internal const reverse iterator on segment date:
-        return the const reverse iterator at the rbegining of the map. */
-    SegmentDateMapConstReverseIterator_T segmentDateMapConstIteratorRBegin () const {
-      assert (_childrenList != NULL);
-      return _childrenList->mapConstIteratorRBegin ();
-    }
-    
-    /** Initialise the internal const reverse iterator on segment date:
-        return the const reverse iterator at the rend of the map. */
-    SegmentDateMapConstReverseIterator_T segmentDateMapConstIteratorREnd () const {
-      assert (_childrenList != NULL);
-      return _childrenList->mapConstIteratorREnd ();
+      return _childrenList->listREnd ();
     }
 
     /** Initialise the internal iterator on segment date:
         return the iterator at the begining of the map. */
-    SegmentDateMapIterator_T segmentDateMapIteratorBegin () const {
+    SegmentDateMapIterator_T segmentDateMapBegin () const {
       assert (_childrenList != NULL);
-      return _childrenList->mapIteratorBegin ();
+      return _childrenList->mapBegin ();
     }
     
     /** Initialise the internal iterator on segment date:
         return the iterator at the end of the map. */
-    SegmentDateMapIterator_T segmentDateMapIteratorEnd () const {
+    SegmentDateMapIterator_T segmentDateMapEnd () const {
       assert (_childrenList != NULL);
-      return _childrenList->mapIteratorEnd ();
+      return _childrenList->mapEnd ();
     }
     
     /** Initialise the internal reverse iterator on segment date:
         return the reverse iterator at the rbegining of the map. */
-    SegmentDateMapReverseIterator_T segmentDateMapIteratorRBegin () const {
+    SegmentDateMapReverseIterator_T segmentDateMapRBegin () const {
       assert (_childrenList != NULL);
-      return _childrenList->mapIteratorRBegin ();
+      return _childrenList->mapRBegin ();
     }
     
     /** Initialise the internal reverse iterator on segment date:
         return the reverse iterator at the rend of the map. */
-    SegmentDateMapReverseIterator_T segmentDateMapIteratorREnd () const {
+    SegmentDateMapReverseIterator_T segmentDateMapREnd () const {
       assert (_childrenList != NULL);
-      return _childrenList->mapIteratorREnd ();
+      return _childrenList->mapREnd ();
     }
 
-
-    /** Initialise the internal const iterator on leg date:
-        return the const iterator at the begining of the list. */
-    LegDateListConstIterator_T legDateListConstIteratorBegin () const {
-      assert (_secondChildrenList != NULL);
-      return _secondChildrenList->listConstIteratorBegin ();
-    }
-    
-    /** Initialise the internal const iterator on leg date:
-        return the const iterator at the end of the list. */
-    LegDateListConstIterator_T legDateListConstIteratorEnd () const {
-      assert (_secondChildrenList != NULL);
-      return _secondChildrenList->listConstIteratorEnd ();
-    }
-    
-    /** Initialise the internal const reverse iterator on leg date:
-        return the const reverse iterator at the rbegining of the list. */
-    LegDateListConstReverseIterator_T legDateListConstIteratorRBegin () const {
-      assert (_secondChildrenList != NULL);
-      return _secondChildrenList->listConstIteratorRBegin ();
-    }
-    
-    /** Initialise the internal const reverse iterator on leg date:
-        return the const reverse iterator at the rend of the list. */
-    LegDateListConstReverseIterator_T legDateListConstIteratorREnd () const {
-      assert (_secondChildrenList != NULL);
-      return _secondChildrenList->listConstIteratorREnd ();
-    }
 
     /** Initialise the internal iterator on leg date:
         return the iterator at the begining of the list. */
-    LegDateListIterator_T legDateListIteratorBegin () const {
+    LegDateListIterator_T legDateListBegin () const {
       assert (_secondChildrenList != NULL);
-      return _secondChildrenList->listIteratorBegin ();
+      return _secondChildrenList->listBegin ();
     }
     
     /** Initialise the internal iterator on leg date:
         return the iterator at the end of the list. */
-    LegDateListIterator_T legDateListIteratorEnd () const {
+    LegDateListIterator_T legDateListEnd () const {
       assert (_secondChildrenList != NULL);
-      return _secondChildrenList->listIteratorEnd ();
+      return _secondChildrenList->listEnd ();
     }
     
     /** Initialise the internal reverse iterator on leg date:
         return the reverse iterator at the rbegining of the list. */
-    LegDateListReverseIterator_T legDateListIteratorRBegin () const {
+    LegDateListReverseIterator_T legDateListRBegin () const {
       assert (_secondChildrenList != NULL);
-      return _secondChildrenList->listIteratorRBegin ();
+      return _secondChildrenList->listRBegin ();
     }
     
     /** Initialise the internal reverse iterator on leg date:
         return the reverse iterator at the rend of the list. */
-    LegDateListReverseIterator_T legDateListIteratorREnd () const {
+    LegDateListReverseIterator_T legDateListREnd () const {
       assert (_secondChildrenList != NULL);
-      return _secondChildrenList->listIteratorREnd ();
-    }
-
-    /** Initialise the internal const iteratorson leg date:
-        return the const iterator at the begining of the map. */
-    LegDateMapConstIterator_T legDateMapConstIteratorBegin () const {
-      assert (_secondChildrenList != NULL);
-      return _secondChildrenList->mapConstIteratorBegin ();
-    }
-    
-    /** Initialise the internal const iterator on leg date:
-        return the const iterator at the end of the map. */
-    LegDateMapConstIterator_T legDateMapConstIteratorEnd () const {
-      assert (_secondChildrenList != NULL);
-      return _secondChildrenList->mapConstIteratorEnd ();
-    }
-
-    /** Initialise the internal const reverse iterator on leg date:
-        return the const reverse iterator at the rbegining of the map. */
-    LegDateMapConstReverseIterator_T legDateMapConstIteratorRBegin () const {
-      assert (_secondChildrenList != NULL);
-      return _secondChildrenList->mapConstIteratorRBegin ();
-    }
-    
-    /** Initialise the internal const reverse iterator on leg date:
-        return the const reverse iterator at the rend of the map. */
-    LegDateMapConstReverseIterator_T legDateMapConstIteratorREnd () const {
-      assert (_secondChildrenList != NULL);
-      return _secondChildrenList->mapConstIteratorREnd ();
+      return _secondChildrenList->listREnd ();
     }
 
     /** Initialise the internal iterator on leg date:
         return the iterator at the begining of the map. */
-    LegDateMapIterator_T legDateMapIteratorBegin () const {
+    LegDateMapIterator_T legDateMapBegin () const {
       assert (_secondChildrenList != NULL);
-      return _secondChildrenList->mapIteratorBegin ();
+      return _secondChildrenList->mapBegin ();
     }
     
     /** Initialise the internal iterator on leg date:
         return the iterator at the end of the map. */
-    LegDateMapIterator_T legDateMapIteratorEnd () const {
+    LegDateMapIterator_T legDateMapEnd () const {
       assert (_secondChildrenList != NULL);
-      return _secondChildrenList->mapIteratorEnd ();
+      return _secondChildrenList->mapEnd ();
     }
     
     /** Initialise the internal reverse iterator on leg date:
         return the reverse iterator at the rbegining of the map. */
-    LegDateMapReverseIterator_T legDateMapIteratorRBegin () const {
+    LegDateMapReverseIterator_T legDateMapRBegin () const {
       assert (_secondChildrenList != NULL);
-      return _secondChildrenList->mapIteratorRBegin ();
+      return _secondChildrenList->mapRBegin ();
     }
     
     /** Initialise the internal reverse iterator on leg date:
         return the reverse iterator at the rend of the map. */
-    LegDateMapReverseIterator_T legDateMapIteratorREnd () const {
+    LegDateMapReverseIterator_T legDateMapREnd () const {
       assert (_secondChildrenList != NULL);
-      return _secondChildrenList->mapIteratorREnd ();
+      return _secondChildrenList->mapREnd ();
     }
 
     
