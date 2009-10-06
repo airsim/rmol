@@ -161,8 +161,6 @@ namespace stdair {
   inline BomIterator_T<BOM_CONTENT, ITERATOR>
   operator+(const typename ITERATOR::difference_type n, 
             const BomIterator_T<BOM_CONTENT, ITERATOR>& r) {
-    // Definition allowing to retrieve the Parent_T of BomIterator_T.
-    typedef typename BomIterator_T<BOM_CONTENT,ITERATOR>::Parent_T Parent_T;
     return BomIterator_T<BOM_CONTENT, ITERATOR> (n+r.base());
   }
   
