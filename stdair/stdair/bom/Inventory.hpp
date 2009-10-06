@@ -29,6 +29,7 @@ namespace stdair {
   class Inventory : public BomStructure {
     friend class FacBomStructure;
     friend class FacBomContent;
+    friend class BomStructure;
 
   public:
     // Type definitions

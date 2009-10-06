@@ -25,6 +25,7 @@ namespace stdair {
   class LegDate : public BomStructure {
     friend class FacBomStructure;
     friend class FacBomContent;
+    friend class BomStructure;
     
   public:
     // Type definitions
