@@ -155,9 +155,9 @@ namespace stdair {
     // /////////// Iteration methods //////////
     /** Initialise the internal const iterator on flight date:
         return the const iterator at the begining of the list. */
-    FlightDateListConstIterator_T flightDateListBegin () const {
+    FlightDateListConstIterator_T flightDateListConstIteratorBegin () const {
       assert (_childrenList != NULL);
-      return _childrenList->listBegin ();
+      return _childrenList->listConstIteratorBegin ();
     }
     
     /** Initialise the internal const iterator on flight date:
@@ -183,9 +183,9 @@ namespace stdair {
 
     /** Initialise the internal iterator on flight date:
         return the iterator at the begining of the list. */
-    FlightDateListIterator_T flightDateListBegin () {
+    FlightDateListIterator_T flightDateListIteratorBegin () const {
       assert (_childrenList != NULL);
-      return _childrenList->listBegin ();
+      return _childrenList->listIteratorBegin ();
     }
     
     /** Initialise the internal iterator on flight date:
