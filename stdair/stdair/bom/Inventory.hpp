@@ -150,6 +150,7 @@ namespace stdair {
       _childrenList->describeFull (ioOut);
     }
 
+  public:
     // /////////// Iteration methods //////////
     /** Initialise the internal const iterator on flight date:
         return the const iterator at the begining of the list. */
