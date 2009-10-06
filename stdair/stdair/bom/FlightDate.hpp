@@ -195,9 +195,9 @@ namespace stdair {
     // /////////// Iteration methods //////////
     /** Initialise the internal const iterator on segment date:
         return the const iterator at the begining of the list. */
-    SegmentDateListConstIterator_T segmentDateListConstIteratorBegin () const {
+    SegmentDateListConstIterator_T segmentDateListBegin () const {
       assert (_childrenList != NULL);
-      return _childrenList->listConstIteratorBegin ();
+      return _childrenList->listBegin ();
     }
     
     /** Initialise the internal const iterator on segment date:
@@ -223,9 +223,9 @@ namespace stdair {
 
     /** Initialise the internal iterator on segment date:
         return the iterator at the begining of the list. */
-    SegmentDateListIterator_T segmentDateListIteratorBegin () const {
+    SegmentDateListIterator_T segmentDateListBegin () const {
       assert (_childrenList != NULL);
-      return _childrenList->listIteratorBegin ();
+      return _childrenList->listBegin ();
     }
     
     /** Initialise the internal iterator on segment date:
@@ -308,9 +308,9 @@ namespace stdair {
 
     /** Initialise the internal const iterator on leg date:
         return the const iterator at the begining of the list. */
-    LegDateListConstIterator_T legDateListConstIteratorBegin () const {
+    LegDateListConstIterator_T legDateListBegin () const {
       assert (_secondChildrenList != NULL);
-      return _secondChildrenList->listConstIteratorBegin ();
+      return _secondChildrenList->listBegin ();
     }
     
     /** Initialise the internal const iterator on leg date:
@@ -336,9 +336,9 @@ namespace stdair {
 
     /** Initialise the internal iterator on leg date:
         return the iterator at the begining of the list. */
-    LegDateListIterator_T legDateListIteratorBegin () const {
+    LegDateListIterator_T legDateListBegin () const {
       assert (_secondChildrenList != NULL);
-      return _secondChildrenList->listIteratorBegin ();
+      return _secondChildrenList->listBegin ();
     }
     
     /** Initialise the internal iterator on leg date:
