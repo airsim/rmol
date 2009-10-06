@@ -286,6 +286,12 @@ AC_CONFIG_FILES(
 	rmol.pc
 	rmol.spec
 	rmol.m4
+    stdair/Makefile
+    stdair/basic/Makefile
+    stdair/bom/Makefile
+    stdair/factory/Makefile
+    stdair/core/Makefile
+    stdair/config/Makefile
 	rmol/Makefile
 	rmol/basic/Makefile
 	rmol/field/Makefile
@@ -310,6 +316,7 @@ AC_CONFIG_FILES(
 	po/Makefile.in
 	test/Makefile
 	test/com/Makefile
+	test/stdair/Makefile
 	win32/Makefile)
 AC_OUTPUT
 
