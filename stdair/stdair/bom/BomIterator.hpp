@@ -31,7 +31,7 @@ namespace stdair {
     // Definition allowing the retrieve the difference type of the ITERATOR.
     typedef typename ITERATOR::difference_type difference_type;
 
-  protected:
+  public:
     /** Normal constructor. */
     BomIterator_T (ITERATOR iIterator)
       : _itBomStructureObject (iIterator) { }
