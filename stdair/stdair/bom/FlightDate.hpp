@@ -223,9 +223,9 @@ namespace stdair {
 
     /** Initialise the internal iterator on segment date:
         return the iterator at the begining of the list. */
-    SegmentDateListIterator_T segmentDateListBegin () const {
+    SegmentDateListIterator_T segmentDateListBegin () {
       assert (_childrenList != NULL);
-      return _childrenList->listBegin ();
+      return _childrenList->listaBegin ();
     }
     
     /** Initialise the internal iterator on segment date:
@@ -336,7 +336,7 @@ namespace stdair {
 
     /** Initialise the internal iterator on leg date:
         return the iterator at the begining of the list. */
-    LegDateListIterator_T legDateListBegin () const {
+    LegDateListIterator_T legDateListBegin () {
       assert (_secondChildrenList != NULL);
       return _secondChildrenList->listBegin ();
     }
