@@ -23,16 +23,7 @@ bom_h_sources = $(top_srcdir)/rmol/bom/BomAbstract.hpp \
 		$(top_srcdir)/rmol/bom/StatAggregatorStructList.hpp \
 		$(top_srcdir)/rmol/bom/StudyStatManager.hpp \
 		$(top_srcdir)/rmol/bom/ExpectationMaximization.hpp \
-        $(top_srcdir)/rmol/bom/QForecaster.hpp \
-        $(top_srcdir)/rmol/bom/BomRootTypes.hpp \
-        $(top_srcdir)/rmol/bom/InventoryTypes.hpp \
-        $(top_srcdir)/rmol/bom/Inventory.hpp \
-        $(top_srcdir)/rmol/bom/FlightDateTypes.hpp \
-        $(top_srcdir)/rmol/bom/FlightDate.hpp \
-        $(top_srcdir)/rmol/bom/LegDateTypes.hpp \
-        $(top_srcdir)/rmol/bom/LegDate.hpp \
-        $(top_srcdir)/rmol/bom/SegmentDateTypes.hpp \
-        $(top_srcdir)/rmol/bom/SegmentDate.hpp
+        $(top_srcdir)/rmol/bom/QForecaster.hpp 
 
 bom_cc_sources = $(top_srcdir)/rmol/bom/BomAbstract.cpp \
 		$(top_srcdir)/rmol/bom/Bucket.cpp \
@@ -52,8 +43,5 @@ bom_cc_sources = $(top_srcdir)/rmol/bom/BomAbstract.cpp \
 		$(top_srcdir)/rmol/bom/StatAggregatorStruct.cpp \
 		$(top_srcdir)/rmol/bom/StudyStatManager.cpp \
 		$(top_srcdir)/rmol/bom/ExpectationMaximization.cpp \
-		$(top_srcdir)/rmol/bom/QForecaster.cpp \
-        $(top_srcdir)/rmol/bom/Inventory.cpp \
-        $(top_srcdir)/rmol/bom/FlightDate.cpp \
-        $(top_srcdir)/rmol/bom/LegDate.cpp \
-        $(top_srcdir)/rmol/bom/SegmentDate.cpp
+		$(top_srcdir)/rmol/bom/QForecaster.cpp 
+  
