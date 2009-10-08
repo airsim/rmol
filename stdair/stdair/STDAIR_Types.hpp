@@ -33,7 +33,6 @@ namespace stdair {
   class DocumentNotFoundException : public RootException {
   };
 
-
   // /////////////// Log /////////////
   /** Level of logs. */
   namespace LOG {
