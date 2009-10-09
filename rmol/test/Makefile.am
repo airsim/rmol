@@ -4,12 +4,12 @@ include $(top_srcdir)/Makefile.common
 MAINTAINERCLEANFILES = Makefile.in
 
 ##
-SUBDIRS = com stdair
+SUBDIRS = com 
 
 EXTRA_DIST = testLib.sh
 ##
 
-EXTRA_TESTS = valarrays
+EXTRA_TESTS = valarrays bomsforforecaster
 STD_CHECKS = OptimiseTestSuite SimulateTestSuite ForecasterTestSuite UnconstrainerTestSuite
 check_PROGRAMS = $(STD_CHECKS) $(EXTRA_TESTS)
 TESTS = $(STD_CHECKS)
@@ -46,4 +46,11 @@ valarrays_SOURCES = valarrays.cpp
 valarrays_CXXFLAGS= $(BOOST_CFLAGS) $(CPPUNIT_CFLAGS)
 valarrays_LDADD = 
 valarrays_LDFLAGS = $(BOOST_LIBS)
+
+bomsforforecaster_SOURCES = bomsforforecaster.cpp
+bomsforforecaster_CXXFLAGS= $(BOOST_CFLAGS) $(CPPUNIT_CFLAGS)
+bomsforforecaster_LDADD = 
+bomsforforecaster_LDFLAGS = $(BOOST_LIBS) \
+	$(top_builddir)/@PACKAGE@/core/lib@PACKAGE@.la \
+	$(top_builddir)/@PACKAGE@/service/libsvc.la
 

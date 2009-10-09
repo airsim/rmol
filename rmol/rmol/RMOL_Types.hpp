@@ -94,6 +94,9 @@ namespace RMOL {
   /** Define the holder of sellup factors (used for computing Q-eq bookings)*/
   typedef std::vector<double> SellupFactorHolder_T;
 
+  /** Define the holder of censorship flags. */
+  typedef std::vector<double> CensorshipFlagHolder_T;
+
 
 }
 #endif // __RMOL_RMOL_TYPES_HPP
