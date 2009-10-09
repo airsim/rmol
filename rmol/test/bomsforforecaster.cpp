@@ -1,12 +1,12 @@
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
-// C
-// #include <cassert>
 // STL
+#include <cassert>
 #include <sstream>
 #include <fstream>
 #include <string>
+#include <limits>
 // #include <iostream>
 // RMOL
 #include <RMOL_Service.hpp>
@@ -24,18 +24,18 @@ namespace RMOL {
       bool _censorshipFlag;
       
       // Constructer
-      BookingClassData (double iBookingCount, double iFare, 
-                        double iSellupFactor, bool iCensorshipFlag) : 
-        _bookingCount(iBookingCount), _fare(iFare), 
+      BookingClassData (const double iBookingCount, const double iFare, 
+                        const double iSellupFactor, const bool iCensorshipFlag)
+        : _bookingCount(iBookingCount), _fare(iFare), 
         _sellupFactor(iSellupFactor), _censorshipFlag(iCensorshipFlag) {
       }
       
       // Getters
-      double getFare () {
+      double getFare () const {
         return _fare;
       }
       
-      bool getCensorshipFlag () {
+      bool getCensorshipFlag () const {
         return _censorshipFlag;
       }
 
@@ -71,62 +71,69 @@ namespace RMOL {
     }
 
     // Add BookingClassData
-    void addBookingClassData (BookingClassData* iBookingClassData) {
-      _bookingClassDataList.push_back(iBookingClassData);
+    void addBookingClassData (BookingClassData& ioBookingClassData) {
+      _bookingClassDataList.push_back (&ioBookingClassData);
     }
 
     // Getters
-    int getNumberOfClass () {
+    unsigned int getNumberOfClass () const {
       return _bookingClassDataList.size();
     }
 
-    double getMinimumFare () {
+    double getMinimumFare () const {
       return _minimumFare;
     }
 
-    bool getCensorshipFlag () {
+    bool getCensorshipFlag () const {
       return _censorshipFlag;
     }
 
     // Setters
-    void setMinimumFare (double iMinFare) {
+    void setMinimumFare (const double iMinFare) {
       _minimumFare = iMinFare;
     }
 
-    void setCensorshipFlag (bool iCensorshipFlag) {
+    void setCensorshipFlag (const bool iCensorshipFlag) {
       _censorshipFlag = iCensorshipFlag;
     }
 
     // compute minimum fare 
-    void calculateMinimumFare() {
-      double minFare = 1000000;
+    void updateMinimumFare() {
+      double minFare = std::numeric_limits<double>::max();
       BookingClassDataList_T::iterator itBookingClassDataList;
       for (itBookingClassDataList = _bookingClassDataList.begin();
            itBookingClassDataList != _bookingClassDataList.end();
            ++itBookingClassDataList) {
         BookingClassData* lBookingClassData = *itBookingClassDataList;
-        double lFare = lBookingClassData->getFare();
+        assert (lBookingClassData != NULL);
+        
+        const double lFare = lBookingClassData->getFare();
         if (lFare < minFare) { 
           minFare = lFare; 
         }
       }
+      //
       setMinimumFare(minFare);
     }
 
     // compute censorship flag for the data set
-    void calculateCensorshipFlag () {
+    void updateCensorshipFlag () {
       bool censorshipFlag = false;
       BookingClassDataList_T::iterator itBookingClassDataList;
       for (itBookingClassDataList = _bookingClassDataList.begin();
            itBookingClassDataList != _bookingClassDataList.end();
            ++itBookingClassDataList) {
         BookingClassData* lBookingClassData = *itBookingClassDataList;
-        bool lCensorshipFlagOfAClass = lBookingClassData -> getCensorshipFlag();
+        assert (lBookingClassData != NULL);
+        
+        const bool lCensorshipFlagOfAClass =
+          lBookingClassData->getCensorshipFlag();
         if (lCensorshipFlagOfAClass) {
           censorshipFlag = true;
           break;
         }
       }
+      //
       setCensorshipFlag(censorshipFlag);
     }
     
@@ -201,26 +208,26 @@ int main (int argc, char* argv[]) {
   RMOL_LOG_DEBUG(YClassData.toString());
 
   // Add BookingClassData into the BCDataSet
-  lBookingClassDataSet.addBookingClassData( &QClassData );
-  lBookingClassDataSet.addBookingClassData( &MClassData );
-  lBookingClassDataSet.addBookingClassData( &BClassData );
-  lBookingClassDataSet.addBookingClassData( &YClassData );
+  lBookingClassDataSet.addBookingClassData (QClassData );
+  lBookingClassDataSet.addBookingClassData( MClassData );
+  lBookingClassDataSet.addBookingClassData( BClassData );
+  lBookingClassDataSet.addBookingClassData( YClassData );
 
   //Display
   RMOL_LOG_DEBUG( lBookingClassDataSet.toString() );
 
   // Number of classes
-  int lNoOfClass = lBookingClassDataSet.getNumberOfClass();
+  const unsigned int lNoOfClass = lBookingClassDataSet.getNumberOfClass();
   RMOL_LOG_DEBUG( "Number of Classes: " << lNoOfClass );
 
   // Minimum fare
-  lBookingClassDataSet.calculateMinimumFare();
-  double lMinFare = lBookingClassDataSet.getMinimumFare();
+  lBookingClassDataSet.updateMinimumFare();
+  const double lMinFare = lBookingClassDataSet.getMinimumFare();
   RMOL_LOG_DEBUG( "Minimum fare: " << lMinFare );
 
   // Censorship flag
-  lBookingClassDataSet.calculateCensorshipFlag();
-  double lCensorshipFlag = lBookingClassDataSet.getCensorshipFlag();
+  lBookingClassDataSet.updateCensorshipFlag();
+  const bool lCensorshipFlag = lBookingClassDataSet.getCensorshipFlag();
   RMOL_LOG_DEBUG( "Censorship Flag: " << lCensorshipFlag );
 
   // Close the log output file
