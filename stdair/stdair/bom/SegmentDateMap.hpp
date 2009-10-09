@@ -1,5 +1,5 @@
-#ifndef __STDAIR_BOM_SEGMENTDATELIST_HPP
-#define __STDAIR_BOM_SEGMENTDATELIST_HPP
+#ifndef __STDAIR_BOM_SEGMENTDATEMAP_HPP
+#define __STDAIR_BOM_SEGMENTDATEMAP_HPP
 
 // //////////////////////////////////////////////////////////////////////
 // Import section
@@ -12,47 +12,47 @@ namespace stdair {
 // Forward declarations
   template <typename BOM_CONTENT, typename ITERATOR> struct BomIterator_T;
 
-  /** Structure which handles the iterators for a segment-date list. */
-  struct SegmentDateList_T {
+  /** Structure which handles the iterators for a segment-date map. */
+  struct SegmentDateMap_T {
 
   public:
     // /////////////////////////////////////////////////////////////////////////
     // See the explanations, within the stdair::BomContentRoot class, for all
     // the iterator types specified below
     // /////////////////////////////////////////////////////////////////////////
-    /** Define the segment-date list iterators. */
+    /** Define the segment-date map iterators. */
     typedef BomIterator_T<SegmentDate,
-                          SegmentDateStructureList_T::const_iterator> iterator;
+                          SegmentDateStructureMap_T::const_iterator> iterator;
     typedef BomIterator_T<SegmentDate,
-                          SegmentDateStructureList_T::const_reverse_iterator> reverse_iterator;
+                          SegmentDateStructureMap_T::const_reverse_iterator> reverse_iterator;
     // /////////////////////////////////////////////////////////////////////////
 
   public:
     // /////////// Iteration methods //////////
     /** Initialise the internal iterator on segment date:
-        return the iterator at the begining of the list. */
+        return the iterator at the begining of the map. */
     iterator begin () const;
     
     /** Initialise the internal iterator on segment date:
-        return the iterator at the end of the list. */
+        return the iterator at the end of the map. */
     iterator end () const;
 
     /** Initialise the internal reverse iterator on segment date:
-        return the reverse iterator at the rbegining of the list. */
+        return the reverse iterator at the rbegining of the map. */
     reverse_iterator rbegin () const;
     
     /** Initialise the internal reverse iterator on segment date:
-        return the reverse iterator at the end of the list. */
+        return the reverse iterator at the end of the map. */
     reverse_iterator rend () const;
 
   public:
     /** Default constructors. */
-    SegmentDateList_T ();
-    SegmentDateList_T (const SegmentDateList_T&);
-    SegmentDateList_T (const FlightDateStructure_T&);
+    SegmentDateMap_T ();
+    SegmentDateMap_T (const SegmentDateMap_T&);
+    SegmentDateMap_T (const FlightDateStructure_T&);
 
     /** Destructor. */
-    virtual ~SegmentDateList_T();
+    virtual ~SegmentDateMap_T();
 
   private:
     // Attributes
@@ -61,5 +61,5 @@ namespace stdair {
   };
 
 }
-#endif // __STDAIR_BOM_SEGMENTDATELIST_HPP
+#endif // __STDAIR_BOM_SEGMENTDATEMAP_HPP
 

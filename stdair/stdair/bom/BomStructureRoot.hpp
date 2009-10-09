@@ -13,7 +13,7 @@
 
 namespace stdair {
   // Forward declarations.
-  template <typename BOM_CONTENT> class Inventory;
+  template <typename BOM_CONTENT> class InventoryStructure;
   class BomStructureDummy;
   class BomContentDummy;
 
@@ -38,7 +38,7 @@ namespace stdair {
     typedef BomStructureRootKey<BOM_CONTENT> BomKey_T;
 
     /** Definition allowing to retrieve the associated children type. */
-    typedef boost::mpl::vector<Inventory<ContentChild_T>, BomStructureDummy> ChildrenBomTypeList_T;
+    typedef boost::mpl::vector<InventoryStructure<ContentChild_T>, BomStructureDummy> ChildrenBomTypeList_T;
 
     /** Definition allowing to retrive the default children bom holder type. */
     typedef BomChildrenHolderImp<BomContentDummy> DefaultChildrenBomHolder_T;

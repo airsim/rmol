@@ -12,7 +12,7 @@ namespace stdair {
 
   // Forward declarations
   template <typename BOM_CONTENT>
-  class FlightDate;
+  class FlightDateStructure;
 
   /** Key of flight-date. */
   template <typename BOM_CONTENT>
@@ -23,7 +23,7 @@ namespace stdair {
   private:
     // Type definitions
     /** Definition allowing to retrieve the associated BOM structure type. */
-    typedef FlightDate<BOM_CONTENT> BomStructure_T;
+    typedef FlightDateStructure<BOM_CONTENT> BomStructure_T;
 
   public:
     // /////////// Construction ///////////

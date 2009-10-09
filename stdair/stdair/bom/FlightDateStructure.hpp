@@ -16,7 +16,7 @@
 namespace stdair {
 
   // Forward declaration
-  template <typename BOM_CONTENT> class Inventory;
+  template <typename BOM_CONTENT> class InventoryStructure;
   class BomContentDummy;
   
   /** Wrapper class aimed at holding the actual content, modeled

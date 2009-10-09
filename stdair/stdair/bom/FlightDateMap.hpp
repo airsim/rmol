@@ -1,5 +1,5 @@
-#ifndef __STDAIR_BOM_FLIGHTDATELIST_HPP
-#define __STDAIR_BOM_FLIGHTDATELIST_HPP
+#ifndef __STDAIR_BOM_FLIGHTDATEMAP_HPP
+#define __STDAIR_BOM_FLIGHTDATEMAP_HPP
 
 // //////////////////////////////////////////////////////////////////////
 // Import section
@@ -9,51 +9,50 @@
 #include <stdair/bom/FlightDateTypes.hpp>
 
 namespace stdair {
-  
 // Forward declarations
   template <typename BOM_CONTENT, typename ITERATOR> struct BomIterator_T;
 
-  /** Structure which handles the iterators for a flight-date list. */
-  struct FlightDateList_T {
+  /** Structure which handles the iterators for a flight-date map. */
+  struct FlightDateMap_T {
 
   public:
     // /////////////////////////////////////////////////////////////////////////
     // See the explanations, within the stdair::BomContentRoot class, for all
     // the iterator types specified below
     // /////////////////////////////////////////////////////////////////////////
-    /** Define the flight-date list iterators. */
+    /** Define the flight-date map iterators. */
     typedef BomIterator_T<FlightDate,
-                          FlightDateStructureList_T::const_iterator> iterator;
+                          FlightDateStructureMap_T::const_iterator> iterator;
     typedef BomIterator_T<FlightDate,
-                          FlightDateStructureList_T::const_reverse_iterator> reverse_iterator;
+                          FlightDateStructureMap_T::const_reverse_iterator> reverse_iterator;
     // /////////////////////////////////////////////////////////////////////////
 
   public:
     // /////////// Iteration methods //////////
     /** Initialise the internal iterator on flight date:
-        return the iterator at the begining of the list. */
+        return the iterator at the begining of the map. */
     iterator begin () const;
     
     /** Initialise the internal iterator on flight date:
-        return the iterator at the end of the list. */
+        return the iterator at the end of the map. */
     iterator end () const;
 
     /** Initialise the internal reverse iterator on flight date:
-        return the reverse iterator at the rbegining of the list. */
+        return the reverse iterator at the rbegining of the map. */
     reverse_iterator rbegin () const;
     
     /** Initialise the internal reverse iterator on flight date:
-        return the reverse iterator at the end of the list. */
+        return the reverse iterator at the end of the map. */
     reverse_iterator rend () const;
 
   public:
     /** Default constructors. */
-    FlightDateList_T ();
-    FlightDateList_T (const FlightDateList_T&);
-    FlightDateList_T (const InventoryStructure_T&);
+    FlightDateMap_T ();
+    FlightDateMap_T (const FlightDateMap_T&);
+    FlightDateMap_T (const InventoryStructure_T&);
 
     /** Destructor. */
-    virtual ~FlightDateList_T();
+    virtual ~FlightDateMap_T();
 
   private:
     // Attributes
@@ -62,5 +61,5 @@ namespace stdair {
   };
 
 }
-#endif // __STDAIR_BOM_FLIGHTDATELIST_HPP
+#endif // __STDAIR_BOM_FLIGHTDATEMAP_HPP
 
