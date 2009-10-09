@@ -535,7 +535,7 @@ namespace RMOL {
         i.e., n corresponds to the number of classes/buckets.
     */
     unsigned int Kj = K;
-    const int cabinCapacityInt = static_cast<int> (iCabinCapacity);
+    //const int cabinCapacityInt = static_cast<int> (iCabinCapacity);
     for (short j = 1 ; j <= nbOfClasses - 1; ++j, ioBucketHolder.iterate()) {
       // DEBUG
       std::cout << "K" << j << " = " << Kj << std::endl;
