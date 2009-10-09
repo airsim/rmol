@@ -1,5 +1,5 @@
-#ifndef __STDAIR_BOM_LEGDATE_HPP
-#define __STDAIR_BOM_LEGDATE_HPP
+#ifndef __STDAIR_BOM_LEGDATESTRUCTURE_HPP
+#define __STDAIR_BOM_LEGDATESTRUCTURE_HPP
 
 // //////////////////////////////////////////////////////////////////////
 // Import section
@@ -14,7 +14,7 @@
 namespace stdair {
 
   // Forward declarations
-  template <typename BOM_CONTENT> class FlightDate;
+  template <typename BOM_CONTENT> class FlightDateStructure;
   class BomStructureDummy;
   class BomContentDummy;
   
@@ -22,7 +22,7 @@ namespace stdair {
       by an external specific LegDate class (for instance,
       in the AIRSCHED library). */
   template <class BOM_CONTENT>
-  class LegDate : public BomStructure {
+  class LegDateStructure : public BomStructure {
     friend class FacBomStructure;
     friend class FacBomContent;
     friend class BomStructure;
@@ -47,13 +47,13 @@ namespace stdair {
 
   public:
     // /////////// Getters /////////////
-    /** Get the (parent) FlightDate object. */
-    ParentBomStructure_T* getFlightDatePtr() const {
+    /** Get the (parent) FlightDateStructure object. */
+    ParentBomStructure_T* getFlightDateStructurePtr() const {
       return _parent;
     }
     
-    /** Get the (parent) FlightDate object. */
-    ParentBomStructure_T& getFlightDate() const;
+    /** Get the (parent) FlightDateStructure object. */
+    ParentBomStructure_T& getFlightDateStructure() const;
     
     /** Get the leg-date key. */
     const BomKey_T& getKey() const {
@@ -62,9 +62,9 @@ namespace stdair {
 
   private:
     // /////////// Setters /////////////
-    /** Set the (parent) FlightDate object. */
-    void setFlightDate (ParentBomStructure_T& ioFlightDate) {
-      _parent = &ioFlightDate;
+    /** Set the (parent) FlightDateStructure object. */
+    void setFlightDateStructure (ParentBomStructure_T& ioFlightDateStructure) {
+      _parent = &ioFlightDateStructure;
     }
     
     /** Default children list setter. */
@@ -104,12 +104,12 @@ namespace stdair {
     /** Constructors are private so as to force the usage of the Factory
         layer. */
     /** Default constructors. */
-    LegDate ();
-    LegDate (const LegDate&);
-    LegDate (const BomKey_T& iKey) : _parent (NULL), _key (iKey) { }
+    LegDateStructure ();
+    LegDateStructure (const LegDateStructure&);
+    LegDateStructure (const BomKey_T& iKey) : _parent (NULL), _key (iKey) { }
 
     /** Destructor. */
-    virtual ~LegDate() { }
+    virtual ~LegDateStructure() { }
 
   private:
     // Attributes
@@ -124,4 +124,4 @@ namespace stdair {
   };
 
 }
-#endif // __STDAIR_BOM_LEGDATE_HPP
+#endif // __STDAIR_BOM_LEGDATESTRUCTURE_HPP

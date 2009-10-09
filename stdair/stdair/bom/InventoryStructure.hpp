@@ -1,5 +1,5 @@
-#ifndef __STDAIR_BOM_INVENTORY_HPP
-#define __STDAIR_BOM_INVENTORY_HPP
+#ifndef __STDAIR_BOM_INVENTORYSTRUCTURE_HPP
+#define __STDAIR_BOM_INVENTORYSTRUCTURE_HPP
 
 // //////////////////////////////////////////////////////////////////////
 // Import section
@@ -13,7 +13,7 @@
 #include <stdair/bom/InventoryKey.hpp>
 #include <stdair/bom/BomChildrenHolderImp.hpp>
 #include <stdair/bom/BomIterator.hpp>
-#include <stdair/bom/FlightDate.hpp>
+#include <stdair/bom/FlightDateStructure.hpp>
 
 namespace stdair {
 
@@ -26,7 +26,7 @@ namespace stdair {
       by an external specific Inventory class (for instance,
       in the AIRSCHED library). */
   template <class BOM_CONTENT>
-  class Inventory : public BomStructure {
+  class InventoryStructure : public BomStructure {
     friend class FacBomStructure;
     friend class FacBomContent;
     friend class BomStructure;
@@ -209,13 +209,13 @@ namespace stdair {
     /** Constructors are private so as to force the usage of the Factory
         layer. */
     /** Default constructors. */
-    Inventory ();
-    Inventory (const Inventory&);
-    Inventory (const BomKey_T& iKey)
+    InventoryStructure ();
+    InventoryStructure (const InventoryStructure&);
+    InventoryStructure (const BomKey_T& iKey)
       : _parent (NULL), _key (iKey), _childrenList (NULL) { }
 
     /** Destructor. */
-    virtual ~Inventory() { }
+    virtual ~InventoryStructure() { }
 
   private:
     // Attributes
@@ -233,5 +233,5 @@ namespace stdair {
   };
 
 }
-#endif // __STDAIR_BOM_INVENTORY_HPP
+#endif // __STDAIR_BOM_INVENTORYSTRUCTURE_HPP
 

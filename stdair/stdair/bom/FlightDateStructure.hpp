@@ -1,5 +1,5 @@
-#ifndef __STDAIR_BOM_FLIGHTDATE_HPP
-#define __STDAIR_BOM_FLIGHTDATE_HPP
+#ifndef __STDAIR_BOM_FLIGHTDATESTRUCTURE_HPP
+#define __STDAIR_BOM_FLIGHTDATESTRUCTURE_HPP
 
 // //////////////////////////////////////////////////////////////////////
 // Import section
@@ -9,8 +9,8 @@
 // STDAIR 
 #include <stdair/bom/BomStructure.hpp>
 #include <stdair/bom/FlightDateKey.hpp>
-#include <stdair/bom/SegmentDate.hpp>
-#include <stdair/bom/LegDate.hpp>
+#include <stdair/bom/SegmentDateStructure.hpp>
+#include <stdair/bom/LegDateStructure.hpp>
 #include <stdair/bom/BomChildrenHolderImp.hpp>
 
 namespace stdair {
@@ -23,7 +23,7 @@ namespace stdair {
       by an external specific FlightDate class (for instance,
       in the AIRSCHED library). */
   template <class BOM_CONTENT>
-  class FlightDate : public BomStructure {
+  class FlightDateStructure : public BomStructure {
     friend class FacBomStructure;
     friend class FacBomContent;
     friend class BomStructure;
@@ -49,8 +49,8 @@ namespace stdair {
     typedef typename BOM_CONTENT::SecondContentChild_T SecondContentChild_T;
     
     /** Definition allowing to retrieve the associated children type. */
-    typedef boost::mpl::vector<SegmentDate<ContentChild_T>,
-                               LegDate<SecondContentChild_T> > ChildrenBomTypeList_T;
+    typedef boost::mpl::vector<SegmentDateStructure<ContentChild_T>,
+                               LegDateStructure<SecondContentChild_T> > ChildrenBomTypeList_T;
 
     /** Definition allowing to retrive the default children bom holder type. */
     typedef BomChildrenHolderImp<BomContentDummy> DefaultChildrenBomHolder_T;
@@ -80,13 +80,13 @@ namespace stdair {
     
   public:
     // /////////// Getters /////////////
-    /** Get the (parent) Inventory object. */
-    ParentBomStructure_T* getInventoryPtr() const {
+    /** Get the (parent) InventoryStructure object. */
+    ParentBomStructure_T* getInventoryStructurePtr() const {
       return _parent;
     }
     
-    /** Get the (parent) Inventory object. */
-    ParentBomStructure_T& getInventory() const {
+    /** Get the (parent) InventoryStructure object. */
+    ParentBomStructure_T& getInventoryStructure() const {
       assert (_parent != NULL);
       return *_parent;
     }
@@ -119,7 +119,7 @@ namespace stdair {
   private:
     // /////////// Setters /////////////
     /** Set the (parent) FlightDate object. */
-    void setBomStructureRoot (ParentBomStructure_T& ioParent) {
+    void setInventoryStructure (ParentBomStructure_T& ioParent) {
       _parent = &ioParent;
     }
     
@@ -303,14 +303,14 @@ namespace stdair {
     /** Constructors are private so as to force the usage of the Factory
         layer. */
     /** Default constructors. */
-    FlightDate ();
-    FlightDate (const FlightDate&);
-    FlightDate (const BomKey_T& iKey)
+    FlightDateStructure ();
+    FlightDateStructure (const FlightDateStructure&);
+    FlightDateStructure (const BomKey_T& iKey)
       : _parent (NULL), _key (iKey), _childrenList (NULL),
         _secondChildrenList (NULL) { }
 
     /** Destructor. */
-    virtual ~FlightDate() { }
+    virtual ~FlightDateStructure() { }
 
   private:
     // Attributes
@@ -332,5 +332,5 @@ namespace stdair {
   };
 
 }
-#endif // __STDAIR_BOM_FLIGHTDATE_HPP
+#endif // __STDAIR_BOM_FLIGHTDATESTRUCTURE_HPP
 

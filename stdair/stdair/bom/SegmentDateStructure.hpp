@@ -1,5 +1,5 @@
-#ifndef __STDAIR_BOM_SEGMENTDATE_HPP
-#define __STDAIR_BOM_SEGMENTDATE_HPP
+#ifndef __STDAIR_BOM_SEGMENTDATESTRUCTURE_HPP
+#define __STDAIR_BOM_SEGMENTDATESTRUCTURE_HPP
 
 // //////////////////////////////////////////////////////////////////////
 // Import section
@@ -14,7 +14,7 @@
 namespace stdair {
 
   // Forward declarations
-  template <typename BOM_CONTENT> class FlightDate;
+  template <typename BOM_CONTENT> class FlightDateStructure;
   class BomStructureDummy;
   class BomContentDummy;
   
@@ -22,7 +22,7 @@ namespace stdair {
       by an external specific SegmentDate class (for instance,
       in the AIRSCHED library). */
   template <class BOM_CONTENT>
-  class SegmentDate : public BomStructure {
+  class SegmentDateStructure : public BomStructure {
     friend class FacBomStructure;
     friend class FacBomContent;
     friend class BomStructure;
@@ -47,13 +47,13 @@ namespace stdair {
 
   public:
     // /////////// Getters /////////////
-    /** Get the (parent) FlightDate object. */
-    ParentBomStructure_T* getFlightDatePtr() const {
+    /** Get the (parent) FlightDateStructure object. */
+    ParentBomStructure_T* getFlightDateStructurePtr() const {
       return _parent;
     }
     
-    /** Get the (parent) FlightDate object. */
-    ParentBomStructure_T& getFlightDate() const;
+    /** Get the (parent) FlightDateStructure object. */
+    ParentBomStructure_T& getFlightDateStructure() const;
     
     /** Get the segment-date key. */
     const BomKey_T& getKey() const {
@@ -62,9 +62,9 @@ namespace stdair {
         
   private:
     // /////////// Setters /////////////
-    /** Set the (parent) FlightDate object. */
-    void setFlightDate (ParentBomStructure_T& ioFlightDate) {
-      _parent = &ioFlightDate;
+    /** Set the (parent) FlightDateStructure object. */
+    void setFlightDateStructure (ParentBomStructure_T& ioFlightDateStructure) {
+      _parent = &ioFlightDateStructure;
     }
     
     /** Default children list setter. */
@@ -104,12 +104,12 @@ namespace stdair {
     /** Constructors are private so as to force the usage of the Factory
         layer. */
     /** Default constructors. */
-    SegmentDate ();
-    SegmentDate (const SegmentDate&);
-    SegmentDate (const BomKey_T& iKey) : _parent (NULL), _key (iKey) { }
+    SegmentDateStructure ();
+    SegmentDateStructure (const SegmentDateStructure&);
+    SegmentDateStructure (const BomKey_T& iKey) : _parent (NULL), _key (iKey) { }
 
     /** Destructor. */
-    virtual ~SegmentDate() { }
+    virtual ~SegmentDateStructure() { }
 
   private:
     // Attributes
@@ -124,4 +124,4 @@ namespace stdair {
   };
 
 }
-#endif // __STDAIR_BOM_SEGMENTDATE_HPP
+#endif // __STDAIR_BOM_SEGMENTDATESTRUCTURE_HPP

@@ -9,13 +9,13 @@ bom_h_sources = \
 				$(top_srcdir)/stdair/bom/BomStructureRoot.hpp \
 				$(top_srcdir)/stdair/bom/BomStructureDummy.hpp \
 				$(top_srcdir)/stdair/bom/InventoryList.hpp \
-				$(top_srcdir)/stdair/bom/Inventory.hpp \
+				$(top_srcdir)/stdair/bom/InventoryStructure.hpp \
 				$(top_srcdir)/stdair/bom/FlightDateList.hpp \
-				$(top_srcdir)/stdair/bom/FlightDate.hpp \
+				$(top_srcdir)/stdair/bom/FlightDateStructure.hpp \
 				$(top_srcdir)/stdair/bom/LegDateList.hpp \
-				$(top_srcdir)/stdair/bom/LegDate.hpp \
+				$(top_srcdir)/stdair/bom/LegDateStructure.hpp \
 				$(top_srcdir)/stdair/bom/SegmentDateList.hpp \
-				$(top_srcdir)/stdair/bom/SegmentDate.hpp \
+				$(top_srcdir)/stdair/bom/SegmentDateStructure.hpp \
 				$(top_srcdir)/stdair/bom/BomChildrenHolder.hpp \
 				$(top_srcdir)/stdair/bom/BomChildrenHolderImp.hpp \
 				$(top_srcdir)/stdair/bom/BomContent.hpp \
