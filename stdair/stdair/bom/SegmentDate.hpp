@@ -69,7 +69,7 @@ namespace stdair {
     /** Destructor. */
     virtual ~SegmentDate();
 
-  private:
+  protected:
     // Attributes
     /** Reference structure. */
     BomStructure_T& _segmentDateStructure;

@@ -69,7 +69,7 @@ namespace stdair {
     /** Destructor. */
     virtual ~LegDate();
 
-  private:
+  protected:
     // Attributes
     /** Reference structure. */
     BomStructure_T& _legDateStructure;

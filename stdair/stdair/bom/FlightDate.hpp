@@ -102,7 +102,7 @@ namespace stdair {
     /** Destructor. */
     virtual ~FlightDate();
 
-  private:
+  protected:
     // Attributes
     /** Reference structure. */
     BomStructure_T& _flightDateStructure;

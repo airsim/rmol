@@ -90,7 +90,7 @@ namespace stdair {
     /** Destructor. */
     virtual ~Inventory();
 
-  private:
+  protected:
     // Attributes
     /** Reference structure. */
     BomStructure_T& _inventoryStructure;
