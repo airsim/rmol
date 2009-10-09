@@ -10,7 +10,8 @@
 namespace RMOL {
 
   /** Class modelling an airline-related SegmentDate. */
-  class SegmentDate : public stdair::SegmentDate {
+  class SegmentDate
+  //: public stdair::SegmentDate {
   public:
 
     /** Compute and update the censorship flag for all the booking classes
@@ -19,7 +20,7 @@ namespace RMOL {
     
     /** Same method, but on an object provided by a third party (e.g.,
         an external library). */
-    static void updateCensorshipFlag (std::SegmentDate& ioSegmentDate);
+    // static void updateCensorshipFlag (stdair::SegmentDate& ioSegmentDate);
     
   private:
     
