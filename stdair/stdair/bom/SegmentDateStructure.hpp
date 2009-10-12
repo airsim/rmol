@@ -45,7 +45,7 @@ namespace stdair {
     typedef typename BOM_CONTENT::ContentChild_T ContentChild_T;
     
     /** Definition allowing to retrieve the associated children type. */
-    typedef boost::mpl::vector <SegmentDateStructure<ContentChild_T>,
+    typedef boost::mpl::vector <SegmentCabinStructure<ContentChild_T>,
                                 BomStructureDummy> ChildrenBomTypeList_T;
 
     /** Definition allowing to retrieve the default children bom holder type. */
