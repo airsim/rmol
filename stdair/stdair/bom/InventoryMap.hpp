@@ -1,5 +1,5 @@
-#ifndef __STDAIR_BOM_INVENTORYLIST_HPP
-#define __STDAIR_BOM_INVENTORYLIST_HPP
+#ifndef __STDAIR_BOM_INVENTORYMAP_HPP
+#define __STDAIR_BOM_INVENTORYMAP_HPP
 
 // //////////////////////////////////////////////////////////////////////
 // Import section
@@ -13,47 +13,47 @@ namespace stdair {
 // Forward declarations
   template <typename BOM_CONTENT, typename ITERATOR> struct BomIterator_T;
 
-  /** Structure which handles the iterators for a flight-date list. */
-  struct InventoryList_T {
+  /** Structure which handles the iterators for a flight-date map. */
+  struct InventoryMap_T {
 
   public:
     // /////////////////////////////////////////////////////////////////////////
     // See the explanations, within the stdair::BomContentRoot class, for all
     // the iterator types specified below
     // /////////////////////////////////////////////////////////////////////////
-    /** Define the flight-date list iterators. */
+    /** Define the flight-date map iterators. */
     typedef BomIterator_T<Inventory,
-                          InventoryStructureList_T::const_iterator> iterator;
+                          InventoryStructureMap_T::const_iterator> iterator;
     typedef BomIterator_T<Inventory,
-                          InventoryStructureList_T::const_reverse_iterator> reverse_iterator;
+                          InventoryStructureMap_T::const_reverse_iterator> reverse_iterator;
     // /////////////////////////////////////////////////////////////////////////
 
   public:
     // /////////// Iteration methods //////////
     /** Initialise the internal iterator on flight date:
-        return the iterator at the begining of the list. */
+        return the iterator at the begining of the map. */
     iterator begin () const;
     
     /** Initialise the internal iterator on flight date:
-        return the iterator at the end of the list. */
+        return the iterator at the end of the map. */
     iterator end () const;
 
     /** Initialise the internal reverse iterator on flight date:
-        return the reverse iterator at the rbegining of the list. */
+        return the reverse iterator at the rbegining of the map. */
     reverse_iterator rbegin () const;
     
     /** Initialise the internal reverse iterator on flight date:
-        return the reverse iterator at the end of the list. */
+        return the reverse iterator at the end of the map. */
     reverse_iterator rend () const;
 
   public:
     /** Default constructors. */
-    InventoryList_T ();
-    InventoryList_T (const InventoryList_T&);
-    InventoryList_T (const BomStructureRoot_T&);
+    InventoryMap_T ();
+    InventoryMap_T (const InventoryMap_T&);
+    InventoryMap_T (const BomStructureRoot_T&);
 
     /** Destructor. */
-    virtual ~InventoryList_T();
+    virtual ~InventoryMap_T();
 
   private:
     // Attributes
@@ -62,5 +62,5 @@ namespace stdair {
   };
 
 }
-#endif // __STDAIR_BOM_INVENTORYLIST_HPP
+#endif // __STDAIR_BOM_INVENTORYMAP_HPP
 

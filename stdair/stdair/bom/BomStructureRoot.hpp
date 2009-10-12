@@ -47,6 +47,15 @@ namespace stdair {
     typedef BomChildrenHolderImp<ContentChild_T> ChildrenBomHolder_T;
 
   public:
+     /** Define the iterators of the inventory list. */
+    typedef typename ChildrenBomHolder_T::ListIterator_T InventoryListIterator_T;
+    typedef typename ChildrenBomHolder_T::ListReverseIterator_T InventoryListReverseIterator_T;
+
+    /** Define the iterators of the inventory map. */
+    typedef typename ChildrenBomHolder_T::MapIterator_T InventoryMapIterator_T;
+    typedef typename ChildrenBomHolder_T::MapReverseIterator_T InventoryMapReverseIterator_T;
+
+  public:
 
     // /////////// Getters /////////////
     /** Get the BomStructureRoot key. */
@@ -97,6 +106,63 @@ namespace stdair {
         at the same level). */
     const std::string describeShortKey() const { return _key.toString(); }
 
+    public:
+    // /////////// Iteration methods //////////
+    /** Initialise the internal iterator on inventory:
+        return the iterator at the begining of the list. */
+    InventoryListIterator_T inventoryListBegin () const {
+      assert (_childrenList != NULL);
+      return _childrenList->listBegin ();
+    }
+    
+    /** Initialise the internal iterator on inventory:
+        return the iterator at the end of the list. */
+    InventoryListIterator_T inventoryListEnd () const {
+      assert (_childrenList != NULL);
+      return _childrenList->listEnd ();
+    }
+    
+    /** Initialise the internal reverse iterator on inventory:
+        return the reverse iterator at the rbegining of the list. */
+    InventoryListReverseIterator_T inventoryListRBegin () const {
+      assert (_childrenList != NULL);
+      return _childrenList->listRBegin ();
+    }
+    
+    /** Initialise the internal reverse iterator on inventory:
+        return the reverse iterator at the rend of the list. */
+    InventoryListReverseIterator_T inventoryListREnd () const {
+      assert (_childrenList != NULL);
+      return _childrenList->listREnd ();
+    }
+
+    /** Initialise the internal iterator on inventory:
+        return the iterator at the begining of the map. */
+    InventoryMapIterator_T inventoryMapBegin () const {
+      assert (_childrenList != NULL);
+      return _childrenList->mapBegin ();
+    }
+    
+    /** Initialise the internal iterator on inventory:
+        return the iterator at the end of the map. */
+    InventoryMapIterator_T inventoryMapEnd () const {
+      assert (_childrenList != NULL);
+      return _childrenList->mapEnd ();
+    }
+    
+    /** Initialise the internal reverse iterator on inventory:
+        return the reverse iterator at the rbegining of the map. */
+    InventoryMapReverseIterator_T inventoryMapRBegin () const {
+      assert (_childrenList != NULL);
+      return _childrenList->mapRBegin ();
+    }
+    
+    /** Initialise the internal reverse iterator on inventory:
+        return the reverse iterator at the rend of the map. */
+    InventoryMapReverseIterator_T inventoryMapREnd () const {
+      assert (_childrenList != NULL);
+      return _childrenList->mapREnd ();
+    }
 
   private:
     /** Constructors are private so as to force the usage of the Factory

@@ -11,6 +11,8 @@ bom_h_sources = \
 				$(top_srcdir)/stdair/bom/BomStructureDummy.hpp \
 				$(top_srcdir)/stdair/bom/Inventory.hpp \
 				$(top_srcdir)/stdair/bom/InventoryTypes.hpp \
+				$(top_srcdir)/stdair/bom/InventoryList.hpp \
+				$(top_srcdir)/stdair/bom/InventoryMap.hpp \
 				$(top_srcdir)/stdair/bom/InventoryStructure.hpp \
 				$(top_srcdir)/stdair/bom/FlightDate.hpp \
 				$(top_srcdir)/stdair/bom/FlightDateTypes.hpp \
@@ -35,6 +37,8 @@ bom_h_sources = \
 				$(top_srcdir)/stdair/bom/BomIterator.hpp
 bom_cc_sources = \
 				$(top_srcdir)/stdair/bom/Inventory.cpp \
+				$(top_srcdir)/stdair/bom/InventoryList.cpp \
+				$(top_srcdir)/stdair/bom/InventoryMap.cpp \
 				$(top_srcdir)/stdair/bom/FlightDate.cpp \
 				$(top_srcdir)/stdair/bom/FlightDateList.cpp \
 				$(top_srcdir)/stdair/bom/FlightDateMap.cpp \
