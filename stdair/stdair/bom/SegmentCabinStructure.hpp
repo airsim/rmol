@@ -1,5 +1,5 @@
-#ifndef __STDAIR_BOM_LEGDATESTRUCTURE_HPP
-#define __STDAIR_BOM_LEGDATESTRUCTURE_HPP
+#ifndef __STDAIR_BOM_SEGMENTCABINSTRUCTURE_HPP
+#define __STDAIR_BOM_SEGMENTCABINSTRUCTURE_HPP
 
 // //////////////////////////////////////////////////////////////////////
 // Import section
@@ -8,22 +8,22 @@
 #include <boost/mpl/vector.hpp>
 // STDAIR 
 #include <stdair/bom/BomStructure.hpp>
-#include <stdair/bom/LegDateKey.hpp>
-#include <stdair/bom/LegCabinStructure.hpp>
+#include <stdair/bom/SegmentCabinKey.hpp>
+#include <stdair/bom/BookingClassStructure.hpp>
 #include <stdair/bom/BomChildrenHolderImp.hpp>
 
 namespace stdair {
 
   // Forward declarations
-  template <typename BOM_CONTENT> class FlightDateStructure;
+  template <typename BOM_CONTENT> class SegmentDateStructure;
   class BomStructureDummy;
   class BomContentDummy;
   
   /** Wrapper class aimed at holding the actual content, modeled
-      by an external specific LegDate class (for instance,
+      by an external specific SegmentCabin class (for instance,
       in the AIRSCHED library). */
   template <class BOM_CONTENT>
-  class LegDateStructure : public BomStructure {
+  class SegmentCabinStructure : public BomStructure {
     friend class FacBomStructure;
     friend class FacBomContent;
     friend class BomStructure;
@@ -34,7 +34,7 @@ namespace stdair {
     typedef BOM_CONTENT Content_T;
 
     /** Definition allowing to retrieve the associated BOM key type. */
-    typedef LegDateKey<BOM_CONTENT> BomKey_T;
+    typedef SegmentCabinKey<BOM_CONTENT> BomKey_T;
 
     /** Definition allowing to retrieve the associated parent
         BOM structure type. */
@@ -45,7 +45,7 @@ namespace stdair {
     typedef typename BOM_CONTENT::ContentChild_T ContentChild_T;
     
     /** Definition allowing to retrieve the associated children type. */
-    typedef boost::mpl::vector <LegDateStructure<ContentChild_T>,
+    typedef boost::mpl::vector <BookingClassStructure<ContentChild_T>,
                                 BomStructureDummy> ChildrenBomTypeList_T;
 
     /** Definition allowing to retrieve the default children bom holder type. */
@@ -54,50 +54,50 @@ namespace stdair {
     /** Definition allowing to retrive the  children bom holder type. */
     typedef BomChildrenHolderImp<ContentChild_T> ChildrenBomHolder_T;
 
-    /** Define the iterators of the leg-cabin list. */
-    typedef typename ChildrenBomHolder_T::ListIterator_T LegCabinListIterator_T;
-    typedef typename ChildrenBomHolder_T::ListReverseIterator_T LegCabinListReverseIterator_T;
+    /** Define the iterators of the segment-cabin list. */
+    typedef typename ChildrenBomHolder_T::ListIterator_T BookingClassListIterator_T;
+    typedef typename ChildrenBomHolder_T::ListReverseIterator_T BookingClassListReverseIterator_T;
 
-    /** Define the iterators of the leg-cabin map. */
-    typedef typename ChildrenBomHolder_T::MapIterator_T LegCabinMapIterator_T;
-    typedef typename ChildrenBomHolder_T::MapReverseIterator_T LegCabinMapReverseIterator_T;
+    /** Define the iterators of the segment-cabin map. */
+    typedef typename ChildrenBomHolder_T::MapIterator_T BookingClassMapIterator_T;
+    typedef typename ChildrenBomHolder_T::MapReverseIterator_T BookingClassMapReverseIterator_T;
     
   public:
     // /////////// Getters /////////////
-    /** Get the (parent) FlightDateStructure object. */
-    ParentBomStructure_T* getFlightDateStructurePtr() const {
+    /** Get the (parent) SegmentDateStructure object. */
+    ParentBomStructure_T* getSegmentDateStructurePtr() const {
       return _parent;
     }
     
-    /** Get the (parent) FlightDateStructure object. */
-    ParentBomStructure_T& getFlightDateStructure() const;
+    /** Get the (parent) SegmentDateStructure object. */
+    ParentBomStructure_T& getSegmentDateStructure() const;
     
-    /** Get the leg-date key. */
+    /** Get the segment-date key. */
     const BomKey_T& getKey() const {
       return _key;
     }
 
-    /** Get the list of leg-cabins. */
+    /** Get the list of segment-cabins. */
     const ChildrenBomHolder_T& getChildrenList() const {
       return *_childrenList;
     }
 
-    /** Get the list of leg-cabins. */
+    /** Get the list of segment-cabins. */
     void getChildrenList (ChildrenBomHolder_T*& ioChildrenList) {
       ioChildrenList = _childrenList;
     }
     
   private:
     // /////////// Setters /////////////
-    /** Set the (parent) FlightDateStructure object. */
-    void setFlightDateStructure (ParentBomStructure_T& ioFlightDateStructure) {
-      _parent = &ioFlightDateStructure;
+    /** Set the (parent) SegmentDateStructure object. */
+    void setSegmentDateStructure (ParentBomStructure_T& ioSegmentDateStructure) {
+      _parent = &ioSegmentDateStructure;
     }
     
     /** Default children list setter. */
     void setChildrenList (DefaultChildrenBomHolder_T&) { }
 
-    /** Set the leg-cabin children list. */
+    /** Set the segment-cabin children list. */
     void setChildrenList (ChildrenBomHolder_T& ioChildrenList) {
       _childrenList = &ioChildrenList;
     }
@@ -114,7 +114,7 @@ namespace stdair {
         @param ostream& the output stream. */
     void describeFull (std::ostringstream& ioOut) const {
       ioOut << describeShortKey () << std::endl;
-      displayLegCabinList (ioOut);
+      displayBookingClassList (ioOut);
     }
 
     /** Read a Business Object from an input stream.
@@ -132,68 +132,68 @@ namespace stdair {
         at the same level). */
     const std::string describeShortKey() const { return _key.toString(); }
 
-    /** Dump the leg-cabin children list in to an output stream.
+    /** Dump the segment-cabin children list in to an output stream.
         @param ostream& the output stream. */
-    void displayLegCabinList (std::ostringstream& ioOut) const {
-      ioOut << "LegCabins: " << std::endl;
+    void displayBookingClassList (std::ostringstream& ioOut) const {
+      ioOut << "BookingClasss: " << std::endl;
       assert (_childrenList != NULL);
       _childrenList->describeFull (ioOut);
     }
 
   public:
     // /////////// Iteration methods //////////
-    /** Initialise the internal iterator on leg cabin:
+    /** Initialise the internal iterator on booking class:
         return the iterator at the begining of the list. */
-    LegCabinListIterator_T legCabinListBegin () const {
+    BookingClassListIterator_T bookingClassListBegin () const {
       assert (_childrenList != NULL);
       return _childrenList->listBegin ();
     }
     
-    /** Initialise the internal iterator on leg cabin:
+    /** Initialise the internal iterator on booking class:
         return the iterator at the end of the list. */
-    LegCabinListIterator_T legCabinListEnd () const {
+    BookingClassListIterator_T bookingClassListEnd () const {
       assert (_childrenList != NULL);
       return _childrenList->listEnd ();
     }
     
-    /** Initialise the internal reverse iterator on leg cabin:
+    /** Initialise the internal reverse iterator on booking class:
         return the reverse iterator at the rbegining of the list. */
-    LegCabinListReverseIterator_T legCabinListRBegin () const {
+    BookingClassListReverseIterator_T bookingClassListRBegin () const {
       assert (_childrenList != NULL);
       return _childrenList->listRBegin ();
     }
     
-    /** Initialise the internal reverse iterator on leg cabin:
+    /** Initialise the internal reverse iterator on booking class:
         return the reverse iterator at the rend of the list. */
-    LegCabinListReverseIterator_T legCabinListREnd () const {
+    BookingClassListReverseIterator_T bookingClassListREnd () const {
       assert (_childrenList != NULL);
       return _childrenList->listREnd ();
     }
 
-    /** Initialise the internal iterator on leg cabin:
+    /** Initialise the internal iterator on booking class:
         return the iterator at the begining of the map. */
-    LegCabinMapIterator_T legCabinMapBegin () const {
+    BookingClassMapIterator_T bookingClassMapBegin () const {
       assert (_childrenList != NULL);
       return _childrenList->mapBegin ();
     }
     
-    /** Initialise the internal iterator on leg cabin:
+    /** Initialise the internal iterator on booking class:
         return the iterator at the end of the map. */
-    LegCabinMapIterator_T legCabinMapEnd () const {
+    BookingClassMapIterator_T bookingClassMapEnd () const {
       assert (_childrenList != NULL);
       return _childrenList->mapEnd ();
     }
     
-    /** Initialise the internal reverse iterator on leg cabin:
+    /** Initialise the internal reverse iterator on booking class:
         return the reverse iterator at the rbegining of the map. */
-    LegCabinMapReverseIterator_T legCabinMapRBegin () const {
+    BookingClassMapReverseIterator_T bookingClassMapRBegin () const {
       assert (_childrenList != NULL);
       return _childrenList->mapRBegin ();
     }
     
-    /** Initialise the internal reverse iterator on leg cabin:
+    /** Initialise the internal reverse iterator on booking class:
         return the reverse iterator at the rend of the map. */
-    LegCabinMapReverseIterator_T legCabinMapREnd () const {
+    BookingClassMapReverseIterator_T bookingClassMapREnd () const {
       assert (_childrenList != NULL);
       return _childrenList->mapREnd ();
     }
@@ -202,16 +202,16 @@ namespace stdair {
     /** Constructors are private so as to force the usage of the Factory
         layer. */
     /** Default constructors. */
-    LegDateStructure ();
-    LegDateStructure (const LegDateStructure&);
-    LegDateStructure (const BomKey_T& iKey) : _parent (NULL), _key (iKey) { }
+    SegmentCabinStructure ();
+    SegmentCabinStructure (const SegmentCabinStructure&);
+    SegmentCabinStructure (const BomKey_T& iKey) : _parent (NULL), _key (iKey){ }
 
     /** Destructor. */
-    virtual ~LegDateStructure() { }
+    virtual ~SegmentCabinStructure() { }
 
   private:
     // Attributes
-    /** Parent flight-date. */
+    /** Parent segment-date. */
     ParentBomStructure_T* _parent;
 
     /** The actual functional (Business Object) content. */
@@ -220,9 +220,9 @@ namespace stdair {
     /** The key of both the structure and content objects. */
     BomKey_T _key;
     
-    /** List of leg-cabins. */
+    /** List of segment-cabins. */
     ChildrenBomHolder_T* _childrenList;
   };
 
 }
-#endif // __STDAIR_BOM_LEGDATESTRUCTURE_HPP
+#endif // __STDAIR_BOM_SEGMENTCABINSTRUCTURE_HPP

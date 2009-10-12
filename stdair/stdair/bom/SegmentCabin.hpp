@@ -1,41 +1,41 @@
-#ifndef __STDAIR_BOM_SEGMENTDATE_HPP
-#define __STDAIR_BOM_SEGMENTDATE_HPP
+#ifndef __STDAIR_BOM_SEGMENTCABIN_HPP
+#define __STDAIR_BOM_SEGMENTCABIN_HPP
 
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // STDAIR 
 #include <stdair/bom/BomContent.hpp>
-#include <stdair/bom/SegmentDateTypes.hpp>
 #include <stdair/bom/SegmentCabinTypes.hpp>
+#include <stdair/bom/BookingClassTypes.hpp>
 
 namespace stdair {
   // Forward declarations
   class FacBomContent;
-  class FlightDate;
-  struct SegmentCabinList_T;
-  struct SegmentCabinMap_T;
+  class SegmentDate;
+  struct BookingClassList_T;
+  struct BookingClassMap_T;
 
   /** Class representing the actual functional/business content for a
       segment-date. */
-  class SegmentDate : public BomContent {
+  class SegmentCabin : public BomContent {
     friend class FacBomContent;
 
   public:
     // Type definitions
     /** Definition allowing to retrieve the associated parent
         BOM content type. */
-    typedef FlightDate ParentBomContent_T;
+    typedef SegmentDate ParentBomContent_T;
 
     /** Definition allowing to retrieve the associated BOM structure type. */
-    typedef SegmentDateStructure_T BomStructure_T;
+    typedef SegmentCabinStructure_T BomStructure_T;
 
     /** Definition allowing to retrieve the associated BOM key type. */
-    typedef SegmentDateKey_T BomKey_T;
+    typedef SegmentCabinKey_T BomKey_T;
 
     /** Definition allowing to retrieve the associated 
          BOM content child type. */
-    typedef SegmentCabin ContentChild_T;
+    typedef BookingClass ContentChild_T;
     
   public:
     // /////////// Display support methods /////////
@@ -60,35 +60,35 @@ namespace stdair {
     
   public:
     // /////////// Getters /////////////
-    /** Get a SegmentCabinList_T for iteration methods. */
-    SegmentCabinList_T getSegmentCabinList () const;
+    /** Get a BookingClassList_T for iteration methods. */
+    BookingClassList_T getBookingClassList () const;
 
-    /** Get a SegmentCabinMap_T for iteration methods. */
-    SegmentCabinMap_T getSegmentCabinMap () const;
+    /** Get a BookingClassMap_T for iteration methods. */
+    BookingClassMap_T getBookingClassMap () const;
 
   private:
     /** Retrieve the BOM structure object. */
     BomStructure_T& getBomStructure () {
-      return _segmentDateStructure;
+      return _segmentCabinStructure;
     }
 
   private:
     /** Constructors are private so as to force the usage of the Factory
         layer. */
     /** Default constructors. */
-    SegmentDate ();
-    SegmentDate (const SegmentDate&);
-    SegmentDate (BomStructure_T&);
+    SegmentCabin ();
+    SegmentCabin (const SegmentCabin&);
+    SegmentCabin (BomStructure_T&);
 
     /** Destructor. */
-    virtual ~SegmentDate();
+    virtual ~SegmentCabin();
 
   protected:
     // Attributes
     /** Reference structure. */
-    BomStructure_T& _segmentDateStructure;
+    BomStructure_T& _segmentCabinStructure;
   };
 
 }
-#endif // __STDAIR_BOM_SEGMENTDATE_HPP
+#endif // __STDAIR_BOM_SEGMENTCABIN_HPP
 

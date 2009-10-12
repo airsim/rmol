@@ -4,35 +4,32 @@
 // C
 #include <assert.h>
 // STDAIR
-#include <stdair/bom/LegDateStructure.hpp>
-#include <stdair/bom/FlightDate.hpp>
+#include <stdair/bom/LegCabinStructure.hpp>
 #include <stdair/bom/LegDate.hpp>
 #include <stdair/bom/LegCabin.hpp>
-#include <stdair/bom/LegCabinList.hpp>
-#include <stdair/bom/LegCabinMap.hpp>
 
 namespace stdair {
 
   // ////////////////////////////////////////////////////////////////////
-  LegDate::LegDate (BomStructure_T& ioLegStructure)
-    : _legDateStructure (ioLegStructure) {
+  LegCabin::LegCabin (BomStructure_T& ioLegStructure)
+    : _legCabinStructure (ioLegStructure) {
   }
   
   // ////////////////////////////////////////////////////////////////////
-  LegDate::~LegDate () {
+  LegCabin::~LegCabin () {
   }
 
   // //////////////////////////////////////////////////////////////////////
-  void LegDate::toStream (std::ostream& ioOut) const {
+  void LegCabin::toStream (std::ostream& ioOut) const {
     ioOut << toString() << std::endl;
   }
 
   // //////////////////////////////////////////////////////////////////////
-  void LegDate::fromStream (std::istream& ioIn) {
+  void LegCabin::fromStream (std::istream& ioIn) {
   }
 
   // //////////////////////////////////////////////////////////////////////
-  std::string LegDate::toString() const {
+  std::string LegCabin::toString() const {
     std::ostringstream oStr;
 
     // First, put the key of that level
@@ -45,23 +42,13 @@ namespace stdair {
   }
     
   // //////////////////////////////////////////////////////////////////////
-  const std::string LegDate::describeKey() const {
-    return _legDateStructure.describeKey();
+  const std::string LegCabin::describeKey() const {
+    return _legCabinStructure.describeKey();
   }
 
   // //////////////////////////////////////////////////////////////////////
-  const std::string LegDate::describeShortKey() const {
-    return _legDateStructure.describeShortKey();
-  }
-
-  // //////////////////////////////////////////////////////////////////////
-  LegCabinList_T LegDate::getLegCabinList () const {
-    return LegCabinList_T (_legDateStructure);
-  }
-
-  // //////////////////////////////////////////////////////////////////////
-  LegCabinMap_T LegDate::getLegCabinMap () const {
-    return LegCabinMap_T (_legDateStructure);
+  const std::string LegCabin::describeShortKey() const {
+    return _legCabinStructure.describeShortKey();
   }
   
 }

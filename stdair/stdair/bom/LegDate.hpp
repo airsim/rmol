@@ -7,11 +7,14 @@
 // STDAIR 
 #include <stdair/bom/BomContent.hpp>
 #include <stdair/bom/LegDateTypes.hpp>
+#include <stdair/bom/LegCabinTypes.hpp>
 
 namespace stdair {
   // Forward declarations
   class FacBomContent;
   class FlightDate;
+  struct LegCabinList_T;
+  struct LegCabinMap_T;
 
   /** Class representing the actual functional/business content for a
       leg-date. */
@@ -29,9 +32,12 @@ namespace stdair {
 
     /** Definition allowing to retrieve the associated BOM key type. */
     typedef LegDateKey_T BomKey_T;
+
+    /** Definition allowing to retrieve the associated 
+         BOM content child type. */
+    typedef LegCabin ContentChild_T;
     
   public:
-
     // /////////// Display support methods /////////
     /** Dump a Business Object into an output stream.
         @param ostream& the output stream. */
@@ -51,6 +57,14 @@ namespace stdair {
     /** Get a string describing the short key (differentiating two objects
         at the same level). */
     const std::string describeShortKey() const;
+    
+  public:
+    // /////////// Getters /////////////
+    /** Get a LegCabinList_T for iteration methods. */
+    LegCabinList_T getLegCabinList () const;
+
+    /** Get a LegCabinMap_T for iteration methods. */
+    LegCabinMap_T getLegCabinMap () const;
 
   private:
     /** Retrieve the BOM structure object. */

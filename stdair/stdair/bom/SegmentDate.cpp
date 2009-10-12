@@ -7,6 +7,9 @@
 #include <stdair/bom/SegmentDateStructure.hpp>
 #include <stdair/bom/FlightDate.hpp>
 #include <stdair/bom/SegmentDate.hpp>
+#include <stdair/bom/SegmentCabin.hpp>
+#include <stdair/bom/SegmentCabinList.hpp>
+#include <stdair/bom/SegmentCabinMap.hpp>
 
 namespace stdair {
 
@@ -51,5 +54,15 @@ namespace stdair {
     return _segmentDateStructure.describeShortKey();
   }
 
+  // //////////////////////////////////////////////////////////////////////
+  SegmentCabinList_T SegmentDate::getSegmentCabinList () const {
+    return SegmentCabinList_T (_segmentDateStructure);
+  }
+
+  // //////////////////////////////////////////////////////////////////////
+  SegmentCabinMap_T SegmentDate::getSegmentCabinMap () const {
+    return SegmentCabinMap_T (_segmentDateStructure);
+  }
+  
 }
 

@@ -54,6 +54,12 @@ namespace stdair {
   /** Define the type for flight numbers. */
   typedef unsigned int FlightNumber_T;
   
+  /** Define the type for cabin codes. */
+  typedef std::string CabinCode_T;
+
+  /** Define the type for class codes. */
+  typedef std::string ClassCode_T;
+  
   /** Define the type for durations (e.g., elapsed in-flight time). */
   typedef boost::posix_time::time_duration Duration_T;
 

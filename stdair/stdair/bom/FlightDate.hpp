@@ -5,7 +5,6 @@
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // STDAIR
-#include <stdair/bom/BomStructureList.hpp>
 #include <stdair/bom/BomContent.hpp>
 #include <stdair/bom/FlightDateTypes.hpp>
 #include <stdair/bom/SegmentDateTypes.hpp>

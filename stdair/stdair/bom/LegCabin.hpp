@@ -1,41 +1,34 @@
-#ifndef __STDAIR_BOM_SEGMENTDATE_HPP
-#define __STDAIR_BOM_SEGMENTDATE_HPP
+#ifndef __STDAIR_BOM_LEGCABIN_HPP
+#define __STDAIR_BOM_LEGCABIN_HPP
 
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // STDAIR 
 #include <stdair/bom/BomContent.hpp>
-#include <stdair/bom/SegmentDateTypes.hpp>
-#include <stdair/bom/SegmentCabinTypes.hpp>
+#include <stdair/bom/LegCabinTypes.hpp>
 
 namespace stdair {
   // Forward declarations
   class FacBomContent;
-  class FlightDate;
-  struct SegmentCabinList_T;
-  struct SegmentCabinMap_T;
+  class LegDate;
 
   /** Class representing the actual functional/business content for a
-      segment-date. */
-  class SegmentDate : public BomContent {
+      leg-date. */
+  class LegCabin : public BomContent {
     friend class FacBomContent;
 
   public:
     // Type definitions
     /** Definition allowing to retrieve the associated parent
         BOM content type. */
-    typedef FlightDate ParentBomContent_T;
+    typedef LegDate ParentBomContent_T;
 
     /** Definition allowing to retrieve the associated BOM structure type. */
-    typedef SegmentDateStructure_T BomStructure_T;
+    typedef LegCabinStructure_T BomStructure_T;
 
     /** Definition allowing to retrieve the associated BOM key type. */
-    typedef SegmentDateKey_T BomKey_T;
-
-    /** Definition allowing to retrieve the associated 
-         BOM content child type. */
-    typedef SegmentCabin ContentChild_T;
+    typedef LegCabinKey_T BomKey_T;
     
   public:
     // /////////// Display support methods /////////
@@ -58,37 +51,29 @@ namespace stdair {
         at the same level). */
     const std::string describeShortKey() const;
     
-  public:
-    // /////////// Getters /////////////
-    /** Get a SegmentCabinList_T for iteration methods. */
-    SegmentCabinList_T getSegmentCabinList () const;
-
-    /** Get a SegmentCabinMap_T for iteration methods. */
-    SegmentCabinMap_T getSegmentCabinMap () const;
-
   private:
     /** Retrieve the BOM structure object. */
     BomStructure_T& getBomStructure () {
-      return _segmentDateStructure;
+      return _legCabinStructure;
     }
 
   private:
     /** Constructors are private so as to force the usage of the Factory
         layer. */
     /** Default constructors. */
-    SegmentDate ();
-    SegmentDate (const SegmentDate&);
-    SegmentDate (BomStructure_T&);
+    LegCabin ();
+    LegCabin (const LegCabin&);
+    LegCabin (BomStructure_T&);
 
     /** Destructor. */
-    virtual ~SegmentDate();
+    virtual ~LegCabin();
 
   protected:
     // Attributes
     /** Reference structure. */
-    BomStructure_T& _segmentDateStructure;
+    BomStructure_T& _legCabinStructure;
   };
 
 }
-#endif // __STDAIR_BOM_SEGMENTDATE_HPP
+#endif // __STDAIR_BOM_LEGCABIN_HPP
 

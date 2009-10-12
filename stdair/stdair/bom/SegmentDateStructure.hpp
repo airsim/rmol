@@ -9,6 +9,7 @@
 // STDAIR 
 #include <stdair/bom/BomStructure.hpp>
 #include <stdair/bom/SegmentDateKey.hpp>
+#include <stdair/bom/SegmentCabinStructure.hpp>
 #include <stdair/bom/BomChildrenHolderImp.hpp>
 
 namespace stdair {
@@ -38,13 +39,29 @@ namespace stdair {
     /** Definition allowing to retrieve the associated parent
         BOM structure type. */
     typedef typename BOM_CONTENT::ParentBomContent_T::BomStructure_T ParentBomStructure_T;
+
+    /** Definition allowing to retrieve the  children type of the
+        BOM_CONTENT. */
+    typedef typename BOM_CONTENT::ContentChild_T ContentChild_T;
     
     /** Definition allowing to retrieve the associated children type. */
-    typedef boost::mpl::vector <BomStructureDummy, BomStructureDummy> ChildrenBomTypeList_T;
+    typedef boost::mpl::vector <SegmentDateStructure<ContentChild_T>,
+                                BomStructureDummy> ChildrenBomTypeList_T;
 
     /** Definition allowing to retrieve the default children bom holder type. */
     typedef BomChildrenHolderImp<BomContentDummy> DefaultChildrenBomHolder_T;
 
+    /** Definition allowing to retrive the  children bom holder type. */
+    typedef BomChildrenHolderImp<ContentChild_T> ChildrenBomHolder_T;
+
+    /** Define the iterators of the segment-cabin list. */
+    typedef typename ChildrenBomHolder_T::ListIterator_T SegmentCabinListIterator_T;
+    typedef typename ChildrenBomHolder_T::ListReverseIterator_T SegmentCabinListReverseIterator_T;
+
+    /** Define the iterators of the segment-cabin map. */
+    typedef typename ChildrenBomHolder_T::MapIterator_T SegmentCabinMapIterator_T;
+    typedef typename ChildrenBomHolder_T::MapReverseIterator_T SegmentCabinMapReverseIterator_T;
+    
   public:
     // /////////// Getters /////////////
     /** Get the (parent) FlightDateStructure object. */
@@ -59,7 +76,17 @@ namespace stdair {
     const BomKey_T& getKey() const {
       return _key;
     }
-        
+
+    /** Get the list of segment-cabins. */
+    const ChildrenBomHolder_T& getChildrenList() const {
+      return *_childrenList;
+    }
+
+    /** Get the list of segment-cabins. */
+    void getChildrenList (ChildrenBomHolder_T*& ioChildrenList) {
+      ioChildrenList = _childrenList;
+    }
+    
   private:
     // /////////// Setters /////////////
     /** Set the (parent) FlightDateStructure object. */
@@ -70,6 +97,10 @@ namespace stdair {
     /** Default children list setter. */
     void setChildrenList (DefaultChildrenBomHolder_T&) { }
 
+    /** Set the segment-cabin children list. */
+    void setChildrenList (ChildrenBomHolder_T& ioChildrenList) {
+      _childrenList = &ioChildrenList;
+    }
     
   public:
     // /////////// Display support methods /////////
@@ -83,6 +114,7 @@ namespace stdair {
         @param ostream& the output stream. */
     void describeFull (std::ostringstream& ioOut) const {
       ioOut << describeShortKey () << std::endl;
+      displaySegmentCabinList (ioOut);
     }
 
     /** Read a Business Object from an input stream.
@@ -100,6 +132,72 @@ namespace stdair {
         at the same level). */
     const std::string describeShortKey() const { return _key.toString(); }
 
+    /** Dump the segment-cabin children list in to an output stream.
+        @param ostream& the output stream. */
+    void displaySegmentCabinList (std::ostringstream& ioOut) const {
+      ioOut << "SegmentCabins: " << std::endl;
+      assert (_childrenList != NULL);
+      _childrenList->describeFull (ioOut);
+    }
+
+  public:
+    // /////////// Iteration methods //////////
+    /** Initialise the internal iterator on segment cabin:
+        return the iterator at the begining of the list. */
+    SegmentCabinListIterator_T segmentCabinListBegin () const {
+      assert (_childrenList != NULL);
+      return _childrenList->listBegin ();
+    }
+    
+    /** Initialise the internal iterator on segment cabin:
+        return the iterator at the end of the list. */
+    SegmentCabinListIterator_T segmentCabinListEnd () const {
+      assert (_childrenList != NULL);
+      return _childrenList->listEnd ();
+    }
+    
+    /** Initialise the internal reverse iterator on segment cabin:
+        return the reverse iterator at the rbegining of the list. */
+    SegmentCabinListReverseIterator_T segmentCabinListRBegin () const {
+      assert (_childrenList != NULL);
+      return _childrenList->listRBegin ();
+    }
+    
+    /** Initialise the internal reverse iterator on segment cabin:
+        return the reverse iterator at the rend of the list. */
+    SegmentCabinListReverseIterator_T segmentCabinListREnd () const {
+      assert (_childrenList != NULL);
+      return _childrenList->listREnd ();
+    }
+
+    /** Initialise the internal iterator on segment cabin:
+        return the iterator at the begining of the map. */
+    SegmentCabinMapIterator_T segmentCabinMapBegin () const {
+      assert (_childrenList != NULL);
+      return _childrenList->mapBegin ();
+    }
+    
+    /** Initialise the internal iterator on segment cabin:
+        return the iterator at the end of the map. */
+    SegmentCabinMapIterator_T segmentCabinMapEnd () const {
+      assert (_childrenList != NULL);
+      return _childrenList->mapEnd ();
+    }
+    
+    /** Initialise the internal reverse iterator on segment cabin:
+        return the reverse iterator at the rbegining of the map. */
+    SegmentCabinMapReverseIterator_T segmentCabinMapRBegin () const {
+      assert (_childrenList != NULL);
+      return _childrenList->mapRBegin ();
+    }
+    
+    /** Initialise the internal reverse iterator on segment cabin:
+        return the reverse iterator at the rend of the map. */
+    SegmentCabinMapReverseIterator_T segmentCabinMapREnd () const {
+      assert (_childrenList != NULL);
+      return _childrenList->mapREnd ();
+    }
+    
   private:
     /** Constructors are private so as to force the usage of the Factory
         layer. */
@@ -116,11 +214,14 @@ namespace stdair {
     /** Parent flight-date. */
     ParentBomStructure_T* _parent;
 
-     /** The actual functional (Business Object) content. */
+    /** The actual functional (Business Object) content. */
     BOM_CONTENT* _content;
 
     /** The key of both the structure and content objects. */
     BomKey_T _key;
+    
+    /** List of segment-cabins. */
+    ChildrenBomHolder_T* _childrenList;
   };
 
 }

@@ -1,0 +1,52 @@
+// //////////////////////////////////////////////////////////////////////
+// Import section
+// //////////////////////////////////////////////////////////////////////
+// STL
+#include <cassert>
+// STDAIR
+#include <stdair/bom/LegDateStructure.hpp>
+#include <stdair/bom/FlightDate.hpp>
+#include <stdair/bom/LegDate.hpp>
+#include <stdair/bom/LegCabin.hpp>
+#include <stdair/bom/LegCabinMap.hpp>
+
+namespace stdair {
+
+  // ////////////////////////////////////////////////////////////////////
+  LegCabinMap_T::
+  LegCabinMap_T (const LegDateStructure_T& iLegDateStructure)
+    : _legDateStructure (iLegDateStructure) {
+  }
+
+  // ////////////////////////////////////////////////////////////////////
+  LegCabinMap_T::
+  LegCabinMap_T (const LegCabinMap_T& iSCMap)
+    : _legDateStructure (iSCMap._legDateStructure) {
+  }
+
+  // ////////////////////////////////////////////////////////////////////
+  LegCabinMap_T::~LegCabinMap_T () {
+  }
+
+  // //////////////////////////////////////////////////////////////////////
+  LegCabinMap_T::iterator LegCabinMap_T::begin () const {
+    return _legDateStructure.legCabinMapBegin ();
+  }
+
+  // //////////////////////////////////////////////////////////////////////
+  LegCabinMap_T::iterator LegCabinMap_T::end () const {
+    return _legDateStructure.legCabinMapEnd ();
+  }
+
+  // //////////////////////////////////////////////////////////////////////
+  LegCabinMap_T::reverse_iterator LegCabinMap_T::rbegin () const {
+    return _legDateStructure.legCabinMapRBegin ();
+  }
+
+  // //////////////////////////////////////////////////////////////////////
+  LegCabinMap_T::reverse_iterator LegCabinMap_T::rend () const {
+    return _legDateStructure.legCabinMapREnd ();
+  }
+
+}
+

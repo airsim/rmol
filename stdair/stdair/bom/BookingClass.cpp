@@ -4,35 +4,33 @@
 // C
 #include <assert.h>
 // STDAIR
-#include <stdair/bom/LegDateStructure.hpp>
-#include <stdair/bom/FlightDate.hpp>
-#include <stdair/bom/LegDate.hpp>
+#include <stdair/bom/BookingClassStructure.hpp>
+#include <stdair/bom/SegmentCabin.hpp>
 #include <stdair/bom/LegCabin.hpp>
-#include <stdair/bom/LegCabinList.hpp>
-#include <stdair/bom/LegCabinMap.hpp>
+#include <stdair/bom/BookingClass.hpp>
 
 namespace stdair {
 
   // ////////////////////////////////////////////////////////////////////
-  LegDate::LegDate (BomStructure_T& ioLegStructure)
-    : _legDateStructure (ioLegStructure) {
+  BookingClass::BookingClass (BomStructure_T& ioBookingClassStructure)
+    : _bookingClassStructure (ioBookingClassStructure) {
   }
   
   // ////////////////////////////////////////////////////////////////////
-  LegDate::~LegDate () {
+  BookingClass::~BookingClass () {
   }
 
   // //////////////////////////////////////////////////////////////////////
-  void LegDate::toStream (std::ostream& ioOut) const {
+  void BookingClass::toStream (std::ostream& ioOut) const {
     ioOut << toString() << std::endl;
   }
 
   // //////////////////////////////////////////////////////////////////////
-  void LegDate::fromStream (std::istream& ioIn) {
+  void BookingClass::fromStream (std::istream& ioIn) {
   }
 
   // //////////////////////////////////////////////////////////////////////
-  std::string LegDate::toString() const {
+  std::string BookingClass::toString() const {
     std::ostringstream oStr;
 
     // First, put the key of that level
@@ -45,23 +43,13 @@ namespace stdair {
   }
     
   // //////////////////////////////////////////////////////////////////////
-  const std::string LegDate::describeKey() const {
-    return _legDateStructure.describeKey();
+  const std::string BookingClass::describeKey() const {
+    return _bookingClassStructure.describeKey();
   }
 
   // //////////////////////////////////////////////////////////////////////
-  const std::string LegDate::describeShortKey() const {
-    return _legDateStructure.describeShortKey();
-  }
-
-  // //////////////////////////////////////////////////////////////////////
-  LegCabinList_T LegDate::getLegCabinList () const {
-    return LegCabinList_T (_legDateStructure);
-  }
-
-  // //////////////////////////////////////////////////////////////////////
-  LegCabinMap_T LegDate::getLegCabinMap () const {
-    return LegCabinMap_T (_legDateStructure);
+  const std::string BookingClass::describeShortKey() const {
+    return _bookingClassStructure.describeShortKey();
   }
   
 }
