@@ -54,14 +54,6 @@ namespace stdair {
     /** Definition allowing to retrive the  children bom holder type. */
     typedef BomChildrenHolderImp<ContentChild_T> ChildrenBomHolder_T;
 
-    /** Define the iterators of the leg-cabin list. */
-    typedef typename ChildrenBomHolder_T::ListIterator_T LegCabinListIterator_T;
-    typedef typename ChildrenBomHolder_T::ListReverseIterator_T LegCabinListReverseIterator_T;
-
-    /** Define the iterators of the leg-cabin map. */
-    typedef typename ChildrenBomHolder_T::MapIterator_T LegCabinMapIterator_T;
-    typedef typename ChildrenBomHolder_T::MapReverseIterator_T LegCabinMapReverseIterator_T;
-    
   public:
     // /////////// Getters /////////////
     /** Get the (parent) FlightDateStructure object. */
@@ -138,64 +130,6 @@ namespace stdair {
       ioOut << "LegCabins: " << std::endl;
       assert (_childrenList != NULL);
       _childrenList->describeFull (ioOut);
-    }
-
-  public:
-    // /////////// Iteration methods //////////
-    /** Initialise the internal iterator on leg cabin:
-        return the iterator at the begining of the list. */
-    LegCabinListIterator_T legCabinListBegin () const {
-      assert (_childrenList != NULL);
-      return _childrenList->listBegin ();
-    }
-    
-    /** Initialise the internal iterator on leg cabin:
-        return the iterator at the end of the list. */
-    LegCabinListIterator_T legCabinListEnd () const {
-      assert (_childrenList != NULL);
-      return _childrenList->listEnd ();
-    }
-    
-    /** Initialise the internal reverse iterator on leg cabin:
-        return the reverse iterator at the rbegining of the list. */
-    LegCabinListReverseIterator_T legCabinListRBegin () const {
-      assert (_childrenList != NULL);
-      return _childrenList->listRBegin ();
-    }
-    
-    /** Initialise the internal reverse iterator on leg cabin:
-        return the reverse iterator at the rend of the list. */
-    LegCabinListReverseIterator_T legCabinListREnd () const {
-      assert (_childrenList != NULL);
-      return _childrenList->listREnd ();
-    }
-
-    /** Initialise the internal iterator on leg cabin:
-        return the iterator at the begining of the map. */
-    LegCabinMapIterator_T legCabinMapBegin () const {
-      assert (_childrenList != NULL);
-      return _childrenList->mapBegin ();
-    }
-    
-    /** Initialise the internal iterator on leg cabin:
-        return the iterator at the end of the map. */
-    LegCabinMapIterator_T legCabinMapEnd () const {
-      assert (_childrenList != NULL);
-      return _childrenList->mapEnd ();
-    }
-    
-    /** Initialise the internal reverse iterator on leg cabin:
-        return the reverse iterator at the rbegining of the map. */
-    LegCabinMapReverseIterator_T legCabinMapRBegin () const {
-      assert (_childrenList != NULL);
-      return _childrenList->mapRBegin ();
-    }
-    
-    /** Initialise the internal reverse iterator on leg cabin:
-        return the reverse iterator at the rend of the map. */
-    LegCabinMapReverseIterator_T legCabinMapREnd () const {
-      assert (_childrenList != NULL);
-      return _childrenList->mapREnd ();
     }
     
   private:

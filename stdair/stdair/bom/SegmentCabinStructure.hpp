@@ -54,14 +54,6 @@ namespace stdair {
     /** Definition allowing to retrive the  children bom holder type. */
     typedef BomChildrenHolderImp<ContentChild_T> ChildrenBomHolder_T;
 
-    /** Define the iterators of the segment-cabin list. */
-    typedef typename ChildrenBomHolder_T::ListIterator_T BookingClassListIterator_T;
-    typedef typename ChildrenBomHolder_T::ListReverseIterator_T BookingClassListReverseIterator_T;
-
-    /** Define the iterators of the segment-cabin map. */
-    typedef typename ChildrenBomHolder_T::MapIterator_T BookingClassMapIterator_T;
-    typedef typename ChildrenBomHolder_T::MapReverseIterator_T BookingClassMapReverseIterator_T;
-    
   public:
     // /////////// Getters /////////////
     /** Get the (parent) SegmentDateStructure object. */
@@ -140,64 +132,6 @@ namespace stdair {
       _childrenList->describeFull (ioOut);
     }
 
-  public:
-    // /////////// Iteration methods //////////
-    /** Initialise the internal iterator on booking class:
-        return the iterator at the begining of the list. */
-    BookingClassListIterator_T bookingClassListBegin () const {
-      assert (_childrenList != NULL);
-      return _childrenList->listBegin ();
-    }
-    
-    /** Initialise the internal iterator on booking class:
-        return the iterator at the end of the list. */
-    BookingClassListIterator_T bookingClassListEnd () const {
-      assert (_childrenList != NULL);
-      return _childrenList->listEnd ();
-    }
-    
-    /** Initialise the internal reverse iterator on booking class:
-        return the reverse iterator at the rbegining of the list. */
-    BookingClassListReverseIterator_T bookingClassListRBegin () const {
-      assert (_childrenList != NULL);
-      return _childrenList->listRBegin ();
-    }
-    
-    /** Initialise the internal reverse iterator on booking class:
-        return the reverse iterator at the rend of the list. */
-    BookingClassListReverseIterator_T bookingClassListREnd () const {
-      assert (_childrenList != NULL);
-      return _childrenList->listREnd ();
-    }
-
-    /** Initialise the internal iterator on booking class:
-        return the iterator at the begining of the map. */
-    BookingClassMapIterator_T bookingClassMapBegin () const {
-      assert (_childrenList != NULL);
-      return _childrenList->mapBegin ();
-    }
-    
-    /** Initialise the internal iterator on booking class:
-        return the iterator at the end of the map. */
-    BookingClassMapIterator_T bookingClassMapEnd () const {
-      assert (_childrenList != NULL);
-      return _childrenList->mapEnd ();
-    }
-    
-    /** Initialise the internal reverse iterator on booking class:
-        return the reverse iterator at the rbegining of the map. */
-    BookingClassMapReverseIterator_T bookingClassMapRBegin () const {
-      assert (_childrenList != NULL);
-      return _childrenList->mapRBegin ();
-    }
-    
-    /** Initialise the internal reverse iterator on booking class:
-        return the reverse iterator at the rend of the map. */
-    BookingClassMapReverseIterator_T bookingClassMapREnd () const {
-      assert (_childrenList != NULL);
-      return _childrenList->mapREnd ();
-    }
-    
   private:
     /** Constructors are private so as to force the usage of the Factory
         layer. */

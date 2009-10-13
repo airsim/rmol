@@ -4,10 +4,7 @@
 // STL
 #include <cassert>
 // STDAIR
-#include <stdair/bom/FlightDateStructure.hpp>
-#include <stdair/bom/Inventory.hpp>
-#include <stdair/bom/FlightDate.hpp>
-#include <stdair/bom/SegmentDate.hpp>
+#include <stdair/bom/BomChildrenHolderImp.hpp>
 #include <stdair/bom/LegDate.hpp>
 #include <stdair/bom/LegDateMap.hpp>
 
@@ -15,14 +12,14 @@ namespace stdair {
 
   // ////////////////////////////////////////////////////////////////////
   LegDateMap_T::
-  LegDateMap_T (const FlightDateStructure_T& iFlightDateStructure)
-    : _flightDateStructure (iFlightDateStructure) {
+  LegDateMap_T (const LegDateHolder_T& iLegDateHolder)
+    : _legDateHolder (iLegDateHolder) {
   }
 
   // ////////////////////////////////////////////////////////////////////
   LegDateMap_T::
-  LegDateMap_T (const LegDateMap_T& iSDMap)
-    : _flightDateStructure (iSDMap._flightDateStructure) {
+  LegDateMap_T (const LegDateMap_T& iLDMap)
+    : _legDateHolder (iLDMap._legDateHolder) {
   }
 
   // ////////////////////////////////////////////////////////////////////
@@ -31,22 +28,22 @@ namespace stdair {
 
   // //////////////////////////////////////////////////////////////////////
   LegDateMap_T::iterator LegDateMap_T::begin () const {
-    return _flightDateStructure.legDateMapBegin ();
+    return _legDateHolder.mapBegin ();
   }
 
   // //////////////////////////////////////////////////////////////////////
   LegDateMap_T::iterator LegDateMap_T::end () const {
-    return _flightDateStructure.legDateMapEnd ();
+    return _legDateHolder.mapEnd ();
   }
 
   // //////////////////////////////////////////////////////////////////////
   LegDateMap_T::reverse_iterator LegDateMap_T::rbegin () const {
-    return _flightDateStructure.legDateMapRBegin ();
+    return _legDateHolder.mapRBegin ();
   }
 
   // //////////////////////////////////////////////////////////////////////
   LegDateMap_T::reverse_iterator LegDateMap_T::rend () const {
-    return _flightDateStructure.legDateMapREnd ();
+    return _legDateHolder.mapREnd ();
   }
 
 }

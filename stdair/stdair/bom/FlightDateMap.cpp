@@ -4,8 +4,7 @@
 // STL
 #include <cassert>
 // STDAIR
-#include <stdair/bom/InventoryStructure.hpp>
-#include <stdair/bom/Inventory.hpp>
+#include <stdair/bom/BomChildrenHolderImp.hpp>
 #include <stdair/bom/FlightDate.hpp>
 #include <stdair/bom/FlightDateMap.hpp>
 
@@ -13,14 +12,14 @@ namespace stdair {
 
   // ////////////////////////////////////////////////////////////////////
   FlightDateMap_T::
-  FlightDateMap_T (const InventoryStructure_T& iInventoryStructure)
-    : _inventoryStructure (iInventoryStructure) {
+  FlightDateMap_T (const FlightDateHolder_T& iFlightDateHolder)
+    : _flightDateHolder (iFlightDateHolder) {
   }
 
   // ////////////////////////////////////////////////////////////////////
   FlightDateMap_T::
   FlightDateMap_T (const FlightDateMap_T& iFDMap)
-    : _inventoryStructure (iFDMap._inventoryStructure) {
+    : _flightDateHolder (iFDMap._flightDateHolder) {
   }
 
   // ////////////////////////////////////////////////////////////////////
@@ -29,22 +28,22 @@ namespace stdair {
 
   // //////////////////////////////////////////////////////////////////////
   FlightDateMap_T::iterator FlightDateMap_T::begin () const {
-    return _inventoryStructure.flightDateMapBegin ();
+    return _flightDateHolder.mapBegin ();
   }
 
   // //////////////////////////////////////////////////////////////////////
   FlightDateMap_T::iterator FlightDateMap_T::end () const {
-    return _inventoryStructure.flightDateMapEnd ();
+    return _flightDateHolder.mapEnd ();
   }
 
   // //////////////////////////////////////////////////////////////////////
   FlightDateMap_T::reverse_iterator FlightDateMap_T::rbegin () const {
-    return _inventoryStructure.flightDateMapRBegin ();
+    return _flightDateHolder.mapRBegin ();
   }
 
   // //////////////////////////////////////////////////////////////////////
   FlightDateMap_T::reverse_iterator FlightDateMap_T::rend () const {
-    return _inventoryStructure.flightDateMapREnd ();
+    return _flightDateHolder.mapREnd ();
   }
 
 }

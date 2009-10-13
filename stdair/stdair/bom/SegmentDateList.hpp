@@ -5,13 +5,15 @@
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // STDAIR
-#include <stdair/bom/FlightDateTypes.hpp>
 #include <stdair/bom/SegmentDateTypes.hpp>
 
 namespace stdair {
-// Forward declarations
+  
+  // Forward declarations
   template <typename BOM_CONTENT, typename ITERATOR> struct BomIterator_T;
-
+  template <typename BOM_STRUCTURE> class BomChildrenHolderImp;
+  class SegmentDate;
+  
   /** Structure which handles the iterators for a segment-date list. */
   struct SegmentDateList_T {
 
@@ -26,7 +28,10 @@ namespace stdair {
     typedef BomIterator_T<SegmentDate,
                           SegmentDateStructureList_T::const_reverse_iterator> reverse_iterator;
     // /////////////////////////////////////////////////////////////////////////
-
+    
+    /** Define the segment-date holder. */
+    typedef BomChildrenHolderImp<SegmentDate> SegmentDateHolder_T;
+    
   public:
     // /////////// Iteration methods //////////
     /** Initialise the internal iterator on segment date:
@@ -49,7 +54,7 @@ namespace stdair {
     /** Default constructors. */
     SegmentDateList_T ();
     SegmentDateList_T (const SegmentDateList_T&);
-    SegmentDateList_T (const FlightDateStructure_T&);
+    SegmentDateList_T (const SegmentDateHolder_T&);
 
     /** Destructor. */
     virtual ~SegmentDateList_T();
@@ -57,7 +62,7 @@ namespace stdair {
   private:
     // Attributes
     /** Reference structure. */
-    const FlightDateStructure_T& _flightDateStructure;
+    const SegmentDateHolder_T& _segmentDateHolder;
   };
 
 }

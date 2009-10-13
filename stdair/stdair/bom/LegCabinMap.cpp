@@ -4,9 +4,7 @@
 // STL
 #include <cassert>
 // STDAIR
-#include <stdair/bom/LegDateStructure.hpp>
-#include <stdair/bom/FlightDate.hpp>
-#include <stdair/bom/LegDate.hpp>
+#include <stdair/bom/BomChildrenHolderImp.hpp>
 #include <stdair/bom/LegCabin.hpp>
 #include <stdair/bom/LegCabinMap.hpp>
 
@@ -14,14 +12,14 @@ namespace stdair {
 
   // ////////////////////////////////////////////////////////////////////
   LegCabinMap_T::
-  LegCabinMap_T (const LegDateStructure_T& iLegDateStructure)
-    : _legDateStructure (iLegDateStructure) {
+  LegCabinMap_T (const LegCabinHolder_T& iLegCabinHolder)
+    : _legCabinHolder (iLegCabinHolder) {
   }
 
   // ////////////////////////////////////////////////////////////////////
   LegCabinMap_T::
-  LegCabinMap_T (const LegCabinMap_T& iSCMap)
-    : _legDateStructure (iSCMap._legDateStructure) {
+  LegCabinMap_T (const LegCabinMap_T& iLCMap)
+    : _legCabinHolder (iLCMap._legCabinHolder) {
   }
 
   // ////////////////////////////////////////////////////////////////////
@@ -30,22 +28,22 @@ namespace stdair {
 
   // //////////////////////////////////////////////////////////////////////
   LegCabinMap_T::iterator LegCabinMap_T::begin () const {
-    return _legDateStructure.legCabinMapBegin ();
+    return _legCabinHolder.mapBegin ();
   }
 
   // //////////////////////////////////////////////////////////////////////
   LegCabinMap_T::iterator LegCabinMap_T::end () const {
-    return _legDateStructure.legCabinMapEnd ();
+    return _legCabinHolder.mapEnd ();
   }
 
   // //////////////////////////////////////////////////////////////////////
   LegCabinMap_T::reverse_iterator LegCabinMap_T::rbegin () const {
-    return _legDateStructure.legCabinMapRBegin ();
+    return _legCabinHolder.mapRBegin ();
   }
 
   // //////////////////////////////////////////////////////////////////////
   LegCabinMap_T::reverse_iterator LegCabinMap_T::rend () const {
-    return _legDateStructure.legCabinMapREnd ();
+    return _legCabinHolder.mapREnd ();
   }
 
 }

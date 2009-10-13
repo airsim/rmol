@@ -56,12 +56,12 @@ namespace stdair {
 
   // //////////////////////////////////////////////////////////////////////
   FlightDateList_T Inventory::getFlightDateList () const {
-    return FlightDateList_T (_inventoryStructure);
+    return _inventoryStructure.getChildrenList();
   }
 
   // //////////////////////////////////////////////////////////////////////
   FlightDateMap_T Inventory::getFlightDateMap () const {
-    return FlightDateMap_T (_inventoryStructure);
+    return _inventoryStructure.getChildrenList();
   }
 
 }

@@ -59,22 +59,22 @@ namespace stdair {
   
   // //////////////////////////////////////////////////////////////////////
   SegmentDateList_T FlightDate::getSegmentDateList () const {
-    return SegmentDateList_T (_flightDateStructure);
+    return _flightDateStructure.getChildrenList();
   }
 
   // //////////////////////////////////////////////////////////////////////
   SegmentDateMap_T FlightDate::getSegmentDateMap () const {
-    return SegmentDateMap_T (_flightDateStructure);
+    return _flightDateStructure.getChildrenList();
   }
 
   // //////////////////////////////////////////////////////////////////////
   LegDateList_T FlightDate::getLegDateList () const {
-    return LegDateList_T (_flightDateStructure);
+    return _flightDateStructure.getSecondChildrenList();
   }
 
   // //////////////////////////////////////////////////////////////////////
   LegDateMap_T FlightDate::getLegDateMap () const {
-    return LegDateMap_T (_flightDateStructure);
+    return _flightDateStructure.getSecondChildrenList();
   }
   
 }

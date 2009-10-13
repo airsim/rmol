@@ -4,8 +4,7 @@
 // STL
 #include <cassert>
 // STDAIR
-#include <stdair/bom/BomStructureRoot.hpp>
-#include <stdair/bom/BomContentRoot.hpp>
+#include <stdair/bom/BomChildrenHolderImp.hpp>
 #include <stdair/bom/Inventory.hpp>
 #include <stdair/bom/InventoryList.hpp>
 
@@ -13,14 +12,14 @@ namespace stdair {
 
   // ////////////////////////////////////////////////////////////////////
   InventoryList_T::
-  InventoryList_T (const BomStructureRoot_T& iBomStructureRoot)
-    : _bomStructureRoot (iBomStructureRoot) {
+  InventoryList_T (const InventoryHolder_T& iInventoryHolder)
+    : _inventoryHolder (iInventoryHolder) {
   }
 
   // ////////////////////////////////////////////////////////////////////
   InventoryList_T::
   InventoryList_T (const InventoryList_T& iINVList)
-    : _bomStructureRoot (iINVList._bomStructureRoot) {
+    : _inventoryHolder (iINVList._inventoryHolder) {
   }
 
   // ////////////////////////////////////////////////////////////////////
@@ -29,22 +28,22 @@ namespace stdair {
 
   // //////////////////////////////////////////////////////////////////////
   InventoryList_T::iterator InventoryList_T::begin () const {
-    return _bomStructureRoot.inventoryListBegin ();
+    return _inventoryHolder.listBegin ();
   }
 
   // //////////////////////////////////////////////////////////////////////
   InventoryList_T::iterator InventoryList_T::end () const {
-    return _bomStructureRoot.inventoryListEnd ();
+    return _inventoryHolder.listEnd ();
   }
 
   // //////////////////////////////////////////////////////////////////////
   InventoryList_T::reverse_iterator InventoryList_T::rbegin () const {
-    return _bomStructureRoot.inventoryListRBegin ();
+    return _inventoryHolder.listRBegin ();
   }
 
   // //////////////////////////////////////////////////////////////////////
   InventoryList_T::reverse_iterator InventoryList_T::rend () const {
-    return _bomStructureRoot.inventoryListREnd ();
+    return _inventoryHolder.listREnd ();
   }
 
 }

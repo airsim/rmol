@@ -4,9 +4,7 @@
 // STL
 #include <cassert>
 // STDAIR
-#include <stdair/bom/SegmentDateStructure.hpp>
-#include <stdair/bom/FlightDate.hpp>
-#include <stdair/bom/SegmentDate.hpp>
+#include <stdair/bom/BomChildrenHolderImp.hpp>
 #include <stdair/bom/SegmentCabin.hpp>
 #include <stdair/bom/SegmentCabinMap.hpp>
 
@@ -14,14 +12,14 @@ namespace stdair {
 
   // ////////////////////////////////////////////////////////////////////
   SegmentCabinMap_T::
-  SegmentCabinMap_T (const SegmentDateStructure_T& iSegmentDateStructure)
-    : _segmentDateStructure (iSegmentDateStructure) {
+  SegmentCabinMap_T (const SegmentCabinHolder_T& iSegmentCabinHolder)
+    : _segmentCabinHolder (iSegmentCabinHolder) {
   }
 
   // ////////////////////////////////////////////////////////////////////
   SegmentCabinMap_T::
   SegmentCabinMap_T (const SegmentCabinMap_T& iSCMap)
-    : _segmentDateStructure (iSCMap._segmentDateStructure) {
+    : _segmentCabinHolder (iSCMap._segmentCabinHolder) {
   }
 
   // ////////////////////////////////////////////////////////////////////
@@ -30,22 +28,22 @@ namespace stdair {
 
   // //////////////////////////////////////////////////////////////////////
   SegmentCabinMap_T::iterator SegmentCabinMap_T::begin () const {
-    return _segmentDateStructure.segmentCabinMapBegin ();
+    return _segmentCabinHolder.mapBegin ();
   }
 
   // //////////////////////////////////////////////////////////////////////
   SegmentCabinMap_T::iterator SegmentCabinMap_T::end () const {
-    return _segmentDateStructure.segmentCabinMapEnd ();
+    return _segmentCabinHolder.mapEnd ();
   }
 
   // //////////////////////////////////////////////////////////////////////
   SegmentCabinMap_T::reverse_iterator SegmentCabinMap_T::rbegin () const {
-    return _segmentDateStructure.segmentCabinMapRBegin ();
+    return _segmentCabinHolder.mapRBegin ();
   }
 
   // //////////////////////////////////////////////////////////////////////
   SegmentCabinMap_T::reverse_iterator SegmentCabinMap_T::rend () const {
-    return _segmentDateStructure.segmentCabinMapREnd ();
+    return _segmentCabinHolder.mapREnd ();
   }
 
 }

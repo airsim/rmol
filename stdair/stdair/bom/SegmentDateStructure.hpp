@@ -54,14 +54,6 @@ namespace stdair {
     /** Definition allowing to retrive the  children bom holder type. */
     typedef BomChildrenHolderImp<ContentChild_T> ChildrenBomHolder_T;
 
-    /** Define the iterators of the segment-cabin list. */
-    typedef typename ChildrenBomHolder_T::ListIterator_T SegmentCabinListIterator_T;
-    typedef typename ChildrenBomHolder_T::ListReverseIterator_T SegmentCabinListReverseIterator_T;
-
-    /** Define the iterators of the segment-cabin map. */
-    typedef typename ChildrenBomHolder_T::MapIterator_T SegmentCabinMapIterator_T;
-    typedef typename ChildrenBomHolder_T::MapReverseIterator_T SegmentCabinMapReverseIterator_T;
-    
   public:
     // /////////// Getters /////////////
     /** Get the (parent) FlightDateStructure object. */
@@ -138,64 +130,6 @@ namespace stdair {
       ioOut << "SegmentCabins: " << std::endl;
       assert (_childrenList != NULL);
       _childrenList->describeFull (ioOut);
-    }
-
-  public:
-    // /////////// Iteration methods //////////
-    /** Initialise the internal iterator on segment cabin:
-        return the iterator at the begining of the list. */
-    SegmentCabinListIterator_T segmentCabinListBegin () const {
-      assert (_childrenList != NULL);
-      return _childrenList->listBegin ();
-    }
-    
-    /** Initialise the internal iterator on segment cabin:
-        return the iterator at the end of the list. */
-    SegmentCabinListIterator_T segmentCabinListEnd () const {
-      assert (_childrenList != NULL);
-      return _childrenList->listEnd ();
-    }
-    
-    /** Initialise the internal reverse iterator on segment cabin:
-        return the reverse iterator at the rbegining of the list. */
-    SegmentCabinListReverseIterator_T segmentCabinListRBegin () const {
-      assert (_childrenList != NULL);
-      return _childrenList->listRBegin ();
-    }
-    
-    /** Initialise the internal reverse iterator on segment cabin:
-        return the reverse iterator at the rend of the list. */
-    SegmentCabinListReverseIterator_T segmentCabinListREnd () const {
-      assert (_childrenList != NULL);
-      return _childrenList->listREnd ();
-    }
-
-    /** Initialise the internal iterator on segment cabin:
-        return the iterator at the begining of the map. */
-    SegmentCabinMapIterator_T segmentCabinMapBegin () const {
-      assert (_childrenList != NULL);
-      return _childrenList->mapBegin ();
-    }
-    
-    /** Initialise the internal iterator on segment cabin:
-        return the iterator at the end of the map. */
-    SegmentCabinMapIterator_T segmentCabinMapEnd () const {
-      assert (_childrenList != NULL);
-      return _childrenList->mapEnd ();
-    }
-    
-    /** Initialise the internal reverse iterator on segment cabin:
-        return the reverse iterator at the rbegining of the map. */
-    SegmentCabinMapReverseIterator_T segmentCabinMapRBegin () const {
-      assert (_childrenList != NULL);
-      return _childrenList->mapRBegin ();
-    }
-    
-    /** Initialise the internal reverse iterator on segment cabin:
-        return the reverse iterator at the rend of the map. */
-    SegmentCabinMapReverseIterator_T segmentCabinMapREnd () const {
-      assert (_childrenList != NULL);
-      return _childrenList->mapREnd ();
     }
     
   private:

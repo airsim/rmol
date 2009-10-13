@@ -4,10 +4,7 @@
 // STL
 #include <cassert>
 // STDAIR
-#include <stdair/bom/FlightDateStructure.hpp>
-#include <stdair/bom/Inventory.hpp>
-#include <stdair/bom/FlightDate.hpp>
-#include <stdair/bom/SegmentDate.hpp>
+#include <stdair/bom/BomChildrenHolderImp.hpp>
 #include <stdair/bom/LegDate.hpp>
 #include <stdair/bom/LegDateList.hpp>
 
@@ -15,14 +12,14 @@ namespace stdair {
 
   // ////////////////////////////////////////////////////////////////////
   LegDateList_T::
-  LegDateList_T (const FlightDateStructure_T& iFlightDateStructure)
-    : _flightDateStructure (iFlightDateStructure) {
+  LegDateList_T (const LegDateHolder_T& iLegDateHolder)
+    : _legDateHolder (iLegDateHolder) {
   }
 
   // ////////////////////////////////////////////////////////////////////
   LegDateList_T::
-  LegDateList_T (const LegDateList_T& iSDList)
-    : _flightDateStructure (iSDList._flightDateStructure) {
+  LegDateList_T (const LegDateList_T& iLDList)
+    : _legDateHolder (iLDList._legDateHolder) {
   }
 
   // ////////////////////////////////////////////////////////////////////
@@ -31,22 +28,22 @@ namespace stdair {
 
   // //////////////////////////////////////////////////////////////////////
   LegDateList_T::iterator LegDateList_T::begin () const {
-    return _flightDateStructure.legDateListBegin ();
+    return _legDateHolder.listBegin ();
   }
 
   // //////////////////////////////////////////////////////////////////////
   LegDateList_T::iterator LegDateList_T::end () const {
-    return _flightDateStructure.legDateListEnd ();
+    return _legDateHolder.listEnd ();
   }
 
   // //////////////////////////////////////////////////////////////////////
   LegDateList_T::reverse_iterator LegDateList_T::rbegin () const {
-    return _flightDateStructure.legDateListRBegin ();
+    return _legDateHolder.listRBegin ();
   }
 
   // //////////////////////////////////////////////////////////////////////
   LegDateList_T::reverse_iterator LegDateList_T::rend () const {
-    return _flightDateStructure.legDateListREnd ();
+    return _legDateHolder.listREnd ();
   }
 
 }

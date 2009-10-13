@@ -5,13 +5,15 @@
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // STDAIR
-#include <stdair/bom/LegDateTypes.hpp>
 #include <stdair/bom/LegCabinTypes.hpp>
 
 namespace stdair {
-// Forward declarations
+  
+  // Forward declarations
   template <typename BOM_CONTENT, typename ITERATOR> struct BomIterator_T;
-
+  template <typename BOM_STRUCTURE> class BomChildrenHolderImp;
+  class LegCabin;
+  
   /** Structure which handles the iterators for a leg-cabin list. */
   struct LegCabinList_T {
 
@@ -26,7 +28,10 @@ namespace stdair {
     typedef BomIterator_T<LegCabin,
                           LegCabinStructureList_T::const_reverse_iterator> reverse_iterator;
     // /////////////////////////////////////////////////////////////////////////
-
+    
+    /** Define the leg-cabin holder. */
+    typedef BomChildrenHolderImp<LegCabin> LegCabinHolder_T;
+    
   public:
     // /////////// Iteration methods //////////
     /** Initialise the internal iterator on leg cabin:
@@ -49,7 +54,7 @@ namespace stdair {
     /** Default constructors. */
     LegCabinList_T ();
     LegCabinList_T (const LegCabinList_T&);
-    LegCabinList_T (const LegDateStructure_T&);
+    LegCabinList_T (const LegCabinHolder_T&);
 
     /** Destructor. */
     virtual ~LegCabinList_T();
@@ -57,7 +62,7 @@ namespace stdair {
   private:
     // Attributes
     /** Reference structure. */
-    const LegDateStructure_T& _legDateStructure;
+    const LegCabinHolder_T& _legCabinHolder;
   };
 
 }

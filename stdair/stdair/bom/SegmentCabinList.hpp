@@ -5,13 +5,15 @@
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // STDAIR
-#include <stdair/bom/SegmentDateTypes.hpp>
 #include <stdair/bom/SegmentCabinTypes.hpp>
 
 namespace stdair {
-// Forward declarations
+  
+  // Forward declarations
   template <typename BOM_CONTENT, typename ITERATOR> struct BomIterator_T;
-
+  template <typename BOM_STRUCTURE> class BomChildrenHolderImp;
+  class SegmentCabin;
+  
   /** Structure which handles the iterators for a segment-cabin list. */
   struct SegmentCabinList_T {
 
@@ -26,7 +28,10 @@ namespace stdair {
     typedef BomIterator_T<SegmentCabin,
                           SegmentCabinStructureList_T::const_reverse_iterator> reverse_iterator;
     // /////////////////////////////////////////////////////////////////////////
-
+    
+    /** Define the segment-cabin holder. */
+    typedef BomChildrenHolderImp<SegmentCabin> SegmentCabinHolder_T;
+    
   public:
     // /////////// Iteration methods //////////
     /** Initialise the internal iterator on segment cabin:
@@ -49,7 +54,7 @@ namespace stdair {
     /** Default constructors. */
     SegmentCabinList_T ();
     SegmentCabinList_T (const SegmentCabinList_T&);
-    SegmentCabinList_T (const SegmentDateStructure_T&);
+    SegmentCabinList_T (const SegmentCabinHolder_T&);
 
     /** Destructor. */
     virtual ~SegmentCabinList_T();
@@ -57,7 +62,7 @@ namespace stdair {
   private:
     // Attributes
     /** Reference structure. */
-    const SegmentDateStructure_T& _segmentDateStructure;
+    const SegmentCabinHolder_T& _segmentCabinHolder;
   };
 
 }

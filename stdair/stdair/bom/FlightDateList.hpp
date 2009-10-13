@@ -5,14 +5,15 @@
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // STDAIR
-#include <stdair/bom/InventoryTypes.hpp>
 #include <stdair/bom/FlightDateTypes.hpp>
 
 namespace stdair {
   
-// Forward declarations
+  // Forward declarations
   template <typename BOM_CONTENT, typename ITERATOR> struct BomIterator_T;
-
+  template <typename BOM_STRUCTURE> class BomChildrenHolderImp;
+  class FlightDate;
+  
   /** Structure which handles the iterators for a flight-date list. */
   struct FlightDateList_T {
 
@@ -27,7 +28,10 @@ namespace stdair {
     typedef BomIterator_T<FlightDate,
                           FlightDateStructureList_T::const_reverse_iterator> reverse_iterator;
     // /////////////////////////////////////////////////////////////////////////
-
+    
+    /** Define the flight-date holder. */
+    typedef BomChildrenHolderImp<FlightDate> FlightDateHolder_T;
+    
   public:
     // /////////// Iteration methods //////////
     /** Initialise the internal iterator on flight date:
@@ -50,7 +54,7 @@ namespace stdair {
     /** Default constructors. */
     FlightDateList_T ();
     FlightDateList_T (const FlightDateList_T&);
-    FlightDateList_T (const InventoryStructure_T&);
+    FlightDateList_T (const FlightDateHolder_T&);
 
     /** Destructor. */
     virtual ~FlightDateList_T();
@@ -58,7 +62,7 @@ namespace stdair {
   private:
     // Attributes
     /** Reference structure. */
-    const InventoryStructure_T& _inventoryStructure;
+    const FlightDateHolder_T& _flightDateHolder;
   };
 
 }

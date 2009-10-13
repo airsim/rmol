@@ -4,25 +4,22 @@
 // STL
 #include <cassert>
 // STDAIR
-#include <stdair/bom/FlightDateStructure.hpp>
-#include <stdair/bom/Inventory.hpp>
-#include <stdair/bom/FlightDate.hpp>
+#include <stdair/bom/BomChildrenHolderImp.hpp>
 #include <stdair/bom/SegmentDate.hpp>
 #include <stdair/bom/SegmentDateMap.hpp>
-#include <stdair/bom/LegDate.hpp>
 
 namespace stdair {
 
   // ////////////////////////////////////////////////////////////////////
   SegmentDateMap_T::
-  SegmentDateMap_T (const FlightDateStructure_T& iFlightDateStructure)
-    : _flightDateStructure (iFlightDateStructure) {
+  SegmentDateMap_T (const SegmentDateHolder_T& iSegmentDateHolder)
+    : _segmentDateHolder (iSegmentDateHolder) {
   }
 
   // ////////////////////////////////////////////////////////////////////
   SegmentDateMap_T::
   SegmentDateMap_T (const SegmentDateMap_T& iSDMap)
-    : _flightDateStructure (iSDMap._flightDateStructure) {
+    : _segmentDateHolder (iSDMap._segmentDateHolder) {
   }
 
   // ////////////////////////////////////////////////////////////////////
@@ -31,22 +28,22 @@ namespace stdair {
 
   // //////////////////////////////////////////////////////////////////////
   SegmentDateMap_T::iterator SegmentDateMap_T::begin () const {
-    return _flightDateStructure.segmentDateMapBegin ();
+    return _segmentDateHolder.mapBegin ();
   }
 
   // //////////////////////////////////////////////////////////////////////
   SegmentDateMap_T::iterator SegmentDateMap_T::end () const {
-    return _flightDateStructure.segmentDateMapEnd ();
+    return _segmentDateHolder.mapEnd ();
   }
 
   // //////////////////////////////////////////////////////////////////////
   SegmentDateMap_T::reverse_iterator SegmentDateMap_T::rbegin () const {
-    return _flightDateStructure.segmentDateMapRBegin ();
+    return _segmentDateHolder.mapRBegin ();
   }
 
   // //////////////////////////////////////////////////////////////////////
   SegmentDateMap_T::reverse_iterator SegmentDateMap_T::rend () const {
-    return _flightDateStructure.segmentDateMapREnd ();
+    return _segmentDateHolder.mapREnd ();
   }
 
 }

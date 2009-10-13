@@ -4,9 +4,7 @@
 // STL
 #include <cassert>
 // STDAIR
-#include <stdair/bom/SegmentCabinStructure.hpp>
-#include <stdair/bom/SegmentDate.hpp>
-#include <stdair/bom/SegmentCabin.hpp>
+#include <stdair/bom/BomChildrenHolderImp.hpp>
 #include <stdair/bom/BookingClass.hpp>
 #include <stdair/bom/BookingClassList.hpp>
 
@@ -14,14 +12,14 @@ namespace stdair {
 
   // ////////////////////////////////////////////////////////////////////
   BookingClassList_T::
-  BookingClassList_T (const SegmentCabinStructure_T& iSegmentCabinStructure)
-    : _segmentCabinStructure (iSegmentCabinStructure) {
+  BookingClassList_T (const BookingClassHolder_T& iBookingClassHolder)
+    : _bookingClassHolder (iBookingClassHolder) {
   }
 
   // ////////////////////////////////////////////////////////////////////
   BookingClassList_T::
-  BookingClassList_T (const BookingClassList_T& iSCList)
-    : _segmentCabinStructure (iSCList._segmentCabinStructure) {
+  BookingClassList_T (const BookingClassList_T& iBCList)
+    : _bookingClassHolder (iBCList._bookingClassHolder) {
   }
 
   // ////////////////////////////////////////////////////////////////////
@@ -30,22 +28,22 @@ namespace stdair {
 
   // //////////////////////////////////////////////////////////////////////
   BookingClassList_T::iterator BookingClassList_T::begin () const {
-    return _segmentCabinStructure.bookingClassListBegin ();
+    return _bookingClassHolder.listBegin ();
   }
 
   // //////////////////////////////////////////////////////////////////////
   BookingClassList_T::iterator BookingClassList_T::end () const {
-    return _segmentCabinStructure.bookingClassListEnd ();
+    return _bookingClassHolder.listEnd ();
   }
 
   // //////////////////////////////////////////////////////////////////////
   BookingClassList_T::reverse_iterator BookingClassList_T::rbegin () const {
-    return _segmentCabinStructure.bookingClassListRBegin ();
+    return _bookingClassHolder.listRBegin ();
   }
 
   // //////////////////////////////////////////////////////////////////////
   BookingClassList_T::reverse_iterator BookingClassList_T::rend () const {
-    return _segmentCabinStructure.bookingClassListREnd ();
+    return _bookingClassHolder.listREnd ();
   }
 
 }

@@ -5,13 +5,15 @@
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // STDAIR
-#include <stdair/bom/FlightDateTypes.hpp>
 #include <stdair/bom/LegDateTypes.hpp>
 
 namespace stdair {
-// Forward declarations
+  
+  // Forward declarations
   template <typename BOM_CONTENT, typename ITERATOR> struct BomIterator_T;
-
+  template <typename BOM_STRUCTURE> class BomChildrenHolderImp;
+  class LegDate;
+  
   /** Structure which handles the iterators for a leg-date map. */
   struct LegDateMap_T {
 
@@ -26,7 +28,10 @@ namespace stdair {
     typedef BomIterator_T<LegDate,
                           LegDateStructureMap_T::const_reverse_iterator> reverse_iterator;
     // /////////////////////////////////////////////////////////////////////////
-
+    
+    /** Define the leg-date holder. */
+    typedef BomChildrenHolderImp<LegDate> LegDateHolder_T;
+    
   public:
     // /////////// Iteration methods //////////
     /** Initialise the internal iterator on leg date:
@@ -49,7 +54,7 @@ namespace stdair {
     /** Default constructors. */
     LegDateMap_T ();
     LegDateMap_T (const LegDateMap_T&);
-    LegDateMap_T (const FlightDateStructure_T&);
+    LegDateMap_T (const LegDateHolder_T&);
 
     /** Destructor. */
     virtual ~LegDateMap_T();
@@ -57,7 +62,7 @@ namespace stdair {
   private:
     // Attributes
     /** Reference structure. */
-    const FlightDateStructure_T& _flightDateStructure;
+    const LegDateHolder_T& _legDateHolder;
   };
 
 }

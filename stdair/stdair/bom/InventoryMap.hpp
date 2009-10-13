@@ -5,15 +5,16 @@
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // STDAIR
-#include <stdair/bom/BomRootTypes.hpp>
 #include <stdair/bom/InventoryTypes.hpp>
 
 namespace stdair {
   
-// Forward declarations
+  // Forward declarations
   template <typename BOM_CONTENT, typename ITERATOR> struct BomIterator_T;
-
-  /** Structure which handles the iterators for a flight-date map. */
+  template <typename BOM_STRUCTURE> class BomChildrenHolderImp;
+  class Inventory;
+  
+  /** Structure which handles the iterators for a inventory map. */
   struct InventoryMap_T {
 
   public:
@@ -21,13 +22,16 @@ namespace stdair {
     // See the explanations, within the stdair::BomContentRoot class, for all
     // the iterator types specified below
     // /////////////////////////////////////////////////////////////////////////
-    /** Define the flight-date map iterators. */
+    /** Define the inventory map iterators. */
     typedef BomIterator_T<Inventory,
                           InventoryStructureMap_T::const_iterator> iterator;
     typedef BomIterator_T<Inventory,
                           InventoryStructureMap_T::const_reverse_iterator> reverse_iterator;
     // /////////////////////////////////////////////////////////////////////////
-
+    
+    /** Define the inventory holder. */
+    typedef BomChildrenHolderImp<Inventory> InventoryHolder_T;
+    
   public:
     // /////////// Iteration methods //////////
     /** Initialise the internal iterator on flight date:
@@ -50,7 +54,7 @@ namespace stdair {
     /** Default constructors. */
     InventoryMap_T ();
     InventoryMap_T (const InventoryMap_T&);
-    InventoryMap_T (const BomStructureRoot_T&);
+    InventoryMap_T (const InventoryHolder_T&);
 
     /** Destructor. */
     virtual ~InventoryMap_T();
@@ -58,7 +62,7 @@ namespace stdair {
   private:
     // Attributes
     /** Reference structure. */
-    const BomStructureRoot_T& _bomStructureRoot;
+    const InventoryHolder_T& _inventoryHolder;
   };
 
 }

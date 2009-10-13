@@ -4,25 +4,22 @@
 // STL
 #include <cassert>
 // STDAIR
-#include <stdair/bom/FlightDateStructure.hpp>
-#include <stdair/bom/Inventory.hpp>
-#include <stdair/bom/FlightDate.hpp>
+#include <stdair/bom/BomChildrenHolderImp.hpp>
 #include <stdair/bom/SegmentDate.hpp>
 #include <stdair/bom/SegmentDateList.hpp>
-#include <stdair/bom/LegDate.hpp>
 
 namespace stdair {
 
   // ////////////////////////////////////////////////////////////////////
   SegmentDateList_T::
-  SegmentDateList_T (const FlightDateStructure_T& iFlightDateStructure)
-    : _flightDateStructure (iFlightDateStructure) {
+  SegmentDateList_T (const SegmentDateHolder_T& iSegmentDateHolder)
+    : _segmentDateHolder (iSegmentDateHolder) {
   }
 
   // ////////////////////////////////////////////////////////////////////
   SegmentDateList_T::
   SegmentDateList_T (const SegmentDateList_T& iSDList)
-    : _flightDateStructure (iSDList._flightDateStructure) {
+    : _segmentDateHolder (iSDList._segmentDateHolder) {
   }
 
   // ////////////////////////////////////////////////////////////////////
@@ -31,22 +28,22 @@ namespace stdair {
 
   // //////////////////////////////////////////////////////////////////////
   SegmentDateList_T::iterator SegmentDateList_T::begin () const {
-    return _flightDateStructure.segmentDateListBegin ();
+    return _segmentDateHolder.listBegin ();
   }
 
   // //////////////////////////////////////////////////////////////////////
   SegmentDateList_T::iterator SegmentDateList_T::end () const {
-    return _flightDateStructure.segmentDateListEnd ();
+    return _segmentDateHolder.listEnd ();
   }
 
   // //////////////////////////////////////////////////////////////////////
   SegmentDateList_T::reverse_iterator SegmentDateList_T::rbegin () const {
-    return _flightDateStructure.segmentDateListRBegin ();
+    return _segmentDateHolder.listRBegin ();
   }
 
   // //////////////////////////////////////////////////////////////////////
   SegmentDateList_T::reverse_iterator SegmentDateList_T::rend () const {
-    return _flightDateStructure.segmentDateListREnd ();
+    return _segmentDateHolder.listREnd ();
   }
 
 }
