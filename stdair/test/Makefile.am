@@ -4,7 +4,7 @@ include $(top_srcdir)/Makefile.common
 MAINTAINERCLEANFILES = Makefile.in
 
 ##
-SUBDIRS = com mpl
+SUBDIRS = com inheritance mpl
 
 EXTRA_DIST =
 ##

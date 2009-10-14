@@ -4,7 +4,7 @@ AC_PREREQ(2.59)
 AC_COPYRIGHT([Copyright (C) 2007-2009  Denis Arnaud <denis_arnaud@users.sourceforge.net>])
 AC_INIT([STDAIR],[0.1.0],[denis_arnaud@users.sourceforge.net],[stdair])
 AC_CONFIG_HEADER([stdair/config.h])
-AC_CONFIG_SRCDIR([stdair/bom/BomKey.cpp])
+AC_CONFIG_SRCDIR([stdair/bom/BomKey.hpp])
 AC_CONFIG_AUX_DIR([config])
 AM_INIT_AUTOMAKE
 AM_PATH_CPPUNIT(1.10)
@@ -202,6 +202,7 @@ AC_CONFIG_FILES(
 	doc/sourceforge/howto_release_stdair.html
 	test/Makefile
 	test/com/Makefile
+	test/inheritance/Makefile
 	test/mpl/Makefile
 	test/mpl/book/Makefile)
 AC_OUTPUT
