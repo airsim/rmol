@@ -5,8 +5,8 @@
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // STDAIR 
-#include <stdair/bom/BomContent.hpp>
 #include <stdair/bom/BomContentRoot.hpp>
+#include <stdair/bom/InventoryContent.hpp>
 #include <stdair/bom/BomRootTypes.hpp>
 #include <stdair/bom/InventoryTypes.hpp>
 #include <stdair/bom/FlightDateTypes.hpp>
@@ -21,7 +21,7 @@ namespace stdair {
   
   /** Class representing the actual functional/business content for
       an airline inventory. */
-  class Inventory : public BomContent {
+  class Inventory : public InventoryContent {
     friend class FacBomContent;
 
   public:

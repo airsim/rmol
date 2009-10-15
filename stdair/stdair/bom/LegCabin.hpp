@@ -5,7 +5,7 @@
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // STDAIR 
-#include <stdair/bom/BomContent.hpp>
+#include <stdair/bom/LegCabinContent.hpp>
 #include <stdair/bom/LegCabinTypes.hpp>
 
 namespace stdair {
@@ -15,7 +15,7 @@ namespace stdair {
 
   /** Class representing the actual functional/business content for a
       leg-date. */
-  class LegCabin : public BomContent {
+  class LegCabin : public LegCabinContent {
     friend class FacBomContent;
 
   public:

@@ -5,7 +5,7 @@
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // STDAIR
-#include <stdair/bom/BomContent.hpp>
+#include <stdair/bom/FlightDateContent.hpp>
 #include <stdair/bom/FlightDateTypes.hpp>
 #include <stdair/bom/SegmentDateTypes.hpp>
 #include <stdair/bom/LegDateTypes.hpp>
@@ -22,7 +22,7 @@ namespace stdair {
   
   /** Class representing the actual functional/business content for a
       flight-date. */
-  class FlightDate : public BomContent {
+  class FlightDate : public FlightDateContent {
     friend class FacBomContent;
 
   public:

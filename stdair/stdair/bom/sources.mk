@@ -12,36 +12,43 @@ bom_h_sources = \
 				$(top_srcdir)/stdair/bom/BomStructureRoot.hpp \
 				$(top_srcdir)/stdair/bom/BomStructureDummy.hpp \
 				$(top_srcdir)/stdair/bom/Inventory.hpp \
+				$(top_srcdir)/stdair/bom/InventoryContent.hpp \
 				$(top_srcdir)/stdair/bom/InventoryTypes.hpp \
 				$(top_srcdir)/stdair/bom/InventoryList.hpp \
 				$(top_srcdir)/stdair/bom/InventoryMap.hpp \
 				$(top_srcdir)/stdair/bom/InventoryStructure.hpp \
 				$(top_srcdir)/stdair/bom/FlightDate.hpp \
+				$(top_srcdir)/stdair/bom/FlightDateContent.hpp \
 				$(top_srcdir)/stdair/bom/FlightDateTypes.hpp \
 				$(top_srcdir)/stdair/bom/FlightDateList.hpp \
 				$(top_srcdir)/stdair/bom/FlightDateMap.hpp \
 				$(top_srcdir)/stdair/bom/FlightDateStructure.hpp \
 				$(top_srcdir)/stdair/bom/SegmentDate.hpp \
+				$(top_srcdir)/stdair/bom/SegmentDateContent.hpp \
 				$(top_srcdir)/stdair/bom/SegmentDateTypes.hpp \
 				$(top_srcdir)/stdair/bom/SegmentDateList.hpp \
 				$(top_srcdir)/stdair/bom/SegmentDateMap.hpp \
 				$(top_srcdir)/stdair/bom/SegmentDateStructure.hpp \
 				$(top_srcdir)/stdair/bom/LegDate.hpp \
+				$(top_srcdir)/stdair/bom/LegDateContent.hpp \
 				$(top_srcdir)/stdair/bom/LegDateTypes.hpp \
 				$(top_srcdir)/stdair/bom/LegDateList.hpp \
 				$(top_srcdir)/stdair/bom/LegDateMap.hpp \
 				$(top_srcdir)/stdair/bom/LegDateStructure.hpp \
 				$(top_srcdir)/stdair/bom/SegmentCabin.hpp \
+				$(top_srcdir)/stdair/bom/SegmentCabinContent.hpp \
 				$(top_srcdir)/stdair/bom/SegmentCabinTypes.hpp \
 				$(top_srcdir)/stdair/bom/SegmentCabinList.hpp \
 				$(top_srcdir)/stdair/bom/SegmentCabinMap.hpp \
 				$(top_srcdir)/stdair/bom/SegmentCabinStructure.hpp \
 				$(top_srcdir)/stdair/bom/LegCabin.hpp \
+				$(top_srcdir)/stdair/bom/LegCabinContent.hpp \
 				$(top_srcdir)/stdair/bom/LegCabinTypes.hpp \
 				$(top_srcdir)/stdair/bom/LegCabinList.hpp \
 				$(top_srcdir)/stdair/bom/LegCabinMap.hpp \
 				$(top_srcdir)/stdair/bom/LegCabinStructure.hpp \
 				$(top_srcdir)/stdair/bom/BookingClass.hpp \
+				$(top_srcdir)/stdair/bom/BookingClassContent.hpp \
 				$(top_srcdir)/stdair/bom/BookingClassTypes.hpp \
 				$(top_srcdir)/stdair/bom/BookingClassList.hpp \
 				$(top_srcdir)/stdair/bom/BookingClassMap.hpp \
@@ -54,24 +61,31 @@ bom_h_sources = \
 				$(top_srcdir)/stdair/bom/BomIterator.hpp
 bom_cc_sources = \
 				$(top_srcdir)/stdair/bom/Inventory.cpp \
+				$(top_srcdir)/stdair/bom/InventoryContent.cpp \
 				$(top_srcdir)/stdair/bom/InventoryList.cpp \
 				$(top_srcdir)/stdair/bom/InventoryMap.cpp \
 				$(top_srcdir)/stdair/bom/FlightDate.cpp \
+				$(top_srcdir)/stdair/bom/FlightDateContent.cpp \
 				$(top_srcdir)/stdair/bom/FlightDateList.cpp \
 				$(top_srcdir)/stdair/bom/FlightDateMap.cpp \
 				$(top_srcdir)/stdair/bom/SegmentDate.cpp \
+				$(top_srcdir)/stdair/bom/SegmentDateContent.cpp \
 				$(top_srcdir)/stdair/bom/SegmentDateList.cpp \
 				$(top_srcdir)/stdair/bom/SegmentDateMap.cpp \
 				$(top_srcdir)/stdair/bom/LegDate.cpp \
+				$(top_srcdir)/stdair/bom/LegDateContent.cpp \
 				$(top_srcdir)/stdair/bom/LegDateList.cpp \
 				$(top_srcdir)/stdair/bom/LegDateMap.cpp \
 				$(top_srcdir)/stdair/bom/SegmentCabin.cpp \
+				$(top_srcdir)/stdair/bom/SegmentCabinContent.cpp \
 				$(top_srcdir)/stdair/bom/SegmentCabinList.cpp \
 				$(top_srcdir)/stdair/bom/SegmentCabinMap.cpp \
 				$(top_srcdir)/stdair/bom/LegCabin.cpp \
+				$(top_srcdir)/stdair/bom/LegCabinContent.cpp \
 				$(top_srcdir)/stdair/bom/LegCabinList.cpp \
 				$(top_srcdir)/stdair/bom/LegCabinMap.cpp \
 				$(top_srcdir)/stdair/bom/BookingClass.cpp \
+				$(top_srcdir)/stdair/bom/BookingClassContent.cpp \
 				$(top_srcdir)/stdair/bom/BookingClassList.cpp \
 				$(top_srcdir)/stdair/bom/BookingClassMap.cpp
 

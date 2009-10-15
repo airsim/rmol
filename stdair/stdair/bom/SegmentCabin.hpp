@@ -5,7 +5,7 @@
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // STDAIR 
-#include <stdair/bom/BomContent.hpp>
+#include <stdair/bom/SegmentCabinContent.hpp>
 #include <stdair/bom/SegmentCabinTypes.hpp>
 #include <stdair/bom/BookingClassTypes.hpp>
 
@@ -18,7 +18,7 @@ namespace stdair {
 
   /** Class representing the actual functional/business content for a
       segment-date. */
-  class SegmentCabin : public BomContent {
+  class SegmentCabin : public SegmentCabinContent {
     friend class FacBomContent;
 
   public:
