@@ -12,13 +12,11 @@
 #include <stdair/bom/BomStructure.hpp>
 #include <stdair/bom/InventoryKey.hpp>
 #include <stdair/bom/BomChildrenHolderImp.hpp>
-#include <stdair/bom/BomIterator.hpp>
 #include <stdair/bom/FlightDateStructure.hpp>
 
 namespace stdair {
 
   // Forward declaration
-  template <typename BOM_CONTENT> class BomStructureRoot;
   class BomStructureDummy;
   class BomContentDummy;
   
@@ -45,7 +43,7 @@ namespace stdair {
 
     /** Definition allowing to retrieve the associated parent
         BOM structure type. */
-    typedef typename BOM_CONTENT::ParentBomContent_T::BomStructure_T ParentBomStructure_T;
+    typedef typename BOM_CONTENT::Parent_T::BomStructure_T ParentBomStructure_T;
 
     /** Definition allowing to retrieve the associated children type. */
     typedef boost::mpl::vector<FlightDateStructure<ContentChild_T>,

@@ -12,6 +12,5 @@ namespace stdair {
 
   /** Key of a STL map. */
   typedef std::string MapKey_T;
-  
 }
 #endif // __STDAIR_BAS_BASTYPES_HPP

@@ -1,29 +1,33 @@
-#ifndef __STDAIR_BOM_BOMSTRUCTUREROOT_HPP
-#define __STDAIR_BOM_BOMSTRUCTUREROOT_HPP
+#ifndef __STDAIR_BOM_BOMROOTSTRUCTURE_HPP
+#define __STDAIR_BOM_BOMROOTSTRUCTURE_HPP
 
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
-// STDAIR 
-#include <stdair/bom/BomStructure.hpp>
-#include <stdair/bom/BomStructureRootKey.hpp>
-#include <stdair/bom/BomChildrenHolderImp.hpp>
+// STL
+#include <cassert>
 // MPL
 #include <boost/mpl/vector.hpp>
+// STDAIR 
+#include <stdair/bom/BomStructure.hpp>
+#include <stdair/bom/BomRootKey.hpp>
+#include <stdair/bom/BomChildrenHolderImp.hpp>
+#include <stdair/bom/InventoryStructure.hpp>
 
 namespace stdair {
   // Forward declarations.
-  template <typename BOM_CONTENT> class InventoryStructure;
   class BomStructureDummy;
   class BomContentDummy;
 
   /** Wrapper class aimed at holding the actual content, modeled
       by a specific BomContentRoot class. */
   template <typename BOM_CONTENT>
-  class BomStructureRoot : public BomStructure {
+  class BomRootStructure : public BomStructure {
     friend class FacBomStructure;
     friend class FacBomContent;
+    friend class BomStructure;
 
+  public:
     // Type definitions
     /** Definition allowing to retrieve the associated BOM content type. */
     typedef BOM_CONTENT Content_T;
@@ -35,7 +39,7 @@ namespace stdair {
   private:
     // Type definitions
     /** Definition allowing to retrieve the associated BOM key type. */
-    typedef BomStructureRootKey<BOM_CONTENT> BomKey_T;
+    typedef BomRootKey<BOM_CONTENT> BomKey_T;
 
     /** Definition allowing to retrieve the associated children type. */
     typedef boost::mpl::vector<InventoryStructure<ContentChild_T>, BomStructureDummy> ChildrenBomTypeList_T;
@@ -47,15 +51,15 @@ namespace stdair {
     typedef BomChildrenHolderImp<ContentChild_T> ChildrenBomHolder_T;
 
   public:
-
     // /////////// Getters /////////////
-    /** Get the BomStructureRoot key. */
+    /** Get the BomRootStructure key. */
     const BomKey_T& getKey() const {
       return _key;
     }
     
     /** Get the list of inventories. */
     const ChildrenBomHolder_T& getChildrenList() const {
+      assert (_childrenList != NULL);
       return *_childrenList;
     }
 
@@ -101,12 +105,12 @@ namespace stdair {
     /** Constructors are private so as to force the usage of the Factory
         layer. */
     /** Default constructors. */
-    BomStructureRoot ();
-    BomStructureRoot (const BomStructureRoot&);
-    BomStructureRoot (const BomKey_T& iKey) { _key = iKey; }
+    BomRootStructure ();
+    BomRootStructure (const BomRootStructure&);
+    BomRootStructure (const BomKey_T& iKey) { _key = iKey; }
 
     /** Destructor. */
-    ~BomStructureRoot () { }
+    ~BomRootStructure () { }
 
   private:
     // Attributes
@@ -121,5 +125,5 @@ namespace stdair {
   };
 
 }
-#endif // __STDAIR_BOM_BOMSTRUCTUREROOT_HPP
+#endif // __STDAIR_BOM_BOMROOTSTRUCTURE_HPP
 

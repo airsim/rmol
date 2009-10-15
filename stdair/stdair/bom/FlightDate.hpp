@@ -28,12 +28,12 @@ namespace stdair {
   public:
     // Type definitions
     // /////////////////////////////////////////////////////////////////////////
-    // See the explanations, within the BomContentRoot class, for all
+    // See the explanations, within the BomRoot class, for all
     // the types which require to be specified below
     // /////////////////////////////////////////////////////////////////////////
     /** Definition allowing to retrieve the associated parent
         BOM content type. */
-    typedef Inventory ParentBomContent_T;
+    typedef Inventory Parent_T;
 
     /** Definition allowing to retrieve the associated BOM structure type. */
     typedef FlightDateStructure_T BomStructure_T;

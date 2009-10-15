@@ -37,7 +37,7 @@ namespace stdair {
 
     /** Definition allowing to retrieve the associated parent
         BOM structure type. */
-    typedef typename BOM_CONTENT::ParentBomContent_T::BomStructure_T ParentBomStructure_T;
+    typedef typename BOM_CONTENT::Parent_T::BomStructure_T ParentBomStructure_T;
     
     /** Definition allowing to retrieve the associated children type. */
     typedef boost::mpl::vector <BomStructureDummy,

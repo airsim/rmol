@@ -6,6 +6,7 @@
 // //////////////////////////////////////////////////////////////////////
 // STDAIR 
 #include <stdair/bom/BomStructure.hpp>
+#include <stdair/bom/BomKey.hpp>
 #include <stdair/bom/BomChildrenHolderImp.hpp>
 // MPL
 #include <boost/mpl/vector.hpp>
@@ -13,7 +14,6 @@
 namespace stdair {
   // Forward declarations.
   class BomContentDummy;
-  class BomKey;
 
   /** Wrapper class aimed at holding the actual content, modeled
       by a specific BomContentDummy class. */

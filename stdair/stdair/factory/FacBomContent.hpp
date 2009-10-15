@@ -11,9 +11,6 @@
 // STDAIR
 #include <stdair/STDAIR_Types.hpp>
 #include <stdair/bom/BomStructure.hpp>
-#include <stdair/bom/BomContentRoot.hpp>
-#include <stdair/bom/BomStructureRoot.hpp>
-#include <stdair/bom/BomStructureRootKey.hpp>
 #include <stdair/factory/FacBomStructure.hpp>
 
 namespace stdair {
@@ -30,27 +27,22 @@ namespace stdair {
     typedef std::vector<BomContent*> BomContentPool_T;
   public:
     /** Create the root of the BOM tree, i.e., a pair of linked
-        BomStructureRoot and BomContentRoot objects. */
-    template <typename BOM_CONTENT_CHILD>
-    BomContentRoot<BOM_CONTENT_CHILD>& createBomRoot () {
-
-      // Type for the BomContentRoot.
-      typedef BomContentRoot<BOM_CONTENT_CHILD> BOM_CONTENT_ROOT_T;
+        BomRootStructure and BomRoot objects. */
+    template <typename BOM_ROOT>
+    BOM_ROOT& createBomRoot () {
+      // Define the typename for BomRootKey.
+      typedef typename BOM_ROOT::BomKey_T BOM_ROOT_KEY_T;
       // Create the BOM root object.
-      // Note that its object key has got no importance, as that BOM root class
-      // is actually (only) a marker.
-      BomStructureRootKey<BOM_CONTENT_ROOT_T> lBomStructureRootKey;
-      BOM_CONTENT_ROOT_T& lBomContentRoot =
-        createInternal<BOM_CONTENT_ROOT_T>(lBomStructureRootKey);
-            
-      return lBomContentRoot;
+      BOM_ROOT_KEY_T lBomRootKey;
+      BOM_ROOT& lBomRoot = createInternal<BOM_ROOT>(lBomRootKey);
+      return lBomRoot;
     }
     
     /** Create a (child) content object, given a key.
         <br>A structure object is created, under the hood, with the given key.
         That structure object then gets a pointer on the content object. */
     template <typename BOM_CONTENT_CHILD>
-    BOM_CONTENT_CHILD& create (typename BOM_CONTENT_CHILD::ParentBomContent_T& ioContentParent, const typename BOM_CONTENT_CHILD::BomKey_T& iKey) {
+    BOM_CONTENT_CHILD& create (typename BOM_CONTENT_CHILD::Parent_T& ioContentParent, const typename BOM_CONTENT_CHILD::BomKey_T& iKey) {
       
       // Create the child structure object for the given key
       BOM_CONTENT_CHILD& lBomContentChild =
@@ -61,7 +53,7 @@ namespace stdair {
         lBomContentChild.getBomStructure ();
 
       // Type for the parent Bom content
-      typedef typename BOM_CONTENT_CHILD::ParentBomContent_T PARENT_CONTENT_T;
+      typedef typename BOM_CONTENT_CHILD::Parent_T PARENT_CONTENT_T;
       
       // Type for the parent Bom structure
       typedef typename PARENT_CONTENT_T::BomStructure_T PARENT_STRUCTURE_T;

@@ -5,16 +5,16 @@
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // STDAIR 
-#include <stdair/bom/BomContentRoot.hpp>
-#include <stdair/bom/InventoryContent.hpp>
 #include <stdair/bom/BomRootTypes.hpp>
 #include <stdair/bom/InventoryTypes.hpp>
 #include <stdair/bom/FlightDateTypes.hpp>
+#include <stdair/bom/InventoryContent.hpp>
 
 namespace stdair {
 
   // Forward declarations
   class FacBomContent;
+  class BomRoot;
   class FlightDate;
   struct FlightDateList_T;
   struct FlightDateMap_T;
@@ -26,12 +26,12 @@ namespace stdair {
 
   public:
     // /////////////////////////////////////////////////////////////////////////
-    // See the explanations, within the BomContentRoot class, for all
+    // See the explanations, within the BomRoot class, for all
     // the types which require to be specified below
     // /////////////////////////////////////////////////////////////////////////
     /** Definition allowing to retrieve the associated parent
         BOM content type. */
-    typedef BomContentRoot_T ParentBomContent_T;
+    typedef BomRoot Parent_T;
 
     /** Definition allowing to retrieve the associated BOM structure type. */
     typedef InventoryStructure_T BomStructure_T;

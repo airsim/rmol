@@ -1,6 +1,6 @@
 bom_h_sources = \
 				$(top_srcdir)/stdair/bom/BomKey.hpp \
-				$(top_srcdir)/stdair/bom/BomStructureRootKey.hpp \
+				$(top_srcdir)/stdair/bom/BomRootKey.hpp \
 				$(top_srcdir)/stdair/bom/InventoryKey.hpp \
 				$(top_srcdir)/stdair/bom/FlightDateKey.hpp \
 				$(top_srcdir)/stdair/bom/LegDateKey.hpp \
@@ -8,8 +8,12 @@ bom_h_sources = \
 				$(top_srcdir)/stdair/bom/SegmentCabinKey.hpp \
 				$(top_srcdir)/stdair/bom/BookingClassKey.hpp \
 				$(top_srcdir)/stdair/bom/BomRootTypes.hpp \
+				$(top_srcdir)/stdair/bom/BomRoot.hpp \
+				$(top_srcdir)/stdair/bom/BomContent.hpp \
+				$(top_srcdir)/stdair/bom/BomRootContent.hpp \
+				$(top_srcdir)/stdair/bom/BomContentDummy.hpp \
 				$(top_srcdir)/stdair/bom/BomStructure.hpp \
-				$(top_srcdir)/stdair/bom/BomStructureRoot.hpp \
+				$(top_srcdir)/stdair/bom/BomRootStructure.hpp \
 				$(top_srcdir)/stdair/bom/BomStructureDummy.hpp \
 				$(top_srcdir)/stdair/bom/Inventory.hpp \
 				$(top_srcdir)/stdair/bom/InventoryContent.hpp \
@@ -55,11 +59,10 @@ bom_h_sources = \
 				$(top_srcdir)/stdair/bom/BookingClassStructure.hpp \
 				$(top_srcdir)/stdair/bom/BomChildrenHolder.hpp \
 				$(top_srcdir)/stdair/bom/BomChildrenHolderImp.hpp \
-				$(top_srcdir)/stdair/bom/BomContent.hpp \
-				$(top_srcdir)/stdair/bom/BomContentRoot.hpp \
-				$(top_srcdir)/stdair/bom/BomContentDummy.hpp \
 				$(top_srcdir)/stdair/bom/BomIterator.hpp
 bom_cc_sources = \
+				$(top_srcdir)/stdair/bom/BomRoot.cpp \
+				$(top_srcdir)/stdair/bom/BomRootContent.cpp \
 				$(top_srcdir)/stdair/bom/Inventory.cpp \
 				$(top_srcdir)/stdair/bom/InventoryContent.cpp \
 				$(top_srcdir)/stdair/bom/InventoryList.cpp \

@@ -5,9 +5,7 @@
 #include <assert.h>
 // STDAIR
 #include <stdair/bom/BomStructure.hpp>
-#include <stdair/bom/BomStructureRoot.hpp>
 #include <stdair/bom/BomContent.hpp>
-#include <stdair/bom/BomContentRoot.hpp>
 #include <stdair/factory/FacSupervisor.hpp>
 #include <stdair/factory/FacBomContent.hpp>
 

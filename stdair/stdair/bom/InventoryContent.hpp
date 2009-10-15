@@ -4,7 +4,8 @@
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
-// STDAIR 
+// STDAIR
+#include <stdair/STDAIR_Types.hpp>
 #include <stdair/bom/BomContent.hpp>
 
 namespace stdair {
@@ -32,7 +33,80 @@ namespace stdair {
         at the same level). */
     virtual const std::string describeShortKey() const = 0;
 
-    
+  public:
+    // ////////// Getters ////////////
+    /** Get the booking counter. */
+    const NbOfBookings_T& getBookingCounter () const {
+      return _bookingCounter;
+    }
+
+    /** Get the total inventory revenue. */
+    const Revenue_T& getRevenue () const {
+      return _inventoryRevenue;
+    }
+
+    /** Get the inventory average fare. */
+    const Fare_T& getAverageFare() const {
+      return _inventoryAverageFare;
+    }
+
+    /** Get the Availability Seat Kilometer for the inventory. */
+    const Distance_T& getASK() const {
+      return _inventoryASK;
+    }
+
+    /** Get the yield value for the inventory. */
+    const Revenue_T& getYield () const {
+      return _inventoryYield;
+    }
+
+    /** Get the Revenue Passanger Kilometer for the whole inventory. */
+    const Distance_T& getRPK() const {
+      return _inventoryRPK;
+    }
+
+    /** Get the unit revenue value for the whole inventory. */
+    const Revenue_T& getUnitRevenue () const {
+      return _inventoryUnitRevenue;
+    }
+
+    /** Get the load factor value for this inventory. */
+    const Revenue_T& getLoadFactor () const {
+      return _inventoryLoadFactor;
+    }
+
+  public:
+    // ///////// Setters //////////
+    /** Set the revenue amount. */
+    void setRevenue (const Revenue_T& iInventoryRevenue) {
+      _inventoryRevenue = iInventoryRevenue;
+    }
+
+    /** Set the Revenue Passanger Kilometer. */
+    void setRPK (const Distance_T& iInventoryRPK) {
+      _inventoryRPK = iInventoryRPK;
+    }
+
+    /** Set the unit revenue. */
+    void setUnitRevenue (const Revenue_T& iInventoryURevenue) {
+      _inventoryUnitRevenue = iInventoryURevenue;
+    }
+
+    /** Set the average fare. */
+    void setAverageFare(Fare_T iIAFare) {
+      _inventoryAverageFare = iIAFare;
+    }
+
+    /** Set the yield. */
+    void setYield (const Revenue_T& iInvYield) {
+      _inventoryYield = iInvYield;
+    }
+
+    /** Set the load factor. */
+    void setLoadFactor (const Revenue_T& iInventoryLF) {
+      _inventoryLoadFactor = iInventoryLF;
+    }
+
   protected:
     /** Default constructors. */
     InventoryContent ();
@@ -43,6 +117,31 @@ namespace stdair {
 
   protected:
     // Attributes
+    /** Counter of all bookings into the inventory. */
+    NbOfBookings_T _bookingCounter;
+      
+    /** Total amount of money earn with all flight bookings
+        for one airline. */
+    Revenue_T _inventoryRevenue;
+
+    /** Value of the average fare of the inventory.*/
+    Fare_T _inventoryAverageFare;
+
+    /** Value of the Available Seat Kilometer for this Inventory.*/
+    Distance_T _inventoryASK;
+
+    /** Value of the Yield (Revenue/ASK). */
+    Revenue_T _inventoryYield;
+
+    /** Value of the Revenue Passanger Kilometer for the whole inventory.*/
+    Distance_T _inventoryRPK;
+
+    /** Value of the Unit Revenue (Revenue/RPK). */
+    Revenue_T _inventoryUnitRevenue;
+
+    /** Value of the Load Factor (ASK/RPK). */
+    Revenue_T _inventoryLoadFactor;
+      
   };
 
 }

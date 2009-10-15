@@ -16,7 +16,6 @@
 namespace stdair {
 
   // Forward declaration
-  template <typename BOM_CONTENT> class InventoryStructure;
   class BomContentDummy;
   
   /** Wrapper class aimed at holding the actual content, modeled
@@ -38,7 +37,7 @@ namespace stdair {
 
     /** Definition allowing to retrieve the associated parent
         BOM structure type. */
-    typedef typename BOM_CONTENT::ParentBomContent_T::BomStructure_T ParentBomStructure_T;
+    typedef typename BOM_CONTENT::Parent_T::BomStructure_T ParentBomStructure_T;
 
     /** Definition allowing to retrieve the  children type of the
         BOM_CONTENT. */

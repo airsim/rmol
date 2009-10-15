@@ -25,7 +25,7 @@ namespace stdair {
     // Type definitions
     /** Definition allowing to retrieve the associated parent
         BOM content type. */
-    typedef SegmentDate ParentBomContent_T;
+    typedef SegmentDate Parent_T;
 
     /** Definition allowing to retrieve the associated BOM structure type. */
     typedef SegmentCabinStructure_T BomStructure_T;

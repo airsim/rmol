@@ -25,7 +25,7 @@ namespace stdair {
     // Type definitions
     /** Definition allowing to retrieve the associated parent
         BOM content type. */
-    typedef FlightDate ParentBomContent_T;
+    typedef FlightDate Parent_T;
 
     /** Definition allowing to retrieve the associated BOM structure type. */
     typedef LegDateStructure_T BomStructure_T;

@@ -1,5 +1,5 @@
-#ifndef __STDAIR_BOM_BOMSTRUCTUREROOTKEY_HPP
-#define __STDAIR_BOM_BOMSTRUCTUREROOTKEY_HPP
+#ifndef __STDAIR_BOM_BOMROOTKEY_HPP
+#define __STDAIR_BOM_BOMROOTKEY_HPP
 
 // //////////////////////////////////////////////////////////////////////
 // Import section
@@ -12,33 +12,33 @@ namespace stdair {
 
   // Forward declarations
   template <typename BOM_CONTENT>
-  class BomStructureRoot;
+  class BomRootStructure;
 
   /** Key of the BOM structure root. */
   template <typename BOM_CONTENT>
-  class BomStructureRootKey : public BomKey {
+  class BomRootKey : public BomKey {
     friend class FacBomStructure;
     friend class FacBomContent;
     
   private:
     // Type definitions
     /** Definition allowing to retrieve the associated BOM structure type. */
-    typedef BomStructureRoot<BOM_CONTENT> BomStructure_T;
+    typedef BomRootStructure<BOM_CONTENT> BomStructure_T;
 
   public:
     // /////////// Construction ///////////
     /** Constructor. */
-    BomStructureRootKey () {}
+    BomRootKey () {}
 
     /** Destructor. */
-    ~BomStructureRootKey () {}
+    ~BomRootKey () {}
     
     
     // /////////// Display support methods /////////
     /** Dump a Business Object Key into an output stream.
         @param ostream& the output stream. */
     void toStream (std::ostream& ioOut) const {
-      ioOut << "BomStructureRootKey: " << toString() << std::endl;
+      ioOut << "BomRootStructureKey: " << toString() << std::endl;
     }
 
     /** Read a Business Object Key from an input stream.
@@ -63,4 +63,4 @@ namespace stdair {
   };
 
 }
-#endif // __STDAIR_BOM_BOMSTRUCTUREROOTKEY_HPP
+#endif // __STDAIR_BOM_BOMROOTKEY_HPP

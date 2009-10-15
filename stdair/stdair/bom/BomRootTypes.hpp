@@ -8,19 +8,15 @@
 
 namespace stdair {
   // Forward declarations.
-  template <typename BOM_CONTENT> class BomStructureRoot;
-  template <typename BOM_CONTENT> class BomStructureRootKey;
-  template <typename BOM_CHILD> class BomContentRoot;
-  class Inventory;
+  template <typename BOM_CONTENT> class BomRootStructure;
+  template <typename BOM_CONTENT> class BomRootKey;
+  class BomRoot;
+  
+  /** Define the BomRootStructure. */
+  typedef BomRootStructure<BomRoot> BomRootStructure_T;
 
-  /** Define the BomContentRoot. */
-  typedef BomContentRoot<Inventory> BomContentRoot_T;
-
-  /** Define the BomStructureRoot. */
-  typedef BomStructureRoot<BomContentRoot_T> BomStructureRoot_T;
-
-  /** Define the BomStructureRootKey. */
-  typedef BomStructureRootKey<BomContentRoot_T> BomStructureRootKey_T;
+  /** Define the BomRootStructureKey. */
+  typedef BomRootKey<BomRoot> BomRootKey_T;
 
 }
 #endif // __STDAIR_BOM_BOMROOTTYPES_HPP
