@@ -5,6 +5,7 @@
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // STDAIR 
+#include <stdair/bom/BomStructure.hpp>
 #include <stdair/bom/LegCabinContent.hpp>
 #include <stdair/bom/LegCabinTypes.hpp>
 

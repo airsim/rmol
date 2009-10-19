@@ -5,9 +5,10 @@
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // STDAIR 
-#include <stdair/bom/SegmentDateContent.hpp>
+#include <stdair/bom/BomStructure.hpp>
 #include <stdair/bom/SegmentDateTypes.hpp>
 #include <stdair/bom/SegmentCabinTypes.hpp>
+#include <stdair/bom/SegmentDateContent.hpp>
 
 namespace stdair {
   // Forward declarations

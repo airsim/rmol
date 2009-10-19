@@ -6,8 +6,8 @@
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // STL
-#include <vector>
 #include <map>
+#include <vector>
 
 namespace stdair {
 
@@ -22,10 +22,10 @@ namespace stdair {
   /** Define the Inventory key. */
   typedef InventoryKey<Inventory> InventoryKey_T;
 
-  /** Define the flight-date structure list. */
+  /** Define the Inventory structure list. */
   typedef std::vector<InventoryStructure_T*> InventoryStructureList_T;
 
-  /** Define the flight-date structure map. */
+  /** Define the Inventory structure map. */
   typedef std::map<const std::string, InventoryStructure_T*> InventoryStructureMap_T;
   
 }

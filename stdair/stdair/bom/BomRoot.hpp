@@ -5,6 +5,7 @@
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // STDAIR 
+#include <stdair/bom/BomStructure.hpp>
 #include <stdair/bom/BomRootContent.hpp>
 #include <stdair/bom/BomRootTypes.hpp>
 #include <stdair/bom/InventoryTypes.hpp>
@@ -12,7 +13,6 @@
 namespace stdair {
   // Forward declarations.
   class FacBomContent;
-  class Inventory;
   struct InventoryList_T;
   struct InventoryMap_T;
   
