@@ -72,7 +72,7 @@ namespace stdair {
       return _segmentCabinStructure;
     }
 
-  private:
+  protected:
     /** Constructors are private so as to force the usage of the Factory
         layer. */
     /** Default constructors. */

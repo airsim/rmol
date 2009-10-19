@@ -109,7 +109,7 @@ namespace stdair {
       return _bomRootStructure;
     }
     
-  private:
+  protected:
     /** Constructors are private so as to force the usage of the Factory
         layer. */
     /** Default constructors. */
