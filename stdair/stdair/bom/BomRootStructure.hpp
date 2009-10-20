@@ -9,16 +9,12 @@
 // MPL
 #include <boost/mpl/vector.hpp>
 // STDAIR 
-#include <stdair/bom/BomStructure.hpp>
+#include <stdair/bom/BomStructureDummy.hpp>
+#include <stdair/bom/BomContentDummy.hpp>
 #include <stdair/bom/BomRootKey.hpp>
-#include <stdair/bom/BomChildrenHolderImp.hpp>
 #include <stdair/bom/InventoryStructure.hpp>
 
 namespace stdair {
-  // Forward declarations.
-  class BomStructureDummy;
-  class BomContentDummy;
-
   /** Wrapper class aimed at holding the actual content, modeled
       by a specific BomContentRoot class. */
   template <typename BOM_CONTENT>

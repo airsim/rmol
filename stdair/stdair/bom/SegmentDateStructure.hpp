@@ -7,18 +7,12 @@
 // MPL
 #include <boost/mpl/vector.hpp>
 // STDAIR 
-#include <stdair/bom/BomStructure.hpp>
+#include <stdair/bom/BomStructureDummy.hpp>
+#include <stdair/bom/BomContentDummy.hpp>
 #include <stdair/bom/SegmentDateKey.hpp>
 #include <stdair/bom/SegmentCabinStructure.hpp>
-#include <stdair/bom/BomChildrenHolderImp.hpp>
 
 namespace stdair {
-
-  // Forward declarations
-  template <typename BOM_CONTENT> class FlightDateStructure;
-  class BomStructureDummy;
-  class BomContentDummy;
-  
   /** Wrapper class aimed at holding the actual content, modeled
       by an external specific SegmentDate class (for instance,
       in the AIRSCHED library). */
