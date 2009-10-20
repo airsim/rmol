@@ -14,6 +14,7 @@ namespace stdair {
   // Forward declarations
   class FacBomContent;
   class SegmentDate;
+  struct SegmentCabinKey_T;
   struct BookingClassList_T;
   struct BookingClassMap_T;
 

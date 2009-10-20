@@ -13,14 +13,10 @@ namespace stdair {
 
   // Forward declarations.
   template <typename BOM_CONTENT> class SegmentDateStructure;
-  template <typename BOM_CONTENT> class SegmentDateKey;
   class SegmentDate;
   
   /** Define the SegmentDate structure. */
   typedef SegmentDateStructure<SegmentDate> SegmentDateStructure_T;
-  
-  /** Define the SegmentDate key. */
-  typedef SegmentDateKey<SegmentDate> SegmentDateKey_T;
   
   /** Define the segment-date structure list. */
   typedef std::vector<SegmentDateStructure_T*> SegmentDateStructureList_T;

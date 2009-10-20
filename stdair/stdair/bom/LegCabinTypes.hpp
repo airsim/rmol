@@ -13,14 +13,10 @@ namespace stdair {
 
   // Forward declarations.
   template <typename BOM_CONTENT> class LegCabinStructure;
-  template <typename BOM_CONTENT> class LegCabinKey;
   class LegCabin;
   
   /** Define the LegCabin structure. */
   typedef LegCabinStructure<LegCabin> LegCabinStructure_T;
-  
-  /** Define the LegCabin key. */
-  typedef LegCabinKey<LegCabin> LegCabinKey_T;
   
   /** Define the leg-cabin structure list. */
   typedef std::vector<LegCabinStructure_T*> LegCabinStructureList_T;

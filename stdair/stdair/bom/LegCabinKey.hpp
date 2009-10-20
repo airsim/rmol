@@ -9,31 +9,16 @@
 #include <stdair/bom/BomKey.hpp>
 
 namespace stdair {
-
-  // Forward declarations
-  template <typename BOM_CONTENT>
-  class LegCabinStructure;
-
   /** Key of leg-cabin. */
-  template <typename BOM_CONTENT>
-  class LegCabinKey : public BomKey {
-    friend class FacBomStructure;
-    friend class FacBomContent;
-    
-  private:
-    // Type definitions
-    /** Definition allowing to retrieve the associated BOM structure type. */
-    typedef LegCabinStructure<BOM_CONTENT> BomStructure_T;
+  struct LegCabinKey_T : public BomKey_T {
 
   public:
     // /////////// Construction ///////////
     /** Constructor. */
-    LegCabinKey (const CabinCode_T& iCabinCode)
-      : _cabinCode (iCabinCode) {
-    }
+    LegCabinKey_T (const CabinCode_T& iCabinCode);
 
     /** Destructor. */
-    ~LegCabinKey () { }
+    ~LegCabinKey_T ();
     
     // /////////// Getters //////////
     /** Get the cabin code. */
@@ -44,25 +29,18 @@ namespace stdair {
     // /////////// Display support methods /////////
     /** Dump a Business Object Key into an output stream.
         @param ostream& the output stream. */
-    void toStream (std::ostream& ioOut) const {
-      ioOut << "LegCabinKey: " << toString() << std::endl;
-    }
+    void toStream (std::ostream& ioOut) const;
 
     /** Read a Business Object Key from an input stream.
         @param istream& the input stream. */
-    void fromStream (std::istream& ioIn) { }
+    void fromStream (std::istream& ioIn);
 
    /** Get the serialised version of the Business Object Key.
        <br>That string is unique, at the level of a given Business Object,
        when among children of a given parent Business Object.
        <br>For instance, "H" and "K" allow to differentiate among two
        marketing classes for the same leg-cabin. */
-    std::string toString() const {
-      std::ostringstream oStr;
-      oStr << _cabinCode;
-      return oStr.str();
-    }
-
+    std::string toString() const;
     
   private:
     // Attributes

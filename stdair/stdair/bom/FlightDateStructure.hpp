@@ -29,7 +29,7 @@ namespace stdair {
     typedef BOM_CONTENT Content_T;
 
     /** Definition allowing to retrieve the associated BOM key type. */
-    typedef FlightDateKey<BOM_CONTENT> BomKey_T;
+    typedef FlightDateKey_T BomKey_T;
 
     /** Definition allowing to retrieve the associated parent
         BOM structure type. */

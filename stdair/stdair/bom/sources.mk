@@ -61,6 +61,13 @@ bom_h_sources = \
 				$(top_srcdir)/stdair/bom/BomChildrenHolderImp.hpp \
 				$(top_srcdir)/stdair/bom/BomIterator.hpp
 bom_cc_sources = \
+				$(top_srcdir)/stdair/bom/BomRootKey.cpp \
+				$(top_srcdir)/stdair/bom/InventoryKey.cpp \
+				$(top_srcdir)/stdair/bom/FlightDateKey.cpp \
+				$(top_srcdir)/stdair/bom/LegDateKey.cpp \
+				$(top_srcdir)/stdair/bom/SegmentDateKey.cpp \
+				$(top_srcdir)/stdair/bom/SegmentCabinKey.cpp \
+				$(top_srcdir)/stdair/bom/BookingClassKey.cpp \
 				$(top_srcdir)/stdair/bom/BomRoot.cpp \
 				$(top_srcdir)/stdair/bom/BomRootContent.cpp \
 				$(top_srcdir)/stdair/bom/Inventory.cpp \

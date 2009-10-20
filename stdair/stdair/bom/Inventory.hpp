@@ -14,6 +14,7 @@ namespace stdair {
   // Forward declarations
   class FacBomContent;
   class BomRoot;
+  struct InventoryKey_T;
   struct FlightDateList_T;
   struct FlightDateMap_T;
   

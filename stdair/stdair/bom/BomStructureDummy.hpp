@@ -26,9 +26,6 @@ namespace stdair {
     /** Definition allowing to retrieve the associated BOM content type. */
     typedef BomContentDummy Content_T;
 
-    /** Definition allowing to retrieve the associated BOM key type. */
-    typedef BomKey BomKey_T;
-
     /** Definition allowing to retrieve the associated children type. */
     typedef boost::mpl::vector<> ChildrenBomTypeList_T;
 

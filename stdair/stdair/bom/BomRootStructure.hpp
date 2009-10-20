@@ -35,7 +35,7 @@ namespace stdair {
   private:
     // Type definitions
     /** Definition allowing to retrieve the associated BOM key type. */
-    typedef BomRootKey<BOM_CONTENT> BomKey_T;
+    typedef BomRootKey_T BomKey_T;
 
     /** Definition allowing to retrieve the associated children type. */
     typedef boost::mpl::vector<InventoryStructure<ContentChild_T>, BomStructureDummy> ChildrenBomTypeList_T;

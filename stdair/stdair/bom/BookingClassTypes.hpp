@@ -13,14 +13,10 @@ namespace stdair {
 
   // Forward declarations.
   template <typename BOM_CONTENT> class BookingClassStructure;
-  template <typename BOM_CONTENT> class BookingClassKey;
   class BookingClass;
   
   /** Define the BookingClass structure. */
   typedef BookingClassStructure<BookingClass> BookingClassStructure_T;
-  
-  /** Define the BookingClass key. */
-  typedef BookingClassKey<BookingClass> BookingClassKey_T;
   
   /** Define the segment-cabin structure list. */
   typedef std::vector<BookingClassStructure_T*> BookingClassStructureList_T;

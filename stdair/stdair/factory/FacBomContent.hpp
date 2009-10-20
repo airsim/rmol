@@ -89,7 +89,7 @@ namespace stdair {
       typedef typename BOM_CONTENT::BomStructure_T BOM_STRUCTURE_T;
       BOM_STRUCTURE_T& lBomStructure =
         FacBomStructure::instance().
-        create<typename BOM_CONTENT::BomKey_T> (iKey);
+        create<typename BOM_CONTENT::BomKey_T, BOM_STRUCTURE_T> (iKey);
 
       // The created flight-date content (BomContent) object gets a constant
       // reference on its corresponding flight-date structure/holder object

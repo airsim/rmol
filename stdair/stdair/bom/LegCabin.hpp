@@ -13,7 +13,8 @@ namespace stdair {
   // Forward declarations
   class FacBomContent;
   class LegDate;
-
+  struct LegCabinKey_T;
+  
   /** Class representing the actual functional/business content for a
       leg-date. */
   class LegCabin : public LegCabinContent {

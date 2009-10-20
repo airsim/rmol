@@ -17,7 +17,7 @@ namespace stdair {
       at the same level only. For instance, the segment-date key allows
       to differentiate two segment-dates under a given flight-date,
       but does not allow to differentiate two segemnt-dates in general. */
-  class BomKey {
+  struct BomKey_T {
   public:
 
     // /////////// Display support methods /////////
@@ -48,7 +48,7 @@ template <class charT, class traits>
 inline
 std::basic_ostream<charT, traits>&
 operator<< (std::basic_ostream<charT, traits>& ioOut,
-            const stdair::BomKey& iBom) {
+            const stdair::BomKey_T& iBom) {
   /**
      string stream:
       - with same format
@@ -76,7 +76,7 @@ template <class charT, class traits>
 inline
 std::basic_istream<charT, traits>&
 operator>> (std::basic_istream<charT, traits>& ioIn,
-            stdair::BomKey& ioBom) {
+            stdair::BomKey_T& ioBom) {
   // Fill Bom object with input stream
   ioBom.fromStream (ioIn);
   return ioIn;

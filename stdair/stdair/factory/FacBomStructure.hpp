@@ -51,18 +51,15 @@ namespace stdair {
     static FacBomStructure& instance();
     
     /** Create a structure object with the given key. */
-    template <typename BOM_KEY>
-    typename BOM_KEY::BomStructure_T& create (const BOM_KEY& iKey) {
-      // Type for the BOM structure.
-      typedef typename BOM_KEY::BomStructure_T BOM_STRUCTURE_T;
+    template <typename BOM_KEY, typename BOM_STRUCTURE>
+    BOM_STRUCTURE& create (const BOM_KEY& iKey) {
+      BOM_STRUCTURE* aBomStructure_ptr = NULL;
       
-      BOM_STRUCTURE_T* aBomStructure_ptr = NULL;
-      
-      aBomStructure_ptr = new BOM_STRUCTURE_T (iKey);
+      aBomStructure_ptr = new BOM_STRUCTURE (iKey);
       assert (aBomStructure_ptr != NULL);
 
       // Initialise the children list of the BOM structure.
-      initChildrenList<BOM_STRUCTURE_T> (*aBomStructure_ptr);
+      initChildrenList<BOM_STRUCTURE> (*aBomStructure_ptr);
       
       // The new object is added to the pool of structure objects
       _structurePool.push_back (aBomStructure_ptr);

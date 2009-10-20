@@ -13,14 +13,10 @@ namespace stdair {
 
   // Forward declarations.
   template <typename BOM_CONTENT> class LegDateStructure;
-  template <typename BOM_CONTENT> class LegDateKey;
   class LegDate;
   
   /** Define the LegDate structure. */
   typedef LegDateStructure<LegDate> LegDateStructure_T;
-  
-  /** Define the LegDate key. */
-  typedef LegDateKey<LegDate> LegDateKey_T;
   
   /** Define the leg-date structure list. */
   typedef std::vector<LegDateStructure_T*> LegDateStructureList_T;

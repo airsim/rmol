@@ -9,30 +9,16 @@
 #include <stdair/bom/BomKey.hpp>
 
 namespace stdair {
-
-  // Forward declarations
-  template <typename BOM_CONTENT>
-  class LegDateStructure;
-
   /** Key of leg-date. */
-  template <typename BOM_CONTENT>
-  class LegDateKey : public BomKey {
-    friend class FacBomStructure;
-    friend class FacBomContent;
-    
-  private:
-    // Type definitions
-    /** Definition allowing to retrieve the associated BOM structure type. */
-    typedef LegDateStructure<BOM_CONTENT> BomStructure_T;
+  struct LegDateKey_T : public BomKey_T {
 
   public:
     // /////////// Construction ///////////
     /** Constructor. */
-    LegDateKey (const AirportCode_T& iBoardPoint) : _boardPoint (iBoardPoint) {
-    }
+    LegDateKey_T (const AirportCode_T& iBoardPoint);
 
     /** Destructor. */
-    ~LegDateKey () { }
+    ~LegDateKey_T ();
     
     // /////////// Getters //////////
     /** Get the boarding point. */
@@ -43,24 +29,18 @@ namespace stdair {
     // /////////// Display support methods /////////
     /** Dump a Business Object Key into an output stream.
         @param ostream& the output stream. */
-    void toStream (std::ostream& ioOut) const {
-      ioOut << "LegDateKey: " << toString() << std::endl;
-    }
+    void toStream (std::ostream& ioOut) const;
 
     /** Read a Business Object Key from an input stream.
         @param istream& the input stream. */
-    void fromStream (std::istream& ioIn) { }
+    void fromStream (std::istream& ioIn);
 
    /** Get the serialised version of the Business Object Key.
        <br>That string is unique, at the level of a given Business Object,
        when among children of a given parent Business Object.
        <br>For instance, "H" and "K" allow to differentiate among two
        marketing classes for the same leg-date. */
-    std::string toString() const {
-      std::ostringstream oStr;
-      oStr << _boardPoint;
-      return oStr.str();
-    }
+    std::string toString() const;
     
   private:
     // Attributes

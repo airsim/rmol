@@ -13,6 +13,7 @@
 namespace stdair {
   // Forward declarations.
   class FacBomContent;
+  struct BomRootKey_T;
   struct InventoryList_T;
   struct InventoryMap_T;
   
