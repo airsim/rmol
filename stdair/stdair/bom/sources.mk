@@ -4,6 +4,7 @@ bom_h_sources = \
 				$(top_srcdir)/stdair/bom/InventoryKey.hpp \
 				$(top_srcdir)/stdair/bom/FlightDateKey.hpp \
 				$(top_srcdir)/stdair/bom/LegDateKey.hpp \
+				$(top_srcdir)/stdair/bom/LegCabinKey.hpp \
 				$(top_srcdir)/stdair/bom/SegmentDateKey.hpp \
 				$(top_srcdir)/stdair/bom/SegmentCabinKey.hpp \
 				$(top_srcdir)/stdair/bom/BookingClassKey.hpp \
@@ -65,6 +66,7 @@ bom_cc_sources = \
 				$(top_srcdir)/stdair/bom/InventoryKey.cpp \
 				$(top_srcdir)/stdair/bom/FlightDateKey.cpp \
 				$(top_srcdir)/stdair/bom/LegDateKey.cpp \
+				$(top_srcdir)/stdair/bom/LegCabinKey.cpp \
 				$(top_srcdir)/stdair/bom/SegmentDateKey.cpp \
 				$(top_srcdir)/stdair/bom/SegmentCabinKey.cpp \
 				$(top_srcdir)/stdair/bom/BookingClassKey.cpp \
