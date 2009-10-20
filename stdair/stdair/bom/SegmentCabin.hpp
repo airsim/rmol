@@ -5,7 +5,7 @@
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // STDAIR 
-#include <stdair/bom/BomStructure.hpp>
+#include <stdair/bom/SegmentCabinStructure.hpp>
 #include <stdair/bom/SegmentCabinContent.hpp>
 #include <stdair/bom/SegmentCabinTypes.hpp>
 #include <stdair/bom/BookingClassTypes.hpp>
