@@ -5,7 +5,6 @@
 #include <assert.h>
 // STDAIR
 #include <stdair/bom/SegmentDateStructure.hpp>
-#include <stdair/bom/FlightDate.hpp>
 #include <stdair/bom/SegmentDate.hpp>
 #include <stdair/bom/SegmentCabin.hpp>
 #include <stdair/bom/SegmentCabinList.hpp>

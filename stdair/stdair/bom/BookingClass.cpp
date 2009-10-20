@@ -5,8 +5,6 @@
 #include <assert.h>
 // STDAIR
 #include <stdair/bom/BookingClassStructure.hpp>
-#include <stdair/bom/SegmentCabin.hpp>
-#include <stdair/bom/LegCabin.hpp>
 #include <stdair/bom/BookingClass.hpp>
 
 namespace stdair {

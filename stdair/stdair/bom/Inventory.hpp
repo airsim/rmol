@@ -5,6 +5,7 @@
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // STDAIR 
+#include <stdair/bom/BomRoot.hpp>
 #include <stdair/bom/InventoryStructure.hpp>
 #include <stdair/bom/InventoryTypes.hpp>
 #include <stdair/bom/FlightDateTypes.hpp>
@@ -13,7 +14,6 @@
 namespace stdair {
   // Forward declarations
   class FacBomContent;
-  class BomRoot;
   struct InventoryKey_T;
   struct FlightDateList_T;
   struct FlightDateMap_T;

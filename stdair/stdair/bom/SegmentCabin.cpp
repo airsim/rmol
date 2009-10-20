@@ -5,7 +5,6 @@
 #include <assert.h>
 // STDAIR
 #include <stdair/bom/SegmentCabinStructure.hpp>
-#include <stdair/bom/SegmentDate.hpp>
 #include <stdair/bom/SegmentCabin.hpp>
 #include <stdair/bom/BookingClass.hpp>
 #include <stdair/bom/BookingClassList.hpp>

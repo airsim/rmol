@@ -8,7 +8,6 @@
 #include <algorithm>
 // STDAIR
 #include <stdair/bom/FlightDateStructure.hpp>
-#include <stdair/bom/Inventory.hpp>
 #include <stdair/bom/FlightDate.hpp>
 #include <stdair/bom/SegmentDate.hpp>
 #include <stdair/bom/SegmentDateList.hpp>

@@ -5,6 +5,7 @@
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // STDAIR 
+#include <stdair/bom/SegmentCabin.hpp>
 #include <stdair/bom/BookingClassStructure.hpp>
 #include <stdair/bom/BookingClassContent.hpp>
 #include <stdair/bom/SegmentCabinTypes.hpp>
@@ -13,7 +14,6 @@
 namespace stdair {
   // Forward declarations
   class FacBomContent;
-  class SegmentCabin;
   struct BookingClassKey_T;
   struct BookingClassList_T;
   struct BookingClassMap_T;

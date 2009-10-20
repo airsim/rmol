@@ -5,7 +5,6 @@
 #include <assert.h>
 // STDAIR
 #include <stdair/bom/LegCabinStructure.hpp>
-#include <stdair/bom/LegDate.hpp>
 #include <stdair/bom/LegCabin.hpp>
 
 namespace stdair {

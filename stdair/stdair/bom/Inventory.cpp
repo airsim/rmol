@@ -5,7 +5,6 @@
 #include <cassert>
 // STDAIR
 #include <stdair/bom/InventoryStructure.hpp>
-#include <stdair/bom/BomRoot.hpp>
 #include <stdair/bom/Inventory.hpp>
 #include <stdair/bom/FlightDate.hpp>
 #include <stdair/bom/FlightDateList.hpp>

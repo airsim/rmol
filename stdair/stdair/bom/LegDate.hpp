@@ -5,6 +5,7 @@
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // STDAIR 
+#include <stdair/bom/FlightDate.hpp>
 #include <stdair/bom/LegDateStructure.hpp>
 #include <stdair/bom/LegDateContent.hpp>
 #include <stdair/bom/LegDateTypes.hpp>
@@ -13,7 +14,6 @@
 namespace stdair {
   // Forward declarations
   class FacBomContent;
-  class FlightDate;
   struct LegDateKey_T;
   struct LegCabinList_T;
   struct LegCabinMap_T;

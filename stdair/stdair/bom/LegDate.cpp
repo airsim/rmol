@@ -5,7 +5,6 @@
 #include <assert.h>
 // STDAIR
 #include <stdair/bom/LegDateStructure.hpp>
-#include <stdair/bom/FlightDate.hpp>
 #include <stdair/bom/LegDate.hpp>
 #include <stdair/bom/LegCabin.hpp>
 #include <stdair/bom/LegCabinList.hpp>
