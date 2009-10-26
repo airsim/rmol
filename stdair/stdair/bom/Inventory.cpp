@@ -18,8 +18,9 @@
 namespace stdair {
 
   // ////////////////////////////////////////////////////////////////////
-  Inventory::Inventory (BomStructure_T& ioInventoryStructure)
-    : _inventoryStructure (ioInventoryStructure) {
+  Inventory::Inventory (const BomKey_T& iKey,
+                        BomStructure_T& ioInventoryStructure)
+    : InventoryContent (iKey), _inventoryStructure (ioInventoryStructure) {
   }
 
   // ////////////////////////////////////////////////////////////////////

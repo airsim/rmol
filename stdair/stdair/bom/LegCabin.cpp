@@ -10,8 +10,8 @@
 namespace stdair {
 
   // ////////////////////////////////////////////////////////////////////
-  LegCabin::LegCabin (BomStructure_T& ioLegStructure)
-    : _legCabinStructure (ioLegStructure) {
+  LegCabin::LegCabin (const BomKey_T& iKey, BomStructure_T& ioLegStructure)
+    : LegCabinContent (iKey),  _legCabinStructure (ioLegStructure) {
   }
   
   // ////////////////////////////////////////////////////////////////////

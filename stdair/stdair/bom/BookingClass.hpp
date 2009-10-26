@@ -72,7 +72,7 @@ namespace stdair {
     /** Default constructors. */
     BookingClass ();
     BookingClass (const BookingClass&);
-    BookingClass (BomStructure_T&);
+    BookingClass (const BomKey_T&, BomStructure_T&);
 
     /** Destructor. */
     virtual ~BookingClass();

@@ -65,7 +65,7 @@ namespace stdair {
     /** Default constructors. */
     LegCabin ();
     LegCabin (const LegCabin&);
-    LegCabin (BomStructure_T&);
+    LegCabin (const BomKey_T& iKey, BomStructure_T&);
 
     /** Destructor. */
     virtual ~LegCabin();

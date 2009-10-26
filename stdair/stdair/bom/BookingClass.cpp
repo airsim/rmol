@@ -10,8 +10,10 @@
 namespace stdair {
 
   // ////////////////////////////////////////////////////////////////////
-  BookingClass::BookingClass (BomStructure_T& ioBookingClassStructure)
-    : _bookingClassStructure (ioBookingClassStructure) {
+  BookingClass::BookingClass (const BomKey_T& iKey,
+                              BomStructure_T& ioBookingClassStructure)
+    : BookingClassContent (iKey),
+      _bookingClassStructure (ioBookingClassStructure) {
   }
   
   // ////////////////////////////////////////////////////////////////////

@@ -13,8 +13,9 @@
 namespace stdair {
 
   // ////////////////////////////////////////////////////////////////////
-  SegmentDate::SegmentDate (BomStructure_T& ioSegmentStructure)
-    : _segmentDateStructure (ioSegmentStructure) {
+  SegmentDate::SegmentDate (const BomKey_T& iKey,
+                            BomStructure_T& ioSegmentStructure)
+    : SegmentDateContent (iKey), _segmentDateStructure (ioSegmentStructure) {
   }
   
   // ////////////////////////////////////////////////////////////////////

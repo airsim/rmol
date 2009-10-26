@@ -6,11 +6,24 @@
 // //////////////////////////////////////////////////////////////////////
 // STDAIR 
 #include <stdair/bom/BomContent.hpp>
+#include <stdair/bom/FlightDateKey.hpp>
 
 namespace stdair {
 
   /** Class representing the actual attributes for an airline flight-date. */
   class FlightDateContent : public BomContent {
+  public:
+    // Type definitions.
+    /** Definition allowing to retrieve the associated BOM key type. */
+    typedef FlightDateKey_T BomKey_T;
+
+  public:
+    // /////////// Getters ///////////////
+    /** Get the flight-date key. */
+    const BomKey_T& getKey() const {
+      return _key;
+    }
+
   public:
     // /////////// Display support methods /////////
     /** Dump a Business Object into an output stream.
@@ -35,7 +48,7 @@ namespace stdair {
     
   protected:
     /** Default constructors. */
-    FlightDateContent ();
+    FlightDateContent (const BomKey_T&);
     FlightDateContent (const FlightDateContent&);
 
     /** Destructor. */
@@ -43,6 +56,9 @@ namespace stdair {
 
   protected:
     // Attributes
+    /** The key of both structure and content objects. */
+    BomKey_T _key;
+    
   };
 
 }

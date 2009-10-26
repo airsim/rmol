@@ -11,7 +11,6 @@
 // STDAIR 
 #include <stdair/bom/BomStructureDummy.hpp>
 #include <stdair/bom/BomContentDummy.hpp>
-#include <stdair/bom/InventoryKey.hpp>
 #include <stdair/bom/FlightDateStructure.hpp>
 
 namespace stdair {
@@ -30,7 +29,7 @@ namespace stdair {
     typedef BOM_CONTENT Content_T;
 
     /** Definition allowing to retrieve the associated BOM key type. */
-    typedef InventoryKey_T BomKey_T;
+    typedef typename BOM_CONTENT::BomKey_T BomKey_T;
 
     /** Definition allowing to retrieve the  children type of the
         BOM_CONTENT. */
@@ -63,9 +62,10 @@ namespace stdair {
       return *_parent;
     }
     
-    /** Get the flight-date key. */
+    /** Get the inventory key. */
     const BomKey_T& getKey() const {
-      return _key;
+      assert (_content != NULL);
+      return _content->getKey ();
     }
 
     /** Get the list of flight-dates. */
@@ -118,11 +118,11 @@ namespace stdair {
     
     /** Get a string describing the whole key (differentiating two objects
         at any level). */
-    const std::string describeKey() const { return _key.toString(); }
+    const std::string describeKey() const { return getKey().toString(); }
 
     /** Get a string describing the short key (differentiating two objects
         at the same level). */
-    const std::string describeShortKey() const { return _key.toString(); }
+    const std::string describeShortKey() const { return getKey().toString(); }
 
     /** Dump the flight-date children list in to an output stream.
         @param ostream& the output stream. */
@@ -136,11 +136,10 @@ namespace stdair {
     /** Constructors are private so as to force the usage of the Factory
         layer. */
     /** Default constructors. */
-    InventoryStructure ();
-    InventoryStructure (const InventoryStructure&);
-    InventoryStructure (const BomKey_T& iKey)
-      : _parent (NULL), _key (iKey), _childrenList (NULL) { }
+    InventoryStructure () : _parent (NULL), _content (NULL),
+                            _childrenList (NULL) { }
 
+    InventoryStructure (const InventoryStructure&);
     /** Destructor. */
     virtual ~InventoryStructure() { }
 
@@ -152,9 +151,6 @@ namespace stdair {
     /** The actual functional (Business Object) content. */
     BOM_CONTENT* _content;
 
-    /** The key of both the structure and content objects. */
-    BomKey_T _key;
-    
     /** List of flight-dates. */
     ChildrenBomHolder_T* _childrenList;
   };

@@ -6,11 +6,24 @@
 // //////////////////////////////////////////////////////////////////////
 // STDAIR 
 #include <stdair/bom/BomContent.hpp>
+#include <stdair/bom/BookingClassKey.hpp>
 
 namespace stdair {
 
   /** Class representing the actual attributes for an airline booking class. */
   class BookingClassContent : public BomContent {
+  public:
+    // Type definitions.
+    /** Definition allowing to retrieve the associated BOM key type. */
+    typedef BookingClassKey_T BomKey_T;
+
+  public:
+    // /////////// Getters ////////////
+    /** Get the booking class key. */
+    const BomKey_T& getKey() const {
+      return _key;
+    }
+    
   public:
     // /////////// Display support methods /////////
     /** Dump a Business Object into an output stream.
@@ -35,7 +48,7 @@ namespace stdair {
     
   protected:
     /** Default constructors. */
-    BookingClassContent ();
+    BookingClassContent (const BomKey_T&);
     BookingClassContent (const BookingClassContent&);
 
     /** Destructor. */
@@ -43,6 +56,8 @@ namespace stdair {
 
   protected:
     // Attributes
+    /** The key of both structure and content objects. */
+    BomKey_T _key;
   };
 
 }

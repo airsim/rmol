@@ -80,7 +80,7 @@ namespace stdair {
     /** Default constructors. */
     SegmentCabin ();
     SegmentCabin (const SegmentCabin&);
-    SegmentCabin (BomStructure_T&);
+    SegmentCabin (const BomKey_T&, BomStructure_T&);
 
     /** Destructor. */
     virtual ~SegmentCabin();

@@ -13,8 +13,9 @@
 namespace stdair {
 
   // ////////////////////////////////////////////////////////////////////
-  SegmentCabin::SegmentCabin (BomStructure_T& ioSegmentStructure)
-    : _segmentCabinStructure (ioSegmentStructure) {
+  SegmentCabin::SegmentCabin (const BomKey_T& iKey,
+                              BomStructure_T& ioSegmentStructure)
+    : SegmentCabinContent (iKey), _segmentCabinStructure (ioSegmentStructure) {
   }
   
   // ////////////////////////////////////////////////////////////////////

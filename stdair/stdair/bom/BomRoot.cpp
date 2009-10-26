@@ -19,8 +19,8 @@
 namespace stdair {
 
   // ////////////////////////////////////////////////////////////////////
-  BomRoot::BomRoot (BomStructure_T& ioBomRootStructure)
-    : _bomRootStructure (ioBomRootStructure) {
+  BomRoot::BomRoot (const BomKey_T& iKey, BomStructure_T& ioBomRootStructure)
+    : BomRootContent (iKey), _bomRootStructure (ioBomRootStructure) {
   }
 
   // ////////////////////////////////////////////////////////////////////

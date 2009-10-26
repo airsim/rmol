@@ -88,12 +88,11 @@ namespace stdair {
       // Create the structure/holder object
       typedef typename BOM_CONTENT::BomStructure_T BOM_STRUCTURE_T;
       BOM_STRUCTURE_T& lBomStructure =
-        FacBomStructure::instance().
-        create<typename BOM_CONTENT::BomKey_T, BOM_STRUCTURE_T> (iKey);
+        FacBomStructure::instance().create<BOM_STRUCTURE_T> ();
 
       // The created flight-date content (BomContent) object gets a constant
       // reference on its corresponding flight-date structure/holder object
-      BOM_CONTENT* aBomContent_ptr = new BOM_CONTENT (lBomStructure);
+      BOM_CONTENT* aBomContent_ptr = new BOM_CONTENT (iKey, lBomStructure);
       assert (aBomContent_ptr != NULL);
 
       // The new object is added to the pool of content objects

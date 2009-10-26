@@ -19,8 +19,9 @@
 namespace stdair {
 
   // ////////////////////////////////////////////////////////////////////
-  FlightDate::FlightDate (BomStructure_T& ioFlightStructure)
-    : _flightDateStructure (ioFlightStructure) {
+  FlightDate::FlightDate (const BomKey_T& iKey,
+                          BomStructure_T& ioFlightStructure)
+    : FlightDateContent (iKey), _flightDateStructure (ioFlightStructure) {
   }
 
   // ////////////////////////////////////////////////////////////////////

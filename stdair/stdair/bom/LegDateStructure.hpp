@@ -9,7 +9,6 @@
 // STDAIR 
 #include <stdair/bom/BomStructureDummy.hpp>
 #include <stdair/bom/BomContentDummy.hpp>
-#include <stdair/bom/LegDateKey.hpp>
 #include <stdair/bom/LegCabinStructure.hpp>
 
 namespace stdair {  
@@ -28,7 +27,7 @@ namespace stdair {
     typedef BOM_CONTENT Content_T;
 
     /** Definition allowing to retrieve the associated BOM key type. */
-    typedef LegDateKey_T BomKey_T;
+    typedef typename BOM_CONTENT::BomKey_T BomKey_T;
 
     /** Definition allowing to retrieve the associated parent
         BOM structure type. */
@@ -60,7 +59,8 @@ namespace stdair {
     
     /** Get the leg-date key. */
     const BomKey_T& getKey() const {
-      return _key;
+      assert (_content != NULL);
+      return _content->getKey();
     }
 
     /** Get the list of leg-cabins. */
@@ -112,11 +112,11 @@ namespace stdair {
     
     /** Get a string describing the whole key (differentiating two objects
         at any level). */
-    const std::string describeKey() const { return _key.toString(); }
+    const std::string describeKey() const { return getKey().toString(); }
 
     /** Get a string describing the short key (differentiating two objects
         at the same level). */
-    const std::string describeShortKey() const { return _key.toString(); }
+    const std::string describeShortKey() const { return getKey().toString(); }
 
     /** Dump the leg-cabin children list in to an output stream.
         @param ostream& the output stream. */
@@ -130,9 +130,9 @@ namespace stdair {
     /** Constructors are private so as to force the usage of the Factory
         layer. */
     /** Default constructors. */
-    LegDateStructure ();
+    LegDateStructure () : _parent (NULL), _content (NULL),
+                          _childrenList (NULL) { }
     LegDateStructure (const LegDateStructure&);
-    LegDateStructure (const BomKey_T& iKey) : _parent (NULL), _key (iKey) { }
 
     /** Destructor. */
     virtual ~LegDateStructure() { }
@@ -145,9 +145,6 @@ namespace stdair {
     /** The actual functional (Business Object) content. */
     BOM_CONTENT* _content;
 
-    /** The key of both the structure and content objects. */
-    BomKey_T _key;
-    
     /** List of leg-cabins. */
     ChildrenBomHolder_T* _childrenList;
   };

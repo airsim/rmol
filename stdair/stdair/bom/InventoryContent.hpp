@@ -7,11 +7,17 @@
 // STDAIR
 #include <stdair/STDAIR_Types.hpp>
 #include <stdair/bom/BomContent.hpp>
+#include <stdair/bom/InventoryKey.hpp>
 
 namespace stdair {
 
   /** Class representing the actual attributes for an airline inventory. */
   class InventoryContent : public BomContent {
+  public :
+    // Type definitions
+    /** Definition allowing to retrieve the associated BOM key type. */
+    typedef InventoryKey_T BomKey_T;
+
   public:
     // /////////// Display support methods /////////
     /** Dump a Business Object into an output stream.
@@ -35,6 +41,11 @@ namespace stdair {
 
   public:
     // ////////// Getters ////////////
+    /** Get the inventory key. */
+    const BomKey_T& getKey() const {
+      return _key;
+    }
+
     /** Get the booking counter. */
     const NbOfBookings_T& getBookingCounter () const {
       return _bookingCounter;
@@ -109,7 +120,7 @@ namespace stdair {
 
   protected:
     /** Default constructors. */
-    InventoryContent ();
+    InventoryContent (const BomKey_T&);
     InventoryContent (const InventoryContent&);
 
     /** Destructor. */
@@ -117,6 +128,9 @@ namespace stdair {
 
   protected:
     // Attributes
+    /** The key of both structure and content objects. */
+    BomKey_T _key;
+
     /** Counter of all bookings into the inventory. */
     NbOfBookings_T _bookingCounter;
       

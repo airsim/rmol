@@ -6,11 +6,24 @@
 // //////////////////////////////////////////////////////////////////////
 // STDAIR 
 #include <stdair/bom/BomContent.hpp>
+#include <stdair/bom/LegCabinKey.hpp>
 
 namespace stdair {
 
   /** Class representing the actual attributes for an airline leg-cabin. */
   class LegCabinContent : public BomContent {
+  public:
+    // Type definitions.
+    /** Definition allowing to retrieve the associated BOM key type. */
+    typedef LegCabinKey_T BomKey_T;
+
+  public:
+    // /////////// Getters ////////////
+     /** Get the leg-cabin key. */
+    const BomKey_T& getKey() const {
+      return _key;
+    }
+    
   public:
     // /////////// Display support methods /////////
     /** Dump a Business Object into an output stream.
@@ -35,7 +48,7 @@ namespace stdair {
     
   protected:
     /** Default constructors. */
-    LegCabinContent ();
+    LegCabinContent (const BomKey_T&);
     LegCabinContent (const LegCabinContent&);
 
     /** Destructor. */
@@ -43,6 +56,8 @@ namespace stdair {
 
   protected:
     // Attributes
+    /** The key of both structure and content objects. */
+    BomKey_T _key;
   };
 
 }

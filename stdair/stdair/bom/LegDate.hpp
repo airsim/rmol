@@ -80,7 +80,7 @@ namespace stdair {
     /** Default constructors. */
     LegDate ();
     LegDate (const LegDate&);
-    LegDate (BomStructure_T&);
+    LegDate (const BomKey_T&, BomStructure_T&);
 
     /** Destructor. */
     virtual ~LegDate();

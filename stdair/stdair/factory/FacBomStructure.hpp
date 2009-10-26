@@ -51,11 +51,11 @@ namespace stdair {
     static FacBomStructure& instance();
     
     /** Create a structure object with the given key. */
-    template <typename BOM_KEY, typename BOM_STRUCTURE>
-    BOM_STRUCTURE& create (const BOM_KEY& iKey) {
+    template <typename BOM_STRUCTURE>
+    BOM_STRUCTURE& create () {
       BOM_STRUCTURE* aBomStructure_ptr = NULL;
       
-      aBomStructure_ptr = new BOM_STRUCTURE (iKey);
+      aBomStructure_ptr = new BOM_STRUCTURE ();
       assert (aBomStructure_ptr != NULL);
 
       // Initialise the children list of the BOM structure.
@@ -74,8 +74,9 @@ namespace stdair {
         the parent structure object.       .
         @return bool Whether or not the operation succeeded. */
     template <typename BOM_STRUCTURE_CHILD>
-    static bool linkBomParentWithBomChild (typename BOM_STRUCTURE_CHILD::ParentBomStructure_T& ioBomParent,
-                                           BOM_STRUCTURE_CHILD& ioBomChild) {
+    static bool linkBomParentWithBomChild 
+    (typename BOM_STRUCTURE_CHILD::ParentBomStructure_T& ioBomParent,
+     BOM_STRUCTURE_CHILD& ioBomChild) {
 
       // Set the parent of the child structure object
       ioBomChild._parent = &ioBomParent;
@@ -109,7 +110,7 @@ namespace stdair {
   private:
     /** Create a bom children holder object with the given children type. */
     template <typename BOM_CONTENT_CHILD>
-    BomChildrenHolderImp<BOM_CONTENT_CHILD>& create () {
+    BomChildrenHolderImp<BOM_CONTENT_CHILD>& createBomHolder () {
       
       BomChildrenHolderImp<BOM_CONTENT_CHILD>* aBomChildrenHolder_ptr = NULL;
       
@@ -134,7 +135,7 @@ namespace stdair {
       
       typedef typename CHILDREN_TYPE_T::Content_T CONTENT_CHILDREN_T;
       BomChildrenHolderImp<CONTENT_CHILDREN_T>& lBomChildrenHolder=
-        instance().create<CONTENT_CHILDREN_T>();
+        instance().createBomHolder<CONTENT_CHILDREN_T>();
       
       ioBomStructure.setChildrenList (lBomChildrenHolder);
       
@@ -142,7 +143,7 @@ namespace stdair {
       
       typedef typename SECOND_CHILDREN_TYPE_T::Content_T SECOND_CONTENT_CHILDREN_T;
       BomChildrenHolderImp<SECOND_CONTENT_CHILDREN_T>& lSecondBomChildrenHolder =
-        instance().create<SECOND_CONTENT_CHILDREN_T>();
+        instance().createBomHolder<SECOND_CONTENT_CHILDREN_T>();
       
       ioBomStructure.setChildrenList (lSecondBomChildrenHolder);
     }

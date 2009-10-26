@@ -84,7 +84,7 @@ namespace stdair {
     /** Default constructors. */
     Inventory ();
     Inventory (const Inventory&);
-    Inventory (BomStructure_T&);
+    Inventory (const BomKey_T&, BomStructure_T&);
 
     /** Destructor. */
     virtual ~Inventory();

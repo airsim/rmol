@@ -13,8 +13,8 @@
 namespace stdair {
 
   // ////////////////////////////////////////////////////////////////////
-  LegDate::LegDate (BomStructure_T& ioLegStructure)
-    : _legDateStructure (ioLegStructure) {
+  LegDate::LegDate (const BomKey_T& iKey, BomStructure_T& ioLegStructure)
+    : LegDateContent (iKey), _legDateStructure (ioLegStructure) {
   }
   
   // ////////////////////////////////////////////////////////////////////

@@ -11,7 +11,6 @@
 // STDAIR 
 #include <stdair/bom/BomStructureDummy.hpp>
 #include <stdair/bom/BomContentDummy.hpp>
-#include <stdair/bom/BomRootKey.hpp>
 #include <stdair/bom/InventoryStructure.hpp>
 
 namespace stdair {
@@ -35,7 +34,7 @@ namespace stdair {
   private:
     // Type definitions
     /** Definition allowing to retrieve the associated BOM key type. */
-    typedef BomRootKey_T BomKey_T;
+    typedef typename BOM_CONTENT::BomKey_T BomKey_T;
 
     /** Definition allowing to retrieve the associated children type. */
     typedef boost::mpl::vector<InventoryStructure<ContentChild_T>, BomStructureDummy> ChildrenBomTypeList_T;
@@ -49,8 +48,9 @@ namespace stdair {
   public:
     // /////////// Getters /////////////
     /** Get the BomRootStructure key. */
-    const BomKey_T& getKey() const {
-      return _key;
+    const BomKey_T& getKey () const {
+      assert (_content != NULL);
+      return _content->getKey ();
     }
     
     /** Get the list of inventories. */
@@ -91,28 +91,24 @@ namespace stdair {
     
     /** Get a string describing the whole key (differentiating two objects
         at any level). */
-    const std::string describeKey() const { return _key.toString(); }
+    const std::string describeKey() const { return getKey().toString(); }
 
     /** Get a string describing the short key (differentiating two objects
         at the same level). */
-    const std::string describeShortKey() const { return _key.toString(); }
+    const std::string describeShortKey() const { return getKey().toString(); }
 
   private:
     /** Constructors are private so as to force the usage of the Factory
         layer. */
     /** Default constructors. */
-    BomRootStructure ();
+    BomRootStructure () : _content (NULL), _childrenList (NULL) { };
     BomRootStructure (const BomRootStructure&);
-    BomRootStructure (const BomKey_T& iKey) { _key = iKey; }
 
     /** Destructor. */
     ~BomRootStructure () { }
 
   private:
     // Attributes
-    /** The key of both the structure and content objects. */
-    BomKey_T _key; 
-
     /** The actual functional (Business Object) content. */
     BOM_CONTENT* _content;
 
