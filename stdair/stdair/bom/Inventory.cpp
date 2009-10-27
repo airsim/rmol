@@ -9,11 +9,6 @@
 #include <stdair/bom/FlightDate.hpp>
 #include <stdair/bom/FlightDateList.hpp>
 #include <stdair/bom/FlightDateMap.hpp>
-#include <stdair/bom/SegmentDate.hpp>
-#include <stdair/bom/LegDate.hpp>
-#include <stdair/bom/SegmentCabin.hpp>
-#include <stdair/bom/LegCabin.hpp>
-#include <stdair/bom/BookingClass.hpp>
 
 namespace stdair {
 
@@ -39,9 +34,6 @@ namespace stdair {
   // //////////////////////////////////////////////////////////////////////
   std::string Inventory::toString() const {
     std::ostringstream oStr;
-
-    _inventoryStructure.describeFull (oStr);
-      
     return oStr.str();
   }
     

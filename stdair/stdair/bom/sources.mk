@@ -8,6 +8,8 @@ bom_h_sources = \
 				$(top_srcdir)/stdair/bom/SegmentDateKey.hpp \
 				$(top_srcdir)/stdair/bom/SegmentCabinKey.hpp \
 				$(top_srcdir)/stdair/bom/BookingClassKey.hpp \
+				$(top_srcdir)/stdair/bom/AirlineFeatureSetKey.hpp \
+				$(top_srcdir)/stdair/bom/AirlineFeatureKey.hpp \
 				$(top_srcdir)/stdair/bom/BomRootTypes.hpp \
 				$(top_srcdir)/stdair/bom/BomRoot.hpp \
 				$(top_srcdir)/stdair/bom/BomContent.hpp \
@@ -58,9 +60,20 @@ bom_h_sources = \
 				$(top_srcdir)/stdair/bom/BookingClassList.hpp \
 				$(top_srcdir)/stdair/bom/BookingClassMap.hpp \
 				$(top_srcdir)/stdair/bom/BookingClassStructure.hpp \
+				$(top_srcdir)/stdair/bom/AirlineFeatureSet.hpp \
+				$(top_srcdir)/stdair/bom/AirlineFeatureSetContent.hpp \
+				$(top_srcdir)/stdair/bom/AirlineFeatureSetTypes.hpp \
+				$(top_srcdir)/stdair/bom/AirlineFeatureSetStructure.hpp \ 
+				$(top_srcdir)/stdair/bom/AirlineFeature.hpp \
+				$(top_srcdir)/stdair/bom/AirlineFeatureContent.hpp \
+				$(top_srcdir)/stdair/bom/AirlineFeatureTypes.hpp \
+				$(top_srcdir)/stdair/bom/AirlineFeatureList.hpp \
+				$(top_srcdir)/stdair/bom/AirlineFeatureMap.hpp \
+				$(top_srcdir)/stdair/bom/AirlineFeatureStructure.hpp \
 				$(top_srcdir)/stdair/bom/BomChildrenHolder.hpp \
 				$(top_srcdir)/stdair/bom/BomChildrenHolderImp.hpp \
-				$(top_srcdir)/stdair/bom/BomIterator.hpp
+				$(top_srcdir)/stdair/bom/BomIterator.hpp \
+				$(top_srcdir)/stdair/bom/OptimizerStruct.hpp
 bom_cc_sources = \
 				$(top_srcdir)/stdair/bom/BomRootKey.cpp \
 				$(top_srcdir)/stdair/bom/InventoryKey.cpp \
@@ -70,6 +83,8 @@ bom_cc_sources = \
 				$(top_srcdir)/stdair/bom/SegmentDateKey.cpp \
 				$(top_srcdir)/stdair/bom/SegmentCabinKey.cpp \
 				$(top_srcdir)/stdair/bom/BookingClassKey.cpp \
+				$(top_srcdir)/stdair/bom/AirlineFeatureSetKey.cpp \
+				$(top_srcdir)/stdair/bom/AirlineFeatureKey.cpp \
 				$(top_srcdir)/stdair/bom/BomRoot.cpp \
 				$(top_srcdir)/stdair/bom/BomRootContent.cpp \
 				$(top_srcdir)/stdair/bom/Inventory.cpp \
@@ -99,5 +114,12 @@ bom_cc_sources = \
 				$(top_srcdir)/stdair/bom/BookingClass.cpp \
 				$(top_srcdir)/stdair/bom/BookingClassContent.cpp \
 				$(top_srcdir)/stdair/bom/BookingClassList.cpp \
-				$(top_srcdir)/stdair/bom/BookingClassMap.cpp
+				$(top_srcdir)/stdair/bom/BookingClassMap.cpp \
+				$(top_srcdir)/stdair/bom/AirlineFeatureSet.cpp \
+				$(top_srcdir)/stdair/bom/AirlineFeatureSetContent.cpp \
+				$(top_srcdir)/stdair/bom/AirlineFeature.cpp \
+				$(top_srcdir)/stdair/bom/AirlineFeatureContent.cpp \
+				$(top_srcdir)/stdair/bom/AirlineFeatureList.cpp \
+				$(top_srcdir)/stdair/bom/AirlineFeatureMap.cpp \
+				$(top_srcdir)/stdair/bom/OptimizerStruct.cpp
 

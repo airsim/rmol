@@ -73,12 +73,6 @@ namespace stdair {
       ioOut << toString() << std::endl;
     }
 
-    /** Dump a Business Object with all its children into an output stream.
-        @param ostream& the output stream. */
-    void describeFull (std::ostringstream& ioOut) const {
-      ioOut << describeShortKey () << std::endl;
-    }
-
     /** Read a Business Object from an input stream.
         @param istream& the input stream. */
     void fromStream (std::istream& ioIn) { }

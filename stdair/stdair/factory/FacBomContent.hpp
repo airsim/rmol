@@ -18,6 +18,7 @@ namespace stdair {
   // Forward declarations
   class BomStructure;
   class BomContent;
+  struct OptimizerStruct_T;
   
   /** Base class for Factory layer. */
   class FacBomContent {
@@ -29,7 +30,7 @@ namespace stdair {
     /** Create the root of the BOM tree, i.e., a pair of linked
         BomRootStructure and BomRoot objects. */
     template <typename BOM_ROOT>
-    BOM_ROOT& createBomRoot () {
+    BOM_ROOT& create () {
       // Define the typename for BomRootKey.
       typedef typename BOM_ROOT::BomKey_T BOM_ROOT_KEY_T;
       // Create the BOM root object.
@@ -77,7 +78,6 @@ namespace stdair {
       return lBomContentChild;
     }
 
-    
   private:
     /** Create a content object, given a key.
         <br>A structure object is created, under the hood, with the given key.
@@ -93,6 +93,89 @@ namespace stdair {
       // The created flight-date content (BomContent) object gets a constant
       // reference on its corresponding flight-date structure/holder object
       BOM_CONTENT* aBomContent_ptr = new BOM_CONTENT (iKey, lBomStructure);
+      assert (aBomContent_ptr != NULL);
+
+      // The new object is added to the pool of content objects
+      _contentPool.push_back (aBomContent_ptr);
+
+      // Link the structure/holder object with its corresponding content object
+      setContent<BOM_STRUCTURE_T, BOM_CONTENT> (lBomStructure, *aBomContent_ptr);
+
+      return *aBomContent_ptr;
+    }
+
+
+    // //////////////////// AirlineFeature //////////////////////////
+  public:
+    /** Create a AirlineFeature object. */
+    template <typename BOM_CONTENT_CHILD>
+    BOM_CONTENT_CHILD& 
+    createAirlineFeature (typename BOM_CONTENT_CHILD::Parent_T& ioContentParent, 
+                          const typename BOM_CONTENT_CHILD::BomKey_T& iKey,
+                          const ForecasterMode_T& iForecastMode,
+                          const HistoricalDataLimit_T& iHistoricalDataLimit,
+                          const OptimizerStruct_T& iOptimizerStruct,
+                          const ControlMode_T& iControlMode) {
+      
+      // Create the child structure object for the given key
+      BOM_CONTENT_CHILD& lBomContentChild =
+        createInternalAirlineFeature<BOM_CONTENT_CHILD> (iKey, iForecastMode,
+                                                         iHistoricalDataLimit,
+                                                         iOptimizerStruct, 
+                                                         iControlMode);
+
+      // Retrieve the child structure object
+      typename BOM_CONTENT_CHILD::BomStructure_T& lBomStructureChild =
+        lBomContentChild.getBomStructure ();
+
+      // Type for the parent Bom content
+      typedef typename BOM_CONTENT_CHILD::Parent_T PARENT_CONTENT_T;
+      
+      // Type for the parent Bom structure
+      typedef typename PARENT_CONTENT_T::BomStructure_T PARENT_STRUCTURE_T;
+      
+      // Retrieve the parent structure object
+      PARENT_STRUCTURE_T& lBomStructureParent =
+        ioContentParent.getBomStructure ();
+           
+      // Type for the child Bom structure
+      typedef typename BOM_CONTENT_CHILD::BomStructure_T CHILD_STRUCTURE_T;
+      
+      // Link both the parent and child structure objects
+      const bool hasLinkBeenSuccessful = FacBomStructure::
+        linkBomParentWithBomChild<CHILD_STRUCTURE_T> (lBomStructureParent,
+                                                      lBomStructureChild);
+
+      if (hasLinkBeenSuccessful == false) {
+        throw new MemoryAllocationException();
+      }
+
+      return lBomContentChild;
+    }
+
+  private:
+    /** Create a AirlineFeature object. */
+    template <typename BOM_CONTENT>
+    BOM_CONTENT&
+    createInternalAirlineFeature (const typename BOM_CONTENT::BomKey_T& iKey,
+                                  const ForecasterMode_T& iForecastMode,
+                                  const HistoricalDataLimit_T& iHistoricalDataLimit,
+                                  const OptimizerStruct_T& iOptimizerStruct,
+                                  const ControlMode_T& iControlMode) {
+    
+      // Create the structure/holder object
+      typedef typename BOM_CONTENT::BomStructure_T BOM_STRUCTURE_T;
+      BOM_STRUCTURE_T& lBomStructure =
+        FacBomStructure::instance().create<BOM_STRUCTURE_T> ();
+
+      // The created flight-date content (BomContent) object gets a constant
+      // reference on its corresponding flight-date structure/holder object
+      BOM_CONTENT* aBomContent_ptr = new BOM_CONTENT (iKey,
+                                                      iForecastMode,
+                                                      iHistoricalDataLimit,
+                                                      iOptimizerStruct, 
+                                                      iControlMode,
+                                                      lBomStructure);
       assert (aBomContent_ptr != NULL);
 
       // The new object is added to the pool of content objects

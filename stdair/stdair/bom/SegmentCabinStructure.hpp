@@ -96,13 +96,6 @@ namespace stdair {
       ioOut << toString() << std::endl;
     }
 
-    /** Dump a Business Object with all its children into an output stream.
-        @param ostream& the output stream. */
-    void describeFull (std::ostringstream& ioOut) const {
-      ioOut << describeShortKey () << std::endl;
-      displayBookingClassList (ioOut);
-    }
-
     /** Read a Business Object from an input stream.
         @param istream& the input stream. */
     void fromStream (std::istream& ioIn) { }
@@ -117,14 +110,6 @@ namespace stdair {
     /** Get a string describing the short key (differentiating two objects
         at the same level). */
     const std::string describeShortKey() const { return getKey().toString(); }
-
-    /** Dump the segment-cabin children list in to an output stream.
-        @param ostream& the output stream. */
-    void displayBookingClassList (std::ostringstream& ioOut) const {
-      ioOut << "BookingClasss: " << std::endl;
-      assert (_childrenList != NULL);
-      _childrenList->describeFull (ioOut);
-    }
 
   private:
     /** Constructors are private so as to force the usage of the Factory

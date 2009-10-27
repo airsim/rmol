@@ -1,22 +1,21 @@
-#ifndef __STDAIR_BOM_SEGMENTDATESTRUCTURE_HPP
-#define __STDAIR_BOM_SEGMENTDATESTRUCTURE_HPP
+#ifndef __STDAIR_BOM_AIRLINEFEATURESTRUCTURE_HPP
+#define __STDAIR_BOM_AIRLINEFEATURESTRUCTURE_HPP
 
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // MPL
 #include <boost/mpl/vector.hpp>
-// STDAIR 
+// STDAIR  
 #include <stdair/bom/BomStructureDummy.hpp>
 #include <stdair/bom/BomContentDummy.hpp>
-#include <stdair/bom/SegmentCabinStructure.hpp>
 
 namespace stdair {
   /** Wrapper class aimed at holding the actual content, modeled
-      by an external specific SegmentDate class (for instance,
+      by an external specific AirlineFeature class (for instance,
       in the AIRSCHED library). */
   template <class BOM_CONTENT>
-  class SegmentDateStructure : public BomStructure {
+  class AirlineFeatureStructure : public BomStructure {
     friend class FacBomStructure;
     friend class FacBomContent;
     friend class BomStructure;
@@ -32,61 +31,39 @@ namespace stdair {
     /** Definition allowing to retrieve the associated parent
         BOM structure type. */
     typedef typename BOM_CONTENT::Parent_T::BomStructure_T ParentBomStructure_T;
-
-    /** Definition allowing to retrieve the  children type of the
-        BOM_CONTENT. */
-    typedef typename BOM_CONTENT::ContentChild_T ContentChild_T;
     
     /** Definition allowing to retrieve the associated children type. */
-    typedef boost::mpl::vector <SegmentCabinStructure<ContentChild_T>,
+    typedef boost::mpl::vector <BomStructureDummy,
                                 BomStructureDummy> ChildrenBomTypeList_T;
 
     /** Definition allowing to retrieve the default children bom holder type. */
     typedef BomChildrenHolderImp<BomContentDummy> DefaultChildrenBomHolder_T;
 
-    /** Definition allowing to retrive the  children bom holder type. */
-    typedef BomChildrenHolderImp<ContentChild_T> ChildrenBomHolder_T;
-
   public:
     // /////////// Getters /////////////
-    /** Get the (parent) FlightDateStructure object. */
-    ParentBomStructure_T* getFlightDateStructurePtr() const {
+    /** Get the (parent) AirlineFeatureSetStructure object. */
+    ParentBomStructure_T* getAirlineFeatureSetStructurePtr() const {
       return _parent;
     }
     
-    /** Get the (parent) FlightDateStructure object. */
-    ParentBomStructure_T& getFlightDateStructure() const;
+    /** Get the (parent) AirlineFeatureSetStructure object. */
+    ParentBomStructure_T& getAirlineFeatureSetStructure() const;
     
-    /** Get the segment-date key. */
+    /** Get the segment-cabin key. */
     const BomKey_T& getKey() const {
       assert (_content != NULL);
-      return _content->getKey ();
-    }
-
-    /** Get the list of segment-cabins. */
-    const ChildrenBomHolder_T& getChildrenList() const {
-      return *_childrenList;
-    }
-
-    /** Get the list of segment-cabins. */
-    void getChildrenList (ChildrenBomHolder_T*& ioChildrenList) {
-      ioChildrenList = _childrenList;
+      return _content->getKey();
     }
     
   private:
     // /////////// Setters /////////////
-    /** Set the (parent) FlightDateStructure object. */
-    void setFlightDateStructure (ParentBomStructure_T& ioFlightDateStructure) {
-      _parent = &ioFlightDateStructure;
+    /** Set the (parent) AirlineFeatureSetStructure object. */
+    void setAirlineFeatureSetStructure (ParentBomStructure_T& ioAirlineFeatureSetStructure){
+      _parent = &ioAirlineFeatureSetStructure;
     }
     
     /** Default children list setter. */
     void setChildrenList (DefaultChildrenBomHolder_T&) { }
-
-    /** Set the segment-cabin children list. */
-    void setChildrenList (ChildrenBomHolder_T& ioChildrenList) {
-      _childrenList = &ioChildrenList;
-    }
     
   public:
     // /////////// Display support methods /////////
@@ -110,29 +87,26 @@ namespace stdair {
     /** Get a string describing the short key (differentiating two objects
         at the same level). */
     const std::string describeShortKey() const { return getKey().toString(); }
-
+    
   private:
     /** Constructors are private so as to force the usage of the Factory
         layer. */
     /** Default constructors. */
-    SegmentDateStructure () : _parent (NULL), _content (NULL),
-                              _childrenList (NULL) { }
-    SegmentDateStructure (const SegmentDateStructure&);
+    AirlineFeatureStructure () : _parent (NULL), _content (NULL) { }
+    AirlineFeatureStructure (const AirlineFeatureStructure&);
 
     /** Destructor. */
-    virtual ~SegmentDateStructure() { }
+    virtual ~AirlineFeatureStructure() { }
 
   private:
     // Attributes
-    /** Parent flight-date. */
+    /** Parent segment-cabin. */
     ParentBomStructure_T* _parent;
 
     /** The actual functional (Business Object) content. */
     BOM_CONTENT* _content;
 
-    /** List of segment-cabins. */
-    ChildrenBomHolder_T* _childrenList;
   };
 
 }
-#endif // __STDAIR_BOM_SEGMENTDATESTRUCTURE_HPP
+#endif // __STDAIR_BOM_AIRLINEFEATURESTRUCTURE_HPP

@@ -9,12 +9,6 @@
 #include <stdair/bom/Inventory.hpp>
 #include <stdair/bom/InventoryList.hpp>
 #include <stdair/bom/InventoryMap.hpp>
-#include <stdair/bom/FlightDate.hpp>
-#include <stdair/bom/SegmentDate.hpp>
-#include <stdair/bom/LegDate.hpp>
-#include <stdair/bom/SegmentCabin.hpp>
-#include <stdair/bom/LegCabin.hpp>
-#include <stdair/bom/BookingClass.hpp>
 
 namespace stdair {
 

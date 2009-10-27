@@ -102,13 +102,6 @@ namespace stdair {
       ioOut << toString() << std::endl;
     }
 
-    /** Dump a Business Object with all its children into an output stream.
-        @param ostream& the output stream. */
-    void describeFull (std::ostringstream& ioOut) const {
-      ioOut << describeShortKey () << std::endl;
-      displayFlightDateList (ioOut);
-    }
-
     /** Read a Business Object from an input stream.
         @param istream& the input stream. */
     void fromStream (std::istream& ioIn) { }
@@ -124,14 +117,6 @@ namespace stdair {
         at the same level). */
     const std::string describeShortKey() const { return getKey().toString(); }
 
-    /** Dump the flight-date children list in to an output stream.
-        @param ostream& the output stream. */
-    void displayFlightDateList (std::ostringstream& ioOut) const {
-      ioOut << "FlightDates: " << std::endl;
-      assert (_childrenList != NULL);
-      _childrenList->describeFull (ioOut);
-    }
-    
   private:
     /** Constructors are private so as to force the usage of the Factory
         layer. */

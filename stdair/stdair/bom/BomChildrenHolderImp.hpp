@@ -61,21 +61,6 @@ namespace stdair {
         at the same level). */
     const std::string describeShortKey() const { return std::string (""); }
 
-    /** Dump a Business Object into an output stream.
-        @param ostream& the output stream. */
-    void describeFull (std::ostringstream& ioOut) const {
-      // Initialise the index
-      unsigned short lIdx = 0;
-      
-      for (typename BomChildrenOrderedList_T::const_iterator itChild =
-             _bomChildrenOrderedList.begin();
-           itChild != _bomChildrenOrderedList.end(); ++itChild, ++lIdx) {
-        const BomStructure_T* lCurrentChild_ptr = *itChild;
-        ioOut << "[" << lIdx << "]: ";
-        lCurrentChild_ptr->describeFull (ioOut);
-      }
-    }
-
     // /////////// Iteration methods //////////
     /** Initialise the internal iterators on bom objects:
         return the iterator at the begining of the list. */
@@ -124,7 +109,12 @@ namespace stdair {
     MapReverseIterator_T mapREnd () const {
       return _bomChildrenList.rend();
     }
-
+    
+    /** Retrieve, if existing, the bom corresponding to the given key. */
+    MapIterator_T find (const MapKey_T& iKey) const {
+      return _bomChildrenList.find (iKey);
+    }
+    
   private:
     /** Constructors are private so as to force the usage of the Factory
         layer. */
