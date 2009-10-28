@@ -30,8 +30,12 @@ namespace stdair {
     /** Create the root of the BOM tree, i.e., a pair of linked
         BomRootStructure and BomRoot objects. */
     template <typename BOM_ROOT>
-    BOM_ROOT& create (typename BOM_ROOT::BomKey_T iKey) {
-      BOM_ROOT& lBomRoot = createInternal<BOM_ROOT>(iKey);
+    BOM_ROOT& create () {
+      // Define the typename for BomRootKey.
+      typedef typename BOM_ROOT::BomKey_T BOM_ROOT_KEY_T;
+      // Create the BOM root object.
+      BOM_ROOT_KEY_T lBomRootKey;
+      BOM_ROOT& lBomRoot = createInternal<BOM_ROOT>(lBomRootKey);
       return lBomRoot;
     }
     
