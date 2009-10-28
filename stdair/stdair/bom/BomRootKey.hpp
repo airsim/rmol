@@ -16,10 +16,8 @@ namespace stdair {
     // /////////// Construction ///////////
     /** Constructor. */
     BomRootKey_T ();
-
     /** Destructor. */
     ~BomRootKey_T ();
-    
     
     // /////////// Display support methods /////////
     /** Dump a Business Object Key into an output stream.
@@ -39,7 +37,6 @@ namespace stdair {
     
   private:
     // Attributes
-    // No attributes, as that class corresponds to the root of Bom structure.
   };
 
 }

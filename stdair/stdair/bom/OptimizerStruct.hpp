@@ -28,6 +28,11 @@ namespace stdair {
     getSellupProbabilityVectorForOptimizer() const {
       return _sellupProbabilityVectorForOptimizer;
     }
+
+    // ////////// Setters ////////////
+    /** Initialization method. */
+    void init (const OptimizerMode_T&,const SellupFlagForOptimizer_T&,
+               const SellupProbabilityVector_T&);
     
     // ///////// Display Methods //////////
     /** Display the structure. */
@@ -37,6 +42,8 @@ namespace stdair {
     const std::string describeSellupProbabilityVector() const;
 
   public:
+    /** Default constructor. */
+    OptimizerStruct_T ();
     /** Constructor. */
     OptimizerStruct_T (const OptimizerMode_T&,
                        const SellupFlagForOptimizer_T&,
@@ -46,10 +53,6 @@ namespace stdair {
 
     /** Defaut destructor. */
     ~OptimizerStruct_T ();
-  private:
-    /** Default constructor. */
-    OptimizerStruct_T ();
-      
       
   private:
     // /////////////// Attributes //////////

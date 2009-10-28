@@ -24,11 +24,6 @@ namespace stdair {
       return _key;
     }
 
-    /** Get the update/creation date for the world schedule data. */
-    const Date_T& getUpdateDate() const {
-      return _updateDate;
-    }
-
     /** Get the number of generated flight dates. */
     const NbOfFlightDates_T getNumberOfFlightDates() const {
       return _flightDateCounter;
@@ -77,11 +72,6 @@ namespace stdair {
 
   public:
     // ///////// Setters //////////
-    /** Set the update/creation date for the world schdule data. */
-    void setUpdateDate (const Date_T& iUpdateDate) {
-      _updateDate = iUpdateDate;
-    }
-
     /** Set the revenue amount. */
     void setRevenue (const Revenue_T& iWCRevenue) {
       _worldScheduleRevenue = iWCRevenue;
@@ -146,9 +136,6 @@ namespace stdair {
     // Attributes
     /** The key of both structure and content objects. */
     BomKey_T _key; 
-
-    /** Update/creation date for the World Schedule data. */
-    Date_T _updateDate;
 
     /** Counter of all generated flight dates in the world schedule. */
     NbOfFlightDates_T _flightDateCounter;

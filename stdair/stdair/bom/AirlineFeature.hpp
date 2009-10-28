@@ -40,6 +40,12 @@ namespace stdair {
     typedef AirlineFeature ContentChild_T;
     
   public:
+    // //////////// Setters //////////
+    /** Intialization method. */
+    void init (const ForecasterMode_T&, const HistoricalDataLimit_T&,
+               const OptimizerStruct_T&, const ControlMode_T&);
+    
+  public:
     // /////////// Display support methods /////////
     /** Dump a Business Object into an output stream.
         @param ostream& the output stream. */
@@ -75,9 +81,7 @@ namespace stdair {
     /** Default constructors. */
     AirlineFeature ();
     AirlineFeature (const AirlineFeature&);
-    AirlineFeature (const BomKey_T&, const ForecasterMode_T&,
-                    const HistoricalDataLimit_T&, const OptimizerStruct_T&,
-                    const ControlMode_T&, BomStructure_T&);
+    AirlineFeature (const BomKey_T&, BomStructure_T&);
 
     /** Destructor. */
     virtual ~AirlineFeature();

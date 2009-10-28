@@ -12,13 +12,8 @@ namespace stdair {
   // ////////////////////////////////////////////////////////////////////
   AirlineFeature::
   AirlineFeature (const BomKey_T& iKey,
-                  const ForecasterMode_T& iForecastMode,
-                  const HistoricalDataLimit_T& iHistoricalDataLimit,
-                  const OptimizerStruct_T& iOptimizerStruct,
-                  const ControlMode_T& iControlMode,
                   BomStructure_T& ioAirlineFeatureStructure)
-    : AirlineFeatureContent (iKey, iForecastMode, iHistoricalDataLimit,
-                             iOptimizerStruct, iControlMode),
+    : AirlineFeatureContent (iKey),
       _airlineFeatureStructure (ioAirlineFeatureStructure) {
   }
   
@@ -26,6 +21,16 @@ namespace stdair {
   AirlineFeature::~AirlineFeature () {
   }
 
+  // ////////////////////////////////////////////////////////////////////
+  void AirlineFeature::
+  init (const ForecasterMode_T& iForecastMode,
+        const HistoricalDataLimit_T& iHistoricalDataLimit,
+        const OptimizerStruct_T& iOptimizerStruct,
+        const ControlMode_T& iControlMode) {
+    AirlineFeatureContent::init (iForecastMode, iHistoricalDataLimit,
+                                 iOptimizerStruct, iControlMode);
+  }
+  
   // //////////////////////////////////////////////////////////////////////
   void AirlineFeature::toStream (std::ostream& ioOut) const {
     ioOut << toString() << std::endl;

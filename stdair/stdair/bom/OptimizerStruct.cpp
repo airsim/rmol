@@ -5,7 +5,10 @@
 #include <stdair/bom/OptimizerStruct.hpp>
 
 namespace stdair {
-
+  // ///////////////////////////////////////////////////////////////////    
+  OptimizerStruct_T::OptimizerStruct_T () {
+  }
+  
   // ///////////////////////////////////////////////////////////////////    
   OptimizerStruct_T::OptimizerStruct_T 
   (const OptimizerMode_T& iOptimizerMode,
@@ -28,6 +31,16 @@ namespace stdair {
   OptimizerStruct_T::~OptimizerStruct_T () {
   }
 
+  // ////////////////////////////////////////////////////////////////////
+  void OptimizerStruct_T::
+  init (const OptimizerMode_T& iOptimizerMode,
+        const SellupFlagForOptimizer_T& iSellupFlagForOptimizer,
+        const SellupProbabilityVector_T& iSellupProbabilityVectorForOptimizer) {
+    _optimizerMode = iOptimizerMode;
+    _sellupFlagForOptimizer = iSellupFlagForOptimizer;
+    _sellupProbabilityVectorForOptimizer = iSellupProbabilityVectorForOptimizer;
+  }
+        
   // ////////////////////////////////////////////////////////////////////
   const std::string OptimizerStruct_T::describe() const {
     std::ostringstream ostr;

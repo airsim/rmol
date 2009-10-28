@@ -25,6 +25,12 @@ namespace stdair {
     const BomKey_T& getKey() const {
       return _key;
     }
+
+  public:
+    // //////////// Setters //////////
+    /** Intialization method. */
+    void init (const ForecasterMode_T&, const HistoricalDataLimit_T&,
+               const OptimizerStruct_T&, const ControlMode_T&);
     
   public:
     // /////////// Display support methods /////////
@@ -50,10 +56,9 @@ namespace stdair {
     
   protected:
     /** Default constructors. */
-    AirlineFeatureContent (const BomKey_T&, const ForecasterMode_T&,
-                           const HistoricalDataLimit_T&,
-                           const OptimizerStruct_T&, const ControlMode_T&);
+    AirlineFeatureContent ();
     AirlineFeatureContent (const AirlineFeatureContent&);
+    AirlineFeatureContent (const BomKey_T&);
 
     /** Destructor. */
     virtual ~AirlineFeatureContent();
