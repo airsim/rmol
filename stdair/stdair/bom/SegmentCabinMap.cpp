@@ -46,5 +46,11 @@ namespace stdair {
     return _segmentCabinHolder.mapREnd ();
   }
 
+  // //////////////////////////////////////////////////////////////////////
+  SegmentCabinMap_T::
+  iterator SegmentCabinMap_T::find (const MapKey_T& iKey) const {
+    return _segmentCabinHolder.find (iKey);
+  }
+
 }
 

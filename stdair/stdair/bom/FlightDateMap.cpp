@@ -46,5 +46,11 @@ namespace stdair {
     return _flightDateHolder.mapREnd ();
   }
 
+  // //////////////////////////////////////////////////////////////////////
+  FlightDateMap_T::
+  iterator FlightDateMap_T::find (const MapKey_T& iKey) const {
+    return _flightDateHolder.find (iKey);
+  }
+  
 }
 

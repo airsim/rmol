@@ -24,6 +24,73 @@ namespace stdair {
       return _key;
     }
     
+    /** Get the cabin code (from key). */
+    const CabinCode_T& getCabinCode() const {
+      return _key.getCabinCode();
+    }
+
+    /** Get the cabin capacity. */
+    const CabinCapacity_T& getCapacity () const {
+      return _capacity;
+    }
+
+    /** Get the number of sold seat. */
+    const NbOfBookings_T& getSoldSeat () const {
+      return _soldSeat;
+    }
+
+    /** Get the value of commited space. */
+    const CommitedSpace_T& getCommitedSpace () const {
+      return _commitedSpace;
+    }
+
+    /** Get the value of the availability pool. */
+    const Availability_T& getAvailabilityPool () const {
+      return _availabilityPool;
+    }
+
+    /** Get the value of the availability. */
+    const Availability_T& getAvailability () const {
+      return _availability;
+    }
+
+    /** Retrive the current Bid-Price. */
+    const BidPrice_T& getCurrentBidPrice () const {
+      return _currentBidPrice;
+    }
+    
+    /** Retrive the Bid-Price Vector. */
+    BidPriceVector_T& getBidPriceVector () {
+      return _bidPriceVector;
+    }
+
+  public:
+    // ///////////// Setters ///////////////
+    /** Set the number of sold seat. */
+    void setSoldSeat (const NbOfBookings_T& iSoldSeat) {
+      _soldSeat = iSoldSeat;
+    }
+
+    /** Set the value of commited space. */
+    void setCommitedSpace (const CommitedSpace_T& iCommitedSpace) {
+      _commitedSpace = iCommitedSpace;
+    }
+
+    /** Set the value of availability pool. */
+    void setAvailabilityPool (const Availability_T& iAvailabilityPool) {
+      _availabilityPool = iAvailabilityPool;
+    }
+
+    /** Set the value of availability. */
+    void setAvailability (const Availability_T& iAvailability) {
+      _availability = iAvailability;
+    }
+
+    /** Set the current Bid-Price. */
+    void setCurrentBidPrice (const BidPrice_T& iBidPrice) {
+      _currentBidPrice = iBidPrice;
+    }
+
   public:
     // /////////// Display support methods /////////
     /** Dump a Business Object into an output stream.
@@ -45,7 +112,6 @@ namespace stdair {
         at the same level). */
     virtual const std::string describeShortKey() const = 0;
 
-    
   protected:
     /** Default constructors. */
     LegCabinContent (const BomKey_T&);
@@ -58,6 +124,27 @@ namespace stdair {
     // Attributes
     /** The key of both structure and content objects. */
     BomKey_T _key;
+    
+    /** Capacity of the cabin. */
+    CabinCapacity_T _capacity;
+
+    /** Sold seat into the cabin. */
+    NbOfBookings_T  _soldSeat;
+
+    /** Commited space for all segmentCabin composed by this LegCabin. */
+    CommitedSpace_T  _commitedSpace;
+
+    /** Availability Pool between capacity and commited spaces. */
+    Availability_T _availabilityPool;
+
+    /** Availability Pool between capacity and commited spaces. */
+    Availability_T _availability;
+
+    /** Bid Price Vector. */
+    BidPriceVector_T _bidPriceVector;
+
+    /** Current BidPrice. */
+    BidPrice_T _currentBidPrice;
   };
 
 }

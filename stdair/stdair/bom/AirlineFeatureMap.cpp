@@ -47,8 +47,8 @@ namespace stdair {
   }
 
   // //////////////////////////////////////////////////////////////////////
-  AirlineFeatureMap_T::iterator AirlineFeatureMap_T::
-  find (const MapKey_T& iKey) const {
+  AirlineFeatureMap_T::
+  iterator AirlineFeatureMap_T::find (const MapKey_T& iKey) const {
     return _airlineFeatureHolder.find (iKey);
   }
 

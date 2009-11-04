@@ -46,5 +46,11 @@ namespace stdair {
     return _legCabinHolder.mapREnd ();
   }
 
+  // //////////////////////////////////////////////////////////////////////
+  LegCabinMap_T::
+  iterator LegCabinMap_T::find (const MapKey_T& iKey) const {
+    return _legCabinHolder.find (iKey);
+  }
+  
 }
 

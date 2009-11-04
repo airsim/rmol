@@ -13,6 +13,7 @@
 namespace stdair {
   // Forward declarations.
   class FacBomContent;
+  class AirlineFeatureSet;
   struct BomRootKey_T;
   struct InventoryList_T;
   struct InventoryMap_T;
@@ -103,6 +104,19 @@ namespace stdair {
 
     /** Get a InventoryMap_T for iteration methods. */
     InventoryMap_T getInventoryMap () const;
+    
+    /** Get the reference of the AirlineFeatureSet object. */
+    const AirlineFeatureSet& getAirlineFeatureSet() const {
+      assert (_airlineFeatureSet != NULL);
+      return *_airlineFeatureSet;
+    }
+
+  public:
+    // //////////// Setters //////////////
+    /** Set the reference to the AirlineFeatureSet object. */
+    void setAirlineFeatureSet (const AirlineFeatureSet* ioAirlineFeatureSet_ptr){
+      _airlineFeatureSet = ioAirlineFeatureSet_ptr;
+    }
 
   private:     
     /** Retrieve the BOM structure object. */
@@ -124,6 +138,9 @@ namespace stdair {
     // Attributes
     /** Reference structure. */
     BomStructure_T& _bomRootStructure;
+    
+    /** Set of all AirlineFeatures.*/
+    const AirlineFeatureSet* _airlineFeatureSet;
   };
 
 }

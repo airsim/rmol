@@ -4,16 +4,18 @@
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
-// C
-#include <assert.h>
 // STL
+#include <cassert>
 #include <string>
 #include <vector>
+#include <iostream>
 // MPL
 #include <boost/mpl/vector.hpp>
 #include <boost/mpl/size.hpp>
 #include <boost/mpl/at.hpp>
 #include <boost/mpl/find.hpp>
+#include <boost/mpl/erase.hpp>
+#include <boost/mpl/begin_end.hpp>
 #include <boost/type_traits/is_same.hpp>
 // STDAIR
 #include <stdair/bom/BomChildrenHolderImp.hpp>
@@ -59,7 +61,7 @@ namespace stdair {
       assert (aBomStructure_ptr != NULL);
 
       // Initialise the children list of the BOM structure.
-      initChildrenList<BOM_STRUCTURE> (*aBomStructure_ptr);
+      initChildrenLists<BOM_STRUCTURE> (*aBomStructure_ptr);
       
       // The new object is added to the pool of structure objects
       _structurePool.push_back (aBomStructure_ptr);
@@ -127,7 +129,7 @@ namespace stdair {
         <br>Create the BomChildrenHolder objects corresponding to the
         list of children types of the given BOM structure. */
     template <typename BOM_STRUCTURE>
-    static void initChildrenList (BOM_STRUCTURE& ioBomStructure) {
+    static void initChildrenLists (BOM_STRUCTURE& ioBomStructure) {
       // Type for the childrend type list.
       typedef typename BOM_STRUCTURE::ChildrenBomTypeList_T CHILDREN_TYPE_LIST_T;
 
@@ -147,7 +149,7 @@ namespace stdair {
       
       ioBomStructure.setChildrenList (lSecondBomChildrenHolder);
     }
-        
+
   private:
     /** The unique instance.*/
     static FacBomStructure* _instance;

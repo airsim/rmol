@@ -46,5 +46,11 @@ namespace stdair {
     return _legDateHolder.mapREnd ();
   }
 
+  // //////////////////////////////////////////////////////////////////////
+  LegDateMap_T::
+  iterator LegDateMap_T::find (const MapKey_T& iKey) const {
+    return _legDateHolder.find (iKey);
+  }
+  
 }
 

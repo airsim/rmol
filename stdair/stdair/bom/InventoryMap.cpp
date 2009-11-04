@@ -46,5 +46,11 @@ namespace stdair {
     return _inventoryHolder.mapREnd ();
   }
 
+  // //////////////////////////////////////////////////////////////////////
+  InventoryMap_T::
+  iterator InventoryMap_T::find (const MapKey_T& iKey) const {
+    return _inventoryHolder.find (iKey);
+  }
+
 }
 

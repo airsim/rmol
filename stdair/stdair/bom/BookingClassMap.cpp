@@ -45,6 +45,12 @@ namespace stdair {
   BookingClassMap_T::reverse_iterator BookingClassMap_T::rend () const {
     return _bookingClassHolder.mapREnd ();
   }
-
+  
+  // //////////////////////////////////////////////////////////////////////
+  BookingClassMap_T::
+  iterator BookingClassMap_T::find (const MapKey_T& iKey) const {
+    return _bookingClassHolder.find (iKey);
+  }
+  
 }
 

@@ -4,12 +4,22 @@
 // STL
 #include <cassert>
 // STDAIR
+#include <stdair/basic/BasConst_BookingClass.hpp>
+#include <stdair/basic/BasConst_Inventory.hpp>
 #include <stdair/bom/LegCabinContent.hpp>
 
 namespace stdair {
 
   // ////////////////////////////////////////////////////////////////////
-  LegCabinContent::LegCabinContent (const BomKey_T& iKey) : _key (iKey) {
+  LegCabinContent::LegCabinContent (const BomKey_T& iKey)
+  : _key (iKey),
+    _capacity (DEFAULT_CABIN_CAPACITY),
+    _soldSeat (DEFAULT_CLASS_NB_OF_BOOKINGS),
+    _commitedSpace (DEFAULT_COMMITED_SPACE),
+    _availabilityPool (DEFAULT_CLASS_AVAILABILITY),
+    _availability (DEFAULT_CLASS_AVAILABILITY),
+    _bidPriceVector (DEFAULT_BID_PRICE_VECTOR),
+    _currentBidPrice (DEFAULT_BID_PRICE) {
   }
 
   // ////////////////////////////////////////////////////////////////////

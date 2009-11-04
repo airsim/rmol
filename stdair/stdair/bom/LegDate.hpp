@@ -10,6 +10,7 @@
 #include <stdair/bom/LegDateContent.hpp>
 #include <stdair/bom/LegDateTypes.hpp>
 #include <stdair/bom/LegCabinTypes.hpp>
+#include <stdair/bom/SegmentDateMap.hpp>
 
 namespace stdair {
   // Forward declarations
@@ -38,6 +39,42 @@ namespace stdair {
     /** Definition allowing to retrieve the associated 
          BOM content child type. */
     typedef LegCabin ContentChild_T;
+
+  public:
+    // /////////// Getters ////////////
+//     /** Get the airline code (from the parent class). */
+//     const AirlineCode_T& getAirlineCode() const;
+      
+//     /** Get the flight number (from the parent class). */
+//     const FlightNumber_T& getFlightNumber() const;
+
+//     /** Get the flight-date (from the parent class). */
+//     const Date_T& getFlightDateDate() const;
+
+// /** Retrieve, if existing, the LegCabin corresponding to the
+//     given cabin code (LegCabin key).
+//     <br>If not existing, return the NULL pointer. */
+//     LegCabin* getLegCabin (const CabinCode_T& iCabinCode) const;
+    
+   //  // ///////// Counting methods  //////////
+//     /** Update the counters of booked seats. */
+//     void updateBookingsAndSeatCounters();
+
+//     /** Update the values of commited spaces. */
+//     void updateCommitedSpaces() const;
+      
+//     /** Update the availability pools for Legs. */
+//     void updateAvailabilityPools() const;
+      
+//     /** Update the availabilities for Legs. */
+//     void updateAllAvailabilities() const;
+
+//     /** Reset the LegDate to its initial state. */
+//     void reset();
+
+//     /** Update the capacity and the ASK value of this leg.*/ 
+//     void updateCapacityAndLegASK(const CabinCapacity_T&,
+//                                  const AnalysisStatus_T&);
     
   public:
     // /////////// Display support methods /////////
@@ -68,6 +105,12 @@ namespace stdair {
     /** Get a LegCabinMap_T for iteration methods. */
     LegCabinMap_T getLegCabinMap () const;
 
+    /** Retrieve, if existing, the SegmentDate corresponding to the
+        given board point.
+        <br>If not existing, return the NULL pointer. */
+    // SegmentDate* getSegmentDate (const std::string& iSegmentDateKey) const;
+
+
   private:
     /** Retrieve the BOM structure object. */
     BomStructure_T& getBomStructure () {
@@ -89,6 +132,10 @@ namespace stdair {
     // Attributes
     /** Reference structure. */
     BomStructure_T& _legDateStructure;
+
+    /** List of crossing SegmentDate objects. */
+    //SegmentDateMap_T _segmentDateList;
+    
   };
 
 }

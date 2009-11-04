@@ -45,6 +45,12 @@ namespace stdair {
   SegmentDateMap_T::reverse_iterator SegmentDateMap_T::rend () const {
     return _segmentDateHolder.mapREnd ();
   }
+  
+  // //////////////////////////////////////////////////////////////////////
+  SegmentDateMap_T::
+  iterator SegmentDateMap_T::find (const MapKey_T& iKey) const {
+    return _segmentDateHolder.find (iKey);
+  }
 
 }
 

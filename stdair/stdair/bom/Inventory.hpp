@@ -10,10 +10,12 @@
 #include <stdair/bom/InventoryTypes.hpp>
 #include <stdair/bom/FlightDateTypes.hpp>
 #include <stdair/bom/InventoryContent.hpp>
+#include <stdair/bom/BookingClassMap.hpp>
 
 namespace stdair {
   // Forward declarations
   class FacBomContent;
+  class AirlineFeature;
   struct InventoryKey_T;
   struct FlightDateList_T;
   struct FlightDateMap_T;
@@ -72,12 +74,50 @@ namespace stdair {
     /** Get a FlightDateMap_T for iteration methods. */
     FlightDateMap_T getFlightDateMap () const;
     
+    /** Get the airline feature. */
+    const AirlineFeature* getAirlineFeature () const {
+      return _airlineFeature;
+    }
+    
+    /** Retrieve, if existing, the FlightDate corresponding to the
+        given flight number and flight date (FlightDate key).
+        <br>If not existing, return the NULL pointer. */
+    // FlightDate* getFlightDate (const FlightNumber_T& iFlightNumber,
+//                                const Date_T& iFlightDate) const;
+    
+  public:
+    // /////////// Setters ////////////
+    /** Set the airline feature. */
+    void setAirlineFeature (const AirlineFeature* ioAirlineFeaturePtr) {
+      _airlineFeature = ioAirlineFeaturePtr;
+    }
+
+  public:
+    // /////////// Business methods //////////
+    /** Return the BookingClass corresponding to a given key.
+        <br>When no BookingClass, matching the given key, can be found,
+        the NULL pointer is returned.
+        <br>Otherwise, a pointer is returned on the BookingClass object. */
+    // BookingClass* getBookingClass (const std::string&) const;
+    
+    /** Clean the list of classes. */
+   //  void cleanClassList();
+    
   private:
     /** Retrieve the BOM structure object. */
     BomStructure_T& getBomStructure () {
       return _inventoryStructure;
     }
-
+    
+    /** Retrieve, if existing, the FlightDate corresponding to the
+        given FlightDate key (InventoryKey + flight number).
+        <br>If not existing, return the NULL pointer.
+        <br>Note that the string must be formed thanks to the
+        FlightDateKey::describeShort() method, as that latter is used when
+        inserting the FlightDate within the Inventory dedicated list. */
+   //  FlightDate*
+//     getFlightDateInternal (const std::string& iFlightDateKey) const;
+    
   protected:
     /** Constructors are private so as to force the usage of the Factory
         layer. */
@@ -93,6 +133,12 @@ namespace stdair {
     // Attributes
     /** Reference structure. */
     BomStructure_T& _inventoryStructure;
+    
+    /** The feature set of the correspondent airline. */
+    const AirlineFeature* _airlineFeature;
+
+    /** List of booking classes. */
+    //BookingClassMap_T _bookingClassList;
   };
 
 }

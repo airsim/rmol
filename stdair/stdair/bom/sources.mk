@@ -1,4 +1,5 @@
 bom_h_sources = \
+				$(top_srcdir)/stdair/bom/StructAbstract.hpp \
 				$(top_srcdir)/stdair/bom/BomKey.hpp \
 				$(top_srcdir)/stdair/bom/BomRootKey.hpp \
 				$(top_srcdir)/stdair/bom/InventoryKey.hpp \
@@ -73,7 +74,8 @@ bom_h_sources = \
 				$(top_srcdir)/stdair/bom/BomChildrenHolder.hpp \
 				$(top_srcdir)/stdair/bom/BomChildrenHolderImp.hpp \
 				$(top_srcdir)/stdair/bom/BomIterator.hpp \
-				$(top_srcdir)/stdair/bom/OptimizerStruct.hpp
+				$(top_srcdir)/stdair/bom/OptimizerStruct.hpp \
+				$(top_srcdir)/stdair/bom/DoWStruct.hpp
 bom_cc_sources = \
 				$(top_srcdir)/stdair/bom/BomRootKey.cpp \
 				$(top_srcdir)/stdair/bom/InventoryKey.cpp \
@@ -121,5 +123,6 @@ bom_cc_sources = \
 				$(top_srcdir)/stdair/bom/AirlineFeatureContent.cpp \
 				$(top_srcdir)/stdair/bom/AirlineFeatureList.cpp \
 				$(top_srcdir)/stdair/bom/AirlineFeatureMap.cpp \
-				$(top_srcdir)/stdair/bom/OptimizerStruct.cpp
+				$(top_srcdir)/stdair/bom/OptimizerStruct.cpp \
+				$(top_srcdir)/stdair/bom/DoWStruct.cpp
 

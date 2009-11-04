@@ -50,6 +50,10 @@ namespace stdair {
         return the reverse iterator at the end of the map. */
     reverse_iterator rend () const;
 
+    /** Retrieve, if existing, the SegmentDate corresponding to the
+        given key. */
+    iterator find (const MapKey_T&) const;
+    
   public:
     /** Default constructors. */
     SegmentDateMap_T ();

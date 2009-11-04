@@ -51,6 +51,56 @@ namespace stdair {
     typedef LegDate SecondContentChild_T;
 
   public:
+    // /////////// Getters /////////////
+    /** Get a SegmentDateList_T for iteration methods. */
+    SegmentDateList_T getSegmentDateList () const;
+
+    /** Get a SegmentDateMap_T for iteration methods. */
+    SegmentDateMap_T getSegmentDateMap () const;
+
+    /** Get a LegDateList_T for iteration methods. */
+    LegDateList_T getLegDateList () const;
+
+    /** Get a LegDateMap_T for iteration methods. */
+    LegDateMap_T getLegDateMap () const;
+
+    /** Get the list of class structures */
+    // BookingClassMap_T getClassList() const {
+//       return _bookingClassList;
+//     }
+
+    /** Get the airline code (from the parent class). */
+    //    const AirlineCode_T& getAirlineCode() const;
+          
+//     /** Retrieve, if existing, the LegDate corresponding to the
+//         given board point (LegDate key).
+//         <br>If not existing, return the NULL pointer. */
+//     LegDate* getLegDate (const AirportCode_T& iBoardPoint) const;
+
+//     /** Retrieve, if existing, the SegmentDate corresponding to the
+//         given (board point, off point) pair (SegmentDate key).
+//         <br>If not existing, return the NULL pointer. */
+//     SegmentDate* getSegmentDate (const AirportCode_T& iBoardPoint,
+//                                  const AirportCode_T& iOffPoint) const;
+
+//     /** Return the BookingClass corresponding to a given key.
+//         <br>When no BookingClass, matching the given key, can be found,
+//         the NULL pointer is returned.
+//         <br>Otherwise, a pointer is returned on the BookingClass object. */
+//     BookingClass* getBookingClass (const std::string&) const;
+
+//     /** Retrieve, if existing, theOnD corresponding to the
+//         given OnDKey.
+//         <br>If not existing, return the NULL pointer. */
+//     OnD* getOnD (const OnDKey_T& iOnDKey) const;
+  
+  private:
+    /** Retrieve the BOM structure object. */
+    BomStructure_T& getBomStructure () {
+      return _flightDateStructure;
+    }
+
+  public:
     // /////////// Display support methods /////////
     /** Dump a Business Object into an output stream.
         @param ostream& the output stream. */
@@ -71,25 +121,8 @@ namespace stdair {
         at the same level). */
     const std::string describeShortKey() const;
     
-  public:
-    // /////////// Getters /////////////
-    /** Get a SegmentDateList_T for iteration methods. */
-    SegmentDateList_T getSegmentDateList () const;
-
-    /** Get a SegmentDateMap_T for iteration methods. */
-    SegmentDateMap_T getSegmentDateMap () const;
-
-    /** Get a LegDateList_T for iteration methods. */
-    LegDateList_T getLegDateList () const;
-
-    /** Get a LegDateMap_T for iteration methods. */
-    LegDateMap_T getLegDateMap () const;
-  
-  private:
-    /** Retrieve the BOM structure object. */
-    BomStructure_T& getBomStructure () {
-      return _flightDateStructure;
-    }
+    /** Display the full FlightDate context. */
+    //const std::string display() const;
 
   protected:
     /** Constructors are private so as to force the usage of the Factory
@@ -106,6 +139,16 @@ namespace stdair {
     // Attributes
     /** Reference structure. */
     BomStructure_T& _flightDateStructure;
+    
+//     /** Children: list of BookingClass objects. */
+//     BookingClassMap_T _bookingClassList;
+
+//     /** List of similar flight date (for RM purposes). */
+//     FlightDateList_T _similarFlightDateList;
+
+//     /** List of OnDs. */
+//     OnDList_T _onDList;
+
   };
 
 }

@@ -50,5 +50,14 @@ namespace stdair {
     return _legCabinStructure.describeShortKey();
   }
   
+  // //////////////////////////////////////////////////////////////////////
+  void LegCabin::setCapacity(const CabinCapacity_T& iCapacity,
+                             const AnalysisStatus_T& iAnalysisStatus) {
+    _capacity = iCapacity;
+    // LegDate* lLegDate = getParent();
+//     assert (lLegDate!= NULL);
+//       lLegDate->updateCapacityAndLegASK(iCapacity, iAnalysisStatus);
+  }
+  
 }
 
