@@ -7,8 +7,8 @@
 #include <stdair/bom/AirlineFeatureSetStructure.hpp>
 #include <stdair/bom/AirlineFeatureSet.hpp>
 #include <stdair/bom/AirlineFeature.hpp>
-#include <stdair/bom/AirlineFeatureList.hpp>
-#include <stdair/bom/AirlineFeatureMap.hpp>
+#include <stdair/bom/BomList.hpp>
+#include <stdair/bom/BomMap.hpp>
 
 namespace stdair {
 

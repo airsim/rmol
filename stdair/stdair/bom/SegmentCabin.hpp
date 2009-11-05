@@ -10,14 +10,11 @@
 #include <stdair/bom/SegmentCabinContent.hpp>
 #include <stdair/bom/SegmentCabinTypes.hpp>
 #include <stdair/bom/BookingClassTypes.hpp>
-#include <stdair/bom/LegCabinList.hpp>
 
 namespace stdair {
   // Forward declarations
   class FacBomContent;
   struct SegmentCabinKey_T;
-  struct BookingClassList_T;
-  struct BookingClassMap_T;
 
   /** Class representing the actual functional/business content for a
       segment-date. */

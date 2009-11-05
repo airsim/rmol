@@ -6,9 +6,9 @@
 // STDAIR
 #include <stdair/bom/BomRootStructure.hpp>
 #include <stdair/bom/BomRoot.hpp>
+#include <stdair/bom/BomList.hpp>
+#include <stdair/bom/BomMap.hpp>
 #include <stdair/bom/Inventory.hpp>
-#include <stdair/bom/InventoryList.hpp>
-#include <stdair/bom/InventoryMap.hpp>
 
 namespace stdair {
 

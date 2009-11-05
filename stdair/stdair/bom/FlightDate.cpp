@@ -10,11 +10,9 @@
 #include <stdair/bom/FlightDateStructure.hpp>
 #include <stdair/bom/FlightDate.hpp>
 #include <stdair/bom/SegmentDate.hpp>
-#include <stdair/bom/SegmentDateList.hpp>
-#include <stdair/bom/SegmentDateMap.hpp>
 #include <stdair/bom/LegDate.hpp>
-#include <stdair/bom/LegDateList.hpp>
-#include <stdair/bom/LegDateMap.hpp>
+#include <stdair/bom/BomList.hpp>
+#include <stdair/bom/BomMap.hpp>
 
 namespace stdair {
 

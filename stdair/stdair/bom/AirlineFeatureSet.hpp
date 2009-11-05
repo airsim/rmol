@@ -15,8 +15,6 @@ namespace stdair {
   class FacBomContent;
   class AirlineFeature;
   struct AirlineFeatureSetKey_T;
-  struct AirlineFeatureList_T;
-  struct AirlineFeatureMap_T;
   
   /** Class representing the actual functional/business content
       for the Bom root. */

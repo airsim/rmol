@@ -7,8 +7,8 @@
 #include <stdair/bom/SegmentDateStructure.hpp>
 #include <stdair/bom/SegmentDate.hpp>
 #include <stdair/bom/SegmentCabin.hpp>
-#include <stdair/bom/SegmentCabinList.hpp>
-#include <stdair/bom/SegmentCabinMap.hpp>
+#include <stdair/bom/BomList.hpp>
+#include <stdair/bom/BomMap.hpp>
 
 namespace stdair {
 

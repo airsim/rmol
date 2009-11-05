@@ -9,7 +9,6 @@
 #include <stdair/bom/LegCabinStructure.hpp>
 #include <stdair/bom/LegCabinContent.hpp>
 #include <stdair/bom/LegCabinTypes.hpp>
-#include <stdair/bom/SegmentCabinMap.hpp>
 
 namespace stdair {
   // Forward declarations

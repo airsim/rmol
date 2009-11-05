@@ -10,15 +10,13 @@
 #include <stdair/bom/InventoryTypes.hpp>
 #include <stdair/bom/FlightDateTypes.hpp>
 #include <stdair/bom/InventoryContent.hpp>
-#include <stdair/bom/BookingClassMap.hpp>
 
 namespace stdair {
   // Forward declarations
   class FacBomContent;
   class AirlineFeature;
+  class BookingClass;
   struct InventoryKey_T;
-  struct FlightDateList_T;
-  struct FlightDateMap_T;
   
   /** Class representing the actual functional/business content for
       an airline inventory. */
@@ -43,6 +41,9 @@ namespace stdair {
     /** Definition allowing to retrieve the associated  BOM content child
         type. */
     typedef FlightDate ContentChild_T;
+
+    /** Definition allowing to retrieve the specific BookingClass type. */
+    typedef BookingClass BookingClassContent_T;
     // /////////////////////////////////////////////////////////////////////////
 
   public:
@@ -138,7 +139,7 @@ namespace stdair {
     const AirlineFeature* _airlineFeature;
 
     /** List of booking classes. */
-    //BookingClassMap_T _bookingClassList;
+    //BookingClassHolder_T _bookingClassList;
   };
 
 }

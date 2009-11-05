@@ -49,6 +49,9 @@ namespace stdair {
     /** Define the  children bom holder type. */
     typedef BomChildrenHolderImp<ContentChild_T> ChildrenBomHolder_T;
 
+    /** Define the  children booking class holder type. */
+    typedef BomChildrenHolderImp<typename BOM_CONTENT::BookingClassContent_T> BookingClassHolder_T;
+
   public:
     // /////////// Getters /////////////
     /** Get the (parent) BomStructureRoot object. */
@@ -138,6 +141,9 @@ namespace stdair {
 
     /** List of flight-dates. */
     ChildrenBomHolder_T* _childrenList;
+
+    /** List of booking classes. */
+    BookingClassHolder_T* _bookingClassHolder;
   };
 
 }

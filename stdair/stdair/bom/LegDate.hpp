@@ -10,14 +10,11 @@
 #include <stdair/bom/LegDateContent.hpp>
 #include <stdair/bom/LegDateTypes.hpp>
 #include <stdair/bom/LegCabinTypes.hpp>
-#include <stdair/bom/SegmentDateMap.hpp>
 
 namespace stdair {
   // Forward declarations
   class FacBomContent;
   struct LegDateKey_T;
-  struct LegCabinList_T;
-  struct LegCabinMap_T;
 
   /** Class representing the actual functional/business content for a
       leg-date. */

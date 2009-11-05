@@ -13,6 +13,8 @@ namespace stdair {
 
   // Forward declarations.
   template <typename BOM_CONTENT> class InventoryStructure;
+  template <typename BOM> struct BomList_T;
+  template <typename BOM> struct BomMap_T;
   class Inventory;
   
   /** Define the Inventory structure. */
@@ -23,6 +25,12 @@ namespace stdair {
 
   /** Define the Inventory structure map. */
   typedef std::map<const std::string, InventoryStructure_T*> InventoryStructureMap_T;
+
+  /** Define the Inventory list. */
+  typedef BomList_T<Inventory> InventoryList_T;
+
+  /** Define the Inventory map. */
+  typedef BomMap_T<Inventory> InventoryMap_T;
   
 }
 #endif // __STDAIR_BOM_INVENTORYTYPES_HPP

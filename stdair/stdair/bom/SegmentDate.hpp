@@ -15,8 +15,6 @@ namespace stdair {
   // Forward declarations
   class FacBomContent;
   struct SegmentDateKey_T;
-  struct SegmentCabinList_T;
-  struct SegmentCabinMap_T;
 
   /** Class representing the actual functional/business content for a
       segment-date. */

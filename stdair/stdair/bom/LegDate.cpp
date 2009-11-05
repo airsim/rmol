@@ -7,8 +7,8 @@
 #include <stdair/bom/LegDateStructure.hpp>
 #include <stdair/bom/LegDate.hpp>
 #include <stdair/bom/LegCabin.hpp>
-#include <stdair/bom/LegCabinList.hpp>
-#include <stdair/bom/LegCabinMap.hpp>
+#include <stdair/bom/BomList.hpp>
+#include <stdair/bom/BomMap.hpp>
 
 namespace stdair {
 

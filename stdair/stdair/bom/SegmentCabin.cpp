@@ -7,8 +7,8 @@
 #include <stdair/bom/SegmentCabinStructure.hpp>
 #include <stdair/bom/SegmentCabin.hpp>
 #include <stdair/bom/BookingClass.hpp>
-#include <stdair/bom/BookingClassList.hpp>
-#include <stdair/bom/BookingClassMap.hpp>
+#include <stdair/bom/BomList.hpp>
+#include <stdair/bom/BomMap.hpp>
 
 namespace stdair {
 

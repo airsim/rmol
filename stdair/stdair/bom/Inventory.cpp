@@ -7,8 +7,8 @@
 #include <stdair/bom/InventoryStructure.hpp>
 #include <stdair/bom/Inventory.hpp>
 #include <stdair/bom/FlightDate.hpp>
-#include <stdair/bom/FlightDateList.hpp>
-#include <stdair/bom/FlightDateMap.hpp>
+#include <stdair/bom/BomList.hpp>
+#include <stdair/bom/BomMap.hpp>
 
 namespace stdair {
 
@@ -34,6 +34,7 @@ namespace stdair {
   // //////////////////////////////////////////////////////////////////////
   std::string Inventory::toString() const {
     std::ostringstream oStr;
+    oStr << _key.toString();
     return oStr.str();
   }
     
