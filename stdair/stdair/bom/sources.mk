@@ -52,7 +52,7 @@ bom_h_sources = \
 				$(top_srcdir)/stdair/bom/AirlineFeatureSet.hpp \
 				$(top_srcdir)/stdair/bom/AirlineFeatureSetContent.hpp \
 				$(top_srcdir)/stdair/bom/AirlineFeatureSetTypes.hpp \
-				$(top_srcdir)/stdair/bom/AirlineFeatureSetStructure.hpp \ 
+				$(top_srcdir)/stdair/bom/AirlineFeatureSetStructure.hpp \
 				$(top_srcdir)/stdair/bom/AirlineFeature.hpp \
 				$(top_srcdir)/stdair/bom/AirlineFeatureContent.hpp \
 				$(top_srcdir)/stdair/bom/AirlineFeatureTypes.hpp \
