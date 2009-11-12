@@ -34,7 +34,12 @@ namespace stdair {
        when among children of a given parent Business Object.
        <br>For instance, "H" and "K" allow to differentiate among two
        marketing classes for the same segment-date. */
-    virtual std::string toString() const { return std::string("Hello!"); }
+    virtual const std::string toString() const { return std::string("Hello!"); }
+
+    /** Display of the key.
+     <br>That string is unique at all levels.
+    */
+    virtual const std::string describe() const { return toString(); }
   };
 
 }

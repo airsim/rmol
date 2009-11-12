@@ -35,7 +35,10 @@ namespace stdair {
        when among children of a given parent Business Object.
        <br>For instance, "H" and "K" allow to differentiate among two
        marketing classes for the same segment-date. */
-    std::string toString() const;
+    const std::string toString() const;
+    
+    /** Display of the key. */
+    const std::string describe() const;
     
   private:
     // Attributes

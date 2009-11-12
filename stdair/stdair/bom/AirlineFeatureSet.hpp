@@ -14,6 +14,7 @@ namespace stdair {
   // Forward declarations.
   class FacBomContent;
   class AirlineFeature;
+  struct AirlineFeatureKey_T;
   struct AirlineFeatureSetKey_T;
   
   /** Class representing the actual functional/business content
@@ -63,7 +64,7 @@ namespace stdair {
     /** Retrieve, if existing, the Airline features corresponding to the
         given airline code.
         <br>If not existing, return the NULL pointer. */
-    const AirlineFeature* getAirlineFeature (const AirlineCode_T&) const;
+    AirlineFeature* getAirlineFeature (const AirlineFeatureKey_T&) const;
 
     /** Get a AirlineFeatureList_T for iteration methods. */
     AirlineFeatureList_T getAirlineFeatureList () const;
@@ -74,7 +75,7 @@ namespace stdair {
   private:     
     /** Retrieve the BOM structure object. */
     BomStructure_T& getBomStructure () {
-      return _bomRootStructure;
+      return _bomStructure;
     }
     
   protected:
@@ -90,7 +91,7 @@ namespace stdair {
   private:
     // Attributes
     /** Reference structure. */
-    BomStructure_T& _bomRootStructure;
+    BomStructure_T& _bomStructure;
   };
 
 }

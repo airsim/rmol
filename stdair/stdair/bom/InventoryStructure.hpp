@@ -12,8 +12,12 @@
 #include <stdair/bom/BomStructureDummy.hpp>
 #include <stdair/bom/BomContentDummy.hpp>
 #include <stdair/bom/FlightDateStructure.hpp>
+#include <stdair/bom/FlightDateKey.hpp>
 
 namespace stdair {
+  // Forward declarations.
+  template <typename BOM> struct BomMap_T;
+
   /** Wrapper class aimed at holding the actual content, modeled
       by an external specific Inventory class (for instance,
       in the AIRSCHED library). */
@@ -34,6 +38,13 @@ namespace stdair {
     /** Definition allowing to retrieve the  children type of the
         BOM_CONTENT. */
     typedef typename BOM_CONTENT::ContentChild_T ContentChild_T;
+    
+    /** Definition allowing to retrieve the  key type of the
+        ContentChild_T. */
+    typedef FlightDateKey_T ChildKey_T;
+
+    /** Define the map of ContentChild_T. */
+    typedef BomMap_T<ContentChild_T> ChildrenMap_T;
 
     /** Definition allowing to retrieve the associated parent
         BOM structure type. */
@@ -76,10 +87,30 @@ namespace stdair {
       assert (_childrenList != NULL);
       return *_childrenList;
     }
-
-     /** Get the list of flight-dates. */
+    
+    /** Get the list of flight-dates. */
     void getChildrenList (ChildrenBomHolder_T*& ioChildrenList) {
       ioChildrenList = _childrenList;
+    }
+
+    /** Retrieve, if existing, the flight-date corresponding to the
+        given key.
+        <br>If not exissting, return the NULL pointer. */
+    ContentChild_T* getContentChild (const ChildKey_T& iKey) const {
+      ContentChild_T* oContentChild_ptr= NULL;
+      
+      ChildrenMap_T lChildrenMap (getChildrenList());
+      const MapKey_T lMapKey = iKey.toString();
+      
+      typename ChildrenMap_T::iterator itContentChild =
+        lChildrenMap.find (lMapKey);
+      
+      if (itContentChild != lChildrenMap.end()) {
+        oContentChild_ptr = itContentChild->second;
+        assert (oContentChild_ptr != NULL);
+      }
+      
+      return oContentChild_ptr;
     }
     
   private:
@@ -95,6 +126,11 @@ namespace stdair {
     /** Set the  children list. */
     void setChildrenList (ChildrenBomHolder_T& ioChildrenList) {
       _childrenList = &ioChildrenList;
+    }
+    
+    /** Set the  booking class list. */
+    void setBookingClassHolder (BookingClassHolder_T& ioBookingClassHolder) {
+      _bookingClassHolder = &ioBookingClassHolder;
     }
 
   public:
@@ -125,7 +161,7 @@ namespace stdair {
         layer. */
     /** Default constructors. */
     InventoryStructure () : _parent (NULL), _content (NULL),
-                            _childrenList (NULL) { }
+                            _childrenList (NULL), _bookingClassHolder (NULL) { }
 
     InventoryStructure (const InventoryStructure&);
     /** Destructor. */

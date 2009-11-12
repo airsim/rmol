@@ -24,10 +24,15 @@ namespace stdair {
   }
   
   // ////////////////////////////////////////////////////////////////////
-  std::string BomRootKey_T::toString() const {
+  const std::string BomRootKey_T::toString() const {
     std::ostringstream oStr;
     oStr << " -- ROOT -- ";
     return oStr.str();
+  }
+
+  // ////////////////////////////////////////////////////////////////////
+  const std::string BomRootKey_T::describe() const {
+    return toString();
   }
   
 }

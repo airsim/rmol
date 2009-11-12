@@ -109,7 +109,14 @@ namespace stdair {
     MapReverseIterator_T mapREnd () const {
       return _bomChildrenList.rend();
     }
+
     
+    // /////////// Other operators /////////////
+    /** Get the size of the list. */
+    const unsigned int size () const {
+      return _bomChildrenOrderedList.size();
+    }
+
     /** Retrieve, if existing, the bom corresponding to the given key. */
     MapIterator_T find (const MapKey_T& iKey) const {
       return _bomChildrenList.find (iKey);

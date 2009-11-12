@@ -50,6 +50,10 @@ namespace stdair {
         return the reverse iterator at the end of the list. */
     reverse_iterator rend () const { return _bomHolder.listREnd(); }
 
+    // /////////// Other operators /////////////
+    /** Get the size of the list. */
+    const unsigned int size () const { return _bomHolder.size(); }
+
   public:
     /** Default constructors. */
     BomList_T ();

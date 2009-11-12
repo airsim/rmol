@@ -89,22 +89,65 @@ namespace stdair {
       ioBomParent.getChildrenList (lBomChildrenHolder_ptr);
       assert (lBomChildrenHolder_ptr != NULL);
       
-      // Retrieve the short key
-      const typename BOM_STRUCTURE_CHILD::BomKey_T& lBomChildKey =
-        ioBomChild.getKey();
-      const std::string& lBomChildKeyStr = lBomChildKey.toString();
+      bool hasInsertBeenSuccessful =
+        addBomObjecdToBomHolder <typename BOM_STRUCTURE_CHILD::Content_T>
+        (*lBomChildrenHolder_ptr, ioBomChild);
+
+      return hasInsertBeenSuccessful;
+    }
+
+    /** Add a BOM object into a dedicated BOM holder by using the
+        short key of the object. */
+    template <typename BOM_CONTENT>
+    static bool addBomObjecdToBomHolder (BomChildrenHolderImp<BOM_CONTENT>& ioBomHolder, typename BOM_CONTENT::BomStructure_T& ioBomStructure) {
+      // Retrieve the bom structure type.
+      typedef typename BOM_CONTENT::BomStructure_T BOM_STRUCTURE_T;
+      // Define the bom holder type.
+      typedef BomChildrenHolderImp<BOM_CONTENT> BOM_HOLDER_T;
       
-      // Insert the child structure object in the dedicated lists
-      typedef typename BOM_CHILDREN_HOLDER_T::BomChildrenList_T BOM_CHILDREN_LIST_T;
+      // Retrieve the short key
+      const typename BOM_STRUCTURE_T::BomKey_T& lBomKey = ioBomStructure.getKey();
+      const std::string& lBomKeyStr = lBomKey.toString();
+      
+      // Insert the structure object in the dedicated lists
+      typedef typename BOM_HOLDER_T::BomChildrenList_T BOM_LIST_T;
       const bool hasInsertBeenSuccessful =
-        lBomChildrenHolder_ptr->_bomChildrenList.
-        insert (typename BOM_CHILDREN_LIST_T::value_type (lBomChildKeyStr,
-                                                          &ioBomChild)).second;
+        ioBomHolder._bomChildrenList.
+        insert (typename BOM_LIST_T::value_type (lBomKeyStr,
+                                                 &ioBomStructure)).second;
       if (hasInsertBeenSuccessful == false) {
         return hasInsertBeenSuccessful;
       }
-
-      lBomChildrenHolder_ptr->_bomChildrenOrderedList.push_back (&ioBomChild);
+      
+      ioBomHolder._bomChildrenOrderedList.push_back (&ioBomStructure);
+      
+      return true;
+    }
+    
+    /** Add a BOM object into a dedicated BOM holder by using the
+        full key of the object. */
+    template <typename BOM_CONTENT>
+    static bool addFullBomObjecdToBomHolder (BomChildrenHolderImp<BOM_CONTENT> ioBomHolder, typename BOM_CONTENT::BomStructure_T& ioBomStructure) {
+      // Retrieve the bom structure type.
+      typedef typename BOM_CONTENT::BomStructure_T BOM_STRUCTURE_T;
+      // Define the bom holder type.
+      typedef BomChildrenHolderImp<BOM_CONTENT> BOM_HOLDER_T;
+      
+      // Retrieve the short key
+      const typename BOM_STRUCTURE_T::BomKey_T& lBomKey = ioBomStructure.getKey();
+      const std::string& lBomKeyStr = lBomKey.describe();
+      
+      // Insert the structure object in the dedicated lists
+      typedef typename BOM_HOLDER_T::BomChildrenList_T BOM_LIST_T;
+      const bool hasInsertBeenSuccessful =
+        ioBomHolder._bomChildrenList.
+        insert (typename BOM_LIST_T::value_type (lBomKeyStr,
+                                                 &ioBomStructure)).second;
+      if (hasInsertBeenSuccessful == false) {
+        return hasInsertBeenSuccessful;
+      }
+      
+      ioBomHolder._bomChildrenOrderedList.push_back (&ioBomStructure);
       
       return true;
     }

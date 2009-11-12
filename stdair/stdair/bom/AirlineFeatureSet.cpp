@@ -17,7 +17,7 @@ namespace stdair {
   AirlineFeatureSet (const BomKey_T& iKey,
                      BomStructure_T& ioAirlineFeatureSetStructure)
     : AirlineFeatureSetContent (iKey), 
-      _bomRootStructure (ioAirlineFeatureSetStructure) {
+      _bomStructure (ioAirlineFeatureSetStructure) {
   }
 
   // ////////////////////////////////////////////////////////////////////
@@ -48,29 +48,18 @@ namespace stdair {
 
   // //////////////////////////////////////////////////////////////////////
   AirlineFeatureList_T AirlineFeatureSet::getAirlineFeatureList () const {
-    return _bomRootStructure.getChildrenList();
+    return _bomStructure.getChildrenList();
   }
 
   // //////////////////////////////////////////////////////////////////////
   AirlineFeatureMap_T AirlineFeatureSet::getAirlineFeatureMap () const {
-    return _bomRootStructure.getChildrenList();
+    return _bomStructure.getChildrenList();
   }
 
   // //////////////////////////////////////////////////////////////////////
-  const AirlineFeature* AirlineFeatureSet::
-  getAirlineFeature (const AirlineCode_T& iAirlineCode) const {
-
-    AirlineFeatureMap_T lAirlineFeatureMap = getAirlineFeatureMap ();
-    AirlineFeatureMap_T::iterator itAirlineFeature =
-      lAirlineFeatureMap.find (iAirlineCode);
-
-    if (itAirlineFeature != lAirlineFeatureMap.end()) {
-      const AirlineFeature* oAirlineFeature_ptr = itAirlineFeature->second;
-      assert (oAirlineFeature_ptr != NULL);
-      return oAirlineFeature_ptr;
-    }
-    
-    return NULL;
+  AirlineFeature* AirlineFeatureSet::
+  getAirlineFeature (const AirlineFeatureKey_T& iKey) const {
+    return _bomStructure.getContentChild (iKey);
   }
   
 }

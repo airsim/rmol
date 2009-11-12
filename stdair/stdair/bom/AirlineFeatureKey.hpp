@@ -7,11 +7,17 @@
 // STDAIR
 #include <stdair/STDAIR_Types.hpp>
 #include <stdair/bom/BomKey.hpp>
+#include <stdair/bom/AirlineFeatureSetKey.hpp>
 
 namespace stdair {
   /** Key of AirlineFeature. */
   struct AirlineFeatureKey_T : public BomKey_T {
-
+    
+  public:
+    // /////////// Typedefs ////////////
+    /** Definition allowing to retrieve the parent key type. */
+    typedef AirlineFeatureSetKey_T ParentKey_T;
+    
   public:
     // /////////// Construction ///////////
     /** Constructor. */
@@ -22,7 +28,10 @@ namespace stdair {
     
     // /////////// Getters //////////
     /** Get the airline code. */
-    const AirlineCode_T& getAirlineCode() const;
+    const AirlineCode_T& getAirlineCode() const { return _airlineCode; }
+
+    // /////////// Setters /////////////
+    void setParentKey (const ParentKey_T& iParentKey) { }
 
     // /////////// Display support methods /////////
     /** Dump a Business Object Key into an output stream.
@@ -38,7 +47,10 @@ namespace stdair {
        when among children of a given parent Business Object.
        <br>For instance, "H" and "K" allow to differentiate among two
        marketing classes for the same segment-date. */
-    std::string toString() const;
+    const std::string toString() const;
+    
+    /** Display of the key. */
+    const std::string describe() const;
     
   private:
     // Attributes

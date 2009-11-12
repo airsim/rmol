@@ -101,6 +101,13 @@ namespace stdair {
     void setLoadFactor (const Revenue_T& iWSLF) {
       _wScheduleLoadFactor = iWSLF;
     }
+
+  public:
+    // /////////// Business methods ///////////
+    /** Update the counter of flight-dates. */
+    void updateFlightDateCounter() {
+      _flightDateCounter++;
+    }
     
   public:
     // /////////// Display support methods /////////

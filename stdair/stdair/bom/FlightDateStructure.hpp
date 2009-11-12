@@ -55,6 +55,9 @@ namespace stdair {
     /** Definition allowing to retrive the second children bom holder type. */
     typedef BomChildrenHolderImp<SecondContentChild_T> SecondChildrenBomHolder_T;
 
+    /** Define the  children booking class holder type. */
+    typedef BomChildrenHolderImp<typename BOM_CONTENT::BookingClassContent_T> BookingClassHolder_T;
+   
   public:
     // /////////// Getters /////////////
     /** Get the (parent) InventoryStructure object. */
@@ -113,6 +116,11 @@ namespace stdair {
     void setChildrenList (SecondChildrenBomHolder_T& ioChildrenList) {
       _secondChildrenList = &ioChildrenList;
     }
+    
+    /** Set the  booking class list. */
+    void setBookingClassHolder (BookingClassHolder_T& ioBookingClassHolder) {
+      _bookingClassHolder = &ioBookingClassHolder;
+    }
 
   public:
     // /////////// Display support methods /////////
@@ -142,8 +150,8 @@ namespace stdair {
         layer. */
     /** Default constructors. */
     FlightDateStructure () : _parent (NULL), _content (NULL),
-                             _childrenList (NULL),
-                             _secondChildrenList (NULL) { }
+                             _childrenList (NULL), _secondChildrenList (NULL),
+                             _bookingClassHolder (NULL) { }
     FlightDateStructure (const FlightDateStructure&);
 
     /** Destructor. */
@@ -162,6 +170,9 @@ namespace stdair {
 
     /** List of leg-dates. */
     SecondChildrenBomHolder_T* _secondChildrenList;
+
+    /** List of booking classes. */
+    BookingClassHolder_T* _bookingClassHolder;
 
   };
 

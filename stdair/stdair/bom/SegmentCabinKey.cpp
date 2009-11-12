@@ -12,6 +12,11 @@ namespace stdair {
   }
 
   // ////////////////////////////////////////////////////////////////////
+  SegmentCabinKey_T::SegmentCabinKey_T (const SegmentCabinKey_T& iKey)
+    : _parentKey (iKey._parentKey), _cabinCode (iKey._cabinCode) {
+  }
+
+  // ////////////////////////////////////////////////////////////////////
   SegmentCabinKey_T::~SegmentCabinKey_T () {
   }
 
@@ -25,9 +30,16 @@ namespace stdair {
   }
 
   // ////////////////////////////////////////////////////////////////////
-  std::string SegmentCabinKey_T::toString() const {
+  const std::string SegmentCabinKey_T::toString() const {
     std::ostringstream oStr;
     oStr << _cabinCode;
+    return oStr.str();
+  }
+
+  // ////////////////////////////////////////////////////////////////////
+  const std::string SegmentCabinKey_T::describe() const {
+    std::ostringstream oStr;
+    oStr << _parentKey.describe() << ", " << toString();
     return oStr.str();
   }
 

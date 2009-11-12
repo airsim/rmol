@@ -7,15 +7,28 @@
 // STDAIR
 #include <stdair/STDAIR_Types.hpp>
 #include <stdair/bom/BomKey.hpp>
+#include <stdair/bom/InventoryKey.hpp>
 
 namespace stdair {
   /** Key of flight-date. */
   struct FlightDateKey_T : public BomKey_T {
+    friend struct SegmentDateKey_T;
+    friend struct LegDateKey_T;
 
   public:
+    // /////////// Typedefs ////////////
+    /** Definition allowing to retrieve the parent key type. */
+    typedef InventoryKey_T ParentKey_T;
+    
+  private:
+    // /////////// Default constructor //////////
+    FlightDateKey_T () { };
+    
+  public:
     // /////////// Construction ///////////
-    /** Constructor. */
+    /** Constructors. */
     FlightDateKey_T (const FlightNumber_T&, const Date_T&);
+    FlightDateKey_T (const FlightDateKey_T&);
 
     /** Destructor. */
     ~FlightDateKey_T ();
@@ -29,6 +42,12 @@ namespace stdair {
     /** Get the departure date of the (first leg of the) flight. */
     const Date_T& getFlightDate() const {
       return _flightDate;
+    }
+    
+    // /////////// Setters /////////////
+    /** Set the parent key. */
+    void setParentKey (const ParentKey_T& iParentKey) {
+      _parentKey = iParentKey;
     }
     
     // /////////// Display support methods /////////
@@ -45,10 +64,16 @@ namespace stdair {
        when among children of a given parent Business Object.
        <br>For instance, "H" and "K" allow to differentiate among two
        marketing classes for the same segment-date. */
-    std::string toString() const;
+    const std::string toString() const;
+    
+    /** Display of the key. */
+    const std::string describe() const;
     
   private:
     // Attributes
+    /** Inventory Key.*/
+    ParentKey_T _parentKey;
+    
     /** Flight number. */
     FlightNumber_T _flightNumber;
 

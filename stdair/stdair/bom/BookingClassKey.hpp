@@ -7,11 +7,17 @@
 // STDAIR
 #include <stdair/STDAIR_Types.hpp>
 #include <stdair/bom/BomKey.hpp>
+#include <stdair/bom/SegmentCabinKey.hpp>
 
 namespace stdair {
   /** Key of segment-cabin. */
   struct BookingClassKey_T : public BomKey_T {
-
+    
+  public:
+    // /////////// Typedefs ////////////
+    /** Definition allowing to retrieve the parent key type. */
+    typedef SegmentCabinKey_T ParentKey_T;
+    
   public:
     // /////////// Construction ///////////
     /** Constructor. */
@@ -23,6 +29,11 @@ namespace stdair {
     // /////////// Getters //////////
     /** Get the cabin code. */
     const ClassCode_T& getClassCode () const;
+    
+    // /////////// Setters /////////////
+    void setParentKey (const ParentKey_T& iParentKey) {
+      _parentKey = iParentKey;
+    }
     
     // /////////// Display support methods /////////
     /** Dump a Business Object Key into an output stream.
@@ -38,10 +49,16 @@ namespace stdair {
        when among children of a given parent Business Object.
        <br>For instance, "H" and "K" allow to differentiate among two
        marketing classes for the same segment-cabin. */
-    std::string toString() const;
+    const std::string toString() const;
+    
+    /** Display of the key. */
+    const std::string describe() const;
     
   private:
     // Attributes
+    /** Segment-cabin key.*/
+    ParentKey_T _parentKey;
+    
     /** Cabin code. */
     ClassCode_T _classCode;
   };

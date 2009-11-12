@@ -25,10 +25,15 @@ namespace stdair {
   }
 
   // ////////////////////////////////////////////////////////////////////
-  std::string AirlineFeatureKey_T::toString() const {
+  const std::string AirlineFeatureKey_T::toString() const {
     std::ostringstream oStr;
     oStr << _airlineCode;
     return oStr.str();
+  }
+
+  // ////////////////////////////////////////////////////////////////////
+  const std::string AirlineFeatureKey_T::describe() const {
+    return toString();
   }
 
 }

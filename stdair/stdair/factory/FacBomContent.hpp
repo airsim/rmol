@@ -16,6 +16,7 @@
 namespace stdair {
 
   // Forward declarations
+  template<typename BOM> struct BomList_T;
   class BomStructure;
   class BomContent;
   struct OptimizerStruct_T;
@@ -43,11 +44,18 @@ namespace stdair {
         <br>A structure object is created, under the hood, with the given key.
         That structure object then gets a pointer on the content object. */
     template <typename BOM_CONTENT_CHILD>
-    BOM_CONTENT_CHILD& create (typename BOM_CONTENT_CHILD::Parent_T& ioContentParent, const typename BOM_CONTENT_CHILD::BomKey_T& iKey) {
+    BOM_CONTENT_CHILD& create (typename BOM_CONTENT_CHILD::Parent_T& ioContentParent, typename BOM_CONTENT_CHILD::BomKey_T& ioKey) {
+
+      // Define the parent key type.
+      typedef typename BOM_CONTENT_CHILD::Parent_T::BomKey_T ParentKey_T;
+
+      // Finish the construction of the child key by setting its parent.
+      const ParentKey_T& lParentKey = ioContentParent.getKey();
+      ioKey.setParentKey (lParentKey);
       
       // Create the child structure object for the given key
       BOM_CONTENT_CHILD& lBomContentChild =
-        createInternal<BOM_CONTENT_CHILD> (iKey);
+        createInternal<BOM_CONTENT_CHILD> (ioKey);
 
       // Retrieve the child structure object
       typename BOM_CONTENT_CHILD::BomStructure_T& lBomStructureChild =
@@ -104,6 +112,82 @@ namespace stdair {
       return *aBomContent_ptr;
     }
 
+    // //////////////////////////////////////////////////////////////////
+    // Section reserved for the building the direct accesses such as
+    // booking class holder directly in inventory or flight-date, ect.
+    // //////////////////////////////////////////////////////////////////
+  public:
+    template <typename BOM_ROOT>
+    static void createDirectAccesses (const BOM_ROOT& iBomRoot) {
+      // Retrieve the inventory type.
+      typedef typename BOM_ROOT::ContentChild_T INVENTORY_T;
+      // Define the list of inventories.
+      typedef BomList_T<INVENTORY_T> INVENTORY_LIST_T;
+
+      // Browse the BomRoot and build direct accesses within each inventory.
+      const INVENTORY_LIST_T lInventoryList = iBomRoot.getInventoryList();
+      for (typename INVENTORY_LIST_T::iterator itInv = lInventoryList.begin();
+           itInv != lInventoryList.end(); ++itInv) {
+        INVENTORY_T& lCurrentInv = *itInv;
+
+        createDirectAccessesWithinInventory (lCurrentInv);
+      }
+    }
+
+  private:
+    /** Create a holder of all booking classes within the given inventory. */
+    template <typename INVENTORY>
+    static void createDirectAccessesWithinInventory (INVENTORY& ioInventory){
+      // Retrieve the flight-date type.
+      typedef typename INVENTORY::ContentChild_T FLIGHT_DATE_T;
+      // Define the list of flight-dates.
+      typedef BomList_T<FLIGHT_DATE_T> FLIGHT_DATE_LIST_T;
+      // Retrieve the booking class type.
+      typedef typename INVENTORY::BookingClassContent_T BOOKING_CLASS_T;
+      // Define the bom holder of booking classes.
+      typedef BomChildrenHolderImp<BOOKING_CLASS_T> BOOKING_CLASS_HOLDER_T;
+      
+      // Initialize the booking class holder within the inventory.
+      BOOKING_CLASS_HOLDER_T& lBookingClassHolder =
+        FacBomStructure::instance().createBomHolder<BOOKING_CLASS_T> ();
+      ioInventory._inventoryStructure.setBookingClassHolder(lBookingClassHolder);
+      
+      // Browse the inventory and build direct accesses within each
+      // flight-date, then build the booking class holder within the
+      // inventory.
+      const FLIGHT_DATE_LIST_T lFlightDateList = ioInventory.getFlightDateList();
+      for (typename FLIGHT_DATE_LIST_T::iterator itFlightDate =
+             lFlightDateList.begin(); itFlightDate != lFlightDateList.end();
+           ++itFlightDate) {
+        FLIGHT_DATE_T& lCurrentFlightDate = *itFlightDate;
+        createDirectAccessesWithinFlightDate (lCurrentFlightDate);
+      }
+    }
+
+    /** Create the direct acceeses within the given flight-date, and, at the
+        same time, build the class holder for the parent inventory. */
+    template <typename FLIGHT_DATE>
+    static void createDirectAccessesWithinFlightDate (const FLIGHT_DATE& ioFlightDate) {
+      // Retrieve the booking class type.
+      typedef typename FLIGHT_DATE::BookingClassContent_T BOOKING_CLASS_T;
+      // Define the bom holder of booking classes.
+      typedef BomChildrenHolderImp<BOOKING_CLASS_T> BOOKING_CLASS_HOLDER_T;
+      
+      typename FLIGHT_DATE::BomStructure_T::ParentBomStructure_T& lInvStructure =
+        ioFlightDate._flightDateStructure.getInventoryStructure();
+
+      BOOKING_CLASS_HOLDER_T* lInvBookingClassHolder_ptr =
+        lInvStructure._bookingClassHolder;
+      assert (lInvBookingClassHolder_ptr != NULL);
+
+      // Retrieve the segment-date type.
+      typedef typename FLIGHT_DATE::ContentChild_T SEGMENT_DATE_T;
+      // Define the list of segment-dates.
+      typedef BomList_T<SEGMENT_DATE_T> SEGMENT_DATE_LIST_T;
+
+             
+    }
+    
   public:
     /** Provide the unique instance.
         <br>The singleton is instantiated when first used.

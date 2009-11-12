@@ -109,6 +109,11 @@ namespace stdair {
       return *_airlineFeatureSet;
     }
 
+    /** Retrieve, if existing, the Inventory corresponding to the
+        given airline code (Inventory key).
+        <br>If not existing, return the NULL pointer. */
+    Inventory* getInventory (const AirlineCode_T&) const;
+    
   public:
     // //////////// Setters //////////////
     /** Set the reference to the AirlineFeatureSet object. */

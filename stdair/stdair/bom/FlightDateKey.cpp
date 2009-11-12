@@ -13,6 +13,12 @@ namespace stdair {
   }
 
   // ////////////////////////////////////////////////////////////////////
+  FlightDateKey_T::FlightDateKey_T (const FlightDateKey_T& iKey)
+    : _parentKey (iKey._parentKey),
+      _flightNumber (iKey._flightNumber), _flightDate (iKey._flightDate) {
+  }
+
+  // ////////////////////////////////////////////////////////////////////
   FlightDateKey_T::~FlightDateKey_T () {
   }
 
@@ -26,9 +32,16 @@ namespace stdair {
   }
 
   // ////////////////////////////////////////////////////////////////////
-  std::string FlightDateKey_T::toString() const {
+  const std::string FlightDateKey_T::toString() const {
     std::ostringstream oStr;
     oStr << _flightNumber << ", " << _flightDate;
+    return oStr.str();
+  }
+  
+  // ////////////////////////////////////////////////////////////////////
+  const std::string FlightDateKey_T::describe() const {
+    std::ostringstream oStr;
+    oStr << _parentKey.describe() << ", " << toString();
     return oStr.str();
   }
 

@@ -58,9 +58,11 @@ namespace stdair {
     return _inventoryStructure.getChildrenList();
   }
 
-
-//   FlightDate* getFlightDate (const FlightNumber_T& iFlightNumber,
-//                                const Date_T& iFlightDate) const;
+  // //////////////////////////////////////////////////////////////////////
+  FlightDate* Inventory::
+  getFlightDate (const FlightDateKey_T& iKey) const {
+    return _inventoryStructure.getContentChild (iKey);
+  }
 
 //    BookingClass* getBookingClass (const std::string&) const;
     

@@ -21,13 +21,27 @@ namespace stdair {
   BomRoot::~BomRoot () {
   }
 
-  // //////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////
   InventoryList_T BomRoot::getInventoryList () const {
     return _bomRootStructure.getChildrenList();
   }
 
-  // //////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////
   InventoryMap_T BomRoot::getInventoryMap () const {
     return _bomRootStructure.getChildrenList();
   }
+
+  Inventory* BomRoot::getInventory (const AirlineCode_T& iAirlineCode) const {
+    Inventory* oInventory_ptr = NULL;
+
+    InventoryMap_T lInventoryMap = getInventoryMap ();
+    InventoryMap_T::iterator itInv = lInventoryMap.find (iAirlineCode);
+
+    if (itInv != lInventoryMap.end()) {
+      oInventory_ptr = itInv->second;
+    }
+    
+    return oInventory_ptr;
+  }
+  
 }

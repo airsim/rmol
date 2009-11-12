@@ -16,6 +16,7 @@ namespace stdair {
   class FacBomContent;
   class AirlineFeature;
   class BookingClass;
+  struct FlightDateKey_T;
   struct InventoryKey_T;
   
   /** Class representing the actual functional/business content for
@@ -83,8 +84,7 @@ namespace stdair {
     /** Retrieve, if existing, the FlightDate corresponding to the
         given flight number and flight date (FlightDate key).
         <br>If not existing, return the NULL pointer. */
-    // FlightDate* getFlightDate (const FlightNumber_T& iFlightNumber,
-//                                const Date_T& iFlightDate) const;
+    FlightDate* getFlightDate (const FlightDateKey_T&) const;
     
   public:
     // /////////// Setters ////////////
@@ -137,9 +137,6 @@ namespace stdair {
     
     /** The feature set of the correspondent airline. */
     const AirlineFeature* _airlineFeature;
-
-    /** List of booking classes. */
-    //BookingClassHolder_T _bookingClassList;
   };
 
 }

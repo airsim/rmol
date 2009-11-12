@@ -10,6 +10,10 @@ namespace stdair {
   InventoryKey_T::InventoryKey_T (const AirlineCode_T& iAirlineCode)
     : _airlineCode (iAirlineCode) {
   }
+  // ////////////////////////////////////////////////////////////////////
+  InventoryKey_T::InventoryKey_T (const InventoryKey_T& iKey)
+    : _airlineCode (iKey._airlineCode) {
+  }
 
   // ////////////////////////////////////////////////////////////////////
   InventoryKey_T::~InventoryKey_T () {
@@ -25,10 +29,15 @@ namespace stdair {
   }
 
   // ////////////////////////////////////////////////////////////////////
-  std::string InventoryKey_T::toString() const {
+  const std::string InventoryKey_T::toString() const {
     std::ostringstream oStr;
     oStr << _airlineCode;
     return oStr.str();
+  }
+
+  // ////////////////////////////////////////////////////////////////////
+  const std::string InventoryKey_T::describe() const {
+    return toString();
   }
 
 }
