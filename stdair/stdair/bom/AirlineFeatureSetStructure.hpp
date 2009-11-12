@@ -89,10 +89,10 @@ namespace stdair {
       
       if (itContentChild != lChildrenMap.end()) {
         oContentChild_ptr = itContentChild->second;
-        return oContentChild_ptr;
+        assert (oContentChild_ptr != NULL);
       }
       
-      assert (oContentChild_ptr != NULL);
+      return oContentChild_ptr;
     }
     
   private: 
