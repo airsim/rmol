@@ -10,8 +10,12 @@
 #include <stdair/bom/BomStructureDummy.hpp>
 #include <stdair/bom/BomContentDummy.hpp>
 #include <stdair/bom/LegCabinStructure.hpp>
+#include <stdair/bom/LegCabinKey.hpp>
 
 namespace stdair {  
+  // Forward declarations.
+  template <typename BOM> struct BomMap_T;
+  
   /** Wrapper class aimed at holding the actual content, modeled
       by an external specific LegDate class (for instance,
       in the AIRSCHED library). */
@@ -36,6 +40,12 @@ namespace stdair {
     /** Definition allowing to retrieve the  children type of the
         BOM_CONTENT. */
     typedef typename BOM_CONTENT::ContentChild_T ContentChild_T;
+
+    /** Definition allowing to retrieve the child key type. */
+    typedef LegCabinKey_T ChildKey_T;
+
+    /** Define the map of ContentChild_T. */
+    typedef BomMap_T<ContentChild_T> ChildrenMap_T;
     
     /** Definition allowing to retrieve the associated children type. */
     typedef boost::mpl::vector <LegCabinStructure<ContentChild_T>,
@@ -46,6 +56,9 @@ namespace stdair {
 
     /** Definition allowing to retrive the  children bom holder type. */
     typedef BomChildrenHolderImp<ContentChild_T> ChildrenBomHolder_T;
+
+    /** Define the associated segment-date holder type.*/
+    typedef BomChildrenHolderImp<typename BOM_CONTENT::SegmentDateContent_T> SegmentDateHolder_T;
 
   public:
     // /////////// Getters /////////////
@@ -72,6 +85,26 @@ namespace stdair {
     void getChildrenList (ChildrenBomHolder_T*& ioChildrenList) {
       ioChildrenList = _childrenList;
     }
+
+    /** Retrieve, if existing, the leg-cabin corresponding to the
+        given key.
+        <br>If not exissting, return the NULL pointer. */
+    ContentChild_T* getContentChild (const ChildKey_T& iKey) const {
+      ContentChild_T* oContentChild_ptr = NULL;
+      
+      ChildrenMap_T lChildrenMap (getChildrenList());
+      const MapKey_T lMapKey = iKey.toString();
+      
+      typename ChildrenMap_T::iterator itContentChild =
+        lChildrenMap.find (lMapKey);
+      
+      if (itContentChild != lChildrenMap.end()) {
+        oContentChild_ptr = itContentChild->second;
+        assert (oContentChild_ptr != NULL);
+      }
+      
+      return oContentChild_ptr;
+    }
     
   private:
     // /////////// Setters /////////////
@@ -86,6 +119,11 @@ namespace stdair {
     /** Set the leg-cabin children list. */
     void setChildrenList (ChildrenBomHolder_T& ioChildrenList) {
       _childrenList = &ioChildrenList;
+    }
+
+    /** Set the segment-date holder. */
+    void setSegmentDateHolder (SegmentDateHolder_T& ioSegmentDateHolder) {
+      _segmentDateHolder = &ioSegmentDateHolder;
     }
     
   public:
@@ -116,7 +154,7 @@ namespace stdair {
         layer. */
     /** Default constructors. */
     LegDateStructure () : _parent (NULL), _content (NULL),
-                          _childrenList (NULL) { }
+                          _childrenList (NULL), _segmentDateHolder (NULL) { }
     LegDateStructure (const LegDateStructure&);
 
     /** Destructor. */
@@ -132,6 +170,9 @@ namespace stdair {
 
     /** List of leg-cabins. */
     ChildrenBomHolder_T* _childrenList;
+
+    /** Holder of associated segment-dates. */
+    SegmentDateHolder_T* _segmentDateHolder;
   };
 
 }

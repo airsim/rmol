@@ -40,6 +40,9 @@ namespace stdair {
     /** Definition allowing to retrieve the default children bom holder type. */
     typedef BomChildrenHolderImp<BomContentDummy> DefaultChildrenBomHolder_T;
 
+    /** Define the associated segment-cabin holder type. */
+    typedef BomChildrenHolderImp<typename BOM_CONTENT::SegmentCabinContent_T> SegmentCabinHolder_T;
+
   public:
     // /////////// Getters /////////////
     /** Get the (parent) LegDateStructure object. */
@@ -65,6 +68,11 @@ namespace stdair {
     
     /** Default children list setter. */
     void setChildrenList (DefaultChildrenBomHolder_T&) { }
+
+    /** Set the segment-cabin holder. */
+    void setSegmentCabinHolder (SegmentCabinHolder_T& ioSegmentCabinHolder) {
+      _segmentCabinHolder = &ioSegmentCabinHolder;
+    }
 
   public:
     // /////////// Display support methods /////////
@@ -93,7 +101,8 @@ namespace stdair {
     /** Constructors are private so as to force the usage of the Factory
         layer. */
     /** Default constructors. */
-    LegCabinStructure () : _parent (NULL), _content (NULL) { }
+    LegCabinStructure () : _parent (NULL), _content (NULL),
+                           _segmentCabinHolder (NULL) { }
     LegCabinStructure (const LegCabinStructure&);
 
     /** Destructor. */
@@ -106,6 +115,9 @@ namespace stdair {
 
     /** The actual functional (Business Object) content. */
     BOM_CONTENT* _content;
+
+    /** Holder of the associated segment-cabins. */
+    SegmentCabinHolder_T* _segmentCabinHolder;
   };
 
 }

@@ -479,4 +479,13 @@ namespace stdair {
   /** Default Bid-Price Vector. */
   const BidPriceVector_T DEFAULT_BID_PRICE_VECTOR = std::vector<BidPrice_T>();
 
+  /** Maximum number of legs linked to a single flight-date.
+      <br>Note that the number of derived segments is n*(n+1)/2 if n
+      is the number of legs. */
+  const unsigned short MAXIMUM_NUMBER_OF_LEGS_IN_FLIGHT = 7;
+  
+  /** Maximum number of segments linked to a single O&D
+      (Origin & Destination). */
+  const unsigned short MAXIMUM_NUMBER_OF_SEGMENTS_IN_OND = 3;
+
 }

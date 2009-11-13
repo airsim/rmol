@@ -8,6 +8,7 @@
 #include <stdair/bom/FlightDate.hpp>
 #include <stdair/bom/SegmentDateStructure.hpp>
 #include <stdair/bom/SegmentDateTypes.hpp>
+#include <stdair/bom/LegDateTypes.hpp>
 #include <stdair/bom/SegmentCabinTypes.hpp>
 #include <stdair/bom/SegmentDateContent.hpp>
 
@@ -36,6 +37,9 @@ namespace stdair {
     /** Definition allowing to retrieve the associated 
          BOM content child type. */
     typedef SegmentCabin ContentChild_T;
+
+    /** Definition allowing to retrieve the specific LegDate type. */
+    typedef LegDate LegDateContent_T;
         
   public:
     // /////////// Getters /////////////
@@ -44,6 +48,9 @@ namespace stdair {
 
     /** Get a SegmentCabinMap_T for iteration methods. */
     SegmentCabinMap_T getSegmentCabinMap () const;
+
+    /** Get a LegDateList_T for iteration methods. */
+    LegDateList_T getLegDateList () const;
 
 //     /** Get the airline code (from the parent class). */
 //     const AirlineCode_T& getAirlineCode() const;

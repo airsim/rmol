@@ -60,8 +60,14 @@ namespace stdair {
     /** Define the  children bom holder type. */
     typedef BomChildrenHolderImp<ContentChild_T> ChildrenBomHolder_T;
 
-    /** Define the  children booking class holder type. */
-    typedef BomChildrenHolderImp<typename BOM_CONTENT::BookingClassContent_T> BookingClassHolder_T;
+    /** Define the children booking class type. */
+    typedef typename BOM_CONTENT::BookingClassContent_T BookingClass_T;
+    
+    /** Define the children booking class holder type. */
+    typedef BomChildrenHolderImp<BookingClass_T> BookingClassHolder_T;
+    
+    /** Define the map of ContentChild_T. */
+    typedef BomMap_T<BookingClass_T> BookingClassMap_T;
 
   public:
     // /////////// Getters /////////////
@@ -91,6 +97,12 @@ namespace stdair {
     /** Get the list of flight-dates. */
     void getChildrenList (ChildrenBomHolder_T*& ioChildrenList) {
       ioChildrenList = _childrenList;
+    }
+
+    /** Get the holder of booking classes. */
+    BookingClassHolder_T& getBookingClassHolder() const {
+      assert (_bookingClassHolder);
+      return *_bookingClassHolder;
     }
 
     /** Retrieve, if existing, the flight-date corresponding to the

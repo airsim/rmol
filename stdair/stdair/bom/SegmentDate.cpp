@@ -7,6 +7,7 @@
 #include <stdair/bom/SegmentDateStructure.hpp>
 #include <stdair/bom/SegmentDate.hpp>
 #include <stdair/bom/SegmentCabin.hpp>
+#include <stdair/bom/LegDate.hpp>
 #include <stdair/bom/BomList.hpp>
 #include <stdair/bom/BomMap.hpp>
 
@@ -62,6 +63,11 @@ namespace stdair {
   // //////////////////////////////////////////////////////////////////////
   SegmentCabinMap_T SegmentDate::getSegmentCabinMap () const {
     return _segmentDateStructure.getChildrenList();
+  }
+
+  // //////////////////////////////////////////////////////////////////////
+  LegDateList_T SegmentDate::getLegDateList () const {
+    return _segmentDateStructure.getLegDateHolder();
   }
   
   // ///////// ///////////////////////////////////////////////////////////////

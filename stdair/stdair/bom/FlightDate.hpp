@@ -62,31 +62,25 @@ namespace stdair {
 
     /** Get a LegDateMap_T for iteration methods. */
     LegDateMap_T getLegDateMap () const;
-
-    /** Get the list of class structures */
-    // BookingClassMap_T getClassList() const {
-//       return _bookingClassList;
-//     }
-
+    
     /** Get the airline code (from the parent class). */
     //    const AirlineCode_T& getAirlineCode() const;
           
-//     /** Retrieve, if existing, the LegDate corresponding to the
-//         given board point (LegDate key).
-//         <br>If not existing, return the NULL pointer. */
-//     LegDate* getLegDate (const AirportCode_T& iBoardPoint) const;
+    /** Retrieve, if existing, the LegDate corresponding to the
+        given LegDate key.
+        <br>If not existing, return the NULL pointer. */
+    LegDate* getLegDate (const LegDateKey_T&) const;
 
-//     /** Retrieve, if existing, the SegmentDate corresponding to the
-//         given (board point, off point) pair (SegmentDate key).
-//         <br>If not existing, return the NULL pointer. */
-//     SegmentDate* getSegmentDate (const AirportCode_T& iBoardPoint,
-//                                  const AirportCode_T& iOffPoint) const;
+    /** Retrieve, if existing, the SegmentDate corresponding to the
+        given SegmentDate key.
+        <br>If not existing, return the NULL pointer. */
+    SegmentDate* getSegmentDate (const SegmentDateKey_T&) const;
 
-//     /** Return the BookingClass corresponding to a given key.
-//         <br>When no BookingClass, matching the given key, can be found,
-//         the NULL pointer is returned.
-//         <br>Otherwise, a pointer is returned on the BookingClass object. */
-//     BookingClass* getBookingClass (const std::string&) const;
+    /** Return the BookingClass corresponding to a given key.
+        <br>When no BookingClass, matching the given key, can be found,
+        the NULL pointer is returned.
+        <br>Otherwise, a pointer is returned on the BookingClass object. */
+    BookingClass* getBookingClass (const BookingClassKey_T&) const;
 
 //     /** Retrieve, if existing, theOnD corresponding to the
 //         given OnDKey.

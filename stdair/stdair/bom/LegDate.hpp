@@ -15,6 +15,7 @@ namespace stdair {
   // Forward declarations
   class FacBomContent;
   struct LegDateKey_T;
+  struct LegCabinKey_T;
 
   /** Class representing the actual functional/business content for a
       leg-date. */
@@ -36,25 +37,28 @@ namespace stdair {
     /** Definition allowing to retrieve the associated 
          BOM content child type. */
     typedef LegCabin ContentChild_T;
+    
+    /** Definition allowing to retrieve the specific SegmentDate type. */
+    typedef SegmentDate SegmentDateContent_T;
 
   public:
     // /////////// Getters ////////////
-//     /** Get the airline code (from the parent class). */
-//     const AirlineCode_T& getAirlineCode() const;
-      
-//     /** Get the flight number (from the parent class). */
-//     const FlightNumber_T& getFlightNumber() const;
-
-//     /** Get the flight-date (from the parent class). */
-//     const Date_T& getFlightDateDate() const;
-
-// /** Retrieve, if existing, the LegCabin corresponding to the
-//     given cabin code (LegCabin key).
-//     <br>If not existing, return the NULL pointer. */
-//     LegCabin* getLegCabin (const CabinCode_T& iCabinCode) const;
+    //     /** Get the airline code (from the parent class). */
+    //     const AirlineCode_T& getAirlineCode() const;
     
-   //  // ///////// Counting methods  //////////
-//     /** Update the counters of booked seats. */
+    //     /** Get the flight number (from the parent class). */
+    //     const FlightNumber_T& getFlightNumber() const;
+    
+    //     /** Get the flight-date (from the parent class). */
+    //     const Date_T& getFlightDateDate() const;
+    
+    /** Retrieve, if existing, the LegCabin corresponding to the
+        given LegCabin key.
+        <br>If not existing, return the NULL pointer. */
+    LegCabin* getLegCabin (const LegCabinKey_T&) const;
+    
+    //  // ///////// Counting methods  //////////
+    //     /** Update the counters of booked seats. */
 //     void updateBookingsAndSeatCounters();
 
 //     /** Update the values of commited spaces. */

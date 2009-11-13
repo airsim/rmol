@@ -47,6 +47,9 @@ namespace stdair {
     /** Definition allowing to retrive the  children bom holder type. */
     typedef BomChildrenHolderImp<ContentChild_T> ChildrenBomHolder_T;
 
+    /** Define the associated leg-cabin holder type. */
+    typedef BomChildrenHolderImp<typename BOM_CONTENT::LegCabinContent_T> LegCabinHolder_T;
+
   public:
     // /////////// Getters /////////////
     /** Get the (parent) SegmentDateStructure object. */
@@ -55,7 +58,10 @@ namespace stdair {
     }
     
     /** Get the (parent) SegmentDateStructure object. */
-    ParentBomStructure_T& getSegmentDateStructure() const;
+    ParentBomStructure_T& getSegmentDateStructure() const {
+      assert (_parent != NULL);
+      return *_parent;
+    }
     
     /** Get the segment-date key. */
     const BomKey_T& getKey() const {
@@ -87,6 +93,11 @@ namespace stdair {
     void setChildrenList (ChildrenBomHolder_T& ioChildrenList) {
       _childrenList = &ioChildrenList;
     }
+
+    /** Set the leg-cabin holder. */
+    void setLegCabinHolder (LegCabinHolder_T& ioLegCabinHolder) {
+      _legCabinHolder = &ioLegCabinHolder;
+    }
     
   public:
     // /////////// Display support methods /////////
@@ -116,7 +127,7 @@ namespace stdair {
         layer. */
     /** Default constructors. */
     SegmentCabinStructure () : _parent (NULL), _content (NULL),
-                               _childrenList (NULL) { }
+                               _childrenList (NULL), _legCabinHolder (NULL) { }
     SegmentCabinStructure (const SegmentCabinStructure&);
 
     /** Destructor. */
@@ -132,6 +143,9 @@ namespace stdair {
     
     /** List of segment-cabins. */
     ChildrenBomHolder_T* _childrenList;
+
+    /** Holder of associated leg-cabins. */
+    LegCabinHolder_T* _legCabinHolder;
   };
 
 }

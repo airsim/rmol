@@ -47,6 +47,9 @@ namespace stdair {
     /** Definition allowing to retrive the  children bom holder type. */
     typedef BomChildrenHolderImp<ContentChild_T> ChildrenBomHolder_T;
 
+    /** Define the associated leg-date holder type. */
+    typedef BomChildrenHolderImp<typename BOM_CONTENT::LegDateContent_T> LegDateHolder_T;
+
   public:
     // /////////// Getters /////////////
     /** Get the (parent) FlightDateStructure object. */
@@ -55,7 +58,10 @@ namespace stdair {
     }
     
     /** Get the (parent) FlightDateStructure object. */
-    ParentBomStructure_T& getFlightDateStructure() const;
+    ParentBomStructure_T& getFlightDateStructure() const {
+      assert (_parent != NULL);
+      return *_parent;
+    }
     
     /** Get the segment-date key. */
     const BomKey_T& getKey() const {
@@ -65,7 +71,14 @@ namespace stdair {
 
     /** Get the list of segment-cabins. */
     const ChildrenBomHolder_T& getChildrenList() const {
+      assert (_childrenList != NULL);
       return *_childrenList;
+    }
+
+    /** Get the list of leg-dates. */
+    const LegDateHolder_T& getLegDateHolder() const {
+      assert (_legDateHolder != NULL);
+      return *_legDateHolder;
     }
 
     /** Get the list of segment-cabins. */
@@ -86,6 +99,11 @@ namespace stdair {
     /** Set the segment-cabin children list. */
     void setChildrenList (ChildrenBomHolder_T& ioChildrenList) {
       _childrenList = &ioChildrenList;
+    }
+
+    /** Set the leg-date holder.*/
+    void setLegDateHolder (LegDateHolder_T& ioLegDateHolder) {
+      _legDateHolder = &ioLegDateHolder;
     }
     
   public:
@@ -116,7 +134,7 @@ namespace stdair {
         layer. */
     /** Default constructors. */
     SegmentDateStructure () : _parent (NULL), _content (NULL),
-                              _childrenList (NULL) { }
+                              _childrenList (NULL), _legDateHolder (NULL) { }
     SegmentDateStructure (const SegmentDateStructure&);
 
     /** Destructor. */
@@ -132,6 +150,9 @@ namespace stdair {
 
     /** List of segment-cabins. */
     ChildrenBomHolder_T* _childrenList;
+
+    /** Holder of associated leg-dates. */
+    LegDateHolder_T* _legDateHolder;
   };
 
 }

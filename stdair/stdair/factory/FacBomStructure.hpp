@@ -127,7 +127,7 @@ namespace stdair {
     /** Add a BOM object into a dedicated BOM holder by using the
         full key of the object. */
     template <typename BOM_CONTENT>
-    static bool addFullBomObjecdToBomHolder (BomChildrenHolderImp<BOM_CONTENT> ioBomHolder, typename BOM_CONTENT::BomStructure_T& ioBomStructure) {
+    static bool addFullBomObjecdToBomHolder (BomChildrenHolderImp<BOM_CONTENT>& ioBomHolder, typename BOM_CONTENT::BomStructure_T& ioBomStructure) {
       // Retrieve the bom structure type.
       typedef typename BOM_CONTENT::BomStructure_T BOM_STRUCTURE_T;
       // Define the bom holder type.

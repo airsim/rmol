@@ -14,6 +14,7 @@
 namespace stdair {
   // Forward declarations
   class FacBomContent;
+  class LegCabin;
   struct SegmentCabinKey_T;
 
   /** Class representing the actual functional/business content for a
@@ -36,6 +37,9 @@ namespace stdair {
     /** Definition allowing to retrieve the associated 
          BOM content child type. */
     typedef BookingClass ContentChild_T;
+
+    /** Definition allowing to retrieve the specific LegCabin type. */
+    typedef LegCabin LegCabinContent_T;
    
   public:
     // /////////// Getters /////////////

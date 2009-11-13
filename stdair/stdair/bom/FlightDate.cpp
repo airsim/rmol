@@ -11,6 +11,7 @@
 #include <stdair/bom/FlightDate.hpp>
 #include <stdair/bom/SegmentDate.hpp>
 #include <stdair/bom/LegDate.hpp>
+#include <stdair/bom/BookingClass.hpp>
 #include <stdair/bom/BomList.hpp>
 #include <stdair/bom/BomMap.hpp>
 
@@ -74,6 +75,21 @@ namespace stdair {
   LegDateMap_T FlightDate::getLegDateMap () const {
     return _flightDateStructure.getSecondChildrenList();
   }
-  
+
+  // //////////////////////////////////////////////////////////////////////
+  LegDate* FlightDate::getLegDate (const LegDateKey_T& iKey) const {
+    return _flightDateStructure.getSecondContentChild (iKey);
+  }
+
+  // //////////////////////////////////////////////////////////////////////
+  SegmentDate* FlightDate::getSegmentDate (const SegmentDateKey_T& iKey) const {
+    return _flightDateStructure.getContentChild (iKey);
+  }
+
+  // //////////////////////////////////////////////////////////////////////
+  BookingClass* FlightDate::
+  getBookingClass (const BookingClassKey_T& iKey) const {
+    return _flightDateStructure.getBookingClass (iKey);
+  }
 }
 
