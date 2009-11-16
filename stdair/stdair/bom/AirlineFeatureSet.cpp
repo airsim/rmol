@@ -48,12 +48,12 @@ namespace stdair {
 
   // //////////////////////////////////////////////////////////////////////
   AirlineFeatureList_T AirlineFeatureSet::getAirlineFeatureList () const {
-    return _bomStructure.getChildrenList();
+    return _bomStructure.getChildrenHolder();
   }
 
   // //////////////////////////////////////////////////////////////////////
   AirlineFeatureMap_T AirlineFeatureSet::getAirlineFeatureMap () const {
-    return _bomStructure.getChildrenList();
+    return _bomStructure.getChildrenHolder();
   }
 
   // //////////////////////////////////////////////////////////////////////

@@ -7,11 +7,14 @@
 // MPL
 #include <boost/mpl/vector.hpp>
 // STDAIR 
-#include <stdair/bom/BomStructureDummy.hpp>
-#include <stdair/bom/BomContentDummy.hpp>
+#include <stdair/bom/BomStopStructure.hpp>
+#include <stdair/bom/BomStopContent.hpp>
 #include <stdair/bom/BookingClassStructure.hpp>
 
 namespace stdair {
+  // Forward declarations.
+  template <typename BOM> struct BomMap_T;
+  
   /** Wrapper class aimed at holding the actual content, modeled
       by an external specific SegmentCabin class (for instance,
       in the AIRSCHED library). */
@@ -39,16 +42,22 @@ namespace stdair {
     
     /** Definition allowing to retrieve the associated children type. */
     typedef boost::mpl::vector <BookingClassStructure<ContentChild_T>,
-                                BomStructureDummy> ChildrenBomTypeList_T;
+                                BomStopStructure> ChildrenBomTypeList_T;
 
     /** Definition allowing to retrieve the default children bom holder type. */
-    typedef BomChildrenHolderImp<BomContentDummy> DefaultChildrenBomHolder_T;
+    typedef BomChildrenHolderImp<BomStopContent> DefaultChildrenBomHolder_T;
 
     /** Definition allowing to retrive the  children bom holder type. */
     typedef BomChildrenHolderImp<ContentChild_T> ChildrenBomHolder_T;
 
+    /** Define the associated leg-cabin type. */
+    typedef typename BOM_CONTENT::LegCabinContent_T LegCabin_T;
+    
     /** Define the associated leg-cabin holder type. */
-    typedef BomChildrenHolderImp<typename BOM_CONTENT::LegCabinContent_T> LegCabinHolder_T;
+    typedef BomChildrenHolderImp<LegCabin_T> LegCabinHolder_T;
+    
+    /** Define the map of leg-cabin. */
+    typedef BomMap_T<LegCabin_T> LegCabinMap_T;
 
   public:
     // /////////// Getters /////////////
@@ -69,14 +78,14 @@ namespace stdair {
       return _content->getKey();
     }
 
-    /** Get the list of segment-cabins. */
-    const ChildrenBomHolder_T& getChildrenList() const {
-      return *_childrenList;
+    /** Get the holder of segment-cabins. */
+    const ChildrenBomHolder_T& getChildrenHolder() const {
+      return *_childrenHolder;
     }
 
-    /** Get the list of segment-cabins. */
-    void getChildrenList (ChildrenBomHolder_T*& ioChildrenList) {
-      ioChildrenList = _childrenList;
+    /** Get the holder of segment-cabins. */
+    void getChildrenHolder (ChildrenBomHolder_T*& ioChildrenHolder) {
+      ioChildrenHolder = _childrenHolder;
     }
     
   private:
@@ -86,12 +95,12 @@ namespace stdair {
       _parent = &ioSegmentDateStructure;
     }
     
-    /** Default children list setter. */
-    void setChildrenList (DefaultChildrenBomHolder_T&) { }
+    /** Default children holder setter. */
+    void setChildrenHolder (DefaultChildrenBomHolder_T&) { }
 
-    /** Set the segment-cabin children list. */
-    void setChildrenList (ChildrenBomHolder_T& ioChildrenList) {
-      _childrenList = &ioChildrenList;
+    /** Set the segment-cabin children holder. */
+    void setChildrenHolder (ChildrenBomHolder_T& ioChildrenHolder) {
+      _childrenHolder = &ioChildrenHolder;
     }
 
     /** Set the leg-cabin holder. */
@@ -127,7 +136,7 @@ namespace stdair {
         layer. */
     /** Default constructors. */
     SegmentCabinStructure () : _parent (NULL), _content (NULL),
-                               _childrenList (NULL), _legCabinHolder (NULL) { }
+                               _childrenHolder (NULL), _legCabinHolder (NULL) { }
     SegmentCabinStructure (const SegmentCabinStructure&);
 
     /** Destructor. */
@@ -141,8 +150,8 @@ namespace stdair {
     /** The actual functional (Business Object) content. */
     BOM_CONTENT* _content;
     
-    /** List of segment-cabins. */
-    ChildrenBomHolder_T* _childrenList;
+    /** Holder of segment-cabins. */
+    ChildrenBomHolder_T* _childrenHolder;
 
     /** Holder of associated leg-cabins. */
     LegCabinHolder_T* _legCabinHolder;

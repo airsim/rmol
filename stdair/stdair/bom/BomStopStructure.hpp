@@ -1,5 +1,5 @@
-#ifndef __STDAIR_BOM_BOMSTRUCTUREDUMMY_HPP
-#define __STDAIR_BOM_BOMSTRUCTUREDUMMY_HPP
+#ifndef __STDAIR_BOM_BOMSTOPSTRUCTURE_HPP
+#define __STDAIR_BOM_BOMSTOPSTRUCTURE_HPP
 
 // //////////////////////////////////////////////////////////////////////
 // Import section
@@ -13,18 +13,18 @@
 
 namespace stdair {
   // Forward declarations.
-  class BomContentDummy;
+  class BomStopContent;
 
   /** Wrapper class aimed at holding the actual content, modeled
-      by a specific BomContentDummy class. */
-  class BomStructureDummy : public BomStructure {
+      by a specific BomStopContent class. */
+  class BomStopStructure : public BomStructure {
     friend class FacBomStructure;
     friend class FacBomContent;
 
   private:
     // Type definitions
     /** Definition allowing to retrieve the associated BOM content type. */
-    typedef BomContentDummy Content_T;
+    typedef BomStopContent Content_T;
 
     /** Definition allowing to retrieve the associated children type. */
     typedef boost::mpl::vector<> ChildrenBomTypeList_T;
@@ -35,7 +35,7 @@ namespace stdair {
   public:
 
     // /////////// Getters /////////////
-    /** Get the BomStructureDummy key. */
+    /** Get the BomStopStructure key. */
     const BomKey_T& getKey() const {
       return _key;
     }
@@ -73,12 +73,12 @@ namespace stdair {
     /** Constructors are private so as to force the usage of the Factory
         layer. */
     /** Default constructors. */
-    BomStructureDummy ();
-    BomStructureDummy (const BomStructureDummy&);
-    BomStructureDummy (const BomKey_T& iKey) { _key = iKey; }
+    BomStopStructure ();
+    BomStopStructure (const BomStopStructure&);
+    BomStopStructure (const BomKey_T& iKey) { _key = iKey; }
 
     /** Destructor. */
-    ~BomStructureDummy () { }
+    ~BomStopStructure () { }
 
   private:
     // Attributes
@@ -90,5 +90,5 @@ namespace stdair {
   };
 
 }
-#endif // __STDAIR_BOM_BOMSTRUCTUREDUMMY_HPP
+#endif // __STDAIR_BOM_BOMSTOPSTRUCTURE_HPP
 

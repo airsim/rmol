@@ -56,12 +56,12 @@ namespace stdair {
 
   // //////////////////////////////////////////////////////////////////////
   BookingClassList_T SegmentCabin::getBookingClassList () const {
-    return _segmentCabinStructure.getChildrenList();
+    return _segmentCabinStructure.getChildrenHolder();
   }
 
   // //////////////////////////////////////////////////////////////////////
   BookingClassMap_T SegmentCabin::getBookingClassMap () const {
-    return _segmentCabinStructure.getChildrenList();
+    return _segmentCabinStructure.getChildrenHolder();
   }
   
 }

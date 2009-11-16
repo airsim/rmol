@@ -23,12 +23,12 @@ namespace stdair {
 
   // ////////////////////////////////////////////////////////////////////
   InventoryList_T BomRoot::getInventoryList () const {
-    return _bomRootStructure.getChildrenList();
+    return _bomRootStructure.getChildrenHolder();
   }
 
   // ////////////////////////////////////////////////////////////////////
   InventoryMap_T BomRoot::getInventoryMap () const {
-    return _bomRootStructure.getChildrenList();
+    return _bomRootStructure.getChildrenHolder();
   }
 
   Inventory* BomRoot::getInventory (const AirlineCode_T& iAirlineCode) const {

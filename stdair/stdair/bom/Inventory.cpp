@@ -7,6 +7,7 @@
 #include <stdair/bom/InventoryStructure.hpp>
 #include <stdair/bom/Inventory.hpp>
 #include <stdair/bom/FlightDate.hpp>
+#include <stdair/bom/BookingClass.hpp>
 #include <stdair/bom/BomList.hpp>
 #include <stdair/bom/BomMap.hpp>
 
@@ -50,12 +51,22 @@ namespace stdair {
 
   // //////////////////////////////////////////////////////////////////////
   FlightDateList_T Inventory::getFlightDateList () const {
-    return _inventoryStructure.getChildrenList();
+    return _inventoryStructure.getChildrenHolder();
   }
 
   // //////////////////////////////////////////////////////////////////////
   FlightDateMap_T Inventory::getFlightDateMap () const {
-    return _inventoryStructure.getChildrenList();
+    return _inventoryStructure.getChildrenHolder();
+  }
+
+  // //////////////////////////////////////////////////////////////////////
+  BookingClassList_T Inventory::getBookingClassList () const {
+    return _inventoryStructure.getBookingClassHolder();
+  }
+
+  // //////////////////////////////////////////////////////////////////////
+  BookingClassMap_T Inventory::getBookingClassMap () const {
+    return _inventoryStructure.getBookingClassHolder();
   }
 
   // //////////////////////////////////////////////////////////////////////

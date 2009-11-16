@@ -7,11 +7,14 @@
 // MPL
 #include <boost/mpl/vector.hpp>
 // STDAIR 
-#include <stdair/bom/BomStructureDummy.hpp>
-#include <stdair/bom/BomContentDummy.hpp>
+#include <stdair/bom/BomStopStructure.hpp>
+#include <stdair/bom/BomStopContent.hpp>
 #include <stdair/bom/BookingClassStructure.hpp>
 
 namespace stdair {
+  // Forward declarations.
+  template <typename BOM> struct BomMap_T;
+  
   /** Wrapper class aimed at holding the actual content, modeled
       by an external specific LegCabin class (for instance,
       in the AIRSCHED library). */
@@ -34,14 +37,20 @@ namespace stdair {
     typedef typename BOM_CONTENT::Parent_T::BomStructure_T ParentBomStructure_T;
     
     /** Definition allowing to retrieve the associated children type. */
-    typedef boost::mpl::vector <BomStructureDummy,
-                                BomStructureDummy> ChildrenBomTypeList_T;
+    typedef boost::mpl::vector <BomStopStructure,
+                                BomStopStructure> ChildrenBomTypeList_T;
 
     /** Definition allowing to retrieve the default children bom holder type. */
-    typedef BomChildrenHolderImp<BomContentDummy> DefaultChildrenBomHolder_T;
+    typedef BomChildrenHolderImp<BomStopContent> DefaultChildrenBomHolder_T;
 
+    /** Define the associated segment-cabin type. */
+    typedef typename BOM_CONTENT::SegmentCabinContent_T SegmentCabin_T;
+    
     /** Define the associated segment-cabin holder type. */
-    typedef BomChildrenHolderImp<typename BOM_CONTENT::SegmentCabinContent_T> SegmentCabinHolder_T;
+    typedef BomChildrenHolderImp<SegmentCabin_T> SegmentCabinHolder_T;
+    
+    /** Define the map of segment-cabin. */
+    typedef BomMap_T<SegmentCabin_T> SegmentCabinMap_T;
 
   public:
     // /////////// Getters /////////////
@@ -66,8 +75,8 @@ namespace stdair {
       _parent = &ioLegDateStructure;
     }
     
-    /** Default children list setter. */
-    void setChildrenList (DefaultChildrenBomHolder_T&) { }
+    /** Default children holder setter. */
+    void setChildrenHolder (DefaultChildrenBomHolder_T&) { }
 
     /** Set the segment-cabin holder. */
     void setSegmentCabinHolder (SegmentCabinHolder_T& ioSegmentCabinHolder) {

@@ -9,6 +9,7 @@
 #include <stdair/bom/InventoryStructure.hpp>
 #include <stdair/bom/InventoryTypes.hpp>
 #include <stdair/bom/FlightDateTypes.hpp>
+#include <stdair/bom/BookingClassTypes.hpp>
 #include <stdair/bom/InventoryContent.hpp>
 
 namespace stdair {
@@ -75,6 +76,12 @@ namespace stdair {
 
     /** Get a FlightDateMap_T for iteration methods. */
     FlightDateMap_T getFlightDateMap () const;
+
+    /** Get a BookingClassList_T for iteration methods. */
+    BookingClassList_T getBookingClassList () const;
+
+    /** Get a BookingClassMap_T for iteration methods. */
+    BookingClassMap_T getBookingClassMap () const;
     
     /** Get the airline feature. */
     const AirlineFeature* getAirlineFeature () const {

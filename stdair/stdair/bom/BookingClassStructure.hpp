@@ -7,8 +7,8 @@
 // MPL
 #include <boost/mpl/vector.hpp>
 // STDAIR  
-#include <stdair/bom/BomStructureDummy.hpp>
-#include <stdair/bom/BomContentDummy.hpp>
+#include <stdair/bom/BomStopStructure.hpp>
+#include <stdair/bom/BomStopContent.hpp>
 
 namespace stdair {
   /** Wrapper class aimed at holding the actual content, modeled
@@ -33,11 +33,11 @@ namespace stdair {
     typedef typename BOM_CONTENT::Parent_T::BomStructure_T ParentBomStructure_T;
     
     /** Definition allowing to retrieve the associated children type. */
-    typedef boost::mpl::vector <BomStructureDummy,
-                                BomStructureDummy> ChildrenBomTypeList_T;
+    typedef boost::mpl::vector <BomStopStructure,
+                                BomStopStructure> ChildrenBomTypeList_T;
 
     /** Definition allowing to retrieve the default children bom holder type. */
-    typedef BomChildrenHolderImp<BomContentDummy> DefaultChildrenBomHolder_T;
+    typedef BomChildrenHolderImp<BomStopContent> DefaultChildrenBomHolder_T;
 
   public:
     // /////////// Getters /////////////
@@ -62,8 +62,8 @@ namespace stdair {
       _parent = &ioSegmentCabinStructure;
     }
     
-    /** Default children list setter. */
-    void setChildrenList (DefaultChildrenBomHolder_T&) { }
+    /** Default children holder setter. */
+    void setChildrenHolder (DefaultChildrenBomHolder_T&) { }
     
   public:
     // /////////// Display support methods /////////

@@ -17,10 +17,10 @@ bom_h_sources = \
 				$(top_srcdir)/stdair/bom/BomRoot.hpp \
 				$(top_srcdir)/stdair/bom/BomContent.hpp \
 				$(top_srcdir)/stdair/bom/BomRootContent.hpp \
-				$(top_srcdir)/stdair/bom/BomContentDummy.hpp \
+				$(top_srcdir)/stdair/bom/BomStopContent.hpp \
 				$(top_srcdir)/stdair/bom/BomStructure.hpp \
 				$(top_srcdir)/stdair/bom/BomRootStructure.hpp \
-				$(top_srcdir)/stdair/bom/BomStructureDummy.hpp \
+				$(top_srcdir)/stdair/bom/BomStopStructure.hpp \
 				$(top_srcdir)/stdair/bom/Inventory.hpp \
 				$(top_srcdir)/stdair/bom/InventoryContent.hpp \
 				$(top_srcdir)/stdair/bom/InventoryTypes.hpp \

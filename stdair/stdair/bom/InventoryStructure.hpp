@@ -9,8 +9,8 @@
 // (Boost) MPL
 #include <boost/mpl/vector.hpp>
 // STDAIR 
-#include <stdair/bom/BomStructureDummy.hpp>
-#include <stdair/bom/BomContentDummy.hpp>
+#include <stdair/bom/BomStopStructure.hpp>
+#include <stdair/bom/BomStopContent.hpp>
 #include <stdair/bom/FlightDateStructure.hpp>
 #include <stdair/bom/FlightDateKey.hpp>
 
@@ -52,10 +52,10 @@ namespace stdair {
 
     /** Definition allowing to retrieve the associated children type. */
     typedef boost::mpl::vector<FlightDateStructure<ContentChild_T>,
-                               BomStructureDummy> ChildrenBomTypeList_T;
+                               BomStopStructure> ChildrenBomTypeList_T;
 
     /** Define the default children bom holder type. */
-    typedef BomChildrenHolderImp<BomContentDummy> DefaultChildrenBomHolder_T;
+    typedef BomChildrenHolderImp<BomStopContent> DefaultChildrenBomHolder_T;
 
     /** Define the  children bom holder type. */
     typedef BomChildrenHolderImp<ContentChild_T> ChildrenBomHolder_T;
@@ -66,7 +66,7 @@ namespace stdair {
     /** Define the children booking class holder type. */
     typedef BomChildrenHolderImp<BookingClass_T> BookingClassHolder_T;
     
-    /** Define the map of ContentChild_T. */
+    /** Define the map of booking class. */
     typedef BomMap_T<BookingClass_T> BookingClassMap_T;
 
   public:
@@ -88,15 +88,15 @@ namespace stdair {
       return _content->getKey ();
     }
 
-    /** Get the list of flight-dates. */
-    const ChildrenBomHolder_T& getChildrenList() const {
-      assert (_childrenList != NULL);
-      return *_childrenList;
+    /** Get the holder of flight-dates. */
+    const ChildrenBomHolder_T& getChildrenHolder() const {
+      assert (_childrenHolder != NULL);
+      return *_childrenHolder;
     }
     
-    /** Get the list of flight-dates. */
-    void getChildrenList (ChildrenBomHolder_T*& ioChildrenList) {
-      ioChildrenList = _childrenList;
+    /** Get the holder of flight-dates. */
+    void getChildrenHolder (ChildrenBomHolder_T*& ioChildrenHolder) {
+      ioChildrenHolder = _childrenHolder;
     }
 
     /** Get the holder of booking classes. */
@@ -111,7 +111,7 @@ namespace stdair {
     ContentChild_T* getContentChild (const ChildKey_T& iKey) const {
       ContentChild_T* oContentChild_ptr= NULL;
       
-      ChildrenMap_T lChildrenMap (getChildrenList());
+      ChildrenMap_T lChildrenMap (getChildrenHolder());
       const MapKey_T lMapKey = iKey.toString();
       
       typename ChildrenMap_T::iterator itContentChild =
@@ -132,15 +132,15 @@ namespace stdair {
       _parent = &ioParent;
     }
 
-    /** Default children list setter. */
-    void setChildrenList (DefaultChildrenBomHolder_T&) { }
+    /** Default children holder setter. */
+    void setChildrenHolder (DefaultChildrenBomHolder_T&) { }
     
-    /** Set the  children list. */
-    void setChildrenList (ChildrenBomHolder_T& ioChildrenList) {
-      _childrenList = &ioChildrenList;
+    /** Set the  children holder. */
+    void setChildrenHolder (ChildrenBomHolder_T& ioChildrenHolder) {
+      _childrenHolder = &ioChildrenHolder;
     }
     
-    /** Set the  booking class list. */
+    /** Set the  booking class holder. */
     void setBookingClassHolder (BookingClassHolder_T& ioBookingClassHolder) {
       _bookingClassHolder = &ioBookingClassHolder;
     }
@@ -173,7 +173,8 @@ namespace stdair {
         layer. */
     /** Default constructors. */
     InventoryStructure () : _parent (NULL), _content (NULL),
-                            _childrenList (NULL), _bookingClassHolder (NULL) { }
+                            _childrenHolder (NULL),
+                            _bookingClassHolder (NULL) { }
 
     InventoryStructure (const InventoryStructure&);
     /** Destructor. */
@@ -187,10 +188,10 @@ namespace stdair {
     /** The actual functional (Business Object) content. */
     BOM_CONTENT* _content;
 
-    /** List of flight-dates. */
-    ChildrenBomHolder_T* _childrenList;
+    /** Holder of flight-dates. */
+    ChildrenBomHolder_T* _childrenHolder;
 
-    /** List of booking classes. */
+    /** Holder of booking classes. */
     BookingClassHolder_T* _bookingClassHolder;
   };
 

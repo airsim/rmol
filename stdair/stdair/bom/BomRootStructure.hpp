@@ -9,8 +9,8 @@
 // MPL
 #include <boost/mpl/vector.hpp>
 // STDAIR 
-#include <stdair/bom/BomStructureDummy.hpp>
-#include <stdair/bom/BomContentDummy.hpp>
+#include <stdair/bom/BomStopStructure.hpp>
+#include <stdair/bom/BomStopContent.hpp>
 #include <stdair/bom/InventoryStructure.hpp>
 
 namespace stdair {
@@ -37,10 +37,10 @@ namespace stdair {
     typedef typename BOM_CONTENT::BomKey_T BomKey_T;
 
     /** Definition allowing to retrieve the associated children type. */
-    typedef boost::mpl::vector<InventoryStructure<ContentChild_T>, BomStructureDummy> ChildrenBomTypeList_T;
+    typedef boost::mpl::vector<InventoryStructure<ContentChild_T>, BomStopStructure> ChildrenBomTypeList_T;
 
     /** Definition allowing to retrive the default children bom holder type. */
-    typedef BomChildrenHolderImp<BomContentDummy> DefaultChildrenBomHolder_T;
+    typedef BomChildrenHolderImp<BomStopContent> DefaultChildrenBomHolder_T;
     
     /** Definition allowing to retrive the  children bom holder type. */
     typedef BomChildrenHolderImp<ContentChild_T> ChildrenBomHolder_T;
@@ -53,25 +53,25 @@ namespace stdair {
       return _content->getKey ();
     }
     
-    /** Get the list of inventories. */
-    const ChildrenBomHolder_T& getChildrenList() const {
-      assert (_childrenList != NULL);
-      return *_childrenList;
+    /** Get the holder of inventories. */
+    const ChildrenBomHolder_T& getChildrenHolder() const {
+      assert (_childrenHolder != NULL);
+      return *_childrenHolder;
     }
 
-    /** Get the list of inventories. */
-    void getChildrenList (ChildrenBomHolder_T*& ioChildrenList) {
-      ioChildrenList = _childrenList;
+    /** Get the holder of inventories. */
+    void getChildrenHolder (ChildrenBomHolder_T*& ioChildrenHolder) {
+      ioChildrenHolder = _childrenHolder;
     }
 
   private: 
     /////////////// Setters ////////////////
-    /** Default children list setter. */
-    void setChildrenList (DefaultChildrenBomHolder_T&) { }
+    /** Default children holder setter. */
+    void setChildrenHolder (DefaultChildrenBomHolder_T&) { }
     
-    /** Set the  children list. */
-    void setChildrenList (ChildrenBomHolder_T& ioChildrenList) {
-      _childrenList = &ioChildrenList;
+    /** Set the  children holder. */
+    void setChildrenHolder (ChildrenBomHolder_T& ioChildrenHolder) {
+      _childrenHolder = &ioChildrenHolder;
     }
 
   public:
@@ -101,7 +101,7 @@ namespace stdair {
     /** Constructors are private so as to force the usage of the Factory
         layer. */
     /** Default constructors. */
-    BomRootStructure () : _content (NULL), _childrenList (NULL) { };
+    BomRootStructure () : _content (NULL), _childrenHolder (NULL) { };
     BomRootStructure (const BomRootStructure&);
 
     /** Destructor. */
@@ -112,8 +112,8 @@ namespace stdair {
     /** The actual functional (Business Object) content. */
     BOM_CONTENT* _content;
 
-    /** List of inventories. */
-    ChildrenBomHolder_T* _childrenList;
+    /** Holder of inventories. */
+    ChildrenBomHolder_T* _childrenHolder;
   };
 
 }

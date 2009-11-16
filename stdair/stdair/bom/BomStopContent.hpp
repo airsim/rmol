@@ -1,5 +1,5 @@
-#ifndef __STDAIR_BOM_BOMCONTENTDUMMY_HPP
-#define __STDAIR_BOM_BOMCONTENTDUMMY_HPP
+#ifndef __STDAIR_BOM_BOMSTOPCONTENT_HPP
+#define __STDAIR_BOM_BOMSTOPCONTENT_HPP
 
 // //////////////////////////////////////////////////////////////////////
 // Import section
@@ -9,20 +9,20 @@
 
 namespace stdair {
   // Forward declarations.
-  class BomStructureDummy;
+  class BomStopStructure;
   class BomKey;
 
   /** Class representing the actual functional/business content
-      for the Bom dummy.
-      <br>That class is just an utility tool to mark the dummy
+      for the Bom stop.
+      <br>That class is just an utility tool to mark the stop
       of the Bom tree. */
-  class BomContentDummy : public BomContent {
+  class BomStopContent : public BomContent {
     friend class FacBomContent;
 
   public:
     // Type definitions
     /** Definition allowing to retrieve the associated BOM structure type. */
-    typedef BomStructureDummy BomStructure_T;
+    typedef BomStopStructure BomStructure_T;
 
     /** Definition allowing to retrieve the associated BOM key type. */
     typedef BomKey BomKey_T;
@@ -52,13 +52,13 @@ namespace stdair {
     /** Constructors are private so as to force the usage of the Factory
         layer. */
     /** Default constructors. */
-    BomContentDummy ();
-    BomContentDummy (const BomContentDummy&);
-    BomContentDummy (const BomStructure_T& iBomStructure)
+    BomStopContent ();
+    BomStopContent (const BomStopContent&);
+    BomStopContent (const BomStructure_T& iBomStructure)
       : _bomStructure (iBomStructure) { }
 
     /** Destructor. */
-    virtual ~BomContentDummy() { }
+    virtual ~BomStopContent() { }
 
   private:
     // Attributes
@@ -67,4 +67,4 @@ namespace stdair {
   };
 
 }
-#endif // __STDAIR_BOM_BOMCONTENTDUMMY_HPP
+#endif // __STDAIR_BOM_BOMSTOPCONTENT_HPP

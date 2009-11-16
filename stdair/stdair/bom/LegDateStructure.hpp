@@ -7,8 +7,8 @@
 // MPL
 #include <boost/mpl/vector.hpp>
 // STDAIR 
-#include <stdair/bom/BomStructureDummy.hpp>
-#include <stdair/bom/BomContentDummy.hpp>
+#include <stdair/bom/BomStopStructure.hpp>
+#include <stdair/bom/BomStopContent.hpp>
 #include <stdair/bom/LegCabinStructure.hpp>
 #include <stdair/bom/LegCabinKey.hpp>
 
@@ -49,16 +49,22 @@ namespace stdair {
     
     /** Definition allowing to retrieve the associated children type. */
     typedef boost::mpl::vector <LegCabinStructure<ContentChild_T>,
-                                BomStructureDummy> ChildrenBomTypeList_T;
+                                BomStopStructure> ChildrenBomTypeList_T;
 
     /** Definition allowing to retrieve the default children bom holder type. */
-    typedef BomChildrenHolderImp<BomContentDummy> DefaultChildrenBomHolder_T;
+    typedef BomChildrenHolderImp<BomStopContent> DefaultChildrenBomHolder_T;
 
     /** Definition allowing to retrive the  children bom holder type. */
     typedef BomChildrenHolderImp<ContentChild_T> ChildrenBomHolder_T;
-
-    /** Define the associated segment-date holder type.*/
-    typedef BomChildrenHolderImp<typename BOM_CONTENT::SegmentDateContent_T> SegmentDateHolder_T;
+    
+    /** Define the associated segment-date type. */
+    typedef typename BOM_CONTENT::SegmentDateContent_T SegmentDate_T;
+    
+    /** Define the associated segment-date holder type. */
+    typedef BomChildrenHolderImp<SegmentDate_T> SegmentDateHolder_T;
+    
+    /** Define the map of segment-date. */
+    typedef BomMap_T<SegmentDate_T> SegmentDateMap_T;
 
   public:
     // /////////// Getters /////////////
@@ -76,14 +82,14 @@ namespace stdair {
       return _content->getKey();
     }
 
-    /** Get the list of leg-cabins. */
-    const ChildrenBomHolder_T& getChildrenList() const {
-      return *_childrenList;
+    /** Get the holder of leg-cabins. */
+    const ChildrenBomHolder_T& getChildrenHolder() const {
+      return *_childrenHolder;
     }
 
-    /** Get the list of leg-cabins. */
-    void getChildrenList (ChildrenBomHolder_T*& ioChildrenList) {
-      ioChildrenList = _childrenList;
+    /** Get the holder of leg-cabins. */
+    void getChildrenHolder (ChildrenBomHolder_T*& ioChildrenHolder) {
+      ioChildrenHolder = _childrenHolder;
     }
 
     /** Retrieve, if existing, the leg-cabin corresponding to the
@@ -92,7 +98,7 @@ namespace stdair {
     ContentChild_T* getContentChild (const ChildKey_T& iKey) const {
       ContentChild_T* oContentChild_ptr = NULL;
       
-      ChildrenMap_T lChildrenMap (getChildrenList());
+      ChildrenMap_T lChildrenMap (getChildrenHolder());
       const MapKey_T lMapKey = iKey.toString();
       
       typename ChildrenMap_T::iterator itContentChild =
@@ -113,12 +119,12 @@ namespace stdair {
       _parent = &ioFlightDateStructure;
     }
     
-    /** Default children list setter. */
-    void setChildrenList (DefaultChildrenBomHolder_T&) { }
+    /** Default children holder setter. */
+    void setChildrenHolder (DefaultChildrenBomHolder_T&) { }
 
-    /** Set the leg-cabin children list. */
-    void setChildrenList (ChildrenBomHolder_T& ioChildrenList) {
-      _childrenList = &ioChildrenList;
+    /** Set the leg-cabin children holder. */
+    void setChildrenHolder (ChildrenBomHolder_T& ioChildrenHolder) {
+      _childrenHolder = &ioChildrenHolder;
     }
 
     /** Set the segment-date holder. */
@@ -154,7 +160,7 @@ namespace stdair {
         layer. */
     /** Default constructors. */
     LegDateStructure () : _parent (NULL), _content (NULL),
-                          _childrenList (NULL), _segmentDateHolder (NULL) { }
+                          _childrenHolder (NULL), _segmentDateHolder (NULL) { }
     LegDateStructure (const LegDateStructure&);
 
     /** Destructor. */
@@ -168,8 +174,8 @@ namespace stdair {
     /** The actual functional (Business Object) content. */
     BOM_CONTENT* _content;
 
-    /** List of leg-cabins. */
-    ChildrenBomHolder_T* _childrenList;
+    /** Holder of leg-cabins. */
+    ChildrenBomHolder_T* _childrenHolder;
 
     /** Holder of associated segment-dates. */
     SegmentDateHolder_T* _segmentDateHolder;

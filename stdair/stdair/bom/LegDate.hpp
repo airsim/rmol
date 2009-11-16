@@ -40,7 +40,7 @@ namespace stdair {
     
     /** Definition allowing to retrieve the specific SegmentDate type. */
     typedef SegmentDate SegmentDateContent_T;
-
+    
   public:
     // /////////// Getters ////////////
     //     /** Get the airline code (from the parent class). */

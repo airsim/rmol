@@ -27,18 +27,18 @@ namespace stdair {
     
   public:
     /** Define lists of children BOM structures. */
-    typedef std::vector<BomStructure_T*> BomChildrenOrderedList_T;
-    typedef std::map<const std::string, BomStructure_T*> BomChildrenList_T;
+    typedef std::vector<BomStructure_T*> BomChildrenList_T;
+    typedef std::map<const std::string, BomStructure_T*> BomChildrenMap_T;
 
     /** Define the different types of iterators. */
     typedef BomIterator_T<BOM_CONTENT_CHILD,
-                          typename BomChildrenOrderedList_T::const_iterator> ListIterator_T;
+                          typename BomChildrenList_T::const_iterator> ListIterator_T;
     typedef BomIterator_T<BOM_CONTENT_CHILD,
-                          typename BomChildrenOrderedList_T::const_reverse_iterator> ListReverseIterator_T;
+                          typename BomChildrenList_T::const_reverse_iterator> ListReverseIterator_T;
     typedef BomIterator_T<BOM_CONTENT_CHILD,
-                          typename BomChildrenList_T::const_iterator> MapIterator_T;
+                          typename BomChildrenMap_T::const_iterator> MapIterator_T;
     typedef BomIterator_T<BOM_CONTENT_CHILD,
-                          typename BomChildrenList_T::const_reverse_iterator> MapReverseIterator_T;
+                          typename BomChildrenMap_T::const_reverse_iterator> MapReverseIterator_T;
 
   public:
     // /////////// Display support methods /////////
@@ -65,61 +65,61 @@ namespace stdair {
     /** Initialise the internal iterators on bom objects:
         return the iterator at the begining of the list. */
     ListIterator_T listBegin () const {
-      return ListIterator_T(_bomChildrenOrderedList.begin());
+      return ListIterator_T(_bomChildrenList.begin());
     }
     
     /** Initialise the internal iterators on bom objects:
         return the iterator past the end of the list. */
     ListIterator_T listEnd () const {
-      return _bomChildrenOrderedList.end();
+      return _bomChildrenList.end();
     }
 
     /** Initialise the internal reverse iterators on bom objects:
         return the reverse iterator at the rbegining of the list. */
     ListReverseIterator_T listRBegin () const {
-      return _bomChildrenOrderedList.rbegin();
+      return _bomChildrenList.rbegin();
     }
     
     /** Initialise the internal reverse iterators on bom objects:
         return the reverse iterator past the rend of the list. */
     ListReverseIterator_T listREnd () const {
-      return _bomChildrenOrderedList.rend();
+      return _bomChildrenList.rend();
     }
 
     /** Initialise the internal iterators on bom objects:
         return the iterator at the begining of the map. */
     MapIterator_T mapBegin () const {
-      return _bomChildrenList.begin();
+      return _bomChildrenMap.begin();
     }
     
     /** Initialise the internal iterators on bom objects:
         return the iterator past the end of the map. */
     MapIterator_T mapEnd () const {
-      return _bomChildrenList.end();
+      return _bomChildrenMap.end();
     }
 
     /** Initialise the internal reverse iterators on bom objects:
         return the reverse iterator at the rbegining of the map. */
     MapReverseIterator_T mapRBegin () const {
-      return _bomChildrenList.rbegin();
+      return _bomChildrenMap.rbegin();
     }
     
     /** Initialise the internal reverse iterators on bom objects:
         return the reverse iterator past the rend of the map. */
     MapReverseIterator_T mapREnd () const {
-      return _bomChildrenList.rend();
+      return _bomChildrenMap.rend();
     }
 
     
     // /////////// Other operators /////////////
     /** Get the size of the list. */
     const unsigned int size () const {
-      return _bomChildrenOrderedList.size();
+      return _bomChildrenList.size();
     }
 
     /** Retrieve, if existing, the bom corresponding to the given key. */
     MapIterator_T find (const MapKey_T& iKey) const {
-      return _bomChildrenList.find (iKey);
+      return _bomChildrenMap.find (iKey);
     }
     
   private:
@@ -135,10 +135,10 @@ namespace stdair {
   private:
     ///////////// Attributes //////////////
     /** List of children BOM structures. */
-    BomChildrenList_T _bomChildrenList;
+    BomChildrenMap_T _bomChildrenMap;
 
     /** Map of children BOM structures with their key. */
-    BomChildrenOrderedList_T _bomChildrenOrderedList;
+    BomChildrenList_T _bomChildrenList;
   };
   
 }

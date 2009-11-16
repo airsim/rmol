@@ -57,12 +57,12 @@ namespace stdair {
 
   // //////////////////////////////////////////////////////////////////////
   SegmentCabinList_T SegmentDate::getSegmentCabinList () const {
-    return _segmentDateStructure.getChildrenList();
+    return _segmentDateStructure.getChildrenHolder();
   }
 
   // //////////////////////////////////////////////////////////////////////
   SegmentCabinMap_T SegmentDate::getSegmentCabinMap () const {
-    return _segmentDateStructure.getChildrenList();
+    return _segmentDateStructure.getChildrenHolder();
   }
 
   // //////////////////////////////////////////////////////////////////////

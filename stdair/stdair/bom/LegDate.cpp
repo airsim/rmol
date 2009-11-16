@@ -55,12 +55,12 @@ namespace stdair {
 
   // ////////////////////////////////////////////////////////////////////
   LegCabinList_T LegDate::getLegCabinList () const {
-    return _legDateStructure.getChildrenList();
+    return _legDateStructure.getChildrenHolder();
   }
 
   // ////////////////////////////////////////////////////////////////////
   LegCabinMap_T LegDate::getLegCabinMap () const {
-    return _legDateStructure.getChildrenList();
+    return _legDateStructure.getChildrenHolder();
   }
 
   // ////////////////////////////////////////////////////////////////////
