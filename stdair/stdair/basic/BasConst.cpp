@@ -5,7 +5,7 @@
 #include <string>
 // STDAIR
 #include <stdair/STDAIR_Types.hpp>
-#include <stdair/basic/BasConst_WorldSchedule.hpp>
+#include <stdair/basic/BasConst_General.hpp>
 #include <stdair/basic/BasConst_Inventory.hpp>
 #include <stdair/basic/BasConst_BookingClass.hpp>
 #include <stdair/basic/BasConst_Yield.hpp>
@@ -127,8 +127,8 @@ namespace stdair {
   /** Default Date OffSet (e.g., 0). */
   const DateOffSet_T DEFAULT_DATE_OFFSET (0);
   
-  //  // //////// WorldSchedule ///////
-  //   /** Default update date for the WorldSchedule. */
+  //  // //////// General ///////
+  //   /** Default update date for the General. */
   //   const Date_T DEFAULT_WORLD_SCHEDULE_UPDATE_DATE (2007,
   //                                                    boost::gregorian::Jan,
   //                                                    1);

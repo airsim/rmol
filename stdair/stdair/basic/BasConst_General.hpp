@@ -1,5 +1,5 @@
-#ifndef __STDAIR_BAS_BASCONST_WORLDSCHEDULE_HPP
-#define __STDAIR_BAS_BASCONST_WORLDSCHEDULE_HPP
+#ifndef __STDAIR_BAS_BASCONST_GENERAL_HPP
+#define __STDAIR_BAS_BASCONST_GENERAL_HPP
 
 // //////////////////////////////////////////////////////////////////////
 // Import section
@@ -37,4 +37,4 @@ namespace stdair {
   extern const BookingRatio_T DEFAULT_OND_BOOKING_RATE;
 
 }
-#endif // __STDAIR_BAS_BASCONST_WORLDSCHEDULE_HPP
+#endif // __STDAIR_BAS_BASCONST_GENERAL_HPP

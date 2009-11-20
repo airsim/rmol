@@ -152,6 +152,11 @@ namespace stdair {
       _segmentUnitRevenue = iSegmentURevenue;
     }
 
+    /** Set the distance. */
+    void setDistance (const Distance_T& iDistance) {
+      _distance = iDistance;
+    }
+
     
   public:
     // /////////// Display support methods /////////

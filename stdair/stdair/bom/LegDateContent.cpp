@@ -4,7 +4,7 @@
 // STL
 #include <cassert>
 // STDAIR
-#include <stdair/basic/BasConst_WorldSchedule.hpp>
+#include <stdair/basic/BasConst_General.hpp>
 #include <stdair/bom/LegDateContent.hpp>
 
 namespace stdair {
