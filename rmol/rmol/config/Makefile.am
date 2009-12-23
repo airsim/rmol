@@ -1,25 +1,26 @@
+# rmol/config
 include $(top_srcdir)/Makefile.common
 
 ## Source directory
 
-DISTCLEANFILES = @PACKAGE@-paths.hpp
+DISTCLEANFILES = rmol-paths.hpp
 
 MAINTAINERCLEANFILES = Makefile.in
 
-EXTRA_DIST = @PACKAGE@-paths.hpp
+EXTRA_DIST = rmol-paths.hpp
 
 # Targets
-all-local: @PACKAGE@-paths.hpp
+all-local: rmol-paths.hpp
 
-@PACKAGE@-paths.hpp: Makefile
-	@echo '#ifndef __@PACKAGE_NAME@_PATHS_HPP' > $@
-	@echo '#define __@PACKAGE_NAME@_PATHS_HPP' >> $@
-	@echo '#define PACKAGE "@PACKAGE@"' >> $@
-	@echo '#define PACKAGE_NAME "@PACKAGE_NAME@"' >> $@
+rmol-paths.hpp: Makefile
+	@echo '#ifndef __RMOL_PATHS_HPP' > $@
+	@echo '#define __RMOL_PATHS_HPP' >> $@
+	@echo '#define PACKAGE "rmol"' >> $@
+	@echo '#define PACKAGE_NAME "RMOL"' >> $@
 	@echo '#define PACKAGE_VERSION "@VERSION@"' >> $@
 	@echo '#define PREFIXDIR "$(prefix)"' >> $@
 	@echo '#define BINDIR "$(bindir)"' >> $@
 	@echo '#define LIBEXECDIR "$(libexecdir)"' >> $@
 	@echo '#define DATADIR "$(datadir)"' >> $@
 	@echo '#define DOCDIR "$(docdir)"' >> $@
-	@echo '#endif // __@PACKAGE_NAME@_PATHS_HPP' >> $@
+	@echo '#endif // __RMOL_PATHS_HPP' >> $@
