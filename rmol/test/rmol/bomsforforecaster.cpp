@@ -9,7 +9,7 @@
 #include <limits>
 // #include <iostream>
 // RMOL
-#include <RMOL_Service.hpp>
+#include <rmol/RMOL_Service.hpp>
 #include <rmol/service/Logger.hpp>
 
 namespace RMOL {
