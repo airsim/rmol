@@ -6,7 +6,7 @@
 // STDAIR
 //#include <stdair/STDAIR_Service.hpp>
 // STDAIR Test Suite
-#include <test/StandardAirlineITTestSuite.hpp>
+#include <test/stdair/StandardAirlineITTestSuite.hpp>
 
 // //////////////////////////////////////////////////////////////////////
 void testStandardAirlineITHelper() {

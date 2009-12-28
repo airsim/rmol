@@ -204,7 +204,9 @@ AC_CONFIG_FILES(
 	test/com/Makefile
 	test/inheritance/Makefile
 	test/mpl/Makefile
-	test/mpl/book/Makefile)
+	test/mpl/book/Makefile
+	test/stdair/Makefile
+)
 AC_OUTPUT
 
 echo "
