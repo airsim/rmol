@@ -314,8 +314,8 @@ AC_CONFIG_FILES(
 	doc/doxygen_html.cfg
 	doc/sourceforge/howto_release_rmol.html
 	po/Makefile.in
+	extracppunit/Makefile
 	test/Makefile
-	test/com/Makefile
 	test/stdair/Makefile
 	test/rmol/Makefile
 	win32/Makefile)

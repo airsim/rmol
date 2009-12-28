@@ -6,7 +6,7 @@
 #include <vector>
 #include <cmath>
 // CPPUNIT
-#include <test/com/CppUnitCore.hpp>
+#include <extracppunit/CppUnitCore.hpp>
 // RMOL
 #include <rmol/RMOL_Service.hpp>
 #include <rmol/RMOL_Types.hpp>

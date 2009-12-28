@@ -4,7 +4,7 @@ include $(top_srcdir)/Makefile.common
 MAINTAINERCLEANFILES = Makefile.in
 
 ##
-SUBDIRS = com rmol
+SUBDIRS = rmol
 
 ##
 EXTRA_TESTS = valarrays

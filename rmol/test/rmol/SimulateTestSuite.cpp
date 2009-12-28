@@ -9,7 +9,7 @@
 // Chapter 19)
 #include <gsl/gsl_randist.h>
 // CPPUNIT
-#include <test/com/CppUnitCore.hpp>
+#include <extracppunit/CppUnitCore.hpp>
 // RMOL Test Suite
 #include <test/rmol/SimulateTestSuite.hpp>
 
