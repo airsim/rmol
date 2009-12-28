@@ -11,7 +11,7 @@
 #include <rmol/RMOL_UNCONSTRAINER_Types.hpp>
 #include <rmol/RMOL_UTILITY_Types.hpp>
 // RMOL Test Suite
-#include <test/UnconstrainerTestSuite.hpp>
+#include <test/rmol/UnconstrainerTestSuite.hpp>
 
 // //////////////////////////////////////////////////////////////////////
 int testUnconstrainerHelper (const unsigned short unconstrainingMethodFlag) {

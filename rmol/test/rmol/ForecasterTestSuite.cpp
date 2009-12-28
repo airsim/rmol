@@ -12,7 +12,7 @@
 #include <rmol/RMOL_Types.hpp>
 #include <rmol/RMOL_FORECASTER_Types.hpp>
 // RMOL Test Suite
-#include <test/ForecasterTestSuite.hpp>
+#include <test/rmol/ForecasterTestSuite.hpp>
 
 // //////////////////////////////////////////////////////////////////////
 int testForecasterHelper (const unsigned short forecastingMethodFlag) {

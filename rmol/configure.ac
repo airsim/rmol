@@ -317,6 +317,7 @@ AC_CONFIG_FILES(
 	test/Makefile
 	test/com/Makefile
 	test/stdair/Makefile
+	test/rmol/Makefile
 	win32/Makefile)
 AC_OUTPUT
 

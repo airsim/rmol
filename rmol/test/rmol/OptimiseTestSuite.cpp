@@ -7,7 +7,7 @@
 #include <rmol/RMOL_Service.hpp>
 #include <rmol/RMOL_Types.hpp>
 // RMOL Test Suite
-#include <test/OptimiseTestSuite.hpp>
+#include <test/rmol/OptimiseTestSuite.hpp>
 
 // //////////////////////////////////////////////////////////////////////
 int testOptimiseHelper (const unsigned short optimisationMethodFlag) {
@@ -31,7 +31,7 @@ int testOptimiseHelper (const unsigned short optimisationMethodFlag) {
     const double cabinCapacity = 100.0;
     
     // Input file name
-    const std::string inputFileName ("../samples/sample2.csv");
+    const std::string inputFileName ("sample2.csv");
     const bool hasInputFile = true;
     
     // Set the log parameters

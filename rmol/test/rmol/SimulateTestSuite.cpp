@@ -11,7 +11,7 @@
 // CPPUNIT
 #include <test/com/CppUnitCore.hpp>
 // RMOL Test Suite
-#include <test/SimulateTestSuite.hpp>
+#include <test/rmol/SimulateTestSuite.hpp>
 
 // Random Generator Type
 const gsl_rng_type* _rngTypePtr = NULL;
