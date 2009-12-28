@@ -200,8 +200,8 @@ AC_CONFIG_FILES(
 	doc/local/index.doc
 	doc/doxygen_html.cfg
 	doc/sourceforge/howto_release_stdair.html
+	extracppunit/Makefile
 	test/Makefile
-	test/com/Makefile
 	test/inheritance/Makefile
 	test/mpl/Makefile
 	test/mpl/book/Makefile

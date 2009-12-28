@@ -18,5 +18,5 @@ StandardAirlineITTestSuite_SOURCES = StandardAirlineITTestSuite.hpp \
 StandardAirlineITTestSuite_CXXFLAGS= $(BOOST_CFLAGS) $(CPPUNIT_CFLAGS)
 StandardAirlineITTestSuite_LDADD = 
 StandardAirlineITTestSuite_LDFLAGS = $(BOOST_LIBS) $(CPPUNIT_LIBS) \
-	$(top_builddir)/test/com/libcppunitcore.la \
+	$(top_builddir)/extracppunit/libextracc-extracppunit.la \
 	$(top_builddir)/stdair/core/libstdair.la

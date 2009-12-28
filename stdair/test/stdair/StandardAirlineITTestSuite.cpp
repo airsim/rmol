@@ -2,7 +2,7 @@
 #include <iostream>
 #include <string>
 // CPPUNIT
-#include <test/com/CppUnitCore.hpp>
+#include <extracppunit/CppUnitCore.hpp>
 // STDAIR
 //#include <stdair/STDAIR_Service.hpp>
 // STDAIR Test Suite
