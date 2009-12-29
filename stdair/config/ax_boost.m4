@@ -19,6 +19,10 @@ dnl   AC_SUBST(BOOST_WSERIALIZATION_LIB)
 dnl   AC_SUBST(BOOST_SIGNALS_LIB)
 dnl   AC_SUBST(BOOST_DATE_TIME_LIB)
 dnl   AC_SUBST(BOOST_REGEX_LIB)
+dnl   AC_SUBST(BOOST_PYTHON_LIB)
+dnl   AC_SUBST(BOOST_ASIO_LIB)
+dnl   AC_SUBST(BOOST_MPI_LIB)
+dnl   AC_SUBST(BOOST_MPI_PYTHON_LIB)
 dnl   AC_SUBST(BOOST_UNIT_TEST_FRAMEWORK_LIB)
 dnl
 dnl And sets:
@@ -33,6 +37,10 @@ dnl   HAVE_BOOST_SERIALIZATION
 dnl   HAVE_BOOST_SIGNALS
 dnl   HAVE_BOOST_DATE_TIME
 dnl   HAVE_BOOST_REGEX
+dnl   HAVE_BOOST_PYTHON
+dnl   HAVE_BOOST_ASIO
+dnl   HAVE_BOOST_MPI
+dnl   HAVE_BOOST_MPI_PYTHON
 dnl   HAVE_BOOST_UNIT_TEST_FRAMEWORK
 dnl
 dnl @category InstalledPackages
@@ -234,6 +242,9 @@ BOOSTLIB_MDW_VERSION="1_33_1"
 			AC_SUBST(BOOST_LIBS)
 			AC_DEFINE(HAVE_BOOST,,[define if the Boost library is available])
 
+#
+# Boost::Filesystem
+#
 			AC_CACHE_CHECK([whether the Boost::Filesystem library is available],
 						   ax_cv_boost_filesystem,
 						[AC_LANG_SAVE
@@ -261,6 +272,9 @@ BOOSTLIB_MDW_VERSION="1_33_1"
 				fi
 			fi
 
+#
+# Boost::System
+#
             AC_CACHE_CHECK([whether the Boost::System library is available],
                            ax_cv_boost_system,
                            [AC_LANG_SAVE
@@ -287,6 +301,9 @@ BOOSTLIB_MDW_VERSION="1_33_1"
                  fi
             fi
 
+#
+# Boost::Program_Options
+#
 			AC_CACHE_CHECK([whether the Boost::Program_Options library is available],
 						   ax_cv_boost_program_options,
 						   [AC_LANG_SAVE
@@ -314,6 +331,9 @@ BOOSTLIB_MDW_VERSION="1_33_1"
 				fi
 			fi
 
+#
+# Boost::Threads
+#
 			AC_CACHE_CHECK(whether the Boost::Thread library is available,
 						   ax_cv_boost_thread,
 						[AC_LANG_SAVE
@@ -346,7 +366,8 @@ BOOSTLIB_MDW_VERSION="1_33_1"
 				AC_SUBST(BOOST_CFLAGS)
 				AC_DEFINE(HAVE_BOOST_THREAD,,[define if the Boost::THREAD library is available])
 				BN=boost_thread
-				for ax_lib in $BN $BN-$CC $BN-$CC-mt $BN-$CC-mt-s $BN-$CC-s \
+				for ax_lib in $BN $BN-mt $BN-$CC $BN-$CC-mt \
+						   	  $BN-$CC-mt-s $BN-$CC-s \
                               lib$BN lib$BN-$CC lib$BN-$CC-mt lib$BN-$CC-mt-s \
                               lib$BN-$CC-s $BN-mgw $BN-mgw-mt \
                               $BN-mgw-mt-s $BN-mgw-s  \
@@ -359,6 +380,9 @@ BOOSTLIB_MDW_VERSION="1_33_1"
 				fi
 			fi
 
+#
+# Boost::IOStreams
+#
 			AC_CACHE_CHECK(whether the Boost::IOStreams library is available,
 						   ax_cv_boost_iostreams,
 						[AC_LANG_SAVE
@@ -390,6 +414,9 @@ BOOSTLIB_MDW_VERSION="1_33_1"
 				fi
 			fi
 
+#
+# Boost::Serialization
+#
 			AC_CACHE_CHECK(whether the Boost::Serialization library is available,
 						   ax_cv_boost_serialization,
 						[AC_LANG_SAVE
@@ -432,6 +459,9 @@ BOOSTLIB_MDW_VERSION="1_33_1"
 				fi
 			fi
 
+#
+# Boost::Signals
+#
 			AC_CACHE_CHECK(whether the Boost::Signals library is available,
 						   ax_cv_boost_signals,
 						[AC_LANG_SAVE
@@ -452,14 +482,17 @@ BOOSTLIB_MDW_VERSION="1_33_1"
                               lib$BN-$CC-s $BN-mgw $BN-mgw-mt \
                               $BN-mgw-mt-s $BN-mgw-s  \
                               $BN-$CC-mt-$BOOSTLIB_MDW_VERSION ; do
-				    AC_CHECK_LIB($ax_lib, main, [BOOST_SIGNALS_LIB="-l$ax_lib" AC_SUBST(BOOST_SIGNALS_LIB) link_thread="yes" break],
-                                 [link_thread="no"])
+				    AC_CHECK_LIB($ax_lib, main, [BOOST_SIGNALS_LIB="-l$ax_lib" AC_SUBST(BOOST_SIGNALS_LIB) link_signals="yes" break],
+                                 [link_signals="no"])
   				done
-				if test "x$link_thread" = "xno"; then
+				if test "x$link_signals" = "xno"; then
 					AC_MSG_NOTICE(Could not link against $ax_lib !)
 				fi
 			fi
 
+#
+# Boost::Date_Time
+#
 			AC_CACHE_CHECK(whether the Boost::Date_Time library is available,
 						   ax_cv_boost_date_time,
 						[AC_LANG_SAVE
@@ -480,14 +513,17 @@ BOOSTLIB_MDW_VERSION="1_33_1"
                               lib$BN-$CC-s $BN-mgw $BN-mgw-mt \
                               $BN-mgw-mt-s $BN-mgw-s  \
                               $BN-$CC-mt-$BOOSTLIB_MDW_VERSION ; do
-				    AC_CHECK_LIB($ax_lib, main, [BOOST_DATE_TIME_LIB="-l$ax_lib" AC_SUBST(BOOST_DATE_TIME_LIB) link_thread="yes" break],
-                                 [link_thread="no"])
+				    AC_CHECK_LIB($ax_lib, main, [BOOST_DATE_TIME_LIB="-l$ax_lib" AC_SUBST(BOOST_DATE_TIME_LIB) link_date_time="yes" break],
+                                 [link_date_time="no"])
   				done
-				if test "x$link_thread"="no" = "xno"; then
+				if test "x$link_date_time"="no" = "xno"; then
 					AC_MSG_NOTICE(Could not link against $ax_lib !)
 				fi
 			fi
 
+#
+# Boost::Regex
+#
 			AC_CACHE_CHECK(whether the Boost::Regex library is available,
 						   ax_cv_boost_regex,
 						[AC_LANG_SAVE
@@ -514,6 +550,141 @@ BOOSTLIB_MDW_VERSION="1_33_1"
 				fi
 			fi
 
+#
+# Boost::ASIO: it needs Boost.System, Boost.Regex, Boost.Thread and 
+# Boost.DateTime, but does not produce any (other) library.
+#
+			AC_CACHE_CHECK(whether the Boost::Asio library is available,
+						   ax_cv_boost_asio,
+						[AC_LANG_SAVE
+			 AC_LANG_CPLUSPLUS
+			 AC_COMPILE_IFELSE(AC_LANG_PROGRAM([[@%:@include <boost/asio.hpp>]],
+                                   [[boost::asio::io_service io;
+	                                 boost::system::error_code timer_result;
+	                                 boost::asio::deadline_timer t(io);
+	                                 t.cancel();
+	                                 io.run_one();
+	                                 return 0;
+                                   ]]),
+                   ax_cv_boost_asio=yes, ax_cv_boost_asio=no)
+			 AC_LANG_RESTORE
+			])
+			if test "x$ax_cv_boost_asio" = "xyes"; then
+			   AC_DEFINE(HAVE_BOOST_ASIO,,[define if the Boost::Asio library is available])
+			   BOOST_ASIO_LIB="${BOOST_SYSTEM_LIB} ${BOOST_THREAD_LIB}"
+			   BOOST_ASIO_LIB="${BOOST_ASIO_LIB} ${BOOST_DATE_TIME_LIB}"
+			   BOOST_ASIO_LIB="${BOOST_ASIO_LIB} ${BOOST_REGEX_LIB}"
+			   BOOST_ASIO_LIB="${BOOST_ASIO_LIB} ${BOOST_SERIALIZATION_LIB}"
+			fi
+
+#
+# Support for Python and MPI (MPICH2, Boost::MPI, Boost::Python, 
+# Boost::Serialization, Boost::MPI_Python)
+# Note: on some distributions (e.g., Debian), Boost.MPI uses OpenMPI rather 
+#       than MPICH2
+#
+			CPPFLAGS_ORIG="${CPPFLAGS}"
+			CPPFLAGS="${CPPFLAGS} ${PYTHON_CFLAGS} ${MPICH2_CFLAGS}"
+#			CPPFLAGS="${CPPFLAGS} ${PYTHON_CFLAGS} ${OPENMPI_CFLAGS}"
+			LDFLAGS_ORIG="${LDFLAGS}"
+			LDFLAGS="${LDFLAGS} ${PYTHON_LIBS} ${PYTHON_ADD_LIBS} ${MPICH2_LIBS}"
+#			LDFLAGS="${LDFLAGS} ${PYTHON_LIBS} ${PYTHON_ADD_LIBS} ${OPENMPI_LIBS}"
+
+#
+# Boost::Python
+#
+			AC_CACHE_CHECK(whether the Boost::Python library is available,
+						   ax_cv_boost_python,
+			[AC_LANG_SAVE
+			AC_LANG_CPLUSPLUS
+
+		    AC_COMPILE_IFELSE(AC_LANG_PROGRAM([[@%:@include <boost/python.hpp>
+			char const* greet() { return "hello"; } 
+			BOOST_PYTHON_MODULE(hello_ext) { boost::python::def("greet", greet);}
+										   ]]),
+                   ax_cv_boost_python=yes, ax_cv_boost_python=no)
+			 AC_LANG_RESTORE
+			])
+
+			BOOST_PYTHON_LIB="-lboost_python"
+			AC_SUBST(BOOST_PYTHON_LIB)
+
+#
+# Boost::MPI
+#
+			AC_CACHE_CHECK(whether the Boost::Mpi library is available,
+						   ax_cv_boost_mpi,
+						[AC_LANG_SAVE
+			 AC_LANG_CPLUSPLUS
+			 AC_COMPILE_IFELSE(AC_LANG_PROGRAM([[@%:@include <boost/mpi.hpp>]],
+                                   [[
+	                                 return 0;
+                                   ]]),
+                   ax_cv_boost_mpi=yes, ax_cv_boost_mpi=no)
+			 AC_LANG_RESTORE
+			])
+			if test "x$ax_cv_boost_mpi" = "xyes"; then
+				AC_DEFINE(HAVE_BOOST_MPI,,[define if the Boost::Mpi library is available])
+				BN=boost_mpi
+				for ax_lib in $BN $BN-$CC $BN-$CC-mt $BN-$CC-mt-s $BN-$CC-s \
+                              lib$BN lib$BN-$CC lib$BN-$CC-mt lib$BN-$CC-mt-s \
+                              lib$BN-$CC-s $BN-mgw $BN-mgw-mt $BN-mgw-mt-s \
+                              $BN-mgw-s $BN-$CC-mt-$BOOSTLIB_MDW_VERSION ; do
+
+				    AC_CHECK_LIB($ax_lib, main, [BOOST_MPI_LIB="-l$ax_lib" AC_SUBST(BOOST_MPI_LIB) link_mpi="yes" break],
+                                 [link_mpi="no"])
+  				done
+				if test "x$link_mpi" = "xno"; then
+					AC_MSG_NOTICE(Could not link against $ax_lib !)
+				else
+					BOOST_MPI_LIB="${BOOST_MPI_LIB} ${BOOST_SERIALIZATION_LIB}"
+				fi
+			fi
+
+#
+# Boost::MPI_Python
+#
+			AC_CACHE_CHECK(whether the Boost::Mpi_Python library is available,
+						   ax_cv_boost_mpi_python,
+						[AC_LANG_SAVE
+			 AC_LANG_CPLUSPLUS
+			 AC_COMPILE_IFELSE(AC_LANG_PROGRAM([[@%:@include <boost/mpi/python/serialize.hpp>
+			 								   ]],
+                                   [[
+	                                 return 0;
+                                   ]]),
+                   ax_cv_boost_mpi_python=yes, ax_cv_boost_mpi_python=no)
+			 AC_LANG_RESTORE
+			])
+			if test "x$ax_cv_boost_mpi_python" = "xyes"; then
+				AC_DEFINE(HAVE_BOOST_MPI_PYTHON,,[define if the Boost::Mpi_Python library is available])
+				BN=boost_mpi_python
+#				BN=boost_mpi_python-py25
+				for ax_lib in $BN $BN-$CC $BN-$CC-mt $BN-$CC-mt-s $BN-$CC-s \
+                              lib$BN lib$BN-$CC lib$BN-$CC-mt lib$BN-$CC-mt-s \
+                              lib$BN-$CC-s $BN-mgw $BN-mgw-mt $BN-mgw-mt-s \
+                              $BN-mgw-s $BN-$CC-mt-$BOOSTLIB_MDW_VERSION ; do
+				    AC_CHECK_LIB($ax_lib, main, [BOOST_MPI_PYTHON_LIB="-l$ax_lib" AC_SUBST(BOOST_MPI_PYTHON_LIB) link_mpi_python="yes" break],
+                                 [link_mpi_python="no"])
+  				done
+				if test "x$link_mpi_python" = "xno"; then
+					AC_MSG_NOTICE(Could not link against $ax_lib !)
+				else
+					BOOST_MPI_PYTHON_LIB="${BOOST_MPI_PYTHON_LIB} ${BOOST_SERIALIZATION_LIB}"
+					BOOST_MPI_PYTHON_LIB="${BOOST_MPI_PYTHON_LIB} ${BOOST_PYTHON_LIB}"
+					BOOST_MPI_PYTHON_LIB="${BOOST_MPI_PYTHON_LIB} ${BOOST_MPI_LIB}"
+				fi
+			fi
+
+#
+# End of section on support for MPI
+#
+			CPPFLAGS="${CPPFLAGS_ORIG}"
+			LDFLAGS="${LDFLAGS_ORIG}"
+
+#
+# Boost::UnitTestFramework
+#
 			AC_CACHE_CHECK(whether the Boost::UnitTestFramework library is available,
 						   ax_cv_boost_unit_test_framework,
 						[AC_LANG_SAVE
@@ -555,8 +726,12 @@ BOOSTLIB_MDW_VERSION="1_33_1"
 				   AC_MSG_NOTICE(Could not link against $ax_lib !)
 				fi
 			fi
-		fi
+
+
+		fi dnl endif test "$succeeded"
+
         CPPFLAGS="$CPPFLAGS_SAVED"
         LDFLAGS="$LDFLAGS_SAVED"
-	fi
+
+	fi dnl endif test "x$want_boost"
 ])
