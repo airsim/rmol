@@ -3,12 +3,15 @@ include $(top_srcdir)/Makefile.common
 
 MAINTAINERCLEANFILES = Makefile.in
 
-SUBDIRS = book
+#
+SUBDIRS = contrib
 
-check_PROGRAMS = mpl
+EXTRA_DIST =
 
-mpl_SOURCES = mpl.cpp
-mpl_CXXFLAGS = $(BOOST_CFLAGS)
-mpl_LDADD = $(BOOST_LIB)
+#
+check_PROGRAMS = mpl_book_ch_01
 
-EXTRA_DIST = test_mpl.sh
+#
+mpl_book_ch_01_SOURCES = mpl_book_ch_01.cpp
+mpl_book_ch_01_CXXFLAGS = $(BOOST_CFLAGS)
+mpl_book_ch_01_LDADD = $(BOOST_LIBS)
