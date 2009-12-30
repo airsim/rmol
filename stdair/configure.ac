@@ -202,6 +202,7 @@ AC_CONFIG_FILES(
 	doc/sourceforge/howto_release_stdair.html
 	extracppunit/Makefile
 	test/Makefile
+	test/samples/Makefile
 	test/inheritance/Makefile
 	test/mpl/Makefile
 	test/mpl/contrib/Makefile
