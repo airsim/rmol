@@ -6,5 +6,6 @@ MAINTAINERCLEANFILES = Makefile.in
 ##
 SUBDIRS =
 
-EXTRA_DIST = schedule01.csv
+EXTRA_DIST = schedule01.csv schedule02.csv
 ##
+
