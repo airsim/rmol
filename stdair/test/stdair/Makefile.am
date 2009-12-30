@@ -1,4 +1,4 @@
-## test sub-directory
+## test/stdair sub-directory
 include $(top_srcdir)/Makefile.common
 
 MAINTAINERCLEANFILES = Makefile.in
