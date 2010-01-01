@@ -61,7 +61,10 @@ bom_h_sources = \
 				$(top_srcdir)/stdair/bom/BomChildrenHolderImp.hpp \
 				$(top_srcdir)/stdair/bom/BomIterator.hpp \
 				$(top_srcdir)/stdair/bom/OptimizerStruct.hpp \
-				$(top_srcdir)/stdair/bom/DoWStruct.hpp
+				$(top_srcdir)/stdair/bom/DoWStruct.hpp \
+				$(top_srcdir)/stdair/bom/TravelSolutionStruct.hpp \
+				$(top_srcdir)/stdair/bom/BookingRequestStruct.hpp \
+				$(top_srcdir)/stdair/bom/BomManager.hpp
 bom_cc_sources = \
 				$(top_srcdir)/stdair/bom/BomRootKey.cpp \
 				$(top_srcdir)/stdair/bom/InventoryKey.cpp \
@@ -94,5 +97,6 @@ bom_cc_sources = \
 				$(top_srcdir)/stdair/bom/AirlineFeature.cpp \
 				$(top_srcdir)/stdair/bom/AirlineFeatureContent.cpp \
 				$(top_srcdir)/stdair/bom/OptimizerStruct.cpp \
-				$(top_srcdir)/stdair/bom/DoWStruct.cpp
+				$(top_srcdir)/stdair/bom/DoWStruct.cpp \
+				$(top_srcdir)/stdair/bom/BomManager.cpp
 

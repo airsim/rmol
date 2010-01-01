@@ -3,6 +3,9 @@
 // //////////////////////////////////////////////////////////////////////
 // STL
 #include <cassert>
+#include <istream>
+#include <ostream>
+#include <sstream>
 // STDAIR
 #include <stdair/bom/AirlineFeatureSetStructure.hpp>
 #include <stdair/bom/AirlineFeatureSet.hpp>
@@ -24,6 +27,30 @@ namespace stdair {
   AirlineFeatureSet::~AirlineFeatureSet () {
   }
   
+  // //////////////////////////////////////////////////////////////////////
+  void AirlineFeatureSet::toStream (std::ostream& ioOut) const {
+    ioOut << toString();
+  }
+
+  // //////////////////////////////////////////////////////////////////////
+  void AirlineFeatureSet::fromStream (std::istream& ioIn) {
+  }
+  
+  // //////////////////////////////////////////////////////////////////////
+  std::string AirlineFeatureSet::toString() const {
+    return describeKey();
+  }
+    
+  // //////////////////////////////////////////////////////////////////////
+  const std::string AirlineFeatureSet::describeKey() const {
+    return std::string ("");
+  }
+
+  // //////////////////////////////////////////////////////////////////////
+  const std::string AirlineFeatureSet::describeShortKey() const {
+    return std::string ("");
+  }
+
   // //////////////////////////////////////////////////////////////////////
   const std::string AirlineFeatureSet::display() const {
     // Store current formatting flags of std::cout

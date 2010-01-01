@@ -1,8 +1,11 @@
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
-// C
-#include <assert.h>
+// STL
+#include <cassert>
+#include <istream>
+#include <ostream>
+#include <sstream>
 // STDAIR
 #include <stdair/bom/AirlineFeatureStructure.hpp>
 #include <stdair/bom/AirlineFeature.hpp>

@@ -5,8 +5,7 @@
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // STL
-#include <iostream>
-#include <sstream>
+#include <iosfwd>
 
 namespace stdair {
 

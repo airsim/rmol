@@ -342,6 +342,12 @@ namespace stdair {
 
   /** Define the total revenue of an unconstrained policy. */
   typedef double PolicyRevenue_T;
+
+  // ///////////// Technical ////////////////
+  /** File or directory name.
+      <br>It may contain paths, relative or absolute (e.g., /foo/bar
+      or C:\foo\bar). */
+  typedef std::string Filename_T;
   
 }
 #endif // __STDAIR_STDAIR_TYPES_HPP

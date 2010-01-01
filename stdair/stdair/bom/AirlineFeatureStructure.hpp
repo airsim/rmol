@@ -4,6 +4,8 @@
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
+// STL
+#include <iosfwd>
 // MPL
 #include <boost/mpl/vector.hpp>
 // STDAIR  
@@ -105,7 +107,6 @@ namespace stdair {
 
     /** The actual functional (Business Object) content. */
     BOM_CONTENT* _content;
-
   };
 
 }

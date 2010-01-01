@@ -4,6 +4,9 @@
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
+// STL
+#include <iosfwd>
+#include <string>
 // STDAIR 
 #include <stdair/bom/AirlineFeatureSet.hpp>
 #include <stdair/bom/AirlineFeatureStructure.hpp>
@@ -12,17 +15,20 @@
 #include <stdair/bom/AirlineFeatureTypes.hpp>
 
 namespace stdair {
+
   // Forward declarations
   class FacBomContent;
   struct AirlineFeatureKey_T;
 
+  
   /** Class representing the actual functional/business content for a
       segment-cabin. */
   class AirlineFeature : public AirlineFeatureContent {
     friend class FacBomContent;
 
+    
   public:
-    // Type definitions
+    // //////////// Type definitions //////////////
     /** Definition allowing to retrieve the associated parent
         BOM content type. */
     typedef AirlineFeatureSet Parent_T;
@@ -36,15 +42,17 @@ namespace stdair {
     /** Definition allowing to retrieve the associated 
          BOM content child type. */
     typedef AirlineFeature ContentChild_T;
+
     
   public:
-    // //////////// Setters //////////
-    /** Intialization method. */
+    // //////////// Setters /////////////
+    /** Intialisation method. */
     void init (const ForecasterMode_T&, const HistoricalDataLimit_T&,
                const OptimizerStruct_T&, const ControlMode_T&);
+
     
   public:
-    // /////////// Display support methods /////////
+    // /////////// Display support methods /////////////
     /** Dump a Business Object into an output stream.
         @param ostream& the output stream. */
     void toStream (std::ostream& ioOut) const;
@@ -67,13 +75,16 @@ namespace stdair {
     /** Give a description of the structure (for display purposes). */
     const std::string describe() const;
 
+    
   private:
     /** Retrieve the BOM structure object. */
     BomStructure_T& getBomStructure () {
       return _airlineFeatureStructure;
     }
 
+    
   protected:
+    // ///////////////// Constructors and destructors /////////////////
     /** Constructors are private so as to force the usage of the Factory
         layer. */
     /** Default constructors. */
@@ -84,8 +95,9 @@ namespace stdair {
     /** Destructor. */
     virtual ~AirlineFeature();
 
+    
   protected:
-    // Attributes
+    // ////////////////////// Attributes ///////////////////////////
     /** Reference structure. */
     BomStructure_T& _airlineFeatureStructure;
   };

@@ -4,6 +4,9 @@
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
+// STL
+#include <iosfwd>
+#include <string>
 // STDAIR 
 #include <stdair/bom/AirlineFeatureSetStructure.hpp>
 #include <stdair/bom/AirlineFeatureSetContent.hpp>
@@ -11,16 +14,19 @@
 #include <stdair/bom/AirlineFeatureTypes.hpp>
 
 namespace stdair {
+
   // Forward declarations.
   class FacBomContent;
   class AirlineFeature;
   struct AirlineFeatureKey_T;
   struct AirlineFeatureSetKey_T;
+
   
   /** Class representing the actual functional/business content
       for the Bom root. */
   class AirlineFeatureSet : public AirlineFeatureSetContent {
     friend class FacBomContent;
+
     
   public:
     // /////////////////////////////////////////////////////////////////////////
@@ -35,29 +41,31 @@ namespace stdair {
     typedef AirlineFeature ContentChild_T;
     // /////////////////////////////////////////////////////////////////////////
 
+    
   public:
-    // /////////// Display support methods /////////
+    // /////////// Display support methods /////////////
     /** Dump a Business Object into an output stream.
         @param ostream& the output stream. */
-    void toStream (std::ostream& ioOut) const { ioOut << toString(); }
+    void toStream (std::ostream& ioOut) const;
 
     /** Read a Business Object from an input stream.
         @param istream& the input stream. */
-    void fromStream (std::istream& ioIn) { }
+    void fromStream (std::istream& ioIn);
 
-   /** Get the serialised version of the Business Object. */
-    std::string toString() const { return describeKey(); }
+    /** Get the serialised version of the Business Object. */
+    std::string toString() const;
     
     /** Get a string describing the whole key (differentiating two objects
         at any level). */
-    const std::string describeKey() const { return std::string (""); }
+    const std::string describeKey() const;
 
     /** Get a string describing the short key (differentiating two objects
         at the same level). */
-    const std::string describeShortKey() const { return std::string (""); }
+    const std::string describeShortKey() const;
 
     /** Display the full context of the set of airline features. */
     const std::string display() const;
+
     
   public:
     // /////////// Getters /////////////
@@ -72,13 +80,16 @@ namespace stdair {
     /** Get a AirlineFeatureMap_T for iteration methods. */
     AirlineFeatureMap_T getAirlineFeatureMap () const;
 
+    
   private:     
     /** Retrieve the BOM structure object. */
     BomStructure_T& getBomStructure () {
       return _bomStructure;
     }
-    
+
+
   protected:
+    // ///////////////// Constructors and destructors /////////////////
     /** Constructors are private so as to force the usage of the Factory
         layer. */
     /** Default constructors. */
@@ -88,8 +99,9 @@ namespace stdair {
     /** Destructor. */
     virtual ~AirlineFeatureSet();
 
+    
   private:
-    // Attributes
+    // ////////////////////// Attributes ///////////////////////////
     /** Reference structure. */
     BomStructure_T& _bomStructure;
   };
