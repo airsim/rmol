@@ -98,5 +98,6 @@ bom_cc_sources = \
 				$(top_srcdir)/stdair/bom/AirlineFeatureContent.cpp \
 				$(top_srcdir)/stdair/bom/OptimizerStruct.cpp \
 				$(top_srcdir)/stdair/bom/DoWStruct.cpp \
+				$(top_srcdir)/stdair/bom/TravelSolutionStruct.cpp \
+				$(top_srcdir)/stdair/bom/BookingRequestStruct.cpp \
 				$(top_srcdir)/stdair/bom/BomManager.cpp
-

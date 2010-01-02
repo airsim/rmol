@@ -19,19 +19,14 @@ namespace stdair {
     // /////////// Display support method /////////////
     /** Dump a Business Object into an output stream.
         @param ostream& the output stream. */
-    void toStream (std::ostream& ioOut) const {
-      ioOut << describe();
-    }
+    void toStream (std::ostream& ioOut) const;
 
     /** Read a Business Object from an input stream.
         @param istream& the input stream. */
-    void fromStream (std::istream& ioIn) {
-    }
+    void fromStream (std::istream& ioIn);
 
     /** Display of the structure. */
-    const std::string describe() const {
-      return "";
-    }
+    const std::string describe() const;
 
 
   private:
