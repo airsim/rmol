@@ -45,22 +45,29 @@ namespace stdair {
         <br>A structure object is created, under the hood, with the given key.
         That structure object then gets a pointer on the content object. */
     template <typename BOM_CONTENT_CHILD>
-    BOM_CONTENT_CHILD& create (typename BOM_CONTENT_CHILD::Parent_T& ioContentParent, typename BOM_CONTENT_CHILD::BomKey_T& ioKey) {
-
-      // Define the parent key type.
-      typedef typename BOM_CONTENT_CHILD::Parent_T::BomKey_T ParentKey_T;
-
-      // Finish the construction of the child key by setting its parent.
-      const ParentKey_T& lParentKey = ioContentParent.getKey();
-      ioKey.setParentKey (lParentKey);
+    BOM_CONTENT_CHILD& create (typename BOM_CONTENT_CHILD::BomKey_T& ioKey) {
       
       // Create the child structure object for the given key
       BOM_CONTENT_CHILD& lBomContentChild =
         createInternal<BOM_CONTENT_CHILD> (ioKey);
 
+      return lBomContentChild;
+    }
+
+    /** Link a child content objet with his parent. */
+    template <typename BOM_CONTENT_CHILD>
+    static void linkWithParent (BOM_CONTENT_CHILD& ioContentChild, typename BOM_CONTENT_CHILD::Parent_T& ioContentParent) {
+
+      // Define the key types.
+      typedef typename BOM_CONTENT_CHILD::Parent_T::BomKey_T ParentKey_T;
+      
+      // Finish the construction of the child key by setting its parent.
+      const ParentKey_T& lParentKey = ioContentParent.getKey();
+      ioContentChild._key.setParentKey (lParentKey);
+      
       // Retrieve the child structure object
       typename BOM_CONTENT_CHILD::BomStructure_T& lBomStructureChild =
-        lBomContentChild.getBomStructure ();
+        ioContentChild.getBomStructure ();
 
       // Type for the parent Bom content
       typedef typename BOM_CONTENT_CHILD::Parent_T PARENT_CONTENT_T;
@@ -83,8 +90,6 @@ namespace stdair {
       if (hasLinkBeenSuccessful == false) {
         throw new MemoryAllocationException();
       }
-
-      return lBomContentChild;
     }
 
   private:
