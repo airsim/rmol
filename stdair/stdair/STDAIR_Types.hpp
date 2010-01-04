@@ -167,6 +167,9 @@ namespace stdair {
   /** Define the number of seats required by a demand. */
   typedef unsigned short NbOfSeats_T;
 
+  /** Number of passengers (in a group) for a booking. */
+  typedef unsigned short PartySize_T;
+
   /** Define a mean value (e.g., 20.2). */
   typedef double MeanValue_T;
 
