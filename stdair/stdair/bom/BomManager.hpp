@@ -11,6 +11,13 @@ namespace stdair {
 
   // Forward declarations
   class BomRoot;
+  class Inventory;
+  class FlightDate;
+  class LegDate;
+  class LegCabin;
+  class SegmentDate;
+  class SegmentCabin;
+  class BookingClass;
   
 
   /** Utility class for StdAir objects. */
