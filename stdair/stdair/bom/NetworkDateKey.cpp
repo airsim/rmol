@@ -17,6 +17,11 @@ namespace stdair {
   }
 
   // ////////////////////////////////////////////////////////////////////
+  NetworkDateKey_T::NetworkDateKey_T (const NetworkDateKey_T& iKey)
+    : _referenceDate (iKey._referenceDate) {
+  }
+
+  // ////////////////////////////////////////////////////////////////////
   NetworkDateKey_T::~NetworkDateKey_T () {
   }
 

@@ -10,10 +10,10 @@
 namespace stdair {
 
   // ////////////////////////////////////////////////////////////////////
-  OutboundPath::OutboundPath (const OutboundPathKey_T& iKey)
+  OutboundPathContent::OutboundPathContent (const OutboundPathKey_T& iKey)
     :  _key (iKey), _airlineCode (DEFAULT_AIRLINE_CODE),
       _flightPathCode (DEFAULT_FLIGHTPATH_CODE),
-      _boardTime (NULL_BOOST_TIME_DURATION) {
+      _flightTime (NULL_BOOST_TIME_DURATION) {
   }
   
   // ////////////////////////////////////////////////////////////////////

@@ -10,6 +10,7 @@
 #include <stdair/basic/BasConst_BookingClass.hpp>
 #include <stdair/basic/BasConst_Yield.hpp>
 #include <stdair/basic/BasConst_Period_BOM.hpp>
+#include <stdair/basic/BasConst_TravelSolution.hpp>
 
 namespace stdair {
 

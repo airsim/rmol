@@ -12,10 +12,10 @@ namespace stdair {
                      const Duration_T& iElapsedTime,
                      const NbOfSegments_T& iNbOfSegments,
                      const NbOfAirlines_T& iNbOfAirlines)
-    : destination (iDestination),
-      elapsed (iElapsedTime),
-      nbOfSegments (iNbOfSegments),
-      nbOfAirlines (iNbOfAirlines) {
+    : _destination (iDestination),
+      _elapsed (iElapsedTime),
+      _nbOfSegments (iNbOfSegments),
+      _nbOfAirlines (iNbOfAirlines) {
   }
   
   // ////////////////////////////////////////////////////////////////////
@@ -34,7 +34,8 @@ namespace stdair {
   // ////////////////////////////////////////////////////////////////////
   const std::string OutboundPathKey_T::toString() const {
     std::ostringstream oStr;
-    oStr << _classCode;
+    oStr << _destination << ", " << _elapsed << ", "
+         << _nbOfSegments << ", " << _nbOfAirlines;
     return oStr.str();
   }
 
@@ -47,12 +48,12 @@ namespace stdair {
     
   // //////////////////////////////////////////////////////////////////////
   const AirportCode_T& OutboundPathKey_T::getBoardingPoint() const {
-    return _parentKey.getBoardPoint();
+    return _parentKey.getBoardingPoint();
   }
   
   // //////////////////////////////////////////////////////////////////////
   const Date_T& OutboundPathKey_T::getBoardingDate() const {
-    return _parentKey.getBoardDate();
+    return _parentKey.getBoardingDate();
   }
   
 }

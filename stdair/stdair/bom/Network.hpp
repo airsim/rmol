@@ -40,9 +40,6 @@ namespace stdair {
     /** Definition allowing to retrieve the associated  BOM content child
         type. */
     typedef NetworkDate ContentChild_T;
-
-    /** Definition allowing to retrieve the specific BookingClass type. */
-    typedef BookingClass BookingClassContent_T;
     // /////////////////////////////////////////////////////////////////////////
 
   public:

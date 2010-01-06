@@ -21,7 +21,7 @@ namespace stdair {
     
   private:
     // /////////// Default constructor //////////
-    NetworkDateKey_T () { };
+    NetworkDateKey_T ();
     
   public:
     // /////////// Construction ///////////

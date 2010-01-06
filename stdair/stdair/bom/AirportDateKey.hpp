@@ -21,7 +21,7 @@ namespace stdair {
     
   private:
     // /////////// Default constructor //////////
-    AirportDateKey_T () { };
+    AirportDateKey_T ();
     
   public:
     // /////////// Construction ///////////

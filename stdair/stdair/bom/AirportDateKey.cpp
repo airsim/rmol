@@ -16,6 +16,11 @@ namespace stdair {
   }
 
   // ////////////////////////////////////////////////////////////////////
+  AirportDateKey_T::AirportDateKey_T (const AirportDateKey_T& iKey)
+    : _origin (iKey._origin) {
+  }
+
+  // ////////////////////////////////////////////////////////////////////
   AirportDateKey_T::~AirportDateKey_T () {
   }
 

@@ -44,6 +44,11 @@ namespace stdair {
     const NbOfAirlines_T& getNbOfAirlines() const {
       return _nbOfAirlines;
     }
+
+    /** Get the elapsed time. */
+    const Duration_T& getElapsedTime() const {
+      return _elapsed;
+    }
     
     /** Get boarding airport. */
     const AirportCode_T& getBoardingPoint() const;

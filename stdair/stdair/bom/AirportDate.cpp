@@ -63,12 +63,6 @@ namespace stdair {
   OutboundPathMap_T AirportDate::getOutboundPathMap () const {
     return _airportDateStructure.getChildrenHolder();
   }
-
-  // ////////////////////////////////////////////////////////////////////
-  OutboundPath* AirportDate::
-  getOutboundPath (const OutboundPathKey_T& iKey) const {
-    return _airportDateStructure.getContentChild (iKey);
-  }
   
 }
 

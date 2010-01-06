@@ -5,7 +5,7 @@
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // LATUS Common
-#include <stdair/basic/BasComTypes.hpp>
+#include <stdair/STDAIR_Types.hpp>
 
 namespace stdair {
 

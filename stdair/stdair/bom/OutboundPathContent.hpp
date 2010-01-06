@@ -45,22 +45,22 @@ namespace stdair {
 
     /** Get the number of segments (part of the primary key). */
     const NbOfSegments_T& getNbOfSegments() const {
-      return _key._nbOfSegments;
+      return _key.getNbOfSegments();
     }
 
     /** Get the destination (part of the primary key). */
     const AirportCode_T& getDestination() const {
-      return _key._destination;
+      return _key.getOffPoint();
     }
 
     /** Get the elapsed time (part of the primary key). */
     const Duration_T& getElapsedTime() const {
-      return _key._elapsed;
+      return _key.getElapsedTime();
     }
 
     /** Get the number of airlines (part of the primary key). */
     const NbOfAirlines_T& getNbOfAirlines() const {
-      return _key._nbOfAirlines;
+      return _key.getNbOfAirlines();
     }
    
   public:
