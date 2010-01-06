@@ -1,5 +1,5 @@
-#ifndef __STDAIR_BOM_BOOKINGCLASSKEY_HPP
-#define __STDAIR_BOM_BOOKINGCLASSKEY_HPP
+#ifndef __STDAIR_BOM_OUTBOUNDPATHKEY_HPP
+#define __STDAIR_BOM_OUTBOUNDPATHKEY_HPP
 
 // //////////////////////////////////////////////////////////////////////
 // Import section
@@ -7,28 +7,49 @@
 // STDAIR
 #include <stdair/STDAIR_Types.hpp>
 #include <stdair/bom/BomKey.hpp>
-#include <stdair/bom/SegmentCabinKey.hpp>
+#include <stdair/bom/AirportDateKey.hpp>
 
 namespace stdair {
-  /** Key of booking-class. */
-  struct BookingClassKey_T : public BomKey_T {
+  /** Key of OutboundPath. */
+  struct OutboundPathKey_T : public BomKey_T {
     
   public:
     // /////////// Typedefs ////////////
     /** Definition allowing to retrieve the parent key type. */
-    typedef SegmentCabinKey_T ParentKey_T;
+    typedef AirportDateKey_T ParentKey_T;
     
   public:
     // /////////// Construction ///////////
     /** Constructor. */
-    BookingClassKey_T (const ClassCode_T& iClassCode);
-
+    OutboundPathKey_T (const AirportCode_T&,
+                       const Duration_T&,
+                       const NbOfSegments_T&,
+                       const NbOfAirlines_T&);
+    
     /** Destructor. */
-    ~BookingClassKey_T ();
+    ~OutboundPathKey_T ();
     
     // /////////// Getters //////////
-    /** Get the cabin code. */
-    const ClassCode_T& getClassCode () const;
+    /** Get off airport. */
+    const AirportCode_T& getOffPoint() const {
+      return _destination;
+    }
+    
+    /** Get the number of segments. */
+    const NbOfSegments_T& getNbOfSegments() const {
+      return _nbOfSegments;
+    }
+    
+    /** Get the number of airlines. */
+    const NbOfAirlines_T& getNbOfAirlines() const {
+      return _nbOfAirlines;
+    }
+    
+    /** Get boarding airport. */
+    const AirportCode_T& getBoardingPoint() const;
+    
+    /** Get boarding date. */
+    const Date_T& getBoardingDate() const;
     
     // /////////// Setters /////////////
     void setParentKey (const ParentKey_T& iParentKey) {
@@ -56,12 +77,21 @@ namespace stdair {
     
   private:
     // Attributes
-    /** Segment-cabin key.*/
+    /** Airport-date key.*/
     ParentKey_T _parentKey;
-    
-    /** Cabin code. */
-    ClassCode_T _classCode;
+
+    /** The off point. */
+    AirportCode_T _destination;
+
+    /** The elapsed time of the path. */
+    Duration_T _elapsed;
+
+    /** Number of segments included in the path. */
+    NbOfSegments_T _nbOfSegments;
+
+    /** Number of airlines included in the path. */
+    NbOfAirlines_T _nbOfAirlines;
   };
 
 }
-#endif // __STDAIR_BOM_BOOKINGCLASSKEY_HPP
+#endif // __STDAIR_BOM_OUTBOUNDPATHKEY_HPP

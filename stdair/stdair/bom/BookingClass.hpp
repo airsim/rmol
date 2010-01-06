@@ -17,7 +17,7 @@ namespace stdair {
   struct BookingClassKey_T;
 
   /** Class representing the actual functional/business content for a
-      segment-cabin. */
+      booking class. */
   class BookingClass : public BookingClassContent {
     friend class FacBomContent;
 

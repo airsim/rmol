@@ -11,6 +11,10 @@ bom_h_sources = \
 				$(top_srcdir)/stdair/bom/SegmentDateKey.hpp \
 				$(top_srcdir)/stdair/bom/SegmentCabinKey.hpp \
 				$(top_srcdir)/stdair/bom/BookingClassKey.hpp \
+				$(top_srcdir)/stdair/bom/NetworkKey.hpp \
+				$(top_srcdir)/stdair/bom/NetworkDateKey.hpp \
+				$(top_srcdir)/stdair/bom/AirportDateKey.hpp \
+				$(top_srcdir)/stdair/bom/OutboundPathKey.hpp \
 				$(top_srcdir)/stdair/bom/AirlineFeatureSetKey.hpp \
 				$(top_srcdir)/stdair/bom/AirlineFeatureKey.hpp \
 				$(top_srcdir)/stdair/bom/BomRootTypes.hpp \
@@ -49,6 +53,22 @@ bom_h_sources = \
 				$(top_srcdir)/stdair/bom/BookingClassContent.hpp \
 				$(top_srcdir)/stdair/bom/BookingClassTypes.hpp \
 				$(top_srcdir)/stdair/bom/BookingClassStructure.hpp \
+				$(top_srcdir)/stdair/bom/Network.hpp \
+				$(top_srcdir)/stdair/bom/NetworkContent.hpp \
+				$(top_srcdir)/stdair/bom/NetworkTypes.hpp \
+				$(top_srcdir)/stdair/bom/NetworkStructure.hpp \
+				$(top_srcdir)/stdair/bom/NetworkDate.hpp \
+				$(top_srcdir)/stdair/bom/NetworkDateContent.hpp \
+				$(top_srcdir)/stdair/bom/NetworkDateTypes.hpp \
+				$(top_srcdir)/stdair/bom/NetworkDateStructure.hpp \
+				$(top_srcdir)/stdair/bom/AirportDate.hpp \
+				$(top_srcdir)/stdair/bom/AirportDateContent.hpp \
+				$(top_srcdir)/stdair/bom/AirportDateTypes.hpp \
+				$(top_srcdir)/stdair/bom/AirportDateStructure.hpp \
+				$(top_srcdir)/stdair/bom/OutboundPath.hpp \
+				$(top_srcdir)/stdair/bom/OutboundPathContent.hpp \
+				$(top_srcdir)/stdair/bom/OutboundPathTypes.hpp \
+				$(top_srcdir)/stdair/bom/OutboundPathStructure.hpp \
 				$(top_srcdir)/stdair/bom/AirlineFeatureSet.hpp \
 				$(top_srcdir)/stdair/bom/AirlineFeatureSetContent.hpp \
 				$(top_srcdir)/stdair/bom/AirlineFeatureSetTypes.hpp \
@@ -74,6 +94,10 @@ bom_cc_sources = \
 				$(top_srcdir)/stdair/bom/SegmentDateKey.cpp \
 				$(top_srcdir)/stdair/bom/SegmentCabinKey.cpp \
 				$(top_srcdir)/stdair/bom/BookingClassKey.cpp \
+				$(top_srcdir)/stdair/bom/NetworkKey.cpp \
+				$(top_srcdir)/stdair/bom/NetworkDateKey.cpp \
+				$(top_srcdir)/stdair/bom/AirportDateKey.cpp \
+				$(top_srcdir)/stdair/bom/OutboundPathKey.cpp \
 				$(top_srcdir)/stdair/bom/AirlineFeatureSetKey.cpp \
 				$(top_srcdir)/stdair/bom/AirlineFeatureKey.cpp \
 				$(top_srcdir)/stdair/bom/BomRoot.cpp \
@@ -92,6 +116,14 @@ bom_cc_sources = \
 				$(top_srcdir)/stdair/bom/LegCabinContent.cpp \
 				$(top_srcdir)/stdair/bom/BookingClass.cpp \
 				$(top_srcdir)/stdair/bom/BookingClassContent.cpp \
+				$(top_srcdir)/stdair/bom/Network.cpp \
+				$(top_srcdir)/stdair/bom/NetworkContent.cpp \
+				$(top_srcdir)/stdair/bom/NetworkDate.cpp \
+				$(top_srcdir)/stdair/bom/NetworkDateContent.cpp \
+				$(top_srcdir)/stdair/bom/AirportDate.cpp \
+				$(top_srcdir)/stdair/bom/AirportDateContent.cpp \
+				$(top_srcdir)/stdair/bom/OutboundPath.cpp \
+				$(top_srcdir)/stdair/bom/OutboundPathContent.cpp \
 				$(top_srcdir)/stdair/bom/AirlineFeatureSet.cpp \
 				$(top_srcdir)/stdair/bom/AirlineFeatureSetContent.cpp \
 				$(top_srcdir)/stdair/bom/AirlineFeature.cpp \

@@ -55,6 +55,9 @@ namespace stdair {
   /** Define the type for date (e.g., departure date of a flight). */
   typedef boost::gregorian::date Date_T;
     
+  /** Define the type for network ID. */
+  typedef std::string NetworkID_T;
+
   /** Define the type for airport codes. */
   typedef std::string AirportCode_T;
 

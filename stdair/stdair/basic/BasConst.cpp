@@ -93,10 +93,10 @@ namespace stdair {
   //     /** Time duration representing a full minute (in seconds).*/
   //     const int TIME_DURATION_FOR_A_MINUTE_IN_SECONDS = 60;
 
-  //     /** Null time duration (in boost::time_duration unit).*/
-  //     const Duration_T NULL_BOOST_TIME_DURATION =
-  //       boost::posix_time::hours(0)+ boost::posix_time::minutes (0)
-  //       + boost::posix_time::seconds (0);
+  /** Null time duration (in boost::time_duration unit).*/
+  const Duration_T NULL_BOOST_TIME_DURATION =
+    boost::posix_time::hours(0)+ boost::posix_time::minutes (0)
+    + boost::posix_time::seconds (0);
 
   //     /** Date duration representing a full day (in boost::date_duration unit).*/
   //     const DateOffSet_T BOOST_DATE_DURATION_FOR_A_DAY (1);
@@ -144,39 +144,39 @@ namespace stdair {
   //     const DateTime_T DEFAULT_DEMAND_DATETIME (DEFAULT_WHOLE_DEMAND_UPDATE_DATE,
   //                                               NULL_BOOST_TIME_DURATION);
 
-  //     // //////// Fare Rules ///////
-  //     /** Default saturdayStay value (false). */
-  //     const SaturdayStay_T DEFAULT_SATURDAY_STAY = false;
+  // //////// Fare Rules ///////
+  /** Default saturdayStay value (false). */
+  const SaturdayStay_T DEFAULT_SATURDAY_STAY = false;
+  
+  /** Default change fees value (false). */
+  const ChangeFees_T DEFAULT_CHANGE_FEES = false;
+  
+  /** Default non refundable value (false). */
+  const NonRefundable_T DEFAULT_NON_REFUNDABLE = false;
+  
+  /** Default airlineCode value ('XX'). */
+  const AirlineCode_T DEFAULT_AIRLINE_CODE = "XX";
 
-  //     /** Default change fees value (false). */
-  //     const ChangeFees_T DEFAULT_CHANGE_FEES = false;
+  /** Default airlineCode value (''). */
+  const AirlineCode_T DEFAULT_NULL_AIRLINE_CODE = "";
 
-  //     /** Default non refundable value (false). */
-  //     const NonRefundable_T DEFAULT_NON_REFUNDABLE = false;
+  /** Default airportCode value ('XXX'). */
+  const AirportCode_T DEFAULT_AIRPORT_CODE = "XXX";
 
-  //     /** Default airlineCode value ('XX'). */
-  //     const AirlineCode_T DEFAULT_AIRLINE_CODE = "XX";
+  /** Default family code value ('X'). */
+  const ClassCode_T DEFAULT_FAMILY_CODE = "0";
 
-  //     /** Default airlineCode value (''). */
-  //     const AirlineCode_T DEFAULT_NULL_AIRLINE_CODE = "";
+  /** Default classCode value ('X'). */
+  const ClassCode_T DEFAULT_CLASS_CODE = "X";
 
-  //     /** Default airportCode value ('XXX'). */
-  //     const AirportCode_T DEFAULT_AIRPORT_CODE = "XXX";
+  /** Default number of airlines. */
+  const NbOfAirlines_T DEFAULT_NBOFAIRLINES = 0;
 
-  //     /** Default family code value ('X'). */
-  //     const ClassCode_T DEFAULT_FAMILY_CODE = "0";
+  /** Default classCode value (''). */
+  const ClassCode_T DEFAULT_NULL_CLASS_CODE = "";
 
-  //     /** Default classCode value ('X'). */
-  //     const ClassCode_T DEFAULT_CLASS_CODE = "X";
-
-  //     /** Default number of airlines. */
-  //     const NbOfAirlines_T DEFAULT_NBOFAIRLINES = 0;
-
-  //     /** Default classCode value (''). */
-  //     const ClassCode_T DEFAULT_NULL_CLASS_CODE = "";
-
-  //     /** Default flightPathCode value (''). */
-  //     const FlightPathCode_T DEFAULT_FLIGHTPATH_CODE = "";
+  /** Default flightPathCode value (''). */
+  const FlightPathCode_T DEFAULT_FLIGHTPATH_CODE = "";
 
   //     // //////// DemandFeatures ///////
   //     /** Default SaturdayStay average ratio of demand (value between [0, 100]). */
@@ -331,21 +331,21 @@ namespace stdair {
   //     /** Default remaining futre demand standard deviation for OnD. */
   //     const NbOfBookings_T DEFAULT_OND_REMAINING_DEMAND_STANDARD_DEVIATION = 0.0;
     
-  //     // //////// Travel Solutions ///////
-  //     /** Default Minimum connection time. */
-  //     const Duration_T DEFAULT_MINIMUM_CONNECTION_TIME (0, 30, 0);
+      // //////// Travel Solutions ///////
+      /** Default Minimum connection time. */
+      const Duration_T DEFAULT_MINIMUM_CONNECTION_TIME (0, 30, 0);
 
-  //     /** Default Matching Indicator value. */
-  //     const MatchingIndicator_T DEFAULT_MATCHING_INDICATOR (0.0);
+      /** Default Matching Indicator value. */
+      const MatchingIndicator_T DEFAULT_MATCHING_INDICATOR (0.0);
 
-  //     /** Default price value (0.0). */
+      /** Default price value (0.0). */
   //     const PriceValue_T DEFAULT_PRICE_VALUE (0.0);
 
-  //     /** Default currency (euro). */
-  //     const PriceCurrency_T DEFAULT_CURRENCY ("EUR");
+      /** Default currency (euro). */
+      const PriceCurrency_T DEFAULT_CURRENCY ("EUR");
 
-  //     /** Default availability status for a travel solution. */
-  //     const AvailabilityStatus_T DEFAULT_AVAILABILITY_STATUS = false;
+      /** Default availability status for a travel solution. */
+      const AvailabilityStatus_T DEFAULT_AVAILABILITY_STATUS = false;
 
   //     // //////// Cancellation ///////
   //     /** Default Fare value */

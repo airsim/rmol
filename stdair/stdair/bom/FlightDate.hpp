@@ -42,8 +42,8 @@ namespace stdair {
          BOM content child type. */
     typedef SegmentDate ContentChild_T;
 
-        /** Definition allowing to retrieve the associated second
-         BOM content child type. */
+    /** Definition allowing to retrieve the associated second
+        BOM content child type. */
     typedef LegDate SecondContentChild_T;
 
     /** Definition allowing to retrieve the specific BookingClass type. */

@@ -11,6 +11,7 @@
 #include <stdair/bom/BomRootContent.hpp>
 #include <stdair/bom/BomRootTypes.hpp>
 #include <stdair/bom/InventoryTypes.hpp>
+#include <stdair/bom/NetworkTypes.hpp>
 
 namespace stdair {
   // Forward declarations.
@@ -60,6 +61,10 @@ namespace stdair {
     /** Definition allowing to retrieve the associated 
          BOM content child type. */
     typedef Inventory ContentChild_T;
+    
+    /** Definition allowing to retrieve the associated second
+        BOM content child type. */
+    typedef Network SecondContentChild_T;
     // /////////////////////////////////////////////////////////////////////////
 
 
@@ -104,6 +109,12 @@ namespace stdair {
 
     /** Get a InventoryMap_T for iteration methods. */
     InventoryMap_T getInventoryMap () const;
+
+    /** Get a NetworkList_T for iteration methods. */
+    NetworkList_T getNetworkList () const;
+
+    /** Get a NetworkMap_T for iteration methods. */
+    NetworkMap_T getNetworkMap () const;
     
     /** Get the reference of the AirlineFeatureSet object. */
     const AirlineFeatureSet& getAirlineFeatureSet() const {
@@ -115,6 +126,11 @@ namespace stdair {
         given airline code (Inventory key).
         <br>If not existing, return the NULL pointer. */
     Inventory* getInventory (const AirlineCode_T&) const;
+
+    /** Retrieve, if existing, the Network corresponding to the
+        given airline code (Network key).
+        <br>If not existing, return the NULL pointer. */
+    Network* getNetwork (const NetworkID_T&) const;
     
   public:
     // //////////// Setters //////////////

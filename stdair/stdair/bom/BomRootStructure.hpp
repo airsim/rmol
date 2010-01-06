@@ -12,6 +12,7 @@
 #include <stdair/bom/BomStopStructure.hpp>
 #include <stdair/bom/BomStopContent.hpp>
 #include <stdair/bom/InventoryStructure.hpp>
+#include <stdair/bom/NetworkStructure.hpp>
 
 namespace stdair {
   /** Wrapper class aimed at holding the actual content, modeled
@@ -30,20 +31,29 @@ namespace stdair {
     /** Definition allowing to retrieve the  children type of the
         BOM_CONTENT. */
     typedef typename BOM_CONTENT::ContentChild_T ContentChild_T;
-    
+
+    /** Definition allowing to retrieve the second children type of the
+        BOM_CONTENT. */
+    typedef typename BOM_CONTENT::SecondContentChild_T SecondContentChild_T;
+
   private:
     // Type definitions
     /** Definition allowing to retrieve the associated BOM key type. */
     typedef typename BOM_CONTENT::BomKey_T BomKey_T;
 
     /** Definition allowing to retrieve the associated children type. */
-    typedef boost::mpl::vector<InventoryStructure<ContentChild_T>, BomStopStructure> ChildrenBomTypeList_T;
-
+    typedef boost::mpl::vector<InventoryStructure<ContentChild_T>, 
+                               NetworkStructure<SecondContentChild_T> > ChildrenBomTypeList_T;
+    
     /** Definition allowing to retrive the default children bom holder type. */
     typedef BomChildrenHolderImp<BomStopContent> DefaultChildrenBomHolder_T;
-    
+
     /** Definition allowing to retrive the  children bom holder type. */
     typedef BomChildrenHolderImp<ContentChild_T> ChildrenBomHolder_T;
+
+     /** Definition allowing to retrive the second children bom holder type. */
+    typedef BomChildrenHolderImp<SecondContentChild_T> SecondChildrenBomHolder_T;
+
 
   public:
     // /////////// Getters /////////////
@@ -59,9 +69,20 @@ namespace stdair {
       return *_childrenHolder;
     }
 
+    /** Get the holder of networks. */
+    const SecondChildrenBomHolder_T& getSecondChildrenHolder() const {
+      assert (_secondChildrenHolder != NULL);
+      return *_secondChildrenHolder;
+    }
+
     /** Get the holder of inventories. */
     void getChildrenHolder (ChildrenBomHolder_T*& ioChildrenHolder) {
       ioChildrenHolder = _childrenHolder;
+    }
+
+    /** Get the holder of networks. */
+    void getChildrenHolder (SecondChildrenBomHolder_T*& ioChildrenHolder) {
+      ioChildrenHolder = _secondChildrenHolder;
     }
 
   private: 
@@ -72,6 +93,11 @@ namespace stdair {
     /** Set the  children holder. */
     void setChildrenHolder (ChildrenBomHolder_T& ioChildrenHolder) {
       _childrenHolder = &ioChildrenHolder;
+    }
+
+    /** Set the network children holder. */
+    void setChildrenHolder (SecondChildrenBomHolder_T& ioChildrenHolder) {
+      _secondChildrenHolder = &ioChildrenHolder;
     }
 
   public:
@@ -101,7 +127,8 @@ namespace stdair {
     /** Constructors are private so as to force the usage of the Factory
         layer. */
     /** Default constructors. */
-    BomRootStructure () : _content (NULL), _childrenHolder (NULL) { };
+    BomRootStructure () : _content (NULL), _childrenHolder (NULL),
+                          _secondChildrenHolder (NULL) { };
     BomRootStructure (const BomRootStructure&);
 
     /** Destructor. */
@@ -114,6 +141,9 @@ namespace stdair {
 
     /** Holder of inventories. */
     ChildrenBomHolder_T* _childrenHolder;
+    
+    /** Holder of networks. */
+    SecondChildrenBomHolder_T* _secondChildrenHolder;
   };
 
 }

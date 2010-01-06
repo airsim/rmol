@@ -1,5 +1,5 @@
-#ifndef __STDAIR_BOM_BOOKINGCLASSKEY_HPP
-#define __STDAIR_BOM_BOOKINGCLASSKEY_HPP
+#ifndef __STDAIR_BOM_NETWORKDATEKEY_HPP
+#define __STDAIR_BOM_NETWORKDATEKEY_HPP
 
 // //////////////////////////////////////////////////////////////////////
 // Import section
@@ -7,61 +7,75 @@
 // STDAIR
 #include <stdair/STDAIR_Types.hpp>
 #include <stdair/bom/BomKey.hpp>
-#include <stdair/bom/SegmentCabinKey.hpp>
+#include <stdair/bom/NetworkKey.hpp>
 
 namespace stdair {
-  /** Key of booking-class. */
-  struct BookingClassKey_T : public BomKey_T {
-    
+  /** Key of network-date. */
+  struct NetworkDateKey_T : public BomKey_T {
+    friend struct AirportDateKey_T;
+
   public:
     // /////////// Typedefs ////////////
     /** Definition allowing to retrieve the parent key type. */
-    typedef SegmentCabinKey_T ParentKey_T;
+    typedef NetworkKey_T ParentKey_T;
+    
+  private:
+    // /////////// Default constructor //////////
+    NetworkDateKey_T () { };
     
   public:
     // /////////// Construction ///////////
-    /** Constructor. */
-    BookingClassKey_T (const ClassCode_T& iClassCode);
+    /** Constructors. */
+    NetworkDateKey_T (const Date_T& iReferenceDate);
+    NetworkDateKey_T (const NetworkDateKey_T&);
 
     /** Destructor. */
-    ~BookingClassKey_T ();
+    ~NetworkDateKey_T ();
     
     // /////////// Getters //////////
-    /** Get the cabin code. */
-    const ClassCode_T& getClassCode () const;
-    
-    // /////////// Setters /////////////
-    void setParentKey (const ParentKey_T& iParentKey) {
-      _parentKey = iParentKey;
+    /** Get the reference date. */
+    const Date_T& getReferenceDate() const {
+      return _referenceDate;
     }
-    
+
     // /////////// Display support methods /////////
     /** Dump a Business Object Key into an output stream.
         @param ostream& the output stream. */
     void toStream (std::ostream& ioOut) const;
-
+    
     /** Read a Business Object Key from an input stream.
         @param istream& the input stream. */
     void fromStream (std::istream& ioIn);
-
+      
    /** Get the serialised version of the Business Object Key.
        <br>That string is unique, at the level of a given Business Object,
        when among children of a given parent Business Object.
        <br>For instance, "H" and "K" allow to differentiate among two
-       marketing classes for the same segment-cabin. */
+       marketing classes for the same segment-date. */
     const std::string toString() const;
-    
+
     /** Display of the key. */
     const std::string describe() const;
-    
+
+    // /////////// Setters ///////////////
+    /** Set the parent key. */
+    void setParentKey (const ParentKey_T& iParentKey) {
+      _parentKey = iParentKey;
+    }
+
   private:
     // Attributes
-    /** Segment-cabin key.*/
+    /** Network Key.*/
     ParentKey_T _parentKey;
-    
-    /** Cabin code. */
-    ClassCode_T _classCode;
+
+    /** The reference date of the network-date.
+        <br> A network-date is a set of flight-dates which are linked together
+        by a set of O&D products. Hence, the "dates" of those flight-dates
+        are not necessarily the same. That's why we have to choose a date
+        as the "reference" one. */
+    Date_T _referenceDate;
   };
 
 }
-#endif // __STDAIR_BOM_BOOKINGCLASSKEY_HPP
+
+#endif // __STDAIR_BOM_NETWORKDATEKEY_HPP
