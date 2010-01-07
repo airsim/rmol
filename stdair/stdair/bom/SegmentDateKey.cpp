@@ -7,15 +7,15 @@
 namespace stdair {
 
   // ////////////////////////////////////////////////////////////////////
-  SegmentDateKey_T::SegmentDateKey_T (const AirportCode_T& iBoardPoint,
+  SegmentDateKey_T::SegmentDateKey_T (const AirportCode_T& iBoardingPoint,
                                       const AirportCode_T& iOffPoint)
-    : _boardPoint (iBoardPoint), _offPoint (iOffPoint) {
+    : _boardingPoint (iBoardingPoint), _offPoint (iOffPoint) {
   }
 
   // ////////////////////////////////////////////////////////////////////
   SegmentDateKey_T::SegmentDateKey_T (const SegmentDateKey_T& iKey)
     : _parentKey (iKey._parentKey),
-      _boardPoint (iKey._boardPoint), _offPoint (iKey._offPoint) {
+      _boardingPoint (iKey._boardingPoint), _offPoint (iKey._offPoint) {
   }
 
   // ////////////////////////////////////////////////////////////////////
@@ -34,7 +34,7 @@ namespace stdair {
   // ////////////////////////////////////////////////////////////////////
   const std::string SegmentDateKey_T::toString() const {
     std::ostringstream oStr;
-    oStr << _boardPoint << "-" << _offPoint;
+    oStr << _boardingPoint << "-" << _offPoint;
     return oStr.str();
   }
 

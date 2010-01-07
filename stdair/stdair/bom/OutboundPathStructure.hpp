@@ -11,6 +11,11 @@
 #include <stdair/bom/BomStopContent.hpp>
 
 namespace stdair {
+  // Forward declarations.
+  template <typename BOM> struct BomMap_T;
+  struct AirportDateKey_T;
+  struct NetworkDateKey_T;
+
   /** Wrapper class aimed at holding the actual content, modeled
       by an external specific OutboundPath class (for instance,
       in the AIRSCHED library). */
@@ -39,6 +44,18 @@ namespace stdair {
     /** Definition allowing to retrieve the default children bom holder type. */
     typedef BomChildrenHolderImp<BomStopContent> DefaultChildrenBomHolder_T;
 
+    /** Define the children segment-date type. */
+    typedef typename BOM_CONTENT::SegmentDateContent_T SegmentDate_T;
+    
+    /** Define the children segment-date holder type. */
+    typedef BomChildrenHolderImp<SegmentDate_T> SegmentDateHolder_T;
+    
+    /** Define the map of segment-date. */
+    typedef BomMap_T<SegmentDate_T> SegmentDateMap_T;
+
+    /** Definition allowing to retrieve the AirportDate type. */
+    typedef typename BOM_CONTENT::Parent_T AirportDate_T;
+    
   public:
     // /////////// Getters /////////////
     /** Get the (parent) AirportDateStructure object. */
@@ -47,12 +64,29 @@ namespace stdair {
     }
     
     /** Get the (parent) AirportDateStructure object. */
-    ParentBomStructure_T& getAirportDateStructure() const;
+    ParentBomStructure_T& getAirportDateStructure() const {
+      assert (_parent != NULL);
+      return *_parent;
+    }
     
-    /** Get the segment-cabin key. */
+    /** Get the outbound path key. */
     const BomKey_T& getKey() const {
       assert (_content != NULL);
       return _content->getKey();
+    }
+    /** Get the holder of segment-dates. */
+    SegmentDateHolder_T& getSegmentDateHolder() const {
+      assert (_segmentDateHolder);
+      return *_segmentDateHolder;
+    }
+
+    /** Get the AirportDate (from the Network parent class) corresponding
+        to the given key (reference date + airport code).
+        <br>Return the NULL pointer if not existing. */
+    AirportDate_T* getAirportDate (const AirportDateKey_T& iAirportDateKey,
+                                   const NetworkDateKey_T& iNetworkDateKey)const{
+      assert (_parent != NULL);
+      return _parent->getAirportDate (iAirportDateKey, iNetworkDateKey);
     }
     
   private:
@@ -64,6 +98,11 @@ namespace stdair {
     
     /** Default children holder setter. */
     void setChildrenHolder (DefaultChildrenBomHolder_T&) { }
+
+    /** Set the  segment-date holder. */
+    void setSegmentDateHolder (SegmentDateHolder_T& ioSegmentDateHolder) {
+      _segmentDateHolder = &ioSegmentDateHolder;
+    }
     
   public:
     // /////////// Display support methods /////////
@@ -92,7 +131,8 @@ namespace stdair {
     /** Constructors are private so as to force the usage of the Factory
         layer. */
     /** Default constructors. */
-    OutboundPathStructure () : _parent (NULL), _content (NULL) { }
+    OutboundPathStructure () : _parent (NULL), _content (NULL),
+                               _segmentDateHolder (NULL) { }
     OutboundPathStructure (const OutboundPathStructure&);
 
     /** Destructor. */
@@ -105,6 +145,9 @@ namespace stdair {
 
     /** The actual functional (Business Object) content. */
     BOM_CONTENT* _content;
+
+    /** Holder of segment-dates. */
+    SegmentDateHolder_T* _segmentDateHolder;
 
   };
 

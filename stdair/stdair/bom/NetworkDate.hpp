@@ -5,7 +5,7 @@
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // STDAIR 
-#include <stdair/bom/BomRoot.hpp>
+#include <stdair/bom/Network.hpp>
 #include <stdair/bom/NetworkDateStructure.hpp>
 #include <stdair/bom/NetworkDateTypes.hpp>
 #include <stdair/bom/AirportDateTypes.hpp>
@@ -30,7 +30,7 @@ namespace stdair {
     // /////////////////////////////////////////////////////////////////////////
     /** Definition allowing to retrieve the associated parent
         BOM content type. */
-    typedef BomRoot Parent_T;
+    typedef Network Parent_T;
 
     /** Definition allowing to retrieve the associated BOM structure type. */
     typedef NetworkDateStructure_T BomStructure_T;
@@ -41,9 +41,6 @@ namespace stdair {
     /** Definition allowing to retrieve the associated  BOM content child
         type. */
     typedef AirportDate ContentChild_T;
-
-    /** Definition allowing to retrieve the specific BookingClass type. */
-    typedef BookingClass BookingClassContent_T;
     // /////////////////////////////////////////////////////////////////////////
 
   public:
@@ -74,7 +71,12 @@ namespace stdair {
 
     /** Get a AirportDateMap_T for iteration methods. */
     AirportDateMap_T getAirportDateMap () const;
-
+    
+    /** Retrieve, if existing, the AirportDate corresponding to the
+        given airport-date key.
+        <br>If not existing, return the NULL pointer. */
+    AirportDate* getAirportDate (const AirportDateKey_T&) const;
+    
   private:
     /** Retrieve the BOM structure object. */
     BomStructure_T& getBomStructure () {

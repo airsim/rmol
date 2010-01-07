@@ -43,6 +43,11 @@ namespace stdair {
     const Date_T& getFlightDate() const {
       return _flightDate;
     }
+
+    /** Get the airline code of the flight-date. */
+    const AirlineCode_T& getAirlineCode () const {
+      return _parentKey.getAirlineCode();
+    }
     
     // /////////// Setters /////////////
     /** Set the parent key. */

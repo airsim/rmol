@@ -60,15 +60,6 @@ namespace stdair {
     /** Define the  children bom holder type. */
     typedef BomChildrenHolderImp<ContentChild_T> ChildrenBomHolder_T;
 
-    // /** Define the children booking class type. */
-    // typedef typename BOM_CONTENT::BookingClassContent_T BookingClass_T;
-    
-    // /** Define the children booking class holder type. */
-    // typedef BomChildrenHolderImp<BookingClass_T> BookingClassHolder_T;
-    
-    // /** Define the map of booking class. */
-    // typedef BomMap_T<BookingClass_T> BookingClassMap_T;
-
   public:
     // /////////// Getters /////////////
     /** Get the (parent) BomStructureRoot object. */
@@ -99,28 +90,22 @@ namespace stdair {
       ioChildrenHolder = _childrenHolder;
     }
 
-    /** Get the holder of booking classes. */
-    // BookingClassHolder_T& getBookingClassHolder() const {
-    //   assert (_bookingClassHolder);
-    //   return *_bookingClassHolder;
-    // }
-
     /** Retrieve, if existing, the network-date corresponding to the
         given key.
         <br>If not exissting, return the NULL pointer. */
     ContentChild_T* getContentChild (const ChildKey_T& iKey) const {
       ContentChild_T* oContentChild_ptr= NULL;
       
-      // ChildrenMap_T lChildrenMap (getChildrenHolder());
-      // const MapKey_T lMapKey = iKey.toString();
+      ChildrenMap_T lChildrenMap (getChildrenHolder());
+      const MapKey_T lMapKey = iKey.toString();
       
-      // typename ChildrenMap_T::iterator itContentChild =
-      //   lChildrenMap.find (lMapKey);
+      typename ChildrenMap_T::iterator itContentChild =
+        lChildrenMap.find (lMapKey);
       
-      // if (itContentChild != lChildrenMap.end()) {
-      //   oContentChild_ptr = itContentChild->second;
-      //   assert (oContentChild_ptr != NULL);
-      // }
+      if (itContentChild != lChildrenMap.end()) {
+        oContentChild_ptr = itContentChild->second;
+        assert (oContentChild_ptr != NULL);
+      }
       
       return oContentChild_ptr;
     }

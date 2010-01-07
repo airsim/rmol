@@ -26,7 +26,7 @@ namespace stdair {
   public:
     // /////////// Construction ///////////
     /** Constructors. */
-    LegDateKey_T (const AirportCode_T& iBoardPoint);
+    LegDateKey_T (const AirportCode_T& iBoardingPoint);
     LegDateKey_T (const LegDateKey_T&);
 
     /** Destructor. */
@@ -34,8 +34,8 @@ namespace stdair {
     
     // /////////// Getters //////////
     /** Get the boarding point. */
-    const AirportCode_T& getBoardPoint() const {
-      return _boardPoint;
+    const AirportCode_T& getBoardingPoint() const {
+      return _boardingPoint;
     }
     
     // /////////// Setters /////////////
@@ -67,8 +67,8 @@ namespace stdair {
     /** Flight-date Key.*/
     ParentKey_T _parentKey;
     
-    /** Boarding airport. */
-    AirportCode_T _boardPoint;
+    /** Boardinging airport. */
+    AirportCode_T _boardingPoint;
   };
 
 }

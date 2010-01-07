@@ -80,7 +80,7 @@ namespace stdair {
         <br>Basically, the board time of the given SegmentDate should be
         such as to allow the passenger connecting from the previous flight
         (current SegmentDate object) to the next one (given SegmentDate). */
-    //    bool isConnectable (const SegmentDate&) const;
+    bool isConnectable (const SegmentDate&) const;
 
   public:
     // /////////// Display support methods /////////

@@ -25,9 +25,9 @@ namespace stdair {
 
   // //////////////////////////////////////////////////////////////////////
   const Duration_T SegmentDateContent::getTimeOffSet() const {
-    // TimeOffSet = (OffTime - BoardTime) + (OffDate - BoardDate) * 24
+    // TimeOffSet = (OffTime - BoardingTime) + (OffDate - BoardingDate) * 24
     //              - ElapsedTime
-    Duration_T oTimeOffSet = (_offTime - _boardTime);
+    Duration_T oTimeOffSet = (_offTime - _boardingTime);
     const DateOffSet_T& lDateOffSet = getDateOffSet();
     const Duration_T lDateOffSetInHours (lDateOffSet.days() * 24, 0, 0);
     oTimeOffSet += lDateOffSetInHours - _elapsedTime;

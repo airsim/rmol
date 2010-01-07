@@ -45,7 +45,7 @@ namespace stdair {
         <br>A structure object is created, under the hood, with the given key.
         That structure object then gets a pointer on the content object. */
     template <typename BOM_CONTENT_CHILD>
-    BOM_CONTENT_CHILD& create (typename BOM_CONTENT_CHILD::BomKey_T& ioKey) {
+    BOM_CONTENT_CHILD& create(const typename BOM_CONTENT_CHILD::BomKey_T& ioKey){
       
       // Create the child structure object for the given key
       BOM_CONTENT_CHILD& lBomContentChild =
@@ -126,6 +126,48 @@ namespace stdair {
       // Forward the job to FacBomStructure.
       FacBomStructure::createDirectAccesses<typename BOM_ROOT::BomStructure_T>
         (iBomRoot._bomRootStructure);
+    }
+    
+    /** Link a segment-date with an outbound path. */
+    template <typename OUTBOUND_PATH>
+    static void addSegmentDateIntoOutboundPath
+    (OUTBOUND_PATH& ioOutboundPath,
+     const typename OUTBOUND_PATH::SegmentDateContent_T& iSegmentDate) {
+
+      // Forward the job to FacBomStructure.
+      FacBomStructure::
+        addSegmentDateIntoOutboundPath<typename OUTBOUND_PATH::BomStructure_T>
+        (ioOutboundPath._outboundPathStructure,
+         iSegmentDate._segmentDateStructure);
+
+      // Increment the total flight time of the outbound path
+      const Duration_T lElapsed = iSegmentDate.getElapsedTime();
+      ioOutboundPath.incrementTotalFlightTime (lElapsed);
+      // Increment the flight path code
+      std::ostringstream ostr;
+      FlightPathCode_T lPreviousFPCode =
+        ioOutboundPath.getCurrentFlightPathCode();
+      ostr << lPreviousFPCode
+           << iSegmentDate.getFlightNumber();
+      ioOutboundPath.setFlightPathCode(ostr.str());
+    }
+
+    /** Clone the links, existing between a reference OutboundPath and its
+        SegmentDate objects, to another OutboundPath.
+        @param OutboundPath&
+        @param const OutboundPath& The reference OutboundPath object.
+        @exception FacExceptionNullPointer
+        @exception FacException.*/
+    template <typename OUTBOUND_PATH>    
+    static void cloneSegmentDateLinks (OUTBOUND_PATH& ioOutboundPath,
+                                       const OUTBOUND_PATH& iReferenceOutboundPath) {
+      // Clone the list of SegmentDate pointers.
+      ioOutboundPath._outboundPathStructure._segmentDateHolder =
+        iReferenceOutboundPath._outboundPathStructure._segmentDateHolder;
+      
+      // Clone the flight path
+      ioOutboundPath._flightPathCode =
+        iReferenceOutboundPath._flightPathCode;
     }
     
   public:

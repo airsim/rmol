@@ -31,6 +31,10 @@ namespace stdair {
 
   /** Define the booking class map. */
   typedef BomMap_T<OutboundPath> OutboundPathMap_T;
+  
+  typedef std::vector<std::vector<stdair::OutboundPath*> >OutboundPathListList_T;
+  typedef std::vector<stdair::OutboundPath*> OutboundPathLightList_T;
+  
 }
 #endif // __STDAIR_BOM_OUTBOUNDPATHTYPES_HPP
 

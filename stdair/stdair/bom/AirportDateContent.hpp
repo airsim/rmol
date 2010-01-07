@@ -23,6 +23,11 @@ namespace stdair {
     const BomKey_T& getKey() const {
       return _key;
     }
+    
+    /** Get the (origin) airport (part of the primary key). */
+    const AirportCode_T& getOrigin() const {
+      return _key.getBoardingPoint();
+    }
 
   public:
     // /////////// Display support methods /////////

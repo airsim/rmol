@@ -57,6 +57,12 @@ namespace stdair {
   AirportDateMap_T NetworkDate::getAirportDateMap () const {
     return _networkDateStructure.getChildrenHolder();
   }
-
+  
+  // //////////////////////////////////////////////////////////////////////
+  AirportDate* NetworkDate::
+  getAirportDate (const AirportDateKey_T& iKey) const {
+    return _networkDateStructure.getContentChild (iKey);
+  }
+  
 }
 

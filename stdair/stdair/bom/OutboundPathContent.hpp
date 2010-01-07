@@ -75,7 +75,6 @@ namespace stdair {
       _flightPathCode = iFPCode;
     }
     
-
   public:
     // /////////// Display support methods /////////
     /** Dump a Business Object into an output stream.

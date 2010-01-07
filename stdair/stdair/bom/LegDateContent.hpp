@@ -24,9 +24,9 @@ namespace stdair {
       return _key;
     }
 
-    /** Get the board point (part of the primary key). */
-    const AirportCode_T& getBoardPoint () const {
-      return _key.getBoardPoint();
+    /** Get the boarding point (part of the primary key). */
+    const AirportCode_T& getBoardingPoint () const {
+      return _key.getBoardingPoint();
     }
 
     /** Get the off point. */
@@ -34,14 +34,14 @@ namespace stdair {
       return _offPoint;
     }
 
-    /** Get the board date. */
-    const Date_T& getBoardDate () const {
-      return _boardDate;
+    /** Get the boarding date. */
+    const Date_T& getBoardingDate () const {
+      return _boardingDate;
     }
 
-    /** Get the board time. */
-    const Duration_T& getBoardTime () const {
-      return _boardTime;
+    /** Get the boarding time. */
+    const Duration_T& getBoardingTime () const {
+      return _boardingTime;
     }
 
     /** Get the off date. */
@@ -85,14 +85,14 @@ namespace stdair {
     }
 
 
-    /** Get the date off set (off date - board date). */
+    /** Get the date off set (off date - boarding date). */
     const DateOffSet_T getDateOffSet () const {
-      return _offDate - _boardDate;
+      return _offDate - _boardingDate;
     }
 
-    /** Get the time off set between board and off points.
+    /** Get the time off set between boarding and off points.
         <br>It is defined as being:
-        TimeOffSet = (OffTime - BoardTime) + (OffDate - BoardDate) * 24
+        TimeOffSet = (OffTime - BoardingTime) + (OffDate - BoardingDate) * 24
         - ElapsedTime. */
     const Duration_T getTimeOffSet() const;
 
@@ -103,14 +103,14 @@ namespace stdair {
       _offPoint = iOffPoint;
     }
 
-    /** Set the board date. */
-    void setBoardDate (const Date_T& iBoardDate) {
-      _boardDate = iBoardDate;
+    /** Set the boarding date. */
+    void setBoardingDate (const Date_T& iBoardingDate) {
+      _boardingDate = iBoardingDate;
     }
 
-    /** Set the board time. */
-    void setBoardTime (const Duration_T& iBoardTime) {
-      _boardTime = iBoardTime;
+    /** Set the boarding time. */
+    void setBoardingTime (const Duration_T& iBoardingTime) {
+      _boardingTime = iBoardingTime;
     }
 
     /** Set the off date. */
@@ -172,11 +172,11 @@ namespace stdair {
     /** Off Point. */
     AirportCode_T _offPoint;
 
-    /** Board Date. */
-    Date_T _boardDate;
+    /** Boarding Date. */
+    Date_T _boardingDate;
 
-    /** Board Time. */
-    Duration_T _boardTime;
+    /** Boarding Time. */
+    Duration_T _boardingTime;
 
     /** Off Date. */
     Date_T _offDate;

@@ -5,7 +5,7 @@
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // STDAIR 
-#include <stdair/bom/FlightDate.hpp>
+#include <stdair/bom/NetworkDate.hpp>
 #include <stdair/bom/AirportDateStructure.hpp>
 #include <stdair/bom/AirportDateContent.hpp>
 #include <stdair/bom/AirportDateTypes.hpp>
@@ -26,7 +26,7 @@ namespace stdair {
     // Type definitions
     /** Definition allowing to retrieve the associated parent
         BOM content type. */
-    typedef FlightDate Parent_T;
+    typedef NetworkDate Parent_T;
 
     /** Definition allowing to retrieve the associated BOM structure type. */
     typedef AirportDateStructure_T BomStructure_T;
@@ -68,12 +68,21 @@ namespace stdair {
     /** Get a OutboundPathMap_T for iteration methods. */
     OutboundPathMap_T getOutboundPathMap () const;
 
-
+    /** Get the OutboundPathListList. */
+    const OutboundPathListList_T& getOutboundPathListList () const {
+      return _outboundPathListList;
+    }
+    
   private:
     /** Retrieve the BOM structure object. */
     BomStructure_T& getBomStructure () {
       return _airportDateStructure;
     }
+
+  public:
+    // //////////// Business Methods //////////////
+    /** Build the list of lists of outbound paths. **/
+    void buildOutboundPathListList (stdair::OutboundPath&);
 
   protected:
     /** Constructors are private so as to force the usage of the Factory
@@ -90,6 +99,11 @@ namespace stdair {
     // Attributes
     /** Reference structure. */
     BomStructure_T& _airportDateStructure;
+
+    /** The list of lists of OutboundPaths, used uniquement for the
+        construction of the main list of OutboundPaths in
+        AirportDateStructure. */
+    OutboundPathListList_T _outboundPathListList;
 
   };
 

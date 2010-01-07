@@ -4,6 +4,7 @@
 // C
 #include <assert.h>
 // STDAIR
+#include <stdair/basic/BasConst_TravelSolution.hpp>
 #include <stdair/bom/SegmentDateStructure.hpp>
 #include <stdair/bom/SegmentDate.hpp>
 #include <stdair/bom/SegmentCabin.hpp>
@@ -71,25 +72,25 @@ namespace stdair {
   }
   
   // ///////// ///////////////////////////////////////////////////////////////
-//   bool SegmentDate::
-//   isConnectable (const SegmentDate& iSegmentDate) const {
-//     bool oIsConnectable = false;
+  bool SegmentDate::
+  isConnectable (const SegmentDate& iSegmentDate) const {
+    bool oIsConnectable = false;
+    
+    const Date_T& lOffDate = getOffDate();
+    const Date_T& lBoardingDate = iSegmentDate.getBoardingDate();
+    const DateOffSet_T lDateOffSet = lBoardingDate - lOffDate;
+    const Duration_T lDateOffSetInHours (lDateOffSet.days() * 24, 0, 0);
+    
+    const Duration_T& lOffTime = getOffTime();
+    const Duration_T& lBoardingTime = iSegmentDate.getBoardingTime();
+    
+    const Duration_T lStopOverTime =
+      lBoardingTime - lOffTime + lDateOffSetInHours;
 
-//     const Date_T& lOffDate = getOffDate();
-//     const Date_T& lBoardDate = iSegmentDate.getBoardDate();
-//     const DateOffSet_T lDateOffSet = lBoardDate - lOffDate;
-//     const Duration_T lDateOffSetInHours (lDateOffSet.days() * 24, 0, 0);
+    oIsConnectable = lStopOverTime >= DEFAULT_MINIMUM_CONNECTION_TIME;
 
-//     const Duration_T& lOffTime = getOffTime();
-//     const Duration_T& lBoardTime = iSegmentDate.getBoardTime();
-
-//     const Duration_T lStopOverTime =
-//       lBoardTime - lOffTime + lDateOffSetInHours;
-
-//     oIsConnectable = lStopOverTime >= DEFAULT_MINIMUM_CONNECTION_TIME;
-
-//     return oIsConnectable;
-//   }
+    return oIsConnectable;
+  }
   
 }
 

@@ -137,7 +137,7 @@ namespace stdair {
     /** Add a BOM object into a dedicated BOM holder by using the
         full key of the object. */
     template <typename BOM_CONTENT>
-    static bool addFullBomObjecdToBomHolder (BomChildrenHolderImp<BOM_CONTENT>& ioBomHolder, typename BOM_CONTENT::BomStructure_T& ioBomStructure) {
+    static bool addFullBomObjectToBomHolder (BomChildrenHolderImp<BOM_CONTENT>& ioBomHolder, typename BOM_CONTENT::BomStructure_T& ioBomStructure) {
       // Retrieve the bom structure type.
       typedef typename BOM_CONTENT::BomStructure_T BOM_STRUCTURE_T;
       // Define the bom holder type.
@@ -208,7 +208,6 @@ namespace stdair {
     // booking class holder directly in inventory or flight-date, ect.
     // //////////////////////////////////////////////////////////////////
   private:
-
     // /////////////////////////////////////////////////////////////////
     template <typename BOM_ROOT_STRUCTURE>
     static void createDirectAccesses (BOM_ROOT_STRUCTURE& ioBomRootStructure) {
@@ -332,8 +331,8 @@ namespace stdair {
 
           const SEGMENT_DATE_KEY_T& lSegmentDateKey =
             lCurrentSegmentDate_ptr->getKey();
-          const AirportCode_T& lBoardPoint = lSegmentDateKey.getBoardPoint();
-          AirportCode_T currentBoardPoint = lBoardPoint;
+          const AirportCode_T& lBoardingPoint = lSegmentDateKey.getBoardingPoint();
+          AirportCode_T currentBoardingPoint = lBoardingPoint;
           const AirportCode_T& lOffPoint = lSegmentDateKey.getOffPoint();
           
           // Add a sanity check so as to ensure that the loop stops. If
@@ -342,14 +341,14 @@ namespace stdair {
           // segments are derived from the legs thanks to the
           // FlightPeriodStruct::buildSegments() method).
           unsigned short i = 1;
-          while (currentBoardPoint != lOffPoint
+          while (currentBoardingPoint != lOffPoint
                  && i <= MAXIMUM_NUMBER_OF_LEGS_IN_FLIGHT) {
-            // Retrieve the (unique) LegDate getting that Board Point
+            // Retrieve the (unique) LegDate getting that Boarding Point
 
             const LEG_DATE_HOLDER_T& lLegDateHolder = ioFlightDateStructure.getSecondChildrenHolder();
             const LEG_DATE_STRUCTURE_MAP_T& lLegDateMap = lLegDateHolder._bomChildrenMap;
             typename LEG_DATE_STRUCTURE_MAP_T::const_iterator itLegDate =
-              lLegDateMap.find (currentBoardPoint);
+              lLegDateMap.find (currentBoardingPoint);
             assert (itLegDate != lLegDateMap.end());
             LEG_DATE_STRUCTURE_T* lLegDateStructure_ptr = itLegDate->second;
             assert (lLegDateStructure_ptr != NULL);
@@ -361,7 +360,7 @@ namespace stdair {
             const typename LEG_DATE_STRUCTURE_T::Content_T* lLegDateContent_ptr =
               lLegDateStructure_ptr->_content;
             assert (lLegDateContent_ptr != NULL);
-            currentBoardPoint = lLegDateContent_ptr->getOffPoint();
+            currentBoardingPoint = lLegDateContent_ptr->getOffPoint();
             ++i;
           }
           assert (i <= MAXIMUM_NUMBER_OF_LEGS_IN_FLIGHT);
@@ -369,7 +368,7 @@ namespace stdair {
         }
         // Create the routing for the leg- and segment-cabins.
         // At the same time, set the SegmentDate attributes derived from
-        // its routing legs (e.g., board and off dates).
+        // its routing legs (e.g., boarding and off dates).
         createDirectAccessesWithinSegmentDate<SEGMENT_DATE_STRUCTURE_T> (*lCurrentSegmentDate_ptr);
       }             
     }
@@ -499,11 +498,11 @@ namespace stdair {
         assert (lBookingClassStructure_ptr != NULL);
         
         bool addingSucceeded =
-          addFullBomObjecdToBomHolder<BOOKING_CLASS_T> (lFDBookingClassHolder,
+          addFullBomObjectToBomHolder<BOOKING_CLASS_T> (lFDBookingClassHolder,
                                                         *lBookingClassStructure_ptr);
         assert (addingSucceeded == true);
         addingSucceeded =
-          addFullBomObjecdToBomHolder<BOOKING_CLASS_T> (lInvBookingClassHolder,
+          addFullBomObjectToBomHolder<BOOKING_CLASS_T> (lInvBookingClassHolder,
                                                         *lBookingClassStructure_ptr);
         assert (addingSucceeded == true);
       }
@@ -576,6 +575,33 @@ namespace stdair {
                                                ioSegmentCabinStructure);
       assert (addingSucceeded == true);
     }
+
+    /** Link a segment-date with an outbound path. */
+    template <typename OUTBOUND_PATH_STRUCTURE>
+    static void addSegmentDateIntoOutboundPath
+    (OUTBOUND_PATH_STRUCTURE& ioOutboundPathStructure,
+     typename OUTBOUND_PATH_STRUCTURE::SegmentDate_T::BomStructure_T& ioSegmentDateStructure) {
+      
+      // Retrieve the segment-date type.
+      typedef typename OUTBOUND_PATH_STRUCTURE::SegmentDate_T SEGMENT_DATE_T;
+      typedef typename OUTBOUND_PATH_STRUCTURE::SegmentDate_T::BomStructure_T SEGMENT_DATE_STRUCTURE_T;
+      // Define the bom holder of segment-dates.
+      typedef BomChildrenHolderImp<SEGMENT_DATE_T> SEGMENT_DATE_HOLDER_T;
+
+      // Check if it is necessary to initialize the SegmentDate holder.
+      if (boost::is_same<SEGMENT_DATE_T, BomStopContent>::value == false
+          && ioOutboundPathStructure._segmentDateHolder == NULL) {
+        // Initialize the segment-date holder within the outbound path.
+        SEGMENT_DATE_HOLDER_T& lSegmentDateHolder =
+          FacBomStructure::instance().createBomHolder<SEGMENT_DATE_T>();
+        ioOutboundPathStructure.setSegmentDateHolder(lSegmentDateHolder);
+      }
+      assert (ioOutboundPathStructure._segmentDateHolder != NULL);
+      bool addingSucceeded =
+        addFullBomObjectToBomHolder<SEGMENT_DATE_T> (*ioOutboundPathStructure._segmentDateHolder, ioSegmentDateStructure);
+      assert (addingSucceeded == true);
+    }
+    // //////////////////////////////////////////////////////////////////
 
   private:
     /** The unique instance.*/

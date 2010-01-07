@@ -33,9 +33,9 @@ namespace stdair {
     ~SegmentDateKey_T ();
     
     // /////////// Getters //////////
-    /** Get the boarding point. */
-    const AirportCode_T& getBoardPoint() const {
-      return _boardPoint;
+    /** Get the boardinging point. */
+    const AirportCode_T& getBoardingPoint() const {
+      return _boardingPoint;
     }
 
     /** Get the arrival point. */
@@ -43,6 +43,16 @@ namespace stdair {
       return _offPoint;
     }
 
+    /** Get the flight number. */
+    const FlightNumber_T& getFlightNumber() const {
+      return _parentKey.getFlightNumber();
+    }
+
+    /** Get the airline code of the segment. */
+    const AirlineCode_T& getAirlineCode () const {
+      return _parentKey.getAirlineCode();
+    }
+ 
     // /////////// Setters /////////////
     void setParentKey (const ParentKey_T& iParentKey) {
       _parentKey = iParentKey;
@@ -72,8 +82,8 @@ namespace stdair {
     /** Flight-date Key.*/
     ParentKey_T _parentKey;
     
-    /** Boarding airport. */
-    AirportCode_T _boardPoint;
+    /** Boardinging airport. */
+    AirportCode_T _boardingPoint;
 
     /** Arrival airport. */
     AirportCode_T _offPoint;

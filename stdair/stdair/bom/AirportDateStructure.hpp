@@ -15,6 +15,7 @@
 namespace stdair {  
   // Forward declarations.
   template <typename BOM> struct BomMap_T;
+  struct NetworkDateKey_T;
   
   /** Wrapper class aimed at holding the actual content, modeled
       by an external specific AirportDate class (for instance,
@@ -102,6 +103,15 @@ namespace stdair {
       }
       
       return oContentChild_ptr;
+    }
+
+    /** Get the AirportDate (from the Network parent class) corresponding
+        to the given key (reference date + airport code).
+        <br>Return the NULL pointer if not existing. */
+    Content_T* getAirportDate (const BomKey_T& iAirportDateKey,
+                               const NetworkDateKey_T& iNetworkDateKey)const{
+      assert (_parent != NULL);
+      return _parent->getAirportDate (iAirportDateKey, iNetworkDateKey);
     }
     
   private:

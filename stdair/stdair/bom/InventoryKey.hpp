@@ -34,7 +34,9 @@ namespace stdair {
     
     // /////////// Getters //////////
     /** Get the airline code. */
-    const AirlineCode_T& getAirlineCode() const;
+    const AirlineCode_T& getAirlineCode() const {
+      return _airlineCode;
+    }
 
     // /////////// Display support methods /////////
     /** Dump a Business Object Key into an output stream.
