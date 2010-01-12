@@ -34,7 +34,7 @@ namespace stdair {
   // ////////////////////////////////////////////////////////////////////
   const std::string FlightDateKey_T::toString() const {
     std::ostringstream oStr;
-    oStr << _flightNumber << ", " << _flightDate;
+    oStr << _parentKey.toString() << _flightNumber << " " << _flightDate;
     return oStr.str();
   }
   
