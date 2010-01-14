@@ -12,6 +12,14 @@
 namespace stdair {
 
   // //////////////////////////////////////////////////////////////////////
+  BookingRequestStruct::BookingRequestStruct (const AirportCode_T& iOrigin,
+                                              const AirportCode_T& iDestination,
+                                              const Date_T& iDepartureDate,
+                                              const PassengerType_T& iPaxType,
+                                              const NbOfSeats_T& iPartySize) {
+  }
+
+  // //////////////////////////////////////////////////////////////////////
   void BookingRequestStruct::toStream (std::ostream& ioOut) const {
     ioOut << describe();
   }

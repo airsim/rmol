@@ -82,7 +82,13 @@ namespace stdair {
     /** Display of the structure. */
     const std::string describe() const;
 
+  public:
+    // /////////////// Constructors and Destructors /////////////////
+    BookingRequestStruct (const AirportCode_T&, const AirportCode_T&,
+                          const Date_T&, const PassengerType_T&,
+                          const NbOfSeats_T&);
     
+
   private:
     // /////////////// Attributes /////////////////
     /** Origin. */
