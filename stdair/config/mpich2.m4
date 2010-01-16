@@ -56,9 +56,11 @@ MPIDIR="${MPICH2_DEF_VERSION}-${MPICH2_DEF_CC}"
 	AC_ARG_WITH(mpich2,
 		[  --with-mpich2=<path>    root directory path of Mpich2 installation],
 		[MPICH2_lib_check="$with_mpich2/lib${MODE}/mpich2 $with_mpich2/lib/mpich2 $with_mpich2/lib${MODE} $with_mpich2/lib"
-		MPICH2_inc_check="$with_mpich2/include $with_mpich2/include/mpich2 $with_mpich2/include/mpich2/${MPIDIR}"],
-		[MPICH2_lib_check="/usr/lib${MODE} /usr/lib /usr/lib${MODE}/mpich2 /usr/lib/mpich2 /usr/lib${MODE}/mpich2/lib /usr/lib/mpich2/lib /usr/lib${MODE}/mpich2/${MPIDIR} /usr/lib/mpich2/${MPIDIR} /usr/local/lib${MODE} /usr/local/lib /usr/local/lib${MODE}/mpich2 /usr/local/lib/mpich2 /usr/local/lib${MODE}/mpich2/${MPIDIR} /usr/local/lib/mpich2/${MPIDIR} /usr/local/mpich2/lib${MODE} /usr/local/mpich2/lib /usr/local/mpich2/${MPIDIR}/lib${MODE} /usr/local/mpich2/${MPIDIR}/lib$ /opt/mpich2/lib /opt/mpich2/${MPIDIR}/lib /opt/mpich2/lib/mpich2"
-		MPICH2_inc_check="/usr/include /usr/include/mpich2 /usr/include/mpich2/${MPIDIR} /usr/local/include /usr/local/include/mpich2 /usr/local/include/mpich2/${MPIDIR} /opt/mpich2/include /opt/mpich2/${MPIDIR}/include"])
+		MPICH2_inc_check="$with_mpich2/include $with_mpich2/include/mpich2 $with_mpich2/include/mpich2/${MPIDIR}"
+		MPICH2_bin_check="$with_mpich2/bin $with_mpich2/lib${MODE}/mpich2/bin $with_mpich2/lib/mpich2/bin $with_mpich2/lib${MODE}/bin $with_mpich2/lib/bin"],
+		[MPICH2_lib_check="/usr/lib${MODE} /usr/lib /usr/lib${MODE}/mpich2 /usr/lib/mpich2 /usr/lib${MODE}/mpich2/lib /usr/lib/mpich2/lib /usr/lib${MODE}/mpich2/${MPIDIR} /usr/lib/mpich2/${MPIDIR} /usr/local/lib${MODE} /usr/local/lib /usr/local/lib${MODE}/mpich2 /usr/local/lib/mpich2 /usr/local/lib${MODE}/mpich2/${MPIDIR} /usr/local/lib/mpich2/${MPIDIR} /usr/local/mpich2/lib${MODE} /usr/local/mpich2/lib /usr/local/mpich2/${MPIDIR}/lib${MODE} /usr/local/mpich2/${MPIDIR}/lib /opt/mpich2/lib /opt/mpich2/${MPIDIR}/lib /opt/mpich2/lib/mpich2"
+		MPICH2_inc_check="/usr/include /usr/include/mpich2 /usr/include/mpich2-${ARCH} /usr/include/mpich2-${GENARCH} /usr/include/mpich2/${MPIDIR} /usr/local/include /usr/local/include/mpich2 /usr/local/include/mpich2/${MPIDIR} /opt/mpich2/include /opt/mpich2/${MPIDIR}/include"
+		MPICH2_bin_check="/usr/lib${MODE}/bin /usr/lib/bin /usr/lib${MODE}/mpich2/bin /usr/lib/mpich2/bin /usr/lib${MODE}/mpich2/lib/bin /usr/lib/mpich2/lib/bin /usr/lib${MODE}/mpich2/${MPIDIR}/bin /usr/lib/mpich2/${MPIDIR}/bin /usr/local/lib${MODE}/bin /usr/local/lib/bin /usr/local/lib${MODE}/mpich2/bin /usr/local/lib/mpich2/bin /usr/local/lib${MODE}/mpich2/${MPIDIR}/bin /usr/local/lib/mpich2/${MPIDIR}/bin /usr/local/mpich2/lib${MODE}/bin /usr/local/mpich2/lib/bin /usr/local/mpich2/${MPIDIR}/lib${MODE}/bin /usr/local/mpich2/${MPIDIR}/lib/bin /opt/mpich2/lib/bin /opt/mpich2/${MPIDIR}/lib/bin /opt/mpich2/lib/mpich2/bin"])
 
 	AC_ARG_WITH(mpich2-lib,
 		[  --with-mpich2-lib=<path> directory path of Mpich2 library installation],
@@ -91,7 +93,7 @@ MPIDIR="${MPICH2_DEF_VERSION}-${MPICH2_DEF_CC}"
 
 	if test -z "$MPICH2_libdir"
 	then
-		AC_MSG_ERROR([Didn't find $MPICH2_LIB library in '$MPICH2_lib_check'])
+		AC_MSG_ERROR([Did not find $MPICH2_LIB library in '$MPICH2_lib_check'])
 	fi
 
 	case "$MPICH2_libdir" in
@@ -106,7 +108,7 @@ MPIDIR="${MPICH2_DEF_VERSION}-${MPICH2_DEF_CC}"
 	#
 	AC_MSG_CHECKING([for Mpich2 include directory])
 	MPICH2_incdir=
-	for m in $MPICH2_inc_check
+	for m in ${MPICH2_inc_check}
 	do
 		if test -d "$m" && test -f "$m/mpi.h"
 		then
@@ -117,7 +119,7 @@ MPIDIR="${MPICH2_DEF_VERSION}-${MPICH2_DEF_CC}"
 
 	if test -z "$MPICH2_incdir"
 	then
-		AC_MSG_ERROR([Didn't find the Mpich2 include dir in '$MPICH2_inc_check'])
+		AC_MSG_ERROR([Did not find the Mpich2 include dir in '$MPICH2_inc_check'])
 	fi
 
 	case "$MPICH2_incdir" in
@@ -128,13 +130,45 @@ MPIDIR="${MPICH2_DEF_VERSION}-${MPICH2_DEF_CC}"
 	AC_MSG_RESULT([$MPICH2_incdir])
 
 	#
+	# Look for Mpich2 configuration
+	#
+	# Mpich2 configuration binary
+	MPICH2_VERBIN=mpich2version
+
+	AC_MSG_CHECKING([for Mpich2 configuration])
+	MPICH2_verdir=
+	for m in ${MPICH2_bin_check}
+	do
+		if test -d "$m"
+		then
+			if (test -x "$m/$MPICH2_VERBIN")
+			then
+				MPICH2_verdir=$m
+				break
+			fi
+		fi
+	done
+
+	if test -z "$MPICH2_verdir"
+	then
+		AC_MSG_ERROR([Did not find $MPICH2_VERBIN tool in '$MPICH2_bin_check'])
+	fi
+
+	case "$MPICH2_verdir" in
+		/* ) ;;
+		* )  AC_MSG_ERROR([The Mpich2 tool directory ($MPICH2_verdir) must be an absolute path.]) ;;
+	esac
+
+	AC_MSG_RESULT([$MPICH2_verdir])
+
+	#
 	# Look for Mpich2 version
 	#
 	min_mpich2_version=ifelse([$1], , 1.0.0, $1)
 	AC_MSG_CHECKING([for Mpich2 version >= $min_mpich2_version])
 
-	# Derive the full version, e.g., 1.3.3
-	MPICH2_VERSION=`echo ${MPICH2_incdir} | sed 's/.*\/\([[0-9]]*\)\.\([[0-9]]*\)\.\([[0-9]]*\).*/\1.\2.\3/g'`
+	# Derive the full version, e.g., 1.2.1
+	MPICH2_VERSION=`${MPICH2_verdir}/${MPICH2_VERBIN} --version | cut -f2`
 	if test -z "${MPICH2_VERSION}" ; then
 	   MPICH2_VERSION=${MPICH2_DEF_VERSION}
 	fi

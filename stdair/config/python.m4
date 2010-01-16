@@ -28,11 +28,11 @@ else
     AC_MSG_ERROR([distutils module not found])
 fi
 AC_MSG_CHECKING([Python configuration directory])
-python_version=`${PYTHON} -c "import sys; print sys.version[[:3]]"`
+PYTHON_VERSION=`${PYTHON} -c "import sys; print sys.version" | head -1 | cut -d' ' -f1`
 python_configdir=`${PYTHON} -c "from distutils.sysconfig import get_python_lib as f; import os; print os.path.join(f(plat_specific=1,standard_lib=1),'config')"`
 PYTHON_CFLAGS=`${PYTHON} -c "import distutils.sysconfig; print '-I'+distutils.sysconfig.get_python_inc()"`
 
-AC_SUBST(python_version)[]dnl
+AC_SUBST(PYTHON_VERSION)[]dnl
 AC_SUBST(python_configdir)[]dnl
 AC_SUBST(PYTHON_CFLAGS)[]dnl
 # This should be enough of a message.
