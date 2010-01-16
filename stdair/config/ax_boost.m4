@@ -69,6 +69,7 @@ AC_DEFUN([AX_BOOST],
 #    AC_CANONICAL_BUILD
 BOOST_MDW_VERSION="1-33-1"
 BOOSTLIB_MDW_VERSION="1_33_1"
+BOOST_version_header="boost/version.hpp"
 
 	if test "x$want_boost" = "xyes"; then
 		boost_lib_version_req=ifelse([$1], ,1.20.0,$1)
@@ -87,14 +88,18 @@ BOOSTLIB_MDW_VERSION="1_33_1"
 		dnl this location is chosen if boost libraries are installed 
 		dnl with the --layout=system option
 		dnl or if you install boost with RPM
-		if test -d /lib64; then
+		if test -d /lib64
+		then
 			BOOST_LIBDIRTYPE="lib64"
 		else
 			BOOST_LIBDIRTYPE="lib"
 		fi
-		if test "$ac_boost_path" != ""; then
-			if test "$BOOST_LIBDIRTYPE" == "lib64"; then
-				if test -d "$ac_boost_path/$BOOST_LIBDIRTYPE" && test -r "$ac_boost_path/$BOOST_LIBDIRTYPE"; then
+		if test "$ac_boost_path" != ""
+		then
+			if test "$BOOST_LIBDIRTYPE" == "lib64"
+			then
+				if test -d "$ac_boost_path/$BOOST_LIBDIRTYPE" && test -r "$ac_boost_path/$BOOST_LIBDIRTYPE"
+				then
 	                BOOST_LIBS="-L$ac_boost_path/$BOOST_LIBDIRTYPE"
 				else
                     BOOST_LIBS="-L$ac_boost_path/lib"
@@ -103,19 +108,28 @@ BOOSTLIB_MDW_VERSION="1_33_1"
 				BOOST_LIBS="-L$ac_boost_path/lib"
 			fi
 			BOOST_CFLAGS="-I$ac_boost_path/include"
+			BOOST_VERSION=`grep "define BOOST_LIB_VERSION" $ac_boost_path/include/${BOOST_version_header} | cut -d' ' -f3 | cut -d\" -f2`
 		else
-			for ac_boost_path_tmp in /usr /usr/local /opt /nastools/boost ; do
-				if test -d "$ac_boost_path_tmp/include/boost" && test -r "$ac_boost_path_tmp/include/boost"; then
+			for ac_boost_path_tmp in /usr /usr/local /opt /nastools/boost
+			do
+				if test -d "$ac_boost_path_tmp/include/boost" && test -r "$ac_boost_path_tmp/include/boost"
+				then
 					BOOST_LIBS="-L$ac_boost_path_tmp/$BOOST_LIBDIRTYPE"
 					BOOST_CFLAGS="-I$ac_boost_path_tmp/include"
+					BOOST_VERSION=`grep "define BOOST_LIB_VERSION" $ac_boost_path_tmp/include/${BOOST_version_header} | cut -d' ' -f3 | cut -d\" -f2`
 					break;
 				fi
-				if test -d "$ac_boost_path_tmp/include/boost-$BOOST_MDW_VERSION/boost" && test -r "$ac_boost_path_tmp/include/boost-$BOOST_MDW_VERSION/boost"; then
+				if test -d "$ac_boost_path_tmp/include/boost-$BOOST_MDW_VERSION/boost" && test -r "$ac_boost_path_tmp/include/boost-$BOOST_MDW_VERSION/boost"
+				then
 					BOOST_LIBS="-L$ac_boost_path_tmp/$BOOST_LIBDIRTYPE"
 					BOOST_CFLAGS="-I$ac_boost_path_tmp/include/boost-$BOOST_MDW_VERSION"
+					BOOST_VERSION=`grep "define BOOST_LIB_VERSION" $ac_boost_path_tmp/include/boost-$BOOST_MDW_VERSION/${BOOST_version_header} | cut -d' ' -f3 | cut -d\" -f2`
 			
 					dnl Hack for wrongly installed Boost libraries (AMD64 libraries installed in boost/lib directory)
-					if test -d "$ac_boost_path_tmp/lib" && test -r "$ac_boost_path_tmp/lib" && test ! -d "$ac_boost_path_tmp/lib64"; then
+					if test -d "$ac_boost_path_tmp/lib" \
+					&& test -r "$ac_boost_path_tmp/lib" \
+					&& test ! -d "$ac_boost_path_tmp/lib64"
+					then
 						BOOST_LIBS="-L$ac_boost_path_tmp/lib"
 						echo "Hack: $BOOST_LIBS"
 					fi
@@ -584,10 +598,12 @@ BOOSTLIB_MDW_VERSION="1_33_1"
 #       than MPICH2
 #
 			CPPFLAGS_ORIG="${CPPFLAGS}"
-			CPPFLAGS="${CPPFLAGS} ${PYTHON_CFLAGS} ${MPICH2_CFLAGS}"
+			CPPFLAGS="${CPPFLAGS} ${PYTHON_CFLAGS} ${MPIGEN_CFLAGS}"
+#			CPPFLAGS="${CPPFLAGS} ${PYTHON_CFLAGS} ${MPICH2_CFLAGS}"
 #			CPPFLAGS="${CPPFLAGS} ${PYTHON_CFLAGS} ${OPENMPI_CFLAGS}"
 			LDFLAGS_ORIG="${LDFLAGS}"
-			LDFLAGS="${LDFLAGS} ${PYTHON_LIBS} ${PYTHON_ADD_LIBS} ${MPICH2_LIBS}"
+			LDFLAGS="${LDFLAGS} ${PYTHON_LIBS} ${PYTHON_ADD_LIBS} ${MPIGEN_LIBS}"
+#			LDFLAGS="${LDFLAGS} ${PYTHON_LIBS} ${PYTHON_ADD_LIBS} ${MPICH2_LIBS}"
 #			LDFLAGS="${LDFLAGS} ${PYTHON_LIBS} ${PYTHON_ADD_LIBS} ${OPENMPI_LIBS}"
 
 #
@@ -606,7 +622,7 @@ BOOSTLIB_MDW_VERSION="1_33_1"
 			 AC_LANG_RESTORE
 			])
 
-			BOOST_PYTHON_LIB="-lboost_python"
+			BOOST_PYTHON_LIB="-lboost_python ${PYTHON_LIBS} ${PYTHON_ADD_LIBS}"
 			AC_SUBST(BOOST_PYTHON_LIB)
 
 #
@@ -637,7 +653,7 @@ BOOSTLIB_MDW_VERSION="1_33_1"
 				if test "x$link_mpi" = "xno"; then
 					AC_MSG_NOTICE(Could not link against $ax_lib !)
 				else
-					BOOST_MPI_LIB="${BOOST_MPI_LIB} ${BOOST_SERIALIZATION_LIB}"
+					BOOST_MPI_LIB="${BOOST_MPI_LIB} ${BOOST_SERIALIZATION_LIB} ${MPIGEN_LIBS}"
 				fi
 			fi
 
@@ -673,6 +689,7 @@ BOOSTLIB_MDW_VERSION="1_33_1"
 					BOOST_MPI_PYTHON_LIB="${BOOST_MPI_PYTHON_LIB} ${BOOST_SERIALIZATION_LIB}"
 					BOOST_MPI_PYTHON_LIB="${BOOST_MPI_PYTHON_LIB} ${BOOST_PYTHON_LIB}"
 					BOOST_MPI_PYTHON_LIB="${BOOST_MPI_PYTHON_LIB} ${BOOST_MPI_LIB}"
+					BOOST_MPI_PYTHON_LIB="${BOOST_MPI_PYTHON_LIB} ${MPIGEN_LIBS}"
 				fi
 			fi
 

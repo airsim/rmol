@@ -63,7 +63,7 @@ AC_DEFUN([AX_MYSQL],
 		* )  AC_MSG_ERROR([The MySQL binary directory ($MYSQL_bindir) must be an absolute path.]) ;;
 	esac
 
-	AC_MSG_RESULT([$MYSQL_bindir])
+	AC_MSG_RESULT([$MYSQL_CONFIG])
 
 #	AC_PATH_PROG(MYSQL_CONFIG, mysql_config, $MYSQL_bindir)
 
@@ -79,7 +79,7 @@ AC_DEFUN([AX_MYSQL],
 		MYSQL_LIB_OPTION=libs
 	fi
 
-	if test "x${MYSQL_CONFIG+set}" != xset
+	if test "x${MYSQL_CONFIG}1" = "x1"
 	then
 		MYSQL_VERSION=`${MYSQL_CONFIG} --version`
 		MYSQL_CFLAGS=`${MYSQL_CONFIG} --cflags`
@@ -144,6 +144,7 @@ AC_DEFUN([AX_MYSQL],
 
 		AC_MSG_RESULT([$MYSQL_incdir])
 
+		MYSQL_VERSION=`grep "define MYSQL_SERVER_VERSION" $MYSQL_incdir/mysql_version.h | cut -d\" -f2`
 		MYSQL_CFLAGS="-I${MYSQL_incdir}"
 		MYSQL_LIBS="-L${MYSQL_libdir} -l${MYSQL_C_LIB}"
 	fi

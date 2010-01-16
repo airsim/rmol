@@ -22,9 +22,11 @@ AC_DEFUN([AX_SOCI],
 	AC_ARG_WITH(soci,
 		[  --with-soci=<path>     root directory path of Soci installation],
 		[SOCI_lib_check="$with_soci/lib64/soci $with_soci/lib/soci $with_soci/lib64 $with_soci/lib"
-		SOCI_inc_check="$with_soci/include $with_soci/include/soci"],
+		SOCI_inc_check="$with_soci/include $with_soci/include/soci"
+		SOCI_bin_check="$with_soci/bin"],
 		[SOCI_lib_check="/usr/lib64 /usr/lib /usr/lib64/soci /usr/lib/soci /usr/local/lib64 /usr/local/lib /usr/local/lib/soci /usr/local/soci/lib /usr/local/soci/lib/soci /opt/soci/lib /opt/soci/lib/soci"
-		SOCI_inc_check="/usr/include /usr/include/soci /usr/local/include/soci /usr/local/soci/include /usr/local/soci/include/soci /opt/soci/include /opt/soci/include/soci"])
+		SOCI_inc_check="/usr/include /usr/include/soci /usr/local/include/soci /usr/local/soci/include /usr/local/soci/include/soci /opt/soci/include /opt/soci/include/soci"
+		SOCI_bin_check="/usr/bin /usr/local/bin /usr/local/soci/bin /opt/bin /opt/soci/bin /opt/bin/soci"])
 
 	AC_ARG_WITH(soci-lib,
 		[  --with-soci-lib=<path> directory path of Soci library installation],
@@ -33,6 +35,41 @@ AC_DEFUN([AX_SOCI],
 	AC_ARG_WITH(soci-include,
 		[  --with-soci-include=<path> directory path of Soci header installation],
 		[SOCI_inc_check="$with_soci_include $with_soci_include/include $with_soci_include/include/soci"])
+
+    #
+	# Look for Soci Configuration Script
+	#
+	AC_MSG_CHECKING([for Soci configuration script])
+	SOCI_CONFIG=
+	SOCI_bindir=
+	for m in $SOCI_bin_check
+		do
+			if test -d "$m" && test -f "$m/soci-config"
+			then
+				SOCI_CONFIG=$m/soci-config
+				SOCI_bindir=$m
+			break
+		fi
+	done
+
+#	if test -z "$SOCI_bindir"
+#	then
+#		AC_MSG_ERROR([Didn't find $SOCI_CONFIG binary in '$SOCI_bin_check'])
+#	fi
+
+#	case "$SOCI_bindir" in
+#		/* ) ;;
+#		* )  AC_MSG_ERROR([The Soci binary directory ($SOCI_bindir) must be an absolute path.]) ;;
+#	esac
+
+	AC_MSG_RESULT([$SOCI_CONFIG])
+
+#	AC_PATH_PROG(SOCI_CONFIG, soci-config, $SOCI_bindir)
+
+	if test "x${SOCI_CONFIG}1" != "x1"
+	then
+		SOCI_VERSION=`${SOCI_CONFIG} --version`
+	fi
 
 	# SOCI library
 	SOCI_CORE_LIB=soci_core
