@@ -57,10 +57,10 @@ MPIDIR="${OPENMPI_DEF_VERSION}-${OPENMPI_DEF_CC}"
 		[  --with-openmpi=<path>    root directory path of Openmpi installation],
 		[OPENMPI_lib_check="$with_openmpi/lib${MODE}/openmpi $with_openmpi/lib/openmpi $with_openmpi/lib${MODE} $with_openmpi/lib"
 		OPENMPI_inc_check="$with_openmpi/include $with_openmpi/include/openmpi $with_openmpi/include/openmpi/${MPIDIR}"
-		OPENMPI_bin_check="$with_openmpi/lib${MODE}/openmpi/bin $with_openmpi/lib/openmpi/bin $with_openmpi/lib${MODE}/bin $with_openmpi/lib/bin"],
+		OPENMPI_bin_check="$with_openmpi/bin $with_openmpi/lib${MODE}/openmpi/bin $with_openmpi/lib/openmpi/bin $with_openmpi/lib${MODE}/bin $with_openmpi/lib/bin"],
 		[OPENMPI_lib_check="/usr/lib${MODE} /usr/lib /usr/lib${MODE}/openmpi /usr/lib/openmpi /usr/lib${MODE}/openmpi/lib /usr/lib/openmpi/lib /usr/lib${MODE}/openmpi/${MPIDIR} /usr/lib/openmpi/${MPIDIR} /usr/local/lib${MODE} /usr/local/lib /usr/local/lib${MODE}/openmpi /usr/local/lib/openmpi /usr/local/lib${MODE}/openmpi/${MPIDIR} /usr/local/lib/openmpi/${MPIDIR} /usr/local/openmpi/lib${MODE} /usr/local/openmpi/lib /usr/local/openmpi/${MPIDIR}/lib${MODE} /usr/local/openmpi/${MPIDIR}/lib /opt/openmpi/lib /opt/openmpi/${MPIDIR}/lib /opt/openmpi/lib/openmpi"
 		OPENMPI_inc_check="/usr/include /usr/include/openmpi /usr/include/openmpi-${ARCH} /usr/include/openmpi-${GENARCH} /usr/include/openmpi/${MPIDIR} /usr/local/include /usr/local/include/openmpi /usr/local/include/openmpi/${MPIDIR} /opt/openmpi/include /opt/openmpi/${MPIDIR}/include"
-		OPENMPI_bin_check="/usr/lib${MODE}/bin /usr/lib/bin /usr/lib${MODE}/openmpi/bin /usr/lib/openmpi/bin /usr/lib${MODE}/openmpi/lib/bin /usr/lib/openmpi/lib/bin /usr/lib${MODE}/openmpi/${MPIDIR}/bin /usr/lib/openmpi/${MPIDIR}/bin /usr/local/lib${MODE}/bin /usr/local/lib/bin /usr/local/lib${MODE}/openmpi/bin /usr/local/lib/openmpi/bin /usr/local/lib${MODE}/openmpi/${MPIDIR}/bin /usr/local/lib/openmpi/${MPIDIR}/bin /usr/local/openmpi/lib${MODE}/bin /usr/local/openmpi/lib/bin /usr/local/openmpi/${MPIDIR}/lib${MODE}/bin /usr/local/openmpi/${MPIDIR}/lib/bin /opt/openmpi/lib/bin /opt/openmpi/${MPIDIR}/lib/bin /opt/openmpi/lib/openmpi/bin"])
+		OPENMPI_bin_check="/usr/bin /usr/lib${MODE}/bin /usr/lib/bin /usr/lib${MODE}/openmpi/bin /usr/lib/openmpi/bin /usr/lib${MODE}/openmpi/lib/bin /usr/lib/openmpi/lib/bin /usr/lib${MODE}/openmpi/${MPIDIR}/bin /usr/lib/openmpi/${MPIDIR}/bin /usr/local/bin /usr/local/lib${MODE}/bin /usr/local/lib/bin /usr/local/lib${MODE}/openmpi/bin /usr/local/lib/openmpi/bin /usr/local/lib${MODE}/openmpi/${MPIDIR}/bin /usr/local/lib/openmpi/${MPIDIR}/bin /usr/local/openmpi/lib${MODE}/bin /usr/local/openmpi/lib/bin /usr/local/openmpi/${MPIDIR}/lib${MODE}/bin /usr/local/openmpi/${MPIDIR}/lib/bin /opt/bin /opt/openmpi/bin /opt/openmpi/lib/bin /opt/openmpi/${MPIDIR}/lib/bin /opt/openmpi/lib/openmpi/bin"])
 
 	AC_ARG_WITH(openmpi-lib,
 		[  --with-openmpi-lib=<path> directory path of Openmpi library installation],
@@ -132,7 +132,7 @@ MPIDIR="${OPENMPI_DEF_VERSION}-${OPENMPI_DEF_CC}"
 	# Look for OpenMPI configuration
 	#
 	# OpenMPI configuration binary
-	OPENMPI_VERBIN=mpirun
+	OPENMPI_VERBIN1=ompi_info
 
 	AC_MSG_CHECKING([for OpenMPI configuration])
 	OPENMPI_verdir=
@@ -150,13 +150,13 @@ MPIDIR="${OPENMPI_DEF_VERSION}-${OPENMPI_DEF_CC}"
 
 	if test -z "$OPENMPI_verdir"
 	then
-		AC_MSG_ERROR([Did not find $OPENMPI_VERBIN tool in '$OPENMPI_bin_check'])
+		AC_MSG_RESULT([Did not find $OPENMPI_VERBIN tool, but will try to determine the version with other tricks])
+	else
+		case "$OPENMPI_verdir" in
+			/* ) ;;
+			* )  AC_MSG_ERROR([The Openmpi tool directory ($OPENMPI_verdir) must be an absolute path.]) ;;
+		esac
 	fi
-
-	case "$OPENMPI_verdir" in
-		/* ) ;;
-		* )  AC_MSG_ERROR([The Openmpi tool directory ($OPENMPI_verdir) must be an absolute path.]) ;;
-	esac
 
 	AC_MSG_RESULT([$OPENMPI_verdir])
 
@@ -167,7 +167,10 @@ MPIDIR="${OPENMPI_DEF_VERSION}-${OPENMPI_DEF_CC}"
 	AC_MSG_CHECKING([for OpenMPI version >= $min_openmpi_version])
 
 	# Derive the full version, e.g., 1.3.3
-	OPENMPI_VERSION=`${OPENMPI_verdir}/${OPENMPI_VERBIN} --version 2>&1 | grep mpirun | cut -d\) -f2`
+	if test ! -z "$OPENMPI_verdir"
+	then
+		OPENMPI_VERSION=`${OPENMPI_verdir}/${OPENMPI_VERBIN} | grep "Open MPI:" | cut -d: -f2 | cut -d\  -f2`
+	fi
 	if test -z "${OPENMPI_VERSION}" ; then
 	   OPENMPI_VERSION=${OPENMPI_DEF_VERSION}
 	fi
