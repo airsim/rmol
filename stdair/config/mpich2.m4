@@ -151,13 +151,13 @@ MPIDIR="${MPICH2_DEF_VERSION}-${MPICH2_DEF_CC}"
 
 	if test -z "$MPICH2_verdir"
 	then
-		AC_MSG_ERROR([Did not find $MPICH2_VERBIN tool in '$MPICH2_bin_check'])
+		AC_MSG_RESULT([Did not find $MPICH2_VERBIN tool, but will try to determine the version with other tricks])
+	else
+		case "$MPICH2_verdir" in
+			/* ) ;;
+			* )  AC_MSG_ERROR([The Mpich2 tool directory ($MPICH2_verdir) must be an absolute path.]) ;;
+		esac
 	fi
-
-	case "$MPICH2_verdir" in
-		/* ) ;;
-		* )  AC_MSG_ERROR([The Mpich2 tool directory ($MPICH2_verdir) must be an absolute path.]) ;;
-	esac
 
 	AC_MSG_RESULT([$MPICH2_verdir])
 
@@ -168,7 +168,10 @@ MPIDIR="${MPICH2_DEF_VERSION}-${MPICH2_DEF_CC}"
 	AC_MSG_CHECKING([for Mpich2 version >= $min_mpich2_version])
 
 	# Derive the full version, e.g., 1.2.1
-	MPICH2_VERSION=`${MPICH2_verdir}/${MPICH2_VERBIN} --version | cut -f2`
+	if test ! -z "$MPICH2_verdir"
+	then
+		MPICH2_VERSION=`${MPICH2_verdir}/${MPICH2_VERBIN} --version | cut -f2`
+	fi
 	if test -z "${MPICH2_VERSION}" ; then
 	   MPICH2_VERSION=${MPICH2_DEF_VERSION}
 	fi
