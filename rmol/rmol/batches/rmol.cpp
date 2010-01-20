@@ -19,7 +19,7 @@
 const std::string K_RMOL_DEFAULT_LOG_FILENAME ("rmol.log");
 
 /** Default name and location for the (CSV) input file. */
-const std::string K_RMOL_DEFAULT_INPUT_FILENAME ("class.csv");
+const std::string K_RMOL_DEFAULT_INPUT_FILENAME ("../../test/samples/rm01.csv");
 
 /** Default number of random draws to be generated (best if over 100). */
 const int K_RMOL_DEFAULT_RANDOM_DRAWS = 100000;

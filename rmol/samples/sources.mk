@@ -1,5 +1,6 @@
 sample_csv_sources = \
-	$(top_srcdir)/samples/sample1.csv \
-	$(top_srcdir)/samples/sample2.csv \
-	$(top_srcdir)/samples/sample3.csv \
-	$(top_srcdir)/samples/sample4.csv
+	$(top_srcdir)/samples/rm01.csv \
+	$(top_srcdir)/samples/rm02.csv \
+	$(top_srcdir)/samples/rm03.csv \
+	$(top_srcdir)/samples/rm04.csv
+
