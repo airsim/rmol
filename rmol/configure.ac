@@ -316,6 +316,7 @@ AC_CONFIG_FILES(
 	po/Makefile.in
 	extracppunit/Makefile
 	test/Makefile
+	test/samples/Makefile
 	test/stdair/Makefile
 	test/rmol/Makefile
 	win32/Makefile)
