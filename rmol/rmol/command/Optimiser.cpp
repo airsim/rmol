@@ -1,14 +1,14 @@
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
-// C
-#include <assert.h>
 // STL
+#include <cassert>
 //#include <cmath>
 #include <sstream>
 #include <iomanip>
+// StdAir
+#include <stdair/basic/BasChronometer.hpp>
 // RMOL
-#include <rmol/basic/BasChronometer.hpp>
 #include <rmol/field/FldYieldRange.hpp>
 #include <rmol/field/FldDistributionParameters.hpp>
 #include <rmol/bom/StudyStatManager.hpp>
@@ -70,7 +70,7 @@ namespace RMOL {
                                       BucketHolder& ioBucketHolder,
                                       BidPriceVector_T& ioBidPriceVector,
                                       StudyStatManager& ioStudyStatManager) {
-    BasChronometer lMCIntegrationBasChrono;
+    stdair::BasChronometer lMCIntegrationBasChrono;
     lMCIntegrationBasChrono.start();
     // Retrieve the BucketHolder
     // BucketHolder& ioBucketHolder = ioResource.getBucketHolder();
@@ -153,7 +153,7 @@ namespace RMOL {
                                BucketHolder& ioBucketHolder,
                                BidPriceVector_T& ioBidPriceVector,
                                StudyStatManager& ioStudyStatManager) {
-    BasChronometer lEMRSBasChrono;
+    stdair::BasChronometer lEMRSBasChrono;
     lEMRSBasChrono.start();
     Emsr::heuristicOptimisationByEmsr (iCabinCapacity,
                                        ioBucketHolder,

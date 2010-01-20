@@ -1,15 +1,15 @@
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
-// C
-#include <assert.h>
 // STL
+#include <cassert>
 #include <string>
 #include <fstream>
 #include <sstream>
 #include <cmath>
+// StdAir
+#include <stdair/basic/BasChronometer.hpp>
 // RMOL
-#include <rmol/basic/BasChronometer.hpp>
 #include <rmol/bom/StudyStatManager.hpp>
 #include <rmol/bom/VariateList.hpp>
 #include <rmol/bom/Gaussian.hpp>
@@ -259,9 +259,9 @@ namespace RMOL {
     // Retrieve the BucketHolder
     // BucketHolder& ioBucketHolder = ioResource.getBucketHolder();
 
-    BasChronometer lDrawBasChronometer;
-    BasChronometer lSortBasChronometer;
-    BasChronometer lBVPCalculationBasChronometer;
+    stdair::BasChronometer lDrawBasChronometer;
+    stdair::BasChronometer lSortBasChronometer;
+    stdair::BasChronometer lBVPCalculationBasChronometer;
 
     // Number of classes/buckets: n
     const short nbOfClasses = ioBucketHolder.getSize();
