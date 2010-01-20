@@ -31,7 +31,7 @@ int testOptimiseHelper (const unsigned short optimisationMethodFlag) {
     const double cabinCapacity = 100.0;
     
     // Input file name
-    const std::string inputFileName ("sample2.csv");
+    const std::string inputFileName ("../samples/rm02.csv");
     const bool hasInputFile = true;
     
     // Set the log parameters
