@@ -5,7 +5,10 @@
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // STL
+#include <iosfwd>
 #include <vector>
+// StdAir
+#include <stdair/STDAIR_Types.hpp>
 
 namespace stdair {
 
@@ -47,6 +50,9 @@ namespace stdair {
         <br>Call the clean method of all the instantiated  factories
         for the BomContent layer. */
     void cleanBomContentLayer();
+
+    /** Delete the Logger object. */
+    void cleanLoggerService();
 
     /** Clean the static instance.
         <br> The singleton is deleted.*/

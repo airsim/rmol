@@ -1,3 +1,4 @@
+# stdair
 include $(top_srcdir)/Makefile.common
 include $(srcdir)/core/sources.mk
 
@@ -5,7 +6,7 @@ include $(srcdir)/core/sources.mk
 
 MAINTAINERCLEANFILES = Makefile.in
 
-SUBDIRS = basic bom factory core config
+SUBDIRS = basic bom factory config service core
 
 #EXTRA_DIST = config_msvc.h
 EXTRA_DIST =

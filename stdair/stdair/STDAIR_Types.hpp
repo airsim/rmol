@@ -7,7 +7,7 @@
 // STL
 #include <string>
 #include <vector>
-#include <list>
+#include <map>
 // Boost (Extended STL)
 #include <boost/date_time/gregorian/gregorian.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
@@ -15,7 +15,7 @@
 
 namespace stdair {
 
-   // ///////// Exceptions ///////////
+  // ///////// Exceptions ///////////
   class RootException : public std::exception {
   };
 
@@ -46,6 +46,9 @@ namespace stdair {
       VERBOSE,
       LAST_VALUE
     } EN_LogLevel;
+    
+    static const std::string _logLevels[LAST_VALUE] =
+      {"C", "E", "N", "W", "D", "V"};
   }
 
   // //////// Type definitions /////////

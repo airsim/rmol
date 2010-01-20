@@ -1,12 +1,14 @@
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
-// C
-#include <assert.h>
-// STDAIR
+// STL
+#include <cassert>
+#include <ostream>
+// StdAir
 #include <stdair/factory/FacBomStructure.hpp>
 #include <stdair/factory/FacBomContent.hpp>
 #include <stdair/factory/FacSupervisor.hpp>
+#include <stdair/service/Logger.hpp>
 
 namespace stdair {
 
@@ -70,10 +72,16 @@ namespace stdair {
   }
 
   // //////////////////////////////////////////////////////////////////////
+  void FacSupervisor::cleanLoggerService() {
+    Logger::clean();
+  }
+  
+  // //////////////////////////////////////////////////////////////////////
   void FacSupervisor::cleanFactory () {
 	if (_instance != NULL) {
-		_instance->cleanBomStructureLayer();
-		_instance->cleanBomContentLayer();
+      _instance->cleanBomStructureLayer();
+      _instance->cleanBomContentLayer();
+      _instance->cleanLoggerService();
  	}
     delete _instance; _instance = NULL;
   }
