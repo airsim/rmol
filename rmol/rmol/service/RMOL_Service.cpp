@@ -1,12 +1,13 @@
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
-// C
-#include <assert.h>
 // STL
+#include <cassert>
 #include <iomanip>
 #include <sstream>
 #include <iostream>
+// StdAir
+#include <stdair/basic/BasChronometer.hpp>
 // RMOL
 #include <rmol/basic/BasConst_RMOL_Service.hpp>
 #include <rmol/field/FldYieldRange.hpp>
@@ -152,11 +153,14 @@ namespace RMOL {
     const double iCapacity = _rmolServiceContext->getCapacity();
     BucketHolder* oBucketHolder_ptr = _rmolServiceContext->getBucketHolder();
     assert (oBucketHolder_ptr != NULL);
+    
     BidPriceVector_T lBidPriceVector;
-
     StudyStatManager* lStudyStatManager_ptr =
       _rmolServiceContext->getStudyStatManager();
 
+    stdair::BasChronometer lOptimisationChronometer;
+    lOptimisationChronometer.start();
+    
     if (lStudyStatManager_ptr == NULL) {
       Optimiser::optimalOptimisationByMCIntegration (K, iCapacity, 
                                                      *oBucketHolder_ptr,
@@ -167,8 +171,13 @@ namespace RMOL {
                                                      lBidPriceVector,
                                                      *lStudyStatManager_ptr);
     }
+
+    const double lOptimisationMeasure = lOptimisationChronometer.elapsed();
+    
     // DEBUG
-    RMOL_LOG_DEBUG (oBucketHolder_ptr->display());
+    RMOL_LOG_DEBUG ("Optimisation by Monte-Carlo performed in "
+                    << lOptimisationMeasure);
+    RMOL_LOG_DEBUG ("Resulting buckets: " << oBucketHolder_ptr->display());
 
     std::ostringstream logStream;
     logStream << "Bid-Price Vector (BPV): ";
@@ -452,6 +461,5 @@ namespace RMOL {
                                               iSellupFactorHolder);    
 
   }
-
   
 }
