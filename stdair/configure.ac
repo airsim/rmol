@@ -190,6 +190,7 @@ AC_CONFIG_FILES(
 	stdair/basic/Makefile
 	stdair/bom/Makefile
 	stdair/factory/Makefile
+	stdair/service/Makefile
 	stdair/core/Makefile
 	stdair/config/Makefile
 	doc/Makefile
