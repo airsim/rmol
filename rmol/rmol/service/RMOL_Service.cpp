@@ -7,6 +7,7 @@
 #include <stdair/basic/BasChronometer.hpp>
 #include <stdair/basic/BasFileMgr.hpp>
 #include <stdair/bom/BomManager.hpp> // for display()
+#include <stdair/factory/FacSupervisor.hpp>
 #include <stdair/service/Logger.hpp>
 // RMOL
 #include <rmol/basic/BasConst_RMOL_Service.hpp>
@@ -71,6 +72,8 @@ namespace RMOL {
 
   // //////////////////////////////////////////////////////////////////////
   RMOL_Service::~RMOL_Service () {
+    // Clean all the StdAir objects, including the log service
+    stdair::FacSupervisor::cleanFactory();
   }
 
   // //////////////////////////////////////////////////////////////////////
