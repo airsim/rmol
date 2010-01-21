@@ -9,8 +9,9 @@
 #include <iostream>
 #include <sstream>
 #include <string>
-// STDAIR
+// StdAir
 #include <stdair/STDAIR_Types.hpp>
+#include <stdair/basic/BasLogParams.hpp>
 
 // /////////////// LOG MACROS /////////////////
 #define STDAIR_LOG_CORE(iLevel, iToBeLogged) \
@@ -52,32 +53,26 @@ namespace stdair {
     void log (const LOG::EN_LogLevel iLevel, const int iLineNumber,
               const std::string& iFileName, const T& iToBeLogged) {
       if (iLevel <= _level) {
-        assert (_logStream != NULL);
-        *_logStream << "[" << LOG::_logLevels[iLevel] << "]" << iFileName << ":"
-                    << iLineNumber << ": " << iToBeLogged << std::endl;
+        _logStream << "[" << LOG::_logLevels[iLevel] << "]" << iFileName << ":"
+                   << iLineNumber << ": " << iToBeLogged << std::endl;
       }
     }
     
-    /** Get the log level. */
-    LOG::EN_LogLevel getLogLevel();
+    /** Initialise the static Logger instance. */
+    static void init (const stdair::BasLogParams&);
     
-    /** get the log stream. */
-    std::ostream& getLogStream();
-    
-    /** Set the logger parameters (level and stream). */
-    void setLogParameters (const LOG::EN_LogLevel iLogLevel, 
-                           std::ostream& ioLogStream);
-    
-    /** Return the static Logger instance.*/
+    /** Return the static Logger instance. */
     static Logger& instance();
     
     
   private:
     /** Default constructors are private so that only the required 
         constructor can be used. */
+    Logger (const stdair::BasLogParams&);
+    /** Default constructor. It must not be used. */
     Logger ();
+    /** Default copy constructor. It must not be used. */
     Logger (const Logger&);
-    Logger (const LOG::EN_LogLevel iLevel, std::ostream& ioLogStream);
     /** Destructor. */
     ~Logger ();
 
@@ -85,14 +80,14 @@ namespace stdair {
     static void clean();
     
   private:
+    /** Instance object.*/
+    static Logger* _instance;
+
     /** Log level. */
     LOG::EN_LogLevel _level;
     
     /** Stream dedicated to the logs. */
-    std::ostream* _logStream;
-    
-    /** Instance object.*/
-    static Logger* _instance;
+    std::ostream& _logStream;
   };
   
 }

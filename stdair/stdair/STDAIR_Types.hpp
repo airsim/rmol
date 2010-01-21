@@ -22,6 +22,9 @@ namespace stdair {
   class FileNotFoundException : public RootException {
   };
   
+  class NonInitialisedLogServiceException : public RootException {
+  };
+
   class NonInitialisedServiceException : public RootException {
   };
 
