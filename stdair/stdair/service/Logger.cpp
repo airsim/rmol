@@ -26,6 +26,7 @@ namespace stdair {
 
   // //////////////////////////////////////////////////////////////////////
   Logger::~Logger () {
+    std::cout << "In Logger destructor" << std::endl;
   }
 
   // //////////////////////////////////////////////////////////////////////
@@ -33,11 +34,11 @@ namespace stdair {
     // Sanity check
     if (_instance != NULL) {
       STDAIR_LOG_ERROR ("Error: the log stream has already been initialised");
-      // TODO: throw an exception?
-
-    } else {
-      _instance = new Logger (iLogParams);
+      assert (false);
     }
+    assert (_instance == NULL);
+
+    _instance = new Logger (iLogParams);
   }
 
   // //////////////////////////////////////////////////////////////////////
@@ -51,7 +52,9 @@ namespace stdair {
   
   // //////////////////////////////////////////////////////////////////////
   void Logger::clean() {
+    std::cout << "In Logger::clean(), before static instance deletion" << std::endl;
     delete _instance; _instance = NULL;
+    std::cout << "In Logger::clean(), after static instance deletion" << std::endl;
   }
   
 }

@@ -1,9 +1,9 @@
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
-// C
-#include <assert.h>
-// STDAIR
+// STL
+#include <cassert>
+// StdAir
 #include <stdair/bom/BomStructure.hpp>
 #include <stdair/factory/FacSupervisor.hpp>
 #include <stdair/factory/FacBomStructure.hpp>

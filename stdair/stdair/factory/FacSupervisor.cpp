@@ -3,7 +3,6 @@
 // //////////////////////////////////////////////////////////////////////
 // STL
 #include <cassert>
-#include <ostream>
 // StdAir
 #include <stdair/factory/FacBomStructure.hpp>
 #include <stdair/factory/FacBomContent.hpp>
@@ -39,6 +38,7 @@ namespace stdair {
   FacSupervisor::~FacSupervisor() {
     cleanBomStructureLayer();
     cleanBomContentLayer();
+    cleanLoggerService();
   }
 
   // //////////////////////////////////////////////////////////////////////
@@ -73,16 +73,16 @@ namespace stdair {
 
   // //////////////////////////////////////////////////////////////////////
   void FacSupervisor::cleanLoggerService() {
+    // Clean the static instance of the log service
     Logger::clean();
   }
   
   // //////////////////////////////////////////////////////////////////////
   void FacSupervisor::cleanFactory () {
-	if (_instance != NULL) {
-      _instance->cleanBomStructureLayer();
-      _instance->cleanBomContentLayer();
-      _instance->cleanLoggerService();
- 	}
+    // Clean the static instance of the log service
+    Logger::clean();
+
+    // Clean the static instance of the FacSupervisor
     delete _instance; _instance = NULL;
   }
 
