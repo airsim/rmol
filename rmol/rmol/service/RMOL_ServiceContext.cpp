@@ -1,8 +1,8 @@
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
-// C
-#include <assert.h>
+// STL
+#include <cassert>
 // RMOL
 #include <rmol/basic/BasConst_RMOL_Service.hpp>
 #include <rmol/field/FldYieldRange.hpp>
@@ -23,30 +23,36 @@
 namespace RMOL {
 
   // //////////////////////////////////////////////////////////////////////
-  RMOL_ServiceContext::
-  RMOL_ServiceContext (const ResourceCapacity_T iResourceCapacity) :
-    _bucketHolder (NULL), _capacity (iResourceCapacity),
-    _studyStatManager (NULL),
-    _generatedDemandVectorHolder (DEFAULT_GENERATED_DEMAND_VECTOR_HOLDER) {
-    init (iResourceCapacity);
-  }
-  
-  // //////////////////////////////////////////////////////////////////////
   RMOL_ServiceContext::RMOL_ServiceContext () : 
-    _bucketHolder (NULL), _capacity (DEFAULT_RMOL_SERVICE_CAPACITY),
-    _studyStatManager (NULL),
-    _generatedDemandVectorHolder (DEFAULT_GENERATED_DEMAND_VECTOR_HOLDER) {
-    init (DEFAULT_RMOL_SERVICE_CAPACITY);
+    _bucketHolder (NULL), _studyStatManager (NULL) {
+    assert (false);
   }
   
   // //////////////////////////////////////////////////////////////////////
   RMOL_ServiceContext::RMOL_ServiceContext (const RMOL_ServiceContext&) :
-    _bucketHolder (NULL), _capacity (DEFAULT_RMOL_SERVICE_CAPACITY),
-    _studyStatManager (NULL),
+    _bucketHolder (NULL), _studyStatManager (NULL) {
+    assert (false);
+  }
+
+  // //////////////////////////////////////////////////////////////////////
+  RMOL_ServiceContext::
+  RMOL_ServiceContext (const stdair::AirlineCode_T& iAirlineCode) : 
+    _bucketHolder (NULL), _studyStatManager (NULL),
+    _airlineCode (iAirlineCode), _capacity (DEFAULT_RMOL_SERVICE_CAPACITY),
     _generatedDemandVectorHolder (DEFAULT_GENERATED_DEMAND_VECTOR_HOLDER) {
     init (DEFAULT_RMOL_SERVICE_CAPACITY);
   }
-
+  
+  // //////////////////////////////////////////////////////////////////////
+  RMOL_ServiceContext::
+  RMOL_ServiceContext (const stdair::AirlineCode_T& iAirlineCode,
+                       const ResourceCapacity_T iResourceCapacity) :
+    _bucketHolder (NULL), _studyStatManager (NULL),
+    _airlineCode (iAirlineCode), _capacity (iResourceCapacity),
+    _generatedDemandVectorHolder (DEFAULT_GENERATED_DEMAND_VECTOR_HOLDER) {
+    init (iResourceCapacity);
+  }
+  
   // //////////////////////////////////////////////////////////////////////
   RMOL_ServiceContext::~RMOL_ServiceContext() {
   }

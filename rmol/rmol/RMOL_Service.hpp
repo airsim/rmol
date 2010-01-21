@@ -108,8 +108,9 @@ namespace RMOL {
         <br>Moreover, a reference on an output stream is given, so
         that log outputs can be directed onto that stream.       
         @param const stdair::BasLogParams& Parameters for the output log
-               stream. */
-    RMOL_Service (const stdair::BasLogParams&);
+               stream.
+        @param AirlineCode_T& Code of the owner airline. */
+    RMOL_Service (const stdair::BasLogParams&, const stdair::AirlineCode_T&);
 
     /** Constructor.
         <br>The init() method is called; see the corresponding documentation
@@ -119,8 +120,9 @@ namespace RMOL {
         initialised with the proper log output stream by some other
         methods in the calling chain (for instance, when the RMOL_Service
         is itself being initialised by another library service such as
-        AIRINV_Service). */
-    RMOL_Service ();
+        AIRINV_Service).
+        @param AirlineCode_T& Code of the owner airline. */
+    RMOL_Service (const stdair::AirlineCode_T&);
 
     /** Constructor.
         <br>The init() method is called; see the corresponding documentation
@@ -128,8 +130,10 @@ namespace RMOL {
         <br>Moreover, a reference on an output stream is given, so
         that log outputs can be directed onto that stream.       
         @param const stdair::BasLogParams& Parameters for the output log stream.
+        @param AirlineCode_T& Code of the owner airline.
         @param const ResourceCapacity_T Capacity of the resource to optimise. */
-    RMOL_Service (const stdair::BasLogParams&, const ResourceCapacity_T);
+    RMOL_Service (const stdair::BasLogParams&, const stdair::AirlineCode_T&,
+                  const ResourceCapacity_T);
     
     /** Constructor.
         <br>The init() method is called; see the corresponding documentation
@@ -140,8 +144,9 @@ namespace RMOL {
         methods in the calling chain (for instance, when the RMOL_Service
         is itself being initialised by another library service such as
         AIRINV_Service).
+        @param AirlineCode_T& Code of the owner airline.
         @param const ResourceCapacity_T Capacity of the resource to optimise. */
-    RMOL_Service (const ResourceCapacity_T);
+    RMOL_Service (const stdair::AirlineCode_T&, const ResourceCapacity_T);
     
     /** Destructor. */
     ~RMOL_Service();
@@ -184,18 +189,23 @@ namespace RMOL {
 
     
   private:
-    /** Default Constructors. */
+    // /////// Construction and Destruction helper methods ///////
+    /** Default constructor. */
+    RMOL_Service ();
+    /** Default copy constructor. */
     RMOL_Service (const RMOL_Service&);
 
     /** Initialise the log. */
     void logInit (const stdair::BasLogParams&);
 
-    /** Initialise. */
-    void init ();
+    /** Initialise.
+        @param AirlineCode_T& Code of the owner airline. */
+    void init (const stdair::AirlineCode_T&);
 
     /** Initialise.
+        @param AirlineCode_T& Code of the owner airline.
         @param const ResourceCapacity_T Capacity of the resource to optimise. */
-    void init (const ResourceCapacity_T);
+    void init (const stdair::AirlineCode_T&, const ResourceCapacity_T);
     
     /** Finaliser. */
     void finalise ();

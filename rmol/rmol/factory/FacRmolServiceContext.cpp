@@ -1,8 +1,8 @@
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
-// C
-#include <assert.h>
+// STL
+#include <cassert>
 // RMOL
 #include <rmol/service/RMOL_ServiceContext.hpp>
 #include <rmol/factory/FacSupervisor.hpp>
@@ -30,10 +30,11 @@ namespace RMOL {
   }
 
   // //////////////////////////////////////////////////////////////////////
-  RMOL_ServiceContext& FacRmolServiceContext::create () {
+  RMOL_ServiceContext& FacRmolServiceContext::
+  create (const stdair::AirlineCode_T& iAirlineCode) {
     RMOL_ServiceContext* aServiceContext_ptr = NULL;
 
-    aServiceContext_ptr = new RMOL_ServiceContext ();
+    aServiceContext_ptr = new RMOL_ServiceContext (iAirlineCode);
     assert (aServiceContext_ptr != NULL);
 
     // The new object is added to the Bom pool
@@ -44,10 +45,12 @@ namespace RMOL {
 
   // //////////////////////////////////////////////////////////////////////
   RMOL_ServiceContext& FacRmolServiceContext::
-  create (const ResourceCapacity_T iResourceCapacity) {
+  create (const stdair::AirlineCode_T& iAirlineCode,
+          const ResourceCapacity_T iResourceCapacity) {
     RMOL_ServiceContext* aServiceContext_ptr = NULL;
 
-    aServiceContext_ptr = new RMOL_ServiceContext (iResourceCapacity);
+    aServiceContext_ptr = new RMOL_ServiceContext (iAirlineCode,
+                                                   iResourceCapacity);
     assert (aServiceContext_ptr != NULL);
 
     // The new object is added to the Bom pool

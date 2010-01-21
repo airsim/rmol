@@ -26,31 +26,39 @@
 namespace RMOL {
 
   // //////////////////////////////////////////////////////////////////////
+  RMOL_Service::RMOL_Service () : _rmolServiceContext (NULL) {
+    assert (false);
+  }
+
+  // //////////////////////////////////////////////////////////////////////
   RMOL_Service::RMOL_Service (const RMOL_Service& iService) :
     _rmolServiceContext (NULL) {
     assert (false);
   }
 
   // //////////////////////////////////////////////////////////////////////
-  RMOL_Service::RMOL_Service (const stdair::BasLogParams& iLogParams) :
+  RMOL_Service::RMOL_Service (const stdair::BasLogParams& iLogParams,
+                              const stdair::AirlineCode_T& iAirlineCode) :
     _rmolServiceContext (NULL) {
 
     // Set the log file
     logInit (iLogParams);
 
     // Initialise the (remaining of the) context
-    init ();
+    init (iAirlineCode);
   }
 
   // //////////////////////////////////////////////////////////////////////
-  RMOL_Service::RMOL_Service () :
+  RMOL_Service::RMOL_Service (const stdair::AirlineCode_T& iAirlineCode) :
     _rmolServiceContext (NULL) {
+    
     // Initialise the context
-    init ();
+    init (iAirlineCode);
   }
 
   // //////////////////////////////////////////////////////////////////////
   RMOL_Service::RMOL_Service (const stdair::BasLogParams& iLogParams,
+                              const stdair::AirlineCode_T& iAirlineCode,
                               const ResourceCapacity_T iResourceCapacity) :
     _rmolServiceContext (NULL) {
     
@@ -58,7 +66,7 @@ namespace RMOL {
     logInit (iLogParams);
 
     // Initialise the (remaining of the) context
-    init (iResourceCapacity);
+    init (iAirlineCode, iResourceCapacity);
   }
 
   // //////////////////////////////////////////////////////////////////////
@@ -71,18 +79,19 @@ namespace RMOL {
   }
 
   // //////////////////////////////////////////////////////////////////////
-  void RMOL_Service::init () {
+  void RMOL_Service::init (const stdair::AirlineCode_T& iAirlineCode) {
     // Initialise the context
     RMOL_ServiceContext& lRMOL_ServiceContext = 
-                         FacRmolServiceContext::instance().create ();
+                         FacRmolServiceContext::instance().create (iAirlineCode);
     _rmolServiceContext = &lRMOL_ServiceContext;
   }
 
   // //////////////////////////////////////////////////////////////////////
-  void RMOL_Service::init (const ResourceCapacity_T iResourceCapacity) {
+  void RMOL_Service::init (const stdair::AirlineCode_T& iAirlineCode,
+                           const ResourceCapacity_T iResourceCapacity) {
     // Initialise the context
     RMOL_ServiceContext& lRMOL_ServiceContext = 
-      FacRmolServiceContext::instance().create (iResourceCapacity);
+      FacRmolServiceContext::instance().create (iAirlineCode, iResourceCapacity);
     _rmolServiceContext = &lRMOL_ServiceContext;
   }
   

@@ -225,7 +225,8 @@ int main (int argc, char* argv[]) {
     
     // Initialise the list of classes/buckets
     const stdair::BasLogParams lLogParams (stdair::LOG::DEBUG, logOutputFile);
-    RMOL::RMOL_Service rmolService (lLogParams, lCapacity);
+    const stdair::AirlineCode_T lAirlineCode ("BA");
+    RMOL::RMOL_Service rmolService (lLogParams, lAirlineCode, lCapacity);
     rmolService.setUpStudyStatManager();
     
     if (hasInputFile) {

@@ -1,8 +1,14 @@
+// //////////////////////////////////////////////////////////////////////
+// Import section
+// //////////////////////////////////////////////////////////////////////
 #include <rmol/basic/BasConst_General.hpp>
 #include <rmol/basic/BasConst_Overbooking.hpp>
 #include <rmol/basic/BasConst_RMOL_Service.hpp>
 
 namespace RMOL {
+
+  /** Default airline code for the RMOL_Service. */
+  const stdair::AirlineCode_T DEFAULT_RMOL_SERVICE_AIRLINE_CODE = "BA";
 
   /** Default capacity for the RMOL_Service. */
   const double DEFAULT_RMOL_SERVICE_CAPACITY = 1.0;

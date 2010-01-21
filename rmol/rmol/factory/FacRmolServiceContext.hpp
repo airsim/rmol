@@ -4,6 +4,8 @@
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
+// StdAir
+#include <stdair/STDAIR_Types.hpp>
 // RMOL
 #include <rmol/RMOL_Types.hpp>
 #include <rmol/factory/FacServiceAbstract.hpp>
@@ -30,12 +32,13 @@ namespace RMOL {
     /** Create a new ServiceContext object.
         <br>This new object is added to the list of instantiated objects.
         @return ServiceContext& The newly created object. */
-    RMOL_ServiceContext& create ();
+    RMOL_ServiceContext& create (const stdair::AirlineCode_T&);
 
     /** Create a new ServiceContext object.
         <br>This new object is added to the list of instantiated objects.
         @return ServiceContext& The newly created object. */
-    RMOL_ServiceContext& create (const ResourceCapacity_T iResourceCapacity);
+    RMOL_ServiceContext& create (const stdair::AirlineCode_T&,
+                                 const ResourceCapacity_T);
 
     
   protected:

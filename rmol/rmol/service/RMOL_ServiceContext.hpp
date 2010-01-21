@@ -6,6 +6,8 @@
 // //////////////////////////////////////////////////////////////////////
 // STL
 #include <string>
+// StdAir
+#include <stdair/STDAIR_Types.hpp>
 // RMOL
 #include <rmol/RMOL_Types.hpp>
 #include <rmol/service/ServiceAbstract.hpp>
@@ -24,17 +26,42 @@ namespace RMOL {
     friend class RMOL_Service;
     friend class FacRmolServiceContext;
 
+  public:
+    // ///////// Getters //////////
+    /** Get the airline code. */
+    const stdair::AirlineCode_T& getAirlineCode () const {
+      return _airlineCode;
+    }
+
+    
+    // ///////// Setters //////////
+    /** Set the airline code. */
+    void setAirlineCode (const stdair::AirlineCode_T& iAirlineCode) {
+      _airlineCode = iAirlineCode;
+    }
+
+    
+  public:
+    /** Set up the StudyStatManager. */
+    void setUpStudyStatManager ();
+    
+    
   private:
+    // /////// Construction / initialisation ////////
     /** Constructors. */
     RMOL_ServiceContext ();
     RMOL_ServiceContext (const RMOL_ServiceContext&);
-    RMOL_ServiceContext (const ResourceCapacity_T iResourceCapacity);
-    void init (const ResourceCapacity_T iResourceCapacity);
+    RMOL_ServiceContext (const stdair::AirlineCode_T&);
+    RMOL_ServiceContext (const stdair::AirlineCode_T&, const ResourceCapacity_T);
+    void init (const ResourceCapacity_T);
+    
     /** Initialise the StudyStatManager. */
     void initStudyStatManager ();
+    
     /** Destructor. */
     ~RMOL_ServiceContext();
 
+    
     /** Set the cabin availability. */
     void setResourceCapacity (const ResourceCapacity_T iResourceCapacity);
     
@@ -86,19 +113,20 @@ namespace RMOL {
       return _capacity;
     }
 
-  public:
-    /** Set up the StudyStatManager. */
-    void setUpStudyStatManager ();
     
   private:
+    // //////////// Attributes //////////////////
     /** Internal pointer on BucketHolder. */
     BucketHolder* _bucketHolder;
 
-    /** Resource Capacity. */
-    ResourceCapacity_T _capacity;
-
     /** Statistic Manager. */
     StudyStatManager* _studyStatManager;
+
+    /** Code of the airline owner of the revenue management system. */
+    stdair::AirlineCode_T _airlineCode;
+    
+    /** Resource Capacity. */
+    ResourceCapacity_T _capacity;
 
     /** Holder of the generated demand vectors. */
     GeneratedDemandVectorHolder_T _generatedDemandVectorHolder;
