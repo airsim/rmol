@@ -34,7 +34,8 @@ int testUnconstrainerHelper (const unsigned short unconstrainingMethodFlag) {
 
     // Initialise the RMOL service
     const stdair::BasLogParams lLogParams (stdair::LOG::DEBUG, logOutputFile);
-    RMOL::RMOL_Service rmolService (lLogParams);
+    const stdair::AirlineCode_T lAirlineCode ("BA");
+    RMOL::RMOL_Service rmolService (lLogParams, lAirlineCode);
     
     // A sample historical booking data to be processed by unconstrainer
     RMOL::ConstrainedDataHolder_T lConstrainedDataHolder;

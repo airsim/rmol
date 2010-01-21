@@ -42,7 +42,8 @@ int testOptimiseHelper (const unsigned short optimisationMethodFlag) {
     
     // Initialise the RMOL service
     const stdair::BasLogParams lLogParams (stdair::LOG::DEBUG, logOutputFile);
-    RMOL::RMOL_Service rmolService (lLogParams, cabinCapacity);
+    const stdair::AirlineCode_T lAirlineCode ("BA");
+    RMOL::RMOL_Service rmolService (lLogParams, lAirlineCode, cabinCapacity);
     rmolService.setUpStudyStatManager();
     
     // Define bid price and booking Limit vectors
