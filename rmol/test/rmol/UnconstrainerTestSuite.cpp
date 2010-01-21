@@ -33,7 +33,8 @@ int testUnconstrainerHelper (const unsigned short unconstrainingMethodFlag) {
     std::ostringstream oDebugStr;
 
     // Initialise the RMOL service
-    RMOL::RMOL_Service rmolService (logOutputFile);
+    const stdair::BasLogParams lLogParams (stdair::LOG::DEBUG, logOutputFile);
+    RMOL::RMOL_Service rmolService (lLogParams);
     
     // A sample historical booking data to be processed by unconstrainer
     RMOL::ConstrainedDataHolder_T lConstrainedDataHolder;

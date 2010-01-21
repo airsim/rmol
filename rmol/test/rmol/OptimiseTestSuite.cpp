@@ -41,7 +41,9 @@ int testOptimiseHelper (const unsigned short optimisationMethodFlag) {
     logOutputFile.clear();
     
     // Initialise the RMOL service
-    RMOL::RMOL_Service rmolService (logOutputFile, cabinCapacity);
+    const stdair::BasLogParams lLogParams (stdair::LOG::DEBUG, logOutputFile);
+    RMOL::RMOL_Service rmolService (lLogParams, cabinCapacity);
+    rmolService.setUpStudyStatManager();
     
     // Define bid price and booking Limit vectors
     RMOL::BidPriceVector_T lBidPriceVector;
@@ -69,66 +71,70 @@ int testOptimiseHelper (const unsigned short optimisationMethodFlag) {
     }
     
     switch (METHOD_FLAG) {
+    case 0 : {
+      // Calculate the optimal protections by the Monte Carlo
+      // Integration approach        
+      rmolService.optimalOptimisationByMCIntegration (K);
+      break;
+    }
+      
+    case 1 : {
+      // Calculate the optimal protections by DP.
+      rmolService.optimalOptimisationByDP ();
+      break;
+    }
+      
+    case 2 : {
+      // Calculate the Bid-Price Vector by EMSR
+      rmolService.heuristicOptimisationByEmsr ();
+      break;
+    }
+      
+    case 3 : {
+      // Calculate the protections by EMSR-a
+      // Test the EMSR-a algorithm implementation
+      rmolService.heuristicOptimisationByEmsrA (lBidPriceVector, 
+                                                lProtectionLevelVector,
+                                                lBookingLimitVector);
 
-    case 0 : // Calculate the optimal protections by the Monte Carlo
-             // Integration approach
-	  {
-      	rmolService.optimalOptimisationByMCIntegration (K);
-      	break;
-	  }
-    case 1 : // Calculate the optimal protections by DP.
-	  {
-      	rmolService.optimalOptimisationByDP ();
-      	break;
+      // Return a cumulated booking limit value to test
+      oExpectedBookingLimit = static_cast<int> (lBookingLimitVector.at(2));
+      break;
+    }
+      
+    case 4 : {
+      // Calculate the protections by EMSR-b
+      rmolService.heuristicOptimisationByEmsrB ();
+      break;
+    }
+      
+    case 5 : {
+      // Calculate the protection by EMSR-a with sellup
+      // Create an empty sell-up probability vector
+      std::vector<double> sellupProbabilityVector; 
+      
+      // Define the sell-up probability to be 20%
+      const double sampleProbability = 0.2;
+      
+      // NOTE: size of sellup vector should be equal to no of buckets - 1
+      // TODO: check that with an assertion
+      const short nbOfSampleBucket = 4;
+      for (short i = 1; i <= nbOfSampleBucket - 1; i++) {
+        sellupProbabilityVector.push_back (sampleProbability);
       }
-    case 2 : // Calculate the Bid-Price Vector by EMSR
-	  {
-      	rmolService.heuristicOptimisationByEmsr ();
-      	break;
-	  }
-    case 3 : // Calculate the protections by EMSR-a
-	  {
-      	// Test the EMSR-a algorithm implementation
-      	rmolService.heuristicOptimisationByEmsrA (lBidPriceVector, 
-                                                  lProtectionLevelVector,
-												  lBookingLimitVector);
+      
+      // Test the algorithm with the sample sell-up vector
+      rmolService.heuristicOptimisationByEmsrAwithSellup 
+        (sellupProbabilityVector, lProtectionLevelVector, 
+         lBidPriceVector, lBookingLimitVector);
+      
+      // Return a cumulated booking limit value to test
+      oExpectedBookingLimit = static_cast<int> (lBookingLimitVector.at(2));
+      
+      break;
+    }
 
-      	// Return a cumulated booking limit value to test
-      	oExpectedBookingLimit = static_cast<int> (lBookingLimitVector.at(2));
-      	break;
-      }
-    case 4 : // Calculate the protections by EMSR-b
-	  {
-      	rmolService.heuristicOptimisationByEmsrB ();
-	    break;
-	  }
-    case 5 : // Calculate the protection by EMSR-a with sellup
-      {
-        // Create an empty sell-up probability vector
-        std::vector<double> sellupProbabilityVector; 
-
-		// Define the sell-up probability to be 20%
-        const double sampleProbability = 0.2;
-
-        // NOTE: size of sellup vector should be equal to no of buckets - 1
-        // TODO: check that with an assertion
-        const short nbOfSampleBucket = 4;
-        for (short i = 1; i <= nbOfSampleBucket - 1; i++) {
-          sellupProbabilityVector.push_back (sampleProbability);
-	    }
-
-        // Test the algorithm with the sample sell-up vector
-        rmolService.heuristicOptimisationByEmsrAwithSellup 
-          (sellupProbabilityVector, lProtectionLevelVector, 
-           lBidPriceVector, lBookingLimitVector);
-
-        // Return a cumulated booking limit value to test
-        oExpectedBookingLimit = static_cast<int> (lBookingLimitVector.at(2));
-
-        break;
-      }
-
-    default : rmolService.optimalOptimisationByMCIntegration (K);
+    default: rmolService.optimalOptimisationByMCIntegration (K);
     }
         
   } catch (const std::exception& stde) {
@@ -172,7 +178,7 @@ void OptimiseTestSuite::testOptimiseEMSR() {
 // EMSR-a
 void OptimiseTestSuite::testOptimiseEMSRa() {
   const int lExpectedBookingLimit = testOptimiseHelper(3);
-  CPPUNIT_ASSERT(lExpectedBookingLimit == 61);
+  CPPUNIT_ASSERT (lExpectedBookingLimit == 61);
 }
 
 // //////////////////////////////////////////////////////////////////////

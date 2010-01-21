@@ -33,7 +33,8 @@ int testForecasterHelper (const unsigned short forecastingMethodFlag) {
     std::ostringstream oDebugStr;
 
     // Initialise the RMOL service
-    RMOL::RMOL_Service rmolService (logOutputFile);
+    const stdair::BasLogParams lLogParams (stdair::LOG::DEBUG, logOutputFile);
+    RMOL::RMOL_Service rmolService (lLogParams);
     
     // A sample historical demand data to be processed by forecaster
     // Class |  Q  |  M  |  B  |  Y  |

@@ -3,14 +3,11 @@
 // //////////////////////////////////////////////////////////////////////
 // STL
 #include <cassert>
-#include <sstream>
 #include <fstream>
-#include <string>
-#include <limits>
-// #include <iostream>
+// StdAir
+#include <stdair/service/Logger.hpp>
 // RMOL
 #include <rmol/RMOL_Service.hpp>
-#include <rmol/service/Logger.hpp>
 
 namespace RMOL {
 
@@ -190,7 +187,10 @@ int main (int argc, char* argv[]) {
   // Open and clean the log outputfile
   logOutputFile.open (lLogFilename.c_str());
   logOutputFile.clear();
-  RMOL::RMOL_Service lRmolService(logOutputFile);
+
+  // Initialise the RMOL service
+  const stdair::BasLogParams lLogParams (stdair::LOG::DEBUG, logOutputFile);
+  RMOL::RMOL_Service lRmolService (lLogParams);
 
   // Register BCDataSet
   RMOL::BookingClassDataSet lBookingClassDataSet;
@@ -202,10 +202,10 @@ int main (int argc, char* argv[]) {
   RMOL::BookingClassData YClassData (0, 300, 0.3, false);
 
   // Display
-  RMOL_LOG_DEBUG(QClassData.toString());
-  RMOL_LOG_DEBUG(MClassData.toString());
-  RMOL_LOG_DEBUG(BClassData.toString());
-  RMOL_LOG_DEBUG(YClassData.toString());
+  STDAIR_LOG_DEBUG(QClassData.toString());
+  STDAIR_LOG_DEBUG(MClassData.toString());
+  STDAIR_LOG_DEBUG(BClassData.toString());
+  STDAIR_LOG_DEBUG(YClassData.toString());
 
   // Add BookingClassData into the BCDataSet
   lBookingClassDataSet.addBookingClassData (QClassData );
@@ -214,21 +214,23 @@ int main (int argc, char* argv[]) {
   lBookingClassDataSet.addBookingClassData( YClassData );
 
   //Display
-  RMOL_LOG_DEBUG( lBookingClassDataSet.toString() );
+  STDAIR_LOG_DEBUG( lBookingClassDataSet.toString() );
 
   // Number of classes
   const unsigned int lNoOfClass = lBookingClassDataSet.getNumberOfClass();
-  RMOL_LOG_DEBUG( "Number of Classes: " << lNoOfClass );
+  STDAIR_LOG_DEBUG( "Number of Classes: " << lNoOfClass );
 
   // Minimum fare
   lBookingClassDataSet.updateMinimumFare();
   const double lMinFare = lBookingClassDataSet.getMinimumFare();
-  RMOL_LOG_DEBUG( "Minimum fare: " << lMinFare );
+  STDAIR_LOG_DEBUG( "Minimum fare: " << lMinFare );
 
   // Censorship flag
   lBookingClassDataSet.updateCensorshipFlag();
   const bool lCensorshipFlag = lBookingClassDataSet.getCensorshipFlag();
-  RMOL_LOG_DEBUG( "Censorship Flag: " << lCensorshipFlag );
+
+  // DEBUG
+  STDAIR_LOG_DEBUG ( "Censorship Flag: " << lCensorshipFlag );
 
   // Close the log output file
   logOutputFile.close();
