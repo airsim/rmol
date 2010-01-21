@@ -3,11 +3,10 @@
 // //////////////////////////////////////////////////////////////////////
 // STL
 #include <cassert>
-//#include <cmath>
 #include <sstream>
-#include <iomanip>
 // StdAir
 #include <stdair/basic/BasChronometer.hpp>
+#include <stdair/service/Logger.hpp>
 // RMOL
 #include <rmol/field/FldYieldRange.hpp>
 #include <rmol/field/FldDistributionParameters.hpp>
@@ -22,7 +21,6 @@
 #include <rmol/factory/FacDemand.hpp>
 #include <rmol/factory/FacBucket.hpp>
 #include <rmol/command/Optimiser.hpp>
-#include <rmol/service/Logger.hpp>
 
 namespace RMOL {
 
@@ -134,7 +132,8 @@ namespace RMOL {
     // Reset formatting flags of stream
     ostr.flags (oldFlags);
 
-    RMOL_LOG_DEBUG (ostr.str());
+    // DEBUG
+    STDAIR_LOG_DEBUG (ostr.str());
   }
 
   // //////////////////////////////////////////////////////////////////////

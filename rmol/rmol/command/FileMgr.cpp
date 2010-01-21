@@ -2,10 +2,12 @@
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // STL
-#include <iostream>
+#include <ostream>
 #include <istream>
 #include <sstream>
 #include <fstream>
+// StdAir
+#include <stdair/service/Logger.hpp>
 // RMOL
 #include <rmol/field/FldYieldRange.hpp>
 #include <rmol/field/FldDistributionParameters.hpp>
@@ -16,7 +18,6 @@
 #include <rmol/factory/FacBucket.hpp>
 #include <rmol/factory/FacBucketHolder.hpp>
 #include <rmol/command/FileMgr.hpp>
-#include <rmol/service/Logger.hpp>
 
 namespace RMOL {
 
@@ -27,7 +28,7 @@ namespace RMOL {
     // Open the input file
     std::ifstream inputFile (iInputFileName.c_str());
     if (! inputFile) {
-      RMOL_LOG_ERROR ("Can not open input file \"" << iInputFileName << "\"");
+      STDAIR_LOG_ERROR ("Can not open input file \"" << iInputFileName << "\"");
       throw new FileNotFoundException();
     }
     

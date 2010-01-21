@@ -4,18 +4,18 @@
 // GSL Random Number Generation (GSL Reference Manual, version 1.7, Chapter 19)
 #include <gsl/gsl_cdf.h>
 #include <gsl/gsl_randist.h>
-// C
-#include <assert.h>
 // STL
+#include <cassert>
 #include <sstream>
 #include <vector>
 #include <cmath>
+// StdAir
+#include <stdair/service/Logger.hpp>
 // RMOL
 #include <rmol/basic/BasConst_General.hpp>
 #include <rmol/bom/DPOptimiser.hpp>
 #include <rmol/bom/Bucket.hpp>
 #include <rmol/bom/BucketHolder.hpp>
-#include <rmol/service/Logger.hpp>
 
 namespace RMOL {
   
@@ -159,7 +159,7 @@ namespace RMOL {
           ostr << currentGradient  << std::endl
                << "x = " << x << std::endl
                << "class: " << currentBucketIndex << std::endl;
-          RMOL_LOG_DEBUG (ostr.str());
+          STDAIR_LOG_DEBUG (ostr.str());
         }
           
         /*
@@ -183,7 +183,7 @@ namespace RMOL {
       }
 
       // DEBUG
-      RMOL_LOG_DEBUG ("Vmaxindex = " << currentMERVector.back());
+      STDAIR_LOG_DEBUG ("Vmaxindex = " << currentMERVector.back());
         
       MERVectorHolder.push_back (currentMERVector);
      

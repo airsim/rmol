@@ -6,6 +6,9 @@
 // //////////////////////////////////////////////////////////////////////
 // STL
 #include <string>
+// StdAir
+#include <stdair/STDAIR_Types.hpp>
+#include <stdair/basic/BasLogParams.hpp>
 // RMOL
 #include <rmol/RMOL_Types.hpp>
 #include <rmol/RMOL_FORECASTER_Types.hpp>
@@ -20,48 +23,7 @@ namespace RMOL {
   /** Interface for the RMOL Services. */
   class RMOL_Service {
   public:
-    /** Constructor. */
-    RMOL_Service (std::ostream& ioLogStream);
-
-    RMOL_Service (std::ostream& ioLogStream,
-                  const ResourceCapacity_T iResourceCapacity);
-    /** Destructor. */
-    ~RMOL_Service();
-
-    /** Set up the StudyStatManager. */
-    void setUpStudyStatManager ();
-
-    /** Set the cabin availability. */
-    void setResourceCapacity (const ResourceCapacity_T iResourceCapacity);
-
-    /** Add a bucket to the context. */
-    void addBucket (const double iYieldRange, const double iDemandMean,
-                    const double iDemandStandardDev);
-
-    /** Add a bucket to the context. */
-    void addBucket (const double iYieldRange, const double iDemandMean,
-                    const double iDemandStandardDev,
-                    GeneratedDemandVector_T* ioGeneratedDemandVector);
-
-    /** Generate demand for a given (Gaussian) distribution. */
-    GeneratedDemandVector_T* generateDemand (const int K,
-                                             const double& iMean,
-                                             const double& iDeviation);
-
-    /** Sum the two generated demand vectors . */
-    GeneratedDemandVector_T* generateDemand (GeneratedDemandVector_T*,
-                                             GeneratedDemandVector_T*);
-
-    /** Read the input data from a file. */
-    void readFromInputFile (const std::string& iInputFileName);
-
-    /** Build the context with the generated demand for Monte-Carlo
-       Integration algorithm. */
-    void buildContextForMC (const int K);
-
-    /** Clear the context (cabin capacity, bucket holder). */
-    void reset ();
-
+    // /////////// Business Methods /////////////
     /** Single resource optimization using the Monte Carlo algorithm. */
     void optimalOptimisationByMCIntegration (const int K);
 
@@ -138,20 +100,103 @@ namespace RMOL {
                                        PriceHolder_T&,
                                        SellupFactorHolder_T&);
 
+    
+    // ////////// Constructors and destructors //////////
+    /** Constructor.
+        <br>The init() method is called; see the corresponding documentation
+        for more details.
+        <br>Moreover, a reference on an output stream is given, so
+        that log outputs can be directed onto that stream.       
+        @param const stdair::BasLogParams& Parameters for the output log
+               stream. */
+    RMOL_Service (const stdair::BasLogParams&);
+
+    /** Constructor.
+        <br>The init() method is called; see the corresponding documentation
+        for more details.
+        <br>Moreover, as no reference on any output stream is given,
+        it is assumed that the StdAir log service has already been
+        initialised with the proper log output stream by some other
+        methods in the calling chain (for instance, when the RMOL_Service
+        is itself being initialised by another library service such as
+        AIRINV_Service). */
+    RMOL_Service ();
+
+    /** Constructor.
+        <br>The init() method is called; see the corresponding documentation
+        for more details.
+        <br>Moreover, a reference on an output stream is given, so
+        that log outputs can be directed onto that stream.       
+        @param const stdair::BasLogParams& Parameters for the output log stream.
+        @param const ResourceCapacity_T Capacity of the resource to optimise. */
+    RMOL_Service (const stdair::BasLogParams&, const ResourceCapacity_T);
+    
+    /** Constructor.
+        <br>The init() method is called; see the corresponding documentation
+        for more details.
+        <br>Moreover, as no reference on any output stream is given,
+        it is assumed that the StdAir log service has already been
+        initialised with the proper log output stream by some other
+        methods in the calling chain (for instance, when the RMOL_Service
+        is itself being initialised by another library service such as
+        AIRINV_Service).
+        @param const ResourceCapacity_T Capacity of the resource to optimise. */
+    RMOL_Service (const ResourceCapacity_T);
+    
+    /** Destructor. */
+    ~RMOL_Service();
+
+    
+    // //////// Initialisation support methods ///////////
+    /** Set up the StudyStatManager. */
+    void setUpStudyStatManager ();
+
+    /** Set the cabin availability. */
+    void setResourceCapacity (const ResourceCapacity_T iResourceCapacity);
+
+    /** Add a bucket to the context. */
+    void addBucket (const double iYieldRange, const double iDemandMean,
+                    const double iDemandStandardDev);
+
+    /** Add a bucket to the context. */
+    void addBucket (const double iYieldRange, const double iDemandMean,
+                    const double iDemandStandardDev,
+                    GeneratedDemandVector_T* ioGeneratedDemandVector);
+
+    /** Generate demand for a given (Gaussian) distribution. */
+    GeneratedDemandVector_T* generateDemand (const int K,
+                                             const double& iMean,
+                                             const double& iDeviation);
+
+    /** Sum the two generated demand vectors . */
+    GeneratedDemandVector_T* generateDemand (GeneratedDemandVector_T*,
+                                             GeneratedDemandVector_T*);
+
+    /** Read the input data from a file. */
+    void readFromInputFile (const std::string& iInputFileName);
+
+    /** Build the context with the generated demand for Monte-Carlo
+       Integration algorithm. */
+    void buildContextForMC (const int K);
+
+    /** Clear the context (cabin capacity, bucket holder). */
+    void reset ();
+
+    
   private:
     /** Default Constructors. */
-    RMOL_Service ();
     RMOL_Service (const RMOL_Service&);
 
+    /** Initialise the log. */
+    void logInit (const stdair::BasLogParams&);
+
     /** Initialise. */
-    void init (std::ostream& ioLogStream);
+    void init ();
 
-    void init (std::ostream& ioLogStream,
-               const ResourceCapacity_T iResourceCapacity);
+    /** Initialise.
+        @param const ResourceCapacity_T Capacity of the resource to optimise. */
+    void init (const ResourceCapacity_T);
     
-    /** Initilise the log. */
-    void logInit (const LOG::EN_LogLevel iLogLevel, std::ostream& ioLogStream);
-
     /** Finaliser. */
     void finalise ();
 

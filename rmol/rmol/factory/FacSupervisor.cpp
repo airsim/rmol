@@ -7,7 +7,6 @@
 #include <rmol/factory/FacBomAbstract.hpp>
 #include <rmol/factory/FacServiceAbstract.hpp>
 #include <rmol/factory/FacSupervisor.hpp>
-#include <rmol/service/Logger.hpp>
 
 namespace RMOL {
 
@@ -34,15 +33,9 @@ namespace RMOL {
   }
 
   // //////////////////////////////////////////////////////////////////////
-  void FacSupervisor::registerLoggerService (Logger* ioLogger_ptr) {
-    _logger = ioLogger_ptr;
-  }
-
-  // //////////////////////////////////////////////////////////////////////
   FacSupervisor::~FacSupervisor() {
     cleanBomLayer();
     cleanServiceLayer();
-    cleanLoggerService();
  }
 
   // //////////////////////////////////////////////////////////////////////
@@ -74,16 +67,10 @@ namespace RMOL {
   }
 
   // //////////////////////////////////////////////////////////////////////
-  void FacSupervisor::cleanLoggerService() {
-    delete _logger; _logger = NULL;
-  }
-  
-  // //////////////////////////////////////////////////////////////////////
   void FacSupervisor::cleanFactory () {
 	if (_instance != NULL) {
 		_instance->cleanBomLayer();
 		_instance->cleanServiceLayer();
-        _instance->cleanLoggerService();
  	}
     delete (_instance); _instance = NULL;
   }

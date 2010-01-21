@@ -7,11 +7,12 @@
 #include <numeric>
 #include <sstream>
 #include <fstream>
+// StdAir
+#include <stdair/service/Logger.hpp>
 // RMOL
 #include <rmol/RMOL_UTILITY_Types.hpp>
 #include <rmol/bom/QForecaster.hpp>
 #include <rmol/command/Utilities.hpp>
-#include <rmol/service/Logger.hpp>
 
 namespace RMOL {
 
@@ -93,8 +94,10 @@ namespace RMOL {
 
     // 2. Compute Q-equivalent demand mean and standard deviation
     Utilities::updateMeanAndStandardDeviation (ioQEquivalentDemandParameterHolder,
-                                            lQEquivalentDemandHolder);  
-    RMOL_LOG_DEBUG (oDebugStr.str());
+                                            lQEquivalentDemandHolder);
+
+    // DEBUG
+    STDAIR_LOG_DEBUG (oDebugStr.str());
   }
 
   // //////////////////////////////////////////////////////////////////////

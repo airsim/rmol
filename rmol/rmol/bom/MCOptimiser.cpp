@@ -9,6 +9,7 @@
 #include <cmath>
 // StdAir
 #include <stdair/basic/BasChronometer.hpp>
+#include <stdair/service/Logger.hpp>
 // RMOL
 #include <rmol/bom/StudyStatManager.hpp>
 #include <rmol/bom/VariateList.hpp>
@@ -19,7 +20,6 @@
 #include <rmol/bom/PartialSumHolderHolder.hpp>
 //#include <rmol/bom/Resource.hpp>
 #include <rmol/bom/MCOptimiser.hpp>
-#include <rmol/service/Logger.hpp>
 
 namespace RMOL {
 
@@ -78,7 +78,7 @@ namespace RMOL {
       const Gaussian gaussianDemandGenerator (aDistribParams);
 
       /** DEBUG
-          RMOL_LOG_DEBUG ("[" << j << "]: " << Kj << " values with N ( " 
+          STDAIR_LOG_DEBUG ("[" << j << "]: " << Kj << " values with N ( " 
           << aDistribParams.getMean() << ", "
           << aDistribParams.getStandardDeviation() << ").");
       */
@@ -113,7 +113,7 @@ namespace RMOL {
         currentPartialSumList.addPartialSum (sjk);
 
         /* DEBUG
-           RMOL_LOG_DEBUG ("d(" << j << ", " << k << "); " << djk 
+           STDAIR_LOG_DEBUG ("d(" << j << ", " << k << "); " << djk 
            << "; S'(" << j-1 << ", " << lj+k << "); " << spjm1lpk
            << "; S(" << j << ", " << k << "); " << sjk);
         */
@@ -141,7 +141,7 @@ namespace RMOL {
       lj = static_cast<int> (ljdouble);
 
       /** DEBUG 
-      RMOL_LOG_DEBUG ("p(j+1)/p(j) = " << pj1 / pj << ", lj = " << lj 
+      STDAIR_LOG_DEBUG ("p(j+1)/p(j) = " << pj1 / pj << ", lj = " << lj 
                       << ", Kj = " << Kj << " => " << Kj - lj
                       << " points above y(j)");
       */
@@ -158,7 +158,7 @@ namespace RMOL {
       const double yj = (sjl + sjlp1) / 2;
 
       /** DEBUG
-          RMOL_LOG_DEBUG ("S(j,l) = " << sjl << ", S(j,l+1) = " << sjlp1 
+          STDAIR_LOG_DEBUG ("S(j,l) = " << sjl << ", S(j,l+1) = " << sjlp1 
           << ", y(j) = " << yj);
       */
 
@@ -311,7 +311,7 @@ namespace RMOL {
       const Gaussian gaussianDemandGenerator (aDistribParams);
 
       /** DEBUG
-          RMOL_LOG_DEBUG ("[" << j << "]: " << Kj << " values with N ( " 
+          STDAIR_LOG_DEBUG ("[" << j << "]: " << Kj << " values with N ( " 
           << aDistribParams.getMean() << ", "
           << aDistribParams.getStandardDeviation() << ").");
       */
@@ -347,7 +347,7 @@ namespace RMOL {
         currentPartialSumList.addPartialSum (sjk);
 
         /* DEBUG
-           RMOL_LOG_DEBUG ("d(" << j << ", " << k << "); " << djk 
+           STDAIR_LOG_DEBUG ("d(" << j << ", " << k << "); " << djk 
            << "; S'(" << j-1 << ", " << lj+k << "); " << spjm1lpk
            << "; S(" << j << ", " << k << "); " << sjk);
         */
@@ -381,7 +381,7 @@ namespace RMOL {
       lj = static_cast<int> (ljdouble);
       
       /** DEBUG 
-          RMOL_LOG_DEBUG ("p(j+1)/p(j) = " << pj1 / pj << ", lj = " << lj 
+          STDAIR_LOG_DEBUG ("p(j+1)/p(j) = " << pj1 / pj << ", lj = " << lj 
           << ", Kj = " << Kj << " => " << Kj - lj << " points above y(j)");
       */
           
@@ -397,7 +397,7 @@ namespace RMOL {
       const double yj = (sjl + sjlp1) / 2;
 
       /** DEBUG
-          RMOL_LOG_DEBUG ("S(j,l) = " << sjl << ", S(j,l+1) = " << sjlp1 
+          STDAIR_LOG_DEBUG ("S(j,l) = " << sjl << ", S(j,l+1) = " << sjlp1 
           << ", y(j) = " << yj);
       */
 

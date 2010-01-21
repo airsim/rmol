@@ -1,15 +1,14 @@
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
-// C
-#include <assert.h>
 // STL
+#include <cassert>
 #include <sstream>
 #include <limits>
-#include <stdexcept>
+// StdAir
+#include <stdair/service/Logger.hpp>
 // RMOL
 #include <rmol/bom/StatAggregatorStruct.hpp>
-#include <rmol/service/Logger.hpp>
 
 namespace RMOL {
   
@@ -62,7 +61,7 @@ namespace RMOL {
   
     // //////////////////////////////////////////////////////////////////////
   void StatAggregatorStruct_T::display() const {
-    RMOL_LOG_DEBUG (describe());
+    STDAIR_LOG_DEBUG (describe());
   }
 
   // //////////////////////////////////////////////////////////////////////

@@ -1,16 +1,17 @@
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
-//GSL
+// GSL
 #include <gsl/gsl_cdf.h>
 // STL
-#include <math.h>
+#include <cassert>
+#include <cmath>
+// StdAir
+#include <stdair/service/Logger.hpp>
 // RMOL
-#include <rmol/service/Logger.hpp>
 #include <rmol/basic/BasConst_General.hpp>
 #include <rmol/command/Utilities.hpp>
 #include <rmol/bom/ExpectationMaximization.hpp>
-#include <rmol/service/Logger.hpp>
 
 namespace RMOL {
 
@@ -65,7 +66,7 @@ namespace RMOL {
              lCompleteDataMean, lCompleteDataSD);
 
           // Debug
-          RMOL_LOG_DEBUG ("\nUnconstrained data: " 
+          STDAIR_LOG_DEBUG ("\nUnconstrained data: " 
                           << Utilities::vectorToString
                           (lUnconstrainedDataDuringIteration));
           // Maximization step
@@ -85,7 +86,7 @@ namespace RMOL {
                           lSqErrorOfConstrainedData) / (lTotalNumberOfData-1));          
 
           // Debug
-          RMOL_LOG_DEBUG ("\nEstimated Mean: " << lEstimatedMean 
+          STDAIR_LOG_DEBUG ("\nEstimated Mean: " << lEstimatedMean 
                           << "\nnEstimated s.d.: " << lEstimatedSD);
 
         } while(fabs(lCompleteDataMean - lEstimatedMean ) > iStoppingCriterion
@@ -97,13 +98,12 @@ namespace RMOL {
         ioConstrainedDataHolder = lUnconstrainedDataDuringIteration;
       }
       // Job finished as all are unconstrained or nothing to be unconstrained
+      
+    } else {
+      STDAIR_LOG_ERROR ("At least one unconstrained data is required to " 
+                        << "correct constrained data with Expectation "
+                        << "Maximization algorithm.");
     }
-    else {
-      RMOL_LOG_ERROR ("At least one unconstrained data is required to " 
-                      << "correct constrained data with Expectation "
-                      << "Maximization algorithm.");
-    }
- 
   }
 
   // //////////////////////////////////////////////////////////////////////  

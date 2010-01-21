@@ -2,15 +2,13 @@
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // STL
-#include <cmath>
-#include <string>
-#include <sstream>
-#include <fstream>
+#include <cassert>
+// StdAir
+#include <stdair/service/Logger.hpp>
 // RMOL
 #include <rmol/bom/QForecaster.hpp>
 #include <rmol/command/Forecaster.hpp>
 #include <rmol/command/Utilities.hpp>
-#include <rmol/service/Logger.hpp>
 
 namespace RMOL {
 
@@ -97,6 +95,8 @@ namespace RMOL {
       oDebugStr << "Q-equivalent distribution parameters per class " 
                 << Utilities::vectorToString (lMeanAndSDOfAClass);
     }
-    RMOL_LOG_DEBUG(oDebugStr.str());
+
+    // DEBUG
+    STDAIR_LOG_DEBUG(oDebugStr.str());
   }
 }

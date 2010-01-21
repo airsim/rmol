@@ -1,13 +1,14 @@
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
-// C
-#include <assert.h>
+// STL
+#include <cassert>
+// StdAir
+//#include <stdair/service/Logger.hpp>
 // RMOL 
 #include <rmol/bom/StudyStatManager.hpp>
 #include <rmol/factory/FacSupervisor.hpp>
 #include <rmol/factory/FacStudyStatManager.hpp>
-#include <rmol/service/Logger.hpp>
 
 namespace RMOL {
   

@@ -2,10 +2,10 @@
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // STL
-#include <iostream>
-// #include <fstream>
+#include <cassert>
+// StdAir
+#include <stdair/service/Logger.hpp>
 // RMOL
-#include <rmol/service/Logger.hpp>
 #include <rmol/RMOL_UNCONSTRAINER_Types.hpp>
 #include <rmol/command/Utilities.hpp>
 #include <rmol/command/Unconstrainer.hpp>
@@ -34,10 +34,8 @@ namespace RMOL {
     oDebugStr << "After unconstraining, the constrained data became "
               << Utilities::vectorToString(ioConstrainedDataHolder);
 
-    RMOL_LOG_DEBUG (oDebugStr.str());
- 
+    // DEBUG
+    STDAIR_LOG_DEBUG (oDebugStr.str()); 
   }
-
-  // //////////////////////////////////////////////////////////////////////  
 
 }

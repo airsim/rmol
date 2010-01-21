@@ -1,13 +1,13 @@
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
-// C
-#include <assert.h>
 // STL
+#include <cassert>
 #include <sstream>
 #include <limits>
+// StdAir
+#include <stdair/service/Logger.hpp>
 // RMOL Common
-#include <rmol/service/Logger.hpp>
 #include <rmol/bom/StatAggregatorStruct.hpp>
 #include <rmol/bom/StudyStatManager.hpp>
 
@@ -59,7 +59,8 @@ namespace RMOL {
     // Reset formatting flags of stream
     ostr.flags (oldFlags);
 
-    RMOL_LOG_DEBUG (ostr.str());
+    // DEBUG
+    STDAIR_LOG_DEBUG (ostr.str());
   }
 
   // //////////////////////////////////////////////////////////////////////

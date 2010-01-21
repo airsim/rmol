@@ -3,11 +3,11 @@
 // //////////////////////////////////////////////////////////////////////
 // STL
 #include <cassert>
-#include <iomanip>
-#include <sstream>
-#include <iostream>
 // StdAir
 #include <stdair/basic/BasChronometer.hpp>
+#include <stdair/basic/BasFileMgr.hpp>
+#include <stdair/bom/BomManager.hpp> // for display()
+#include <stdair/service/Logger.hpp>
 // RMOL
 #include <rmol/basic/BasConst_RMOL_Service.hpp>
 #include <rmol/field/FldYieldRange.hpp>
@@ -21,32 +21,44 @@
 #include <rmol/command/Unconstrainer.hpp>
 #include <rmol/command/Forecaster.hpp>
 #include <rmol/service/RMOL_ServiceContext.hpp>
-#include <rmol/service/Logger.hpp>
 #include <rmol/RMOL_Service.hpp>
 
 namespace RMOL {
 
   // //////////////////////////////////////////////////////////////////////
+  RMOL_Service::RMOL_Service (const RMOL_Service& iService) :
+    _rmolServiceContext (NULL) {
+    assert (false);
+  }
+
+  // //////////////////////////////////////////////////////////////////////
+  RMOL_Service::RMOL_Service (const stdair::BasLogParams& iLogParams) :
+    _rmolServiceContext (NULL) {
+
+    // Set the log file
+    logInit (iLogParams);
+
+    // Initialise the (remaining of the) context
+    init ();
+  }
+
+  // //////////////////////////////////////////////////////////////////////
   RMOL_Service::RMOL_Service () :
     _rmolServiceContext (NULL) {
-  }
-
-  // //////////////////////////////////////////////////////////////////////
-  RMOL_Service::RMOL_Service (const RMOL_Service& iService) :
-    _rmolServiceContext (iService._rmolServiceContext) {
-  }
-
-  // //////////////////////////////////////////////////////////////////////
-  RMOL_Service::RMOL_Service (std::ostream& ioLogStream) {
     // Initialise the context
-    init (ioLogStream);
+    init ();
   }
 
   // //////////////////////////////////////////////////////////////////////
-  RMOL_Service::RMOL_Service (std::ostream& ioLogStream,
-                              const ResourceCapacity_T iResourceCapacity) {
-    // Initialise the context
-    init (ioLogStream, iResourceCapacity);
+  RMOL_Service::RMOL_Service (const stdair::BasLogParams& iLogParams,
+                              const ResourceCapacity_T iResourceCapacity) :
+    _rmolServiceContext (NULL) {
+    
+    // Set the log file
+    logInit (iLogParams);
+
+    // Initialise the (remaining of the) context
+    init (iResourceCapacity);
   }
 
   // //////////////////////////////////////////////////////////////////////
@@ -54,10 +66,12 @@ namespace RMOL {
   }
 
   // //////////////////////////////////////////////////////////////////////
-  void RMOL_Service::init (std::ostream& ioLogStream) {
-    // Set the log file
-    logInit (LOG::DEBUG, ioLogStream);
+  void RMOL_Service::logInit (const stdair::BasLogParams& iLogParams) {
+    stdair::Logger::init (iLogParams);
+  }
 
+  // //////////////////////////////////////////////////////////////////////
+  void RMOL_Service::init () {
     // Initialise the context
     RMOL_ServiceContext& lRMOL_ServiceContext = 
                          FacRmolServiceContext::instance().create ();
@@ -65,23 +79,13 @@ namespace RMOL {
   }
 
   // //////////////////////////////////////////////////////////////////////
-  void RMOL_Service::init (std::ostream& ioLogStream,
-                           const ResourceCapacity_T iResourceCapacity) {
-    // Set the log file
-    logInit (LOG::DEBUG, ioLogStream);
-
+  void RMOL_Service::init (const ResourceCapacity_T iResourceCapacity) {
     // Initialise the context
     RMOL_ServiceContext& lRMOL_ServiceContext = 
       FacRmolServiceContext::instance().create (iResourceCapacity);
     _rmolServiceContext = &lRMOL_ServiceContext;
   }
   
-  // //////////////////////////////////////////////////////////////////////
-  void RMOL_Service::logInit (const LOG::EN_LogLevel iLogLevel,
-                              std::ostream& ioLogOutputFile) {
-    Logger::instance().setLogParameters (iLogLevel, ioLogOutputFile);
-  }
-
   // //////////////////////////////////////////////////////////////////////
   void RMOL_Service::setUpStudyStatManager () {
     assert (_rmolServiceContext != NULL);
@@ -129,6 +133,15 @@ namespace RMOL {
 
   // //////////////////////////////////////////////////////////////////////
   void RMOL_Service::readFromInputFile (const std::string& iInputFileName) {
+    // Check that the file path given as input corresponds to an actual file
+    const bool doesExistAndIsReadable =
+      stdair::BasFileMgr::doesExistAndIsReadable (iInputFileName);
+    if (doesExistAndIsReadable == false) {
+      STDAIR_LOG_ERROR ("The input file, '" << iInputFileName
+                        << "', can not be retrieved on the file-system");
+      throw FileNotFoundException();
+    }
+
     assert (_rmolServiceContext != NULL);
     _rmolServiceContext->readFromInputFile (iInputFileName);
   }
@@ -175,9 +188,9 @@ namespace RMOL {
     const double lOptimisationMeasure = lOptimisationChronometer.elapsed();
     
     // DEBUG
-    RMOL_LOG_DEBUG ("Optimisation by Monte-Carlo performed in "
+    STDAIR_LOG_DEBUG ("Optimisation by Monte-Carlo performed in "
                     << lOptimisationMeasure);
-    RMOL_LOG_DEBUG ("Resulting buckets: " << oBucketHolder_ptr->display());
+    STDAIR_LOG_DEBUG ("Resulting buckets: " << oBucketHolder_ptr->display());
 
     std::ostringstream logStream;
     logStream << "Bid-Price Vector (BPV): ";
@@ -187,10 +200,10 @@ namespace RMOL {
       const double bidPrice = lBidPriceVector.at(i);
       logStream << std::fixed << std::setprecision (2) << bidPrice << " ";
     }
-    RMOL_LOG_DEBUG (logStream.str());
+    STDAIR_LOG_DEBUG (logStream.str());
 
     if (lStudyStatManager_ptr != NULL) {
-      RMOL_LOG_DEBUG (lStudyStatManager_ptr->describe());
+      STDAIR_LOG_DEBUG (lStudyStatManager_ptr->describe());
     }
   }
 
@@ -225,7 +238,7 @@ namespace RMOL {
     Optimiser::optimalOptimisationByDP (iCapacity, *oBucketHolder_ptr);
 
     // DEBUG
-    RMOL_LOG_DEBUG (oBucketHolder_ptr->display());
+    STDAIR_LOG_DEBUG (oBucketHolder_ptr->display());
   }
 
   // //////////////////////////////////////////////////////////////////////
@@ -265,7 +278,7 @@ namespace RMOL {
     }
     
     // DEBUG
-    RMOL_LOG_DEBUG (oBucketHolder_ptr->display());
+    STDAIR_LOG_DEBUG (oBucketHolder_ptr->display());
     std::ostringstream logStream;
     logStream << "Bid-Price Vector (BPV): ";
     unsigned int size = lBidPriceVector.size();
@@ -274,10 +287,10 @@ namespace RMOL {
       const double bidPrice = lBidPriceVector.at(i);
       logStream << std::fixed << std::setprecision (2) << bidPrice << " ";
     }
-    RMOL_LOG_DEBUG (logStream.str());
+    STDAIR_LOG_DEBUG (logStream.str());
 
     if (lStudyStatManager_ptr != NULL) {
-      RMOL_LOG_DEBUG (lStudyStatManager_ptr->describe());
+      STDAIR_LOG_DEBUG (lStudyStatManager_ptr->describe());
     }
   }
 
@@ -307,7 +320,7 @@ namespace RMOL {
     Optimiser::heuristicOptimisationByEmsrA (iCapacity, *oBucketHolder_ptr);
 
     // DEBUG
-    RMOL_LOG_DEBUG (oBucketHolder_ptr->display());
+    STDAIR_LOG_DEBUG (oBucketHolder_ptr->display());
   }
 
   // //////////////////////////////////////////////////////////////////////
@@ -342,7 +355,7 @@ namespace RMOL {
                                               iSellupProbabilityVector);
 
     // DEBUG
-    RMOL_LOG_DEBUG (ioBucketHolder_ptr->display());
+    STDAIR_LOG_DEBUG (ioBucketHolder_ptr->display());
   }
 
   // //////////////////////////////////////////////////////////////////////
@@ -377,7 +390,7 @@ namespace RMOL {
     Optimiser::heuristicOptimisationByEmsrB (iCapacity, *oBucketHolder_ptr);
 
     // DEBUG
-    RMOL_LOG_DEBUG (oBucketHolder_ptr->display());
+    STDAIR_LOG_DEBUG (oBucketHolder_ptr->display());
   }
 
   // //////////////////////////////////////////////////////////////////////
@@ -397,7 +410,7 @@ namespace RMOL {
   }
 
   // ///////////////////////////////////////////////////////////////////////
-  void RMOL_Service:: legOptimisationByMC () {
+  void RMOL_Service::legOptimisationByMC () {
     assert (_rmolServiceContext != NULL);
     const ResourceCapacity_T iCapacity = _rmolServiceContext->getCapacity();
     BucketHolder* oBucketHolder_ptr = _rmolServiceContext->getBucketHolder();
@@ -408,7 +421,7 @@ namespace RMOL {
                                     lBidPriceVector);
     
     // DEBUG
-    RMOL_LOG_DEBUG (oBucketHolder_ptr->display());
+    STDAIR_LOG_DEBUG (oBucketHolder_ptr->display());
     std::ostringstream logStream;
     logStream << "Bid-Price Vector (BPV): ";
     unsigned int size = lBidPriceVector.size();
@@ -417,7 +430,9 @@ namespace RMOL {
       const double bidPrice = lBidPriceVector.at(i);
       logStream << std::fixed << std::setprecision (2) << bidPrice << " ";
     }
-    RMOL_LOG_DEBUG (logStream.str());
+
+    // DEBUG
+    STDAIR_LOG_DEBUG (logStream.str());
   }
 
   // ///////////////////////////////////////////////////////////////////////

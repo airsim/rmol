@@ -2,22 +2,20 @@
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
-//STL
-#include <algorithm>
-#include <string>
-#include <sstream>
-#include <numeric>
-#include <cmath>
+// STL
 #include <cassert>
-#include <functional>
+#include <string>
+#include <numeric>
+// StdAir
+#include <stdair/service/Logger.hpp>
 // RMOL
 #include <rmol/command/Utilities.hpp>
-#include <rmol/service/Logger.hpp>
+
 namespace RMOL {
 
   // /////////////////////////////////////////////////////////////////////
   void Utilities::updateMinimumElement (double& oMinValue,
-                                     std::vector<double>& iVector) {
+                                        std::vector<double>& iVector) {
 
     assert(!iVector.empty());
     std::vector<double>::iterator pos = min_element (iVector.begin(), 
@@ -33,7 +31,7 @@ namespace RMOL {
     if (lSize > 0) {
       oSum = std::accumulate(iVector.begin(), iVector.end(), 0.0);
     }
-    else {RMOL_LOG_ERROR ("There is no element to sum up.");}
+    else {STDAIR_LOG_ERROR ("There is no element to sum up.");}
   }
 
   // /////////////////////////////////////////////////////////////////////
@@ -49,7 +47,7 @@ namespace RMOL {
                                std::vector<double>& iVector,
                                double& iMean) {
     if (iMean < 0) {
-      RMOL_LOG_ERROR ("Negative mean is not expected.");
+      STDAIR_LOG_ERROR ("Negative mean is not expected.");
 
     } else {
       const unsigned int lSize = iVector.size();
@@ -63,7 +61,7 @@ namespace RMOL {
         }
 
       } else {
-        RMOL_LOG_ERROR ("No value to compute the squared error");
+        STDAIR_LOG_ERROR ("No value to compute the squared error");
       }
     }
   }

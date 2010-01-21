@@ -224,7 +224,8 @@ int main (int argc, char* argv[]) {
     logOutputFile.clear();
     
     // Initialise the list of classes/buckets
-    RMOL::RMOL_Service rmolService (logOutputFile, lCapacity);
+    const stdair::BasLogParams lLogParams (stdair::LOG::DEBUG, logOutputFile);
+    RMOL::RMOL_Service rmolService (lLogParams, lCapacity);
     rmolService.setUpStudyStatManager();
     
     if (hasInputFile) {
