@@ -10,12 +10,12 @@ namespace stdair {
   Logger* Logger::_instance = NULL;
   
   // //////////////////////////////////////////////////////////////////////
-  Logger::Logger () : _logStream (std::cout), _level (LOG::DEBUG) {
+  Logger::Logger () : _level (LOG::DEBUG), _logStream (std::cout) {
     assert (false);
   }
 
   // //////////////////////////////////////////////////////////////////////
-  Logger::Logger (const Logger&) : _logStream (std::cout), _level (LOG::DEBUG) {
+  Logger::Logger (const Logger&) : _level (LOG::DEBUG), _logStream (std::cout) {
     assert (false);
   }
 
