@@ -195,9 +195,21 @@ namespace RMOL {
     /** Default copy constructor. */
     RMOL_Service (const RMOL_Service&);
 
-    /** Initialise the log. */
-    void logInit (const stdair::BasLogParams&);
+    /** Initialise the (RMOL) service context (i.e., the
+        RMOL_ServiceContext object).
+        @param AirlineCode_T& Code of the owner airline. */
+    void initServiceContext (const stdair::AirlineCode_T&);
 
+    /** Initialise the (RMOL) service context (i.e., the
+        RMOL_ServiceContext object).
+        @param AirlineCode_T& Code of the owner airline.
+        @param const ResourceCapacity_T Capacity of the resource to optimise. */
+    void initServiceContext (const stdair::AirlineCode_T&,
+                             const ResourceCapacity_T);
+    
+    /** Initialise the STDAIR service (including the log service). */
+    void initStdAirService (const stdair::BasLogParams&);
+    
     /** Initialise.
         @param AirlineCode_T& Code of the owner airline. */
     void init (const stdair::AirlineCode_T&);

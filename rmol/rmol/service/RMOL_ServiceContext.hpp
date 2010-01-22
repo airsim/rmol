@@ -6,17 +6,28 @@
 // //////////////////////////////////////////////////////////////////////
 // STL
 #include <string>
+// Boost
+#include <boost/shared_ptr.hpp>
 // StdAir
 #include <stdair/STDAIR_Types.hpp>
 // RMOL
 #include <rmol/RMOL_Types.hpp>
 #include <rmol/service/ServiceAbstract.hpp>
 
+// Forward declarations
+namespace stdair {
+  class STDAIR_Service;
+}
+
 namespace RMOL {
 
   /** Forward declaration. */
   class BucketHolder;
   class StudyStatManager;
+
+  /** Pointer on the STDAIR Service handler. */
+  typedef boost::shared_ptr<stdair::STDAIR_Service> STDAIR_ServicePtr_T;
+  
 
   /** Inner class holding the context for the RMOL Service object. */
   class RMOL_ServiceContext : public ServiceAbstract {
@@ -61,7 +72,12 @@ namespace RMOL {
     /** Destructor. */
     ~RMOL_ServiceContext();
 
-    
+  private:    
+    /** Set the pointer on the STDAIR service handler. */
+    void setSTDAIR_Service (STDAIR_ServicePtr_T ioSTDAIR_ServicePtr) {
+      _stdairService = ioSTDAIR_ServicePtr;
+    }
+
     /** Set the cabin availability. */
     void setResourceCapacity (const ResourceCapacity_T iResourceCapacity);
     
@@ -112,6 +128,12 @@ namespace RMOL {
     ResourceCapacity_T getCapacity() const {
       return _capacity;
     }
+
+    
+  private:
+    // ///////////// Children ////////////
+    /** Standard Airline (StdAir) Service Handler. */
+    STDAIR_ServicePtr_T _stdairService;
 
     
   private:
