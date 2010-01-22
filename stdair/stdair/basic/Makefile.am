@@ -2,11 +2,14 @@
 include $(top_srcdir)/Makefile.common
 include $(srcdir)/sources.mk
 
+#
 noinst_LTLIBRARIES= libbas.la
 
 libbas_la_SOURCES = $(bas_h_sources) $(bas_cc_sources) 
 libbas_la_CXXFLAGS = $(BOOST_CFLAGS) 
 libbas_la_LDFLAGS =
 
-#pkgincludedir = $(includedir)/@PACKAGE@/basic
-#pkginclude_HEADERS = $(bas_h_sources)
+
+# Header files
+pkgincludedir = $(includedir)/stdair/basic
+pkginclude_HEADERS = $(bas_h_sources)

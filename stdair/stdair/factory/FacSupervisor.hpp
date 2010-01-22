@@ -24,43 +24,46 @@ namespace stdair {
     typedef std::vector<FacBomStructure*> BomStructureFactoryPool_T;
     typedef std::vector<FacBomContent*> BomContentFactoryPool_T;
     
-    /** Provides the unique instance.
+    /** Provide the unique (static) instance of the FacSupervisor object.
         <br>The singleton is instantiated when first used.
         @return FacSupervisor& */
     static FacSupervisor& instance();
 
-    /** Register a newly instantiated concrete factory for the BomStructure layer.
+    /** Register a newly instantiated concrete factory for the
+        BomStructure layer.
         <br>When a concrete Factory is firstly instantiated
         this factory have to register itself to the FacSupervisor
-        @param FacBomStructure& the concrete Factory to register. */
+        @param FacBomStructure* The concrete Factory to register. */
     void registerBomStructureFactory (FacBomStructure*);
 
-    /** Register a newly instantiated concrete factory for the BomContent layer.
+    /** Register a newly instantiated concrete factory for the
+        BomContent layer.
         <br>When a concrete Factory is firstly instantiated
         this factory have to register itself to the FacSupervisor
-        @param FacBomContent& the concrete Factory to register. */
+        @param FacBomContent* The concrete Factory to register. */
     void registerBomContentFactory (FacBomContent*);
 
-    /** Clean all created object.
-        <br>Call the clean method of all the instantiated  factories
+    /** Clean all registered object.
+        <br>Call the clean method of all the instantiated factories
         for the BomStructure layer. */
     void cleanBomStructureLayer();
 
-    /** Clean all created object.
-        <br>Call the clean method of all the instantiated  factories
+    /** Clean all the registered object.
+        <br>Call the clean method of all the instantiated factories
         for the BomContent layer. */
     void cleanBomContentLayer();
 
-    /** Delete the Logger object. */
-    void cleanLoggerService();
+    /** Delete the static instance of the Logger object. */
+    static void cleanLoggerService();
 
     /** Clean the static instance.
-        <br> The singleton is deleted.*/
-    static void cleanFactory ();
+        <br>As the static instance (singleton) is deleted, all the other
+        registered objects will be deleted in turn. */
+    static void cleanAll ();
 
-    /** Destructor
-        <br>The static instance is deleted (and reset to NULL)
-        by the static cleanFactory() method. */
+    /** Destructor.
+        <br>That destructors is applied on the static instance. It then
+        deletes in turn all the other registered objects. */
     ~FacSupervisor();
 
 

@@ -38,7 +38,6 @@ namespace stdair {
   FacSupervisor::~FacSupervisor() {
     cleanBomStructureLayer();
     cleanBomContentLayer();
-    cleanLoggerService();
   }
 
   // //////////////////////////////////////////////////////////////////////
@@ -78,11 +77,13 @@ namespace stdair {
   }
   
   // //////////////////////////////////////////////////////////////////////
-  void FacSupervisor::cleanFactory () {
+  void FacSupervisor::cleanAll () {
     // Clean the static instance of the log service
-    Logger::clean();
+    cleanLoggerService();
 
-    // Clean the static instance of the FacSupervisor
+    // Clean the static instance of the FacSupervisor.
+    // This in turn will invoke the destructor (~FacSupervisor() method)
+    // of the static instance.
     delete _instance; _instance = NULL;
   }
 

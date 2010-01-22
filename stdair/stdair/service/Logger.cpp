@@ -26,7 +26,7 @@ namespace stdair {
 
   // //////////////////////////////////////////////////////////////////////
   Logger::~Logger () {
-    std::cout << "In Logger destructor" << std::endl;
+    // std::cout << "In Logger destructor" << std::endl;
   }
 
   // //////////////////////////////////////////////////////////////////////
@@ -52,9 +52,11 @@ namespace stdair {
   
   // //////////////////////////////////////////////////////////////////////
   void Logger::clean() {
-    std::cout << "In Logger::clean(), before static instance deletion" << std::endl;
+    // std::cout << "In Logger::clean(), before static instance deletion"
+    //       << std::endl;
     delete _instance; _instance = NULL;
-    std::cout << "In Logger::clean(), after static instance deletion" << std::endl;
+    // std::cout << "In Logger::clean(), after static instance deletion"
+    //       << std::endl;
   }
   
 }

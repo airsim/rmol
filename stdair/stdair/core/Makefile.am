@@ -21,3 +21,7 @@ libstdair_la_LIBADD = \
 libstdair_la_LDFLAGS = \
 	$(BOOST_DATE_TIME_LIB) $(BOOST_PROGRAM_OPTIONS_LIB) $(BOOST_FILESYSTEM_LIB) \
 	-version-info $(GENERIC_LIBRARY_VERSION)
+
+#
+pkgincludedir = $(includedir)/stdair
+pkginclude_HEADERS = $(service_h_sources)
