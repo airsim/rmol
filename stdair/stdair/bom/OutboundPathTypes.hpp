@@ -17,19 +17,19 @@ namespace stdair {
   template <typename BOM> struct BomMap_T;
   class OutboundPath;
   
-  /** Define the booking class structure. */
+  /** Define the outbound path structure. */
   typedef OutboundPathStructure<OutboundPath> OutboundPathStructure_T;
   
-  /** Define the booking class structure list. */
+  /** Define the outbound path structure list. */
   typedef std::vector<OutboundPathStructure_T*> OutboundPathStructureList_T;
 
-  /** Define the booking class structure map. */
+  /** Define the outbound path structure map. */
   typedef std::map<const std::string, OutboundPathStructure_T*> OutboundPathStructureMap_T;
 
-  /** Define the booking class list. */
+  /** Define the outbound path list. */
   typedef BomList_T<OutboundPath> OutboundPathList_T;
 
-  /** Define the booking class map. */
+  /** Define the outbound path map. */
   typedef BomMap_T<OutboundPath> OutboundPathMap_T;
   
   typedef std::vector<std::vector<stdair::OutboundPath*> >OutboundPathListList_T;
