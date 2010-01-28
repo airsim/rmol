@@ -9,6 +9,10 @@
 
 namespace stdair {
 
+  // Forward declarations
+  class BomRoot;
+
+  
   /** Interface for the STDAIR Services. */
   class STDAIR_Service {
   public:
@@ -24,6 +28,15 @@ namespace stdair {
 
     /** Destructor. */
     ~STDAIR_Service();
+
+    
+    // ///////////////// Getters ///////////////////
+    /** Get a reference on the BomRoot object.
+        <br>If the service context has not been initialised, that
+        method throws an exception (failing assertion). */
+    BomRoot& getBomRoot () const {
+      return _bomRoot;
+    }
 
     
   private:
@@ -47,6 +60,12 @@ namespace stdair {
 
     /** Finalise. */
     void finalise ();
+
+    
+  private:
+    // /////////////// Attributes ///////////////
+    /** Root of the BOM tree. */
+    BomRoot& _bomRoot;
   };
 }
 #endif // __STDAIR_SVC_STDAIR_SERVICE_HPP
