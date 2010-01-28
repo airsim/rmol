@@ -41,6 +41,11 @@ namespace stdair {
 
   public:
     // ////////// Getters ////////////
+    /** Get the airline code. */
+    const AirlineCode_T& getAirlineCode () const {
+      return _key.getAirlineCode();
+    }
+    
     /** Get the inventory key. */
     const BomKey_T& getKey() const {
       return _key;
