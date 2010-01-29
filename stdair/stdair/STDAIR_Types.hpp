@@ -12,8 +12,12 @@
 #include <boost/date_time/gregorian/gregorian.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/tuple/tuple.hpp>
+#include <boost/shared_ptr.hpp>
 
 namespace stdair {
+
+  // Forward declarations
+  class STDAIR_Service;
 
   // ///////// Exceptions ///////////
   class RootException : public std::exception {
@@ -360,6 +364,9 @@ namespace stdair {
       <br>It may contain paths, relative or absolute (e.g., /foo/bar
       or C:\foo\bar). */
   typedef std::string Filename_T;
+  
+  /** Pointer on the STDAIR Service handler. */
+  typedef boost::shared_ptr<STDAIR_Service> STDAIR_ServicePtr_T;
   
 }
 #endif // __STDAIR_STDAIR_TYPES_HPP
