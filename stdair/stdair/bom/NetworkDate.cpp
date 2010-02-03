@@ -14,7 +14,7 @@ namespace stdair {
 
   // ////////////////////////////////////////////////////////////////////
   NetworkDate::NetworkDate (const BomKey_T& iKey,
-                        BomStructure_T& ioNetworkDateStructure)
+                            BomStructure_T& ioNetworkDateStructure)
     : NetworkDateContent (iKey), _networkDateStructure (ioNetworkDateStructure) {
   }
 
@@ -62,6 +62,21 @@ namespace stdair {
   AirportDate* NetworkDate::
   getAirportDate (const AirportDateKey_T& iKey) const {
     return _networkDateStructure.getContentChild (iKey);
+  }
+
+  // //////////////////////////////////////////////////////////////////////
+  AirportDate* NetworkDate::getAirportDate (const AirportCode_T& iCode) const {
+    AirportDate* oAirportDate_ptr = NULL;
+    
+    AirportDateMap_T lAirportDateMap = getAirportDateMap ();
+
+    AirportDateMap_T::iterator itAirportDate = lAirportDateMap.find (iCode);
+
+    if (itAirportDate != lAirportDateMap.end()) {
+      oAirportDate_ptr = itAirportDate->second;
+    }
+    
+    return oAirportDate_ptr;
   }
   
 }

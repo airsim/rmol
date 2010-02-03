@@ -16,7 +16,10 @@ namespace stdair {
                                               const AirportCode_T& iDestination,
                                               const Date_T& iDepartureDate,
                                               const PassengerType_T& iPaxType,
-                                              const NbOfSeats_T& iPartySize) {
+                                              const NbOfSeats_T& iPartySize)
+    : _origin (iOrigin), _destination (iDestination),
+      _departureDate (iDepartureDate), _paxType (iPaxType),
+      _partySize (iPartySize) {
   }
 
   // //////////////////////////////////////////////////////////////////////

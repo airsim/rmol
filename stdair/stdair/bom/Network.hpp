@@ -72,9 +72,14 @@ namespace stdair {
     NetworkDateMap_T getNetworkDateMap () const;
     
     /** Retrieve, if existing, the NetworkDate corresponding to the
-        given network number and network date (NetworkDate key).
+        given NetworkDate key.
         <br>If not existing, return the NULL pointer. */
     NetworkDate* getNetworkDate (const NetworkDateKey_T&) const;
+
+    /** Retrieve, if existing, the NetworkDate corresponding to the
+        given Date .
+        <br>If not existing, return the NULL pointer. */
+    NetworkDate* getNetworkDate (const Date_T&) const;
  
 
   private:

@@ -83,6 +83,7 @@ bom_h_sources = \
 				$(top_srcdir)/stdair/bom/OptimizerStruct.hpp \
 				$(top_srcdir)/stdair/bom/DoWStruct.hpp \
 				$(top_srcdir)/stdair/bom/TravelSolutionStruct.hpp \
+				$(top_srcdir)/stdair/bom/TravelSolutionTypes.hpp \
 				$(top_srcdir)/stdair/bom/BookingRequestStruct.hpp \
 				$(top_srcdir)/stdair/bom/BomManager.hpp
 bom_cc_sources = \

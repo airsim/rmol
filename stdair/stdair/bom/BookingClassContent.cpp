@@ -41,17 +41,22 @@ namespace stdair {
   BookingClassContent::~BookingClassContent () {
   }
   
-  // //////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////
   void BookingClassContent::setRemainingDemandMean(NbOfBookings_T& iMean) {
     _remainingDemandMean = iMean;
     _remainingProductDemandMean = iMean;
   }
 
-  // //////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////
   void BookingClassContent::setRemainingDemandSD(NbOfBookings_T& iSD) {
     _remainingDemandSD = iSD;
     _remainingProductDemandSD = iSD;
   }
 
+  // ////////////////////////////////////////////////////////////////////
+  const AirlineCode_T BookingClassContent::getAirlineCode () const {
+    return _key.getAirlineCode();
+  }
+  
 }
 

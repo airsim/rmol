@@ -76,6 +76,11 @@ namespace stdair {
         given airport-date key.
         <br>If not existing, return the NULL pointer. */
     AirportDate* getAirportDate (const AirportDateKey_T&) const;
+
+    /** Retrieve, if existing, the AirportDate corresponding to the
+        given airport-code.
+        <br>If not existing, return the NULL pointer. */
+    AirportDate* getAirportDate (const AirportCode_T&) const;
     
   private:
     /** Retrieve the BOM structure object. */

@@ -142,6 +142,9 @@ namespace stdair {
       return _remainingProductDemandSD;
     }
 
+    /** Get the airline code. */
+    const AirlineCode_T getAirlineCode () const;
+
   public:
     // /////////// Setters ////////////
     /** Set the booking limit. */

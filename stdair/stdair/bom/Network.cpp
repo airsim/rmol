@@ -14,7 +14,7 @@ namespace stdair {
 
   // ////////////////////////////////////////////////////////////////////
   Network::Network (const BomKey_T& iKey,
-                        BomStructure_T& ioNetworkStructure)
+                    BomStructure_T& ioNetworkStructure)
     : NetworkContent (iKey), _networkStructure (ioNetworkStructure) {
   }
 
@@ -59,9 +59,25 @@ namespace stdair {
   }
 
   // //////////////////////////////////////////////////////////////////////
-  NetworkDate* Network::
-  getNetworkDate (const NetworkDateKey_T& iKey) const {
+  NetworkDate* Network::getNetworkDate (const NetworkDateKey_T& iKey) const {
     return _networkStructure.getContentChild (iKey);
+  }
+
+  // //////////////////////////////////////////////////////////////////////
+  NetworkDate* Network::getNetworkDate (const Date_T& iDate) const {
+    NetworkDate* oNetworkDate_ptr = NULL;
+    
+    NetworkDateMap_T lNetworkDateMap = getNetworkDateMap ();
+    
+    std::ostringstream ostr;
+    ostr << iDate;
+    NetworkDateMap_T::iterator itNetworkDate = lNetworkDateMap.find (ostr.str());
+
+    if (itNetworkDate != lNetworkDateMap.end()) {
+      oNetworkDate_ptr = itNetworkDate->second;
+    }
+    
+    return oNetworkDate_ptr;
   }
 
 }

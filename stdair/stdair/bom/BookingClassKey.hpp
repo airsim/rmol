@@ -27,8 +27,15 @@ namespace stdair {
     ~BookingClassKey_T ();
     
     // /////////// Getters //////////
-    /** Get the cabin code. */
-    const ClassCode_T& getClassCode () const;
+    /** Get the class code. */
+    const ClassCode_T& getClassCode () const {
+      return _classCode;
+    }
+
+    /** Get the airline code. */
+    const AirlineCode_T getAirlineCode () const {
+      return _parentKey.getAirlineCode();
+    }
     
     // /////////// Setters /////////////
     void setParentKey (const ParentKey_T& iParentKey) {

@@ -36,7 +36,7 @@ namespace stdair {
   // ////////////////////////////////////////////////////////////////////
   const std::string AirportDateKey_T::toString() const {
     std::ostringstream oStr;
-    oStr << _parentKey.toString() << " " << _origin;
+    oStr << _origin;
     return oStr.str();
   }
   

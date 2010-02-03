@@ -38,6 +38,11 @@ namespace stdair {
       return _cabinCode;
     }
 
+    /** Get the airline code. */
+    const AirlineCode_T getAirlineCode () const {
+      return _parentKey.getAirlineCode();
+    }
+
     // /////////// Setters /////////////
     void setParentKey (const ParentKey_T& iParentKey) {
       _parentKey = iParentKey;
