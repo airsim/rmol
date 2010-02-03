@@ -44,12 +44,12 @@ namespace stdair {
     
   // //////////////////////////////////////////////////////////////////////
   const std::string BookingClass::describeKey() const {
-    return _bookingClassStructure.describeKey();
+    return _key.describe();
   }
 
   // //////////////////////////////////////////////////////////////////////
   const std::string BookingClass::describeShortKey() const {
-    return _bookingClassStructure.describeShortKey();
+    return _key.toString();
   }
   
 }
