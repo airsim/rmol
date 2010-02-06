@@ -1,0 +1,4 @@
+// Demand:	Origin; Destination; PreferedDepartureDate; Mean; StdDev;
+NCE; JFK; 2011-01-15; 50; 0;
+NCE; LHR; 2011-01-15; 300; 0;
+
