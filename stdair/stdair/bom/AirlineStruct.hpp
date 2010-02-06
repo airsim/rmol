@@ -1,5 +1,5 @@
-#ifndef __STDAIR_BOM_TRAVELSOLUTIONSTRUCT_HPP
-#define __STDAIR_BOM_TRAVELSOLUTIONSTRUCT_HPP
+#ifndef __STDAIR_BOM_AIRLINESTRUCT_HPP
+#define __STDAIR_BOM_AIRLINESTRUCT_HPP
 
 // //////////////////////////////////////////////////////////////////////
 // Import section
@@ -9,25 +9,36 @@
 #include <string>
 #include <vector>
 // StdAir
+#include <stdair/STDAIR_Types.hpp>
 #include <stdair/bom/StructAbstract.hpp>
-#include <stdair/bom/BookingClassTypes.hpp>
 
 namespace stdair {
 
-  // Forward declarations
-  class OutboundPath;
-  
-  /** Structure holding the elements of a travel solution. */
-  struct TravelSolutionStruct : public StructAbstract {
+  /** Structure holding parameters describing an airline. */
+  struct AirlineStruct : public StructAbstract {
   public:
     // /////////// Getters ///////////////
-    /** Get the OutboundPath. */
-    OutboundPath& getOutboundPath() const;
-
-    /** Get the list of booking classes. */
-    const BookingClassSTLList_T& getBookingClassList () const {
-      return _bookingClassList;
+    /** Get the airline code. */
+    const AirlineCode_T& getAirlineCode() const {
+      return _code;
     }
+
+    /** Get the airline name. */
+    const std::string& getAirlineName() const {
+      return _name;
+    }
+
+    // /////////// Setters ///////////////
+    /** Set the airline code. */
+    void setAirlineCode (const AirlineCode_T& iAirlineCode) {
+      _code = iAirlineCode;
+    }
+
+    /** Set the airline name. */
+    void setAirlineName (const std::string& iAirlineName) {
+      _name = iAirlineName;
+    }
+
 
   public:
     // /////////// Display support method /////////////
@@ -46,22 +57,22 @@ namespace stdair {
   public:
     // //////////// Constructors & Destructor ///////////////
     /** Main constructor. */
-    TravelSolutionStruct (OutboundPath&, const BookingClassSTLList_T&);
+    AirlineStruct (const AirlineCode_T&, const std::string& iAirlineName);
     /** Destructor. */
-    ~TravelSolutionStruct ();
+    ~AirlineStruct ();
     /** Default copy constructor. */
-    TravelSolutionStruct (const TravelSolutionStruct&);
+    AirlineStruct (const AirlineStruct&);
     /** Default constructor, not to be used. */
-    TravelSolutionStruct ();
+    AirlineStruct ();
     
   private:
     // ///////////////////// Attributes //////////////////////
-    /** The outbound path associated to this solution.*/
-    OutboundPath* _outboundPath_ptr;
+    /** Airline code. */
+    AirlineCode_T _code;
 
-    /** The list of booking classes which make the travel solution. */
-    BookingClassSTLList_T _bookingClassList;
+    /** Airline name. */
+    std::string _name;
   };
-
+  
 }
-#endif // __STDAIR_BOM_TRAVELSOLUTIONSTRUCT_HPP
+#endif // __STDAIR_BOM_AIRLINESTRUCT_HPP

@@ -56,6 +56,9 @@ namespace stdair {
     /** Delete the static instance of the Logger object. */
     static void cleanLoggerService();
 
+    /** Delete the static instance of the DBSessionManager object. */
+    static void cleanDBSessionManager();
+
     /** Clean the static instance.
         <br>As the static instance (singleton) is deleted, all the other
         registered objects will be deleted in turn. */

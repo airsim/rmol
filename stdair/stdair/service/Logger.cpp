@@ -1,8 +1,7 @@
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
-// Stdair Logger
-//#include <stdair/factory/FacSupervisor.hpp>
+// StdAir Logger
 #include <stdair/service/Logger.hpp>
 
 namespace stdair {
@@ -20,7 +19,7 @@ namespace stdair {
   }
 
   // //////////////////////////////////////////////////////////////////////
-  Logger::Logger (const stdair::BasLogParams& iLogParams) 
+  Logger::Logger (const BasLogParams& iLogParams) 
     : _level (iLogParams._logLevel), _logStream (iLogParams._logStream) {
   }
 

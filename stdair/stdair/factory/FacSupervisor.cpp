@@ -8,6 +8,7 @@
 #include <stdair/factory/FacBomContent.hpp>
 #include <stdair/factory/FacSupervisor.hpp>
 #include <stdair/service/Logger.hpp>
+#include <stdair/service/DBSessionManager.hpp>
 
 namespace stdair {
 
@@ -75,9 +76,18 @@ namespace stdair {
     // Clean the static instance of the log service
     Logger::clean();
   }
+
+  // //////////////////////////////////////////////////////////////////////
+  void FacSupervisor::cleanDBSessionManager() {
+    // Clean the static instance of the database session manager
+    DBSessionManager::clean();
+  }
   
   // //////////////////////////////////////////////////////////////////////
   void FacSupervisor::cleanAll () {
+    // Clean the static instance of the database session manager
+    cleanDBSessionManager();
+
     // Clean the static instance of the log service
     cleanLoggerService();
 

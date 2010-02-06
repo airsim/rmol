@@ -46,6 +46,7 @@ namespace stdair {
   class Logger {
     // Friend classes
     friend class FacSupervisor;
+    friend class STDAIR_Service;
   public:
     
     /** Main log entry. */
@@ -58,9 +59,6 @@ namespace stdair {
       }
     }
     
-    /** Initialise the static Logger instance. */
-    static void init (const stdair::BasLogParams&);
-    
     /** Return the static Logger instance. */
     static Logger& instance();
     
@@ -68,7 +66,7 @@ namespace stdair {
   private:
     /** Default constructors are private so that only the required 
         constructor can be used. */
-    Logger (const stdair::BasLogParams&);
+    Logger (const BasLogParams&);
     /** Default constructor. It must not be used. */
     Logger ();
     /** Default copy constructor. It must not be used. */
@@ -76,6 +74,13 @@ namespace stdair {
     /** Destructor. */
     ~Logger ();
 
+    // TODO: migrate all the XXXXXX_Service to the new way to initialise
+    //       Logger, and get rid of that 'public:' interface
+  public:
+    /** Initialise the static Logger instance. */
+    static void init (const BasLogParams&);
+
+  private:
     /** Delete the static Logger instance.*/
     static void clean();
     

@@ -14,6 +14,12 @@
 #include <boost/tuple/tuple.hpp>
 #include <boost/shared_ptr.hpp>
 
+// Forward declarations
+namespace soci {
+  class session;
+  class statement;
+}
+
 namespace stdair {
 
   // Forward declarations
@@ -29,6 +35,9 @@ namespace stdair {
   class NonInitialisedLogServiceException : public RootException {
   };
 
+  class NonInitialisedDBSessionManagerException : public RootException {
+  };
+
   class NonInitialisedServiceException : public RootException {
   };
 
@@ -36,6 +45,12 @@ namespace stdair {
   };
 
   class ObjectNotFoundException : public RootException {
+  };
+
+  class SQLDatabaseException : public RootException {
+  };
+
+  class SQLDatabaseConnectionImpossibleException : public SQLDatabaseException {
   };
 
   class DocumentNotFoundException : public RootException {
@@ -59,6 +74,12 @@ namespace stdair {
   }
 
   // //////// Type definitions /////////
+  /** Database session handler. */
+  typedef soci::session DBSession_T;
+  
+  /** Database request statement handler. */
+  typedef soci::statement DBRequestStatement_T;
+  
   /** Define the type for durations (e.g., elapsed in-flight time). */
   typedef boost::posix_time::time_duration Duration_T;
 
