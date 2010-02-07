@@ -14,7 +14,7 @@ namespace stdair {
 
   // Forward declarations
   class BomRoot;
-
+  class Inventory;
   
   /** Interface for the STDAIR Services. */
   class STDAIR_Service {
@@ -43,6 +43,12 @@ namespace stdair {
     ~STDAIR_Service();
 
     
+    /** Retrieve the Inventory corresponding to the given airline code
+        (Inventory key).
+        <br>If not existing, a ObjectNotFoundException exception is thrown. */
+    Inventory& getInventory (const AirlineCode_T& iAirlineCode) const;
+
+    
     // ///////////////// Getters ///////////////////
     /** Get a reference on the BomRoot object.
         <br>If the service context has not been initialised, that
@@ -50,6 +56,17 @@ namespace stdair {
     BomRoot& getBomRoot () const {
       return _bomRoot;
     }
+
+  public:
+    // /////// Construction and Destruction helper methods ///////
+    /** Retrieve the Inventory corresponding to the given airline code
+        (Inventory key).
+        <br>If not existing, a ObjectNotFoundException exception is thrown. */
+    Inventory& createInventory (const AirlineCode_T& iAirlineCode) const;
+
+    /** Add the airline-specific AirlineFeature object to its AirlineFeatureSet
+        parent. */
+    void addAirlineFeature (const AirlineCode_T& iAirlineCode) const;
 
     
   private:
@@ -76,6 +93,10 @@ namespace stdair {
         in order to secure the access to the corresponding resources. */
     void init ();
 
+    /** Initialise the AirlineFeatureSet object, and attach it to the
+        BomRoot. */
+    void initAirlineFeatureSet ();
+    
     /** Finalise. */
     void finalise ();
 

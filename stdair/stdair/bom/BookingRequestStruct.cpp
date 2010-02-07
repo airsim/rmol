@@ -33,7 +33,10 @@ namespace stdair {
   
   // //////////////////////////////////////////////////////////////////////
   const std::string BookingRequestStruct::describe() const {
-    return "";
+    std::ostringstream oStr;
+    oStr << _origin << " - " << _destination << " " << _departureDate
+         << " " << _paxType << " " << _partySize;
+    return oStr.str();
   }
 
 }

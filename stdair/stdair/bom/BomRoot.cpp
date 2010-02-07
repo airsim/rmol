@@ -70,4 +70,10 @@ namespace stdair {
     return oNetwork_ptr;
   }
   
+  // ////////////////////////////////////////////////////////////////////
+  AirlineFeatureSet& BomRoot::getAirlineFeatureSet() const {
+    assert (_airlineFeatureSet != NULL);
+    return *_airlineFeatureSet;
+  }
+  
 }

@@ -117,10 +117,7 @@ namespace stdair {
     NetworkMap_T getNetworkMap () const;
     
     /** Get the reference of the AirlineFeatureSet object. */
-    const AirlineFeatureSet& getAirlineFeatureSet() const {
-      assert (_airlineFeatureSet != NULL);
-      return *_airlineFeatureSet;
-    }
+    AirlineFeatureSet& getAirlineFeatureSet() const;
 
     /** Retrieve, if existing, the Inventory corresponding to the
         given airline code (Inventory key).
@@ -135,7 +132,7 @@ namespace stdair {
   public:
     // //////////// Setters //////////////
     /** Set the reference to the AirlineFeatureSet object. */
-    void setAirlineFeatureSet (const AirlineFeatureSet* ioAirlineFeatureSet_ptr){
+    void setAirlineFeatureSet (AirlineFeatureSet* ioAirlineFeatureSet_ptr) {
       _airlineFeatureSet = ioAirlineFeatureSet_ptr;
     }
 
@@ -161,7 +158,7 @@ namespace stdair {
     BomStructure_T& _bomRootStructure;
     
     /** Set of all AirlineFeatures.*/
-    const AirlineFeatureSet* _airlineFeatureSet;
+    AirlineFeatureSet* _airlineFeatureSet;
   };
 
 }
