@@ -338,9 +338,10 @@ AC_CONFIG_FILES(
     stdair/bom/Makefile
 	stdair/dbadaptor/Makefile
     stdair/factory/Makefile
+	stdair/command/Makefile
+    stdair/config/Makefile
     stdair/service/Makefile
     stdair/core/Makefile
-    stdair/config/Makefile
 	rmol/Makefile
 	rmol/basic/Makefile
 	rmol/field/Makefile
