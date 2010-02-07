@@ -21,7 +21,7 @@ libstdair_la_LIBADD = \
 			$(top_builddir)/stdair/service/libsvc.la
 libstdair_la_LDFLAGS = \
 	$(BOOST_DATE_TIME_LIB) $(BOOST_PROGRAM_OPTIONS_LIB) \
-	$(BOOST_FILESYSTEM_LIB) \
+	$(BOOST_FILESYSTEM_LIB) $(SOCI_LIBS) \
 	-version-info $(GENERIC_LIBRARY_VERSION)
 
 #

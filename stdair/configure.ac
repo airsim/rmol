@@ -1,8 +1,8 @@
 # Process this file with autoconf to produce a configure script
 #-------------------------------------------------------------------
 AC_PREREQ(2.59)
-AC_COPYRIGHT([Copyright (C) 2007-2009  Denis Arnaud <denis_arnaud@users.sourceforge.net>])
-AC_INIT([STDAIR],[0.1.0],[denis_arnaud@users.sourceforge.net],[stdair])
+AC_COPYRIGHT([Copyright (C) 2007-2010  Denis Arnaud <denis_arnaud@users.sourceforge.net>])
+AC_INIT([STDAIR],[99.99.99],[denis_arnaud@users.sourceforge.net],[stdair])
 AC_CONFIG_HEADER([stdair/config.h])
 AC_CONFIG_SRCDIR([stdair/bom/BomKey.hpp])
 AC_CONFIG_AUX_DIR([config])
@@ -15,7 +15,7 @@ RPM_RELEASE="1"
 AC_SUBST(RPM_RELEASE)
 
 # Shared library versioning
-GENERIC_LIBRARY_VERSION="0:1:0"
+GENERIC_LIBRARY_VERSION="99:99:99"
 #                        | | |
 #                 +------+ | +---+
 #                 |        |     |
@@ -117,6 +117,21 @@ AC_SUBST(BOOST_DATE_TIME_LIB)
 AC_SUBST(BOOST_PROGRAM_OPTIONS_LIB)
 AC_SUBST(BOOST_FILESYSTEM_LIB)
 
+# --------------------------------------------------------------------
+# Support for MySQL (C client API): http://www.mysql.org
+# --------------------------------------------------------------------
+AX_MYSQL
+AC_SUBST(MYSQL_VERSION)
+AC_SUBST(MYSQL_CFLAGS)
+AC_SUBST(MYSQL_LIBS)
+
+# --------------------------------------------------------------------
+# Support for SOCI http://soci.sourceforge.net
+# --------------------------------------------------------------------
+AX_SOCI
+AC_SUBST(SOCI_VERSION)
+AC_SUBST(SOCI_CFLAGS)
+AC_SUBST(SOCI_LIBS)
 
 # -------------------------------------------------------------------
 # Support for documentation
@@ -189,6 +204,7 @@ AC_CONFIG_FILES(
 	stdair/Makefile
 	stdair/basic/Makefile
 	stdair/bom/Makefile
+	stdair/dbadaptor/Makefile
 	stdair/factory/Makefile
 	stdair/service/Makefile
 	stdair/core/Makefile
