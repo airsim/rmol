@@ -1,7 +1,7 @@
 # Process this file with autoconf to produce a configure script
 #-------------------------------------------------------------------
 AC_PREREQ(2.59)
-AC_COPYRIGHT([Copyright (C) 2007-2009  Denis Arnaud <denis_arnaud@users.sourceforge.net>])
+AC_COPYRIGHT([Copyright (C) 2007-2010  Denis Arnaud <denis_arnaud@users.sourceforge.net>])
 AC_INIT([RMOL],[99.99.99],[denis_arnaud@users.sourceforge.net],[rmol])
 AC_CONFIG_HEADER([rmol/config.h])
 AC_CONFIG_SRCDIR([rmol/basic/BasConst.cpp])
@@ -119,6 +119,32 @@ GSL_VERSION=`${GSL_CONFIG} --version`
 AC_SUBST(GSL_CFLAGS)
 AC_SUBST(GSL_LIBS)
 
+# -----------------------------------------------------------
+# Python: http://www.python.org
+# -----------------------------------------------------------
+PGAC_CHECK_PYTHON_EMBED_SETUP
+AC_SUBST(PYTHON_VERSION)
+AC_SUBST(PYTHON_LIBS)
+AC_SUBST(PYTHON_CFLAGS)
+AC_SUBST(PYTHON_ADD_LIBS)
+
+# -----------------------------------------------------------
+# MPICH2: http://www.mcs.anl.gov/research/projects/mpich2
+# Note: Boost.MPI depends on MPICH2, rather than on OpenMPI
+# -----------------------------------------------------------
+#AX_MPICH2
+#AC_SUBST(MPICH2_VERSION)
+#AC_SUBST(MPICH2_CFLAGS)
+#AC_SUBST(MPICH2_LIBS)
+
+# -----------------------------------------------------------
+# OpenMPI: http://www.open-mpi.org
+# -----------------------------------------------------------
+#AX_OPENMPI
+#AC_SUBST(OPENMPI_VERSION)
+#AC_SUBST(OPENMPI_CFLAGS)
+#AC_SUBST(OPENMPI_LIBS)
+
 # --------------------------------------------------------
 # Boost (STL Extensions: http://www.boost.org)
 # --------------------------------------------------------
@@ -129,6 +155,27 @@ AC_SUBST(BOOST_LIBS)
 AC_SUBST(BOOST_DATE_TIME_LIB)
 AC_SUBST(BOOST_PROGRAM_OPTIONS_LIB)
 AC_SUBST(BOOST_FILESYSTEM_LIB)
+AC_SUBST(BOOST_THREAD_LIB)
+AC_SUBST(BOOST_PYTHON_LIB)
+AC_SUBST(BOOST_ASIO_LIB)
+AC_SUBST(BOOST_MPI_LIB)
+AC_SUBST(BOOST_MPI_PYTHON_LIB)
+
+# --------------------------------------------------------------------
+# Support for MySQL (C client API): http://www.mysql.org
+# --------------------------------------------------------------------
+AX_MYSQL
+AC_SUBST(MYSQL_VERSION)
+AC_SUBST(MYSQL_CFLAGS)
+AC_SUBST(MYSQL_LIBS)
+
+# --------------------------------------------------------
+# SOCI (Database API: http://soci.sourceforge.net)
+# --------------------------------------------------------
+AX_SOCI([3.0])
+AC_SUBST(SOCI_VERSION)
+AC_SUBST(SOCI_CFLAGS)
+AC_SUBST(SOCI_LIBS)
 
 
 # -------------------------------------------------------------------
@@ -289,6 +336,7 @@ AC_CONFIG_FILES(
     stdair/Makefile
     stdair/basic/Makefile
     stdair/bom/Makefile
+	stdair/dbadaptor/Makefile
     stdair/factory/Makefile
     stdair/service/Makefile
     stdair/core/Makefile
@@ -371,6 +419,12 @@ External libraries:
     o GSL_CFLAGS ...... : ${GSL_CFLAGS}
     o GSL_LIBS ........ : ${GSL_LIBS}
 
+  - Python ............. :
+    o PYTHON_version ... : ${PYTHON_VERSION}
+    o PYTHON_CFLAGS .... : ${PYTHON_CFLAGS}
+    o PYTHON_LIBS ...... : ${PYTHON_LIBS} 
+    o PYTHON_ADD_LIBS .. : ${PYTHON_ADD_LIBS} 
+
   - Boost ............. :
     o BOOST_VERSION ... : ${BOOST_VERSION}
     o BOOST_CFLAGS .... : ${BOOST_CFLAGS}
@@ -378,6 +432,21 @@ External libraries:
     o BOOST_DT_LIB .... : ${BOOST_DATE_TIME_LIB}
     o BOOST_PO_LIB .... : ${BOOST_PROGRAM_OPTIONS_LIB}
     o BOOST_FS_LIB .... : ${BOOST_FILESYSTEM_LIB}
+    o BOOST_THRD_LIB .. : ${BOOST_THREAD_LIB}
+    o BOOST_PY_LIB .... : ${BOOST_PYTHON_LIB}
+    o BOOST_ASIO_LIB .. : ${BOOST_ASIO_LIB}
+    o BOOST_MPI_LIB ... : ${BOOST_MPI_LIB}
+    o BOOST_MPIPY_LIB . : ${BOOST_MPI_PYTHON_LIB}
+
+  - MySQL ............. :
+    o MYSQL_version ... : ${MYSQL_VERSION}
+    o MYSQL_CFLAGS .... : ${MYSQL_CFLAGS}
+    o MYSQL_LIBS ...... : ${MYSQL_LIBS} 
+
+  - Soci .............. :
+    o SOCI_VERSION .... : ${SOCI_VERSION}
+    o SOCI_CFLAGS ..... : ${SOCI_CFLAGS}
+    o SOCI_LIBS ....... : ${SOCI_LIBS}
 
   - CPPUNIT ........... :
     o CPPUNIT_VERSION . : ${CPPUNIT_VERSION}
