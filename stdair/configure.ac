@@ -278,6 +278,16 @@ External libraries:
     o BOOST_PO_LIB .... : ${BOOST_PROGRAM_OPTIONS_LIB}
     o BOOST_FS_LIB .... : ${BOOST_FILESYSTEM_LIB}
 
+  - MySQL ............. :
+    o MYSQL_version ... : ${MYSQL_VERSION}
+    o MYSQL_CFLAGS .... : ${MYSQL_CFLAGS}
+    o MYSQL_LIBS ...... : ${MYSQL_LIBS} 
+
+  - SOCI .............. :	
+    o SOCI_version .... : ${SOCI_VERSION}
+    o SOCI_CFLAGS ..... : ${SOCI_CFLAGS}
+    o SOCI_LIBS ....... : ${SOCI_LIBS}
+
   - CPPUNIT ........... :
     o CPPUNIT_VERSION . : ${CPPUNIT_VERSION}
     o CPPUNIT_CFLAGS .. : ${CPPUNIT_CFLAGS}
