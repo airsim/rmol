@@ -51,7 +51,7 @@ namespace stdair {
     const std::string lDBSessionConnectionString (oStr.str());
 
     // Instanciate the database session: nothing else is performed at that stage
-    _dbSession = new DBSession_T();
+    _dbSession = new DBSession_T;
     
     try {
 

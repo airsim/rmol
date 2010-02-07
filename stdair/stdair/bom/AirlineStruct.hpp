@@ -58,12 +58,13 @@ namespace stdair {
     // //////////// Constructors & Destructor ///////////////
     /** Main constructor. */
     AirlineStruct (const AirlineCode_T&, const std::string& iAirlineName);
-    /** Destructor. */
-    ~AirlineStruct ();
+    /** Default constructor. */
+    AirlineStruct ();
     /** Default copy constructor. */
     AirlineStruct (const AirlineStruct&);
-    /** Default constructor, not to be used. */
-    AirlineStruct ();
+    /** Destructor. */
+    ~AirlineStruct ();
+
     
   private:
     // ///////////////////// Attributes //////////////////////
