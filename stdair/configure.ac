@@ -207,9 +207,9 @@ AC_CONFIG_FILES(
 	stdair/dbadaptor/Makefile
 	stdair/factory/Makefile
 	stdair/command/Makefile
+	stdair/config/Makefile
 	stdair/service/Makefile
 	stdair/core/Makefile
-	stdair/config/Makefile
 	doc/Makefile
 	doc/images/Makefile
 	doc/tutorial/Makefile
