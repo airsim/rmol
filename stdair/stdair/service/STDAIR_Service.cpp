@@ -7,15 +7,11 @@
 #include <stdair/basic/BasChronometer.hpp>
 #include <stdair/bom/BomManager.hpp> // for display()
 #include <stdair/bom/BomRoot.hpp>
-#include <stdair/bom/AirlineFeatureSet.hpp>
-#include <stdair/bom/AirlineFeature.hpp>
-// Inventory: child of BomRoot, needed for creation of BomRoot
-#include <stdair/bom/Inventory.hpp>
-// Network: child of BomRoot, needed for creation of BomRoot
 #include <stdair/bom/Network.hpp>
-#include <stdair/bom/FlightDate.hpp>
+#include <stdair/bom/Inventory.hpp>
 #include <stdair/factory/FacSupervisor.hpp>
 #include <stdair/factory/FacBomContent.hpp>
+#include <stdair/command/CmdBomManager.hpp>
 #include <stdair/service/Logger.hpp>
 #include <stdair/service/DBSessionManager.hpp>
 #include <stdair/STDAIR_Service.hpp>
@@ -91,32 +87,16 @@ namespace stdair {
   }
 
   // //////////////////////////////////////////////////////////////////////
-  void STDAIR_Service::initAirlineFeatureSet () {  
-    // Initialise the set of required airline features
-    stdair::AirlineFeatureSet& lAirlineFeatureSet =
-      stdair::FacBomContent::instance().create<stdair::AirlineFeatureSet>();
-    
-    // Set the AirlineFeatureSet for the BomRoot.
-    _bomRoot.setAirlineFeatureSet (&lAirlineFeatureSet);
+  void STDAIR_Service::initAirlineFeatureSet () {
+    // Delegate to the dedicated command
+    CmdBomManager::initAirlineFeatureSet (_bomRoot);
   }
   
   // //////////////////////////////////////////////////////////////////////
   void STDAIR_Service::
   addAirlineFeature (const AirlineCode_T& iAirlineCode) const {
-    
-    // Initialise an AirlineFeature object
-    stdair::AirlineFeatureKey_T lAirlineFeatureKey (iAirlineCode);
-    stdair::AirlineFeature& lAirlineFeature = stdair::FacBomContent::
-      instance().create<stdair::AirlineFeature> (lAirlineFeatureKey);
-
-    // Retrieve the AirlineFeatureSet object
-    stdair::AirlineFeatureSet& lAirlineFeatureSet =
-      _bomRoot.getAirlineFeatureSet();
-
-    // Add the AirlineFeature object to its AirlineFeatureSet parent
-    stdair::FacBomContent::
-      linkWithParent<stdair::AirlineFeature> (lAirlineFeature,
-                                              lAirlineFeatureSet);
+    // Delegate to the dedicated command
+    CmdBomManager::addAirlineFeature (_bomRoot, iAirlineCode);
   }
   
   // //////////////////////////////////////////////////////////////////////
@@ -139,42 +119,19 @@ namespace stdair {
     return *lInventory_ptr;
   }
   
+  /**
+     Note that the AirlineFeature is linked both to the Inventory
+     and to the AirlineFeatureSet, which in turn is linked to the BomRoot.
+     There is therefore a duplication of the structure links.
+  */
+
   // //////////////////////////////////////////////////////////////////////
   Inventory& STDAIR_Service::
   createInventory (const AirlineCode_T& iAirlineCode) const {
-    Inventory* lInventory_ptr = _bomRoot.getInventory (iAirlineCode);
-
-    // If there is no Inventory object for that airline already, create one
-    if (lInventory_ptr == NULL) {
-      const stdair::InventoryKey_T lInventoryKey (iAirlineCode);
-
-      // Instantiate an Inventory object with the given airline code
-      lInventory_ptr =
-        &stdair::FacBomContent::instance().
-        create<stdair::Inventory> (lInventoryKey);
-      assert (lInventory_ptr != NULL);
-      
-      // Link the created inventory with the bom root.
-      stdair::FacBomContent::linkWithParent<stdair::Inventory> (*lInventory_ptr,
-                                                                _bomRoot);
-
-      // Set the AirlineFeature for the inventory.
-      const stdair::AirlineFeatureSet& lAirlineFeatureSet =
-        _bomRoot.getAirlineFeatureSet ();
-      const stdair::AirlineFeature* lAirlineFeature_ptr =
-        lAirlineFeatureSet.getAirlineFeature (iAirlineCode);
-
-      // TODO: throw an exception?
-      if (lAirlineFeature_ptr == NULL) {
-        STDAIR_LOG_ERROR (lAirlineFeatureSet.display()
-                          << "Needed airline code: " << iAirlineCode);
-      }
-      
-      lInventory_ptr->setAirlineFeature (lAirlineFeature_ptr);
-    }
-    assert (lInventory_ptr != NULL);
-
-    return *lInventory_ptr;
+    // Delegate to the dedicated command
+    Inventory& oInventory = 
+      CmdBomManager::getOrCreateInventory (_bomRoot, iAirlineCode);
+    return oInventory;
   }
 
 }
