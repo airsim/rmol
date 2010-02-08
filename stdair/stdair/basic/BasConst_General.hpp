@@ -36,5 +36,16 @@ namespace stdair {
   /** Default booking rate for OnD bookings over overall class bookings. */
   extern const BookingRatio_T DEFAULT_OND_BOOKING_RATE;
 
+  /** Number of seconds in one day */
+  extern const Count_T SECONDS_IN_ONE_DAY;
+  
+  /** Number of milliseconds in one second */
+  extern const Count_T MILLISECONDS_IN_ONE_SECOND;
+
+  /** Default update date for the General. */
+  extern const Date_T DEFAULT_DATE;
+  
+  /** Default update date&time. */
+  extern const DateTime_T DEFAULT_DATETIME;
 }
 #endif // __STDAIR_BAS_BASCONST_GENERAL_HPP

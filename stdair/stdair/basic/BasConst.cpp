@@ -129,21 +129,17 @@ namespace stdair {
   const DateOffSet_T DEFAULT_DATE_OFFSET (0);
   
   //  // //////// General ///////
-  //   /** Default update date for the General. */
-  //   const Date_T DEFAULT_WORLD_SCHEDULE_UPDATE_DATE (2007,
-  //                                                    boost::gregorian::Jan,
-  //                                                    1);
+  /** Default update date for the General. */
+  const Date_T DEFAULT_DATE (2007, boost::gregorian::Jan, 1);
   
+  /** Default update date&time. */
+  const DateTime_T DEFAULT_DATETIME (DEFAULT_DATE, NULL_BOOST_TIME_DURATION);
 
-  //     // //////// WholeDemand ///////
-  //     /** Default update date for the WholeDemand. */
-  //     const Date_T DEFAULT_WHOLE_DEMAND_UPDATE_DATE (2007,
-  //                                                    boost::gregorian::Jan,
-  //                                                    1);
-
-  //     /** Default update date&time. */
-  //     const DateTime_T DEFAULT_DEMAND_DATETIME (DEFAULT_WHOLE_DEMAND_UPDATE_DATE,
-  //                                               NULL_BOOST_TIME_DURATION);
+  /** Number of seconds in one day */
+  const Count_T SECONDS_IN_ONE_DAY = 86000;
+  
+  /** Number of milliseconds in one second */
+  const Count_T MILLISECONDS_IN_ONE_SECOND = 1000;
 
   // //////// Fare Rules ///////
   /** Default saturdayStay value (false). */

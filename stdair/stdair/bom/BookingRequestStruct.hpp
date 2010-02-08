@@ -28,8 +28,13 @@ namespace stdair {
     }
 
     /** Get the requested departure date. */
-    const Date_T& getDepartureDate() const {
-      return _departureDate;
+    const Date_T& getPreferedDepartureDate() const {
+      return _preferredDepartureDate;
+    }
+
+    /** Get the request datetime. */
+    const DateTime_T& getRequestDateTime() const {
+      return _requestDateTime;
     }
 
     /** Get the passenger type. */
@@ -55,10 +60,15 @@ namespace stdair {
     }
 
     /** Set the requested departure date. */
-    void setDepartureDate (const Date_T& iDepartureDate) {
-      _departureDate = iDepartureDate;
+    void setPreferredDepartureDate (const Date_T& iDepartureDate) {
+      _preferredDepartureDate = iDepartureDate;
     }
-
+    
+    /** Set the request datetime */
+    void setRequestDateTime (const DateTime_T& iRequestDateTime) {
+      _requestDateTime = iRequestDateTime;
+    }
+    
     /** Set the passenger type. */
     void setPaxType (const PassengerType_T& iPaxType) {
       _paxType = iPaxType;
@@ -84,9 +94,11 @@ namespace stdair {
 
   public:
     // /////////////// Constructors and Destructors /////////////////
+    BookingRequestStruct ();
     BookingRequestStruct (const AirportCode_T&, const AirportCode_T&,
-                          const Date_T&, const PassengerType_T&,
-                          const NbOfSeats_T&);
+                          const Date_T&, const DateTime_T&,
+                          const PassengerType_T&, const NbOfSeats_T&);
+    ~BookingRequestStruct();
     
 
   private:
@@ -96,9 +108,12 @@ namespace stdair {
 
     /** Destination. */
     AirportCode_T _destination;
-
+    
     /** Departure date. */
-    Date_T _departureDate;
+    Date_T _preferredDepartureDate;
+
+    /** Request datetime */
+    DateTime_T _requestDateTime;
 
     /** Passenger type. */
     PassengerType_T _paxType;

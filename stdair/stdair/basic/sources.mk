@@ -10,10 +10,20 @@ bas_h_sources = \
 				$(top_srcdir)/stdair/basic/BasChronometer.hpp \
 				$(top_srcdir)/stdair/basic/BasFileMgr.hpp \
 				$(top_srcdir)/stdair/basic/BasLogParams.hpp \
-				$(top_srcdir)/stdair/basic/BasDBParams.hpp
+				$(top_srcdir)/stdair/basic/BasDBParams.hpp \
+				$(top_srcdir)/stdair/basic/ContinuousAttribute.hpp \
+				$(top_srcdir)/stdair/basic/CategoricalAttribute.hpp \
+				$(top_srcdir)/stdair/basic/DemandCharacteristics.hpp \
+				$(top_srcdir)/stdair/basic/DemandDistribution.hpp \
+				$(top_srcdir)/stdair/basic/RandomGeneration.hpp \
+				$(top_srcdir)/stdair/basic/RandomGenerationContext.hpp
 bas_cc_sources = \
 				$(top_srcdir)/stdair/basic/BasConst.cpp \
 				$(top_srcdir)/stdair/basic/BasChronometer.cpp \
 				$(top_srcdir)/stdair/basic/BasFileMgr.cpp \
 				$(top_srcdir)/stdair/basic/BasLogParams.cpp \
-				$(top_srcdir)/stdair/basic/BasDBParams.cpp
+				$(top_srcdir)/stdair/basic/BasDBParams.cpp \
+				$(top_srcdir)/stdair/basic/DemandCharacteristics.cpp \
+				$(top_srcdir)/stdair/basic/DemandDistribution.cpp \
+				$(top_srcdir)/stdair/basic/RandomGeneration.cpp \
+				$(top_srcdir)/stdair/basic/RandomGenerationContext.cpp
