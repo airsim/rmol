@@ -10,10 +10,6 @@
 #include <stdair/bom/BookingRequestStruct.hpp>
 
 namespace stdair {
-
-  // //////////////////////////////////////////////////////////////////////
-  BookingRequestStruct::BookingRequestStruct () {
-  }
   
   // //////////////////////////////////////////////////////////////////////
   BookingRequestStruct::BookingRequestStruct (const AirportCode_T& iOrigin,

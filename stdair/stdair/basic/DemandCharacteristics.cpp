@@ -21,10 +21,12 @@ namespace stdair {
   
   // /////////////////////////////////////////////////////
   DemandCharacteristics::
-  DemandCharacteristics (const DemandCharacteristics& iDemandCharacteristics) {
-    _origin = iDemandCharacteristics._origin;
-    _preferredDepartureDate = iDemandCharacteristics._preferredDepartureDate;
-    _arrivalPattern = iDemandCharacteristics._arrivalPattern;
+  DemandCharacteristics (const DemandCharacteristics& iDemandCharacteristics) 
+    : _origin (iDemandCharacteristics._origin),
+      _destination (iDemandCharacteristics._destination),
+      _preferredDepartureDate (iDemandCharacteristics._preferredDepartureDate),
+      _paxType (iDemandCharacteristics._paxType),
+      _arrivalPattern (iDemandCharacteristics._arrivalPattern) {
   }
   
   // /////////////////////////////////////////////////////

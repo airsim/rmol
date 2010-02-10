@@ -4,6 +4,8 @@
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
+// Boost
+#include <boost/shared_ptr.hpp>
 // STL
 #include <iosfwd>
 // STDAIR
@@ -12,13 +14,19 @@
 #include <stdair/basic/DemandDistribution.hpp>
 #include <stdair/basic/RandomGeneration.hpp>
 #include <stdair/basic/RandomGenerationContext.hpp>
+#include <stdair/bom/BomContent.hpp>
 #include <stdair/bom/BookingRequestStruct.hpp>
 
 namespace stdair {
+
+  // Type definitions.
+  /** Define the smart pointer to a booking request. */
+  typedef boost::shared_ptr<BookingRequestStruct> BookingRequestPtr_T;
   
   /** Class modeling a demand stream. */
-  class DemandStream {
-
+  class DemandStream : public BomContent {
+    friend class FacBomContent;
+    
   public:
     // ///////////// Getters ///////////
     /** Get the key */
@@ -37,13 +45,37 @@ namespace stdair {
     void setKey (const DemandStreamKey_T& iKey) {
       _key = iKey;
     }
+    
+  public:
+    // /////////// Display support methods /////////
+    /** Dump a Business Object into an output stream.
+        @param ostream& the output stream. */
+    void toStream (std::ostream& ioOut) const { ioOut << toString(); }
+
+    /** Read a Business Object from an input stream.
+        @param istream& the input stream. */
+    void fromStream (std::istream& ioIn) { }
+
+   /** Get the serialised version of the Business Object. */
+    std::string toString() const { return describeKey(); }
+    
+    /** Get a string describing the whole key (differentiating two objects
+        at any level). */
+    const std::string describeKey() const { return std::string (""); }
+
+    /** Get a string describing the short key (differentiating two objects
+        at the same level). */
+    const std::string describeShortKey() const { return std::string (""); }
 
   public:
-    // /////////////// Business Methods //////////
+    // /////////////// Business Methods //////////////
+    /** Check whether enough requests have already been generated. */
+    const bool stillHavingRequestsToBeGenerated () const;
+    
     /** Generate the next request. */
-    bool generateNext (BookingRequestStruct&);
+    BookingRequestPtr_T generateNext ();
 
-  public:
+  private:
     // ////////// Constructors and destructors /////////
     /** Constructor by default */
     DemandStream (const DemandStreamKey_T&, const DemandCharacteristics&,
@@ -53,7 +85,6 @@ namespace stdair {
     /** Destructor */
     virtual ~DemandStream ();
 
-  private:
     /** Default constructors. */
     DemandStream ();
     DemandStream (const DemandStream&);

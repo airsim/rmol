@@ -4,6 +4,8 @@
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
+// Boost
+#include <boost/shared_ptr.hpp>
 // STDAIR
 #include <stdair/STDAIR_Types.hpp>
 
@@ -12,6 +14,10 @@ namespace stdair {
   /** Forward declaration */
   struct BookingRequestStruct;
   class DemandStream;
+
+  // Type definitions.
+  /** Define the smart pointer to a booking request. */
+  typedef boost::shared_ptr<BookingRequestStruct> BookingRequestPtr_T;
   
   /** Event struct. */
   struct EventStruct {
@@ -28,9 +34,10 @@ namespace stdair {
       return _eventDateTime;
     }
     
-    /** Get the pointer Request event. */
-    const BookingRequestStruct* getPointerToRequestEvent () const {
-      return _request;
+    /** Get the Request event. */
+    const BookingRequestStruct& getBookingRequest () const {
+      assert (_request != NULL);
+      return *_request;
     }
 
     /** Get the demand stream of the event. */
@@ -43,7 +50,7 @@ namespace stdair {
     // ////////// Constructors and destructors /////////
     /** Constructor. */
     EventStruct (const EventType_T&, const DateTime_T&,
-                 DemandStream&, BookingRequestStruct* const);
+                 DemandStream&, BookingRequestPtr_T);
     EventStruct (const DateTime_T&);
     
     /** Copy constructor. */
@@ -70,7 +77,7 @@ namespace stdair {
     DemandStream* _demandStream;
     
     /** Pointer to Request event */
-    BookingRequestStruct* _request;
+    BookingRequestPtr_T _request;
 
   };
 

@@ -18,13 +18,23 @@ namespace stdair {
     
     // ///////////// Getters ///////////    
     /** Get the origin. */
-    const LocationCode_T& getOrigin() const {
+    const AirportCode_T& getOrigin() const {
       return _origin;
+    }
+    
+    /** Get the destination. */
+    const AirportCode_T& getDestination() const {
+      return _destination;
     }
     
     /** Get the preferred departure date. */
     const Date_T& getPreferredDepartureDate() const {
       return _preferredDepartureDate;
+    }
+
+    /** Get the passenger type. */
+    const PassengerType_T& getPaxType() const {
+      return _paxType;
     }
     
     /** Get the arrival pattern. */
@@ -35,13 +45,23 @@ namespace stdair {
   public:
     // ///////////// Setters ///////////
     /** Set the origin. */
-    void setOrigin (const LocationCode_T& iOrigin) {
+    void setOrigin (const AirportCode_T& iOrigin) {
       _origin = iOrigin;
+    }
+
+    /** Set the destination. */
+    void setDestination (const AirportCode_T& iDestination) {
+      _destination = iDestination;
     }
     
     /** Set the preferred departure date. */
     void setPreferredDepartureDate (const Date_T& iPreferredDepartureDate) {
       _preferredDepartureDate = iPreferredDepartureDate;
+    }
+    
+    /** Set the passenger type. */
+    void setPaxType (const PassengerType_T& iPaxType) {
+      _paxType = iPaxType;
     }
     
     /** Set the arrival pattern. */
@@ -70,10 +90,16 @@ namespace stdair {
   private:
     // ////////// Attributes //////////
     /** Origin */
-    LocationCode_T _origin;
+    AirportCode_T _origin;
+    
+    /** Origin */
+    AirportCode_T _destination;
     
     /** Preferred departure date */
     Date_T _preferredDepartureDate;
+
+    /** Passenger type. */
+    PassengerType_T _paxType;
     
     /** Arrival pattern (cumulative distribution of timing of arrival
         of requests (negative number of days between departure date
@@ -81,10 +107,10 @@ namespace stdair {
     ContinuousAttribute<FloatDuration_T> _arrivalPattern;
     
     /** Trip type probability mass */
-    //CategoricalAttribute<TripType_T> _tripTypeProbabilityMass;
+    // CategoricalAttribute<TripType_T> _tripTypeProbabilityMass;
     
     /** Willingness-to-pay cumulative distribution */
-    //ContinuousAttribute<MonetaryValue_T> _willingnessToPayCumulativeDistribution;
+    // ContinuousAttribute<MonetaryValue_T> _willingnessToPayCumulativeDistribution;
     
   };
 

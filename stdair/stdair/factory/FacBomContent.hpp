@@ -20,7 +20,10 @@ namespace stdair {
   template<typename BOM> struct BomList_T;
   class BomStructure;
   class BomContent;
+  class DemandStream;
   struct OptimizerStruct_T;
+  struct DemandCharacteristics;
+  struct DemandDistribution;
   
   /** Base class for Factory layer. */
   class FacBomContent {
@@ -169,6 +172,16 @@ namespace stdair {
       ioOutboundPath._flightPathCode =
         iReferenceOutboundPath._flightPathCode;
     }
+
+    // //////////////////////////////////////////////////////////////////
+    // //////////////////////// Normal Factory //////////////////////////
+    // //////////////////////////////////////////////////////////////////
+    /** Create the DemandStream object. */
+    DemandStream& createDemandStream (const DemandStreamKey_T&,
+                                      const DemandCharacteristics&,
+                                      const DemandDistribution&,
+                                      const RandomSeed_T&, 
+                                      const RandomSeed_T&, const RandomSeed_T&);
     
   public:
     /** Provide the unique instance.

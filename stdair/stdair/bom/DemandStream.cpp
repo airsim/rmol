@@ -60,9 +60,9 @@ namespace stdair {
     }
     _totalNumberOfRequestsToBeGenerated = lIntegerNumberOfRequestsToBeGenerated;
   }
-  
-  // //////////////////////////////////////////////////////////////////////
-  bool DemandStream::generateNext (BookingRequestStruct& ioRequest) {
+
+  // ////////////////////////////////////////////////////////////////////
+  const bool DemandStream::stillHavingRequestsToBeGenerated () const {
     // Check whether enough requests have already been generated
     const Count_T lNbOfRequestsGeneratedSoFar =
       _randomGenerationContext.getNumberOfRequestsGeneratedSoFar ();
@@ -72,17 +72,31 @@ namespace stdair {
     if (lRemainingNumberOfRequestsToBeGenerated <= 0) {
       return false;
     }
-      // DEBUG
-      STDAIR_LOG_DEBUG ("Here");
 
+    return true;
+
+  }
+  
+  // //////////////////////////////////////////////////////////////////////
+  BookingRequestPtr_T DemandStream::generateNext () {
+    // Assert that there are requests to be generated.
+    const Count_T lNbOfRequestsGeneratedSoFar =
+      _randomGenerationContext.getNumberOfRequestsGeneratedSoFar ();
+    const Count_T lRemainingNumberOfRequestsToBeGenerated =
+      _totalNumberOfRequestsToBeGenerated - lNbOfRequestsGeneratedSoFar;
+    assert (lRemainingNumberOfRequestsToBeGenerated > 0);
+
+    
     // Origin
-    ioRequest.setOrigin (_demandCharacteristics.getOrigin ());
-
+    const AirportCode_T& lOrigin = _demandCharacteristics.getOrigin ();
+    // Destination
+    const AirportCode_T& lDestination = _demandCharacteristics.getDestination ();
     // Preferred departure date
-    const Date_T lPreferredDepartureDate =
+    const Date_T& lPreferredDepartureDate =
       _demandCharacteristics.getPreferredDepartureDate ();
-    ioRequest.setPreferredDepartureDate (lPreferredDepartureDate);
-
+    // Passenger type.
+    const PassengerType_T& lPassengerType = _demandCharacteristics.getPaxType();
+    
     // Request datetime, determined from departure date and arrival pattern
     // Sequential generation
     const Probability_T lCumulativeProbabilitySoFar =
@@ -99,34 +113,45 @@ namespace stdair {
 
     // convert the number of days in number of seconds + number of milliseconds
     const FloatDuration_T lNumberOfSeconds =
-      lNumberOfDaysBetweenDepartureAndThisRequest*static_cast<float> (SECONDS_IN_ONE_DAY);
+      lNumberOfDaysBetweenDepartureAndThisRequest
+      * static_cast<float> (SECONDS_IN_ONE_DAY);
 
     const IntDuration_T lIntNumberOfSeconds = floor(lNumberOfSeconds);
 
     const FloatDuration_T lNumberOfMilliseconds =
-      (lNumberOfSeconds - lIntNumberOfSeconds) * static_cast<float> (MILLISECONDS_IN_ONE_SECOND);
+      (lNumberOfSeconds - lIntNumberOfSeconds)
+      * static_cast<float> (MILLISECONDS_IN_ONE_SECOND);
 
     const IntDuration_T lIntNumberOfMilliseconds =
-      floor(lNumberOfMilliseconds) + 1; // +1 is a trick to ensure that the next event is strictly later than the current one
+      floor(lNumberOfMilliseconds) + 1; // +1 is a trick to ensure that the next
+    // event is strictly later than the current one
 
     const Duration_T lDifferenceBetweenDepartureAndThisRequest =
-      boost::posix_time::seconds(lIntNumberOfSeconds) + boost::posix_time::millisec(lIntNumberOfMilliseconds);
+      boost::posix_time::seconds(lIntNumberOfSeconds)
+      + boost::posix_time::millisec(lIntNumberOfMilliseconds);
 
     const Time_T lHardcodedReferenceDepartureTime = boost::posix_time::hours(8);
     
-const DateTime_T lDepartureDateTime =
-      boost::posix_time::ptime(lPreferredDepartureDate, lHardcodedReferenceDepartureTime);
+    const DateTime_T lDepartureDateTime =
+      boost::posix_time::ptime (lPreferredDepartureDate,
+                                lHardcodedReferenceDepartureTime);
 
     const DateTime_T lDateTimeThisRequest =
       lDepartureDateTime + lDifferenceBetweenDepartureAndThisRequest;
-    ioRequest.setRequestDateTime (lDateTimeThisRequest);
-
+    
     // Update random generation context
     _randomGenerationContext.setCumulativeProbabilitySoFar (lCumulativeProbabilityThisRequest);
     _randomGenerationContext.incrementGeneratedRequestsCounter ();
-   
-    return true;
-    
+
+
+    // Create the booking request with a hardcoded party size.
+    BookingRequestPtr_T oBookingRequest_ptr =
+      BookingRequestPtr_T (new BookingRequestStruct (lOrigin, lDestination,
+                                                     lPreferredDepartureDate,
+                                                     lDateTimeThisRequest,
+                                                     lPassengerType, 1));
+    assert (oBookingRequest_ptr != NULL);
+    return oBookingRequest_ptr;
   }
 
 }
