@@ -5,7 +5,6 @@
 #include <cassert>
 // STDAIR
 #include <stdair/bom/BomStructure.hpp>
-#include <stdair/bom/DemandStream.hpp>
 #include <stdair/bom/BomContent.hpp>
 #include <stdair/factory/FacSupervisor.hpp>
 #include <stdair/factory/FacBomContent.hpp>
@@ -48,27 +47,4 @@ namespace stdair {
     _instance = NULL;
   }
 
-  // ////////////////////////////////////////////////////////////////////
-  DemandStream& FacBomContent::
-  createDemandStream (const DemandStreamKey_T& iKey,
-                      const DemandCharacteristics& iDemandCharacteristics,
-                      const DemandDistribution& iDemandDistribution,
-                      const RandomSeed_T& iNumberOfRequestsSeed,
-                      const RandomSeed_T& iRequestDateTimeSeed,
-                      const RandomSeed_T& iDemandCharacteristicsSeed) {
-    DemandStream* aDemandStream_ptr = NULL;
-
-    aDemandStream_ptr = new DemandStream (iKey, iDemandCharacteristics,
-                                          iDemandDistribution,
-                                          iNumberOfRequestsSeed,
-                                          iRequestDateTimeSeed,
-                                          iDemandCharacteristicsSeed);
-    assert (aDemandStream_ptr != NULL);
-
-    // The new object is added to the BOM pool
-    _contentPool.push_back (aDemandStream_ptr);
-
-    return *aDemandStream_ptr;
-  }
-  
 }

@@ -4,21 +4,12 @@
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
-// Boost
-#include <boost/shared_ptr.hpp>
 // STDAIR
 #include <stdair/STDAIR_Types.hpp>
+#include <stdair/bom/BookingRequestTypes.hpp>
 
 namespace stdair {
-  
-  /** Forward declaration */
-  struct BookingRequestStruct;
-  class DemandStream;
 
-  // Type definitions.
-  /** Define the smart pointer to a booking request. */
-  typedef boost::shared_ptr<BookingRequestStruct> BookingRequestPtr_T;
-  
   /** Event struct. */
   struct EventStruct {
   
@@ -41,16 +32,19 @@ namespace stdair {
     }
 
     /** Get the demand stream of the event. */
-    DemandStream& getDemandStream () const {
-      assert (_demandStream != NULL);
-      return *_demandStream;
+    const DemandStreamKey_T& getDemandStreamKey () const {
+      return _demandStreamKey;
     }
+
+    // ///////////////// Business Methods /////////////////
+    /** Move the event forward in time by one nanosecond. */
+    void moveForwardInTime ();
     
   public:
     // ////////// Constructors and destructors /////////
     /** Constructor. */
     EventStruct (const EventType_T&, const DateTime_T&,
-                 DemandStream&, BookingRequestPtr_T);
+                 const DemandStreamKey_T&, BookingRequestPtr_T);
     EventStruct (const DateTime_T&);
     
     /** Copy constructor. */
@@ -74,7 +68,7 @@ namespace stdair {
     DateTime_T _eventDateTime;
 
     /** The demand stream which generated this event. */
-    DemandStream* _demandStream;
+    DemandStreamKey_T _demandStreamKey;
     
     /** Pointer to Request event */
     BookingRequestPtr_T _request;

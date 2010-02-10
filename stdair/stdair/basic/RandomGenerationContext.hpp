@@ -42,6 +42,8 @@ namespace stdair {
     // ////////// Constructors and destructors /////////
     /** Constructor by default */
     RandomGenerationContext ();
+    /** Default constructors. */
+    RandomGenerationContext (const RandomGenerationContext&);
 
     /** Destructor */
     virtual ~RandomGenerationContext ();
@@ -51,9 +53,6 @@ namespace stdair {
     /** Increment counter of requests generated so far */
     void incrementGeneratedRequestsCounter ();
     
-  private:
-    /** Default constructors. */
-    RandomGenerationContext (const RandomGenerationContext&);
   
   private:
     // ////////// Attributes //////////

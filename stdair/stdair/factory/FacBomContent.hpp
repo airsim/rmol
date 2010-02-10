@@ -20,7 +20,7 @@ namespace stdair {
   template<typename BOM> struct BomList_T;
   class BomStructure;
   class BomContent;
-  class DemandStream;
+  class EventQueue;
   struct OptimizerStruct_T;
   struct DemandCharacteristics;
   struct DemandDistribution;
@@ -173,16 +173,6 @@ namespace stdair {
         iReferenceOutboundPath._flightPathCode;
     }
 
-    // //////////////////////////////////////////////////////////////////
-    // //////////////////////// Normal Factory //////////////////////////
-    // //////////////////////////////////////////////////////////////////
-    /** Create the DemandStream object. */
-    DemandStream& createDemandStream (const DemandStreamKey_T&,
-                                      const DemandCharacteristics&,
-                                      const DemandDistribution&,
-                                      const RandomSeed_T&, 
-                                      const RandomSeed_T&, const RandomSeed_T&);
-    
   public:
     /** Provide the unique instance.
         <br>The singleton is instantiated when first used.

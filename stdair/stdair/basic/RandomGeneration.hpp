@@ -39,7 +39,7 @@ namespace stdair {
     /** Destructor. */
     virtual ~RandomGeneration ();
   
-  private:
+  public :
     /** Default constructors. */
     RandomGeneration ();
     RandomGeneration (const RandomGeneration&);

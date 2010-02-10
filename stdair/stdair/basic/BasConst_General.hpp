@@ -42,10 +42,13 @@ namespace stdair {
   /** Number of milliseconds in one second */
   extern const Count_T MILLISECONDS_IN_ONE_SECOND;
 
-  /** Default update date for the General. */
+  /** Default date for the General. */
   extern const Date_T DEFAULT_DATE;
   
-  /** Default update date&time. */
+  /** Default date&time. */
   extern const DateTime_T DEFAULT_DATETIME;
+
+  /** Default epsilon duration. */
+  extern const Duration_T DEFAULT_EPSILON_DURATION;
 }
 #endif // __STDAIR_BAS_BASCONST_GENERAL_HPP

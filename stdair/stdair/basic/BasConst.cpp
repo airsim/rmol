@@ -129,11 +129,14 @@ namespace stdair {
   const DateOffSet_T DEFAULT_DATE_OFFSET (0);
   
   //  // //////// General ///////
-  /** Default update date for the General. */
+  /** Default date for the General. */
   const Date_T DEFAULT_DATE (2007, boost::gregorian::Jan, 1);
   
-  /** Default update date&time. */
+  /** Default date&time. */
   const DateTime_T DEFAULT_DATETIME (DEFAULT_DATE, NULL_BOOST_TIME_DURATION);
+
+  /** Default epsilon duration (1 nanosecond). */
+  const Duration_T DEFAULT_EPSILON_DURATION = Duration_T (0, 0, 0, 1);
 
   /** Number of seconds in one day */
   const Count_T SECONDS_IN_ONE_DAY = 86000;

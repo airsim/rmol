@@ -1,49 +1,43 @@
-#ifndef __STDAIR_BAS_EVENTQUEUE_HPP
-#define __STDAIR_BAS_EVENTQUEUE_HPP
+#ifndef __STDAIR_BOM_EVENTQUEUE_HPP
+#define __STDAIR_BOM_EVENTQUEUE_HPP
 
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // STDAIR
 #include <stdair/STDAIR_Types.hpp>
-#include <stdair/bom/EventStruct.hpp>
+#include <stdair/bom/StructAbstract.hpp>
+#include <stdair/bom/EventTypes.hpp>
 
 namespace stdair {
   
   /** Event queue. */
-  class EventQueue {
-  
+  struct EventQueue : public StructAbstract {
+
   public:
-    typedef std::pair<DateTime_T, EventStruct> EventListElement_T;
-    typedef std::multimap<DateTime_T, EventStruct> EventList_T;
-  
-  public:
-    // ///////////// Getters ///////////
-    // /** Get the event type */
-    //const EventType_T& getEventType () const {
-    //  return _eventType;
-    //}
+   /** Read a Business Object from an input stream.
+        @param istream& the input stream. */
+    void fromStream (std::istream& ioIn) {}
+
+    /** Display of the structure. */
+    const std::string describe() const { return ""; }
     
-  public:
-    // ////////// Constructors and destructors /////////
-    /** Constructor. */
-    EventQueue (const DateTime_T&);
-  
-    /** Destructor. */
-    virtual ~EventQueue ();
-  
   public:
     // ////////// Business methods /////////
-    /** Pop event */
-    EventStruct* popEvent ();
+    /** Pop event. */
+    EventStruct& popEvent ();
     
-    /** Add event */
-    void addEvent (const EventStruct&);
+    /** Add event.
+     <br>If there already is an event with the same datetime, move the given
+    event one nanosecond forward and retry the insertion until succeed. */
+    void addEvent (EventStruct&);
+
+    /** Erase the last used event. */
+    void eraseLastUsedEvent ();
     
     /** Is queue done */
     const bool isQueueDone () const;
-    
-    
+        
     // ////////// Debug methods /////////
     /** Queue size */
     const Count_T getQueueSize () const;
@@ -51,23 +45,20 @@ namespace stdair {
     /** Is queue empty */
     const bool isQueueEmpty () const;
     
-    /** Get position of current */
-    const Count_T getPositionOfCurrent () const;
-  
-  private:
+  public:
+    // ////////// Constructors and destructors /////////
     /** Default constructors. */
+    EventQueue ();
+    /** Copy constructor. */
     EventQueue (const EventQueue&);
+    /** Destructor. */
+     ~EventQueue ();
 
   private:
     // ////////// Attributes //////////
-    
     /** Event list */
     EventList_T _eventList;
-    
-    /** Pointer to current event */
-    EventList_T::iterator _currentEvent;
-
   };
 
 }
-#endif // __STDAIR_BAS_EVENTQUEUE_HPP
+#endif // __STDAIR_BOM_EVENTQUEUE_HPP

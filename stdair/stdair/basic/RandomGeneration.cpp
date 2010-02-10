@@ -16,6 +16,13 @@ namespace stdair {
   }
 
   // //////////////////////////////////////////////////////////////////////
+  RandomGeneration::RandomGeneration (const RandomGeneration& iRandomGeneration)
+    : _seed (iRandomGeneration._seed),
+      _generator (iRandomGeneration._generator),
+      _uniformGenerator (iRandomGeneration._uniformGenerator) {
+  }
+
+  // //////////////////////////////////////////////////////////////////////
   RandomGeneration::~RandomGeneration () {
   }
 

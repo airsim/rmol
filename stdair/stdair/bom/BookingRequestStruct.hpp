@@ -15,7 +15,6 @@ namespace stdair {
 
   /** Structure holding the elements of a booking request. */
   struct BookingRequestStruct : public StructAbstract {
-    friend class DemandStream;
     
   public:
     // /////////////// Getters /////////////////
@@ -94,13 +93,13 @@ namespace stdair {
     /** Display of the structure. */
     const std::string describe() const;
 
-  private :
     // /////////////// Constructors and Destructors /////////////////
-    BookingRequestStruct ();
   public :
     BookingRequestStruct (const AirportCode_T&, const AirportCode_T&,
                           const Date_T&, const DateTime_T&,
                           const PassengerType_T&, const NbOfSeats_T&);
+  public :
+    BookingRequestStruct ();
     BookingRequestStruct (const BookingRequestStruct&);
   public:
     ~BookingRequestStruct();

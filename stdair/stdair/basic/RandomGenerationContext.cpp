@@ -15,6 +15,12 @@ namespace stdair {
   }
   
   // //////////////////////////////////////////////////////////////////////
+  RandomGenerationContext::RandomGenerationContext (const RandomGenerationContext& iRandomGenerationContext)
+    : _cumulativeProbabilitySoFar (iRandomGenerationContext._cumulativeProbabilitySoFar),
+      _numberOfRequestsGeneratedSoFar (iRandomGenerationContext._numberOfRequestsGeneratedSoFar) {
+  }
+  
+  // //////////////////////////////////////////////////////////////////////
   RandomGenerationContext::~RandomGenerationContext () {
   }
     

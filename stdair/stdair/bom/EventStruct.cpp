@@ -2,6 +2,7 @@
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // STDAIR
+#include <stdair/basic/BasConst_General.hpp>
 #include <stdair/bom/BookingRequestStruct.hpp>
 #include <stdair/bom/EventStruct.hpp>
 
@@ -10,10 +11,11 @@ namespace stdair {
   // //////////////////////////////////////////////////////////////////////
   EventStruct::
   EventStruct(const EventType_T& iEventType, const DateTime_T& iDateTime,
-              DemandStream& ioDemandStream,  BookingRequestPtr_T ioRequestPtr)
+              const DemandStreamKey_T& iDemandStreamKey,
+              BookingRequestPtr_T ioRequestPtr)
     : _eventType (iEventType),
       _eventDateTime (iDateTime),
-      _demandStream (&ioDemandStream) {
+      _demandStreamKey (iDemandStreamKey) {
     _request = ioRequestPtr;
   }
 
@@ -22,7 +24,7 @@ namespace stdair {
   EventStruct (const EventStruct& iEventStruct)
     : _eventType (iEventStruct._eventType),
       _eventDateTime (iEventStruct._eventDateTime),
-      _demandStream (iEventStruct._demandStream) {
+      _demandStreamKey (iEventStruct._demandStreamKey) {
     _request = iEventStruct._request;
   }
   
@@ -30,11 +32,16 @@ namespace stdair {
   EventStruct::EventStruct (const DateTime_T& iDateTime) 
     : _eventType (""),
       _eventDateTime (iDateTime),
-      _demandStream (NULL) {
+      _demandStreamKey (-1) {
   }
   
   // //////////////////////////////////////////////////////////////////////
   EventStruct::~EventStruct () {
+  }
+
+  // ////////////////////////////////////////////////////////////////////
+  void EventStruct::moveForwardInTime () {
+    _eventDateTime += DEFAULT_EPSILON_DURATION;
   }
 
 }
