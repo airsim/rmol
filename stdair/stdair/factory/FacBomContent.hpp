@@ -173,6 +173,29 @@ namespace stdair {
         iReferenceOutboundPath._flightPathCode;
     }
 
+    // //////////////////////////////////////////////////////////////////
+    // /////////////////////// Dedicated factories //////////////////////
+    // //////////////////////////////////////////////////////////////////
+    template <typename DEMAND_STREAM>
+    DEMAND_STREAM& create (const DemandStreamKey_T& iKey,
+                           const DemandCharacteristics& iDemandCharacteristics,
+                           const DemandDistribution& iDemandDistribution,
+                           const RandomSeed_T& iNumberOfRequestsSeed,
+                           const RandomSeed_T& iRequestDateTimeSeed,
+                           const RandomSeed_T& iDemandCharacteristicsSeed) {
+      DEMAND_STREAM* aDemandStream_ptr =
+        new DEMAND_STREAM (iKey, iDemandCharacteristics, iDemandDistribution,
+                           iNumberOfRequestsSeed, iRequestDateTimeSeed,
+                           iDemandCharacteristicsSeed);
+      assert (aDemandStream_ptr != NULL);
+
+      // The new object is added to the pool of content objects
+      _contentPool.push_back (aDemandStream_ptr);
+      
+      return *aDemandStream_ptr;
+    }
+
+    
   public:
     /** Provide the unique instance.
         <br>The singleton is instantiated when first used.

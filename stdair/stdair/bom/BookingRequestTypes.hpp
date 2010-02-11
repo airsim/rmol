@@ -1,6 +1,6 @@
 // //////////////////////////////////////////////////////////////////////
-#ifndef __STDAIR_BOM_BOOKINGCLASSTYPES_HPP
-#define __STDAIR_BOM_BOOKINGCLASSTYPES_HPP
+#ifndef __STDAIR_BOM_BOOKINGREQUESTTYPES_HPP
+#define __STDAIR_BOM_BOOKINGREQUESTTYPES_HPP
 
 // //////////////////////////////////////////////////////////////////////
 // Import section
@@ -18,5 +18,5 @@ namespace stdair {
   typedef boost::shared_ptr<BookingRequestStruct> BookingRequestPtr_T;
   
 }
-#endif // __STDAIR_BOM_BOOKINGCLASSTYPES_HPP
+#endif // __STDAIR_BOM_BOOKINGREQUESTTYPES_HPP
 

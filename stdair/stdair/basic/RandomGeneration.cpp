@@ -23,6 +23,13 @@ namespace stdair {
   }
 
   // //////////////////////////////////////////////////////////////////////
+  RandomGeneration::RandomGeneration ()
+    : _seed (0), _generator (0),
+      _uniformGenerator (_generator, boost::uniform_real<> (0, 1)) {
+    assert (false);
+  }
+
+  // //////////////////////////////////////////////////////////////////////
   RandomGeneration::~RandomGeneration () {
   }
 

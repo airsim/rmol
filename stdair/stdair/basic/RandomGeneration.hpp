@@ -22,28 +22,30 @@ namespace stdair {
     }
     
     // //////////// Business Methods /////////////
-    /** Generate a randomized number following a uniform distribution between 0 (included) and 1 (excluded). */
+    /** Generate a randomized number following a uniform distribution
+        between 0 (included) and 1 (excluded). */
     RealNumber_T generateUniform01 ();
     
-    /** Generate a randomized number following a uniform distribution between a minimum (included) and a maximum (excluded) value. */
+    /** Generate a randomized number following a uniform distribution
+        between a minimum (included) and a maximum (excluded)
+        value. */
     RealNumber_T generateUniform (const RealNumber_T&, const RealNumber_T&);
     
-    /** Generate a randomized number following a normal distribution specified by a mean and a standard deviation. */
+    /** Generate a randomized number following a normal distribution
+        specified by a mean and a standard deviation. */
     RealNumber_T generateNormal (const RealNumber_T&, const RealNumber_T&);
     
   public:
     // ////////// Constructors and destructors /////////
     /** Constructor. */
     RandomGeneration (const RandomSeed_T&);
-  
-    /** Destructor. */
-    virtual ~RandomGeneration ();
-  
-  public :
     /** Default constructors. */
     RandomGeneration ();
     RandomGeneration (const RandomGeneration&);
-
+    
+    /** Destructor. */
+    virtual ~RandomGeneration ();
+  
     /** Initialize the random generator.
         <br>A uniform random number distribution is defined, which
         produces "real" values between 0 and 1 (0 inclusive, 1
