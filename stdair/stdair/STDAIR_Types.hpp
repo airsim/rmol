@@ -83,12 +83,6 @@ namespace stdair {
   /** Database request statement handler. */
   typedef soci::statement DBRequestStatement_T;
   
-  /** Define the type for durations (e.g., elapsed in-flight time). */
-  typedef boost::posix_time::time_duration Duration_T;
-
-  /** Define the type for date (e.g., departure date of a flight). */
-  typedef boost::gregorian::date Date_T;
-    
   /** Define the type for network ID. */
   typedef std::string NetworkID_T;
 
@@ -120,12 +114,12 @@ namespace stdair {
       B: booked, C: cancelled, R: Rejected). */
   typedef std::string RequestStatus_T;
 
-  /** Define the Date (e.g., flight-date departure date). */
-  typedef boost::gregorian::date Date_T;
-
-  /** Define the Duration (e.g., elapsed in-flight time). */
+  /** Define the type for durations (e.g., elapsed in-flight time). */
   typedef boost::posix_time::time_duration Duration_T;
 
+  /** Define the type for date (e.g., departure date of a flight). */
+  typedef boost::gregorian::date Date_T;
+    
   /** Time */
   typedef boost::posix_time::time_duration Time_T;
 
@@ -145,7 +139,7 @@ namespace stdair {
   typedef boost::gregorian::date_duration DateOffSet_T;
 
   /** Define a duration in number of days. */
-  typedef long DayDuration_T;
+  typedef unsigned int DayDuration_T;
 
   /** Define the Saturday stay status of a travel. */
   typedef bool SaturdayStay_T;
@@ -203,6 +197,9 @@ namespace stdair {
 
   /** Define a price currency (e.g., EUR for Euros). */
   typedef std::string PriceCurrency_T;
+
+  /** Define a Willingness-To-Pay (WTP) (e.g., 1000.0 Euros). */
+  typedef double WTP_T;
 
   /** Define the number of seats required by a demand. */
   typedef unsigned short NbOfSeats_T;
