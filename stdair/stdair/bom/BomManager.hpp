@@ -22,6 +22,7 @@ namespace stdair {
   class NetworkDate;
   class AirportDate;
   class OutboundPath;
+  struct BookingRequestStruct;
 
   /** Utility class for StdAir objects. */
   class BomManager {
@@ -46,21 +47,28 @@ namespace stdair {
         @param std::ostream& Output stream in which the BOM tree should be
                logged/dumped.
         @param const FlightDate& Root of the BOM tree to be displayed. */
-    static void display (std::ostream&, const FlightDate&);
+    static void csvFlightDateDisplay (std::ostream&, const FlightDate&);
 
     /** Recursively display (dump in the underlying output log stream)
         the objects of the given BOM tree.
         @param std::ostream& Output stream in which the BOM tree should be
                logged/dumped.
         @param const LegDate& Root of the BOM tree to be displayed. */
-    static void display (std::ostream&, const LegDate&);
+    static void csvLegDateDisplay (std::ostream&, const FlightDate&);
 
     /** Recursively display (dump in the underlying output log stream)
         the objects of the given BOM tree.
         @param std::ostream& Output stream in which the BOM tree should be
                logged/dumped.
         @param const LegCabin& Root of the BOM tree to be displayed. */
-    static void display (std::ostream&, const LegCabin&);
+    static void csvLegCabinDisplay (std::ostream&, const FlightDate&);
+
+    /** Recursively display (dump in the underlying output log stream)
+        the objects of the given BOM tree.
+        @param std::ostream& Output stream in which the BOM tree should be
+               logged/dumped.
+        @param const LegCabin& Root of the BOM tree to be displayed. */
+    static void csvBPVDisplay (std::ostream&, const FlightDate&);
 
     /** Recursively display (dump in the underlying output log stream)
         the objects of the given BOM tree.
@@ -110,7 +118,15 @@ namespace stdair {
                logged/dumped.
         @param const OutboundPath& Root of the BOM tree to be displayed. */
     static void display (std::ostream&, const OutboundPath&);
-  };
+
+    /** Recursively display (dump in the underlying output log stream)
+        the objects of the given BOM tree.
+        @param std::ostream& Output stream in which the BOM tree should be
+               logged/dumped.
+        @param const LegCabin& Root of the BOM tree to be displayed. */
+    static void csvDisplay (std::ostream&,
+                            const BookingRequestStruct& iBookingRequest);
+  };    
 
 }
 #endif // __STDAIR_BOM_BOMMANAGER_HPP

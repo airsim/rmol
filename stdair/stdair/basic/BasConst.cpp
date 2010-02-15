@@ -488,4 +488,51 @@ namespace stdair {
       (Origin & Destination). */
   const unsigned short MAXIMUM_NUMBER_OF_SEGMENTS_IN_OND = 3;
 
+  
+  // ////////// BomManager-related constants ///////////
+  /** Array with the indentation spaces needed for all the BOM
+      hierachical levels. */
+  const std::string DISPLAY_LEVEL_STRING_ARRAY[51] =
+  { "", "  ", "    ", "      ",
+    "        ", "          ", "            ", "              ",
+    "                ", "                  ", "                    ",
+    "                      ", "                        ",
+    "                          ", "                            ",
+    "                              ", "                                ",
+    "                                    ",
+    "                                      ",
+    "                                        ",
+    "                                          ",
+    "                                            ",
+    "                                              ",
+    "                                                ",
+    "                                                  ",
+    "                                                    ",
+    "                                                      ",
+    "                                                        ",
+    "                                                          ",
+    "                                                            ",
+    "                                                              ",
+    "                                                                ",
+    "                                                                  ",
+    "                                                                    ",
+    "                                                                      ",
+    "                                                                        ",
+    "                                                                          ",
+    "                                                                            ",
+    "                                                                              ",
+    "                                                                                ",
+    "                                                                                  ",
+    "                                                                                    ",
+    "                                                                                      ",
+    "                                                                                        ",
+    "                                                                                          ",
+    "                                                                                            ",
+    "                                                                                              ",
+    "                                                                                                ",
+    "                                                                                                  ",
+    "                                                                                                    ",
+    "                                                                                                      " };
+
+  
 }

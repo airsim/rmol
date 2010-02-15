@@ -4,7 +4,8 @@
 // STL
 #include <cassert>
 #include <ostream>
-// STDAIR
+// StdAir
+#include <stdair/basic/BasConst_BomManager.hpp>
 #include <stdair/bom/BomRoot.hpp>
 #include <stdair/bom/AirlineFeatureSet.hpp>
 #include <stdair/bom/AirlineFeature.hpp>
@@ -21,6 +22,7 @@
 #include <stdair/bom/NetworkDate.hpp>
 #include <stdair/bom/AirportDate.hpp>
 #include <stdair/bom/OutboundPath.hpp>
+#include <stdair/bom/BookingRequestStruct.hpp>
 #include <stdair/bom/BomManager.hpp>
 
 namespace stdair {
@@ -70,7 +72,7 @@ namespace stdair {
       const FlightDate& lCurrentFD = *itFD;
       
       // Call recursively the display() method on the children objects
-      display (oStream, lCurrentFD);
+      csvFlightDateDisplay (oStream, lCurrentFD);
     }
     
     // Reset formatting flags of the given output stream
@@ -78,24 +80,46 @@ namespace stdair {
   }
   
   // //////////////////////////////////////////////////////////////////////
-  void BomManager::display (std::ostream& oStream,
-                            const FlightDate& iFlightDate) {
+  void BomManager::csvFlightDateDisplay (std::ostream& oStream,
+                                         const FlightDate& iFlightDate) {
     // Store current formatting flags of the given output stream
     std::ios::fmtflags oldFlags = oStream.flags();
 
-    // Flight-date level
-    oStream << iFlightDate.describeKey() << std::endl;
+    // Display FlightDate-level information
+    oStream << "******************************************" << std::endl;
+    oStream << "FlightDate: " << iFlightDate.describeKey()  << std::endl
+            << "-----------" << std::endl;
+    oStream << "FlightNb (FlightDate), "
+            << "SS, Rev, Fare, ASK, Yield, RPK, URev, LF, "
+            << std::endl << std::endl;
+
+    oStream << iFlightDate.getFlightNumber()
+            << " (" << iFlightDate.getFlightDate() << "), "
+            << iFlightDate.getBookingCounter() << ", "
+            << iFlightDate.getRevenue() << ", "
+            << iFlightDate.getAverageFare() << ", "
+            << iFlightDate.getASK() << ", "
+            << iFlightDate.getYield() << ", "
+            << iFlightDate.getRPK() << ", "
+            << iFlightDate.getUnitRevenue() << ", "
+            << iFlightDate.getLoadFactor() << ", " << std::endl;
+    oStream << "******************************************" << std::endl;
     
-    // Browse the LegDate objects
-    const LegDateList_T& lLDList = iFlightDate.getLegDateList();
-    for (LegDateList_T::iterator itLD = lLDList.begin();
-         itLD != lLDList.end(); ++itLD) {
-      const LegDate& lCurrentLD = *itLD;
-      
-      // Call recursively the display() method on the children objects
-      display (oStream, lCurrentLD);
-    }
+    // Display the leg-dates
+    csvLegDateDisplay (oStream, iFlightDate);
     
+    // Display the leg-cabins
+    csvLegCabinDisplay (oStream, iFlightDate);
+    
+    // Display the buckets
+    csvBPVDisplay (oStream, iFlightDate);
+    
+    // Display the segment-cabins
+    // csvSegmentCabinDisplay (oStream, iFlightDate);
+    
+    // Display the booking classes
+    // csvClassDisplay (oStream, iFlightDate);
+
     // Browse the SegmentDate objects
     const SegmentDateList_T& lSDList = iFlightDate.getSegmentDateList();
     for (SegmentDateList_T::iterator itSD = lSDList.begin();
@@ -111,41 +135,136 @@ namespace stdair {
   }
   
   // //////////////////////////////////////////////////////////////////////
-  void BomManager::display (std::ostream& oStream,
-                            const LegDate& iLegDate) {
+  void BomManager::csvLegDateDisplay (std::ostream& oStream,
+                                      const FlightDate& iFlightDate) {
     // Store current formatting flags of the given output stream
     std::ios::fmtflags oldFlags = oStream.flags();
 
-    // Leg-date level
-    oStream << iLegDate.describeKey() << std::endl;
+    // Display the header
+    oStream << "******************************************" << std::endl;
+    oStream << "Leg-Dates:" << std::endl
+            << "----------" << std::endl;
+    oStream << "FlightNb (FlightDate), Leg, "
+            << "Dates, Times, Dist, Cap, ASK, SS, LF, "
+            << std::endl << std::endl;
     
-    // Browse the LegCabin objects
-    const LegCabinList_T& lLCList = iLegDate.getLegCabinList();
-    for (LegCabinList_T::iterator itLC = lLCList.begin();
-         itLC != lLCList.end(); ++itLC) {
-      const LegCabin& lCurrentLC = *itLC;
-
-      // Call recursively the display() method on the children objects
-      display (oStream, lCurrentLC);
+    // Browse the LegDate objects
+    const LegDateList_T& lLDList = iFlightDate.getLegDateList();
+    for (LegDateList_T::iterator itLD = lLDList.begin();
+         itLD != lLDList.end(); ++itLD) {
+      const LegDate& lCurrentLD = *itLD;
+      
+      oStream << iFlightDate.getFlightNumber()
+              << " (" << iFlightDate.getFlightDate() << "), "
+              << lCurrentLD.getBoardingPoint() << "-"
+              << lCurrentLD.getOffPoint() << ", "
+              << lCurrentLD.getBoardingDate() << " -> "
+              << lCurrentLD.getOffDate() << " / "
+              << lCurrentLD.getDateOffSet() << ", "
+              << lCurrentLD.getBoardingTime() << " -> "
+              << lCurrentLD.getOffTime() << " ("
+              << lCurrentLD.getTimeOffSet() << ") / "
+              << lCurrentLD.getElapsedTime() << ", "
+              << lCurrentLD.getDistance() << ", "
+              << lCurrentLD.getCapacity() << ", "
+              << lCurrentLD.getASK() << ", "
+              << lCurrentLD.getSoldSeat() << ", "
+              << lCurrentLD.getLoadFactor() << ", "
+              << std::endl;
     }
+    oStream << "******************************************" << std::endl;
     
     // Reset formatting flags of the given output stream
     oStream.flags (oldFlags);
   }
   
   // //////////////////////////////////////////////////////////////////////
-  void BomManager::display (std::ostream& oStream,
-                            const LegCabin& iLegCabin) {
+  void BomManager::csvLegCabinDisplay (std::ostream& oStream,
+                                       const FlightDate& iFlightDate) {
     // Store current formatting flags of the given output stream
     std::ios::fmtflags oldFlags = oStream.flags();
 
-    // Leg-cabin level
-    oStream << iLegCabin.describeKey() << std::endl;
-    
+    // Display the header
+    oStream << "******************************************" << std::endl;
+    oStream << "LegCabins:" << std::endl
+            << "----------" << std::endl;
+    oStream << "FlightNb (FlightDate), Leg, Cabin, "
+            << "Cap, SS, CS, AvlPool, Avl, BP, "
+            << std::endl;
+
+    // Browse the LegDate objects
+    const LegDateList_T& lLDList = iFlightDate.getLegDateList();
+    for (LegDateList_T::iterator itLD = lLDList.begin();
+         itLD != lLDList.end(); ++itLD) {
+      const LegDate& lCurrentLD = *itLD;
+      
+      // Browse the LegCabin objects
+      const LegCabinList_T& lLCList = lCurrentLD.getLegCabinList();
+      for (LegCabinList_T::iterator itLC = lLCList.begin();
+           itLC != lLCList.end(); ++itLC) {
+        const LegCabin& lCurrentLC = *itLC;
+        
+        oStream << iFlightDate.getFlightNumber()
+                << " (" << iFlightDate.getFlightDate() << "), "
+                << lCurrentLD.getBoardingPoint() << "-"
+                << lCurrentLD.getOffPoint() << ", "
+                << lCurrentLC.getCabinCode() << ", "
+                << lCurrentLC.getCapacity() << ", "
+                << lCurrentLC.getSoldSeat() << ", "
+                << lCurrentLC.getCommitedSpace() << ", "
+                << lCurrentLC.getAvailabilityPool() << ", "
+                << lCurrentLC.getAvailability() << ", "
+                << lCurrentLC.getCurrentBidPrice() << ", " << std::endl;
+      }
+    }
+    oStream << "******************************************" << std::endl;
+
     // Reset formatting flags of the given output stream
     oStream.flags (oldFlags);
   }
   
+  // //////////////////////////////////////////////////////////////////////
+  void BomManager::csvBPVDisplay (std::ostream& oStream,
+                                  const FlightDate& iFlightDate) {
+    // Store current formatting flags of the given output stream
+    std::ios::fmtflags oldFlags = oStream.flags();
+
+    // Display the header
+    oStream << "******************************************" << std::endl;
+    oStream << "Bid-Price Vector:" << std::endl;
+    oStream << "Leg, Cabin, Yield, AV0, DSE, AV1, AV2, AV3, AV, SI" << std::endl;
+
+    // Browse the LegDate objects
+    const LegDateList_T& lLDList = iFlightDate.getLegDateList();
+    for (LegDateList_T::iterator itLD = lLDList.begin();
+         itLD != lLDList.end(); ++itLD) {
+      const LegDate& lCurrentLD = *itLD;
+      
+      // Browse the LegCabin objects
+      const LegCabinList_T& lLCList = lCurrentLD.getLegCabinList();
+      for (LegCabinList_T::iterator itLC = lLCList.begin();
+           itLC != lLCList.end(); ++itLC) {
+        LegCabin& lCurrentLC = *itLC;
+        
+        const BidPriceVector_T& aBidPriceVector = lCurrentLC.getBidPriceVector();
+        for (BidPriceVector_T::const_reverse_iterator itBidPrice =
+               aBidPriceVector.rbegin();
+             itBidPrice != aBidPriceVector.rend(); ++itBidPrice) {
+          const BidPrice_T& aBidPrice = *itBidPrice;
+
+          oStream << lCurrentLD.getBoardingPoint() << "-"
+                  << lCurrentLD.getOffPoint() << ", "
+                  << lCurrentLC.getCabinCode() << ", "
+                  << aBidPrice << ", " << std::endl;
+        }
+      }
+    }
+    oStream << "******************************************" << std::endl;
+    
+    // Reset formatting flags of the given output stream
+    oStream.flags (oldFlags);
+  }
+
   // //////////////////////////////////////////////////////////////////////
   void BomManager::display (std::ostream& oStream,
                             const SegmentDate& iSegmentDate) {
@@ -292,5 +411,32 @@ namespace stdair {
     // Reset formatting flags of the given output stream
     oStream.flags (oldFlags);
   }
+
+  // //////////////////////////////////////////////////////////////////////
+  void BomManager::csvDisplay (std::ostream& oStream,
+                               const BookingRequestStruct& iBookingRequest) {
+    // Store current formatting flags of the given output stream
+    std::ios::fmtflags oldFlags = oStream.flags();
+
+    /*
+      #id, request_date (YYMMDD), request_time (HHMMSS), POS (three-letter code),
+       origin (three-letter code), destination (three-letter code),
+       preferred departure date (YYMMDD), preferred departure time (HHMM),
+       min departure time (HHMM), max departure time (HHMM),
+       preferred cabin (F/C/M), trip type (OW/RO/RI), duration of stay (days),
+       frequent flyer tier (G/S/K/N), willingness-to-pay (SGD),
+       disutility per stop (SGD), preferred arrival date (YYMMDD),
+       preferred arrival time (HHMM), value of time (SGD per hour)
+
+      #Preferred cabin: F=First, C=Business M=Economy
+      #Trip type: OW=One-way, RO=Round-trip outbound portion,
+        RI=Round-trip inbound portion
+      #Duration of stay: irrelevant in case of one-way, but set to 0
+      #Frequent-flyer tier: G=Gold, S=Silver, K=Basic (Krisflyer), N=None
+    */
     
+    // Reset formatting flags of the given output stream
+    oStream.flags (oldFlags);
+  }
+  
 }
