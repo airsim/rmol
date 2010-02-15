@@ -6,7 +6,6 @@
 // //////////////////////////////////////////////////////////////////////
 // StdAir
 #include <stdair/STDAIR_Types.hpp>
-#include <stdair/basic/PassengerType.hpp>
 #include <stdair/bom/BomKey.hpp>
 #include <stdair/bom/BomRootKey.hpp>
 
@@ -25,7 +24,7 @@ namespace stdair {
     DemandStreamKey_T (const AirportCode_T& iOrigin,
                        const AirportCode_T& iDestination,
                        const Date_T& iPreferredDepartureDate,
-                       const PassengerType& iPaxType);
+                       const CabinCode_T& iPreferredCabin);
     DemandStreamKey_T (const DemandStreamKey_T&);
 
     /** Destructor. */
@@ -53,9 +52,9 @@ namespace stdair {
       return _preferredDepartureDate;
     }
     
-    /** Get the passenger type. */
-    const PassengerType& getPassengerType() const {
-      return _paxType;
+    /** Get the preferred cabin. */
+    const CabinCode_T& getPreferredCabin() const {
+      return _preferredCabin;
     }
 
     
@@ -89,8 +88,8 @@ namespace stdair {
     /** Preferred departure date */
     Date_T _preferredDepartureDate;
 
-    /** Passenger type. */
-    PassengerType _paxType;
+    /** Preferred cabin. */
+    CabinCode_T _preferredCabin;
   };
 
 }

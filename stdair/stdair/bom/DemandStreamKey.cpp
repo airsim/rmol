@@ -7,24 +7,24 @@
 namespace stdair {
 
   // ////////////////////////////////////////////////////////////////////
-  DemandStreamKey_T::DemandStreamKey_T ()
-    : _paxType (PassengerType::LAST_VALUE) {
+  DemandStreamKey_T::DemandStreamKey_T () {
   }
   
   // ////////////////////////////////////////////////////////////////////
   DemandStreamKey_T::DemandStreamKey_T (const AirportCode_T& iOrigin,
                                         const AirportCode_T& iDestination,
                                         const Date_T& iPreferredDepartureDate,
-                                        const PassengerType& iPaxType)
+                                        const CabinCode_T& iPreferredCabin)
     : _origin (iOrigin), _destination (iDestination),
-      _preferredDepartureDate (iPreferredDepartureDate), _paxType (iPaxType) {
+      _preferredDepartureDate (iPreferredDepartureDate),
+      _preferredCabin (iPreferredCabin) {
   }
 
   // ////////////////////////////////////////////////////////////////////
   DemandStreamKey_T::DemandStreamKey_T (const DemandStreamKey_T& iKey)
     : _origin (iKey._origin), _destination (iKey._destination),
       _preferredDepartureDate (iKey._preferredDepartureDate),
-      _paxType (iKey._paxType) {
+      _preferredCabin (iKey._preferredCabin) {
   }
 
   // ////////////////////////////////////////////////////////////////////
@@ -44,7 +44,7 @@ namespace stdair {
   const std::string DemandStreamKey_T::toString() const {
     std::ostringstream oStr;
     oStr << _origin << "-" << _destination << " " << _preferredDepartureDate
-         << " " << _paxType;
+         << " " << _preferredCabin;
     return oStr.str();
   }
   

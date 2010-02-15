@@ -6,11 +6,10 @@
 #include <iosfwd>
 #include <ostream>
 #include <sstream>
+#include <cmath>
 // Boost
 #include <boost/math/distributions/normal.hpp>
-// Math
-#include <math.h>
-// STDAIR
+// StdAir
 #include <stdair/basic/BasConst_General.hpp>
 #include <stdair/basic/DemandCharacteristics.hpp>
 #include <stdair/basic/RandomGeneration.hpp>

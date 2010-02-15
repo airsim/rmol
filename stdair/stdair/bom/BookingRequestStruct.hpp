@@ -10,7 +10,6 @@
 // StdAir
 #include <stdair/STDAIR_Types.hpp>
 #include <stdair/basic/StructAbstract.hpp>
-#include <stdair/basic/PassengerType.hpp>
 
 namespace stdair {
 
@@ -38,9 +37,9 @@ namespace stdair {
       return _requestDateTime;
     }
 
-    /** Get the passenger type. */
-    const PassengerType& getPaxType() const {
-      return _paxType;
+    /** Get the preferred cabin. */
+    const CabinCode_T& getPreferredCabin() const {
+      return _preferredCabin;
     }
 
     /** Get the party size. */
@@ -70,9 +69,9 @@ namespace stdair {
       _requestDateTime = iRequestDateTime;
     }
     
-    /** Set the passenger type. */
-    void setPaxType (const PassengerType& iPaxType) {
-      _paxType = iPaxType;
+    /** Set the preferred cabin. */
+    void setPreferredCabin (const CabinCode_T& iPreferredCabin) {
+      _preferredCabin = iPreferredCabin;
     }
 
     /** Set the party size. */
@@ -99,7 +98,7 @@ namespace stdair {
     /** Constructor. */
     BookingRequestStruct (const AirportCode_T&, const AirportCode_T&,
                           const Date_T&, const DateTime_T&,
-                          const PassengerType&, const NbOfSeats_T&);
+                          const CabinCode_T&, const NbOfSeats_T&);
   public :
     /** Default constructor. */
     BookingRequestStruct ();
@@ -121,11 +120,11 @@ namespace stdair {
     /** Departure date. */
     Date_T _preferredDepartureDate;
 
-    /** Request datetime */
+    /** Request date-time */
     DateTime_T _requestDateTime;
 
-    /** Passenger type. */
-    PassengerType _paxType;
+    /** Preferred cabin. */
+    CabinCode_T _preferredCabin;
 
     /** Party size. */
     NbOfSeats_T _partySize;

@@ -32,8 +32,8 @@ namespace stdair {
     /** Get the preferred departure date. */
     const Date_T& getPreferredDepartureDate() const;
 
-    /** Get the passenger type. */
-    const PassengerType& getPaxType() const;
+    /** Get the preferred cabin. */
+    const CabinCode_T& getPreferredCabin() const;
     
     /** Get the arrival pattern. */
     const ContinuousFloatDuration_T& getArrivalPattern() const {

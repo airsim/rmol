@@ -16,12 +16,12 @@ namespace stdair {
                                               const AirportCode_T& iDestination,
                                               const Date_T& iDepartureDate,
                                               const DateTime_T& iRequestDateTime,
-                                              const PassengerType& iPaxType,
+                                              const CabinCode_T& iPreferredCabin,
                                               const NbOfSeats_T& iPartySize)
     : _origin (iOrigin), _destination (iDestination),
       _preferredDepartureDate (iDepartureDate), 
       _requestDateTime (iRequestDateTime),
-      _paxType (iPaxType), _partySize (iPartySize) {
+      _preferredCabin (iPreferredCabin), _partySize (iPartySize) {
   }
   
   // //////////////////////////////////////////////////////////////////////
@@ -41,7 +41,8 @@ namespace stdair {
   const std::string BookingRequestStruct::describe() const {
     std::ostringstream oStr;
     oStr << _origin << " - " << _destination << " " << _preferredDepartureDate
-         << " " << _requestDateTime << " " << _paxType << " " << _partySize;
+         << " " << _requestDateTime << " " << _preferredCabin
+         << " " << _partySize;
     return oStr.str();
   }
 

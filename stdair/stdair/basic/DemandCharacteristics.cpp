@@ -18,7 +18,7 @@ namespace stdair {
   
   // /////////////////////////////////////////////////////
   DemandCharacteristics::DemandCharacteristics ()
-    : _key (DemandStreamKey_T("", "", DEFAULT_DATE, PassengerType::LAST_VALUE)) {
+    : _key (DemandStreamKey_T ("", "", DEFAULT_DATE, "")) {
   }
   
   // /////////////////////////////////////////////////////
@@ -48,8 +48,8 @@ namespace stdair {
   }
 
   // /////////////////////////////////////////////////////
-  const PassengerType& DemandCharacteristics::getPaxType() const {
-    return _key.getPassengerType();
+  const CabinCode_T& DemandCharacteristics::getPreferredCabin() const {
+    return _key.getPreferredCabin();
   }
   
   // /////////////////////////////////////////////////////
@@ -65,7 +65,7 @@ namespace stdair {
          << std::endl;
     oStr << "Preferred departure date ......... : "
          << _key.getPreferredDepartureDate() << std::endl;
-    oStr << "Passenger type ................... : " << _key.getPassengerType()
+    oStr << "Preferred cabin .................. : " << _key.getPreferredCabin()
          << std::endl;
     oStr << "Arrival pattern (days from departure, proportion): ";
 

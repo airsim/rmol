@@ -53,9 +53,9 @@ namespace stdair {
       return _demandCharacteristics.getPreferredDepartureDate();
     }
 
-    /** Get the passenger type. */
-    const PassengerType& getPaxType() const {
-      return _demandCharacteristics.getPaxType();
+    /** Get the preferred cabin. */
+    const CabinCode_T& getPreferredCabin() const {
+      return _demandCharacteristics.getPreferredCabin();
     }
     
     /** Get the arrival pattern. */
