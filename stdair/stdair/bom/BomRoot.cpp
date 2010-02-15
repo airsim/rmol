@@ -43,6 +43,16 @@ namespace stdair {
   NetworkMap_T BomRoot::getNetworkMap () const {
     return _bomRootStructure.getSecondChildrenHolder();
   }
+  
+  // //////////////////////////////////////////////////////////////////////
+  DemandStreamList_T BomRoot::getDemandStreamList () const {
+    return _bomRootStructure.getDemandStreamHolder();
+  }
+
+  // //////////////////////////////////////////////////////////////////////
+  DemandStreamMap_T BomRoot::getDemandStreamMap () const {
+    return _bomRootStructure.getDemandStreamHolder();
+  }
 
   // ////////////////////////////////////////////////////////////////////
   Inventory* BomRoot::getInventory (const AirlineCode_T& iAirlineCode) const {
@@ -71,27 +81,25 @@ namespace stdair {
     
     return oNetwork_ptr;
   }
+
+  // ////////////////////////////////////////////////////////////////////
+  DemandStream& BomRoot::
+  getDemandStream (const DemandStreamKeyStr_T& iKey) const {
+    DemandStreamMap_T lDemandStreamMap = getDemandStreamMap ();
+
+    DemandStreamMap_T::iterator itDemandStream = lDemandStreamMap.find (iKey);
+    assert (itDemandStream != lDemandStreamMap.end());
+
+    DemandStream* oDemandStream_ptr = itDemandStream->second;
+    assert (oDemandStream_ptr != NULL);
+    
+    return *oDemandStream_ptr;
+  }
   
   // ////////////////////////////////////////////////////////////////////
   AirlineFeatureSet& BomRoot::getAirlineFeatureSet() const {
     assert (_airlineFeatureSet != NULL);
     return *_airlineFeatureSet;
-  }
-
-  // ////////////////////////////////////////////////////////////////////
-  void BomRoot::addDemandStream (const DemandStreamKeyStr_T& iKeyStr,
-                                 DemandStream& ioDemandStream) {
-    // Insert the reference on the given DemandStream object into the
-    // dedicated list
-    const bool hasInsertBeenSuccessfull =
-      _demandStreamList.insert (DemandStreamList_T::
-                                value_type (iKeyStr, &ioDemandStream)).second;
-    if (hasInsertBeenSuccessfull == false) {
-      STDAIR_LOG_ERROR ("The DemandStream object with key: " << iKeyStr
-                        << " can not be inserted into the dedicated list");
-      STDAIR_LOG_ERROR ("DemandStream object: " << ioDemandStream);
-      assert (false);
-    }
   }
   
 }

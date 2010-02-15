@@ -6,19 +6,30 @@
 // //////////////////////////////////////////////////////////////////////
 // STL
 #include <map>
-// Boost
-#include <boost/shared_ptr.hpp>
-// STDAIR
-#include <stdair/STDAIR_Types.hpp>
+#include <vector>
 
 namespace stdair {
 
-  // Forward declaration
+  // Forward declarations.
+  template <typename BOM_CONTENT> class DemandStreamStructure;
+  template <typename BOM> struct BomList_T;
+  template <typename BOM> struct BomMap_T;
   class DemandStream;
-
   
-  /** Define a map of demand strams. */
-  typedef std::map<const DemandStreamKeyStr_T, DemandStream*> DemandStreamList_T;
+  /** Define the airline feature structure. */
+  typedef DemandStreamStructure<DemandStream> DemandStreamStructure_T;
+  
+  /** Define the airline feature structure list. */
+  typedef std::vector<DemandStreamStructure_T*> DemandStreamStructureList_T;
+
+  /** Define the airline feature structure map. */
+  typedef std::map<const std::string, DemandStreamStructure_T*> DemandStreamStructureMap_T;
+
+  /** Define the airline feature list. */
+  typedef BomList_T<DemandStream> DemandStreamList_T;
+
+  /** Define the airline feature map. */
+  typedef BomMap_T<DemandStream> DemandStreamMap_T;
   
 }
 #endif // __STDAIR_BOM_DEMANDSTREAMTYPES_HPP

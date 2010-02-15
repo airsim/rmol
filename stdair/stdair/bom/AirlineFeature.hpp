@@ -17,7 +17,6 @@
 namespace stdair {
 
   // Forward declarations
-  class FacBomContent;
   struct AirlineFeatureKey_T;
 
   

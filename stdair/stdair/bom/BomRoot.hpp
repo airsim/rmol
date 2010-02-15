@@ -18,6 +18,7 @@ namespace stdair {
   // Forward declarations.
   class FacBomContent;
   class AirlineFeatureSet;
+  class DemandStream;
   struct BomRootKey_T;
   
   /** Class representing the actual functional/business content
@@ -66,6 +67,9 @@ namespace stdair {
     /** Definition allowing to retrieve the associated second
         BOM content child type. */
     typedef Network SecondContentChild_T;
+
+    /** Definition allowing to retrieve the specific DemandStream type. */
+    typedef DemandStream DemandStreamContent_T;
     // /////////////////////////////////////////////////////////////////////////
 
 
@@ -117,14 +121,15 @@ namespace stdair {
 
     /** Get a NetworkMap_T for iteration methods. */
     NetworkMap_T getNetworkMap () const;
+
+    /** Get a DemandStreamList_T for iteration methods. */
+    DemandStreamList_T getDemandStreamList () const;
+
+    /** Get a DemandStreamMap_T for iteration methods. */
+    DemandStreamMap_T getDemandStreamMap () const;
     
     /** Get the reference of the AirlineFeatureSet object. */
     AirlineFeatureSet& getAirlineFeatureSet() const;
-
-    /** Get the reference of the list of DemandStream objects. */
-    DemandStreamList_T& getDemandStreamList() {
-      return _demandStreamList;
-    }
 
     /** Retrieve, if existing, the Inventory corresponding to the
         given airline code (Inventory key).
@@ -135,6 +140,9 @@ namespace stdair {
         given airline code (Network key).
         <br>If not existing, return the NULL pointer. */
     Network* getNetwork (const NetworkID_T&) const;
+
+    /** Retrieve the DemandStream which corresponds to the given key. */
+    DemandStream& getDemandStream (const DemandStreamKeyStr_T&) const;
 
     
   public:
@@ -174,8 +182,6 @@ namespace stdair {
     /** Set of all AirlineFeatures. */
     AirlineFeatureSet* _airlineFeatureSet;
 
-    /** Set of all DemandStream objects. */
-    DemandStreamList_T _demandStreamList;
   };
 
 }

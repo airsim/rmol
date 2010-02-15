@@ -174,6 +174,29 @@ namespace stdair {
         iReferenceOutboundPath._flightPathCode;
     }
 
+    /** Add a demand stream into the bom root. */
+    template <typename DEMAND_STREAM>
+    static bool addDemandStream (typename DEMAND_STREAM::Parent_T& ioBomRoot,
+                                 DEMAND_STREAM& ioDemandStream) {
+      // Definition allowing to retrieve the corresponding BomRoot type.
+      typedef typename DEMAND_STREAM::Parent_T BOM_ROOT_T;
+      // Definition allowing to retrieve the corresponding BomRootStructure type.
+      typedef typename BOM_ROOT_T::BomStructure_T BOM_ROOT_STRUCTURE_T;
+      // Definition allowing to retrieve the corresponding
+      // DemandStreamStructure type.
+      typedef typename DEMAND_STREAM::BomStructure_T DEMAND_STREAM_STRUCTURE_T;
+
+      // Retrieve the bom root structure and the demand stream structure.
+      BOM_ROOT_STRUCTURE_T& lBomRootStructure = ioBomRoot.getBomStructure();
+      DEMAND_STREAM_STRUCTURE_T& lDemandStreamStructure =
+        ioDemandStream.getBomStructure();
+      
+      // Forward the call to FacBomStructure.
+      return FacBomStructure::
+        addDemandStream<DEMAND_STREAM_STRUCTURE_T> (lBomRootStructure,
+                                                    lDemandStreamStructure);
+    }
+    
     // //////////////////////////////////////////////////////////////////
     // /////////////////////// Dedicated factories //////////////////////
     // //////////////////////////////////////////////////////////////////
@@ -184,14 +207,23 @@ namespace stdair {
                            const RandomSeed_T& iNumberOfRequestsSeed,
                            const RandomSeed_T& iRequestDateTimeSeed,
                            const RandomSeed_T& iDemandCharacteristicsSeed) {
+      // Create the structure/holder object
+      typedef typename DEMAND_STREAM::BomStructure_T DEMAND_STREAM_STRUCTURE_T;
+      DEMAND_STREAM_STRUCTURE_T& lBomStructure =
+        FacBomStructure::instance().create<DEMAND_STREAM_STRUCTURE_T> ();
+
       DEMAND_STREAM* aDemandStream_ptr =
         new DEMAND_STREAM (iKey, iDemandCharacteristics, iDemandDistribution,
                            iNumberOfRequestsSeed, iRequestDateTimeSeed,
-                           iDemandCharacteristicsSeed);
+                           iDemandCharacteristicsSeed, lBomStructure);
       assert (aDemandStream_ptr != NULL);
 
       // The new object is added to the pool of content objects
       _contentPool.push_back (aDemandStream_ptr);
+
+      // Link the structure/holder object with its corresponding content object
+      setContent<DEMAND_STREAM_STRUCTURE_T, DEMAND_STREAM> (lBomStructure, 
+                                                            *aDemandStream_ptr);
       
       return *aDemandStream_ptr;
     }

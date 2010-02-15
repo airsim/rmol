@@ -603,6 +603,31 @@ namespace stdair {
     }
     // //////////////////////////////////////////////////////////////////
 
+
+    // //////////////////////////////////////////////////////////////////
+    /** Add a demand stream into the bom root. */
+    template <typename DEMAND_STREAM_STRUCTURE>
+    static bool addDemandStream (typename DEMAND_STREAM_STRUCTURE::ParentBomStructure_T& ioBomRootStructure, DEMAND_STREAM_STRUCTURE& ioDemandStreamStructure) {
+      // Set the parent for the demand stream.
+      ioDemandStreamStructure._parent = &ioBomRootStructure;
+
+      // Retrieve the DemandStream holder within the BomRoot, if this
+      // holder has not been created yet, then create it.
+      typedef typename DEMAND_STREAM_STRUCTURE::Content_T DEMAND_STREAM_T;
+      typedef BomChildrenHolderImp<DEMAND_STREAM_T> DEMAND_STREAM_HOLDER_T;
+      DEMAND_STREAM_HOLDER_T* lDemandStreamHolder = NULL;
+      ioBomRootStructure.getDemandStreamHolder (lDemandStreamHolder);
+
+      if (lDemandStreamHolder == NULL) {
+        lDemandStreamHolder =
+          &FacBomStructure::instance().createBomHolder<DEMAND_STREAM_T> ();
+        ioBomRootStructure.setDemandStreamHolder (*lDemandStreamHolder);
+      }
+
+      return addBomObjecdToBomHolder <DEMAND_STREAM_T> (*lDemandStreamHolder,
+                                                        ioDemandStreamStructure);
+    }
+
   private:
     /** The unique instance.*/
     static FacBomStructure* _instance;

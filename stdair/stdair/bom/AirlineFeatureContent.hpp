@@ -21,7 +21,7 @@ namespace stdair {
 
   public:
     // /////////// Getters ////////////
-    /** Get the booking class key. */
+    /** Get the airline feature key. */
     const BomKey_T& getKey() const {
       return _key;
     }

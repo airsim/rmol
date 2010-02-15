@@ -54,6 +54,15 @@ namespace stdair {
      /** Definition allowing to retrive the second children bom holder type. */
     typedef BomChildrenHolderImp<SecondContentChild_T> SecondChildrenBomHolder_T;
 
+    /** Define the children demand stream type. */
+    typedef typename BOM_CONTENT::DemandStreamContent_T DemandStream_T;
+    
+    /** Define the children demand stream holder type. */
+    typedef BomChildrenHolderImp<DemandStream_T> DemandStreamHolder_T;
+    
+    /** Define the map of demand stream. */
+    typedef BomMap_T<DemandStream_T> DemandStreamMap_T;
+
 
   public:
     // /////////// Getters /////////////
@@ -85,6 +94,17 @@ namespace stdair {
       ioChildrenHolder = _secondChildrenHolder;
     }
 
+    /** Get the holder of demand streams. */
+    const DemandStreamHolder_T& getDemandStreamHolder() const {
+      assert (_demandStreamHolder);
+      return *_demandStreamHolder;
+    }
+
+    /** Get the holder of demand streams. */
+    void getDemandStreamHolder (DemandStreamHolder_T*& ioDemandStreamHolder) {
+      ioDemandStreamHolder = _demandStreamHolder;
+    }
+
   private: 
     /////////////// Setters ////////////////
     /** Default children holder setter. */
@@ -100,6 +120,11 @@ namespace stdair {
       _secondChildrenHolder = &ioChildrenHolder;
     }
 
+    /** Set the  demand stream holder. */
+    void setDemandStreamHolder (DemandStreamHolder_T& ioDemandStreamHolder) {
+      _demandStreamHolder = &ioDemandStreamHolder;
+    }
+    
   public:
     // /////////// Display support methods /////////
     /** Dump a Business Object into an output stream.
@@ -128,7 +153,8 @@ namespace stdair {
         layer. */
     /** Default constructors. */
     BomRootStructure () : _content (NULL), _childrenHolder (NULL),
-                          _secondChildrenHolder (NULL) { };
+                          _secondChildrenHolder (NULL),
+                          _demandStreamHolder (NULL) { };
     BomRootStructure (const BomRootStructure&);
 
     /** Destructor. */
@@ -144,6 +170,9 @@ namespace stdair {
     
     /** Holder of networks. */
     SecondChildrenBomHolder_T* _secondChildrenHolder;
+
+    /** Holder of demand streams. */
+    DemandStreamHolder_T* _demandStreamHolder;
   };
 
 }

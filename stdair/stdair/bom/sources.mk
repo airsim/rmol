@@ -86,6 +86,8 @@ bom_h_sources = \
 				$(top_srcdir)/stdair/bom/TravelSolutionTypes.hpp \
 				$(top_srcdir)/stdair/bom/BookingRequestStruct.hpp \
 				$(top_srcdir)/stdair/bom/AirlineStruct.hpp \
+				$(top_srcdir)/stdair/bom/DemandStreamStructure.hpp \
+				$(top_srcdir)/stdair/bom/DemandStreamContent.hpp \
 				$(top_srcdir)/stdair/bom/DemandStream.hpp \
 				$(top_srcdir)/stdair/bom/DemandStreamTypes.hpp \
 				$(top_srcdir)/stdair/bom/EventStruct.hpp \
@@ -141,6 +143,7 @@ bom_cc_sources = \
 				$(top_srcdir)/stdair/bom/TravelSolutionStruct.cpp \
 				$(top_srcdir)/stdair/bom/BookingRequestStruct.cpp \
 				$(top_srcdir)/stdair/bom/AirlineStruct.cpp \
+				$(top_srcdir)/stdair/bom/DemandStreamContent.cpp \
 				$(top_srcdir)/stdair/bom/DemandStream.cpp \
 				$(top_srcdir)/stdair/bom/EventStruct.cpp \
 				$(top_srcdir)/stdair/bom/EventQueue.cpp \
