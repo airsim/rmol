@@ -84,6 +84,12 @@ namespace stdair {
       return *_secondChildrenHolder;
     }
 
+    /** Get the holder of demand streams. */
+    const DemandStreamHolder_T& getDemandStreamHolder() const {
+      assert (_demandStreamHolder);
+      return *_demandStreamHolder;
+    }
+
     /** Get the holder of inventories. */
     void getChildrenHolder (ChildrenBomHolder_T*& ioChildrenHolder) {
       ioChildrenHolder = _childrenHolder;
@@ -92,12 +98,6 @@ namespace stdair {
     /** Get the holder of networks. */
     void getChildrenHolder (SecondChildrenBomHolder_T*& ioChildrenHolder) {
       ioChildrenHolder = _secondChildrenHolder;
-    }
-
-    /** Get the holder of demand streams. */
-    const DemandStreamHolder_T& getDemandStreamHolder() const {
-      assert (_demandStreamHolder);
-      return *_demandStreamHolder;
     }
 
     /** Get the holder of demand streams. */
