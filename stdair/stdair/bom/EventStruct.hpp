@@ -33,7 +33,7 @@ namespace stdair {
     }
 
     /** Get the demand stream of the event. */
-    const DemandStreamKey_T& getDemandStreamKey () const {
+    const DemandStreamKeyStr_T& getDemandStreamKey () const {
       return _demandStreamKey;
     }
 
@@ -45,7 +45,7 @@ namespace stdair {
     // ////////// Constructors and destructors /////////
     /** Constructor. */
     EventStruct (const EventType_T&, const DateTime_T&,
-                 const DemandStreamKey_T&, BookingRequestPtr_T);
+                 const DemandStreamKeyStr_T&, BookingRequestPtr_T);
     EventStruct (const DateTime_T&);
     
     /** Copy constructor. */
@@ -69,7 +69,7 @@ namespace stdair {
     DateTime_T _eventDateTime;
 
     /** The demand stream which generated this event. */
-    DemandStreamKey_T _demandStreamKey;
+    DemandStreamKeyStr_T _demandStreamKey;
     
     /** Pointer to Request event */
     BookingRequestPtr_T _request;

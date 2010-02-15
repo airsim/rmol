@@ -75,7 +75,7 @@ namespace stdair {
   private:
     // //////////////////// Attributes /////////////////////
     /** DemandStream Key */
-    const DemandStreamKey_T& _key;
+    const DemandStreamKey_T _key;
     
     /** Arrival pattern (cumulative distribution of timing of arrival
         of requests (negative number of days between departure date

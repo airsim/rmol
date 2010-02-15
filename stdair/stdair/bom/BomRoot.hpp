@@ -122,12 +122,9 @@ namespace stdair {
     AirlineFeatureSet& getAirlineFeatureSet() const;
 
     /** Get the reference of the list of DemandStream objects. */
-    DemandStreamListPtr_T getDemandStreamList() const {
-     return _demandStreamList;
+    DemandStreamList_T& getDemandStreamList() {
+      return _demandStreamList;
     }
-
-    /** Get the reference of the list of DemandStream objects. */
-    DemandStreamList_T& getDemandStreamListRef() const;
 
     /** Retrieve, if existing, the Inventory corresponding to the
         given airline code (Inventory key).
@@ -147,11 +144,6 @@ namespace stdair {
       _airlineFeatureSet = ioAirlineFeatureSet_ptr;
     }
 
-    /** Set the reference to the DemandStreamList object. */
-    void setDemandStreamList (DemandStreamListPtr_T ioDemandStreamList_ptr) {
-      _demandStreamList = ioDemandStreamList_ptr;
-    }
-    
     /** Add a demand stream object to the dedicated list.
         @param const DemandStreamKeyStr_T& (String) Key of the DemandStream
                object to be added.
@@ -183,7 +175,7 @@ namespace stdair {
     AirlineFeatureSet* _airlineFeatureSet;
 
     /** Set of all DemandStream objects. */
-    DemandStreamListPtr_T _demandStreamList;
+    DemandStreamList_T _demandStreamList;
   };
 
 }

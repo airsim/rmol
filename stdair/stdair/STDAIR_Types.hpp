@@ -447,5 +447,8 @@ namespace stdair {
   
   /** Real number */
   typedef double RealNumber_T;
+  
+  /** Type definition for the hashed key of the DemandStreamKey object. */
+  typedef std::string DemandStreamKeyStr_T;
 }
 #endif // __STDAIR_STDAIR_TYPES_HPP

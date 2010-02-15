@@ -18,6 +18,7 @@
 #include <stdair/bom/BookingRequestTypes.hpp>
 #include <stdair/bom/DemandStreamKey.hpp>
 #include <stdair/bom/DemandStreamTypes.hpp>
+#include <stdair/service/Logger.hpp>
 
 namespace stdair {
   

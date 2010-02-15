@@ -51,12 +51,6 @@ namespace stdair {
   
   // //////////////////////////////////////////////////////////////////////
   void CmdBomManager::initDemandStreamList (BomRoot& ioBomRoot) {  
-    // Initialise the set of required airline features
-    DemandStreamListPtr_T lDemandStreamList_ptr =
-      boost::make_shared<DemandStreamList_T>();
-    
-    // Set the AirlineFeatureSet for the BomRoot.
-    ioBomRoot.setDemandStreamList (lDemandStreamList_ptr);
   }
   
   // //////////////////////////////////////////////////////////////////////
