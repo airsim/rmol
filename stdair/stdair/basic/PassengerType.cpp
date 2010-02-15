@@ -47,8 +47,15 @@ namespace stdair {
   }
   
   // //////////////////////////////////////////////////////////////////////
-  char PassengerType::getTypeLabel(const EN_PassengerType& iType) {
+  char PassengerType::getTypeLabel (const EN_PassengerType& iType) {
     return _typeLabels[iType];
+  }
+
+  // //////////////////////////////////////////////////////////////////////
+  std::string PassengerType::getTypeLabelAsString(const EN_PassengerType& iType){
+    std::ostringstream oStr;
+    oStr << _typeLabels[iType];
+    return oStr.str();
   }
 
   // //////////////////////////////////////////////////////////////////////
@@ -69,10 +76,22 @@ namespace stdair {
   }
   
   // //////////////////////////////////////////////////////////////////////
+  std::string PassengerType::getTypeAsString() const {
+    std::ostringstream oStr;
+    oStr << _typeLabels[_type];
+    return oStr.str();
+  }
+  
+  // //////////////////////////////////////////////////////////////////////
   const std::string PassengerType::describe() const {
     std::ostringstream ostr;
     ostr << _labels[_type];
     return ostr.str();
   }
 
+  // //////////////////////////////////////////////////////////////////////
+  bool PassengerType::operator== (const EN_PassengerType& iType) const {
+    return (_type == iType);
+  }
+  
 }

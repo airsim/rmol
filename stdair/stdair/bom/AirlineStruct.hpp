@@ -10,7 +10,7 @@
 #include <vector>
 // StdAir
 #include <stdair/STDAIR_Types.hpp>
-#include <stdair/bom/StructAbstract.hpp>
+#include <stdair/basic/StructAbstract.hpp>
 
 namespace stdair {
 

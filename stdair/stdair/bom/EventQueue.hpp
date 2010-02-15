@@ -4,9 +4,11 @@
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
-// STDAIR
+// STL
+#include <iosfwd>
+// StdAir
 #include <stdair/STDAIR_Types.hpp>
-#include <stdair/bom/StructAbstract.hpp>
+#include <stdair/basic/StructAbstract.hpp>
 #include <stdair/bom/EventTypes.hpp>
 
 namespace stdair {

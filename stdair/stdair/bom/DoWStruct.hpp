@@ -8,7 +8,7 @@
 #include <string>
 #include <vector>
 // STDAIR
-#include <stdair/bom/StructAbstract.hpp>
+#include <stdair/basic/StructAbstract.hpp>
 
 namespace stdair {
 

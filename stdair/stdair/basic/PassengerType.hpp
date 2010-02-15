@@ -7,7 +7,7 @@
 // STL
 #include <string>
 // StdAir
-#include <stdair/bom/StructAbstract.hpp>
+#include <stdair/basic/StructAbstract.hpp>
 
 namespace stdair {
 
@@ -21,11 +21,14 @@ namespace stdair {
       LAST_VALUE
     } EN_PassengerType;
 
-    /** Get the label as a string. */
+    /** Get the label as a string (e.g., "Leisure" or "Business"). */
     static const std::string& getLabel (const EN_PassengerType&);
 
-    /** Get the label as a single char. */
+    /** Get the label as a single char (e.g., 'L' or 'B'). */
     static char getTypeLabel (const EN_PassengerType&);
+
+    /** Get the label as a single char (e.g., 'L' or 'B'). */
+    static std::string getTypeLabelAsString (const EN_PassengerType&);
 
     /** List the labels. */
     static std::string describeLabels();
@@ -33,9 +36,15 @@ namespace stdair {
     /** Get the enumerated value. */
     EN_PassengerType getType() const;
 
-    /** Give a description of the structure (for display purposes). */
+    /** Get the enumerated value as a short string (e.g., 'L' or 'B'). */
+    std::string getTypeAsString() const;
+    
+    /** Give a description of the structure (e.g., "Leisure" or "Business"). */
     const std::string describe() const;
 
+  public:
+    /** Comparison operator. */
+    bool operator== (const EN_PassengerType&) const;
     
   public:
     /** Constructor. */

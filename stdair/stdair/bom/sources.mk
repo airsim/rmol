@@ -1,5 +1,4 @@
 bom_h_sources = \
-				$(top_srcdir)/stdair/bom/StructAbstract.hpp \
 				$(top_srcdir)/stdair/bom/BomList.hpp \
 				$(top_srcdir)/stdair/bom/BomMap.hpp \
 				$(top_srcdir)/stdair/bom/BomKey.hpp \

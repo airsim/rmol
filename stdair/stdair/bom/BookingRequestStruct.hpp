@@ -9,8 +9,8 @@
 #include <string>
 // StdAir
 #include <stdair/STDAIR_Types.hpp>
+#include <stdair/basic/StructAbstract.hpp>
 #include <stdair/basic/PassengerType.hpp>
-#include <stdair/bom/StructAbstract.hpp>
 
 namespace stdair {
 
