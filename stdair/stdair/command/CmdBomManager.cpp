@@ -3,10 +3,13 @@
 // //////////////////////////////////////////////////////////////////////
 // STL
 #include <cassert>
+// Boost
+#include <boost/make_shared.hpp>
 // StdAir
 #include <stdair/bom/BomRoot.hpp>
 #include <stdair/bom/AirlineFeatureSet.hpp>
 #include <stdair/bom/AirlineFeature.hpp>
+#include <stdair/bom/DemandStreamTypes.hpp>
 // Inventory: child of BomRoot, needed for creation of BomRoot
 #include <stdair/bom/Inventory.hpp>
 // Network: child of BomRoot, needed for creation of BomRoot
@@ -30,9 +33,8 @@ namespace stdair {
   }
   
   // //////////////////////////////////////////////////////////////////////
-  void CmdBomManager::
-  addAirlineFeature (BomRoot& ioBomRoot,
-                     const AirlineCode_T& iAirlineCode) {
+  void CmdBomManager::addAirlineFeature (BomRoot& ioBomRoot,
+                                         const AirlineCode_T& iAirlineCode) {
     
     // Initialise an AirlineFeature object
     AirlineFeatureKey_T lAirlineFeatureKey (iAirlineCode);
@@ -45,6 +47,16 @@ namespace stdair {
     // Add the AirlineFeature object to its AirlineFeatureSet parent
     FacBomContent::linkWithParent<AirlineFeature> (lAirlineFeature,
                                                    lAirlineFeatureSet);
+  }
+  
+  // //////////////////////////////////////////////////////////////////////
+  void CmdBomManager::initDemandStreamList (BomRoot& ioBomRoot) {  
+    // Initialise the set of required airline features
+    DemandStreamListPtr_T lDemandStreamList_ptr =
+      boost::make_shared<DemandStreamList_T>();
+    
+    // Set the AirlineFeatureSet for the BomRoot.
+    ioBomRoot.setDemandStreamList (lDemandStreamList_ptr);
   }
   
   // //////////////////////////////////////////////////////////////////////

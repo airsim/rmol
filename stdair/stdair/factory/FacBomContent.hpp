@@ -24,6 +24,7 @@ namespace stdair {
   struct OptimizerStruct_T;
   struct DemandCharacteristics;
   struct DemandDistribution;
+  struct DemandStreamKey_T;
   
   /** Base class for Factory layer. */
   class FacBomContent {

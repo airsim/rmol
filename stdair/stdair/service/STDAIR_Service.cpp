@@ -38,6 +38,8 @@ namespace stdair {
 
     // Initialise the AirlineFeatureSet object, and attach it to the BomRoot
     initAirlineFeatureSet ();
+    // Initialise the DemandStreamList object, and attach it to the BomRoot
+    initDemandStreamList ();
     
     // Set the log file
     logInit (iLogParams);
@@ -55,6 +57,8 @@ namespace stdair {
 
     // Initialise the AirlineFeatureSet object, and attach it to the BomRoot
     initAirlineFeatureSet ();
+    // Initialise the DemandStreamList object, and attach it to the BomRoot
+    initDemandStreamList ();
 
     // Set the log file
     logInit (iLogParams);
@@ -90,6 +94,12 @@ namespace stdair {
   void STDAIR_Service::initAirlineFeatureSet () {
     // Delegate to the dedicated command
     CmdBomManager::initAirlineFeatureSet (_bomRoot);
+  }
+
+  // //////////////////////////////////////////////////////////////////////
+  void STDAIR_Service::initDemandStreamList () {
+    // Delegate to the dedicated command
+    CmdBomManager::initDemandStreamList (_bomRoot);
   }
   
   // //////////////////////////////////////////////////////////////////////

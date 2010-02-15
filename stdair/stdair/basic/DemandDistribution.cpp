@@ -9,6 +9,14 @@
 #include <stdair/basic/DemandDistribution.hpp>
 
 namespace stdair {
+
+  // /////////////////////////////////////////////////////
+  DemandDistribution::
+  DemandDistribution (const NbOfRequests_T& iMean,
+                      const StandardDeviationValue_T& iStandardDeviation)
+    : _meanNumberOfRequests (iMean),
+      _standardDeviationNumberOfRequests (iStandardDeviation){
+  }
   
   // /////////////////////////////////////////////////////
   DemandDistribution::DemandDistribution () {
@@ -20,10 +28,9 @@ namespace stdair {
   
   // /////////////////////////////////////////////////////
   DemandDistribution::
-  DemandDistribution (const DemandDistribution& iDemandDistribution) {
-    _meanNumberOfRequests = iDemandDistribution._meanNumberOfRequests;
-    _standardDeviationNumberOfRequests =
-      iDemandDistribution._standardDeviationNumberOfRequests;
+  DemandDistribution (const DemandDistribution& iDemandDistribution)
+    : _meanNumberOfRequests (iDemandDistribution._meanNumberOfRequests),
+      _standardDeviationNumberOfRequests (iDemandDistribution._standardDeviationNumberOfRequests) {
   }
   
   // /////////////////////////////////////////////////////
@@ -31,11 +38,11 @@ namespace stdair {
     std::ostringstream oStr;
 
     oStr << "****************** Demand distribution ******************"
-             << std::endl;
+         << std::endl;
     oStr << "Mean number of requests .......... : "
-             << _meanNumberOfRequests << std::endl;
+         << _meanNumberOfRequests << std::endl;
     oStr << "Std dev of number of requests .... : "
-             << _standardDeviationNumberOfRequests << std::endl;
+         << _standardDeviationNumberOfRequests << std::endl;
 
     return oStr.str();
   }

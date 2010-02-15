@@ -13,8 +13,7 @@ namespace stdair {
   EventStruct(const EventType_T& iEventType, const DateTime_T& iDateTime,
               const DemandStreamKey_T& iDemandStreamKey,
               BookingRequestPtr_T ioRequestPtr)
-    : _eventType (iEventType),
-      _eventDateTime (iDateTime),
+    : _eventType (iEventType), _eventDateTime (iDateTime),
       _demandStreamKey (iDemandStreamKey) {
     _request = ioRequestPtr;
   }
@@ -30,9 +29,8 @@ namespace stdair {
   
   // //////////////////////////////////////////////////////////////////////
   EventStruct::EventStruct (const DateTime_T& iDateTime) 
-    : _eventType (""),
-      _eventDateTime (iDateTime),
-      _demandStreamKey (-1) {
+    : _eventType (""), _eventDateTime (iDateTime),
+      _demandStreamKey ("", "", DEFAULT_DATE, PassengerType::LAST_VALUE) {
   }
   
   // //////////////////////////////////////////////////////////////////////

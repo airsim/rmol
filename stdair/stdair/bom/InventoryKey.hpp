@@ -10,10 +10,10 @@
 #include <stdair/bom/BomRootKey.hpp>
 
 namespace stdair {
+
   /** Key of inventory. */
   struct InventoryKey_T : public BomKey_T {
     friend struct FlightDateKey_T;
-
   public:
     // /////////// Typedefs ////////////
     /** Definition allowing to retrieve the parent key type. */

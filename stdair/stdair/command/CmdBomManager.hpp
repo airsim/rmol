@@ -30,8 +30,7 @@ namespace stdair {
                created . */
     static Inventory& getOrCreateInventory (BomRoot&, const AirlineCode_T&);
       
-    /** Initialise the AirlineFeatureSet object, and attach it to the
-        BomRoot.
+    /** Initialise the AirlineFeatureSet object, and attach it to the BomRoot.
         @param BomRoot& Root of the BOM tree.  */
     static void initAirlineFeatureSet (BomRoot&);
     
@@ -41,6 +40,11 @@ namespace stdair {
         @param const AirlineCode_T& Airline code for the inventory to be
                created . */
     static void addAirlineFeature (BomRoot&, const AirlineCode_T& iAirlineCode);
+
+    /** Initialise the DemandStreamList object, and attach it to the BomRoot.
+        @param BomRoot& Root of the BOM tree. */
+    static void initDemandStreamList (BomRoot&);
+
     
   private:
     // ///////////////////// Internal support methods ////////////////////////

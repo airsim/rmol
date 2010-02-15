@@ -9,6 +9,7 @@
 #include <map>
 // STDAIR
 #include <stdair/STDAIR_Types.hpp>
+#include <stdair/service/Logger.hpp>
 
 namespace stdair {
 
@@ -17,22 +18,28 @@ namespace stdair {
   template <class T>
   struct ContinuousAttribute {
   public:
+
+    // ///////////// Type definitions //////////////
+    /** */
+    typedef std::multimap<T, Probability_T> ContinuousDistribution_T;
+    typedef std::multimap<Probability_T, T> ContinuousInverseDistribution_T;
+    
+    
     // ///////////// Getters ///////////
     /** Get the cumulative distribution. */
-    const std::multimap<T,Probability_T>& getCumulativeDistribution() const {
+    const ContinuousDistribution_T& getCumulativeDistribution() const {
       return _cumulativeDistribution;
     }
   
     /** Get the inverse cumulative distribution. */
-    const std::multimap<Probability_T, T>&
-    getInverseCumulativeDistribution () const {
+    const ContinuousInverseDistribution_T& getInverseCumulativeDistribution () const {
       return _inverseCumulativeDistribution;
     }
 
   public:
     // ///////////// Setters ///////////
     /** Set the cumulative distribution */
-    void setCumulativeDistribution (const std::multimap<T, Probability_T>& iCumulativeDistribution) {
+    void setCumulativeDistribution (const ContinuousDistribution_T& iCumulativeDistribution) {
       _cumulativeDistribution = iCumulativeDistribution;
       determineInverseCumulativeDistributionFromCumulativeDistribution();
     }
@@ -40,15 +47,15 @@ namespace stdair {
   public:
     // /////////////// Business Methods //////////
     /** Get value from inverse cumulative distribution. */
-    const T getValue(const Probability_T& iCumulativeProbability) const {
-      typename std::multimap<Probability_T, T>::const_iterator it =
+    const T getValue (const Probability_T& iCumulativeProbability) const {
+      typename ContinuousDistribution_T::const_iterator it =
         _inverseCumulativeDistribution.lower_bound (iCumulativeProbability);
     
       Probability_T cumulativeProbabilityNextPoint = it->first;
       T valueNextPoint = it->second;
     
       if (it == _inverseCumulativeDistribution.begin()) {
-        std::cout << "hello" << std::endl;
+        STDAIR_LOG_DEBUG ("Last element");
         return valueNextPoint;
       }
       --it;
@@ -75,11 +82,14 @@ namespace stdair {
     /** Display cumulative distribution */
     std::string displayCumulativeDistribution() const {
       std::ostringstream oStr;
-      for (typename std::multimap<T, Probability_T>::const_iterator it =
+      unsigned int idx = 0;
+      for (typename ContinuousDistribution_T::const_iterator it =
              _cumulativeDistribution.begin();
-           it != _cumulativeDistribution.end(); ++it) {
-        oStr << "value: " << it->first
-             << "  cumulative probability: " << it->second << std::endl;
+           it != _cumulativeDistribution.end(); ++it, ++idx) {
+        if (idx != 0) {
+          oStr << ", ";
+        }
+        oStr << it->first << ":" << it->second;
       }
       return oStr.str();
     }
@@ -87,7 +97,7 @@ namespace stdair {
     /** Display inverse cumulative distribution */
     std::string displayInverseCumulativeDistribution() const {
       std::ostringstream oStr;
-      for (typename std::multimap<Probability_T, T>::const_iterator it =
+      for (typename ContinuousInverseDistribution_T::const_iterator it =
              _inverseCumulativeDistribution.begin();
            it != _inverseCumulativeDistribution.end(); ++it) {
         oStr << "cumulative prob: " << it->first
@@ -102,7 +112,8 @@ namespace stdair {
     ContinuousAttribute () { }
     
     /** Constructor */
-    ContinuousAttribute (const std::multimap<T, Probability_T>& iCumulativeDistribution) : _cumulativeDistribution (iCumulativeDistribution) {
+    ContinuousAttribute (const ContinuousDistribution_T& iCumulativeDistribution)
+      : _cumulativeDistribution (iCumulativeDistribution) {
       determineInverseCumulativeDistributionFromCumulativeDistribution();
     }
     
@@ -118,13 +129,13 @@ namespace stdair {
     /** Determine inverse cumulative distribution from cumulative
         distribution (initialisation). */
     void determineInverseCumulativeDistributionFromCumulativeDistribution () {
-      for (typename std::multimap<T, Probability_T>::iterator itCumulativeDistribution =
+      for (typename ContinuousDistribution_T::iterator itCumulativeDistribution =
              _cumulativeDistribution.begin();
            itCumulativeDistribution != _cumulativeDistribution.end();
            ++itCumulativeDistribution) {
         _inverseCumulativeDistribution.
-          insert ( std::pair<float, float> (itCumulativeDistribution->second,
-                                            itCumulativeDistribution->first) );
+          insert (std::pair<float, float> (itCumulativeDistribution->second,
+                                           itCumulativeDistribution->first));
       }
     }
   
@@ -132,11 +143,10 @@ namespace stdair {
     // ////////// Attributes //////////
     
     /** Cumulative distribution */
-    std::multimap<T, Probability_T> _cumulativeDistribution;
+    ContinuousDistribution_T _cumulativeDistribution;
     
     /** Inverse cumulative distribution */
-    std::multimap<Probability_T, T> _inverseCumulativeDistribution;
-    
+    ContinuousInverseDistribution_T _inverseCumulativeDistribution;
   };
   
 }

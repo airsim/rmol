@@ -47,19 +47,22 @@ namespace stdair {
   // //////////////////////////////////////////////////////////////////////
   void DemandStream::init() {
     // Generate the number of requests
-    const RealNumber_T lMu =
-      _demandDistribution.getMeanNumberOfRequests ();
+    const RealNumber_T lMu = _demandDistribution.getMeanNumberOfRequests ();
     const RealNumber_T lSigma =
       _demandDistribution.getStandardDeviationNumberOfRequests ();
+    
     const RealNumber_T lRealNumberOfRequestsToBeGenerated =
       _numberOfRequestsRandomGenerator.generateNormal (lMu, lSigma);
-    Count_T lIntegerNumberOfRequestsToBeGenerated = 0;
+
+    NbOfRequests_T lIntegerNumberOfRequestsToBeGenerated = 0;
     if (lRealNumberOfRequestsToBeGenerated < 0.5) {
     	lIntegerNumberOfRequestsToBeGenerated = 0;
+        
     } else {
-    	lIntegerNumberOfRequestsToBeGenerated =
-          static_cast<Count_T> (lRealNumberOfRequestsToBeGenerated + 0.5);
+      lIntegerNumberOfRequestsToBeGenerated =
+        static_cast<NbOfRequests_T> (lRealNumberOfRequestsToBeGenerated + 0.5);
     }
+    
     _totalNumberOfRequestsToBeGenerated = lIntegerNumberOfRequestsToBeGenerated;
   }
 

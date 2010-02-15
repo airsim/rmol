@@ -17,6 +17,7 @@ bom_h_sources = \
 				$(top_srcdir)/stdair/bom/OutboundPathKey.hpp \
 				$(top_srcdir)/stdair/bom/AirlineFeatureSetKey.hpp \
 				$(top_srcdir)/stdair/bom/AirlineFeatureKey.hpp \
+				$(top_srcdir)/stdair/bom/DemandStreamKey.hpp \
 				$(top_srcdir)/stdair/bom/BomRootTypes.hpp \
 				$(top_srcdir)/stdair/bom/BomRoot.hpp \
 				$(top_srcdir)/stdair/bom/BomContent.hpp \
@@ -107,6 +108,7 @@ bom_cc_sources = \
 				$(top_srcdir)/stdair/bom/OutboundPathKey.cpp \
 				$(top_srcdir)/stdair/bom/AirlineFeatureSetKey.cpp \
 				$(top_srcdir)/stdair/bom/AirlineFeatureKey.cpp \
+				$(top_srcdir)/stdair/bom/DemandStreamKey.cpp \
 				$(top_srcdir)/stdair/bom/BomRoot.cpp \
 				$(top_srcdir)/stdair/bom/BomRootContent.cpp \
 				$(top_srcdir)/stdair/bom/Inventory.cpp \

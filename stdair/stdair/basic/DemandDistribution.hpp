@@ -18,24 +18,24 @@ namespace stdair {
     
     // ///////////// Getters ///////////
     /** Get the mean number of requests. */
-    const RealNumber_T& getMeanNumberOfRequests() const {
+    const NbOfRequests_T& getMeanNumberOfRequests() const {
       return _meanNumberOfRequests;
     }
     
     /** Get the standard deviation of number of requests. */
-    const RealNumber_T& getStandardDeviationNumberOfRequests() const {
+    const StandardDeviationValue_T& getStandardDeviationNumberOfRequests() const {
       return _standardDeviationNumberOfRequests;
     }
 
   public:
     // ///////////// Setters ///////////
     /** Set the mean number of requests. */
-    void setMeanNumberOfRequests (const RealNumber_T& iMean) {
+    void setMeanNumberOfRequests (const NbOfRequests_T& iMean) {
       _meanNumberOfRequests = iMean;
     }
     
     /** Set the standard deviation of number of requests. */
-    void setStandardDeviationNumberOfRequests (const RealNumber_T& iStandardDeviation) {
+    void setStandardDeviationNumberOfRequests (const StandardDeviationValue_T& iStandardDeviation) {
       _standardDeviationNumberOfRequests = iStandardDeviation;
     }
     
@@ -47,23 +47,29 @@ namespace stdair {
     
   public:
     // ////////// Constructors and destructors /////////
-    /** Constructor by default */
+    /** Constructor. */
+    DemandDistribution (const NbOfRequests_T& iMean,
+                        const StandardDeviationValue_T& iStandardDeviation);
+    
+    /** Default constructor. */
+    // TODO: That constructor should be private
     DemandDistribution ();
     
-    /** Copy constructor */
-    DemandDistribution (const DemandDistribution&); // Should be private, but well...
+    /** Copy constructor. */
+    // TODO: That constructor should be private
+    DemandDistribution (const DemandDistribution&);
 
-    /** Destructor */
+    /** Destructor. */
     virtual ~DemandDistribution ();
-  
-  
+
+    
   private:
     // ////////// Attributes //////////
     /** Mean number of requests */
-    RealNumber_T _meanNumberOfRequests;
+    NbOfRequests_T _meanNumberOfRequests;
     
     /** Standard deviation of number of requests */
-    RealNumber_T _standardDeviationNumberOfRequests;
+    StandardDeviationValue_T _standardDeviationNumberOfRequests;
   };
 
 }

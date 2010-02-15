@@ -6,9 +6,10 @@
 // //////////////////////////////////////////////////////////////////////
 // STL
 #include <string>
-// STDAIR
+// StdAir
 #include <stdair/STDAIR_Types.hpp>
-#include <stdair/basic/ContinuousAttribute.hpp>
+#include <stdair/basic/ArrivalPattern.hpp>
+#include <stdair/bom/DemandStreamKey.hpp>
 
 namespace stdair {
   
@@ -17,58 +18,37 @@ namespace stdair {
   public:
     
     // ///////////// Getters ///////////    
-    /** Get the origin. */
-    const AirportCode_T& getOrigin() const {
-      return _origin;
+    /** Get the key. */
+    const DemandStreamKey_T& getKey() const {
+      return _key;
     }
+    
+    /** Get the origin. */
+    const AirportCode_T& getOrigin() const;
     
     /** Get the destination. */
-    const AirportCode_T& getDestination() const {
-      return _destination;
-    }
+    const AirportCode_T& getDestination() const;
     
     /** Get the preferred departure date. */
-    const Date_T& getPreferredDepartureDate() const {
-      return _preferredDepartureDate;
-    }
+    const Date_T& getPreferredDepartureDate() const;
 
     /** Get the passenger type. */
-    const PassengerType_T& getPaxType() const {
-      return _paxType;
-    }
+    const PassengerType& getPaxType() const;
     
     /** Get the arrival pattern. */
-    const ContinuousAttribute<FloatDuration_T>& getArrivalPattern() const {
+    const ContinuousFloatDuration_T& getArrivalPattern() const {
       return _arrivalPattern;
     }
 
+    
   public:
     // ///////////// Setters ///////////
-    /** Set the origin. */
-    void setOrigin (const AirportCode_T& iOrigin) {
-      _origin = iOrigin;
-    }
-
-    /** Set the destination. */
-    void setDestination (const AirportCode_T& iDestination) {
-      _destination = iDestination;
-    }
-    
-    /** Set the preferred departure date. */
-    void setPreferredDepartureDate (const Date_T& iPreferredDepartureDate) {
-      _preferredDepartureDate = iPreferredDepartureDate;
-    }
-    
-    /** Set the passenger type. */
-    void setPaxType (const PassengerType_T& iPaxType) {
-      _paxType = iPaxType;
-    }
-    
     /** Set the arrival pattern. */
-    void setArrivalPattern (const ContinuousAttribute<FloatDuration_T>& iArrivalPattern) {
+    void setArrivalPattern (const ContinuousFloatDuration_T& iArrivalPattern) {
       _arrivalPattern = iArrivalPattern;
     }
 
+    
   public:
     // ////////////// Display Support Methods //////////
     /** Display demand characteristics */
@@ -77,34 +57,30 @@ namespace stdair {
     
   public:
     // ////////// Constructors and destructors /////////
-    /** Constructor by default */
+    /** Default constructor. */
+    DemandCharacteristics (const DemandStreamKey_T& iKey);
+    
+    /** Default constructor. */
+    // TODO: That copy constructor should be private
     DemandCharacteristics ();
     
-    /** Copy constructor */
-    DemandCharacteristics (const DemandCharacteristics&); // Should be private, but well...
+    /** Copy constructor. */
+    // TODO: That copy constructor should be private
+    DemandCharacteristics (const DemandCharacteristics&);
 
     /** Destructor */
     virtual ~DemandCharacteristics ();
   
-  
-  private:
-    // ////////// Attributes //////////
-    /** Origin */
-    AirportCode_T _origin;
-    
-    /** Origin */
-    AirportCode_T _destination;
-    
-    /** Preferred departure date */
-    Date_T _preferredDepartureDate;
 
-    /** Passenger type. */
-    PassengerType_T _paxType;
+  private:
+    // //////////////////// Attributes /////////////////////
+    /** DemandStream Key */
+    const DemandStreamKey_T& _key;
     
     /** Arrival pattern (cumulative distribution of timing of arrival
         of requests (negative number of days between departure date
-        and request date)*/
-    ContinuousAttribute<FloatDuration_T> _arrivalPattern;
+        and request date). */
+    ContinuousFloatDuration_T _arrivalPattern;
     
     /** Trip type probability mass */
     // CategoricalAttribute<TripType_T> _tripTypeProbabilityMass;

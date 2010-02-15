@@ -97,6 +97,10 @@ namespace stdair {
         BomRoot. */
     void initAirlineFeatureSet ();
     
+    /** Initialise the DemandStreamList object, and attach it to the
+        BomRoot. */
+    void initDemandStreamList ();
+
     /** Finalise. */
     void finalise ();
 

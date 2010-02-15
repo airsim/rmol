@@ -10,6 +10,8 @@
 #include <stdair/bom/BomMap.hpp>
 #include <stdair/bom/Inventory.hpp>
 #include <stdair/bom/Network.hpp>
+#include <stdair/bom/DemandStream.hpp>
+#include <stdair/service/Logger.hpp>
 
 namespace stdair {
 
@@ -74,6 +76,32 @@ namespace stdair {
   AirlineFeatureSet& BomRoot::getAirlineFeatureSet() const {
     assert (_airlineFeatureSet != NULL);
     return *_airlineFeatureSet;
+  }
+
+  // ////////////////////////////////////////////////////////////////////
+  DemandStreamList_T& BomRoot::getDemandStreamListRef() const {
+    // TODO: check that the Boost smart pointer is not NULL
+    STDAIR_LOG_ERROR ("!!!!TODO: check that the Boost smart pointer is not NULL!!!!");
+    return *_demandStreamList;
+  }
+  
+  // ////////////////////////////////////////////////////////////////////
+  void BomRoot::addDemandStream (const DemandStreamKeyStr_T& iKeyStr,
+                                 DemandStream& ioDemandStream) {
+    // TODO: check that the Boost smart pointer is not NULL
+    STDAIR_LOG_ERROR ("!!!!TODO: check that the Boost smart pointer is not NULL!!!!");
+    
+    // Insert the reference on the given DemandStream object into the
+    // dedicated list
+    const bool hasInsertBeenSuccessfull =
+      _demandStreamList->insert (DemandStreamList_T::
+                                 value_type (iKeyStr, &ioDemandStream)).second;
+    if (hasInsertBeenSuccessfull == false) {
+      STDAIR_LOG_ERROR ("The DemandStream object with key: " << iKeyStr
+                        << " can not be inserted into the dedicated list");
+      STDAIR_LOG_ERROR ("DemandStream object: " << ioDemandStream);
+      assert (false);
+    }
   }
   
 }

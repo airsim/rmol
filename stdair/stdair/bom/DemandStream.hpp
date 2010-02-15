@@ -16,6 +16,7 @@
 #include <stdair/basic/RandomGenerationContext.hpp>
 #include <stdair/bom/BomContent.hpp>
 #include <stdair/bom/BookingRequestTypes.hpp>
+#include <stdair/bom/DemandStreamKey.hpp>
 #include <stdair/bom/DemandStreamTypes.hpp>
 
 namespace stdair {
@@ -32,7 +33,7 @@ namespace stdair {
     }
     
     /** Get the total number of requests to be generated. */
-    const Count_T& getTotalNumberOfRequestsToBeGenerated() const {
+    const NbOfRequests_T& getTotalNumberOfRequestsToBeGenerated() const {
       return _totalNumberOfRequestsToBeGenerated;
     }
 
@@ -52,22 +53,22 @@ namespace stdair {
     }
 
     /** Get the passenger type. */
-    const PassengerType_T& getPaxType() const {
+    const PassengerType& getPaxType() const {
       return _demandCharacteristics.getPaxType();
     }
     
     /** Get the arrival pattern. */
-    const ContinuousAttribute<FloatDuration_T>& getArrivalPattern() const {
+    const ContinuousFloatDuration_T& getArrivalPattern() const {
       return _demandCharacteristics.getArrivalPattern();
     }
 
     /** Get the mean number of requests. */
-    const RealNumber_T& getMeanNumberOfRequests() const {
+    const NbOfRequests_T& getMeanNumberOfRequests() const {
       return _demandDistribution.getMeanNumberOfRequests();
     }
     
     /** Get the standard deviation of number of requests. */
-    const RealNumber_T& getStandardDeviationNumberOfRequests() const {
+    const StandardDeviationValue_T& getStandardDeviationNumberOfRequests() const {
       return _demandDistribution.getStandardDeviationNumberOfRequests();
     }
     
@@ -185,10 +186,11 @@ namespace stdair {
   protected:
     // ////////// Constructors and destructors /////////
     /** Constructor by default */
-    DemandStream (const DemandStreamKey_T&,
-                  const DemandCharacteristics&,
-                  const DemandDistribution&, const RandomSeed_T&,
-                  const RandomSeed_T&, const RandomSeed_T&);
+    DemandStream (const DemandStreamKey_T&, const DemandCharacteristics&,
+                  const DemandDistribution&,
+                  const RandomSeed_T& iNumberOfRequestsSeed,
+                  const RandomSeed_T& iRequestDateTimeSeed,
+                  const RandomSeed_T& iDemandCharacteristicsSeed);
     /** Default constructors. */
     DemandStream ();
     DemandStream (const DemandStream&);
@@ -210,7 +212,7 @@ namespace stdair {
     DemandDistribution _demandDistribution;
     
     /** Total number of requests to be generated*/
-    Count_T _totalNumberOfRequestsToBeGenerated;
+    NbOfRequests_T _totalNumberOfRequestsToBeGenerated;
 
     /** Random generation context */
     RandomGenerationContext _randomGenerationContext;

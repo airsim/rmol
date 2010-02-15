@@ -8,14 +8,14 @@
 #include <iosfwd>
 #include <string>
 // StdAir
-#include <stdair/bom/StructAbstract.hpp>
 #include <stdair/STDAIR_Types.hpp>
+#include <stdair/basic/PassengerType.hpp>
+#include <stdair/bom/StructAbstract.hpp>
 
 namespace stdair {
 
   /** Structure holding the elements of a booking request. */
   struct BookingRequestStruct : public StructAbstract {
-    
   public:
     // /////////////// Getters /////////////////
     /** Get the requested origin. */
@@ -39,7 +39,7 @@ namespace stdair {
     }
 
     /** Get the passenger type. */
-    const PassengerType_T& getPaxType() const {
+    const PassengerType& getPaxType() const {
       return _paxType;
     }
 
@@ -71,7 +71,7 @@ namespace stdair {
     }
     
     /** Set the passenger type. */
-    void setPaxType (const PassengerType_T& iPaxType) {
+    void setPaxType (const PassengerType& iPaxType) {
       _paxType = iPaxType;
     }
 
@@ -93,15 +93,20 @@ namespace stdair {
     /** Display of the structure. */
     const std::string describe() const;
 
+    
     // /////////////// Constructors and Destructors /////////////////
   public :
+    /** Constructor. */
     BookingRequestStruct (const AirportCode_T&, const AirportCode_T&,
                           const Date_T&, const DateTime_T&,
-                          const PassengerType_T&, const NbOfSeats_T&);
+                          const PassengerType&, const NbOfSeats_T&);
   public :
+    /** Default constructor. */
     BookingRequestStruct ();
+    /** Copy constructor. */
     BookingRequestStruct (const BookingRequestStruct&);
   public:
+    /** Destructor. */
     ~BookingRequestStruct();
     
 
@@ -120,7 +125,7 @@ namespace stdair {
     DateTime_T _requestDateTime;
 
     /** Passenger type. */
-    PassengerType_T _paxType;
+    PassengerType _paxType;
 
     /** Party size. */
     NbOfSeats_T _partySize;

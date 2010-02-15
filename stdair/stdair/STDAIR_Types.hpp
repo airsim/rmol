@@ -47,6 +47,15 @@ namespace stdair {
   class MemoryAllocationException : public RootException {
   };
 
+  class ParserException : public RootException {
+  };
+
+  class CodeConversionException : public ParserException {
+  };
+
+  class CodeDuplicationException : public ParserException {
+  };
+
   class ObjectNotFoundException : public RootException {
   };
 
@@ -438,9 +447,5 @@ namespace stdair {
   
   /** Real number */
   typedef double RealNumber_T;
-
-  // //////////////////////////////////////////////////////////////////////
-  // Demand
-  typedef int DemandStreamKey_T;
 }
 #endif // __STDAIR_STDAIR_TYPES_HPP

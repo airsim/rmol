@@ -7,6 +7,7 @@
 // STDAIR
 #include <stdair/STDAIR_Types.hpp>
 #include <stdair/bom/BookingRequestTypes.hpp>
+#include <stdair/bom/DemandStreamKey.hpp>
 
 namespace stdair {
 
