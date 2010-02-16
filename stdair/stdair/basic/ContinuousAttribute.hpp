@@ -48,7 +48,7 @@ namespace stdair {
     // /////////////// Business Methods //////////
     /** Get value from inverse cumulative distribution. */
     const T getValue (const Probability_T& iCumulativeProbability) const {
-      typename ContinuousDistribution_T::const_iterator it =
+      typename ContinuousInverseDistribution_T::const_iterator it =
         _inverseCumulativeDistribution.lower_bound (iCumulativeProbability);
     
       Probability_T cumulativeProbabilityNextPoint = it->first;
@@ -63,15 +63,9 @@ namespace stdair {
       Probability_T cumulativeProbabilityPreviousPoint = it->first;
       T valuePreviousPoint = it->second;
       if (cumulativeProbabilityNextPoint == cumulativeProbabilityPreviousPoint) {
-        //std::cout << "hlelo2" << std::endl;
         return valuePreviousPoint;
       }
 
-      //std::cout << "cumulativeProbabilityPreviousPoint: " << cumulativeProbabilityPreviousPoint << std::endl;
-      //std::cout << "cumulativeProbabilityNextPoint: " << cumulativeProbabilityNextPoint << std::endl;
-      //std::cout << "valuePreviousPoint: " << valuePreviousPoint << std::endl;
-      //std::cout << "valueNextPoint: " << valueNextPoint << std::endl;
-    
       return valuePreviousPoint + (valueNextPoint - valuePreviousPoint)
         * (iCumulativeProbability - cumulativeProbabilityPreviousPoint)
         / (cumulativeProbabilityNextPoint - cumulativeProbabilityPreviousPoint);
@@ -80,7 +74,7 @@ namespace stdair {
   public:
     // ////////////// Display Support Methods //////////
     /** Display cumulative distribution */
-    std::string displayCumulativeDistribution() const {
+    const std::string displayCumulativeDistribution() const {
       std::ostringstream oStr;
       unsigned int idx = 0;
       for (typename ContinuousDistribution_T::const_iterator it =
@@ -95,7 +89,7 @@ namespace stdair {
     }
     
     /** Display inverse cumulative distribution */
-    std::string displayInverseCumulativeDistribution() const {
+    const std::string displayInverseCumulativeDistribution() const {
       std::ostringstream oStr;
       for (typename ContinuousInverseDistribution_T::const_iterator it =
              _inverseCumulativeDistribution.begin();
@@ -134,8 +128,9 @@ namespace stdair {
            itCumulativeDistribution != _cumulativeDistribution.end();
            ++itCumulativeDistribution) {
         _inverseCumulativeDistribution.
-          insert (std::pair<float, float> (itCumulativeDistribution->second,
-                                           itCumulativeDistribution->first));
+          insert (typename ContinuousInverseDistribution_T::
+                  value_type (itCumulativeDistribution->second,
+                              itCumulativeDistribution->first));
       }
     }
   

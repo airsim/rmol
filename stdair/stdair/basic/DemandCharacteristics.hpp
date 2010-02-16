@@ -8,7 +8,7 @@
 #include <string>
 // StdAir
 #include <stdair/STDAIR_Types.hpp>
-#include <stdair/basic/ArrivalPattern.hpp>
+#include <stdair/basic/DemandCharacteristicTypes.hpp>
 #include <stdair/bom/DemandStreamKey.hpp>
 
 namespace stdair {
@@ -40,14 +40,35 @@ namespace stdair {
       return _arrivalPattern;
     }
 
-    
-  public:
-    // ///////////// Setters ///////////
-    /** Set the arrival pattern. */
-    void setArrivalPattern (const ContinuousFloatDuration_T& iArrivalPattern) {
-      _arrivalPattern = iArrivalPattern;
+    /** Get the channel probability mass. */
+    const ChannelProbabilityMass_T& getChannelProbabilityMass() const {
+      return _channelProbabilityMass;
     }
 
+    /** Get the trip type probability mass. */
+    const TripTypeProbabilityMass_T& getTripTypeProbabilityMass() const {
+      return _tripTypeProbabilityMass;
+    }
+    
+    /** Get the stay duration probability mass. */
+    const StayDurationProbabilityMass_T& getStayDurationProbabilityMass() const {
+      return _stayDurationProbabilityMass;
+    }
+
+    /** Get the frequent flyer probability mass. */
+    const FrequentFlyerProbabilityMass_T& getFrequentFlyerProbabilityMass() const {
+      return _frequentFlyerProbabilityMass;
+    }
+
+    /** Get the preferred departure time cumulative distribution. */
+    const PreferredDepartureTimeCumulativeDistribution_T& getPreferredDepartureTimeCumulativeDistribution () const {
+      return _preferredDepartureTimeCumulativeDistribution;
+    }
+
+    /** Get the WTP cumulative distribution. */
+    const WTPCumulativeDistribution_T& getWTPCumulativeDistribution() const {
+      return _wtpCumulativeDistribution;
+    }
     
   public:
     // ////////////// Display Support Methods //////////
@@ -58,7 +79,14 @@ namespace stdair {
   public:
     // ////////// Constructors and destructors /////////
     /** Default constructor. */
-    DemandCharacteristics (const DemandStreamKey_T& iKey);
+    DemandCharacteristics (const DemandStreamKey_T&,
+                           const ContinuousFloatDuration_T&,
+                           const ChannelProbabilityMass_T&,
+                           const TripTypeProbabilityMass_T&,
+                           const StayDurationProbabilityMass_T&,
+                           const FrequentFlyerProbabilityMass_T&,
+                           const PreferredDepartureTimeCumulativeDistribution_T&,
+                           const WTPCumulativeDistribution_T&);
     
     /** Default constructor. */
     // TODO: That copy constructor should be private
@@ -80,13 +108,25 @@ namespace stdair {
     /** Arrival pattern (cumulative distribution of timing of arrival
         of requests (negative number of days between departure date
         and request date). */
-    ContinuousFloatDuration_T _arrivalPattern;
+    const ContinuousFloatDuration_T _arrivalPattern;
+
+    /** Channel probability mass. */
+    const ChannelProbabilityMass_T _channelProbabilityMass;
     
     /** Trip type probability mass */
-    // CategoricalAttribute<TripType_T> _tripTypeProbabilityMass;
+    const TripTypeProbabilityMass_T _tripTypeProbabilityMass;
+    
+    /** Stay duration probability mass */
+    const StayDurationProbabilityMass_T _stayDurationProbabilityMass;
+    
+    /** Frequent flyer probability mass */
+    const FrequentFlyerProbabilityMass_T _frequentFlyerProbabilityMass;
+
+    /** Preferred departure time cumulative distribution. */
+    const PreferredDepartureTimeCumulativeDistribution_T _preferredDepartureTimeCumulativeDistribution;
     
     /** Willingness-to-pay cumulative distribution */
-    // ContinuousAttribute<MonetaryValue_T> _willingnessToPayCumulativeDistribution;
+    const WTPCumulativeDistribution_T _wtpCumulativeDistribution;
     
   };
 

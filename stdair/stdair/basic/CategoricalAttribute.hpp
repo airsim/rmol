@@ -18,69 +18,101 @@ namespace stdair {
   struct CategoricalAttribute {
 
   public:
+    /** Define the probability mass function type. */
+    typedef std::map<T, Probability_T> ProbabilityMassFunction_T;
+
+    /** Define the inverse cumulative distribution type. */
+    typedef std::map<Probability_T, T> InverseCumulativeDistribution_T;
+    
+  public:
     // ///////////// Getters ///////////
     /** Get the probability mass function. */
     const std::map<T,Probability_T>& getProbabilityMassFunction() const {
-      return _probability_mass_function;
+      return _probabilityMassFunction;
     }
   
     /** Get the inverse cumulative distribution. */
-    const std::map<Probability_T, T>& getInverseCumulativeDistribution () const {
-      return _inverse_cumulative_distribution;
+    const InverseCumulativeDistribution_T& getInverseCumulativeDistribution () const {
+      return _inverseCumulativeDistribution;
     }
 
     // ///////////// Setters ///////////
     /** Set the probability mass function */
-    void setProbabilityMassFunction (const std::map<T, Probability_T>& iProbabilityMassFunction) {
-      _probability_mass_function = iProbabilityMassFunction;
+    void setProbabilityMassFunction (const ProbabilityMassFunction_T& iProbabilityMassFunction) {
+      _probabilityMassFunction = iProbabilityMassFunction;
       determineInverseCumulativeDistributionFromProbabilityMassFunction();
     }
 
   public:
     // /////////////// Business Methods //////////
     /** Get value from inverse cumulative distribution. */
-    T getValue(Probability_T iCumulativeProbability) {
-      return _inverse_cumulative_distribution.lower_bound(iCumulativeProbability)->second;
+    const T getValue (Probability_T iCumulativeProbability) const {
+      return _inverseCumulativeDistribution.
+        lower_bound (iCumulativeProbability)->second;
     }
     
   public:
     // ////////////// Display Support Methods //////////
-    /** Display inverse cumulative distribution */
-    void displayInverseCumulativeDistribution (std::ostream& ioStream) const {
-      for (typename std::map<Probability_T, T>::const_iterator it = _inverse_cumulative_distribution.begin();
-           it != _inverse_cumulative_distribution.end(); ++it) {
-        ioStream << "cumulative prob: " << it->first
+    /** Display probability mass function. */
+    const std::string displayProbabilityMassFunction () const {
+      std::ostringstream oStr;
+      unsigned int idx = 0;
+      
+      for (typename ProbabilityMassFunction_T::const_iterator it =
+             _probabilityMassFunction.begin();
+           it != _probabilityMassFunction.end(); ++it, ++idx) {
+        if (idx != 0) {
+          oStr << ", ";
+        }
+        oStr << it->first << ":" << it->second;        
+      }
+      
+      return oStr.str();
+    }
+    
+    /** Display inverse cumulative distribution. */
+    const std::string displayInverseCumulativeDistribution () const {
+      std::ostringstream oStr;
+      
+      for (typename InverseCumulativeDistribution_T::const_iterator it = 
+             _inverseCumulativeDistribution.begin();
+           it != _inverseCumulativeDistribution.end(); ++it) {
+        oStr << "cumulative prob: " << it->first
                  << "  value: " << it->second << std::endl;
       }
+
+      return oStr.str();
     }
     
   public:
     // ////////// Constructors and destructors /////////
     /** Constructor by default */
-    CategoricalAttribute (const std::map<T, Probability_T>& iProbabilityMassFunction)
-      : _probability_mass_function (iProbabilityMassFunction) {
+    CategoricalAttribute (const ProbabilityMassFunction_T& iProbabilityMassFunction)
+      : _probabilityMassFunction (iProbabilityMassFunction) {
+      determineInverseCumulativeDistributionFromProbabilityMassFunction();
+    }
+    /** Default constructors. */
+    CategoricalAttribute () { }
+    CategoricalAttribute (const CategoricalAttribute& iCategoricalAttribute)
+      : _probabilityMassFunction (iCategoricalAttribute._probabilityMassFunction) {
       determineInverseCumulativeDistributionFromProbabilityMassFunction();
     }
 
     /** Destructor */
     virtual ~CategoricalAttribute () { }
 
-  private:
-    /** Default constructors. */
-    CategoricalAttribute ();
-    CategoricalAttribute (const CategoricalAttribute&);
 
     /** Determine inverse cumulative distribution from probability mass function (initialisation). */
     void determineInverseCumulativeDistributionFromProbabilityMassFunction () {
       Probability_T cumulative_probability_so_far = 0.0;
-      for (typename std::map<T, Probability_T>::const_iterator itProbabilityMassFunction = _probability_mass_function.begin();
-           itProbabilityMassFunction != _probability_mass_function.end();
+      for (typename ProbabilityMassFunction_T::const_iterator itProbabilityMassFunction = _probabilityMassFunction.begin();
+           itProbabilityMassFunction != _probabilityMassFunction.end();
            ++itProbabilityMassFunction) {
         Probability_T attribute_probability_mass = itProbabilityMassFunction->second;
         if (attribute_probability_mass > 0) {
           T attribute_value = itProbabilityMassFunction->first;
           cumulative_probability_so_far += attribute_probability_mass;
-          _inverse_cumulative_distribution[cumulative_probability_so_far] = attribute_value;
+          _inverseCumulativeDistribution[cumulative_probability_so_far] = attribute_value;
         }
       }
     }
@@ -88,10 +120,10 @@ namespace stdair {
   private:
     // ////////// Attributes //////////
     /** Probability mass function */
-    std::map<T, Probability_T> _probability_mass_function;
+    ProbabilityMassFunction_T _probabilityMassFunction;
     
     /** Inverse cumulative distribution */
-    std::map<Probability_T, T> _inverse_cumulative_distribution;
+    InverseCumulativeDistribution_T _inverseCumulativeDistribution;
     
   };
 }

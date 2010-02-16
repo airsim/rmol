@@ -46,40 +46,37 @@ namespace stdair {
     const NbOfSeats_T& getPartySize() const {
       return _partySize;
     }
-    
 
-    // /////////////// Setters /////////////////
-    /** Set the requested origin. */
-    void setOrigin (const AirportCode_T& iOrigin) {
-      _origin = iOrigin;
+    /** Get the reservation channel. */
+    const ChannelLabel_T& getBookingChannel() const {
+      return _channel;
     }
 
-    /** Set the requested destination. */
-    void setDestination (const AirportCode_T& iDestination) {
-      _destination = iDestination;
+    /** Get the trip type. */
+    const TripType_T& getTripType() const {
+      return _tripType;
     }
 
-    /** Set the requested departure date. */
-    void setPreferredDepartureDate (const Date_T& iDepartureDate) {
-      _preferredDepartureDate = iDepartureDate;
-    }
-    
-    /** Set the request datetime */
-    void setRequestDateTime (const DateTime_T& iRequestDateTime) {
-      _requestDateTime = iRequestDateTime;
-    }
-    
-    /** Set the preferred cabin. */
-    void setPreferredCabin (const CabinCode_T& iPreferredCabin) {
-      _preferredCabin = iPreferredCabin;
+    /** Get the duration of stay. */
+    const DayDuration_T& getStayDuration() const {
+      return _stayDuration;
     }
 
-    /** Set the party size. */
-    void setPartySize (const NbOfSeats_T& iPartySize) {
-      _partySize = iPartySize;
+    /** Get the frequent flyer type. */
+    const FrequentFlyer_T& getFrequentFlyerType() const {
+      return _frequentFlyerType;
     }
 
-    
+    /** Get the preferred departure time. */
+    const Duration_T& getPreferredDepartureTime() const {
+      return _preferredDepartureTime;
+    }
+
+    /** Get the willingness-to-pay. */
+    const WTP_T& getWTP() const {
+      return _wtp;
+    }
+      
     // /////////// Display support method /////////////
     /** Dump a Business Object into an output stream.
         @param ostream& the output stream. */
@@ -98,7 +95,10 @@ namespace stdair {
     /** Constructor. */
     BookingRequestStruct (const AirportCode_T&, const AirportCode_T&,
                           const Date_T&, const DateTime_T&,
-                          const CabinCode_T&, const NbOfSeats_T&);
+                          const CabinCode_T&, const NbOfSeats_T&,
+                          const ChannelLabel_T&, const TripType_T&,
+                          const DayDuration_T&, const FrequentFlyer_T&,
+                          const Duration_T&, const WTP_T&);
   public :
     /** Default constructor. */
     BookingRequestStruct ();
@@ -112,22 +112,41 @@ namespace stdair {
   private:
     // /////////////// Attributes /////////////////
     /** Origin. */
-    AirportCode_T _origin;
+    const AirportCode_T _origin;
 
     /** Destination. */
-    AirportCode_T _destination;
+    const AirportCode_T _destination;
     
     /** Departure date. */
-    Date_T _preferredDepartureDate;
+    const Date_T _preferredDepartureDate;
 
     /** Request date-time */
-    DateTime_T _requestDateTime;
+    const DateTime_T _requestDateTime;
 
     /** Preferred cabin. */
-    CabinCode_T _preferredCabin;
+    const CabinCode_T _preferredCabin;
 
     /** Party size. */
-    NbOfSeats_T _partySize;
+    const NbOfSeats_T _partySize;
+
+    /** Booking channel (D=direct, I=indirect, N=oNline, F=oFfline). */
+    const ChannelLabel_T _channel;
+
+    /** Trip type (RO=outbound of round-trip, RI=inbound of round-trip, 
+        OW=one way). */
+    const TripType_T _tripType;
+
+    /** Stay duration (number of days). */
+    const DayDuration_T _stayDuration;
+
+    /** Frequent flyer type (P=Platinum, G=Gold, S=Silver, M=Member, N=None). */
+    const FrequentFlyer_T _frequentFlyerType;
+
+    /** Preferred departure time. */
+    const Duration_T _preferredDepartureTime;
+    
+    /** Willingness-To-Pay. */
+    const WTP_T _wtp;
   };
 
 }

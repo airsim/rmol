@@ -64,6 +64,36 @@ namespace stdair {
       return _demandCharacteristics.getArrivalPattern();
     }
 
+    /** Get the channel probability mass. */
+    const ChannelProbabilityMass_T& getChannelProbabilityMass() const {
+      return _demandCharacteristics.getChannelProbabilityMass();
+    }
+
+    /** Get the trip type probability mass. */
+    const TripTypeProbabilityMass_T& getTripTypeProbabilityMass() const {
+      return _demandCharacteristics.getTripTypeProbabilityMass();
+    }
+
+    /** Get the stay duration probability mass. */
+    const StayDurationProbabilityMass_T& getStayDurationProbabilityMass() const {
+      return _demandCharacteristics.getStayDurationProbabilityMass();
+    }
+
+    /** Get the frequent flyer probability mass. */
+    const FrequentFlyerProbabilityMass_T& getFrequentFlyerProbabilityMass() const {
+      return _demandCharacteristics.getFrequentFlyerProbabilityMass();
+    }
+
+    /** Get the preferred departure time cumulative distribution. */
+    const PreferredDepartureTimeCumulativeDistribution_T& getPreferredDepartureTimeCumulativeDistribution () const {
+      return _demandCharacteristics.getPreferredDepartureTimeCumulativeDistribution();
+    }
+    
+    /** Get the WTP cumulative distribution. */
+    const WTPCumulativeDistribution_T& getWTPCumulativeDistribution() const {
+      return _demandCharacteristics.getWTPCumulativeDistribution();
+    }
+
     /** Get the mean number of requests. */
     const NbOfRequests_T& getMeanNumberOfRequests() const {
       return _demandDistribution.getMeanNumberOfRequests();
@@ -98,6 +128,16 @@ namespace stdair {
     /** Get the seed of the random generator for the demand characteristics. */
     const RandomSeed_T& getDemandCharacteristicsRandomGeneratorSeed () const {
       return _demandCharacteristicsRandomGenerator.getSeed();
+    }
+
+    /** Get the demand characteristics. */
+    const DemandCharacteristics& getDemandCharacteristics () const {
+      return _demandCharacteristics;
+    }
+
+    /** Get the demand distribution. */
+    const DemandDistribution& getDemandDistribution () const {
+      return _demandDistribution;
     }
 
   public:

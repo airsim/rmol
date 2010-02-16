@@ -1,6 +1,7 @@
 bas_h_sources = \
 				$(top_srcdir)/stdair/basic/BasTypes.hpp \
 				$(top_srcdir)/stdair/basic/BasConst_General.hpp \
+				$(top_srcdir)/stdair/basic/BasConst_Request.hpp \
 				$(top_srcdir)/stdair/basic/BasConst_Inventory.hpp \
 				$(top_srcdir)/stdair/basic/BasConst_BookingClass.hpp \
 				$(top_srcdir)/stdair/basic/BasConst_Yield.hpp \
@@ -14,8 +15,8 @@ bas_h_sources = \
 				$(top_srcdir)/stdair/basic/BasDBParams.hpp \
 				$(top_srcdir)/stdair/basic/PassengerType.hpp \
 				$(top_srcdir)/stdair/basic/ContinuousAttribute.hpp \
-				$(top_srcdir)/stdair/basic/ArrivalPattern.hpp \
 				$(top_srcdir)/stdair/basic/CategoricalAttribute.hpp \
+				$(top_srcdir)/stdair/basic/DemandCharacteristicTypes.hpp \
 				$(top_srcdir)/stdair/basic/DemandCharacteristics.hpp \
 				$(top_srcdir)/stdair/basic/DemandDistribution.hpp \
 				$(top_srcdir)/stdair/basic/RandomGeneration.hpp \
