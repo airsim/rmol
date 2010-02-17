@@ -111,8 +111,8 @@ namespace stdair {
     }
     
     /** Get the number of requests generated so far. */
-    const Count_T getNumberOfRequestsGeneratedSoFar() const {
-      return _randomGenerationContext.getCumulativeProbabilitySoFar();;
+    const Count_T& getNumberOfRequestsGeneratedSoFar() const {
+      return _randomGenerationContext.getNumberOfRequestsGeneratedSoFar();
     }
     
     /** Get the seed of the random generator for the number of requests. */

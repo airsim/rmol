@@ -26,7 +26,7 @@ namespace stdair {
     
   // //////////////////////////////////////////////////////////////////////
   void RandomGenerationContext::incrementGeneratedRequestsCounter () {
-    _numberOfRequestsGeneratedSoFar++;
+    ++_numberOfRequestsGeneratedSoFar;
   }
 
 }

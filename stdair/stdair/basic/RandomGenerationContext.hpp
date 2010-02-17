@@ -23,7 +23,7 @@ namespace stdair {
     }
     
     /** Get the number of requests generated so far. */
-    const Count_T& getNumberOfRequestsGeneratedSoFar() const {
+    const Count_T& getNumberOfRequestsGeneratedSoFar () const {
       return _numberOfRequestsGeneratedSoFar;
     }
     
