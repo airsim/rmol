@@ -126,6 +126,8 @@ namespace stdair {
         @param const LegCabin& Root of the BOM tree to be displayed. */
     static void csvDisplay (std::ostream&,
                             const BookingRequestStruct& iBookingRequest);
+    /** Helper fuction to display an interger. */
+    static void intDisplay (std::ostream&, const int&);
   };    
 
 }

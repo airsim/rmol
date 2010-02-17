@@ -132,7 +132,7 @@ namespace stdair {
   /** Time */
   typedef boost::posix_time::time_duration Time_T;
 
-  /** Define an accurate time (date +time). */
+  /** Define an accurate time (date+time). */
   typedef boost::posix_time::ptime DateTime_T;
 
   /** Define a distance (kilometers). */
