@@ -23,6 +23,7 @@
 #include <stdair/bom/BomChildrenHolderImp.hpp>
 #include <stdair/bom/BomStructure.hpp>
 #include <stdair/bom/BomStopContent.hpp>
+#include <stdair/service/Logger.hpp>
 
 namespace stdair {
 
@@ -100,7 +101,7 @@ namespace stdair {
       assert (lBomChildrenHolder_ptr != NULL);
       
       bool hasInsertBeenSuccessful =
-        addBomObjecdToBomHolder <typename BOM_STRUCTURE_CHILD::Content_T>
+        addBomObjectToBomHolder <typename BOM_STRUCTURE_CHILD::Content_T>
         (*lBomChildrenHolder_ptr, ioBomChild);
 
       return hasInsertBeenSuccessful;
@@ -109,7 +110,7 @@ namespace stdair {
     /** Add a BOM object into a dedicated BOM holder by using the
         short key of the object. */
     template <typename BOM_CONTENT>
-    static bool addBomObjecdToBomHolder (BomChildrenHolderImp<BOM_CONTENT>& ioBomHolder, typename BOM_CONTENT::BomStructure_T& ioBomStructure) {
+    static bool addBomObjectToBomHolder (BomChildrenHolderImp<BOM_CONTENT>& ioBomHolder, typename BOM_CONTENT::BomStructure_T& ioBomStructure) {
       // Retrieve the bom structure type.
       typedef typename BOM_CONTENT::BomStructure_T BOM_STRUCTURE_T;
       // Define the bom holder type.
@@ -453,10 +454,10 @@ namespace stdair {
           // Link the SegmentCabin and LegCabin together
           initLinkSegmentCabinWithLegCabin<SEGMENT_CABIN_STRUCTURE_T> (*lSegmentCabinStructure_ptr, lLegCabinStructure);
           
-          // Build the class holders for the corresponding flight-date and
-          // inventory.
-          buildBookingClassHolders<SEGMENT_CABIN_STRUCTURE_T> (*lSegmentCabinStructure_ptr);
         }
+        // Build the class holders for the corresponding flight-date and
+        // inventory.
+        buildBookingClassHolders<SEGMENT_CABIN_STRUCTURE_T> (*lSegmentCabinStructure_ptr);
       }
     }
 
@@ -491,7 +492,8 @@ namespace stdair {
         ioSegmentCabinStructure.getChildrenHolder();
       BOOKING_CLASS_LIST_T lBookingClassList =
         lBookingClassHolder._bomChildrenList;
-      for (typename BOOKING_CLASS_LIST_T::const_iterator itBookingClass =
+      
+         for (typename BOOKING_CLASS_LIST_T::const_iterator itBookingClass =
              lBookingClassList.begin();
            itBookingClass != lBookingClassList.end(); ++itBookingClass) {
         BOOKING_CLASS_STRUCTURE_T* lBookingClassStructure_ptr = *itBookingClass;
@@ -500,6 +502,7 @@ namespace stdair {
         bool addingSucceeded =
           addFullBomObjectToBomHolder<BOOKING_CLASS_T> (lFDBookingClassHolder,
                                                         *lBookingClassStructure_ptr);
+        
         assert (addingSucceeded == true);
         addingSucceeded =
           addFullBomObjectToBomHolder<BOOKING_CLASS_T> (lInvBookingClassHolder,
@@ -526,9 +529,8 @@ namespace stdair {
       assert (lLegDateHolder_ptr != NULL);
 
       bool addingSucceeded =
-        addBomObjecdToBomHolder<LEG_DATE_T> (*lLegDateHolder_ptr,
+        addBomObjectToBomHolder<LEG_DATE_T> (*lLegDateHolder_ptr,
                                              ioLegDateStructure);
-      assert (addingSucceeded == true);
       
       SEGMENT_DATE_HOLDER_T* lSegmentDateHolder_ptr =
         ioLegDateStructure._segmentDateHolder;
@@ -537,7 +539,7 @@ namespace stdair {
       }
 
       addingSucceeded = 
-        addBomObjecdToBomHolder<SEGMENT_DATE_T> (*lSegmentDateHolder_ptr,
+        addBomObjectToBomHolder<SEGMENT_DATE_T> (*lSegmentDateHolder_ptr,
                                                ioSegmentDateStructure);
       assert (addingSucceeded == true);
     }
@@ -560,8 +562,9 @@ namespace stdair {
       assert (lLegCabinHolder_ptr != NULL);
 
       bool addingSucceeded =
-        addBomObjecdToBomHolder<LEG_CABIN_T> (*lLegCabinHolder_ptr,
-                                             ioLegCabinStructure);
+        addFullBomObjectToBomHolder<LEG_CABIN_T> (*lLegCabinHolder_ptr,
+                                                  ioLegCabinStructure);
+      
       assert (addingSucceeded == true);
       
       SEGMENT_CABIN_HOLDER_T* lSegmentCabinHolder_ptr =
@@ -571,7 +574,7 @@ namespace stdair {
       }
 
       addingSucceeded = 
-        addBomObjecdToBomHolder<SEGMENT_CABIN_T> (*lSegmentCabinHolder_ptr,
+        addBomObjectToBomHolder<SEGMENT_CABIN_T> (*lSegmentCabinHolder_ptr,
                                                ioSegmentCabinStructure);
       assert (addingSucceeded == true);
     }
@@ -624,7 +627,7 @@ namespace stdair {
         ioBomRootStructure.setDemandStreamHolder (*lDemandStreamHolder);
       }
 
-      return addBomObjecdToBomHolder <DEMAND_STREAM_T> (*lDemandStreamHolder,
+      return addBomObjectToBomHolder <DEMAND_STREAM_T> (*lDemandStreamHolder,
                                                         ioDemandStreamStructure);
     }
 
