@@ -64,6 +64,11 @@ namespace stdair {
       return _demandCharacteristics.getArrivalPattern();
     }
 
+    /** Get the POS probability mass. */
+    const POSProbabilityMass_T& getPOSProbabilityMass() const {
+      return _demandCharacteristics.getPOSProbabilityMass();
+    }
+
     /** Get the channel probability mass. */
     const ChannelProbabilityMass_T& getChannelProbabilityMass() const {
       return _demandCharacteristics.getChannelProbabilityMass();
@@ -92,6 +97,11 @@ namespace stdair {
     /** Get the WTP cumulative distribution. */
     const WTPCumulativeDistribution_T& getWTPCumulativeDistribution() const {
       return _demandCharacteristics.getWTPCumulativeDistribution();
+    }
+
+    /** Get the value of time cumulative distribution. */
+    const ValueOfTimeCumulativeDistribution_T& getValueOfTimeCumulativeDistribution() const {
+      return _demandCharacteristics.getValueOfTimeCumulativeDistribution();
     }
 
     /** Get the mean number of requests. */

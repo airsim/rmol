@@ -24,6 +24,15 @@ namespace stdair {
   /** Type definition for the arrival pattern inverse cumulative distribution. */
   typedef std::multimap<Probability_T, FloatDuration_T> ArrivalPatternInverseCumulativeDistribution_T;
 
+  /** Define the point-of-sale probablity mass. */
+  typedef CategoricalAttribute<AirportCode_T> POSProbabilityMass_T;
+
+  /** Define the probability mass function type of point-of-sale. */
+  typedef POSProbabilityMass_T::ProbabilityMassFunction_T POSProbabilityMassFunction_T;
+
+  /** Define the inverse cumulative distribution of point-of-sale. */
+  typedef POSProbabilityMass_T::InverseCumulativeDistribution_T POSInverserCumulativeDistribution_T;
+  
   /** Define the booking channel probablity mass. */
   typedef CategoricalAttribute<ChannelLabel_T> ChannelProbabilityMass_T;
 
@@ -77,6 +86,15 @@ namespace stdair {
 
   /** Define the willingness-to-pay continuous inverse distribution. */
   typedef WTPCumulativeDistribution_T::ContinuousInverseDistribution_T WTPContinuousInverseDistribution_T;
+
+  /** Define the value of time cumulative distribution. */
+  typedef ContinuousAttribute<PriceValue_T> ValueOfTimeCumulativeDistribution_T;
+
+  /** Define the value of time continuous distribution. */
+  typedef ValueOfTimeCumulativeDistribution_T::ContinuousDistribution_T ValueOfTimeContinuousDistribution_T;
+
+  /** Define the value of time continuous inverse distribution. */
+  typedef ValueOfTimeCumulativeDistribution_T::ContinuousInverseDistribution_T ValueOfTimeContinuousInverseDistribution_T;
   
 }
 #endif // __STDAIR_BAS_DEMANDCHARACTERISTICTYPES_HPP

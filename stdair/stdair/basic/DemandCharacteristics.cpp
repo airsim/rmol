@@ -15,19 +15,23 @@ namespace stdair {
   DemandCharacteristics::
   DemandCharacteristics (const DemandStreamKey_T& iKey,
                          const ContinuousFloatDuration_T& iArrivalPattern,
+                         const POSProbabilityMass_T& iPOSProbMass,
                          const ChannelProbabilityMass_T& iChannelProbMass,
                          const TripTypeProbabilityMass_T& iTripTypeProbMass,
                          const StayDurationProbabilityMass_T& iStayDurationProbMass,
                          const FrequentFlyerProbabilityMass_T& iFrequentFlyerProbMass,
                          const PreferredDepartureTimeCumulativeDistribution_T& iPreferredDepartureTimeCumulativeDistribution,
-                         const WTPCumulativeDistribution_T& iWTPCumulativeDistribution)
+                         const WTPCumulativeDistribution_T& iWTPCumulativeDistribution,
+                         const ValueOfTimeCumulativeDistribution_T& iValueOfTimeCumulativeDistribution)
     : _key (iKey), _arrivalPattern (iArrivalPattern),
+      _posProbabilityMass (iPOSProbMass),
       _channelProbabilityMass (iChannelProbMass),
       _tripTypeProbabilityMass (iTripTypeProbMass),
       _stayDurationProbabilityMass (iStayDurationProbMass),
       _frequentFlyerProbabilityMass (iFrequentFlyerProbMass),
       _preferredDepartureTimeCumulativeDistribution (iPreferredDepartureTimeCumulativeDistribution),
-      _wtpCumulativeDistribution (iWTPCumulativeDistribution) {
+      _wtpCumulativeDistribution (iWTPCumulativeDistribution),
+      _valueOfTimeCumulativeDistribution (iValueOfTimeCumulativeDistribution) {
   }
   
   // /////////////////////////////////////////////////////
@@ -44,12 +48,14 @@ namespace stdair {
   DemandCharacteristics (const DemandCharacteristics& iDemandCharacteristics) 
     : _key (iDemandCharacteristics._key),
       _arrivalPattern (iDemandCharacteristics._arrivalPattern),
+      _posProbabilityMass (iDemandCharacteristics._posProbabilityMass),
       _channelProbabilityMass (iDemandCharacteristics._channelProbabilityMass),
       _tripTypeProbabilityMass (iDemandCharacteristics._tripTypeProbabilityMass),
       _stayDurationProbabilityMass (iDemandCharacteristics._stayDurationProbabilityMass),
       _frequentFlyerProbabilityMass (iDemandCharacteristics._frequentFlyerProbabilityMass),
       _preferredDepartureTimeCumulativeDistribution (iDemandCharacteristics._preferredDepartureTimeCumulativeDistribution),
-      _wtpCumulativeDistribution (iDemandCharacteristics._wtpCumulativeDistribution) {
+      _wtpCumulativeDistribution (iDemandCharacteristics._wtpCumulativeDistribution),
+      _valueOfTimeCumulativeDistribution (iDemandCharacteristics._valueOfTimeCumulativeDistribution) {
   }
   
   // /////////////////////////////////////////////////////
@@ -89,6 +95,9 @@ namespace stdair {
          << std::endl;
     oStr << "Arrival pattern (days from departure, proportion): ";
     oStr << _arrivalPattern.displayCumulativeDistribution() << std::endl;
+    oStr << "POS probability mass (POS, propotion): ";
+    oStr << _posProbabilityMass.displayProbabilityMassFunction()
+         << std::endl;
     oStr << "Channel probability mass (channel, propotion): ";
     oStr << _channelProbabilityMass.displayProbabilityMassFunction()
          << std::endl;
@@ -105,6 +114,9 @@ namespace stdair {
     oStr << _preferredDepartureTimeCumulativeDistribution.displayCumulativeDistribution() << std::endl;
     oStr << "WTP cumulative distribution (WTP, proportion: ";
     oStr << _wtpCumulativeDistribution.displayCumulativeDistribution()
+         << std::endl;
+    oStr << "Value of time cumulative distribution (value of time, proportion: ";
+    oStr << _valueOfTimeCumulativeDistribution.displayCumulativeDistribution()
          << std::endl;
 
     

@@ -40,6 +40,11 @@ namespace stdair {
       return _arrivalPattern;
     }
 
+    /** Get the point-of-sale probability mass. */
+    const POSProbabilityMass_T& getPOSProbabilityMass() const {
+      return _posProbabilityMass;
+    }
+    
     /** Get the channel probability mass. */
     const ChannelProbabilityMass_T& getChannelProbabilityMass() const {
       return _channelProbabilityMass;
@@ -69,6 +74,11 @@ namespace stdair {
     const WTPCumulativeDistribution_T& getWTPCumulativeDistribution() const {
       return _wtpCumulativeDistribution;
     }
+
+    /** Get the value of time cumulative distribution. */
+    const ValueOfTimeCumulativeDistribution_T& getValueOfTimeCumulativeDistribution () const {
+      return _valueOfTimeCumulativeDistribution;
+    }
     
   public:
     // ////////////// Display Support Methods //////////
@@ -81,12 +91,14 @@ namespace stdair {
     /** Default constructor. */
     DemandCharacteristics (const DemandStreamKey_T&,
                            const ContinuousFloatDuration_T&,
+                           const POSProbabilityMass_T&,
                            const ChannelProbabilityMass_T&,
                            const TripTypeProbabilityMass_T&,
                            const StayDurationProbabilityMass_T&,
                            const FrequentFlyerProbabilityMass_T&,
                            const PreferredDepartureTimeCumulativeDistribution_T&,
-                           const WTPCumulativeDistribution_T&);
+                           const WTPCumulativeDistribution_T&,
+                           const ValueOfTimeCumulativeDistribution_T&);
     
     /** Default constructor. */
     // TODO: That copy constructor should be private
@@ -110,6 +122,9 @@ namespace stdair {
         and request date). */
     const ContinuousFloatDuration_T _arrivalPattern;
 
+    /** POS probability mass. */
+    const POSProbabilityMass_T _posProbabilityMass;
+    
     /** Channel probability mass. */
     const ChannelProbabilityMass_T _channelProbabilityMass;
     
@@ -127,7 +142,9 @@ namespace stdair {
     
     /** Willingness-to-pay cumulative distribution */
     const WTPCumulativeDistribution_T _wtpCumulativeDistribution;
-    
+
+    /** Value of time cumulative distribution. */
+    const ValueOfTimeCumulativeDistribution_T _valueOfTimeCumulativeDistribution;
   };
 
 }

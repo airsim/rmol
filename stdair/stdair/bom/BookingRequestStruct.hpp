@@ -27,6 +27,11 @@ namespace stdair {
       return _destination;
     }
 
+    /** Get the point-of-sale. */
+    const AirportCode_T& getPOS() const {
+      return _pos;
+    }
+
     /** Get the requested departure date. */
     const Date_T& getPreferedDepartureDate() const {
       return _preferredDepartureDate;
@@ -76,6 +81,11 @@ namespace stdair {
     const WTP_T& getWTP() const {
       return _wtp;
     }
+
+    /** Get the value of time. */
+    const PriceValue_T& getValueOfTime () const {
+      return _valueOfTime;
+    }
       
     // /////////// Display support method /////////////
     /** Dump a Business Object into an output stream.
@@ -94,11 +104,11 @@ namespace stdair {
   public :
     /** Constructor. */
     BookingRequestStruct (const AirportCode_T&, const AirportCode_T&,
-                          const Date_T&, const DateTime_T&,
+                          const AirportCode_T&, const Date_T&, const DateTime_T&,
                           const CabinCode_T&, const NbOfSeats_T&,
                           const ChannelLabel_T&, const TripType_T&,
                           const DayDuration_T&, const FrequentFlyer_T&,
-                          const Duration_T&, const WTP_T&);
+                          const Duration_T&, const WTP_T&, const PriceValue_T&);
   public :
     /** Default constructor. */
     BookingRequestStruct ();
@@ -116,6 +126,9 @@ namespace stdair {
 
     /** Destination. */
     const AirportCode_T _destination;
+
+    /** Point-Of-Sale. */
+    const AirportCode_T _pos;
     
     /** Departure date. */
     const Date_T _preferredDepartureDate;
@@ -147,6 +160,9 @@ namespace stdair {
     
     /** Willingness-To-Pay. */
     const WTP_T _wtp;
+
+    /** Value of time. */
+    const PriceValue_T _valueOfTime;
   };
 
 }
