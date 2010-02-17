@@ -574,8 +574,8 @@ namespace stdair {
       }
 
       addingSucceeded = 
-        addBomObjectToBomHolder<SEGMENT_CABIN_T> (*lSegmentCabinHolder_ptr,
-                                               ioSegmentCabinStructure);
+        addFullBomObjectToBomHolder<SEGMENT_CABIN_T> (*lSegmentCabinHolder_ptr,
+                                                      ioSegmentCabinStructure);
       assert (addingSucceeded == true);
     }
 
