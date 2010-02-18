@@ -42,6 +42,14 @@ namespace stdair {
     /** Display of the structure. */
     const std::string describe() const;
 
+    /** Get a string describing the whole key (differentiating two objects
+        at any level). */
+    const std::string describeKey() const;
+
+    /** Get a string describing the short key (differentiating two objects
+        at the same level). */
+    const std::string describeShortKey() const;
+
   
   public:
     // //////////// Constructors & Destructor ///////////////

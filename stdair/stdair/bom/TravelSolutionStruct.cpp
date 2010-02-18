@@ -7,6 +7,7 @@
 #include <ostream>
 #include <sstream>
 // StdAir
+#include <stdair/bom/OutboundPath.hpp>
 #include <stdair/bom/TravelSolutionStruct.hpp>
 
 namespace stdair {
@@ -53,7 +54,30 @@ namespace stdair {
   
   // //////////////////////////////////////////////////////////////////////
   const std::string TravelSolutionStruct::describe() const {
-    return "";
+    std::ostringstream oStr;
+    if (_outboundPath_ptr != NULL) {
+      oStr << *_outboundPath_ptr;
+    }
+    
+    return oStr.str();
   }
 
+  // //////////////////////////////////////////////////////////////////////
+  const std::string TravelSolutionStruct::describeKey() const {
+    std::string oString;
+    if (_outboundPath_ptr != NULL) {
+      oString = _outboundPath_ptr->describeKey();
+    }
+    return oString;
+  }
+
+  // //////////////////////////////////////////////////////////////////////
+  const std::string TravelSolutionStruct::describeShortKey() const {
+    std::string oString;
+    if (_outboundPath_ptr != NULL) {
+      oString = _outboundPath_ptr->describeShortKey();
+    }
+    return oString;
+  }
+  
 }
