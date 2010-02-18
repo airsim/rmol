@@ -115,21 +115,11 @@ namespace stdair {
     csvBPVDisplay (oStream, iFlightDate);
     
     // Display the segment-cabins
-    // csvSegmentCabinDisplay (oStream, iFlightDate);
+    csvSegmentCabinDisplay (oStream, iFlightDate);
     
     // Display the booking classes
     // csvClassDisplay (oStream, iFlightDate);
 
-    // Browse the SegmentDate objects
-    const SegmentDateList_T& lSDList = iFlightDate.getSegmentDateList();
-    for (SegmentDateList_T::iterator itSD = lSDList.begin();
-         itSD != lSDList.end(); ++itSD) {
-      const SegmentDate& lCurrentSD = *itSD;
-      
-      // Call recursively the display() method on the children objects
-      display (oStream, lCurrentSD);
-    }
-    
     // Reset formatting flags of the given output stream
     oStream.flags (oldFlags);
   }
@@ -266,24 +256,51 @@ namespace stdair {
   }
 
   // //////////////////////////////////////////////////////////////////////
-  void BomManager::display (std::ostream& oStream,
-                            const SegmentDate& iSegmentDate) {
+  void BomManager::csvSegmentCabinDisplay (std::ostream& oStream,
+                                           const FlightDate& iFlightDate) {
     // Store current formatting flags of the given output stream
     std::ios::fmtflags oldFlags = oStream.flags();
 
-    // Segment-date level
-    oStream << iSegmentDate.describeKey() << std::endl;
+    // Display the header
+    oStream << "******************************************" << std::endl;
+    oStream << "SegmentCabins:" << std::endl
+                << "--------------" << std::endl;
+    oStream << "Segment, Cabin, Dates, Times, Dist, SS, Rev, Fare, URev, RPK, "
+            << std::endl;
 
-    // Browse the SegmentCabin objects
-    const SegmentCabinList_T& lSCList = iSegmentDate.getSegmentCabinList();
-    for (SegmentCabinList_T::iterator itSC = lSCList.begin();
-         itSC != lSCList.end(); ++itSC) {
-      const SegmentCabin& lCurrentSC = *itSC;
-
-      // Call recursively the display() method on the children objects
-      display (oStream, lCurrentSC);
+    // Browse the SegmentDate objects
+    const SegmentDateList_T& lSDList = iFlightDate.getSegmentDateList();
+    for (SegmentDateList_T::iterator itSD = lSDList.begin();
+         itSD != lSDList.end(); ++itSD) {
+      const SegmentDate& lCurrentSD = *itSD;
+      
+      // Browse the SegmentCabin objects
+      const SegmentCabinList_T& lSCList = lCurrentSD.getSegmentCabinList();
+      for (SegmentCabinList_T::iterator itSC = lSCList.begin();
+           itSC != lSCList.end(); ++itSC) {
+        const SegmentCabin& lCurrentSC = *itSC;
+        
+        oStream << lCurrentSD.getBoardingPoint() << "-"
+                << lCurrentSD.getOffPoint() << ", "
+                << lCurrentSC.getCabinCode() << ", "          
+                << lCurrentSD.getBoardingDate() << " -> "
+                << lCurrentSD.getOffDate() << " / "
+                << lCurrentSD.getDateOffSet() << ", "
+                << lCurrentSD.getBoardingTime() << " -> "
+                << lCurrentSD.getOffTime() << " ("
+                << lCurrentSD.getTimeOffSet() << ") / "
+                << lCurrentSD.getElapsedTime() << ", "
+                << lCurrentSD.getDistance() << ", "
+                << lCurrentSD.getBookingCounter() << ", "
+                << lCurrentSD.getRevenue() << ", "
+                << lCurrentSD.getAverageFare() << ", "
+                << lCurrentSD.getUnitRevenue() << ", "
+                << lCurrentSD.getRPK() << ", "
+                << std::endl;
+      }
     }
-    
+    oStream << "******************************************" << std::endl;
+
     // Reset formatting flags of the given output stream
     oStream.flags (oldFlags);
   }

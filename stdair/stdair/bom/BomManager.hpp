@@ -76,7 +76,7 @@ namespace stdair {
         @param std::ostream& Output stream in which the BOM tree should be
                logged/dumped.
         @param const SegmentDate& Root of the BOM tree to be displayed. */
-    static void display (std::ostream&, const SegmentDate&);
+    static void csvSegmentCabinDisplay (std::ostream&, const FlightDate&);
 
     /** Recursively display (dump in the underlying output log stream)
         the objects of the given BOM tree.
