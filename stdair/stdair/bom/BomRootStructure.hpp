@@ -86,7 +86,7 @@ namespace stdair {
 
     /** Get the holder of demand streams. */
     const DemandStreamHolder_T& getDemandStreamHolder() const {
-      assert (_demandStreamHolder);
+      assert (_demandStreamHolder != NULL);
       return *_demandStreamHolder;
     }
 
