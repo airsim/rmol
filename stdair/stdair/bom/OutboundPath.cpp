@@ -47,12 +47,12 @@ namespace stdair {
     
   // ////////////////////////////////////////////////////////////////////
   const std::string OutboundPath::describeKey() const {
-    return _outboundPathStructure.describeKey();
+    return _key.describe();
   }
 
   // ////////////////////////////////////////////////////////////////////
   const std::string OutboundPath::describeShortKey() const {
-    return _outboundPathStructure.describeShortKey();
+    return _key.toString();
   }
 
   // ////////////////////////////////////////////////////////////////////

@@ -47,6 +47,9 @@ namespace stdair {
   class MemoryAllocationException : public RootException {
   };
 
+  class ObjectLinkingException : public RootException {
+  };
+
   class ParserException : public RootException {
   };
 

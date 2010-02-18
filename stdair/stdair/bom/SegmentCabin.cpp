@@ -46,12 +46,12 @@ namespace stdair {
     
   // //////////////////////////////////////////////////////////////////////
   const std::string SegmentCabin::describeKey() const {
-    return _segmentCabinStructure.describeKey();
+    return _key.describe();
   }
 
   // //////////////////////////////////////////////////////////////////////
   const std::string SegmentCabin::describeShortKey() const {
-    return _segmentCabinStructure.describeShortKey();
+    return _key.toString();
   }
 
   // //////////////////////////////////////////////////////////////////////

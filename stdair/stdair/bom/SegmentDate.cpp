@@ -48,12 +48,12 @@ namespace stdair {
     
   // //////////////////////////////////////////////////////////////////////
   const std::string SegmentDate::describeKey() const {
-    return _segmentDateStructure.describeKey();
+    return _key.describe();
   }
 
   // //////////////////////////////////////////////////////////////////////
   const std::string SegmentDate::describeShortKey() const {
-    return _segmentDateStructure.describeShortKey();
+    return _key.toString();
   }
 
   // //////////////////////////////////////////////////////////////////////

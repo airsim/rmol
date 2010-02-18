@@ -17,7 +17,8 @@ namespace stdair {
 
   // ////////////////////////////////////////////////////////////////////
   BomRoot::BomRoot (const BomKey_T& iKey, BomStructure_T& ioBomRootStructure)
-    : BomRootContent (iKey), _bomRootStructure (ioBomRootStructure) {
+    : BomRootContent (iKey), _bomRootStructure (ioBomRootStructure),
+      _airlineFeatureSet (NULL) {
   }
 
   // ////////////////////////////////////////////////////////////////////

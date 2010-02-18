@@ -122,10 +122,12 @@ namespace stdair {
       
       // Insert the structure object in the dedicated lists
       typedef typename BOM_HOLDER_T::BomChildrenMap_T BOM_MAP_T;
+
       const bool hasInsertBeenSuccessful =
         ioBomHolder._bomChildrenMap.
         insert (typename BOM_MAP_T::value_type (lBomKeyStr,
                                                  &ioBomStructure)).second;
+      
       if (hasInsertBeenSuccessful == false) {
         return hasInsertBeenSuccessful;
       }
@@ -602,6 +604,10 @@ namespace stdair {
       assert (ioOutboundPathStructure._segmentDateHolder != NULL);
       bool addingSucceeded =
         addFullBomObjectToBomHolder<SEGMENT_DATE_T> (*ioOutboundPathStructure._segmentDateHolder, ioSegmentDateStructure);
+      if (addingSucceeded == false) {
+        STDAIR_LOG_DEBUG ("Cannot add SegmentDate: "
+                          << ioSegmentDateStructure._content->describeKey());
+      }
       assert (addingSucceeded == true);
     }
     // //////////////////////////////////////////////////////////////////

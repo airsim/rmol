@@ -15,6 +15,7 @@
 // Network: child of BomRoot, needed for creation of BomRoot
 #include <stdair/bom/Network.hpp>
 #include <stdair/bom/FlightDate.hpp>
+#include <stdair/bom/BomManager.hpp>
 #include <stdair/factory/FacSupervisor.hpp>
 #include <stdair/factory/FacBomContent.hpp>
 #include <stdair/command/CmdBomManager.hpp>
@@ -27,7 +28,6 @@ namespace stdair {
     // Initialise the set of required airline features
     AirlineFeatureSet& lAirlineFeatureSet =
       FacBomContent::instance().create<AirlineFeatureSet>();
-    
     // Set the AirlineFeatureSet for the BomRoot.
     ioBomRoot.setAirlineFeatureSet (&lAirlineFeatureSet);
   }
@@ -40,10 +40,10 @@ namespace stdair {
     AirlineFeatureKey_T lAirlineFeatureKey (iAirlineCode);
     AirlineFeature& lAirlineFeature = FacBomContent::
       instance().create<AirlineFeature> (lAirlineFeatureKey);
-
+    
     // Retrieve the AirlineFeatureSet object
     AirlineFeatureSet& lAirlineFeatureSet = ioBomRoot.getAirlineFeatureSet();
-
+    
     // Add the AirlineFeature object to its AirlineFeatureSet parent
     FacBomContent::linkWithParent<AirlineFeature> (lAirlineFeature,
                                                    lAirlineFeatureSet);

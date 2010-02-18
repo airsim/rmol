@@ -62,6 +62,11 @@ namespace stdair {
     const NbOfAirlines_T& getNbOfAirlines() const {
       return _key.getNbOfAirlines();
     }
+
+    /** Get the boarding time. */
+    const Duration_T& getBoardingTime() const {
+      return _key.getBoardingTime();
+    }
    
   public:
     // /////////// Setters ////////////

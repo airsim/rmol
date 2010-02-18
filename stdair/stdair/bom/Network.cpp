@@ -40,12 +40,12 @@ namespace stdair {
     
   // //////////////////////////////////////////////////////////////////////
   const std::string Network::describeKey() const {
-    return _networkStructure.describeKey();
+    return _key.describe();
   }
 
   // //////////////////////////////////////////////////////////////////////
   const std::string Network::describeShortKey() const {
-    return _networkStructure.describeShortKey();
+    return _key.toString();
   }
 
   // //////////////////////////////////////////////////////////////////////

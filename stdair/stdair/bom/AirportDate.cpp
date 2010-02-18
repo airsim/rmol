@@ -47,12 +47,12 @@ namespace stdair {
     
   // ////////////////////////////////////////////////////////////////////
   const std::string AirportDate::describeKey() const {
-    return _airportDateStructure.describeKey();
+    return _key.describe();
   }
 
   // ////////////////////////////////////////////////////////////////////
   const std::string AirportDate::describeShortKey() const {
-    return _airportDateStructure.describeShortKey();
+    return _key.toString();
   }
 
   // ////////////////////////////////////////////////////////////////////

@@ -413,6 +413,28 @@ namespace stdair {
   }
 
   // //////////////////////////////////////////////////////////////////////
+  void BomManager::display (std::ostream& oStream,
+                            const AirlineFeatureSet& iAirlineFeatureSet) {
+    // Store current formatting flags of the given output stream
+    std::ios::fmtflags oldFlags = oStream.flags();
+
+    oStream << iAirlineFeatureSet.describeKey() << std::endl;
+
+    const AirlineFeatureList_T& lAirlineFeatureList =
+      iAirlineFeatureSet.getAirlineFeatureList();
+    for (AirlineFeatureList_T::iterator itAirlineFeature =
+           lAirlineFeatureList.begin();
+         itAirlineFeature != lAirlineFeatureList.end(); ++itAirlineFeature) {
+      const AirlineFeature& lCurrentAirlineFeature = *itAirlineFeature;
+      
+      oStream << lCurrentAirlineFeature.describeKey() << std::endl;
+    }
+    
+    // Reset formatting flags of the given output stream
+    oStream.flags (oldFlags);
+  }
+
+  // //////////////////////////////////////////////////////////////////////
   void BomManager::csvDisplay (std::ostream& oStream,
                                const BookingRequestStruct& iBookingRequest) {
     // Store current formatting flags of the given output stream

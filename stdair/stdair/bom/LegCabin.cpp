@@ -42,12 +42,12 @@ namespace stdair {
     
   // //////////////////////////////////////////////////////////////////////
   const std::string LegCabin::describeKey() const {
-    return _legCabinStructure.describeKey();
+    return _key.describe();
   }
 
   // //////////////////////////////////////////////////////////////////////
   const std::string LegCabin::describeShortKey() const {
-    return _legCabinStructure.describeShortKey();
+    return _key.toString();
   }
   
   // //////////////////////////////////////////////////////////////////////

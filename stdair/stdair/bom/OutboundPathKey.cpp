@@ -11,11 +11,13 @@ namespace stdair {
   OutboundPathKey_T (const AirportCode_T& iDestination,
                      const Duration_T& iElapsedTime,
                      const NbOfSegments_T& iNbOfSegments,
-                     const NbOfAirlines_T& iNbOfAirlines)
+                     const NbOfAirlines_T& iNbOfAirlines,
+                     const Duration_T& iBoardingTime)
     : _destination (iDestination),
       _elapsed (iElapsedTime),
       _nbOfSegments (iNbOfSegments),
-      _nbOfAirlines (iNbOfAirlines) {
+      _nbOfAirlines (iNbOfAirlines),
+      _boardingTime (iBoardingTime){
   }
   
   // ////////////////////////////////////////////////////////////////////
@@ -35,7 +37,7 @@ namespace stdair {
   const std::string OutboundPathKey_T::toString() const {
     std::ostringstream oStr;
     oStr << _destination << ", " << _elapsed << ", "
-         << _nbOfSegments << ", " << _nbOfAirlines;
+         << _nbOfSegments << ", " << _nbOfAirlines << ", " << _boardingTime;
     return oStr.str();
   }
 

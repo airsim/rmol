@@ -41,12 +41,12 @@ namespace stdair {
     
   // //////////////////////////////////////////////////////////////////////
   const std::string Inventory::describeKey() const {
-    return _inventoryStructure.describeKey();
+    return _key.describe();
   }
 
   // //////////////////////////////////////////////////////////////////////
   const std::string Inventory::describeShortKey() const {
-    return _inventoryStructure.describeShortKey();
+    return _key.toString();
   }
 
   // //////////////////////////////////////////////////////////////////////

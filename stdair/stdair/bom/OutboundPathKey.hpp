@@ -21,10 +21,9 @@ namespace stdair {
   public:
     // /////////// Construction ///////////
     /** Constructor. */
-    OutboundPathKey_T (const AirportCode_T&,
-                       const Duration_T&,
-                       const NbOfSegments_T&,
-                       const NbOfAirlines_T&);
+    OutboundPathKey_T (const AirportCode_T&, const Duration_T&,
+                       const NbOfSegments_T&, const NbOfAirlines_T&,
+                       const Duration_T&);
     
     /** Destructor. */
     ~OutboundPathKey_T ();
@@ -48,6 +47,11 @@ namespace stdair {
     /** Get the elapsed time. */
     const Duration_T& getElapsedTime() const {
       return _elapsed;
+    }
+
+    /** Get the boarding time. */
+    const Duration_T& getBoardingTime () const {
+      return _boardingTime;
     }
     
     /** Get boarding airport. */
@@ -96,6 +100,9 @@ namespace stdair {
 
     /** Number of airlines included in the path. */
     NbOfAirlines_T _nbOfAirlines;
+
+    /** The boarding time. */
+    Duration_T _boardingTime;
   };
 
 }

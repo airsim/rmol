@@ -45,12 +45,12 @@ namespace stdair {
     
   // ////////////////////////////////////////////////////////////////////
   const std::string LegDate::describeKey() const {
-    return _legDateStructure.describeKey();
+    return _key.describe();
   }
 
   // ////////////////////////////////////////////////////////////////////
   const std::string LegDate::describeShortKey() const {
-    return _legDateStructure.describeShortKey();
+    return _key.toString();
   }
 
   // ////////////////////////////////////////////////////////////////////

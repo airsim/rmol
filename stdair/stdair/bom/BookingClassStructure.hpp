@@ -78,11 +78,11 @@ namespace stdair {
     void fromStream (std::istream& ioIn) { }
 
    /** Get the serialised version of the Business Object. */
-    std::string toString() const { return describeKey(); }
+    std::string toString() const { return describeShortKey(); }
     
     /** Get a string describing the whole key (differentiating two objects
         at any level). */
-    const std::string describeKey() const { return getKey().toString(); }
+    const std::string describeKey() const { return getKey().describe(); }
 
     /** Get a string describing the short key (differentiating two objects
         at the same level). */

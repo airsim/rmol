@@ -92,7 +92,7 @@ namespace stdair {
                                                       lBomStructureChild);
 
       if (hasLinkBeenSuccessful == false) {
-        throw new MemoryAllocationException();
+        throw ObjectLinkingException();
       }
     }
 

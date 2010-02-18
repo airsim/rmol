@@ -22,6 +22,7 @@ namespace stdair {
   class NetworkDate;
   class AirportDate;
   class OutboundPath;
+  class AirlineFeatureSet;
   struct BookingRequestStruct;
 
   /** Utility class for StdAir objects. */
@@ -118,6 +119,13 @@ namespace stdair {
                logged/dumped.
         @param const OutboundPath& Root of the BOM tree to be displayed. */
     static void display (std::ostream&, const OutboundPath&);
+
+    /** Recursively display (dump in the underlying output log stream)
+        the objects of the given BOM tree.
+        @param std::ostream& Output stream in which the BOM tree should be
+               logged/dumped.
+        @param const AirlineFeatureSet& Root of the BOM tree to be displayed. */
+    static void display (std::ostream&, const AirlineFeatureSet&);
 
     /** Recursively display (dump in the underlying output log stream)
         the objects of the given BOM tree.

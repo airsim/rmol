@@ -51,21 +51,6 @@ namespace stdair {
 
     /** Get a LegDateList_T for iteration methods. */
     LegDateList_T getLegDateList () const;
-
-//     /** Get the airline code (from the parent class). */
-//     const AirlineCode_T& getAirlineCode() const;
-      
-//     /** Get the flight number (from the parent class). */
-//     const FlightNumber_T& getFlightNumber() const;
-
-//     /** Get the flight-date (from the parent class). */
-//     const Date_T& getFlightDateDate() const;
-      
-    /** Retrieve the BookingClass corresponding to the given ClassCode.
-        <br>When no BookingClass, matching the given key, can be found,
-        the NULL pointer is returned.
-        <br>Otherwise, a pointer is returned on the BookingClass object. */
-    //BookingClass* getBookingClass (const ClassCode_T&) const;
       
   private:
     /** Retrieve the BOM structure object. */
@@ -126,15 +111,6 @@ namespace stdair {
     /** Reference structure. */
     BomStructure_T& _segmentDateStructure;
     
-//     /** Map between ClassCode and SegmentCabin pointer. */
-//     ClassSegmentCabinList_T _classSegmentCabinList;
-
-//     /** List of routing LegDate objects. */
-//     LegDateOrderedList_T _legDateList;
-    
-    /** MultiMap linking MatchingIndicator values
-        and BookingClass. */
-    //    BookingClassIndicatorList_T _classIndicatorList;
   };
 
 }
