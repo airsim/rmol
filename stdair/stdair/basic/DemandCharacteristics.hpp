@@ -90,27 +90,24 @@ namespace stdair {
     // ////////// Constructors and destructors /////////
     /** Default constructor. */
     DemandCharacteristics (const DemandStreamKey_T&,
-                           const ContinuousFloatDuration_T&,
-                           const POSProbabilityMass_T&,
-                           const ChannelProbabilityMass_T&,
-                           const TripTypeProbabilityMass_T&,
-                           const StayDurationProbabilityMass_T&,
-                           const FrequentFlyerProbabilityMass_T&,
-                           const PreferredDepartureTimeCumulativeDistribution_T&,
-                           const WTPCumulativeDistribution_T&,
-                           const ValueOfTimeCumulativeDistribution_T&);
+                           const ArrivalPatternCumulativeDistribution_T&,
+                           const POSProbabilityMassFunction_T&,
+                           const ChannelProbabilityMassFunction_T&,
+                           const TripTypeProbabilityMassFunction_T&,
+                           const StayDurationProbabilityMassFunction_T&,
+                           const FrequentFlyerProbabilityMassFunction_T&,
+                           const PreferredDepartureTimeContinuousDistribution_T&,
+                           const WTPContinuousDistribution_T&,
+                           const ValueOfTimeContinuousDistribution_T&);
     
-    /** Default constructor. */
-    // TODO: That copy constructor should be private
-    DemandCharacteristics ();
-    
-    /** Copy constructor. */
-    // TODO: That copy constructor should be private
-    DemandCharacteristics (const DemandCharacteristics&);
-
     /** Destructor */
     virtual ~DemandCharacteristics ();
-  
+
+  private:
+    /** Default constructor. */
+    DemandCharacteristics ();
+    /** Copy constructor. */
+    DemandCharacteristics (const DemandCharacteristics&);
 
   private:
     // //////////////////// Attributes /////////////////////

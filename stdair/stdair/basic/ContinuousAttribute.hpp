@@ -9,6 +9,7 @@
 #include <map>
 // STDAIR
 #include <stdair/STDAIR_Types.hpp>
+#include <stdair/basic/DictionaryManager.hpp>
 #include <stdair/service/Logger.hpp>
 
 namespace stdair {
@@ -21,10 +22,10 @@ namespace stdair {
 
     // ///////////// Type definitions //////////////
     /** */
-    typedef std::multimap<T, Probability_T> ContinuousDistribution_T;
-    typedef std::multimap<Probability_T, T> ContinuousInverseDistribution_T;
-    
-    
+    typedef std::multimap<T, DictionaryKey_T> ContinuousDistribution_T;
+    typedef std::multimap<DictionaryKey_T, T> ContinuousInverseDistribution_T;
+
+  private:
     // ///////////// Getters ///////////
     /** Get the cumulative distribution. */
     const ContinuousDistribution_T& getCumulativeDistribution() const {
@@ -36,7 +37,7 @@ namespace stdair {
       return _inverseCumulativeDistribution;
     }
 
-  public:
+  private:
     // ///////////// Setters ///////////
     /** Set the cumulative distribution */
     void setCumulativeDistribution (const ContinuousDistribution_T& iCumulativeDistribution) {
@@ -48,10 +49,13 @@ namespace stdair {
     // /////////////// Business Methods //////////
     /** Get value from inverse cumulative distribution. */
     const T getValue (const Probability_T& iCumulativeProbability) const {
+      const DictionaryKey_T lKey =
+        DictionaryManager::valueToKey (iCumulativeProbability);
       typename ContinuousInverseDistribution_T::const_iterator it =
-        _inverseCumulativeDistribution.lower_bound (iCumulativeProbability);
+        _inverseCumulativeDistribution.lower_bound (lKey);
     
-      Probability_T cumulativeProbabilityNextPoint = it->first;
+      Probability_T cumulativeProbabilityNextPoint =
+        DictionaryManager::keyToValue (it->first);
       T valueNextPoint = it->second;
     
       if (it == _inverseCumulativeDistribution.begin()) {
@@ -60,7 +64,8 @@ namespace stdair {
       }
       --it;
     
-      Probability_T cumulativeProbabilityPreviousPoint = it->first;
+      Probability_T cumulativeProbabilityPreviousPoint =
+        DictionaryManager::keyToValue (it->first);
       T valuePreviousPoint = it->second;
       if (cumulativeProbabilityNextPoint == cumulativeProbabilityPreviousPoint) {
         return valuePreviousPoint;
@@ -83,7 +88,8 @@ namespace stdair {
         if (idx != 0) {
           oStr << ", ";
         }
-        oStr << it->first << ":" << it->second;
+        oStr << it->first << ":"
+             << DictionaryManager::keyToValue (it->second);
       }
       return oStr.str();
     }
@@ -94,7 +100,7 @@ namespace stdair {
       for (typename ContinuousInverseDistribution_T::const_iterator it =
              _inverseCumulativeDistribution.begin();
            it != _inverseCumulativeDistribution.end(); ++it) {
-        oStr << "cumulative prob: " << it->first
+        oStr << "cumulative prob: " << DictionaryManager::keyToValue (it->first)
              << "  value: " << it->second << std::endl;
       }
       return oStr.str();

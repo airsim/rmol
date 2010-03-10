@@ -237,11 +237,20 @@ namespace stdair {
   protected:
     // ////////// Constructors and destructors /////////
     /** Constructor by default */
-    DemandStreamContent (const BomKey_T&, const DemandCharacteristics&,
-                  const DemandDistribution&,
-                  const RandomSeed_T& iNumberOfRequestsSeed,
-                  const RandomSeed_T& iRequestDateTimeSeed,
-                  const RandomSeed_T& iDemandCharacteristicsSeed);
+    DemandStreamContent (const BomKey_T&,
+                         const ArrivalPatternCumulativeDistribution_T&,
+                         const POSProbabilityMassFunction_T&,
+                         const ChannelProbabilityMassFunction_T&,
+                         const TripTypeProbabilityMassFunction_T&,
+                         const StayDurationProbabilityMassFunction_T&,
+                         const FrequentFlyerProbabilityMassFunction_T&,
+                         const PreferredDepartureTimeContinuousDistribution_T&,
+                         const WTPContinuousDistribution_T&,
+                         const ValueOfTimeContinuousDistribution_T&,
+                         const DemandDistribution&,
+                         const RandomSeed_T& iNumberOfRequestsSeed,
+                         const RandomSeed_T& iRequestDateTimeSeed,
+                         const RandomSeed_T& iDemandCharacteristicsSeed);
     /** Default constructors. */
     DemandStreamContent ();
     DemandStreamContent (const DemandStreamContent&);

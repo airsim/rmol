@@ -16,11 +16,14 @@ bas_h_sources = \
 				$(top_srcdir)/stdair/basic/PassengerType.hpp \
 				$(top_srcdir)/stdair/basic/ContinuousAttribute.hpp \
 				$(top_srcdir)/stdair/basic/CategoricalAttribute.hpp \
+				$(top_srcdir)/stdair/basic/ContinuousAttributeLite.hpp \
+				$(top_srcdir)/stdair/basic/CategoricalAttributeLite.hpp \
 				$(top_srcdir)/stdair/basic/DemandCharacteristicTypes.hpp \
 				$(top_srcdir)/stdair/basic/DemandCharacteristics.hpp \
 				$(top_srcdir)/stdair/basic/DemandDistribution.hpp \
 				$(top_srcdir)/stdair/basic/RandomGeneration.hpp \
-				$(top_srcdir)/stdair/basic/RandomGenerationContext.hpp
+				$(top_srcdir)/stdair/basic/RandomGenerationContext.hpp \
+				$(top_srcdir)/stdair/basic/DictionaryManager.hpp
 bas_cc_sources = \
 				$(top_srcdir)/stdair/basic/BasConst.cpp \
 				$(top_srcdir)/stdair/basic/BasChronometer.cpp \
@@ -31,4 +34,5 @@ bas_cc_sources = \
 				$(top_srcdir)/stdair/basic/DemandCharacteristics.cpp \
 				$(top_srcdir)/stdair/basic/DemandDistribution.cpp \
 				$(top_srcdir)/stdair/basic/RandomGeneration.cpp \
-				$(top_srcdir)/stdair/basic/RandomGenerationContext.cpp
+				$(top_srcdir)/stdair/basic/RandomGenerationContext.cpp \
+				$(top_srcdir)/stdair/basic/DictionaryManager.cpp

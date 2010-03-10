@@ -114,7 +114,7 @@ namespace stdair {
     // /////////// Other operators /////////////
     /** Get the size of the list. */
     const unsigned int size () const {
-      return _bomChildrenList.size();
+      return _bomChildrenMap.size();
     }
 
     /** Retrieve, if existing, the bom corresponding to the given key. */

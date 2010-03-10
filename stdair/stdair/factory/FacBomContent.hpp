@@ -11,6 +11,7 @@
 // STDAIR
 #include <stdair/STDAIR_Types.hpp>
 #include <stdair/basic/BasConst_Inventory.hpp>
+#include <stdair/basic/DemandCharacteristicTypes.hpp>
 #include <stdair/bom/BomStructure.hpp>
 #include <stdair/factory/FacBomStructure.hpp>
 
@@ -202,7 +203,15 @@ namespace stdair {
     // //////////////////////////////////////////////////////////////////
     template <typename DEMAND_STREAM>
     DEMAND_STREAM& create (const DemandStreamKey_T& iKey,
-                           const DemandCharacteristics& iDemandCharacteristics,
+                           const ArrivalPatternCumulativeDistribution_T& iArrivalPattern,
+                           const POSProbabilityMassFunction_T& iPOSProbMass,
+                           const ChannelProbabilityMassFunction_T& iChannelProbMass,
+                           const TripTypeProbabilityMassFunction_T& iTripTypeProbMass,
+                           const StayDurationProbabilityMassFunction_T& iStayDurationProbMass,
+                           const FrequentFlyerProbabilityMassFunction_T& iFrequentFlyerProbMass,
+                           const PreferredDepartureTimeContinuousDistribution_T& iPreferredDepartureTimeContinuousDistribution,
+                           const WTPContinuousDistribution_T& iWTPContinuousDistribution,
+                           const ValueOfTimeContinuousDistribution_T& iValueOfTimeContinuousDistribution,
                            const DemandDistribution& iDemandDistribution,
                            const RandomSeed_T& iNumberOfRequestsSeed,
                            const RandomSeed_T& iRequestDateTimeSeed,
@@ -213,7 +222,13 @@ namespace stdair {
         FacBomStructure::instance().create<DEMAND_STREAM_STRUCTURE_T> ();
 
       DEMAND_STREAM* aDemandStream_ptr =
-        new DEMAND_STREAM (iKey, iDemandCharacteristics, iDemandDistribution,
+        new DEMAND_STREAM (iKey, iArrivalPattern, iPOSProbMass,
+                           iChannelProbMass, iTripTypeProbMass,
+                           iStayDurationProbMass, iFrequentFlyerProbMass,
+                           iPreferredDepartureTimeContinuousDistribution,
+                           iWTPContinuousDistribution,
+                           iValueOfTimeContinuousDistribution,
+                           iDemandDistribution,
                            iNumberOfRequestsSeed, iRequestDateTimeSeed,
                            iDemandCharacteristicsSeed, lBomStructure);
       assert (aDemandStream_ptr != NULL);

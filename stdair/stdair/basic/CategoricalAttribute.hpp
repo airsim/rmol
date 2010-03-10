@@ -9,6 +9,7 @@
 #include <iosfwd>
 // STDAIR
 #include <stdair/STDAIR_Types.hpp>
+#include <stdair/basic/DictionaryManager.hpp>
 
 namespace stdair {
 
@@ -19,15 +20,15 @@ namespace stdair {
 
   public:
     /** Define the probability mass function type. */
-    typedef std::map<T, Probability_T> ProbabilityMassFunction_T;
+    typedef std::map<T, DictionaryKey_T> ProbabilityMassFunction_T;
 
     /** Define the inverse cumulative distribution type. */
-    typedef std::map<Probability_T, T> InverseCumulativeDistribution_T;
+    typedef std::map<DictionaryKey_T, T> InverseCumulativeDistribution_T;
     
-  public:
+  private:
     // ///////////// Getters ///////////
     /** Get the probability mass function. */
-    const std::map<T,Probability_T>& getProbabilityMassFunction() const {
+    const ProbabilityMassFunction_T& getProbabilityMassFunction() const {
       return _probabilityMassFunction;
     }
   
@@ -47,8 +48,10 @@ namespace stdair {
     // /////////////// Business Methods //////////
     /** Get value from inverse cumulative distribution. */
     const T getValue (Probability_T iCumulativeProbability) const {
+      const DictionaryKey_T lKey =
+        DictionaryManager::valueToKey (iCumulativeProbability);
       return _inverseCumulativeDistribution.
-        lower_bound (iCumulativeProbability)->second;
+        lower_bound (lKey)->second;
     }
     
   public:
@@ -64,7 +67,8 @@ namespace stdair {
         if (idx != 0) {
           oStr << ", ";
         }
-        oStr << it->first << ":" << it->second;        
+        oStr << it->first << ":"
+             << DictionaryManager::keyToValue (it->second);        
       }
       
       return oStr.str();
@@ -77,7 +81,7 @@ namespace stdair {
       for (typename InverseCumulativeDistribution_T::const_iterator it = 
              _inverseCumulativeDistribution.begin();
            it != _inverseCumulativeDistribution.end(); ++it) {
-        oStr << "cumulative prob: " << it->first
+        oStr << "cumulative prob: " << DictionaryManager::keyToValue (it->first)
                  << "  value: " << it->second << std::endl;
       }
 
@@ -108,11 +112,15 @@ namespace stdair {
       for (typename ProbabilityMassFunction_T::const_iterator itProbabilityMassFunction = _probabilityMassFunction.begin();
            itProbabilityMassFunction != _probabilityMassFunction.end();
            ++itProbabilityMassFunction) {
-        Probability_T attribute_probability_mass = itProbabilityMassFunction->second;
+        Probability_T attribute_probability_mass =
+          DictionaryManager::keyToValue (itProbabilityMassFunction->second);
         if (attribute_probability_mass > 0) {
           T attribute_value = itProbabilityMassFunction->first;
           cumulative_probability_so_far += attribute_probability_mass;
-          _inverseCumulativeDistribution[cumulative_probability_so_far] = attribute_value;
+          DictionaryKey_T lKey =
+            DictionaryManager::valueToKey (cumulative_probability_so_far);
+          //_inverseCumulativeDistribution[lKey] = attribute_value;
+          _inverseCumulativeDistribution.insert (typename InverseCumulativeDistribution_T::value_type (lKey, attribute_value));
         }
       }
     }

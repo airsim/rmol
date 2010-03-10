@@ -417,6 +417,9 @@ namespace stdair {
   /** Probability */
   typedef float Probability_T;
 
+  /** Dictionary key. */
+  typedef unsigned char DictionaryKey_T;
+
   // //////////////////////////////////////////////////////////////////////
   // Date / Time
   /** Time duration in (integer) number of seconds */
