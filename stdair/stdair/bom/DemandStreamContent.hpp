@@ -41,22 +41,22 @@ namespace stdair {
 
     /** Get the origin. */
     const AirportCode_T& getOrigin() const {
-      return _demandCharacteristics.getOrigin();
+      return _key.getOrigin();
     }
     
     /** Get the destination. */
     const AirportCode_T& getDestination() const {
-      return _demandCharacteristics.getDestination();
+      return _key.getDestination();
     }
     
     /** Get the preferred departure date. */
     const Date_T& getPreferredDepartureDate() const {
-      return _demandCharacteristics.getPreferredDepartureDate();
+      return _key.getPreferredDepartureDate();
     }
 
     /** Get the preferred cabin. */
     const CabinCode_T& getPreferredCabin() const {
-      return _demandCharacteristics.getPreferredCabin();
+      return _key.getPreferredCabin();
     }
 
     /** Get the arrival pattern. */

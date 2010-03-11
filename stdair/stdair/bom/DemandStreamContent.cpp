@@ -35,7 +35,7 @@ namespace stdair {
                        const RandomSeed_T& iRequestDateTimeSeed,
                        const RandomSeed_T& iDemandCharacteristicsSeed)
     : _key (iKey),
-      _demandCharacteristics (iKey, iArrivalPattern, iPOSProbMass,
+      _demandCharacteristics (iArrivalPattern, iPOSProbMass,
                               iChannelProbMass, iTripTypeProbMass,
                               iStayDurationProbMass, iFrequentFlyerProbMass,
                               iPreferredDepartureTimeContinuousDistribution,

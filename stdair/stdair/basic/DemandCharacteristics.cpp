@@ -13,8 +13,7 @@ namespace stdair {
   
   // /////////////////////////////////////////////////////
   DemandCharacteristics::
-  DemandCharacteristics (const DemandStreamKey_T& iKey,
-                         const ArrivalPatternCumulativeDistribution_T& iArrivalPattern,
+  DemandCharacteristics (const ArrivalPatternCumulativeDistribution_T& iArrivalPattern,
                          const POSProbabilityMassFunction_T& iPOSProbMass,
                          const ChannelProbabilityMassFunction_T& iChannelProbMass,
                          const TripTypeProbabilityMassFunction_T& iTripTypeProbMass,
@@ -23,7 +22,7 @@ namespace stdair {
                          const PreferredDepartureTimeContinuousDistribution_T& iPreferredDepartureTimeContinuousDistribution,
                          const WTPContinuousDistribution_T& iWTPContinuousDistribution,
                          const ValueOfTimeContinuousDistribution_T& iValueOfTimeContinuousDistribution)
-    : _key (iKey), _arrivalPattern (iArrivalPattern),
+    : _arrivalPattern (iArrivalPattern),
       _posProbabilityMass (iPOSProbMass),
       _channelProbabilityMass (iChannelProbMass),
       _tripTypeProbabilityMass (iTripTypeProbMass),
@@ -39,39 +38,11 @@ namespace stdair {
   }
   
   // /////////////////////////////////////////////////////
-  const AirportCode_T& DemandCharacteristics::getOrigin() const {
-    return _key.getOrigin();
-  }
-    
-  // /////////////////////////////////////////////////////
-  const AirportCode_T& DemandCharacteristics::getDestination() const {
-    return _key.getDestination();
-  }
-    
-  // /////////////////////////////////////////////////////
-  const Date_T& DemandCharacteristics::getPreferredDepartureDate() const {
-    return _key.getPreferredDepartureDate();
-  }
-
-  // /////////////////////////////////////////////////////
-  const CabinCode_T& DemandCharacteristics::getPreferredCabin() const {
-    return _key.getPreferredCabin();
-  }
-  
-  // /////////////////////////////////////////////////////
   std::string DemandCharacteristics::display() const {
     std::ostringstream oStr;
 
     //
     oStr << "****************** Demand characteristics ******************"
-         << std::endl;
-    oStr << "Origin ........................... : " << _key.getOrigin()
-         << std::endl;
-    oStr << "Destination ...................... : " << _key.getDestination()
-         << std::endl;
-    oStr << "Preferred departure date ......... : "
-         << _key.getPreferredDepartureDate() << std::endl;
-    oStr << "Preferred cabin .................. : " << _key.getPreferredCabin()
          << std::endl;
     oStr << "Arrival pattern (days from departure, proportion): ";
     oStr << _arrivalPattern.displayCumulativeDistribution() << std::endl;

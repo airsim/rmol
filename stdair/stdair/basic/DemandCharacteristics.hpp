@@ -17,24 +17,7 @@ namespace stdair {
   struct DemandCharacteristics {
   public:
     
-    // ///////////// Getters ///////////    
-    /** Get the key. */
-    const DemandStreamKey_T& getKey() const {
-      return _key;
-    }
-    
-    /** Get the origin. */
-    const AirportCode_T& getOrigin() const;
-    
-    /** Get the destination. */
-    const AirportCode_T& getDestination() const;
-    
-    /** Get the preferred departure date. */
-    const Date_T& getPreferredDepartureDate() const;
-
-    /** Get the preferred cabin. */
-    const CabinCode_T& getPreferredCabin() const;
-    
+    // ///////////// Getters /////////// 
     /** Get the arrival pattern. */
     const ContinuousFloatDuration_T& getArrivalPattern() const {
       return _arrivalPattern;
@@ -89,8 +72,7 @@ namespace stdair {
   public:
     // ////////// Constructors and destructors /////////
     /** Default constructor. */
-    DemandCharacteristics (const DemandStreamKey_T&,
-                           const ArrivalPatternCumulativeDistribution_T&,
+    DemandCharacteristics (const ArrivalPatternCumulativeDistribution_T&,
                            const POSProbabilityMassFunction_T&,
                            const ChannelProbabilityMassFunction_T&,
                            const TripTypeProbabilityMassFunction_T&,
@@ -111,9 +93,6 @@ namespace stdair {
 
   private:
     // //////////////////// Attributes /////////////////////
-    /** DemandStream Key */
-    const DemandStreamKey_T _key;
-    
     /** Arrival pattern (cumulative distribution of timing of arrival
         of requests (negative number of days between departure date
         and request date). */
