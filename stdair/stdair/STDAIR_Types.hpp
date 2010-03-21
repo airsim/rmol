@@ -213,8 +213,12 @@ namespace stdair {
   /** Define a Willingness-To-Pay (WTP) (e.g., 1000.0 Euros). */
   typedef double WTP_T;
 
+  /** Define the number of seats (it can be non integer, because the
+      overbooking can be applied at booking class or PNR level). */
+  typedef double NbOfSeats_T;
+
   /** Define the number of seats required by a demand. */
-  typedef unsigned short NbOfSeats_T;
+  // typedef unsigned short NbOfSeats_T;
 
   /** Number of passengers (in a group) for a booking. */
   typedef unsigned short PartySize_T;
@@ -281,8 +285,11 @@ namespace stdair {
   /** Define a number of flight dates. */
   typedef double NbOfFlightDates_T;
 
-  /** Define a number of commited spaces in a cabin. */
+  /** Define the commited space of a cabin. */
   typedef double CommitedSpace_T;
+
+  /** Define the unsold protection (UPR). */
+  typedef double UPR_T;
 
   /** Define availibility of booking limit. */
   typedef bool CensorshipFlag_T;
@@ -296,6 +303,9 @@ namespace stdair {
 
   /** Define the value of the authorization level. */
   typedef double AuthorizationLevel_T;
+
+  /** Define the value of the adjustment for cabin capacity. */
+  typedef double CapacityAdjustment_T;
 
   /** Define the rate of overbooking */
   typedef double OverbookingRate_T;
@@ -325,6 +335,9 @@ namespace stdair {
   /** Define a Bid-Price Vector. */
   typedef std::vector<BidPrice_T> BidPriceVector_T;
 
+  /** Define the current index of a Bid-Price Vector (for a given LegCabin). */
+  typedef unsigned int SeatIndex_T;
+  
   /** Define a number of travel solutions
       (in a travel solution block). */
   typedef unsigned short NbOfTravelSolutions_T;
