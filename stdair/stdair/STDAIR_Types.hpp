@@ -98,8 +98,14 @@ namespace stdair {
   /** Define the type for network ID. */
   typedef std::string NetworkID_T;
 
-  /** Define the type for airport codes. */
-  typedef std::string AirportCode_T;
+  /** Define the Airline Code type (2-letter-code, e.g., BA). */
+  typedef std::string AirlineCode_T;
+
+  /** Location code (3-letter-code, e.g., LON). */
+  typedef std::string LocationCode_T;
+  
+  /** Define the Airport Code type (3-letter-code, e.g., LHR). */
+  typedef LocationCode_T AirportCode_T;
 
   /** Define the type for flight numbers. */
   typedef unsigned short FlightNumber_T;
@@ -115,12 +121,6 @@ namespace stdair {
 
   /** Define the seed type of an Uniform function. */
   typedef unsigned long int UniformSeed_T;
-
-  /** Define the Airline Code type (2-letter-code, e.g., BA). */
-  typedef std::string AirlineCode_T;
-
-  /** Define the Airport Code type (3-letter-code, e.g., LHR). */
-  typedef std::string AirportCode_T;
 
   /** Define the Request status for booking (1-letter-code, e.g.,
       B: booked, C: cancelled, R: Rejected). */
@@ -242,6 +242,11 @@ namespace stdair {
   /** Define the booking class code (product segment class, e.g., H,
       B, K, etc.). */
   typedef std::string ClassCode_T;
+
+  /** Define the sub-class code (e.g., 0, 1, 2, etc.). The subclass is
+      a sub-structure for the booking class, allowing to have specific
+      rules for some criteria like POS. */
+  typedef std::string SubclassCode_T;
 
   /** Define the flight path code (code made by a suite of flight numbers). */
   typedef std::string FlightPathCode_T;
@@ -448,12 +453,6 @@ namespace stdair {
   
   /** Count */
   typedef int Count_T;
-  
-  /** Location code */
-  typedef std::string LocationCode_T;
-  
-  /** Airport code */
-  typedef LocationCode_T AirportCode_T;
   
   /** City code */
   typedef LocationCode_T CityCode_T;
