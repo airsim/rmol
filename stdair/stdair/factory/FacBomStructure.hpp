@@ -62,6 +62,36 @@ namespace stdair {
         <br>The singleton is instantiated when first used.
         @return FacBomStructure& */
     static FacBomStructure& instance();
+
+    
+
+    // //////////////////////////////////////////////////////////////////
+
+  public: 
+    /** Create a structure object with the given key. */
+    template <typename STRUCTURE>
+    STRUCTURE& testCreate () {
+      STRUCTURE* aStructure_ptr = NULL;
+      
+      aStructure_ptr = new STRUCTURE ();
+      assert (aStructure_ptr != NULL);
+      
+      // The new object is added to the pool of structure objects
+      _structurePool.push_back (aStructure_ptr);
+      
+      return *aStructure_ptr;
+    }
+
+
+
+
+
+
+
+
+
+    // //////////////////////////////////////////////////////////////////
+    
     
     /** Create a structure object with the given key. */
     template <typename BOM_STRUCTURE>

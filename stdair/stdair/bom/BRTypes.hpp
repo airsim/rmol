@@ -1,0 +1,19 @@
+// //////////////////////////////////////////////////////////////////////
+#ifndef __STDAIR_BOM_BRTYPES_HPP
+#define __STDAIR_BOM_BRTYPES_HPP
+
+// //////////////////////////////////////////////////////////////////////
+// Import section
+// //////////////////////////////////////////////////////////////////////
+
+namespace stdair {
+  // Forward declarations.
+  template <typename CONTENT> class Structure;
+  class BR;
+  
+  /** Define the BomRootStructure. */
+  typedef Structure<BR> BRStructure_T;
+
+}
+#endif // __STDAIR_BOM_BRTYPES_HPP
+

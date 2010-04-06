@@ -93,7 +93,14 @@ bom_h_sources = \
 				$(top_srcdir)/stdair/bom/EventStruct.hpp \
 				$(top_srcdir)/stdair/bom/EventQueue.hpp \
 				$(top_srcdir)/stdair/bom/EventTypes.hpp \
-				$(top_srcdir)/stdair/bom/BomManager.hpp
+				$(top_srcdir)/stdair/bom/BomManager.hpp \
+				$(top_srcdir)/stdair/bom/Structure.hpp \
+				$(top_srcdir)/stdair/bom/BR.hpp \
+				$(top_srcdir)/stdair/bom/BRKey.hpp \
+				$(top_srcdir)/stdair/bom/BRTypes.hpp \
+				$(top_srcdir)/stdair/bom/IN.hpp \
+				$(top_srcdir)/stdair/bom/INKey.hpp \
+				$(top_srcdir)/stdair/bom/INTypes.hpp
 bom_cc_sources = \
 				$(top_srcdir)/stdair/bom/BomRootKey.cpp \
 				$(top_srcdir)/stdair/bom/InventoryKey.cpp \

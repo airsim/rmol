@@ -6,7 +6,7 @@ include $(srcdir)/core/sources.mk
 
 MAINTAINERCLEANFILES = Makefile.in
 
-SUBDIRS = basic bom dbadaptor factory command config service core
+SUBDIRS = basic bom dbadaptor factory command config service core batches
 
 #EXTRA_DIST = config_msvc.h
 EXTRA_DIST =
