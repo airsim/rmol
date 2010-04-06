@@ -1,5 +1,5 @@
-#ifndef __STDAIR_BOM_INKEY_HPP
-#define __STDAIR_BOM_INKEY_HPP
+#ifndef __STDAIR_BOM_NDKEY_HPP
+#define __STDAIR_BOM_NDKEY_HPP
 
 // //////////////////////////////////////////////////////////////////////
 // Import section
@@ -10,11 +10,11 @@
 
 
 namespace stdair {
-  struct INKey_T : public BomKey_T {
+  struct NDKey_T : public BomKey_T {
 
     // /////////// Display support methods /////////
     void toStream (std::ostream& ioOut) const {
-      ioOut << "INKey: " << toString() << std::endl;
+      ioOut << "NDKey: " << toString() << std::endl;
     }
 
     void fromStream (std::istream& ioIn) {
@@ -22,7 +22,7 @@ namespace stdair {
 
     const std::string toString() const {
       std::ostringstream oStr;
-      oStr << _airlineCode;
+      oStr << _networkNumber;
       return oStr.str();
     }
     
@@ -33,18 +33,18 @@ namespace stdair {
   public:
     // /////////// Construction ///////////
     /** Constructors. */
-    INKey_T (const AirlineCode_T& iAirlineCode) : _airlineCode (iAirlineCode) { }
-    INKey_T (const INKey_T& iKey)
-      : _airlineCode (iKey._airlineCode) { }
+    NDKey_T (const int& iNetworkNumber) : _networkNumber (iNetworkNumber) { }
+    NDKey_T (const NDKey_T& iKey)
+      : _networkNumber (iKey._networkNumber) { }
     /** Destructor. */
-    ~INKey_T () { }
+    ~NDKey_T () { }
 
   private:
     // Attributes
-    /** Airline code. */
-    AirlineCode_T _airlineCode;
+    /** Network number. */
+    int _networkNumber;
 
   };
 }
 
-#endif // __STDAIR_BOM_INKEY_HPP
+#endif // __STDAIR_BOM_NDKEY_HPP

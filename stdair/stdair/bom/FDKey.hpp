@@ -1,5 +1,5 @@
-#ifndef __STDAIR_BOM_INKEY_HPP
-#define __STDAIR_BOM_INKEY_HPP
+#ifndef __STDAIR_BOM_FDKEY_HPP
+#define __STDAIR_BOM_FDKEY_HPP
 
 // //////////////////////////////////////////////////////////////////////
 // Import section
@@ -10,11 +10,11 @@
 
 
 namespace stdair {
-  struct INKey_T : public BomKey_T {
+  struct FDKey_T : public BomKey_T {
 
     // /////////// Display support methods /////////
     void toStream (std::ostream& ioOut) const {
-      ioOut << "INKey: " << toString() << std::endl;
+      ioOut << "FDKey: " << toString() << std::endl;
     }
 
     void fromStream (std::istream& ioIn) {
@@ -22,7 +22,7 @@ namespace stdair {
 
     const std::string toString() const {
       std::ostringstream oStr;
-      oStr << _airlineCode;
+      oStr << _flightNumber;
       return oStr.str();
     }
     
@@ -33,18 +33,18 @@ namespace stdair {
   public:
     // /////////// Construction ///////////
     /** Constructors. */
-    INKey_T (const AirlineCode_T& iAirlineCode) : _airlineCode (iAirlineCode) { }
-    INKey_T (const INKey_T& iKey)
-      : _airlineCode (iKey._airlineCode) { }
+    FDKey_T (const int& iFlightNumber) : _flightNumber (iFlightNumber) { }
+    FDKey_T (const FDKey_T& iKey)
+      : _flightNumber (iKey._flightNumber) { }
     /** Destructor. */
-    ~INKey_T () { }
+    ~FDKey_T () { }
 
   private:
     // Attributes
-    /** Airline code. */
-    AirlineCode_T _airlineCode;
+    /** Flight number. */
+    int _flightNumber;
 
   };
 }
 
-#endif // __STDAIR_BOM_INKEY_HPP
+#endif // __STDAIR_BOM_FDKEY_HPP

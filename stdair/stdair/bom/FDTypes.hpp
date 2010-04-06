@@ -1,6 +1,6 @@
 // //////////////////////////////////////////////////////////////////////
-#ifndef __STDAIR_BOM_INTYPES_HPP
-#define __STDAIR_BOM_INTYPES_HPP
+#ifndef __STDAIR_BOM_FDTYPES_HPP
+#define __STDAIR_BOM_FDTYPES_HPP
 
 // //////////////////////////////////////////////////////////////////////
 // Import section
@@ -12,20 +12,20 @@ namespace stdair {
   template <typename CONTENT> class BomChildrenHolderImp;
   template <typename BOM> struct BomList_T;
   template <typename BOM> struct BomMap_T;
-  class IN;
+  class FD;
   
   /** Define the BomRootStructure. */
-  typedef Structure<IN> INStructure_T;
+  typedef Structure<FD> FDStructure_T;
 
   /** Define the Inventory holder type. */
-  typedef BomChildrenHolderImp<IN> INHolder_T;
+  typedef BomChildrenHolderImp<FD> FDHolder_T;
 
   /** Define the Inventory list. */
-  typedef BomList_T<IN> INList_T;
+  typedef BomList_T<FD> FDList_T;
   
   /** Define the Inventory map. */
-  typedef BomMap_T<IN> INMap_T;
+  typedef BomMap_T<FD> FDMap_T;
   
 }
-#endif // __STDAIR_BOM_INTYPES_HPP
+#endif // __STDAIR_BOM_FDTYPES_HPP
 

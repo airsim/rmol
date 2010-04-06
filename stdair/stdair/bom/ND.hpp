@@ -1,5 +1,5 @@
-#ifndef __STDAIR_BOM_IN_HPP
-#define __STDAIR_BOM_IN_HPP
+#ifndef __STDAIR_BOM_ND_HPP
+#define __STDAIR_BOM_ND_HPP
 
 // //////////////////////////////////////////////////////////////////////
 // Import section
@@ -9,9 +9,7 @@
 // STDAIR 
 #include <stdair/bom/Structure.hpp>
 #include <stdair/bom/BomContent.hpp>
-#include <stdair/bom/INKey.hpp>
-#include <stdair/bom/INTypes.hpp>
-#include <stdair/bom/FDTypes.hpp>
+#include <stdair/bom/NDKey.hpp>
 #include <stdair/bom/NDTypes.hpp>
 
 namespace stdair {
@@ -20,22 +18,21 @@ namespace stdair {
   
   /** Class representing the actual functional/business content
       for the Bom root. */
-  class IN : public BomContent {
+  class ND : public BomContent {
     friend class FacBomContent;
     
   public:
     // /////////////////////////////////////////////////////////////////////////
     /** Definition allowing to retrieve the associated BOM structure type. */
-    typedef INStructure_T Structure_T;
+    typedef NDStructure_T Structure_T;
 
     /** Definition allowing to retrieve the associated BOM key type. */
-    typedef INKey_T Key_T;
+    typedef NDKey_T Key_T;
     
 /** Define the list of children holder types. */
-    typedef boost::fusion::map<
-      boost::fusion::pair<FD, FDHolder_T*>, 
-      boost::fusion::pair<ND, NDHolder_T*> > ChildrenHolderTypeMap_T;
+    typedef boost::fusion::map< > ChildrenHolderTypeMap_T;
     // /////////////////////////////////////////////////////////////////////////
+
     
   public:
     // /////////// Display support methods /////////
@@ -78,12 +75,12 @@ namespace stdair {
     /** Constructors are private so as to force the usage of the Factory
         layer. */
     /** Default constructors. */
-    IN ();
-    IN (const IN&);
-    IN (const Key_T& iKey, Structure_T& ioStructure) 
+    ND ();
+    ND (const ND&);
+    ND (const Key_T& iKey, Structure_T& ioStructure) 
       : _key (iKey), _structure (ioStructure) { }
     /** Destructor. */
-    virtual ~IN() { }
+    virtual ~ND() { }
 
   private:
     // Attributes
@@ -96,4 +93,4 @@ namespace stdair {
   };
 
 }
-#endif // __STDAIR_BOM_IN_HPP
+#endif // __STDAIR_BOM_ND_HPP

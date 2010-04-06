@@ -10,7 +10,6 @@
 #include <stdair/bom/BomRootKey.hpp>
 
 namespace stdair {
-
   /** Key of inventory. */
   struct InventoryKey_T : public BomKey_T {
     friend struct FlightDateKey_T;
@@ -28,7 +27,6 @@ namespace stdair {
     /** Constructors. */
     InventoryKey_T (const AirlineCode_T& iAirlineCode);
     InventoryKey_T (const InventoryKey_T&);
-
     /** Destructor. */
     ~InventoryKey_T ();
     

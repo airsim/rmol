@@ -40,6 +40,7 @@ namespace stdair {
 
 
     // //////////////////////////////////////////////////////////////////
+
   public:
     template <typename CONTENT>
     CONTENT& testCreate (const typename CONTENT::Key_T& iKey) {
@@ -72,14 +73,16 @@ namespace stdair {
       ioStructure._content = &ioContent;
     }
 
-
-
-
-
-
-
-
     // //////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
     
   public:
     /** Create the root of the BOM tree, i.e., a pair of linked

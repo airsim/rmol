@@ -1,5 +1,5 @@
-#ifndef __STDAIR_BOM_IN_HPP
-#define __STDAIR_BOM_IN_HPP
+#ifndef __STDAIR_BOM_FD_HPP
+#define __STDAIR_BOM_FD_HPP
 
 // //////////////////////////////////////////////////////////////////////
 // Import section
@@ -9,10 +9,9 @@
 // STDAIR 
 #include <stdair/bom/Structure.hpp>
 #include <stdair/bom/BomContent.hpp>
-#include <stdair/bom/INKey.hpp>
-#include <stdair/bom/INTypes.hpp>
+#include <stdair/bom/FDKey.hpp>
 #include <stdair/bom/FDTypes.hpp>
-#include <stdair/bom/NDTypes.hpp>
+#include <stdair/bom/BSTypes.hpp>
 
 namespace stdair {
   // Forward declarations.
@@ -20,22 +19,22 @@ namespace stdair {
   
   /** Class representing the actual functional/business content
       for the Bom root. */
-  class IN : public BomContent {
+  class FD : public BomContent {
     friend class FacBomContent;
     
   public:
     // /////////////////////////////////////////////////////////////////////////
     /** Definition allowing to retrieve the associated BOM structure type. */
-    typedef INStructure_T Structure_T;
+    typedef FDStructure_T Structure_T;
 
     /** Definition allowing to retrieve the associated BOM key type. */
-    typedef INKey_T Key_T;
+    typedef FDKey_T Key_T;
     
-/** Define the list of children holder types. */
+    /** Define the list of children holder types. */
     typedef boost::fusion::map<
-      boost::fusion::pair<FD, FDHolder_T*>, 
-      boost::fusion::pair<ND, NDHolder_T*> > ChildrenHolderTypeMap_T;
+      boost::fusion::pair<BS, BSHolder_T*> > ChildrenHolderTypeMap_T;
     // /////////////////////////////////////////////////////////////////////////
+
     
   public:
     // /////////// Display support methods /////////
@@ -78,12 +77,12 @@ namespace stdair {
     /** Constructors are private so as to force the usage of the Factory
         layer. */
     /** Default constructors. */
-    IN ();
-    IN (const IN&);
-    IN (const Key_T& iKey, Structure_T& ioStructure) 
+    FD ();
+    FD (const FD&);
+    FD (const Key_T& iKey, Structure_T& ioStructure) 
       : _key (iKey), _structure (ioStructure) { }
     /** Destructor. */
-    virtual ~IN() { }
+    virtual ~FD() { }
 
   private:
     // Attributes
@@ -96,4 +95,4 @@ namespace stdair {
   };
 
 }
-#endif // __STDAIR_BOM_IN_HPP
+#endif // __STDAIR_BOM_FD_HPP

@@ -28,7 +28,7 @@ namespace stdair {
 
   public:
     // ////////// GETTERS ////////////
-    const Key_T& getKey () {
+    const Key_T& getKey () const {
       assert (_content != NULL);
       return _content->getKey();
     }

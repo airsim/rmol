@@ -35,7 +35,8 @@ namespace stdair {
     typedef BRKey_T Key_T;
 
     /** Define the list of children holder types. */
-    typedef boost::fusion::map<boost::fusion::pair<IN, INHolder_T*> > ChildrenHolderTypeMap_T;
+    typedef boost::fusion::map<
+      boost::fusion::pair<IN, INHolder_T*> > ChildrenHolderTypeMap_T;
     // /////////////////////////////////////////////////////////////////////////
     
   public:
@@ -62,7 +63,9 @@ namespace stdair {
     
   public:
     // /////////// Getters /////////////
-
+    const Key_T& getKey () const {
+      return _key;
+    }
     
   public:
     // //////////// Setters //////////////
@@ -79,9 +82,10 @@ namespace stdair {
     /** Default constructors. */
     BR ();
     BR (const BR&);
-    BR (const Key_T&, Structure_T&);
+    BR (const Key_T& iKey, Structure_T& ioStructure) 
+      : _key (iKey), _structure (ioStructure) { }
     /** Destructor. */
-    virtual ~BR();
+    virtual ~BR() { }
 
   private:
     // Attributes
