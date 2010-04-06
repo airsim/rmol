@@ -6,15 +6,18 @@
 // //////////////////////////////////////////////////////////////////////
 // STL
 #include <iosfwd>
+// BOOST Fusion
+#include <boost/fusion/container/map.hpp>
+#include <boost/fusion/include/map.hpp>
 // STDAIR 
 #include <stdair/bom/Structure.hpp>
 #include <stdair/bom/BomContent.hpp>
 #include <stdair/bom/FDKey.hpp>
 #include <stdair/bom/FDTypes.hpp>
-#include <stdair/bom/BSTypes.hpp>
 
 namespace stdair {
   // Forward declarations.
+  class IN;
   class FacBomContent;
   
   /** Class representing the actual functional/business content
@@ -24,15 +27,17 @@ namespace stdair {
     
   public:
     // /////////////////////////////////////////////////////////////////////////
+    /** Definition allowing to retrieve the associated parent. */
+    typedef IN Parent_T;
+    
     /** Definition allowing to retrieve the associated BOM structure type. */
-    typedef FDStructure_T Structure_T;
+    typedef FDStructure_T BomStructure_T;
 
     /** Definition allowing to retrieve the associated BOM key type. */
     typedef FDKey_T Key_T;
     
     /** Define the list of children holder types. */
-    typedef boost::fusion::map<
-      boost::fusion::pair<BS, BSHolder_T*> > ChildrenHolderTypeMap_T;
+    typedef boost::fusion::map< > ChildrenHolderTypeMap_T;
     // /////////////////////////////////////////////////////////////////////////
 
     
@@ -69,7 +74,7 @@ namespace stdair {
 
   private:     
     /** Retrieve the BOM structure object. */
-    Structure_T& getStructure () {
+    BomStructure_T& getStructure () {
       return _structure;
     }
     
@@ -79,7 +84,7 @@ namespace stdair {
     /** Default constructors. */
     FD ();
     FD (const FD&);
-    FD (const Key_T& iKey, Structure_T& ioStructure) 
+    FD (const Key_T& iKey, BomStructure_T& ioStructure) 
       : _key (iKey), _structure (ioStructure) { }
     /** Destructor. */
     virtual ~FD() { }
@@ -90,7 +95,7 @@ namespace stdair {
     Key_T _key;
     
     /** Reference structure. */
-    Structure_T& _structure;
+    BomStructure_T& _structure;
 
   };
 

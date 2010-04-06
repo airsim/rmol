@@ -13,6 +13,7 @@
 #include <stdair/basic/BasConst_Inventory.hpp>
 #include <stdair/basic/DemandCharacteristicTypes.hpp>
 #include <stdair/bom/BomStructure.hpp>
+#include <stdair/bom/Structure.hpp>
 #include <stdair/factory/FacBomStructure.hpp>
 
 namespace stdair {
@@ -47,7 +48,7 @@ namespace stdair {
       typedef typename CONTENT::Key_T KEY_T;
       
       // Create the structure/holder object
-      typedef typename CONTENT::Structure_T STRUCTURE_T;
+      typedef typename CONTENT::BomStructure_T STRUCTURE_T;
       STRUCTURE_T& lStructure =
         FacBomStructure::instance().testCreate<STRUCTURE_T> ();
 
@@ -64,11 +65,41 @@ namespace stdair {
       return *aContent_ptr;
     }
 
+    /** Link a child content objet with his parent. */
+    template <typename CHILD>
+    static void testLink (CHILD& ioChild, typename CHILD::Parent_T& ioParent) {
+      // Type for the child Bom structure
+      typedef typename CHILD::BomStructure_T CHILD_STRUCTURE_T;
+      
+      // Type for the parent Bom content
+      typedef typename CHILD::Parent_T PARENT_T;
+      
+      // Type for the parent Bom structure
+      typedef typename PARENT_T::BomStructure_T PARENT_STRUCTURE_T;
+
+      
+      // Retrieve the child structure object
+      CHILD_STRUCTURE_T& lStructureChild = ioChild.getStructure ();
+      
+      // Retrieve the parent structure object
+      PARENT_STRUCTURE_T& lStructureParent = ioParent.getStructure ();
+      
+      // Link both the parent and child structure objects
+      const bool hasLinkBeenSuccessful = FacBomStructure::
+        testLinkParentWithChild<CHILD_STRUCTURE_T> (lStructureParent,
+                                                    lStructureChild);
+
+      if (hasLinkBeenSuccessful == false) {
+        throw ObjectLinkingException();
+      }
+    }
+
   private:
     /** Link the structure/holder object with its corresponding content
         object. */
     template<typename STRUCTURE, typename CONTENT>
     static void testSetContent (STRUCTURE& ioStructure,
+                                
                                 CONTENT& ioContent) {
       ioStructure._content = &ioContent;
     }

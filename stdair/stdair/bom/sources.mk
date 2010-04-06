@@ -95,9 +95,6 @@ bom_h_sources = \
 		$(top_srcdir)/stdair/bom/EventTypes.hpp \
 		$(top_srcdir)/stdair/bom/BomManager.hpp \
 		$(top_srcdir)/stdair/bom/Structure.hpp \
-		$(top_srcdir)/stdair/bom/BS.hpp \
-		$(top_srcdir)/stdair/bom/BSKey.hpp \
-		$(top_srcdir)/stdair/bom/BSTypes.hpp \
 		$(top_srcdir)/stdair/bom/BRKey.hpp \
 		$(top_srcdir)/stdair/bom/BRTypes.hpp \
 		$(top_srcdir)/stdair/bom/IN.hpp \

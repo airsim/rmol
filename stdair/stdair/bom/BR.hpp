@@ -15,6 +15,8 @@
 #include <stdair/bom/BRKey.hpp>
 #include <stdair/bom/BRTypes.hpp>
 #include <stdair/bom/INTypes.hpp>
+#include <stdair/bom/IN.hpp>
+#include <stdair/bom/BomList.hpp>
 
 namespace stdair {
   // Forward declarations.
@@ -29,7 +31,7 @@ namespace stdair {
   public:
     // /////////////////////////////////////////////////////////////////////////
     /** Definition allowing to retrieve the associated BOM structure type. */
-    typedef BRStructure_T Structure_T;
+    typedef BRStructure_T BomStructure_T;
 
     /** Definition allowing to retrieve the associated BOM key type. */
     typedef BRKey_T Key_T;
@@ -66,13 +68,17 @@ namespace stdair {
     const Key_T& getKey () const {
       return _key;
     }
+
+    const INList_T getINList () const {
+      return _structure.getChildrenHolder<IN> ();
+    }
     
   public:
     // //////////// Setters //////////////
 
   private:     
     /** Retrieve the BOM structure object. */
-    Structure_T& getStructure () {
+    BomStructure_T& getStructure () {
       return _structure;
     }
     
@@ -82,7 +88,7 @@ namespace stdair {
     /** Default constructors. */
     BR ();
     BR (const BR&);
-    BR (const Key_T& iKey, Structure_T& ioStructure) 
+    BR (const Key_T& iKey, BomStructure_T& ioStructure) 
       : _key (iKey), _structure (ioStructure) { }
     /** Destructor. */
     virtual ~BR() { }
@@ -93,8 +99,7 @@ namespace stdair {
     Key_T _key;
     
     /** Reference structure. */
-    Structure_T& _structure;
-
+    BomStructure_T& _structure;
   };
 
 }

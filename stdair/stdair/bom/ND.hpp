@@ -6,6 +6,9 @@
 // //////////////////////////////////////////////////////////////////////
 // STL
 #include <iosfwd>
+// BOOST Fusion
+#include <boost/fusion/container/map.hpp>
+#include <boost/fusion/include/map.hpp>
 // STDAIR 
 #include <stdair/bom/Structure.hpp>
 #include <stdair/bom/BomContent.hpp>
@@ -14,6 +17,7 @@
 
 namespace stdair {
   // Forward declarations.
+  class IN;
   class FacBomContent;
   
   /** Class representing the actual functional/business content
@@ -23,8 +27,11 @@ namespace stdair {
     
   public:
     // /////////////////////////////////////////////////////////////////////////
+    /** Definition allowing to retrieve the associated parent. */
+    typedef IN Parent_T;
+
     /** Definition allowing to retrieve the associated BOM structure type. */
-    typedef NDStructure_T Structure_T;
+    typedef NDStructure_T BomStructure_T;
 
     /** Definition allowing to retrieve the associated BOM key type. */
     typedef NDKey_T Key_T;
@@ -67,7 +74,7 @@ namespace stdair {
 
   private:     
     /** Retrieve the BOM structure object. */
-    Structure_T& getStructure () {
+    BomStructure_T& getStructure () {
       return _structure;
     }
     
@@ -77,7 +84,7 @@ namespace stdair {
     /** Default constructors. */
     ND ();
     ND (const ND&);
-    ND (const Key_T& iKey, Structure_T& ioStructure) 
+    ND (const Key_T& iKey, BomStructure_T& ioStructure) 
       : _key (iKey), _structure (ioStructure) { }
     /** Destructor. */
     virtual ~ND() { }
@@ -88,7 +95,7 @@ namespace stdair {
     Key_T _key;
     
     /** Reference structure. */
-    Structure_T& _structure;
+    BomStructure_T& _structure;
 
   };
 

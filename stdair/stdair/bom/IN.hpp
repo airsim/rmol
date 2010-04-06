@@ -6,6 +6,9 @@
 // //////////////////////////////////////////////////////////////////////
 // STL
 #include <iosfwd>
+// BOOST Fusion
+#include <boost/fusion/container/map.hpp>
+#include <boost/fusion/include/map.hpp>
 // STDAIR 
 #include <stdair/bom/Structure.hpp>
 #include <stdair/bom/BomContent.hpp>
@@ -13,9 +16,13 @@
 #include <stdair/bom/INTypes.hpp>
 #include <stdair/bom/FDTypes.hpp>
 #include <stdair/bom/NDTypes.hpp>
+#include <stdair/bom/FD.hpp>
+#include <stdair/bom/ND.hpp>
+#include <stdair/bom/BomList.hpp>
 
 namespace stdair {
   // Forward declarations.
+  class BR;
   class FacBomContent;
   
   /** Class representing the actual functional/business content
@@ -25,8 +32,11 @@ namespace stdair {
     
   public:
     // /////////////////////////////////////////////////////////////////////////
+    /** Definition allowing to retrieve the associated parent. */
+    typedef BR Parent_T;
+    
     /** Definition allowing to retrieve the associated BOM structure type. */
-    typedef INStructure_T Structure_T;
+    typedef INStructure_T BomStructure_T;
 
     /** Definition allowing to retrieve the associated BOM key type. */
     typedef INKey_T Key_T;
@@ -64,13 +74,21 @@ namespace stdair {
     const Key_T& getKey () const {
       return _key;
     }
+
+    const FDList_T getFDList () const {
+      return _structure.getChildrenHolder<FD> ();
+    }
+
+    const NDList_T getNDList () const {
+      return _structure.getChildrenHolder<ND> ();
+    }
     
   public:
     // //////////// Setters //////////////
 
   private:     
     /** Retrieve the BOM structure object. */
-    Structure_T& getStructure () {
+    BomStructure_T& getStructure () {
       return _structure;
     }
     
@@ -80,7 +98,7 @@ namespace stdair {
     /** Default constructors. */
     IN ();
     IN (const IN&);
-    IN (const Key_T& iKey, Structure_T& ioStructure) 
+    IN (const Key_T& iKey, BomStructure_T& ioStructure) 
       : _key (iKey), _structure (ioStructure) { }
     /** Destructor. */
     virtual ~IN() { }
@@ -91,7 +109,7 @@ namespace stdair {
     Key_T _key;
     
     /** Reference structure. */
-    Structure_T& _structure;
+    BomStructure_T& _structure;
 
   };
 

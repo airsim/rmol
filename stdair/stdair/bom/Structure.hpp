@@ -6,10 +6,17 @@
 // //////////////////////////////////////////////////////////////////////
 // STL
 #include <cassert>
+// BOOST Fusion
+#include <boost/fusion/container/map.hpp>
+#include <boost/fusion/include/map.hpp>
+#include <boost/fusion/sequence/intrinsic/at_key.hpp>
 // STDAIR
 #include <stdair/bom/BomStructure.hpp>
 
 namespace stdair {
+  // Forward declarations.
+  template <typename CONTENT> class BomChildrenHolderImp;
+  
   /** Wrapper class aimed at holding the actual content, modeled
       by a specific BomContentRoot class. */
   template <typename CONTENT>
@@ -20,6 +27,9 @@ namespace stdair {
 
   public:
     // Type definitions
+    /** Definition allowing to retrieve the associated content. */
+    typedef CONTENT Content_T;
+    
     /** Definition allowing to retrieve the associated key type. */
     typedef typename CONTENT::Key_T Key_T;
 
@@ -31,6 +41,15 @@ namespace stdair {
     const Key_T& getKey () const {
       assert (_content != NULL);
       return _content->getKey();
+    }
+
+    template <typename CHILD>
+    BomChildrenHolderImp<CHILD>& getChildrenHolder () {
+      BomChildrenHolderImp<CHILD>* lHolder_ptr =
+        boost::fusion::at_key<CHILD> (_holderMap);
+      assert (lHolder_ptr != NULL);
+
+      return *lHolder_ptr;
     }
 
   private: 
