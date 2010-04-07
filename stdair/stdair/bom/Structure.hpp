@@ -52,7 +52,6 @@ namespace stdair {
       return *lHolder_ptr;
     }
 
-  private: 
   public:
     // /////////// Display support methods /////////
     /** Dump a Business Object into an output stream.

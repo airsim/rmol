@@ -32,17 +32,17 @@ int main (int argc, char* argv[]) {
      stdair::INKey_T lINKey ("BA");
      stdair::IN& lIN =
        stdair::FacBomContent::instance().testCreate<stdair::IN> (lINKey);
-     stdair::FacBomContent::testLink<stdair::IN> (lIN, lBR);
+     stdair::FacBomContent::testLink (lIN, lBR);
 
      stdair::FDKey_T lFDKey (17);
      stdair::FD& lFD =
        stdair::FacBomContent::instance().testCreate<stdair::FD> (lFDKey);
-     stdair::FacBomContent::testLink<stdair::FD> (lFD, lIN);
+     stdair::FacBomContent::testLink (lFD, lIN);
 
      stdair::NDKey_T lNDKey (1);
      stdair::ND& lND =
        stdair::FacBomContent::instance().testCreate<stdair::ND> (lNDKey);
-     stdair::FacBomContent::testLink<stdair::ND> (lND, lIN);
+     stdair::FacBomContent::testLink (lND, lIN);
 
 
      // Browse

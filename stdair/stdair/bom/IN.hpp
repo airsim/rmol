@@ -6,9 +6,6 @@
 // //////////////////////////////////////////////////////////////////////
 // STL
 #include <iosfwd>
-// BOOST Fusion
-#include <boost/fusion/container/map.hpp>
-#include <boost/fusion/include/map.hpp>
 // STDAIR 
 #include <stdair/bom/Structure.hpp>
 #include <stdair/bom/BomContent.hpp>

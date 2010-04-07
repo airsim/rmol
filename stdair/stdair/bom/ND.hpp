@@ -6,9 +6,6 @@
 // //////////////////////////////////////////////////////////////////////
 // STL
 #include <iosfwd>
-// BOOST Fusion
-#include <boost/fusion/container/map.hpp>
-#include <boost/fusion/include/map.hpp>
 // STDAIR 
 #include <stdair/bom/Structure.hpp>
 #include <stdair/bom/BomContent.hpp>
@@ -36,7 +33,7 @@ namespace stdair {
     /** Definition allowing to retrieve the associated BOM key type. */
     typedef NDKey_T Key_T;
     
-/** Define the list of children holder types. */
+    /** Define the list of children holder types. */
     typedef boost::fusion::map< > ChildrenHolderTypeMap_T;
     // /////////////////////////////////////////////////////////////////////////
 
