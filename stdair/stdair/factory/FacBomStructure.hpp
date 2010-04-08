@@ -92,6 +92,8 @@ namespace stdair {
     static bool testLinkParentWithChild 
     (typename STRUCTURE_CHILD::Content_T::Parent_T::BomStructure_T& ioParent,
      STRUCTURE_CHILD& ioChild) {
+      ioChild._parent = &ioParent;
+      
       typedef typename STRUCTURE_CHILD::Content_T CHILD_CONTENT_T;
       
       // Retrive the bom children holder corresponding the the children type.

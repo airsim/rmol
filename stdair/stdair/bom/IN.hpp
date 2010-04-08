@@ -6,20 +6,20 @@
 // //////////////////////////////////////////////////////////////////////
 // STL
 #include <iosfwd>
+// BOOST Fusion
+#include <boost/fusion/include/map.hpp>
 // STDAIR 
-#include <stdair/bom/Structure.hpp>
 #include <stdair/bom/BomContent.hpp>
 #include <stdair/bom/INKey.hpp>
 #include <stdair/bom/INTypes.hpp>
 #include <stdair/bom/FDTypes.hpp>
 #include <stdair/bom/NDTypes.hpp>
-#include <stdair/bom/FD.hpp>
-#include <stdair/bom/ND.hpp>
-#include <stdair/bom/BomList.hpp>
 
 namespace stdair {
   // Forward declarations.
   class BR;
+  class FD;
+  class ND;
   class FacBomContent;
   
   /** Class representing the actual functional/business content
@@ -72,13 +72,9 @@ namespace stdair {
       return _key;
     }
 
-    const FDList_T getFDList () const {
-      return _structure.getChildrenHolder<FD> ();
-    }
+    const FDList_T getFDList () const;
 
-    const NDList_T getNDList () const {
-      return _structure.getChildrenHolder<ND> ();
-    }
+    const NDList_T getNDList () const;
     
   public:
     // //////////// Setters //////////////
@@ -95,10 +91,9 @@ namespace stdair {
     /** Default constructors. */
     IN ();
     IN (const IN&);
-    IN (const Key_T& iKey, BomStructure_T& ioStructure) 
-      : _key (iKey), _structure (ioStructure) { }
+    IN (const Key_T& iKey, BomStructure_T& ioStructure);
     /** Destructor. */
-    virtual ~IN() { }
+    virtual ~IN();
 
   private:
     // Attributes

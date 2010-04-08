@@ -6,6 +6,8 @@
 // //////////////////////////////////////////////////////////////////////
 // STL
 #include <iosfwd>
+// BOOST Fusion
+#include <boost/fusion/include/map.hpp>
 // STDAIR 
 #include <stdair/bom/Structure.hpp>
 #include <stdair/bom/BomContent.hpp>
@@ -81,10 +83,9 @@ namespace stdair {
     /** Default constructors. */
     ND ();
     ND (const ND&);
-    ND (const Key_T& iKey, BomStructure_T& ioStructure) 
-      : _key (iKey), _structure (ioStructure) { }
+    ND (const Key_T& iKey, BomStructure_T& ioStructure);
     /** Destructor. */
-    virtual ~ND() { }
+    virtual ~ND();
 
   private:
     // Attributes

@@ -1,0 +1,35 @@
+// //////////////////////////////////////////////////////////////////////
+// Import section
+// //////////////////////////////////////////////////////////////////////
+// STL
+#include <cassert>
+// STDAIR
+#include <stdair/bom/Structure.hpp>
+#include <stdair/bom/BR.hpp>
+#include <stdair/bom/IN.hpp>
+#include <stdair/bom/FD.hpp>
+#include <stdair/bom/ND.hpp>
+#include <stdair/bom/BomList.hpp>
+
+namespace stdair {
+
+  // ////////////////////////////////////////////////////////////////////
+  IN::IN (const Key_T& iKey, BomStructure_T& ioINStructure)
+    : _key (iKey), _structure (ioINStructure) {
+  }
+
+  // ////////////////////////////////////////////////////////////////////
+  IN::~IN () {
+  }
+
+  // ////////////////////////////////////////////////////////////////////
+  const NDList_T IN::getNDList () const {
+    return _structure.getChildrenHolder<ND>();
+  }
+
+  // ////////////////////////////////////////////////////////////////////
+  const FDList_T IN::getFDList () const {
+    return _structure.getChildrenHolder<FD>();
+  }
+  
+}

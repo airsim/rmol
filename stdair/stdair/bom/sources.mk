@@ -157,4 +157,8 @@ bom_cc_sources = \
 		$(top_srcdir)/stdair/bom/DemandStream.cpp \
 		$(top_srcdir)/stdair/bom/EventStruct.cpp \
 		$(top_srcdir)/stdair/bom/EventQueue.cpp \
-		$(top_srcdir)/stdair/bom/BomManager.cpp
+		$(top_srcdir)/stdair/bom/BomManager.cpp \
+		$(top_srcdir)/stdair/bom/BR.cpp \
+		$(top_srcdir)/stdair/bom/IN.cpp \
+		$(top_srcdir)/stdair/bom/FD.cpp \
+		$(top_srcdir)/stdair/bom/ND.cpp

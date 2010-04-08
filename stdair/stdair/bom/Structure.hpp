@@ -6,8 +6,8 @@
 // //////////////////////////////////////////////////////////////////////
 // STL
 #include <cassert>
+#include <iostream>
 // BOOST Fusion
-#include <boost/fusion/container/map.hpp>
 #include <boost/fusion/include/map.hpp>
 #include <boost/fusion/sequence/intrinsic/at_key.hpp>
 // STDAIR
@@ -31,10 +31,13 @@ namespace stdair {
     typedef CONTENT Content_T;
     
     /** Definition allowing to retrieve the associated key type. */
-    typedef typename CONTENT::Key_T Key_T;
+    typedef typename Content_T::Key_T Key_T;
 
     /** Definition allowing to retrieve the map of children holder type. */
-    typedef typename CONTENT::ChildrenHolderTypeMap_T ChildrenHolderTypeMap_T; 
+    typedef typename Content_T::ChildrenHolderTypeMap_T ChildrenHolderTypeMap_T;
+
+    /** Definition allowing to retrieve the parent structure type. */
+    typedef typename Content_T::Parent_T::BomStructure_T Parent_T;
 
   public:
     // ////////// GETTERS ////////////
@@ -79,7 +82,7 @@ namespace stdair {
     /** Constructors are private so as to force the usage of the Factory
         layer. */
     /** Default constructors. */
-    Structure () : _content (NULL) { };
+    Structure () : _parent (NULL), _content (NULL) { };
     Structure (const Structure&);
 
     /** Destructor. */
@@ -87,8 +90,11 @@ namespace stdair {
 
   private:
     // Attributes
+    /** The parent structure. */
+    Parent_T* _parent;
+    
     /** The actual functional (Business Object) content. */
-    CONTENT* _content;
+    Content_T* _content;
 
     /** The map of children holders. */
     ChildrenHolderTypeMap_T _holderMap;

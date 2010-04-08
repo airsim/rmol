@@ -6,14 +6,13 @@
 // //////////////////////////////////////////////////////////////////////
 // STL
 #include <iosfwd>
+// BOOST Fusion
+#include <boost/fusion/include/map.hpp>
 // STDAIR 
-#include <stdair/bom/Structure.hpp>
 #include <stdair/bom/BomContent.hpp>
 #include <stdair/bom/BRKey.hpp>
 #include <stdair/bom/BRTypes.hpp>
 #include <stdair/bom/INTypes.hpp>
-#include <stdair/bom/IN.hpp>
-#include <stdair/bom/BomList.hpp>
 
 namespace stdair {
   // Forward declarations.
@@ -36,6 +35,9 @@ namespace stdair {
     /** Define the list of children holder types. */
     typedef boost::fusion::map<
       boost::fusion::pair<IN, INHolder_T*> > ChildrenHolderTypeMap_T;
+
+    /** Definition allowing to retrieve the parent type. */
+    typedef BR Parent_T;
     // /////////////////////////////////////////////////////////////////////////
     
   public:
@@ -66,9 +68,7 @@ namespace stdair {
       return _key;
     }
 
-    const INList_T getINList () const {
-      return _structure.getChildrenHolder<IN> ();
-    }
+    const INList_T getINList () const;
     
   public:
     // //////////// Setters //////////////
@@ -85,10 +85,9 @@ namespace stdair {
     /** Default constructors. */
     BR ();
     BR (const BR&);
-    BR (const Key_T& iKey, BomStructure_T& ioStructure) 
-      : _key (iKey), _structure (ioStructure) { }
+    BR (const Key_T& iKey, BomStructure_T& ioStructure);
     /** Destructor. */
-    virtual ~BR() { }
+    virtual ~BR();
 
   private:
     // Attributes
