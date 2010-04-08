@@ -333,15 +333,16 @@ AC_CONFIG_FILES(
 	rmol.pc
 	rmol.spec
 	rmol.m4
-    stdair/Makefile
-    stdair/basic/Makefile
-    stdair/bom/Makefile
+    	stdair/Makefile
+    	stdair/basic/Makefile
+    	stdair/bom/Makefile
 	stdair/dbadaptor/Makefile
-    stdair/factory/Makefile
+    	stdair/factory/Makefile
 	stdair/command/Makefile
-    stdair/config/Makefile
-    stdair/service/Makefile
-    stdair/core/Makefile
+	stdair/service/Makefile
+	stdair/config/Makefile
+    	stdair/core/Makefile
+	stdair/batches/Makefile
 	rmol/Makefile
 	rmol/basic/Makefile
 	rmol/field/Makefile
