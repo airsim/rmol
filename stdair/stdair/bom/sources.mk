@@ -10,6 +10,7 @@ bom_h_sources = \
 		$(top_srcdir)/stdair/bom/SegmentDateKey.hpp \
 		$(top_srcdir)/stdair/bom/SegmentCabinKey.hpp \
 		$(top_srcdir)/stdair/bom/BookingClassKey.hpp \
+		$(top_srcdir)/stdair/bom/BucketKey.hpp \
 		$(top_srcdir)/stdair/bom/NetworkKey.hpp \
 		$(top_srcdir)/stdair/bom/NetworkDateKey.hpp \
 		$(top_srcdir)/stdair/bom/AirportDateKey.hpp \
@@ -53,6 +54,7 @@ bom_h_sources = \
 		$(top_srcdir)/stdair/bom/BookingClassContent.hpp \
 		$(top_srcdir)/stdair/bom/BookingClassTypes.hpp \
 		$(top_srcdir)/stdair/bom/BookingClassStructure.hpp \
+		$(top_srcdir)/stdair/bom/BucketContent.hpp \
 		$(top_srcdir)/stdair/bom/Network.hpp \
 		$(top_srcdir)/stdair/bom/NetworkContent.hpp \
 		$(top_srcdir)/stdair/bom/NetworkTypes.hpp \
@@ -95,14 +97,23 @@ bom_h_sources = \
 		$(top_srcdir)/stdair/bom/EventTypes.hpp \
 		$(top_srcdir)/stdair/bom/BomManager.hpp \
 		$(top_srcdir)/stdair/bom/Structure.hpp \
-		$(top_srcdir)/stdair/bom/BRKey.hpp \
 		$(top_srcdir)/stdair/bom/BRTypes.hpp \
 		$(top_srcdir)/stdair/bom/IN.hpp \
-		$(top_srcdir)/stdair/bom/INKey.hpp \
+		$(top_srcdir)/stdair/bom/FD.hpp \
 		$(top_srcdir)/stdair/bom/FDTypes.hpp \
-		$(top_srcdir)/stdair/bom/FDKey.hpp \
-		$(top_srcdir)/stdair/bom/NDTypes.hpp \
-		$(top_srcdir)/stdair/bom/NDKey.hpp \
+		$(top_srcdir)/stdair/bom/SD.hpp \
+		$(top_srcdir)/stdair/bom/SDTypes.hpp \
+		$(top_srcdir)/stdair/bom/LD.hpp \
+		$(top_srcdir)/stdair/bom/LDTypes.hpp \
+		$(top_srcdir)/stdair/bom/SC.hpp \
+		$(top_srcdir)/stdair/bom/SCTypes.hpp \
+		$(top_srcdir)/stdair/bom/LC.hpp \
+		$(top_srcdir)/stdair/bom/LCTypes.hpp \
+		$(top_srcdir)/stdair/bom/BC.hpp \
+		$(top_srcdir)/stdair/bom/BCTypes.hpp \
+		$(top_srcdir)/stdair/bom/BK.hpp \
+		$(top_srcdir)/stdair/bom/BKTypes.hpp \
+		$(top_srcdir)/stdair/bom/ND.hpp \
 		$(top_srcdir)/stdair/bom/NDTypes.hpp
 bom_cc_sources = \
 		$(top_srcdir)/stdair/bom/BomRootKey.cpp \
@@ -113,6 +124,8 @@ bom_cc_sources = \
 		$(top_srcdir)/stdair/bom/SegmentDateKey.cpp \
 		$(top_srcdir)/stdair/bom/SegmentCabinKey.cpp \
 		$(top_srcdir)/stdair/bom/BookingClassKey.cpp \
+		$(top_srcdir)/stdair/bom/BucketKey.cpp \
+		$(top_srcdir)/stdair/bom/BucketKey.cpp \
 		$(top_srcdir)/stdair/bom/NetworkKey.cpp \
 		$(top_srcdir)/stdair/bom/NetworkDateKey.cpp \
 		$(top_srcdir)/stdair/bom/AirportDateKey.cpp \
@@ -136,6 +149,7 @@ bom_cc_sources = \
 		$(top_srcdir)/stdair/bom/LegCabinContent.cpp \
 		$(top_srcdir)/stdair/bom/BookingClass.cpp \
 		$(top_srcdir)/stdair/bom/BookingClassContent.cpp \
+		$(top_srcdir)/stdair/bom/BucketContent.cpp \
 		$(top_srcdir)/stdair/bom/Network.cpp \
 		$(top_srcdir)/stdair/bom/NetworkContent.cpp \
 		$(top_srcdir)/stdair/bom/NetworkDate.cpp \
@@ -161,4 +175,10 @@ bom_cc_sources = \
 		$(top_srcdir)/stdair/bom/BR.cpp \
 		$(top_srcdir)/stdair/bom/IN.cpp \
 		$(top_srcdir)/stdair/bom/FD.cpp \
+		$(top_srcdir)/stdair/bom/SD.cpp \
+		$(top_srcdir)/stdair/bom/LD.cpp \
+		$(top_srcdir)/stdair/bom/SC.cpp \
+		$(top_srcdir)/stdair/bom/LC.cpp \
+		$(top_srcdir)/stdair/bom/BC.cpp \
+		$(top_srcdir)/stdair/bom/BK.cpp \
 		$(top_srcdir)/stdair/bom/ND.cpp

@@ -9,28 +9,23 @@
 // BOOST Fusion
 #include <boost/fusion/include/map.hpp>
 // STDAIR 
-#include <stdair/bom/BomContent.hpp>
-#include <stdair/bom/BRKey.hpp>
+#include <stdair/bom/BomRootContent.hpp>
 #include <stdair/bom/BRTypes.hpp>
 #include <stdair/bom/INTypes.hpp>
 
 namespace stdair {
   // Forward declarations.
-  class FacBomContent;
   class IN;
   
   /** Class representing the actual functional/business content
       for the Bom root. */
-  class BR : public BomContent {
+  class BR : public BomRootContent {
     friend class FacBomContent;
     
   public:
     // /////////////////////////////////////////////////////////////////////////
     /** Definition allowing to retrieve the associated BOM structure type. */
     typedef BRStructure_T BomStructure_T;
-
-    /** Definition allowing to retrieve the associated BOM key type. */
-    typedef BRKey_T Key_T;
 
     /** Define the list of children holder types. */
     typedef boost::fusion::map<
@@ -64,15 +59,9 @@ namespace stdair {
     
   public:
     // /////////// Getters /////////////
-    const Key_T& getKey () const {
-      return _key;
-    }
-
     const INList_T getINList () const;
+    const INMap_T getINMap () const;
     
-  public:
-    // //////////// Setters //////////////
-
   private:     
     /** Retrieve the BOM structure object. */
     BomStructure_T& getStructure () {
@@ -85,15 +74,12 @@ namespace stdair {
     /** Default constructors. */
     BR ();
     BR (const BR&);
-    BR (const Key_T& iKey, BomStructure_T& ioStructure);
+    BR (const BomKey_T& iKey, BomStructure_T& ioStructure);
     /** Destructor. */
     virtual ~BR();
 
   private:
     // Attributes
-    /** Key. */
-    Key_T _key;
-    
     /** Reference structure. */
     BomStructure_T& _structure;
   };

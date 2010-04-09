@@ -6,6 +6,8 @@
 // //////////////////////////////////////////////////////////////////////
 // STL
 #include <map>
+// STDAIR
+#include <stdair/basic/BasTypes.hpp>
 
 namespace stdair {
   
@@ -30,8 +32,11 @@ namespace stdair {
     // the iterator types specified below
     // /////////////////////////////////////////////////////////////////////////
     /** Define the bom map iterators. */
-    typedef BomIterator_T<BOM, typename BomStructureMap_T::const_iterator> iterator;
-    typedef BomIterator_T<BOM, typename BomStructureMap_T::const_reverse_iterator> reverse_iterator;
+    typedef BomIterator_T<BOM,
+                          typename BomStructureMap_T::const_iterator> iterator;
+    typedef BomIterator_T<BOM,
+                          typename BomStructureMap_T::const_reverse_iterator
+                          > reverse_iterator;
     // /////////////////////////////////////////////////////////////////////////
        
   public:

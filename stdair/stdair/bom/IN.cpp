@@ -10,12 +10,13 @@
 #include <stdair/bom/FD.hpp>
 #include <stdair/bom/ND.hpp>
 #include <stdair/bom/BomList.hpp>
+#include <stdair/bom/BomMap.hpp>
 
 namespace stdair {
 
   // ////////////////////////////////////////////////////////////////////
-  IN::IN (const Key_T& iKey, BomStructure_T& ioINStructure)
-    : _key (iKey), _structure (ioINStructure) {
+  IN::IN (const BomKey_T& iKey, BomStructure_T& ioINStructure)
+    : InventoryContent (iKey), _structure (ioINStructure) {
   }
 
   // ////////////////////////////////////////////////////////////////////
@@ -28,7 +29,17 @@ namespace stdair {
   }
 
   // ////////////////////////////////////////////////////////////////////
+  const NDMap_T IN::getNDMap () const {
+    return _structure.getChildrenHolder<ND>();
+  }
+
+  // ////////////////////////////////////////////////////////////////////
   const FDList_T IN::getFDList () const {
+    return _structure.getChildrenHolder<FD>();
+  }
+
+  // ////////////////////////////////////////////////////////////////////
+  const FDMap_T IN::getFDMap () const {
     return _structure.getChildrenHolder<FD>();
   }
   

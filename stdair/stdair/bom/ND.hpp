@@ -10,18 +10,16 @@
 #include <boost/fusion/include/map.hpp>
 // STDAIR 
 #include <stdair/bom/Structure.hpp>
-#include <stdair/bom/BomContent.hpp>
-#include <stdair/bom/NDKey.hpp>
+#include <stdair/bom/NetworkDateContent.hpp>
 #include <stdair/bom/NDTypes.hpp>
 
 namespace stdair {
   // Forward declarations.
   class IN;
-  class FacBomContent;
   
   /** Class representing the actual functional/business content
       for the Bom root. */
-  class ND : public BomContent {
+  class ND : public NetworkDateContent {
     friend class FacBomContent;
     
   public:
@@ -31,9 +29,6 @@ namespace stdair {
 
     /** Definition allowing to retrieve the associated BOM structure type. */
     typedef NDStructure_T BomStructure_T;
-
-    /** Definition allowing to retrieve the associated BOM key type. */
-    typedef NDKey_T Key_T;
     
     /** Define the list of children holder types. */
     typedef boost::fusion::map< > ChildrenHolderTypeMap_T;
@@ -55,22 +50,13 @@ namespace stdair {
     
     /** Get a string describing the whole key (differentiating two objects
         at any level). */
-    const std::string describeKey() const { return _key.describe(); }
+    const std::string describeKey() const { return _key.toString(); }
 
     /** Get a string describing the short key (differentiating two objects
         at the same level). */
-    const std::string describeShortKey() const { return _key.describe(); }
+    const std::string describeShortKey() const { return _key.toString(); }
 
     
-  public:
-    // /////////// Getters /////////////
-    const Key_T& getKey () const {
-      return _key;
-    }
-    
-  public:
-    // //////////// Setters //////////////
-
   private:     
     /** Retrieve the BOM structure object. */
     BomStructure_T& getStructure () {
@@ -83,15 +69,12 @@ namespace stdair {
     /** Default constructors. */
     ND ();
     ND (const ND&);
-    ND (const Key_T& iKey, BomStructure_T& ioStructure);
+    ND (const BomKey_T& iKey, BomStructure_T& ioStructure);
     /** Destructor. */
     virtual ~ND();
 
   private:
     // Attributes
-    /** Key. */
-    Key_T _key;
-    
     /** Reference structure. */
     BomStructure_T& _structure;
 

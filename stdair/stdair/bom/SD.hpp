@@ -1,5 +1,5 @@
-#ifndef __STDAIR_BOM_FD_HPP
-#define __STDAIR_BOM_FD_HPP
+#ifndef __STDAIR_BOM_SD_HPP
+#define __STDAIR_BOM_SD_HPP
 
 // //////////////////////////////////////////////////////////////////////
 // Import section
@@ -10,42 +10,37 @@
 #include <boost/fusion/include/map.hpp>
 // STDAIR 
 #include <stdair/bom/Structure.hpp>
-#include <stdair/bom/FlightDateContent.hpp>
-#include <stdair/bom/FDTypes.hpp>
+#include <stdair/bom/SegmentDateContent.hpp>
 #include <stdair/bom/SDTypes.hpp>
-#include <stdair/bom/LDTypes.hpp>
+#include <stdair/bom/SCTypes.hpp>
 
 namespace stdair {
   // Forward declarations.
-  class IN;
-  class SD;
-  class LD;
+  class FD;
+  class SC;
   
   /** Class representing the actual functional/business content
       for the Bom root. */
-  class FD : public FlightDateContent {
+  class SD : public SegmentDateContent {
     friend class FacBomContent;
     
   public:
     // /////////////////////////////////////////////////////////////////////////
     /** Definition allowing to retrieve the associated parent. */
-    typedef IN Parent_T;
+    typedef FD Parent_T;
     
     /** Definition allowing to retrieve the associated BOM structure type. */
-    typedef FDStructure_T BomStructure_T;
+    typedef SDStructure_T BomStructure_T;
     
     /** Define the list of children holder types. */
     typedef boost::fusion::map< 
-      boost::fusion::pair<SD, SDHolder_T*>, 
-      boost::fusion::pair<LD, LDHolder_T*> > ChildrenHolderTypeMap_T;
+      boost::fusion::pair<SC, SCHolder_T*> > ChildrenHolderTypeMap_T;
     // /////////////////////////////////////////////////////////////////////////
 
   public:
     // /////////// Getters /////////////
-    const SDList_T getSDList () const;
-    const SDMap_T getSDMap () const;
-    const LDList_T getLDList () const;
-    const LDMap_T getLDMap () const;
+    const SCList_T getSCList () const;
+    const SCMap_T getSCMap () const;
     
   private:     
     /** Retrieve the BOM structure object. */
@@ -78,11 +73,11 @@ namespace stdair {
     /** Constructors are private so as to force the usage of the Factory
         layer. */
     /** Default constructors. */
-    FD ();
-    FD (const FD&);
-    FD (const BomKey_T& iKey, BomStructure_T& ioStructure);
+    SD ();
+    SD (const SD&);
+    SD (const BomKey_T& iKey, BomStructure_T& ioStructure);
     /** Destructor. */
-    virtual ~FD();
+    virtual ~SD();
 
   private:
     // Attributes
@@ -92,4 +87,4 @@ namespace stdair {
   };
 
 }
-#endif // __STDAIR_BOM_FD_HPP
+#endif // __STDAIR_BOM_SD_HPP

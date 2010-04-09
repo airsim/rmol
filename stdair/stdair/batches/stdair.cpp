@@ -7,16 +7,15 @@
 // StdAir
 #include <stdair/STDAIR_Types.hpp>
 #include <stdair/bom/BR.hpp>
-#include <stdair/bom/BRKey.hpp>
 #include <stdair/bom/BRTypes.hpp>
 #include <stdair/bom/IN.hpp>
-#include <stdair/bom/INKey.hpp>
+#include <stdair/bom/InventoryKey.hpp>
 #include <stdair/bom/INTypes.hpp>
 #include <stdair/bom/FD.hpp>
-#include <stdair/bom/FDKey.hpp>
+#include <stdair/bom/FlightDateKey.hpp>
 #include <stdair/bom/FDTypes.hpp>
 #include <stdair/bom/ND.hpp>
-#include <stdair/bom/NDKey.hpp>
+#include <stdair/bom/NetworkDateKey.hpp>
 #include <stdair/bom/NDTypes.hpp>
 #include <stdair/bom/BomList.hpp>
 #include <stdair/factory/FacBomContent.hpp>
@@ -25,21 +24,20 @@
 // ///////// M A I N ////////////
 int main (int argc, char* argv[]) {
    try {
-     stdair::BRKey_T lBRKey;
      stdair::BR& lBR =
-       stdair::FacBomContent::instance().testCreate<stdair::BR> (lBRKey);
+       stdair::FacBomContent::instance().testCreate<stdair::BR> ();
 
-     stdair::INKey_T lINKey ("BA");
+     stdair::InventoryKey_T lINKey ("BA");
      stdair::IN& lIN =
        stdair::FacBomContent::instance().testCreate<stdair::IN> (lINKey);
      stdair::FacBomContent::testLink (lIN, lBR);
 
-     stdair::FDKey_T lFDKey (17);
+     stdair::FlightDateKey_T lFDKey (17, stdair::Date_T (2010, 02, 14));
      stdair::FD& lFD =
        stdair::FacBomContent::instance().testCreate<stdair::FD> (lFDKey);
      stdair::FacBomContent::testLink (lFD, lIN);
 
-     stdair::NDKey_T lNDKey (1);
+     stdair::NetworkDateKey_T lNDKey (stdair::Date_T (2010, 02, 14));
      stdair::ND& lND =
        stdair::FacBomContent::instance().testCreate<stdair::ND> (lNDKey);
      stdair::FacBomContent::testLink (lND, lIN);

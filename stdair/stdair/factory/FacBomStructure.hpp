@@ -125,7 +125,7 @@ namespace stdair {
       typedef BomChildrenHolderImp<CONTENT> HOLDER_T;
       
       // Retrieve the short key
-      const typename STRUCTURE_T::Key_T& lKey = ioStructure.getKey();
+      const typename STRUCTURE_T::BomKey_T& lKey = ioStructure.getKey();
       const std::string& lKeyStr = lKey.toString();
       
       // Insert the structure object in the dedicated lists

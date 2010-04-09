@@ -9,8 +9,7 @@
 // BOOST Fusion
 #include <boost/fusion/include/map.hpp>
 // STDAIR 
-#include <stdair/bom/BomContent.hpp>
-#include <stdair/bom/INKey.hpp>
+#include <stdair/bom/InventoryContent.hpp>
 #include <stdair/bom/INTypes.hpp>
 #include <stdair/bom/FDTypes.hpp>
 #include <stdair/bom/NDTypes.hpp>
@@ -20,11 +19,10 @@ namespace stdair {
   class BR;
   class FD;
   class ND;
-  class FacBomContent;
   
   /** Class representing the actual functional/business content
       for the Bom root. */
-  class IN : public BomContent {
+  class IN : public InventoryContent {
     friend class FacBomContent;
     
   public:
@@ -34,9 +32,6 @@ namespace stdair {
     
     /** Definition allowing to retrieve the associated BOM structure type. */
     typedef INStructure_T BomStructure_T;
-
-    /** Definition allowing to retrieve the associated BOM key type. */
-    typedef INKey_T Key_T;
     
 /** Define the list of children holder types. */
     typedef boost::fusion::map<
@@ -44,6 +39,19 @@ namespace stdair {
       boost::fusion::pair<ND, NDHolder_T*> > ChildrenHolderTypeMap_T;
     // /////////////////////////////////////////////////////////////////////////
     
+  public:
+    // /////////// Getters /////////////
+    const FDList_T getFDList () const;
+    const FDMap_T getFDMap () const;
+    const NDList_T getNDList () const;
+    const NDMap_T getNDMap () const;
+    
+  private:     
+    /** Retrieve the BOM structure object. */
+    BomStructure_T& getStructure () {
+      return _structure;
+    }
+
   public:
     // /////////// Display support methods /////////
     /** Dump a Business Object into an output stream.
@@ -59,31 +67,12 @@ namespace stdair {
     
     /** Get a string describing the whole key (differentiating two objects
         at any level). */
-    const std::string describeKey() const { return _key.describe(); }
+    const std::string describeKey() const { return _key.toString(); }
 
     /** Get a string describing the short key (differentiating two objects
         at the same level). */
-    const std::string describeShortKey() const { return _key.describe(); }
+    const std::string describeShortKey() const { return _key.toString(); }
 
-    
-  public:
-    // /////////// Getters /////////////
-    const Key_T& getKey () const {
-      return _key;
-    }
-
-    const FDList_T getFDList () const;
-
-    const NDList_T getNDList () const;
-    
-  public:
-    // //////////// Setters //////////////
-
-  private:     
-    /** Retrieve the BOM structure object. */
-    BomStructure_T& getStructure () {
-      return _structure;
-    }
     
   protected:
     /** Constructors are private so as to force the usage of the Factory
@@ -91,15 +80,12 @@ namespace stdair {
     /** Default constructors. */
     IN ();
     IN (const IN&);
-    IN (const Key_T& iKey, BomStructure_T& ioStructure);
+    IN (const BomKey_T& iKey, BomStructure_T& ioStructure);
     /** Destructor. */
     virtual ~IN();
 
   private:
     // Attributes
-    /** Key. */
-    Key_T _key;
-    
     /** Reference structure. */
     BomStructure_T& _structure;
 

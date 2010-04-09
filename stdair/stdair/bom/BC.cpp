@@ -5,17 +5,17 @@
 #include <cassert>
 // STDAIR
 #include <stdair/bom/Structure.hpp>
-#include <stdair/bom/ND.hpp>
+#include <stdair/bom/BC.hpp>
 
 namespace stdair {
 
   // ////////////////////////////////////////////////////////////////////
-  ND::ND (const BomKey_T& iKey, BomStructure_T& ioNDStructure)
-    : NetworkDateContent (iKey), _structure (ioNDStructure) {
+  BC::BC (const BomKey_T& iKey, BomStructure_T& ioBCStructure)
+    : BookingClassContent (iKey), _structure (ioBCStructure) {
   }
 
   // ////////////////////////////////////////////////////////////////////
-  ND::~ND () {
+  BC::~BC () {
   }
   
 }

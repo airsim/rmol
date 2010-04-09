@@ -11,6 +11,7 @@
 #include <boost/fusion/include/map.hpp>
 #include <boost/fusion/sequence/intrinsic/at_key.hpp>
 // STDAIR
+#include <stdair/STDAIR_Types.hpp>
 #include <stdair/bom/BomStructure.hpp>
 
 namespace stdair {
@@ -31,7 +32,7 @@ namespace stdair {
     typedef CONTENT Content_T;
     
     /** Definition allowing to retrieve the associated key type. */
-    typedef typename Content_T::Key_T Key_T;
+    typedef typename Content_T::BomKey_T BomKey_T;
 
     /** Definition allowing to retrieve the map of children holder type. */
     typedef typename Content_T::ChildrenHolderTypeMap_T ChildrenHolderTypeMap_T;
@@ -41,7 +42,7 @@ namespace stdair {
 
   public:
     // ////////// GETTERS ////////////
-    const Key_T& getKey () const {
+    const BomKey_T& getKey () const {
       assert (_content != NULL);
       return _content->getKey();
     }

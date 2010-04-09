@@ -5,29 +5,31 @@
 #include <cassert>
 // STDAIR
 #include <stdair/bom/Structure.hpp>
-#include <stdair/bom/BR.hpp>
-#include <stdair/bom/IN.hpp>
+#include <stdair/bom/FD.hpp>
+#include <stdair/bom/LD.hpp>
+#include <stdair/bom/LC.hpp>
 #include <stdair/bom/BomList.hpp>
 #include <stdair/bom/BomMap.hpp>
 
 namespace stdair {
 
   // ////////////////////////////////////////////////////////////////////
-  BR::BR (const BomKey_T& iKey, BomStructure_T& ioBRStructure)
-    : BomRootContent (iKey), _structure (ioBRStructure) {
+  LD::LD (const BomKey_T& iKey, BomStructure_T& ioLDStructure)
+    : LegDateContent (iKey), _structure (ioLDStructure) {
   }
 
   // ////////////////////////////////////////////////////////////////////
-  BR::~BR () {
+  LD::~LD () {
   }
 
   // ////////////////////////////////////////////////////////////////////
-  const INList_T BR::getINList () const {
-    return _structure.getChildrenHolder<IN>();
+  const LCList_T LD::getLCList () const {
+    return _structure.getChildrenHolder<LC>();
+  }
+
+  // ////////////////////////////////////////////////////////////////////
+  const LCMap_T LD::getLCMap () const {
+    return _structure.getChildrenHolder<LC>();
   }
   
-  // ////////////////////////////////////////////////////////////////////
-  const INMap_T BR::getINMap () const {
-    return _structure.getChildrenHolder<IN>();
-  }
 }

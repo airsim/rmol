@@ -1,5 +1,5 @@
-#ifndef __STDAIR_BOM_LEGCABINKEY_HPP
-#define __STDAIR_BOM_LEGCABINKEY_HPP
+#ifndef __STDAIR_BOM_BUCKETKEY_HPP
+#define __STDAIR_BOM_BUCKETKEY_HPP
 
 // //////////////////////////////////////////////////////////////////////
 // Import section
@@ -7,37 +7,31 @@
 // STDAIR
 #include <stdair/STDAIR_Types.hpp>
 #include <stdair/bom/BomKey.hpp>
-#include <stdair/bom/LegDateKey.hpp>
+#include <stdair/bom/LegCabinKey.hpp>
 
 namespace stdair {
-  /** Key of leg-cabin. */
-  struct LegCabinKey_T : public BomKey_T {
-    friend struct BucketKey_T;
-
+  /** Key of booking-class. */
+  struct BucketKey_T : public BomKey_T {
+    
   public:
     // /////////// Typedefs ////////////
     /** Definition allowing to retrieve the parent key type. */
-    typedef LegDateKey_T ParentKey_T;
-
-  private:
-    // /////////// Default constructor //////////
-    LegCabinKey_T () { };
+    typedef LegCabinKey_T ParentKey_T;
     
   public:
     // /////////// Construction ///////////
-    /** Constructors. */
-    LegCabinKey_T (const CabinCode_T& iCabinCode);
-    LegCabinKey_T (const LegCabinKey_T&);
+    /** Constructor. */
+    BucketKey_T (const ClassCode_T& iClassCode);
 
     /** Destructor. */
-    ~LegCabinKey_T ();
+    ~BucketKey_T ();
     
     // /////////// Getters //////////
-    /** Get the cabin code. */
-    const CabinCode_T& getCabinCode () const {
-      return _cabinCode;
+    /** Get the class code. */
+    const ClassCode_T& getClassCode () const {
+      return _classCode;
     }
-
+    
     // /////////// Setters /////////////
     void setParentKey (const ParentKey_T& iParentKey) {
       _parentKey = iParentKey;
@@ -56,7 +50,7 @@ namespace stdair {
        <br>That string is unique, at the level of a given Business Object,
        when among children of a given parent Business Object.
        <br>For instance, "H" and "K" allow to differentiate among two
-       marketing classes for the same leg-cabin. */
+       marketing classes for the same segment-cabin. */
     const std::string toString() const;
     
     /** Display of the key. */
@@ -64,12 +58,12 @@ namespace stdair {
     
   private:
     // Attributes
-    /** Leg-date Key.*/
+    /** Leg-cabin key.*/
     ParentKey_T _parentKey;
     
     /** Cabin code. */
-    CabinCode_T _cabinCode;
+    ClassCode_T _classCode;
   };
 
 }
-#endif // __STDAIR_BOM_LEGCABINKEY_HPP
+#endif // __STDAIR_BOM_BUCKETKEY_HPP

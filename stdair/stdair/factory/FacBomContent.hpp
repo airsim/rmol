@@ -41,28 +41,18 @@ namespace stdair {
 
 
     // //////////////////////////////////////////////////////////////////
-
   public:
     template <typename CONTENT>
-    CONTENT& testCreate (const typename CONTENT::Key_T& iKey) {
-      typedef typename CONTENT::Key_T KEY_T;
-      
-      // Create the structure/holder object
-      typedef typename CONTENT::BomStructure_T STRUCTURE_T;
-      STRUCTURE_T& lStructure =
-        FacBomStructure::instance().testCreate<STRUCTURE_T> ();
+    CONTENT& testCreate () {
+      typedef typename CONTENT::BomKey_T KEY_T;
+      KEY_T lKey;
 
-      
-      CONTENT* aContent_ptr = new CONTENT (iKey, lStructure);
-      assert (aContent_ptr != NULL);
-
-      // The new object is added to the pool of content objects
-      _contentPool.push_back (aContent_ptr);
-
-      // Link the structure/holder object with its corresponding content object
-      testSetContent<STRUCTURE_T, CONTENT> (lStructure, *aContent_ptr);
-
-      return *aContent_ptr;
+      return testCreateInternal<CONTENT> (lKey);
+    }
+    
+    template <typename CONTENT>
+    CONTENT& testCreate (const typename CONTENT::BomKey_T& iKey) {
+      return testCreateInternal<CONTENT> (iKey);
     }
 
     /** Link a child content objet with his parent. */
@@ -95,6 +85,31 @@ namespace stdair {
     }
 
   private:
+    /** Create a content object, given a key.
+        <br>A structure object is created, under the hood, with the given key.
+        That structure object then gets a pointer on the content object. */
+    template <typename CONTENT>
+    CONTENT& testCreateInternal (const typename CONTENT::BomKey_T& iKey) {
+      typedef typename CONTENT::BomKey_T KEY_T;
+      
+      // Create the structure/holder object
+      typedef typename CONTENT::BomStructure_T STRUCTURE_T;
+      STRUCTURE_T& lStructure =
+        FacBomStructure::instance().testCreate<STRUCTURE_T> ();
+
+      
+      CONTENT* aContent_ptr = new CONTENT (iKey, lStructure);
+      assert (aContent_ptr != NULL);
+
+      // The new object is added to the pool of content objects
+      _contentPool.push_back (aContent_ptr);
+
+      // Link the structure/holder object with its corresponding content object
+      testSetContent<STRUCTURE_T, CONTENT> (lStructure, *aContent_ptr);
+
+      return *aContent_ptr;
+    }
+    
     /** Link the structure/holder object with its corresponding content
         object. */
     template<typename STRUCTURE, typename CONTENT>
