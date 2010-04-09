@@ -21,16 +21,11 @@ namespace stdair {
   public:
     // /////////// Construction ///////////
     /** Constructor. */
-    BucketKey_T (const ClassCode_T& iClassCode);
+    BucketKey_T ();
 
     /** Destructor. */
     ~BucketKey_T ();
     
-    // /////////// Getters //////////
-    /** Get the class code. */
-    const ClassCode_T& getClassCode () const {
-      return _classCode;
-    }
     
     // /////////// Setters /////////////
     void setParentKey (const ParentKey_T& iParentKey) {
@@ -60,9 +55,6 @@ namespace stdair {
     // Attributes
     /** Leg-cabin key.*/
     ParentKey_T _parentKey;
-    
-    /** Cabin code. */
-    ClassCode_T _classCode;
   };
 
 }

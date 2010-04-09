@@ -248,6 +248,22 @@ namespace stdair {
     /** Destructor. */
     virtual ~BookingClassContent();
 
+  public:
+    // for AIRINV Test
+    stdair::SubclassCode_T _subclassCode;
+    stdair::AuthorizationLevel_T _cumulatedProtection;
+    stdair::AuthorizationLevel_T _protection;
+    stdair::OverbookingRate_T _noShowPercentage;
+    stdair::OverbookingRate_T _overbookingPercentage;
+    stdair::NbOfBookings_T _groupNbOfBookings;
+    stdair::NbOfBookings_T _groupPendingNbOfBookings;
+    stdair::NbOfBookings_T _staffNbOfBookings;
+    stdair::NbOfBookings_T _wlNbOfBookings;
+    stdair::NbOfBookings_T _etb;
+    stdair::Availability_T _netClassAvailability;
+    stdair::Availability_T _segmentAvailability;
+    stdair::Availability_T _netRevenueAvailability;
+    
   protected:
     // Attributes
     /** The key of both structure and content objects. */

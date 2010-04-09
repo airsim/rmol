@@ -120,6 +120,21 @@ namespace stdair {
     /** Destructor. */
     virtual ~LegCabinContent();
 
+  public:
+    // Test AIRINV
+    stdair::CapacityAdjustment_T _adjustment;
+    stdair::CapacityAdjustment_T _dcsRegrade;
+    stdair::AuthorizationLevel_T _au;
+    stdair::UPR_T _upr;
+    stdair::NbOfBookings_T _nbOfBookings;
+    stdair::Availability_T _nav;
+    stdair::Availability_T _gav;
+    stdair::OverbookingRate_T _acp;
+    stdair::NbOfBookings_T _etb;
+    stdair::NbOfBookings_T _staffNbOfBookings;
+    stdair::NbOfBookings_T _wlNbOfBookings;
+    stdair::NbOfBookings_T _groupNbOfBookings;
+    
   protected:
     // Attributes
     /** The key of both structure and content objects. */

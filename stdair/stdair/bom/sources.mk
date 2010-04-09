@@ -125,7 +125,6 @@ bom_cc_sources = \
 		$(top_srcdir)/stdair/bom/SegmentCabinKey.cpp \
 		$(top_srcdir)/stdair/bom/BookingClassKey.cpp \
 		$(top_srcdir)/stdair/bom/BucketKey.cpp \
-		$(top_srcdir)/stdair/bom/BucketKey.cpp \
 		$(top_srcdir)/stdair/bom/NetworkKey.cpp \
 		$(top_srcdir)/stdair/bom/NetworkDateKey.cpp \
 		$(top_srcdir)/stdair/bom/AirportDateKey.cpp \

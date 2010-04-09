@@ -7,8 +7,7 @@
 namespace stdair {
 
   // ////////////////////////////////////////////////////////////////////
-  BucketKey_T::BucketKey_T (const ClassCode_T& iClassCode)
-    : _classCode (iClassCode) {
+  BucketKey_T::BucketKey_T () {
   }
 
   // ////////////////////////////////////////////////////////////////////
@@ -27,7 +26,6 @@ namespace stdair {
   // ////////////////////////////////////////////////////////////////////
   const std::string BucketKey_T::toString() const {
     std::ostringstream oStr;
-    oStr << _classCode;
     return oStr.str();
   }
 
