@@ -8,6 +8,7 @@
 #include <stdair/bom/BomRoot.hpp>
 #include <stdair/bom/BomList.hpp>
 #include <stdair/bom/BomMap.hpp>
+#include <stdair/bom/YieldStore.hpp>
 #include <stdair/bom/Inventory.hpp>
 #include <stdair/bom/Network.hpp>
 #include <stdair/bom/DemandStream.hpp>
@@ -53,6 +54,23 @@ namespace stdair {
   // //////////////////////////////////////////////////////////////////////
   DemandStreamMap_T BomRoot::getDemandStreamMap () const {
     return _bomRootStructure.getDemandStreamHolder();
+  }
+
+  // ////////////////////////////////////////////////////////////////////
+  YieldStore* BomRoot::getYieldStore (const AirlineCode_T& iAirlineCode) const {
+    YieldStore* oYieldStore_ptr = NULL;
+
+    // TODO: migrate to the new StdAir structure (e.g., IN, FD, etc.)
+    /*
+    YieldStoreMap_T lYieldStoreMap = getYieldStoreMap ();
+    YieldStoreMap_T::iterator itInv = lYieldStoreMap.find (iAirlineCode);
+
+    if (itInv != lYieldStoreMap.end()) {
+      oYieldStore_ptr = itInv->second;
+    }
+    */
+    
+    return oYieldStore_ptr;
   }
 
   // ////////////////////////////////////////////////////////////////////

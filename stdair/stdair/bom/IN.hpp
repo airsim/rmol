@@ -15,6 +15,7 @@
 #include <stdair/bom/NDTypes.hpp>
 
 namespace stdair {
+
   // Forward declarations.
   class BR;
   class FD;

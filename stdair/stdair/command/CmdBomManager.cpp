@@ -6,6 +6,8 @@
 // Boost
 #include <boost/make_shared.hpp>
 // StdAir
+#include <stdair/bom/BR.hpp>
+#include <stdair/bom/YieldStore.hpp>
 #include <stdair/bom/BomRoot.hpp>
 #include <stdair/bom/AirlineFeatureSet.hpp>
 #include <stdair/bom/AirlineFeature.hpp>
@@ -79,7 +81,6 @@ namespace stdair {
     if (lInventory_ptr == NULL) {
       const InventoryKey_T lInventoryKey (iAirlineCode);
 
-    
       // Instantiate an Inventory object with the given airline code
       lInventory_ptr = &createInventoryInternal (ioBomRoot, iAirlineCode);
       assert (lInventory_ptr != NULL);
@@ -107,6 +108,42 @@ namespace stdair {
     assert (lInventory_ptr != NULL);
 
     return *lInventory_ptr;
+  }
+  
+  // //////////////////////////////////////////////////////////////////////
+  YieldStore& CmdBomManager::
+  createYieldStoreInternal (BomRoot& ioBomRoot,
+                            const AirlineCode_T& iAirlineCode) {
+    YieldStoreKey_T lYieldStoreKey (iAirlineCode);
+
+    // Instantiate an YieldStore object with the given airline code
+    YieldStore& lYieldStore =
+      stdair::FacBomContent::instance().testCreate<YieldStore> (lYieldStoreKey);
+
+    // TODO: migrate to the new StdAir structure (e.g., IN, FD, etc.)
+    // Link the created YieldStore with the bom root.
+    // FacBomContent::testLink<YieldStore> (lYieldStore, ioBomRoot);
+      
+    return lYieldStore;
+  }
+
+  // //////////////////////////////////////////////////////////////////////
+  YieldStore& CmdBomManager::
+  getOrCreateYieldStore (BomRoot& ioBomRoot,
+                         const AirlineCode_T& iAirlineCode) {
+    YieldStore* lYieldStore_ptr = ioBomRoot.getYieldStore (iAirlineCode);
+
+    // If there is no YieldStore object for that airline already, create one
+    if (lYieldStore_ptr == NULL) {
+      const YieldStoreKey_T lYieldStoreKey (iAirlineCode);
+
+      // Instantiate a YieldStore object with the given airline code
+      lYieldStore_ptr = &createYieldStoreInternal (ioBomRoot, iAirlineCode);
+      assert (lYieldStore_ptr != NULL);
+    }
+    assert (lYieldStore_ptr != NULL);
+
+    return *lYieldStore_ptr;
   }
   
 }

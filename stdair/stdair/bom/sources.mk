@@ -3,6 +3,7 @@ bom_h_sources = \
 		$(top_srcdir)/stdair/bom/BomMap.hpp \
 		$(top_srcdir)/stdair/bom/BomKey.hpp \
 		$(top_srcdir)/stdair/bom/BomRootKey.hpp \
+		$(top_srcdir)/stdair/bom/YieldStoreKey.hpp \
 		$(top_srcdir)/stdair/bom/InventoryKey.hpp \
 		$(top_srcdir)/stdair/bom/FlightDateKey.hpp \
 		$(top_srcdir)/stdair/bom/LegDateKey.hpp \
@@ -98,6 +99,9 @@ bom_h_sources = \
 		$(top_srcdir)/stdair/bom/BomManager.hpp \
 		$(top_srcdir)/stdair/bom/Structure.hpp \
 		$(top_srcdir)/stdair/bom/BRTypes.hpp \
+		$(top_srcdir)/stdair/bom/YieldStore.hpp \
+		$(top_srcdir)/stdair/bom/YieldStoreTypes.hpp \
+		$(top_srcdir)/stdair/bom/YieldStoreContent.hpp \
 		$(top_srcdir)/stdair/bom/IN.hpp \
 		$(top_srcdir)/stdair/bom/FD.hpp \
 		$(top_srcdir)/stdair/bom/FDTypes.hpp \
@@ -117,6 +121,7 @@ bom_h_sources = \
 		$(top_srcdir)/stdair/bom/NDTypes.hpp
 bom_cc_sources = \
 		$(top_srcdir)/stdair/bom/BomRootKey.cpp \
+		$(top_srcdir)/stdair/bom/YieldStoreKey.cpp \
 		$(top_srcdir)/stdair/bom/InventoryKey.cpp \
 		$(top_srcdir)/stdair/bom/FlightDateKey.cpp \
 		$(top_srcdir)/stdair/bom/LegDateKey.cpp \
@@ -171,6 +176,8 @@ bom_cc_sources = \
 		$(top_srcdir)/stdair/bom/EventStruct.cpp \
 		$(top_srcdir)/stdair/bom/EventQueue.cpp \
 		$(top_srcdir)/stdair/bom/BomManager.cpp \
+		$(top_srcdir)/stdair/bom/YieldStore.cpp \
+		$(top_srcdir)/stdair/bom/YieldStoreContent.cpp \
 		$(top_srcdir)/stdair/bom/BR.cpp \
 		$(top_srcdir)/stdair/bom/IN.cpp \
 		$(top_srcdir)/stdair/bom/FD.cpp \

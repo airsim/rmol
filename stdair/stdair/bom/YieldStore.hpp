@@ -1,5 +1,5 @@
-#ifndef __STDAIR_BOM_BR_HPP
-#define __STDAIR_BOM_BR_HPP
+#ifndef __STDAIR_BOM_YIELDSTORE_HPP
+#define __STDAIR_BOM_YIELDSTORE_HPP
 
 // //////////////////////////////////////////////////////////////////////
 // Import section
@@ -9,34 +9,41 @@
 // BOOST Fusion
 #include <boost/fusion/include/map.hpp>
 // STDAIR 
-#include <stdair/bom/BomRootContent.hpp>
-#include <stdair/bom/BRTypes.hpp>
+#include <stdair/bom/YieldStoreContent.hpp>
 #include <stdair/bom/YieldStoreTypes.hpp>
-#include <stdair/bom/INTypes.hpp>
 
 namespace stdair {
+
   // Forward declarations.
-  class YieldStore;
-  class IN;
+  class BR;
   
   /** Class representing the actual functional/business content
       for the Bom root. */
-  class BR : public BomRootContent {
+  class YieldStore : public YieldStoreContent {
     friend class FacBomContent;
     
   public:
     // /////////////////////////////////////////////////////////////////////////
-    /** Definition allowing to retrieve the associated BOM structure type. */
-    typedef BRStructure_T BomStructure_T;
-
-    /** Define the list of children holder types. */
-    typedef boost::fusion::map<
-      boost::fusion::pair<YieldStore, YieldStoreHolder_T*>,
-      boost::fusion::pair<IN, INHolder_T*> > ChildrenHolderTypeMap_T;
-
-    /** Definition allowing to retrieve the parent type. */
+    /** Definition allowing to retrieve the associated parent. */
     typedef BR Parent_T;
+    
+    /** Definition allowing to retrieve the associated BOM structure type. */
+    typedef YieldStoreStructure_T BomStructure_T;
+    
+    /** Define the list of children holder types. */
+    typedef boost::fusion::map< > ChildrenHolderTypeMap_T;
     // /////////////////////////////////////////////////////////////////////////
+    
+  public:
+    // /////////// Getters /////////////
+
+    
+  private:     
+    /** Retrieve the BOM structure object. */
+    BomStructure_T& getStructure () {
+      return _structure;
+    }
+
     
   public:
     // /////////// Display support methods /////////
@@ -53,36 +60,22 @@ namespace stdair {
     
     /** Get a string describing the whole key (differentiating two objects
         at any level). */
-    const std::string describeKey() const { return std::string (""); }
+    const std::string describeKey() const { return _key.toString(); }
 
     /** Get a string describing the short key (differentiating two objects
         at the same level). */
-    const std::string describeShortKey() const { return std::string (""); }
+    const std::string describeShortKey() const { return _key.toString(); }
 
-    
-  public:
-    // /////////// Getters /////////////
-    const YieldStoreList_T getYieldStoreList () const;
-    const YieldStoreMap_T getYieldStoreMap () const;
-    const INList_T getINList () const;
-    const INMap_T getINMap () const;
-
-    
-  private:     
-    /** Retrieve the BOM structure object. */
-    BomStructure_T& getStructure () {
-      return _structure;
-    }
     
   protected:
     /** Constructors are private so as to force the usage of the Factory
         layer. */
     /** Default constructors. */
-    BR ();
-    BR (const BR&);
-    BR (const BomKey_T&, BomStructure_T&);
+    YieldStore ();
+    YieldStore (const YieldStore&);
+    YieldStore (const BomKey_T& iKey, BomStructure_T& ioStructure);
     /** Destructor. */
-    virtual ~BR();
+    virtual ~YieldStore();
 
   private:
     // Attributes
@@ -91,4 +84,4 @@ namespace stdair {
   };
 
 }
-#endif // __STDAIR_BOM_BR_HPP
+#endif // __STDAIR_BOM_YIELDSTORE_HPP

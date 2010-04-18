@@ -23,7 +23,9 @@
 
 // ///////// M A I N ////////////
 int main (int argc, char* argv[]) {
+  
    try {
+     
      stdair::BR& lBR =
        stdair::FacBomContent::instance().testCreate<stdair::BR> ();
 

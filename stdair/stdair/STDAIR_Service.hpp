@@ -14,6 +14,7 @@ namespace stdair {
 
   // Forward declarations
   class BomRoot;
+  class YieldStore;
   class Inventory;
   
   /** Interface for the STDAIR Services. */
@@ -48,6 +49,11 @@ namespace stdair {
         <br>If not existing, a ObjectNotFoundException exception is thrown. */
     Inventory& getInventory (const AirlineCode_T& iAirlineCode) const;
 
+    /** Retrieve the Yield Store corresponding to the given airline code
+        (YieldStore key).
+        <br>If not existing, a ObjectNotFoundException exception is thrown. */
+    YieldStore& getYieldStore (const AirlineCode_T& iAirlineCode) const;
+
     
     // ///////////////// Getters ///////////////////
     /** Get a reference on the BomRoot object.
@@ -63,6 +69,11 @@ namespace stdair {
         (Inventory key).
         <br>If not existing, a ObjectNotFoundException exception is thrown. */
     Inventory& createInventory (const AirlineCode_T& iAirlineCode) const;
+
+    /** Retrieve the YieldStore corresponding to the given airline code
+        (YieldStore key).
+        <br>If not existing, a ObjectNotFoundException exception is thrown. */
+    YieldStore& createYieldStore (const AirlineCode_T& iAirlineCode) const;
 
     /** Add the airline-specific AirlineFeature object to its AirlineFeatureSet
         parent. */

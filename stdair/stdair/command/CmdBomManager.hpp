@@ -30,6 +30,18 @@ namespace stdair {
                created . */
     static Inventory& getOrCreateInventory (BomRoot&, const AirlineCode_T&);
       
+    /** If needed, create the YieldStore corresponding to the given airline code
+        (YieldStore key), link it to the BomRoot object and to the
+        associated AirlineFeature object, itself retrieved from the
+        AirlineFeatureSet object.
+        Otherwise, just retrieve the reference on the existing YieldStore object
+        corresponding to the given airline code.
+        <br>If not existing, a ObjectNotFoundException exception is thrown.
+        @param BomRoot& Root of the BOM tree.
+        @param const AirlineCode_T& Airline code for the YieldStore to be
+               created . */
+    static YieldStore& getOrCreateYieldStore (BomRoot&, const AirlineCode_T&);
+      
     /** Initialise the AirlineFeatureSet object, and attach it to the BomRoot.
         @param BomRoot& Root of the BOM tree.  */
     static void initAirlineFeatureSet (BomRoot&);
@@ -54,6 +66,14 @@ namespace stdair {
         @param const AirlineCode_T& Airline code for the inventory to be
                created . */
     static Inventory& createInventoryInternal (BomRoot&, const AirlineCode_T&);
+
+    /** Create the YieldStore corresponding to the given airline code
+        (YieldStore key).
+        @param BomRoot& Root of the BOM tree.
+        @param const AirlineCode_T& Airline code for the YieldStore to be
+               created . */
+    static YieldStore& createYieldStoreInternal (BomRoot&,
+                                                 const AirlineCode_T&);
   };
 
 }

@@ -15,9 +15,11 @@
 #include <stdair/bom/DemandStreamTypes.hpp>
 
 namespace stdair {
+
   // Forward declarations.
   class FacBomContent;
   class AirlineFeatureSet;
+  class YieldStore;
   class DemandStream;
   struct BomRootKey_T;
   
@@ -140,6 +142,11 @@ namespace stdair {
         given airline code (Network key).
         <br>If not existing, return the NULL pointer. */
     Network* getNetwork (const NetworkID_T&) const;
+
+    /** Retrieve, if existing, the YieldStore corresponding to the
+        given airline code (YieldStore key).
+        <br>If not existing, return the NULL pointer. */
+    YieldStore* getYieldStore (const AirlineCode_T&) const;
 
     /** Retrieve the DemandStream which corresponds to the given key. */
     DemandStream& getDemandStream (const DemandStreamKeyStr_T&) const;

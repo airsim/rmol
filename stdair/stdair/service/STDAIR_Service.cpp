@@ -9,6 +9,7 @@
 #include <stdair/bom/BomRoot.hpp>
 #include <stdair/bom/Network.hpp>
 #include <stdair/bom/Inventory.hpp>
+#include <stdair/bom/YieldStore.hpp>
 #include <stdair/factory/FacSupervisor.hpp>
 #include <stdair/factory/FacBomContent.hpp>
 #include <stdair/command/CmdBomManager.hpp>
@@ -129,6 +130,19 @@ namespace stdair {
     return *lInventory_ptr;
   }
   
+  // //////////////////////////////////////////////////////////////////////
+  YieldStore& STDAIR_Service::
+  getYieldStore (const AirlineCode_T& iAirlineCode) const {
+
+    YieldStore* lYieldStore_ptr = _bomRoot.getYieldStore (iAirlineCode);
+    if (lYieldStore_ptr == NULL) {
+      throw ObjectNotFoundException();
+    }
+    assert (lYieldStore_ptr != NULL);
+    
+    return *lYieldStore_ptr;
+  }
+  
   /**
      Note that the AirlineFeature is linked both to the Inventory
      and to the AirlineFeatureSet, which in turn is linked to the BomRoot.
@@ -142,6 +156,15 @@ namespace stdair {
     Inventory& oInventory = 
       CmdBomManager::getOrCreateInventory (_bomRoot, iAirlineCode);
     return oInventory;
+  }
+
+  // //////////////////////////////////////////////////////////////////////
+  YieldStore& STDAIR_Service::
+  createYieldStore (const AirlineCode_T& iAirlineCode) const {
+    // Delegate to the dedicated command
+    YieldStore& oYieldStore = 
+      CmdBomManager::getOrCreateYieldStore (_bomRoot, iAirlineCode);
+    return oYieldStore;
   }
 
 }

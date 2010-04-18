@@ -16,6 +16,7 @@
 #include <stdair/bom/LDTypes.hpp>
 
 namespace stdair {
+
   // Forward declarations.
   class IN;
   class SD;
