@@ -478,6 +478,9 @@ namespace stdair {
 
   /** Type of frequent flyer (P=Platinum, G=Gold, S=Silver, M=Member, N=None). */
   typedef std::string FrequentFlyer_T;
+
+  /** Key of a STL map. */
+  typedef std::string MapKey_T;
   
 }
 #endif // __STDAIR_STDAIR_TYPES_HPP

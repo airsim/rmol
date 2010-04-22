@@ -10,7 +10,7 @@
 namespace stdair {
 
   // ////////////////////////////////////////////////////////////////////
-  FlightDateContent::FlightDateContent (const BomKey_T& iKey)
+  FlightDateContent::FlightDateContent (const Key_T& iKey)
     : _key (iKey),
       _bookingCounter (DEFAULT_CLASS_NB_OF_BOOKINGS),
       _flightRevenue (DEFAULT_REVENUE_VALUE),

@@ -5,7 +5,6 @@
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // STDAIR
-#include <stdair/STDAIR_Types.hpp>
 #include <stdair/bom/BomContent.hpp>
 #include <stdair/bom/InventoryKey.hpp>
 
@@ -16,7 +15,7 @@ namespace stdair {
   public :
     // Type definitions
     /** Definition allowing to retrieve the associated BOM key type. */
-    typedef InventoryKey_T BomKey_T;
+    typedef InventoryKey_T Key_T;
 
   public:
     // /////////// Display support methods /////////
@@ -30,14 +29,10 @@ namespace stdair {
 
    /** Get the serialised version of the Business Object. */
     virtual std::string toString() const = 0;
-    
-    /** Get a string describing the whole key (differentiating two objects
-        at any level). */
-    virtual const std::string describeKey() const = 0;
 
     /** Get a string describing the short key (differentiating two objects
         at the same level). */
-    virtual const std::string describeShortKey() const = 0;
+    const std::string describeShortKey() const { _key.toString(); }
 
   public:
     // ////////// Getters ////////////
@@ -47,7 +42,7 @@ namespace stdair {
     }
     
     /** Get the inventory key. */
-    const BomKey_T& getKey() const {
+    const Key_T& getKey() const {
       return _key;
     }
 
@@ -125,16 +120,15 @@ namespace stdair {
 
   protected:
     /** Default constructors. */
-    InventoryContent (const BomKey_T&);
+    InventoryContent (const Key_T&);
     InventoryContent (const InventoryContent&);
-
     /** Destructor. */
     virtual ~InventoryContent();
 
   protected:
     // Attributes
     /** The key of both structure and content objects. */
-    BomKey_T _key;
+    Key_T _key;
 
     /** Counter of all bookings into the inventory. */
     NbOfBookings_T _bookingCounter;
@@ -160,7 +154,6 @@ namespace stdair {
 
     /** Value of the Load Factor (ASK/RPK). */
     Revenue_T _inventoryLoadFactor;
-      
   };
 
 }

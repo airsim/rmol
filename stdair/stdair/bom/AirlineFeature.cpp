@@ -7,17 +7,16 @@
 #include <ostream>
 #include <sstream>
 // STDAIR
-#include <stdair/bom/AirlineFeatureStructure.hpp>
 #include <stdair/bom/AirlineFeature.hpp>
 
 namespace stdair {
 
   // ////////////////////////////////////////////////////////////////////
   AirlineFeature::
-  AirlineFeature (const BomKey_T& iKey,
-                  BomStructure_T& ioAirlineFeatureStructure)
+  AirlineFeature (const Key_T& iKey,
+                  Structure_T& ioAirlineFeatureStructure)
     : AirlineFeatureContent (iKey),
-      _airlineFeatureStructure (ioAirlineFeatureStructure) {
+      _structure (ioAirlineFeatureStructure) {
   }
   
   // ////////////////////////////////////////////////////////////////////
@@ -34,23 +33,23 @@ namespace stdair {
                                  iOptimizerStruct, iControlMode);
   }
   
-  // //////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////
   void AirlineFeature::toStream (std::ostream& ioOut) const {
     ioOut << toString() << std::endl;
   }
 
-  // //////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////
   void AirlineFeature::fromStream (std::istream& ioIn) {
   }
 
-  // //////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////
   std::string AirlineFeature::toString() const {
     std::ostringstream oStr;
-    oStr << describeShortKey() << std::endl;
+    oStr << describeKey() << std::endl;
     return oStr.str();
   }
 
-  // //////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////
   const std::string AirlineFeature::describe() const {
     std::ostringstream ostr;
     ostr << describeKey()
@@ -61,13 +60,8 @@ namespace stdair {
     return ostr.str();
   }
   
-  // //////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////
   const std::string AirlineFeature::describeKey() const {
-    return _key.describe();
-  }
-
-  // //////////////////////////////////////////////////////////////////////
-  const std::string AirlineFeature::describeShortKey() const {
     return _key.toString();
   }
   

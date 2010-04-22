@@ -104,14 +104,6 @@ namespace stdair {
         in order to secure the access to the corresponding resources. */
     void init ();
 
-    /** Initialise the AirlineFeatureSet object, and attach it to the
-        BomRoot. */
-    void initAirlineFeatureSet ();
-    
-    /** Initialise the DemandStreamList object, and attach it to the
-        BomRoot. */
-    void initDemandStreamList ();
-
     /** Finalise. */
     void finalise ();
 

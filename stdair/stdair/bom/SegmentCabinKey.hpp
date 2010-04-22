@@ -5,30 +5,20 @@
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // STDAIR
-#include <stdair/STDAIR_Types.hpp>
 #include <stdair/bom/BomKey.hpp>
-#include <stdair/bom/SegmentDateKey.hpp>
 
 namespace stdair {
   /** Key of segment-cabin. */
   struct SegmentCabinKey_T : public BomKey_T {
-    friend struct BookingClassKey_T;
-
-  public:
-    // /////////// Typedefs ////////////
-    /** Definition allowing to retrieve the parent key type. */
-    typedef SegmentDateKey_T ParentKey_T;
 
   private:
     // /////////// Default constructor //////////
     SegmentCabinKey_T () { };
-
   public:
     // /////////// Construction ///////////
     /** Constructor. */
     SegmentCabinKey_T (const CabinCode_T& iCabinCode);
     SegmentCabinKey_T (const SegmentCabinKey_T&);
-
     /** Destructor. */
     ~SegmentCabinKey_T ();
     
@@ -36,16 +26,6 @@ namespace stdair {
     /** Get the cabin code. */
     const CabinCode_T& getCabinCode () const {
       return _cabinCode;
-    }
-
-    /** Get the airline code. */
-    const AirlineCode_T getAirlineCode () const {
-      return _parentKey.getAirlineCode();
-    }
-
-    // /////////// Setters /////////////
-    void setParentKey (const ParentKey_T& iParentKey) {
-      _parentKey = iParentKey;
     }
     
     // /////////// Display support methods /////////
@@ -63,15 +43,9 @@ namespace stdair {
        <br>For instance, "H" and "K" allow to differentiate among two
        marketing classes for the same segment-cabin. */
     const std::string toString() const;
-    
-    /** Display of the key. */
-    const std::string describe() const;
-    
+
   private:
     // Attributes
-    /** Segment-date Key.*/
-    ParentKey_T _parentKey;
-    
     /** Cabin code. */
     CabinCode_T _cabinCode;
   };

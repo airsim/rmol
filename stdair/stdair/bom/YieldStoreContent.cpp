@@ -9,7 +9,7 @@
 namespace stdair {
 
   // ////////////////////////////////////////////////////////////////////
-  YieldStoreContent::YieldStoreContent (const BomKey_T& iKey) : _key (iKey) {
+  YieldStoreContent::YieldStoreContent (const Key_T& iKey) : _key (iKey) {
   }
 
   // ////////////////////////////////////////////////////////////////////

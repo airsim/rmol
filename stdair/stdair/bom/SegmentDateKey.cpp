@@ -14,8 +14,7 @@ namespace stdair {
 
   // ////////////////////////////////////////////////////////////////////
   SegmentDateKey_T::SegmentDateKey_T (const SegmentDateKey_T& iKey)
-    : _parentKey (iKey._parentKey),
-      _boardingPoint (iKey._boardingPoint), _offPoint (iKey._offPoint) {
+    : _boardingPoint (iKey._boardingPoint), _offPoint (iKey._offPoint) {
   }
 
   // ////////////////////////////////////////////////////////////////////
@@ -35,13 +34,6 @@ namespace stdair {
   const std::string SegmentDateKey_T::toString() const {
     std::ostringstream oStr;
     oStr << _boardingPoint << "-" << _offPoint;
-    return oStr.str();
-  }
-
-  // ////////////////////////////////////////////////////////////////////
-  const std::string SegmentDateKey_T::describe() const {
-    std::ostringstream oStr;
-    oStr << _parentKey.describe() << ", " << toString();
     return oStr.str();
   }
 

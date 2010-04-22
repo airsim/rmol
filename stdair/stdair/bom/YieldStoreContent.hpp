@@ -5,7 +5,6 @@
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // STDAIR
-#include <stdair/STDAIR_Types.hpp>
 #include <stdair/bom/BomContent.hpp>
 #include <stdair/bom/YieldStoreKey.hpp>
 
@@ -16,7 +15,7 @@ namespace stdair {
   public :
     // Type definitions
     /** Definition allowing to retrieve the associated BOM key type. */
-    typedef YieldStoreKey_T BomKey_T;
+    typedef YieldStoreKey_T Key_T;
 
   public:
     // /////////// Display support methods /////////
@@ -30,14 +29,10 @@ namespace stdair {
 
    /** Get the serialised version of the Business Object. */
     virtual std::string toString() const = 0;
-    
-    /** Get a string describing the whole key (differentiating two objects
-        at any level). */
-    virtual const std::string describeKey() const = 0;
 
     /** Get a string describing the short key (differentiating two objects
         at the same level). */
-    virtual const std::string describeShortKey() const = 0;
+    const std::string describeShortKey() const { return _key.toString(); }
 
   public:
     // ////////// Getters ////////////
@@ -47,27 +42,21 @@ namespace stdair {
     }
     
     /** Get the YieldStore key. */
-    const BomKey_T& getKey() const {
+    const Key_T& getKey() const {
       return _key;
     }
-
-
-  public:
-    // ///////// Setters //////////
-
     
   protected:
     /** Default constructors. */
-    YieldStoreContent (const BomKey_T&);
+    YieldStoreContent (const Key_T&);
     YieldStoreContent (const YieldStoreContent&);
-
     /** Destructor. */
     virtual ~YieldStoreContent();
 
   protected:
     // Attributes
     /** The key of both structure and content objects. */
-    BomKey_T _key;
+    Key_T _key;
   };
 
 }

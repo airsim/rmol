@@ -18,9 +18,9 @@
 
 namespace stdair {
 
-  // //////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////
   DemandStreamContent::
-  DemandStreamContent (const BomKey_T& iKey,
+  DemandStreamContent (const Key_T& iKey,
                        const ArrivalPatternCumulativeDistribution_T& iArrivalPattern,
                        const POSProbabilityMassFunction_T& iPOSProbMass,
                        const ChannelProbabilityMassFunction_T& iChannelProbMass,
@@ -49,11 +49,11 @@ namespace stdair {
     init();
   }
 
-  // //////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////
   DemandStreamContent::~DemandStreamContent () {
   }
 
-  // //////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////
   void DemandStreamContent::init() {
     // Generate the number of requests
     const RealNumber_T lMu = _demandDistribution.getMeanNumberOfRequests ();

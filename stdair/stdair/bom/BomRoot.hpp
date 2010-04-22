@@ -4,134 +4,69 @@
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
-// STL
-#include <iosfwd>
 // STDAIR 
-#include <stdair/bom/BomRootStructure.hpp>
 #include <stdair/bom/BomRootContent.hpp>
 #include <stdair/bom/BomRootTypes.hpp>
 #include <stdair/bom/InventoryTypes.hpp>
 #include <stdair/bom/NetworkTypes.hpp>
 #include <stdair/bom/DemandStreamTypes.hpp>
+#include <stdair/bom/AirlineFeatureTypes.hpp>
+#include <stdair/bom/YieldStoreTypes.hpp>
 
 namespace stdair {
-
-  // Forward declarations.
-  class FacBomContent;
-  class AirlineFeatureSet;
-  class YieldStore;
-  class DemandStream;
-  struct BomRootKey_T;
   
   /** Class representing the actual functional/business content
       for the Bom root. */
   class BomRoot : public BomRootContent {
     friend class FacBomContent;
 
-    // /////////////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////////
     // Type definitions, compulsary for the STDAIR library to work correctly
-    // /////////////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////////
     /** The following types must be defined:
         <ul>
+          <li>Structure_T: Type of the corresponding BOM class within
+          the stdair namespace</li>
           <li>Parent_T: Type corresponding to the parent BOM
           class within that namespace (e.g., AIRSCHED here)</li>
-          <li>BomStructure_T: Type of the corresponding BOM class within
-          the stdair namespace</li>
-          <li>BomKey_T: Type of the corresponding BOM Key structure within
-          the stdair namespace</li>
-          <li>ContentChild_T: Type corresponding to the child BOM
-          class within that namespace (e.g., AIRSCHED here)</li>
+          <li>ChildrenHolderMap_T: The map between the type of children and 
+          a pointer to the bom holder of this type (e.g., AIRSCHED here)</li>
         </ul>
         <br><br>
-        Note that the BomRoot has no parent. So, there is no need for
-        that class to define a Parent_T type.
-        <br><br>
-        Note that when there is a second type of children (for instance,
-        the FlightDate object contains two types of children, namely LegDate
-        and SegmentDate), an additional type definition must be given, namely
-        SecondContentChild_T. As, by default, there is a single type of
-        children, there is no need to specify "First" in the ContentChild_T
-        type.
+        Note that the parent type of BomRoot is its own type.
     */
     
   public:
-    // /////////////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////////
     /** Definition allowing to retrieve the associated BOM structure type. */
-    typedef BomRootStructure_T BomStructure_T;
+    typedef BomRootStructure_T Structure_T;
 
-    /** Definition allowing to retrieve the associated BOM key type. */
-    typedef BomRootKey_T BomKey_T;
+    /** Definition allowing to retrieve the parent type. */
+    typedef BomRoot Parent_T;
 
-    /** Definition allowing to retrieve the associated 
-         BOM content child type. */
-    typedef Inventory ContentChild_T;
-    
-    /** Definition allowing to retrieve the associated second
-        BOM content child type. */
-    typedef Network SecondContentChild_T;
+    /** Define the list of children holder types. */
+    typedef boost::fusion::map<
+      boost::fusion::pair<Inventory, InventoryHolder_T*>,
+      boost::fusion::pair<Network, NetworkHolder_T*>,
+      boost::fusion::pair<AirlineFeature, AirlineFeatureHolder_T*>,
+      boost::fusion::pair<DemandStream, DemandStreamHolder_T*>,
+      boost::fusion::pair<YieldStore, YieldStoreHolder_T*>
+      > ChildrenHolderMap_T;
+    // //////////////////////////////////////////////////////////////////
 
-    /** Definition allowing to retrieve the specific DemandStream type. */
-    typedef DemandStream DemandStreamContent_T;
-    // /////////////////////////////////////////////////////////////////////////
-
-
-    // /////////////////////////////////////////////////////////////////////////
-    // In order to enable STL-iterator-like browsing of children objects,
-    // extra type definitions may be specified, such as the ones commented
-    // below. Hence, although those type definitions may appear not so simple
-    // (some will say "idiomatic"), they allow for a very simple use.
-    // /////////////////////////////////////////////////////////////////////////
-    /** Define the const iterator on the list of children objects . */
-    // typedef stdair::BomIterator_T<BomContent,
-    //                        BomStructureList_T::const_iterator> const_iterator;
-    // where BomStructureList_T is defined as std::vector<BomStructure_T*>
-    // /////////////////////////////////////////////////////////////////////////
-
-    
-  public:
-    // /////////// Display support methods /////////
-    /** Dump a Business Object into an output stream.
-        @param ostream& the output stream. */
-    void toStream (std::ostream& ioOut) const { ioOut << toString(); }
-
-    /** Read a Business Object from an input stream.
-        @param istream& the input stream. */
-    void fromStream (std::istream& ioIn) { }
-
-   /** Get the serialised version of the Business Object. */
-    std::string toString() const { return describeKey(); }
-    
-    /** Get a string describing the whole key (differentiating two objects
-        at any level). */
-    const std::string describeKey() const { return std::string (""); }
-
-    /** Get a string describing the short key (differentiating two objects
-        at the same level). */
-    const std::string describeShortKey() const { return std::string (""); }
-
-    
   public:
     // /////////// Getters /////////////
-    /** Get a InventoryList_T for iteration methods. */
+    /** Get a list or map of a children type for iteration methods. */
     InventoryList_T getInventoryList () const;
-
-    /** Get a InventoryMap_T for iteration methods. */
     InventoryMap_T getInventoryMap () const;
-
-    /** Get a NetworkList_T for iteration methods. */
     NetworkList_T getNetworkList () const;
-
-    /** Get a NetworkMap_T for iteration methods. */
     NetworkMap_T getNetworkMap () const;
-
-    /** Get a DemandStreamList_T for iteration methods. */
     DemandStreamList_T getDemandStreamList () const;
-
-    /** Get a DemandStreamMap_T for iteration methods. */
     DemandStreamMap_T getDemandStreamMap () const;
-    
-    /** Get the reference of the AirlineFeatureSet object. */
-    AirlineFeatureSet& getAirlineFeatureSet() const;
+    AirlineFeatureList_T getAirlineFeatureList () const;
+    AirlineFeatureMap_T getAirlineFeatureMap () const;
+    YieldStoreList_T getYieldStoreList () const;
+    YieldStoreMap_T getYieldStoreMap () const;
 
     /** Retrieve, if existing, the Inventory corresponding to the
         given airline code (Inventory key).
@@ -148,47 +83,46 @@ namespace stdair {
         <br>If not existing, return the NULL pointer. */
     YieldStore* getYieldStore (const AirlineCode_T&) const;
 
+    /** Retrieve, if existing, the Airline features corresponding to the
+        given airline code.
+        <br>If not existing, return the NULL pointer. */
+    AirlineFeature* getAirlineFeature (const AirlineCode_T&) const;
+    
     /** Retrieve the DemandStream which corresponds to the given key. */
     DemandStream& getDemandStream (const DemandStreamKeyStr_T&) const;
 
-    
   public:
-    // //////////// Setters //////////////
-    /** Set the reference to the AirlineFeatureSet object. */
-    void setAirlineFeatureSet (AirlineFeatureSet* ioAirlineFeatureSet_ptr) {
-      _airlineFeatureSet = ioAirlineFeatureSet_ptr;
-    }
+    // /////////// Display support methods /////////
+    /** Dump a Business Object into an output stream.
+        @param ostream& the output stream. */
+    void toStream (std::ostream& ioOut) const { ioOut << toString(); }
 
-    /** Add a demand stream object to the dedicated list.
-        @param const DemandStreamKeyStr_T& (String) Key of the DemandStream
-               object to be added.
-        @param DemandStreamList_T& List of DemandStream objects. */
-    void addDemandStream (const DemandStreamKeyStr_T&, DemandStream&);
+    /** Read a Business Object from an input stream.
+        @param istream& the input stream. */
+    void fromStream (std::istream& ioIn) { }
+
+   /** Get the serialised version of the Business Object. */
+    std::string toString() const { return describeKey(); }
     
-  private:     
-    /** Retrieve the BOM structure object. */
-    BomStructure_T& getBomStructure () {
-      return _bomRootStructure;
-    }
+    /** Get a string describing the whole key (differentiating two objects
+        at any level). */
+    const std::string describeKey() const { return std::string (""); }
     
   protected:
     /** Constructors are private so as to force the usage of the Factory
         layer. */
+    /** Constructors. */
+    BomRoot (const Key_T&, Structure_T&);
+    /** Destructor. */
+     ~BomRoot();
     /** Default constructors. */
     BomRoot ();
     BomRoot (const BomRoot&);
-    BomRoot (const BomKey_T&, BomStructure_T&);
-    /** Destructor. */
-    virtual ~BomRoot();
 
   private:
     // Attributes
     /** Reference structure. */
-    BomStructure_T& _bomRootStructure;
-    
-    /** Set of all AirlineFeatures. */
-    AirlineFeatureSet* _airlineFeatureSet;
-
+    Structure_T& _structure;
   };
 
 }

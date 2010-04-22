@@ -15,12 +15,12 @@ namespace stdair {
   public:
     // Type definitions.
     /** Definition allowing to retrieve the associated BOM key type. */
-    typedef SegmentCabinKey_T BomKey_T;
+    typedef SegmentCabinKey_T Key_T;
 
   public:
     // /////////// Getters ///////////// 
     /** Get the segment-cabin key. */
-    const BomKey_T& getKey() const {
+    const Key_T& getKey() const {
       return _key;
     }
     
@@ -143,28 +143,23 @@ namespace stdair {
 
    /** Get the serialised version of the Business Object. */
     virtual std::string toString() const = 0;
-    
-    /** Get a string describing the whole key (differentiating two objects
-        at any level). */
-    virtual const std::string describeKey() const = 0;
 
     /** Get a string describing the short key (differentiating two objects
         at the same level). */
-    virtual const std::string describeShortKey() const = 0;
+    const std::string describeShortKey() const { return _key.toString(); }
 
     
   protected:
     /** Default constructors. */
-    SegmentCabinContent (const BomKey_T&);
+    SegmentCabinContent (const Key_T&);
     SegmentCabinContent (const SegmentCabinContent&);
-
     /** Destructor. */
-    virtual ~SegmentCabinContent();
+    ~SegmentCabinContent();
 
   protected:
     // Attributes
     /** The key of both structure and content objects. */
-    BomKey_T _key;
+    Key_T _key;
 
     /** Capacity of the cabin. */
     CabinCapacity_T _capacity;

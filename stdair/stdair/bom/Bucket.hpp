@@ -1,45 +1,36 @@
-#ifndef __STDAIR_BOM_BC_HPP
-#define __STDAIR_BOM_BC_HPP
+#ifndef __STDAIR_BOM_BUCKET_HPP
+#define __STDAIR_BOM_BUCKET_HPP
 
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
-// STL
-#include <iosfwd>
-// BOOST Fusion
-#include <boost/fusion/include/map.hpp>
 // STDAIR 
-#include <stdair/bom/Structure.hpp>
-#include <stdair/bom/BookingClassContent.hpp>
-#include <stdair/bom/BCTypes.hpp>
-#include <stdair/bom/BCTypes.hpp>
+#include <stdair/bom/BucketContent.hpp>
+#include <stdair/bom/BucketTypes.hpp>
 
 namespace stdair {
   // Forward declarations.
-  class SC;
+  class LegCabin;
   
   /** Class representing the actual functional/business content
       for the Bom root. */
-  class BC : public BookingClassContent {
+  class Bucket : public BucketContent {
     friend class FacBomContent;
     
   public:
-    // /////////////////////////////////////////////////////////////////////////
-    /** Definition allowing to retrieve the associated parent. */
-    typedef SC Parent_T;
-    
+    // //////////////////////////////////////////////////////////////////
+    // See the explanations, within the BomRoot class, for all
+    // the types which require to be specified below
+    // //////////////////////////////////////////////////////////////////
     /** Definition allowing to retrieve the associated BOM structure type. */
-    typedef BCStructure_T BomStructure_T;
-    
+    typedef BucketStructure_T Structure_T;
+
+    /** Definition allowing to retrieve the associated parent. */
+    typedef LegCabin Parent_T;
+        
     /** Define the list of children holder types. */
-    typedef boost::fusion::map< > ChildrenHolderTypeMap_T;
-    // /////////////////////////////////////////////////////////////////////////
-  
-  private:     
-    /** Retrieve the BOM structure object. */
-    BomStructure_T& getStructure () {
-      return _structure;
-    }
+    typedef boost::fusion::map< > ChildrenHolderMap_T;
+    // //////////////////////////////////////////////////////////////////
     
   public:
     // /////////// Display support methods /////////
@@ -56,28 +47,25 @@ namespace stdair {
     
     /** Get a string describing the whole key (differentiating two objects
         at any level). */
-    const std::string describeKey() const { return _key.toString(); }
-
-    /** Get a string describing the short key (differentiating two objects
-        at the same level). */
-    const std::string describeShortKey() const { return _key.toString(); }
+    const std::string describeKey() const;
 
   protected:
     /** Constructors are private so as to force the usage of the Factory
         layer. */
-    /** Default constructors. */
-    BC ();
-    BC (const BC&);
-    BC (const BomKey_T& iKey, BomStructure_T& ioStructure);
+    /** Constructors. */
+    Bucket (const Key_T& iKey, Structure_T& ioStructure);
     /** Destructor. */
-    virtual ~BC();
+  ~Bucket();
+    /** Default constructors. */
+    Bucket ();
+    Bucket (const Bucket&);
 
   private:
     // Attributes
     /** Reference structure. */
-    BomStructure_T& _structure;
+    Structure_T& _structure;
 
   };
 
 }
-#endif // __STDAIR_BOM_BC_HPP
+#endif // __STDAIR_BOM_BUCKET_HPP

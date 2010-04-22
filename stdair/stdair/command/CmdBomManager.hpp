@@ -42,21 +42,12 @@ namespace stdair {
                created . */
     static YieldStore& getOrCreateYieldStore (BomRoot&, const AirlineCode_T&);
       
-    /** Initialise the AirlineFeatureSet object, and attach it to the BomRoot.
-        @param BomRoot& Root of the BOM tree.  */
-    static void initAirlineFeatureSet (BomRoot&);
-    
     /** Add the airline-specific AirlineFeature object to its AirlineFeatureSet
         parent.
         @param BomRoot& Root of the BOM tree.
         @param const AirlineCode_T& Airline code for the inventory to be
                created . */
     static void addAirlineFeature (BomRoot&, const AirlineCode_T& iAirlineCode);
-
-    /** Initialise the DemandStreamList object, and attach it to the BomRoot.
-        @param BomRoot& Root of the BOM tree. */
-    static void initDemandStreamList (BomRoot&);
-
     
   private:
     // ///////////////////// Internal support methods ////////////////////////

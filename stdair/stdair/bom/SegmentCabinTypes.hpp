@@ -12,19 +12,17 @@
 namespace stdair {
 
   // Forward declarations.
-  template <typename BOM_CONTENT> class SegmentCabinStructure;
+  template <typename CONTENT> class Structure;
+  template <typename CONTENT> class BomChildrenHolderImp;
   template <typename BOM> struct BomList_T;
   template <typename BOM> struct BomMap_T;
   class SegmentCabin;
   
   /** Define the SegmentCabin structure. */
-  typedef SegmentCabinStructure<SegmentCabin> SegmentCabinStructure_T;
+  typedef Structure<SegmentCabin> SegmentCabinStructure_T;
   
-  /** Define the segment-cabin structure list. */
-  typedef std::vector<SegmentCabinStructure_T*> SegmentCabinStructureList_T;
-
-  /** Define the segment-cabin structure map. */
-  typedef std::map<const std::string, SegmentCabinStructure_T*> SegmentCabinStructureMap_T;
+  /** Define the SegmentCabin holder. */
+  typedef BomChildrenHolderImp<SegmentCabin> SegmentCabinHolder_T;
   
  /** Define the segment-cabin list. */
   typedef BomList_T<SegmentCabin> SegmentCabinList_T;

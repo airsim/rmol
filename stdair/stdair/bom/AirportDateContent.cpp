@@ -9,7 +9,7 @@
 namespace stdair {
 
   // ////////////////////////////////////////////////////////////////////
-  AirportDateContent::AirportDateContent (const BomKey_T& iKey) \
+  AirportDateContent::AirportDateContent (const Key_T& iKey) \
     : _key (iKey) {
   }
 

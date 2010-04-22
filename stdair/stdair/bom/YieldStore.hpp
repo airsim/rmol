@@ -4,10 +4,6 @@
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
-// STL
-#include <iosfwd>
-// BOOST Fusion
-#include <boost/fusion/include/map.hpp>
 // STDAIR 
 #include <stdair/bom/YieldStoreContent.hpp>
 #include <stdair/bom/YieldStoreTypes.hpp>
@@ -15,7 +11,7 @@
 namespace stdair {
 
   // Forward declarations.
-  class BR;
+  class BomRoot;
   
   /** Class representing the actual functional/business content
       for the Bom root. */
@@ -23,27 +19,19 @@ namespace stdair {
     friend class FacBomContent;
     
   public:
-    // /////////////////////////////////////////////////////////////////////////
-    /** Definition allowing to retrieve the associated parent. */
-    typedef BR Parent_T;
-    
+    // //////////////////////////////////////////////////////////////////
+    // See the explanations, within the BomRoot class, for all
+    // the types which require to be specified below
+    // //////////////////////////////////////////////////////////////////
     /** Definition allowing to retrieve the associated BOM structure type. */
-    typedef YieldStoreStructure_T BomStructure_T;
+    typedef YieldStoreStructure_T Structure_T;
+
+    /** Definition allowing to retrieve the associated parent. */
+    typedef BomRoot Parent_T;
     
     /** Define the list of children holder types. */
-    typedef boost::fusion::map< > ChildrenHolderTypeMap_T;
-    // /////////////////////////////////////////////////////////////////////////
-    
-  public:
-    // /////////// Getters /////////////
-
-    
-  private:     
-    /** Retrieve the BOM structure object. */
-    BomStructure_T& getStructure () {
-      return _structure;
-    }
-
+    typedef boost::fusion::map< > ChildrenHolderMap_T;
+    // //////////////////////////////////////////////////////////////////
     
   public:
     // /////////// Display support methods /////////
@@ -62,10 +50,6 @@ namespace stdair {
         at any level). */
     const std::string describeKey() const { return _key.toString(); }
 
-    /** Get a string describing the short key (differentiating two objects
-        at the same level). */
-    const std::string describeShortKey() const { return _key.toString(); }
-
     
   protected:
     /** Constructors are private so as to force the usage of the Factory
@@ -73,14 +57,14 @@ namespace stdair {
     /** Default constructors. */
     YieldStore ();
     YieldStore (const YieldStore&);
-    YieldStore (const BomKey_T& iKey, BomStructure_T& ioStructure);
+    YieldStore (const Key_T& iKey, Structure_T& ioStructure);
     /** Destructor. */
     virtual ~YieldStore();
 
   private:
     // Attributes
     /** Reference structure. */
-    BomStructure_T& _structure;
+    Structure_T& _structure;
   };
 
 }

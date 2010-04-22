@@ -40,22 +40,5 @@ namespace stdair {
          << _nbOfSegments << ", " << _nbOfAirlines << ", " << _boardingTime;
     return oStr.str();
   }
-
-  // ////////////////////////////////////////////////////////////////////
-  const std::string OutboundPathKey_T::describe() const {
-    std::ostringstream oStr;
-    oStr << _parentKey.describe() << ", " << toString();
-    return oStr.str();
-  }
-    
-  // //////////////////////////////////////////////////////////////////////
-  const AirportCode_T& OutboundPathKey_T::getBoardingPoint() const {
-    return _parentKey.getBoardingPoint();
-  }
-  
-  // //////////////////////////////////////////////////////////////////////
-  const Date_T& OutboundPathKey_T::getBoardingDate() const {
-    return _parentKey.getBoardingDate();
-  }
   
 }

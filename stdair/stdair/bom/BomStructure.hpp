@@ -7,6 +7,8 @@
 // STL
 #include <iosfwd>
 #include <string>
+// STDAIR
+#include <stdair/STDAIR_Types.hpp>
 
 namespace stdair {
 
@@ -28,14 +30,6 @@ namespace stdair {
    /** Get the serialised version of the Business Object. */
     virtual std::string toString() const = 0;
     
-    /** Get a string describing the whole key (differentiating two objects
-        at any level). */
-    virtual const std::string describeKey() const = 0;
-
-    /** Get a string describing the short key (differentiating two objects
-        at the same level). */
-    virtual const std::string describeShortKey() const = 0;
-    
   protected:
     /** Protected Default Constructor to ensure this class is abtract. */
     BomStructure() {}
@@ -49,9 +43,9 @@ namespace stdair {
        Template function aimed at retrieving the bom content pointer from a
        bom structure.
     */
-    template <typename BOM_CONTENT>
-    static BOM_CONTENT* getBomContentPtr (const typename BOM_CONTENT::BomStructure_T& iBomStructure) {
-      return iBomStructure._content;
+    template <typename CONTENT>
+    static CONTENT* getContentPtr (const typename CONTENT::Structure_T& iStructure) {
+      return iStructure._content;
     }
     
   };

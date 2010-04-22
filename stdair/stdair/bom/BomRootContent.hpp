@@ -5,7 +5,6 @@
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // STDAIR
-#include <stdair/STDAIR_Types.hpp>
 #include <stdair/bom/BomContent.hpp>
 #include <stdair/bom/BomRootKey.hpp>
 
@@ -15,12 +14,12 @@ namespace stdair {
 
   public:
     /** Definition allowing to retrieve the associated BOM key type. */
-    typedef BomRootKey_T BomKey_T;
+    typedef BomRootKey_T Key_T;
 
   public:
     // /////////// Getters //////////////
     /** Get the BomRoot key. */
-    const BomKey_T& getKey() const {
+    const Key_T& getKey() const {
       return _key;
     }
 
@@ -122,19 +121,15 @@ namespace stdair {
    /** Get the serialised version of the Business Object. */
     virtual std::string toString() const = 0;
     
-    /** Get a string describing the whole key (differentiating two objects
-        at any level). */
-    virtual const std::string describeKey() const = 0;
-
     /** Get a string describing the short key (differentiating two objects
         at the same level). */
-    virtual const std::string describeShortKey() const = 0;
+    const std::string describeShortKey() const { return std::string (""); }
     
   protected:
     /** Default constructors. */
     BomRootContent ();
     BomRootContent (const BomRootContent&);
-    BomRootContent (const BomKey_T& iKey);
+    BomRootContent (const Key_T& iKey);
 
     /** Destructor. */
     virtual ~BomRootContent();
@@ -142,7 +137,7 @@ namespace stdair {
   protected:
     // Attributes
     /** The key of both structure and content objects. */
-    BomKey_T _key; 
+    Key_T _key; 
 
     /** Counter of all generated flight dates in the world schedule. */
     NbOfFlightDates_T _flightDateCounter;

@@ -5,30 +5,20 @@
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // STDAIR
-#include <stdair/STDAIR_Types.hpp>
 #include <stdair/bom/BomKey.hpp>
-#include <stdair/bom/FlightDateKey.hpp>
 
 namespace stdair {
   /** Key of leg-date. */
   struct LegDateKey_T : public BomKey_T {
-    friend struct LegCabinKey_T;
- 
-  public:
-    // /////////// Typedefs ////////////
-    /** Definition allowing to retrieve the parent key type. */
-    typedef FlightDateKey_T ParentKey_T;
     
   private:
     // /////////// Default constructor //////////
     LegDateKey_T () { };
-    
   public:
     // /////////// Construction ///////////
     /** Constructors. */
     LegDateKey_T (const AirportCode_T& iBoardingPoint);
     LegDateKey_T (const LegDateKey_T&);
-
     /** Destructor. */
     ~LegDateKey_T ();
     
@@ -36,11 +26,6 @@ namespace stdair {
     /** Get the boarding point. */
     const AirportCode_T& getBoardingPoint() const {
       return _boardingPoint;
-    }
-    
-    // /////////// Setters /////////////
-    void setParentKey (const ParentKey_T& iParentKey) {
-      _parentKey = iParentKey;
     }
     
     // /////////// Display support methods /////////
@@ -59,14 +44,8 @@ namespace stdair {
        marketing classes for the same leg-date. */
     const std::string toString() const;
     
-    /** Display of the key. */
-    const std::string describe() const;
-    
   private:
     // Attributes
-    /** Flight-date Key.*/
-    ParentKey_T _parentKey;
-    
     /** Boardinging airport. */
     AirportCode_T _boardingPoint;
   };

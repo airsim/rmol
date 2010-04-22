@@ -1,42 +1,35 @@
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
-// C
-#include <assert.h>
 // STL
+#include <cassert>
 #include <iostream>
 #include <algorithm>
 // STDAIR
-#include <stdair/bom/FlightDateStructure.hpp>
-#include <stdair/bom/FlightDate.hpp>
-#include <stdair/bom/SegmentDate.hpp>
-#include <stdair/bom/LegDate.hpp>
-#include <stdair/bom/BookingClass.hpp>
-#include <stdair/bom/BomList.hpp>
-#include <stdair/bom/BomMap.hpp>
+#include <stdair/bom/BomSource.hpp>
 
 namespace stdair {
 
   // ////////////////////////////////////////////////////////////////////
-  FlightDate::FlightDate (const BomKey_T& iKey,
-                          BomStructure_T& ioFlightStructure)
-    : FlightDateContent (iKey), _flightDateStructure (ioFlightStructure) {
+  FlightDate::FlightDate (const Key_T& iKey,
+                          Structure_T& ioFlightStructure)
+    : FlightDateContent (iKey), _structure (ioFlightStructure) {
   }
 
   // ////////////////////////////////////////////////////////////////////
   FlightDate::~FlightDate () {
   }
 
-  // //////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////
   void FlightDate::toStream (std::ostream& ioOut) const {
     ioOut << toString() << std::endl;
   }
 
-  // //////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////
   void FlightDate::fromStream (std::istream& ioIn) {
   }
   
-  // //////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////
   std::string FlightDate::toString() const {
     std::ostringstream oStr;
     
@@ -46,50 +39,41 @@ namespace stdair {
     return oStr.str();
   }
     
-  // //////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////
   const std::string FlightDate::describeKey() const {
-    return _key.describe();
-  }
-
-  // //////////////////////////////////////////////////////////////////////
-  const std::string FlightDate::describeShortKey() const {
-    return _key.toString();
+    std::ostringstream oStr;
+    oStr << _structure.describeParentKey() << ", " << describeShortKey();
+    return oStr.str();
   }
   
-  // //////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////
   SegmentDateList_T FlightDate::getSegmentDateList () const {
-    return _flightDateStructure.getChildrenHolder();
+    return _structure.getChildrenHolder<SegmentDate>();
   }
 
-  // //////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////
   SegmentDateMap_T FlightDate::getSegmentDateMap () const {
-    return _flightDateStructure.getChildrenHolder();
+    return _structure.getChildrenHolder<SegmentDate>();
   }
 
-  // //////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////
   LegDateList_T FlightDate::getLegDateList () const {
-    return _flightDateStructure.getSecondChildrenHolder();
+    return _structure.getChildrenHolder<LegDate>();
   }
 
-  // //////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////
   LegDateMap_T FlightDate::getLegDateMap () const {
-    return _flightDateStructure.getSecondChildrenHolder();
+    return _structure.getChildrenHolder<LegDate>();
   }
 
-  // //////////////////////////////////////////////////////////////////////
-  LegDate* FlightDate::getLegDate (const LegDateKey_T& iKey) const {
-    return _flightDateStructure.getSecondContentChild (iKey);
+  // ////////////////////////////////////////////////////////////////////
+  LegDate* FlightDate::getLegDate (const AirportCode_T& iBoardingPoint) const {
+    return _structure.getChildPtr<LegDate> (iBoardingPoint);
   }
 
-  // //////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////
   SegmentDate* FlightDate::getSegmentDate (const SegmentDateKey_T& iKey) const {
-    return _flightDateStructure.getContentChild (iKey);
-  }
-
-  // //////////////////////////////////////////////////////////////////////
-  BookingClass* FlightDate::
-  getBookingClass (const BookingClassKey_T& iKey) const {
-    return _flightDateStructure.getBookingClass (iKey);
+    return _structure.getChildPtr<SegmentDate> (iKey.toString() );
   }
 }
 

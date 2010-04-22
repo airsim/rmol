@@ -4,51 +4,40 @@
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
-// STL
-#include <iosfwd>
-#include <string>
 // STDAIR 
-#include <stdair/bom/AirlineFeatureSet.hpp>
-#include <stdair/bom/AirlineFeatureStructure.hpp>
 #include <stdair/bom/AirlineFeatureContent.hpp>
-#include <stdair/bom/AirlineFeatureSetTypes.hpp>
 #include <stdair/bom/AirlineFeatureTypes.hpp>
 
 namespace stdair {
-
   // Forward declarations
-  struct AirlineFeatureKey_T;
+  class BomRoot;
 
-  
   /** Class representing the actual functional/business content for a
       segment-cabin. */
   class AirlineFeature : public AirlineFeatureContent {
     friend class FacBomContent;
 
-    
   public:
-    // //////////// Type definitions //////////////
+    // //////////////////////////////////////////////////////////////////
+    // See the explanations, within the BomRoot class, for all
+    // the types which require to be specified below
+    // //////////////////////////////////////////////////////////////////
+    /** Definition allowing to retrieve the associated BOM structure type. */
+    typedef AirlineFeatureStructure_T Structure_T;
+
     /** Definition allowing to retrieve the associated parent
         BOM content type. */
-    typedef AirlineFeatureSet Parent_T;
+    typedef BomRoot Parent_T;
 
-    /** Definition allowing to retrieve the associated BOM structure type. */
-    typedef AirlineFeatureStructure_T BomStructure_T;
+    /** Define the list of children holder types. */
+    typedef boost::fusion::map< > ChildrenHolderMap_T;
+    // //////////////////////////////////////////////////////////////////
 
-    /** Definition allowing to retrieve the associated BOM key type. */
-    typedef AirlineFeatureKey_T BomKey_T;
-
-    /** Definition allowing to retrieve the associated 
-         BOM content child type. */
-    typedef AirlineFeature ContentChild_T;
-
-    
   public:
     // //////////// Setters /////////////
     /** Intialisation method. */
     void init (const ForecasterMode_T&, const HistoricalDataLimit_T&,
                const OptimizerStruct_T&, const ControlMode_T&);
-
     
   public:
     // /////////// Display support methods /////////////
@@ -67,20 +56,8 @@ namespace stdair {
         at any level). */
     const std::string describeKey() const;
 
-    /** Get a string describing the short key (differentiating two objects
-        at the same level). */
-    const std::string describeShortKey() const;
-
     /** Give a description of the structure (for display purposes). */
     const std::string describe() const;
-
-    
-  private:
-    /** Retrieve the BOM structure object. */
-    BomStructure_T& getBomStructure () {
-      return _airlineFeatureStructure;
-    }
-
     
   protected:
     // ///////////////// Constructors and destructors /////////////////
@@ -89,8 +66,7 @@ namespace stdair {
     /** Default constructors. */
     AirlineFeature ();
     AirlineFeature (const AirlineFeature&);
-    AirlineFeature (const BomKey_T&, BomStructure_T&);
-
+    AirlineFeature (const Key_T&, Structure_T&);
     /** Destructor. */
     virtual ~AirlineFeature();
 
@@ -98,7 +74,7 @@ namespace stdair {
   protected:
     // ////////////////////// Attributes ///////////////////////////
     /** Reference structure. */
-    BomStructure_T& _airlineFeatureStructure;
+    Structure_T& _structure;
   };
 
 }

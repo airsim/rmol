@@ -4,80 +4,56 @@
 // STL
 #include <cassert>
 // STDAIR
-#include <stdair/bom/NetworkStructure.hpp>
-#include <stdair/bom/Network.hpp>
-#include <stdair/bom/NetworkDate.hpp>
-#include <stdair/bom/BomList.hpp>
-#include <stdair/bom/BomMap.hpp>
+#include <stdair/bom/BomSource.hpp>
 
 namespace stdair {
 
   // ////////////////////////////////////////////////////////////////////
-  Network::Network (const BomKey_T& iKey,
-                    BomStructure_T& ioNetworkStructure)
-    : NetworkContent (iKey), _networkStructure (ioNetworkStructure) {
+  Network::Network (const Key_T& iKey,
+                    Structure_T& ioNetworkStructure)
+    : NetworkContent (iKey), _structure (ioNetworkStructure) {
   }
 
   // ////////////////////////////////////////////////////////////////////
   Network::~Network () {
   }
 
-  // //////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////
   void Network::toStream (std::ostream& ioOut) const {
     ioOut << toString() << std::endl;
   }
 
-  // //////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////
   void Network::fromStream (std::istream& ioIn) {
   }
 
-  // //////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////
   std::string Network::toString() const {
     std::ostringstream oStr;
     oStr << _key.toString();
     return oStr.str();
   }
     
-  // //////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////
   const std::string Network::describeKey() const {
-    return _key.describe();
-  }
-
-  // //////////////////////////////////////////////////////////////////////
-  const std::string Network::describeShortKey() const {
     return _key.toString();
   }
 
-  // //////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////
   NetworkDateList_T Network::getNetworkDateList () const {
-    return _networkStructure.getChildrenHolder();
+    return _structure.getChildrenHolder<NetworkDate>();
   }
 
-  // //////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////
   NetworkDateMap_T Network::getNetworkDateMap () const {
-    return _networkStructure.getChildrenHolder();
+    return _structure.getChildrenHolder<NetworkDate>();
   }
 
-  // //////////////////////////////////////////////////////////////////////
-  NetworkDate* Network::getNetworkDate (const NetworkDateKey_T& iKey) const {
-    return _networkStructure.getContentChild (iKey);
-  }
-
-  // //////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////
   NetworkDate* Network::getNetworkDate (const Date_T& iDate) const {
-    NetworkDate* oNetworkDate_ptr = NULL;
-    
-    NetworkDateMap_T lNetworkDateMap = getNetworkDateMap ();
-    
     std::ostringstream ostr;
     ostr << iDate;
-    NetworkDateMap_T::iterator itNetworkDate = lNetworkDateMap.find (ostr.str());
-
-    if (itNetworkDate != lNetworkDateMap.end()) {
-      oNetworkDate_ptr = itNetworkDate->second;
-    }
-    
-    return oNetworkDate_ptr;
+    return _structure.getChildPtr<NetworkDate> (ostr.str());
   }
 
 }

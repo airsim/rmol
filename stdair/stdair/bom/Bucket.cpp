@@ -1,32 +1,27 @@
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
+// STL
+#include <cassert>
 // STDAIR
-#include <stdair/bom/BucketKey.hpp>
+#include <stdair/bom/BomSource.hpp>
 
 namespace stdair {
 
   // ////////////////////////////////////////////////////////////////////
-  BucketKey_T::BucketKey_T () {
+  Bucket::Bucket (const Key_T& iKey, Structure_T& ioBucketStructure)
+    : BucketContent (iKey), _structure (ioBucketStructure) {
   }
 
   // ////////////////////////////////////////////////////////////////////
-  BucketKey_T::~BucketKey_T () {
+  Bucket::~Bucket () {
   }
-
+    
   // ////////////////////////////////////////////////////////////////////
-  void BucketKey_T::toStream (std::ostream& ioOut) const {
-    ioOut << "BucketKey: " << toString() << std::endl;
-  }
-
-  // ////////////////////////////////////////////////////////////////////
-  void BucketKey_T::fromStream (std::istream& ioIn) {
-  }
-
-  // ////////////////////////////////////////////////////////////////////
-  const std::string BucketKey_T::toString() const {
+  const std::string Bucket::describeKey() const {
     std::ostringstream oStr;
+    oStr << _structure.describeParentKey() << ", " << describeShortKey();
     return oStr.str();
   }
-
+  
 }

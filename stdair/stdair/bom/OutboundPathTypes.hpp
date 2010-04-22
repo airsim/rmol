@@ -12,19 +12,17 @@
 namespace stdair {
 
   // Forward declarations.
-  template <typename BOM_CONTENT> class OutboundPathStructure;
+  template <typename CONTENT> class Structure;
+  template <typename CONTENT> class BomChildrenHolderImp;
   template <typename BOM> struct BomList_T;
   template <typename BOM> struct BomMap_T;
   class OutboundPath;
   
   /** Define the outbound path structure. */
-  typedef OutboundPathStructure<OutboundPath> OutboundPathStructure_T;
+  typedef Structure<OutboundPath> OutboundPathStructure_T;
   
-  /** Define the outbound path structure list. */
-  typedef std::vector<OutboundPathStructure_T*> OutboundPathStructureList_T;
-
-  /** Define the outbound path structure map. */
-  typedef std::map<const std::string, OutboundPathStructure_T*> OutboundPathStructureMap_T;
+  /** Define the outbound path holder. */
+  typedef BomChildrenHolderImp<OutboundPath> OutboundPathHolder_T;
 
   /** Define the outbound path list. */
   typedef BomList_T<OutboundPath> OutboundPathList_T;

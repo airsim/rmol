@@ -1,39 +1,34 @@
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
-// C
-#include <assert.h>
+// STL
+#include <cassert>
 // STDAIR
 #include <stdair/basic/BasConst_TravelSolution.hpp>
-#include <stdair/bom/SegmentDateStructure.hpp>
-#include <stdair/bom/SegmentDate.hpp>
-#include <stdair/bom/SegmentCabin.hpp>
-#include <stdair/bom/LegDate.hpp>
-#include <stdair/bom/BomList.hpp>
-#include <stdair/bom/BomMap.hpp>
+#include <stdair/bom/BomSource.hpp>
 
 namespace stdair {
 
   // ////////////////////////////////////////////////////////////////////
-  SegmentDate::SegmentDate (const BomKey_T& iKey,
-                            BomStructure_T& ioSegmentStructure)
-    : SegmentDateContent (iKey), _segmentDateStructure (ioSegmentStructure) {
+  SegmentDate::SegmentDate (const Key_T& iKey,
+                            Structure_T& ioSegmentStructure)
+    : SegmentDateContent (iKey), _structure (ioSegmentStructure) {
   }
   
   // ////////////////////////////////////////////////////////////////////
   SegmentDate::~SegmentDate () {
   }
 
-  // //////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////
   void SegmentDate::toStream (std::ostream& ioOut) const {
     ioOut << toString() << std::endl;
   }
 
-  // //////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////
   void SegmentDate::fromStream (std::istream& ioIn) {
   }
 
-  // //////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////
   std::string SegmentDate::toString() const {
     std::ostringstream oStr;
 
@@ -46,32 +41,34 @@ namespace stdair {
     return oStr.str();
   }
     
-  // //////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////
   const std::string SegmentDate::describeKey() const {
-    return _key.describe();
+    std::ostringstream oStr;
+    oStr << _structure.describeParentKey() << ", " << describeShortKey();
+    return oStr.str();
   }
 
-  // //////////////////////////////////////////////////////////////////////
-  const std::string SegmentDate::describeShortKey() const {
-    return _key.toString();
-  }
-
-  // //////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////
   SegmentCabinList_T SegmentDate::getSegmentCabinList () const {
-    return _segmentDateStructure.getChildrenHolder();
+    return _structure.getChildrenHolder<SegmentCabin>();
   }
 
-  // //////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////
   SegmentCabinMap_T SegmentDate::getSegmentCabinMap () const {
-    return _segmentDateStructure.getChildrenHolder();
+    return _structure.getChildrenHolder<SegmentCabin>();
   }
 
-  // //////////////////////////////////////////////////////////////////////
-  LegDateList_T SegmentDate::getLegDateList () const {
-    return _segmentDateStructure.getLegDateHolder();
+  // ////////////////////////////////////////////////////////////////////
+  LegDateMap_T SegmentDate::getLegDateMap () const {
+    return _structure.getChildrenHolder<LegDate>();
   }
   
-  // ///////// ///////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////
+  LegDateList_T SegmentDate::getLegDateList () const {
+    return _structure.getChildrenHolder<LegDate>();
+  }
+  
+  // ////////////////////////////////////////////////////////////////////
   bool SegmentDate::
   isConnectable (const SegmentDate& iSegmentDate) const {
     bool oIsConnectable = false;
@@ -90,6 +87,16 @@ namespace stdair {
     oIsConnectable = lStopOverTime >= DEFAULT_MINIMUM_CONNECTION_TIME;
 
     return oIsConnectable;
+  }
+
+  // ////////////////////////////////////////////////////////////////////
+  const AirlineCode_T& SegmentDate::getAirlineCode () const {
+    return _structure.getParent().getParent().getKey().getAirlineCode();
+  }
+
+  // ////////////////////////////////////////////////////////////////////
+  const FlightNumber_T& SegmentDate::getFlightNumber () const {
+    return _structure.getParent().getKey().getFlightNumber();
   }
   
 }

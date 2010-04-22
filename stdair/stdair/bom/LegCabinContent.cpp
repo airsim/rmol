@@ -11,7 +11,7 @@
 namespace stdair {
 
   // ////////////////////////////////////////////////////////////////////
-  LegCabinContent::LegCabinContent (const BomKey_T& iKey)
+  LegCabinContent::LegCabinContent (const Key_T& iKey)
   : _key (iKey),
     _capacity (DEFAULT_CABIN_CAPACITY),
     _soldSeat (DEFAULT_CLASS_NB_OF_BOOKINGS),

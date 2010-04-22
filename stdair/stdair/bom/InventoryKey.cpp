@@ -35,9 +35,4 @@ namespace stdair {
     return oStr.str();
   }
 
-  // ////////////////////////////////////////////////////////////////////
-  const std::string InventoryKey_T::describe() const {
-    return toString();
-  }
-
 }

@@ -5,17 +5,14 @@
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // STDAIR 
-#include <stdair/bom/NetworkDate.hpp>
-#include <stdair/bom/AirportDateStructure.hpp>
 #include <stdair/bom/AirportDateContent.hpp>
 #include <stdair/bom/AirportDateTypes.hpp>
 #include <stdair/bom/OutboundPathTypes.hpp>
 
 namespace stdair {
   // Forward declarations
-  class FacBomContent;
-  struct AirportDateKey_T;
-  struct OutboundPathKey_T;
+  class NetworkDate;
+  class OutboundPath;
 
   /** Class representing the actual functional/business content for a
       airport-date. */
@@ -23,21 +20,38 @@ namespace stdair {
     friend class FacBomContent;
 
   public:
-    // Type definitions
+    // //////////////////////////////////////////////////////////////////
+    // See the explanations, within the BomRoot class, for all
+    // the types which require to be specified below
+    // //////////////////////////////////////////////////////////////////
+    /** Definition allowing to retrieve the associated BOM structure type. */
+    typedef AirportDateStructure_T Structure_T;
+
     /** Definition allowing to retrieve the associated parent
         BOM content type. */
     typedef NetworkDate Parent_T;
 
-    /** Definition allowing to retrieve the associated BOM structure type. */
-    typedef AirportDateStructure_T BomStructure_T;
-
-    /** Definition allowing to retrieve the associated BOM key type. */
-    typedef AirportDateKey_T BomKey_T;
-
-    /** Definition allowing to retrieve the associated 
-         BOM content child type. */
-    typedef OutboundPath ContentChild_T;
+    /** Define the list of children holder types. */
+    typedef boost::fusion::map<
+      boost::fusion::pair<OutboundPath, OutboundPathHolder_T*>
+      > ChildrenHolderMap_T;
+    // //////////////////////////////////////////////////////////////////
     
+  public:
+    // /////////// Getters /////////////
+    /** Get a list or map of a children type for iteration methods. */
+    OutboundPathList_T getOutboundPathList () const;
+    OutboundPathMap_T getOutboundPathMap () const;
+
+    /** Get the OutboundPathListList. */
+    const OutboundPathListList_T& getOutboundPathListList () const {
+      return _outboundPathListList;
+    }
+    
+  public:
+    // //////////// Business Methods //////////////
+    /** Build the list of lists of outbound paths. **/
+    void buildOutboundPathListList (stdair::OutboundPath&);    
        
   public:
     // /////////// Display support methods /////////
@@ -56,49 +70,21 @@ namespace stdair {
         at any level). */
     const std::string describeKey() const;
 
-    /** Get a string describing the short key (differentiating two objects
-        at the same level). */
-    const std::string describeShortKey() const;
-    
-  public:
-    // /////////// Getters /////////////
-    /** Get a OutboundPathList_T for iteration methods. */
-    OutboundPathList_T getOutboundPathList () const;
-
-    /** Get a OutboundPathMap_T for iteration methods. */
-    OutboundPathMap_T getOutboundPathMap () const;
-
-    /** Get the OutboundPathListList. */
-    const OutboundPathListList_T& getOutboundPathListList () const {
-      return _outboundPathListList;
-    }
-    
-  private:
-    /** Retrieve the BOM structure object. */
-    BomStructure_T& getBomStructure () {
-      return _airportDateStructure;
-    }
-
-  public:
-    // //////////// Business Methods //////////////
-    /** Build the list of lists of outbound paths. **/
-    void buildOutboundPathListList (stdair::OutboundPath&);
-
   protected:
     /** Constructors are private so as to force the usage of the Factory
         layer. */
+    /** Constructors. */
+    AirportDate (const Key_T&, Structure_T&);
+    /** Destructor. */
+    virtual ~AirportDate();
     /** Default constructors. */
     AirportDate ();
     AirportDate (const AirportDate&);
-    AirportDate (const BomKey_T&, BomStructure_T&);
-
-    /** Destructor. */
-    virtual ~AirportDate();
 
   protected:
     // Attributes
     /** Reference structure. */
-    BomStructure_T& _airportDateStructure;
+    Structure_T& _structure;
 
     /** The list of lists of OutboundPaths, used uniquement for the
         construction of the main list of OutboundPaths in

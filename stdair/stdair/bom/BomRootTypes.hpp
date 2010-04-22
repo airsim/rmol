@@ -8,11 +8,11 @@
 
 namespace stdair {
   // Forward declarations.
-  template <typename BOM_CONTENT> class BomRootStructure;
+  template <typename CONTENT> class Structure;
   class BomRoot;
   
   /** Define the BomRootStructure. */
-  typedef BomRootStructure<BomRoot> BomRootStructure_T;
+  typedef Structure<BomRoot> BomRootStructure_T;
 
 }
 #endif // __STDAIR_BOM_BOMROOTTYPES_HPP

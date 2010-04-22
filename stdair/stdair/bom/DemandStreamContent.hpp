@@ -4,12 +4,7 @@
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
-// Boost
-#include <boost/shared_ptr.hpp>
-// STL
-#include <iosfwd>
 // STDAIR
-#include <stdair/STDAIR_Types.hpp>
 #include <stdair/basic/DemandCharacteristics.hpp>
 #include <stdair/basic/DemandDistribution.hpp>
 #include <stdair/basic/RandomGeneration.hpp>
@@ -25,12 +20,12 @@ namespace stdair {
   public:
     // Type definitions.
     /** Definition allowing to retrieve the associated BOM key type. */
-    typedef DemandStreamKey_T BomKey_T;
+    typedef DemandStreamKey_T Key_T;
 
   public:
     // ///////////// Getters ///////////
     /** Get the key */
-    const BomKey_T& getKey () const {
+    const Key_T& getKey () const {
       return _key;
     }
     
@@ -177,14 +172,10 @@ namespace stdair {
 
    /** Get the serialised version of the Business Object. */
     virtual std::string toString() const = 0;
-    
-    /** Get a string describing the whole key (differentiating two objects
-        at any level). */
-    virtual const std::string describeKey() const = 0;
 
     /** Get a string describing the short key (differentiating two objects
         at the same level). */
-    virtual const std::string describeShortKey() const = 0;
+    const std::string describeShortKey() const { return _key.toString(); }
 
   public:
     // /////////////// Business Methods //////////
@@ -237,7 +228,7 @@ namespace stdair {
   protected:
     // ////////// Constructors and destructors /////////
     /** Constructor by default */
-    DemandStreamContent (const BomKey_T&,
+    DemandStreamContent (const Key_T&,
                          const ArrivalPatternCumulativeDistribution_T&,
                          const POSProbabilityMassFunction_T&,
                          const ChannelProbabilityMassFunction_T&,
@@ -263,7 +254,7 @@ namespace stdair {
   protected:
     // ////////// Attributes //////////
     /** Key */
-    BomKey_T _key;
+    Key_T _key;
     
     /** Demand characteristics */
     DemandCharacteristics _demandCharacteristics;

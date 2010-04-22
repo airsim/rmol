@@ -9,7 +9,7 @@
 namespace stdair {
 
   // ////////////////////////////////////////////////////////////////////
-  NetworkDateContent::NetworkDateContent (const BomKey_T& iKey) : _key (iKey) {
+  NetworkDateContent::NetworkDateContent (const Key_T& iKey) : _key (iKey) {
   }
 
   // ////////////////////////////////////////////////////////////////////

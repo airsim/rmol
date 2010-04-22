@@ -4,14 +4,12 @@
 // STL
 #include <cassert>
 // STDAIR
-#include <stdair/basic/BasConst_BookingClass.hpp>
-#include <stdair/basic/BasConst_Yield.hpp>
 #include <stdair/bom/BucketContent.hpp>
 
 namespace stdair {
 
   // ////////////////////////////////////////////////////////////////////
-  BucketContent::BucketContent (const BomKey_T& iKey)
+  BucketContent::BucketContent (const Key_T& iKey)
     : _key (iKey) {
   }
 

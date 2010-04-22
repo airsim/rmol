@@ -11,7 +11,7 @@
 namespace stdair {
 
   // ////////////////////////////////////////////////////////////////////
-  BookingClassContent::BookingClassContent (const BomKey_T& iKey)
+  BookingClassContent::BookingClassContent (const Key_T& iKey)
     : _key (iKey),
       _nbOfBookings (DEFAULT_CLASS_NB_OF_BOOKINGS),
       _totalNbOfBookings (DEFAULT_CLASS_TOTAL_NB_OF_BOOKINGS),
@@ -51,11 +51,6 @@ namespace stdair {
   void BookingClassContent::setRemainingDemandSD(NbOfBookings_T& iSD) {
     _remainingDemandSD = iSD;
     _remainingProductDemandSD = iSD;
-  }
-
-  // ////////////////////////////////////////////////////////////////////
-  const AirlineCode_T BookingClassContent::getAirlineCode () const {
-    return _key.getAirlineCode();
   }
   
 }

@@ -15,8 +15,8 @@ namespace stdair {
   
   /** Class modeling the characteristics of a demand type. */
   struct DemandCharacteristics {
-  public:
     
+  public:
     // ///////////// Getters /////////// 
     /** Get the arrival pattern. */
     const ContinuousFloatDuration_T& getArrivalPattern() const {
@@ -83,8 +83,7 @@ namespace stdair {
                            const ValueOfTimeContinuousDistribution_T&);
     
     /** Destructor */
-    virtual ~DemandCharacteristics ();
-
+    ~DemandCharacteristics ();
   private:
     /** Default constructor. */
     DemandCharacteristics ();

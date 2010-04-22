@@ -4,9 +4,8 @@
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
-// C
-#include <assert.h>
 // STL
+#include <cassert>
 #include <vector>
 #include <string>
 #include <map>
@@ -18,27 +17,34 @@ namespace stdair {
   
   /** Template class aimed at holding a list and a map of children BOM
       structure of a dedicated type. */
-  template <typename BOM_CONTENT_CHILD>
+  template <typename CONTENT>
   class BomChildrenHolderImp : public BomChildrenHolder {
     friend class FacBomStructure;
 
     /** Retrieve associated bom structure type. */
-    typedef typename BOM_CONTENT_CHILD::BomStructure_T BomStructure_T;
+    typedef typename CONTENT::Structure_T Structure_T;
     
   public:
     /** Define lists of children BOM structures. */
-    typedef std::vector<BomStructure_T*> BomChildrenList_T;
-    typedef std::map<const std::string, BomStructure_T*> BomChildrenMap_T;
+    typedef std::vector<const Structure_T*> BomChildrenList_T;
+    typedef std::map<const std::string, const Structure_T*> BomChildrenMap_T;
 
     /** Define the different types of iterators. */
-    typedef BomIterator_T<BOM_CONTENT_CHILD,
-                          typename BomChildrenList_T::const_iterator> ListIterator_T;
-    typedef BomIterator_T<BOM_CONTENT_CHILD,
-                          typename BomChildrenList_T::const_reverse_iterator> ListReverseIterator_T;
-    typedef BomIterator_T<BOM_CONTENT_CHILD,
-                          typename BomChildrenMap_T::const_iterator> MapIterator_T;
-    typedef BomIterator_T<BOM_CONTENT_CHILD,
-                          typename BomChildrenMap_T::const_reverse_iterator> MapReverseIterator_T;
+    typedef BomIterator_T<CONTENT,
+                          typename BomChildrenList_T::const_iterator
+                          > ListIterator_T;
+
+    typedef BomIterator_T<CONTENT,
+                          typename BomChildrenList_T::const_reverse_iterator
+                          > ListReverseIterator_T;
+
+    typedef BomIterator_T<CONTENT,
+                          typename BomChildrenMap_T::const_iterator
+                          > MapIterator_T;
+
+    typedef BomIterator_T<CONTENT,
+                          typename BomChildrenMap_T::const_reverse_iterator
+                          > MapReverseIterator_T;
 
   public:
     // /////////// Display support methods /////////
@@ -128,7 +134,6 @@ namespace stdair {
     /** Default constructors. */
     BomChildrenHolderImp () { }
     BomChildrenHolderImp (const BomChildrenHolderImp&);
-
     /** Destructor. */
     ~BomChildrenHolderImp() { }
     

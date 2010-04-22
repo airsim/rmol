@@ -29,10 +29,5 @@ namespace stdair {
     oStr << " -- ROOT -- ";
     return oStr.str();
   }
-
-  // ////////////////////////////////////////////////////////////////////
-  const std::string BomRootKey_T::describe() const {
-    return toString();
-  }
   
 }

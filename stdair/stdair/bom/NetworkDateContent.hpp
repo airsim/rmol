@@ -5,7 +5,6 @@
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // STDAIR
-#include <stdair/STDAIR_Types.hpp>
 #include <stdair/bom/BomContent.hpp>
 #include <stdair/bom/NetworkDateKey.hpp>
 
@@ -16,7 +15,14 @@ namespace stdair {
   public :
     // Type definitions
     /** Definition allowing to retrieve the associated BOM key type. */
-    typedef NetworkDateKey_T BomKey_T;
+    typedef NetworkDateKey_T Key_T;
+
+  public:
+    // ////////// Getters ////////////
+    /** Get the network-date key. */
+    const Key_T& getKey() const {
+      return _key;
+    }
 
   public:
     // /////////// Display support methods /////////
@@ -30,35 +36,22 @@ namespace stdair {
 
    /** Get the serialised version of the Business Object. */
     virtual std::string toString() const = 0;
-    
-    /** Get a string describing the whole key (differentiating two objects
-        at any level). */
-    virtual const std::string describeKey() const = 0;
 
     /** Get a string describing the short key (differentiating two objects
         at the same level). */
-    virtual const std::string describeShortKey() const = 0;
-
-  public:
-    // ////////// Getters ////////////
-    /** Get the network-date key. */
-    const BomKey_T& getKey() const {
-      return _key;
-    }
+    const std::string describeShortKey() const { _key.toString(); }
 
   protected:
     /** Default constructors. */
-    NetworkDateContent (const BomKey_T&);
+    NetworkDateContent (const Key_T&);
     NetworkDateContent (const NetworkDateContent&);
-
     /** Destructor. */
     virtual ~NetworkDateContent();
 
   protected:
     // Attributes
     /** The key of both structure and content objects. */
-    BomKey_T _key;
-      
+    Key_T _key;
   };
 
 }

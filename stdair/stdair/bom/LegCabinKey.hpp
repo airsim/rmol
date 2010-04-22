@@ -5,30 +5,20 @@
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // STDAIR
-#include <stdair/STDAIR_Types.hpp>
 #include <stdair/bom/BomKey.hpp>
-#include <stdair/bom/LegDateKey.hpp>
 
 namespace stdair {
   /** Key of leg-cabin. */
   struct LegCabinKey_T : public BomKey_T {
-    friend struct BucketKey_T;
-
-  public:
-    // /////////// Typedefs ////////////
-    /** Definition allowing to retrieve the parent key type. */
-    typedef LegDateKey_T ParentKey_T;
 
   private:
     // /////////// Default constructor //////////
     LegCabinKey_T () { };
-    
   public:
     // /////////// Construction ///////////
     /** Constructors. */
     LegCabinKey_T (const CabinCode_T& iCabinCode);
     LegCabinKey_T (const LegCabinKey_T&);
-
     /** Destructor. */
     ~LegCabinKey_T ();
     
@@ -36,11 +26,6 @@ namespace stdair {
     /** Get the cabin code. */
     const CabinCode_T& getCabinCode () const {
       return _cabinCode;
-    }
-
-    // /////////// Setters /////////////
-    void setParentKey (const ParentKey_T& iParentKey) {
-      _parentKey = iParentKey;
     }
     
     // /////////// Display support methods /////////
@@ -59,14 +44,8 @@ namespace stdair {
        marketing classes for the same leg-cabin. */
     const std::string toString() const;
     
-    /** Display of the key. */
-    const std::string describe() const;
-    
   private:
     // Attributes
-    /** Leg-date Key.*/
-    ParentKey_T _parentKey;
-    
     /** Cabin code. */
     CabinCode_T _cabinCode;
   };

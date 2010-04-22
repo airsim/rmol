@@ -35,9 +35,4 @@ namespace stdair {
     return oStr.str();
   }
 
-  // ////////////////////////////////////////////////////////////////////
-  const std::string YieldStoreKey_T::describe() const {
-    return toString();
-  }
-
 }

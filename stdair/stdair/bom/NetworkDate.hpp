@@ -4,19 +4,15 @@
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
-// STDAIR 
-#include <stdair/bom/Network.hpp>
-#include <stdair/bom/NetworkDateStructure.hpp>
+// STDAIR
+#include <stdair/bom/NetworkDateContent.hpp>
 #include <stdair/bom/NetworkDateTypes.hpp>
 #include <stdair/bom/AirportDateTypes.hpp>
-#include <stdair/bom/BookingClassTypes.hpp>
-#include <stdair/bom/NetworkDateContent.hpp>
 
 namespace stdair {
   // Forward declarations
-  class FacBomContent;
-  struct AirportDateKey_T;
-  struct NetworkDateKey_T;
+  class Network;
+  class AirportDate;
   
   /** Class representing the actual functional/business content for
       a network-date. */
@@ -24,24 +20,33 @@ namespace stdair {
     friend class FacBomContent;
 
   public:
-    // /////////////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////////
     // See the explanations, within the BomRoot class, for all
     // the types which require to be specified below
-    // /////////////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////////
+    /** Definition allowing to retrieve the associated BOM structure type. */
+    typedef NetworkDateStructure_T Structure_T;
+
     /** Definition allowing to retrieve the associated parent
         BOM content type. */
     typedef Network Parent_T;
 
-    /** Definition allowing to retrieve the associated BOM structure type. */
-    typedef NetworkDateStructure_T BomStructure_T;
+    /** Define the list of children holder types. */
+    typedef boost::fusion::map<
+      boost::fusion::pair<AirportDate, AirportDateHolder_T*>
+      > ChildrenHolderMap_T;
+    // //////////////////////////////////////////////////////////////////
 
-    /** Definition allowing to retrieve the associated BOM key type. */
-    typedef NetworkDateKey_T BomKey_T;
+  public:
+    // /////////// Getters /////////////
+    /** Get a list or map of a children type for iteration methods. */
+    AirportDateList_T getAirportDateList () const;
+    AirportDateMap_T getAirportDateMap () const;
 
-    /** Definition allowing to retrieve the associated  BOM content child
-        type. */
-    typedef AirportDate ContentChild_T;
-    // /////////////////////////////////////////////////////////////////////////
+    /** Retrieve, if existing, the AirportDate corresponding to the
+        given airport-code.
+        <br>If not existing, return the NULL pointer. */
+    AirportDate* getAirportDate (const AirportCode_T&) const;
 
   public:
     // /////////// Display support methods /////////
@@ -59,50 +64,22 @@ namespace stdair {
     /** Get a string describing the whole key (differentiating two objects
         at any level). */
     const std::string describeKey() const;
-
-    /** Get a string describing the short key (differentiating two objects
-        at the same level). */
-    const std::string describeShortKey() const;
-
-  public:
-    // /////////// Getters /////////////
-    /** Get a AirportDateList_T for iteration methods. */
-    AirportDateList_T getAirportDateList () const;
-
-    /** Get a AirportDateMap_T for iteration methods. */
-    AirportDateMap_T getAirportDateMap () const;
     
-    /** Retrieve, if existing, the AirportDate corresponding to the
-        given airport-date key.
-        <br>If not existing, return the NULL pointer. */
-    AirportDate* getAirportDate (const AirportDateKey_T&) const;
-
-    /** Retrieve, if existing, the AirportDate corresponding to the
-        given airport-code.
-        <br>If not existing, return the NULL pointer. */
-    AirportDate* getAirportDate (const AirportCode_T&) const;
-    
-  private:
-    /** Retrieve the BOM structure object. */
-    BomStructure_T& getBomStructure () {
-      return _networkDateStructure;
-    }
-
   protected:
     /** Constructors are private so as to force the usage of the Factory
         layer. */
+    /** Constructors. */
+    NetworkDate (const Key_T&, Structure_T&);
+    /** Destructor. */
+    virtual ~NetworkDate();
     /** Default constructors. */
     NetworkDate ();
     NetworkDate (const NetworkDate&);
-    NetworkDate (const BomKey_T&, BomStructure_T&);
-
-    /** Destructor. */
-    virtual ~NetworkDate();
 
   protected:
     // Attributes
     /** Reference structure. */
-    BomStructure_T& _networkDateStructure;
+    Structure_T& _structure;
 
   };
 

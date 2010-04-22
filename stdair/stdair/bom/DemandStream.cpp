@@ -3,27 +3,16 @@
 // //////////////////////////////////////////////////////////////////////
 // STL
 #include <cassert>
-#include <iosfwd>
-#include <ostream>
-#include <sstream>
-#include <cmath>
-// Boost
-#include <boost/math/distributions/normal.hpp>
 // StdAir
 #include <stdair/basic/BasConst_General.hpp>
-#include <stdair/basic/DemandCharacteristics.hpp>
-#include <stdair/basic/RandomGeneration.hpp>
-#include <stdair/basic/RandomGenerationContext.hpp>
-#include <stdair/bom/BookingRequestStruct.hpp>
 #include <stdair/bom/DemandStream.hpp>
-#include <stdair/service/Logger.hpp>
 
 
 namespace stdair {
 
-  // //////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////
   DemandStream::
-  DemandStream (const DemandStreamKey_T& iKey,
+  DemandStream (const Key_T& iKey,
                 const ArrivalPatternCumulativeDistribution_T& iArrivalPattern,
                 const POSProbabilityMassFunction_T& iPOSProbMass,
                 const ChannelProbabilityMassFunction_T& iChannelProbMass,
@@ -37,7 +26,7 @@ namespace stdair {
                 const RandomSeed_T& iNumberOfRequestsSeed,
                 const RandomSeed_T& iRequestDateTimeSeed,
                 const RandomSeed_T& iDemandCharacteristicsSeed,
-                BomStructure_T& ioDemandStreamStructure)
+                Structure_T& ioDemandStreamStructure)
     : DemandStreamContent (iKey, iArrivalPattern, iPOSProbMass,
                            iChannelProbMass, iTripTypeProbMass,
                            iStayDurationProbMass, iFrequentFlyerProbMass,
@@ -46,10 +35,10 @@ namespace stdair {
                            iValueOfTimeContinuousDistribution,
                            iDemandDistribution, iNumberOfRequestsSeed,
                            iRequestDateTimeSeed, iDemandCharacteristicsSeed),
-      _demandStreamStructure (ioDemandStreamStructure) {
+      _structure (ioDemandStreamStructure) {
   }
 
-  // //////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////
   DemandStream::~DemandStream () {
   }
 }

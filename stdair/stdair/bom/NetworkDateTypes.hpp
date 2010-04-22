@@ -13,19 +13,17 @@
 namespace stdair {
 
   // Forward declarations.
-  template <typename BOM_CONTENT> class NetworkDateStructure;
+  template <typename CONTENT> class Structure;
+  template <typename CONTENT> class BomChildrenHolderImp;
   template <typename BOM> struct BomList_T;
   template <typename BOM> struct BomMap_T;
   class NetworkDate;
   
   /** Define the NetworkDate structure. */
-  typedef NetworkDateStructure<NetworkDate> NetworkDateStructure_T;
+  typedef Structure<NetworkDate> NetworkDateStructure_T;
   
-  /** Define the NetworkDate structure list. */
-  typedef std::vector<NetworkDateStructure_T*> NetworkDateStructureList_T;
-
-  /** Define the NetworkDate structure map. */
-  typedef std::map<const std::string, NetworkDateStructure_T*> NetworkDateStructureMap_T;
+  /** Define the NetworkDate holder. */
+  typedef BomChildrenHolderImp<NetworkDate> NetworkDateHolder_T;
 
   /** Define the NetworkDate list. */
   typedef BomList_T<NetworkDate> NetworkDateList_T;

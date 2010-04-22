@@ -15,12 +15,12 @@ namespace stdair {
   public:
     // Type definitions.
     /** Definition allowing to retrieve the associated BOM key type. */
-    typedef BookingClassKey_T BomKey_T;
+    typedef BookingClassKey_T Key_T;
 
   public:
     // /////////// Getters ////////////
     /** Get the booking class key. */
-    const BomKey_T& getKey() const {
+    const Key_T& getKey() const {
       return _key;
     }
     
@@ -142,9 +142,6 @@ namespace stdair {
       return _remainingProductDemandSD;
     }
 
-    /** Get the airline code. */
-    const AirlineCode_T getAirlineCode () const;
-
   public:
     // /////////// Setters ////////////
     /** Set the booking limit. */
@@ -230,23 +227,18 @@ namespace stdair {
 
    /** Get the serialised version of the Business Object. */
     virtual std::string toString() const = 0;
-    
-    /** Get a string describing the whole key (differentiating two objects
-        at any level). */
-    virtual const std::string describeKey() const = 0;
 
     /** Get a string describing the short key (differentiating two objects
         at the same level). */
-    virtual const std::string describeShortKey() const = 0;
+    const std::string describeShortKey() const { return _key.toString(); }
 
     
   protected:
     /** Default constructors. */
-    BookingClassContent (const BomKey_T&);
+    BookingClassContent (const Key_T&);
     BookingClassContent (const BookingClassContent&);
-
     /** Destructor. */
-    virtual ~BookingClassContent();
+    ~BookingClassContent();
 
   public:
     // for AIRINV Test
@@ -267,7 +259,7 @@ namespace stdair {
   protected:
     // Attributes
     /** The key of both structure and content objects. */
-    BomKey_T _key;
+    Key_T _key;
           
     /** Number of current bookings in the booking. */
     NbOfBookings_T _nbOfBookings;

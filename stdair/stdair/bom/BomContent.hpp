@@ -7,6 +7,10 @@
 // STL
 #include <iosfwd>
 #include <string>
+// BOOST Fusion
+#include <boost/fusion/include/map.hpp>
+// STDAIR
+#include <stdair/STDAIR_Types.hpp>
 
 namespace stdair {
 
@@ -25,14 +29,6 @@ namespace stdair {
 
    /** Get the serialised version of the Business Object. */
     virtual std::string toString() const = 0;
-    
-    /** Get a string describing the whole key (differentiating two objects
-        at any level). */
-    virtual const std::string describeKey() const = 0;
-
-    /** Get a string describing the short key (differentiating two objects
-        at the same level). */
-    virtual const std::string describeShortKey() const = 0;
 
     
   protected:

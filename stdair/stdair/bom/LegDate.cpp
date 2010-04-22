@@ -1,20 +1,16 @@
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
-// C
-#include <assert.h>
+// STL
+#include <cassert>
 // STDAIR
-#include <stdair/bom/LegDateStructure.hpp>
-#include <stdair/bom/LegDate.hpp>
-#include <stdair/bom/LegCabin.hpp>
-#include <stdair/bom/BomList.hpp>
-#include <stdair/bom/BomMap.hpp>
+#include <stdair/bom/BomSource.hpp>
 
 namespace stdair {
 
   // ////////////////////////////////////////////////////////////////////
-  LegDate::LegDate (const BomKey_T& iKey, BomStructure_T& ioLegStructure)
-    : LegDateContent (iKey), _legDateStructure (ioLegStructure) {
+  LegDate::LegDate (const Key_T& iKey, Structure_T& ioLegStructure)
+    : LegDateContent (iKey), _structure (ioLegStructure) {
   }
   
   // ////////////////////////////////////////////////////////////////////
@@ -45,27 +41,24 @@ namespace stdair {
     
   // ////////////////////////////////////////////////////////////////////
   const std::string LegDate::describeKey() const {
-    return _key.describe();
-  }
-
-  // ////////////////////////////////////////////////////////////////////
-  const std::string LegDate::describeShortKey() const {
-    return _key.toString();
+    std::ostringstream oStr;
+    oStr << _structure.describeParentKey() << ", " << describeShortKey();
+    return oStr.str();
   }
 
   // ////////////////////////////////////////////////////////////////////
   LegCabinList_T LegDate::getLegCabinList () const {
-    return _legDateStructure.getChildrenHolder();
+    return _structure.getChildrenHolder<LegCabin>();
   }
 
   // ////////////////////////////////////////////////////////////////////
   LegCabinMap_T LegDate::getLegCabinMap () const {
-    return _legDateStructure.getChildrenHolder();
+    return _structure.getChildrenHolder<LegCabin>();
   }
 
   // ////////////////////////////////////////////////////////////////////
-  LegCabin* LegDate::getLegCabin (const LegCabinKey_T& iKey) const {
-    return _legDateStructure.getContentChild (iKey);
+  LegCabin* LegDate::getLegCabin (const CabinCode_T& iCabinCode) const {
+    return _structure.getChildPtr<LegCabin> (iCabinCode);
   }
   
 }

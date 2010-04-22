@@ -4,79 +4,56 @@
 // STL
 #include <cassert>
 // STDAIR
-#include <stdair/bom/NetworkDateStructure.hpp>
-#include <stdair/bom/NetworkDate.hpp>
-#include <stdair/bom/AirportDate.hpp>
-#include <stdair/bom/BomList.hpp>
-#include <stdair/bom/BomMap.hpp>
+#include <stdair/bom/BomSource.hpp>
 
 namespace stdair {
 
   // ////////////////////////////////////////////////////////////////////
-  NetworkDate::NetworkDate (const BomKey_T& iKey,
-                            BomStructure_T& ioNetworkDateStructure)
-    : NetworkDateContent (iKey), _networkDateStructure (ioNetworkDateStructure) {
+  NetworkDate::NetworkDate (const Key_T& iKey,
+                            Structure_T& ioNetworkDateStructure)
+    : NetworkDateContent (iKey), _structure (ioNetworkDateStructure) {
   }
 
   // ////////////////////////////////////////////////////////////////////
   NetworkDate::~NetworkDate () {
   }
 
-  // //////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////
   void NetworkDate::toStream (std::ostream& ioOut) const {
     ioOut << toString() << std::endl;
   }
 
-  // //////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////
   void NetworkDate::fromStream (std::istream& ioIn) {
   }
 
-  // //////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////
   std::string NetworkDate::toString() const {
     std::ostringstream oStr;
     oStr << _key.toString();
     return oStr.str();
   }
     
-  // //////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////
   const std::string NetworkDate::describeKey() const {
-    return _key.describe();
+    std::ostringstream oStr;
+    oStr << _structure.describeParentKey() << ", " << describeShortKey();
+    return oStr.str();
   }
 
-  // //////////////////////////////////////////////////////////////////////
-  const std::string NetworkDate::describeShortKey() const {
-    return _key.toString();
-  }
-
-  // //////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////
   AirportDateList_T NetworkDate::getAirportDateList () const {
-    return _networkDateStructure.getChildrenHolder();
+    return _structure.getChildrenHolder<AirportDate>();
   }
 
-  // //////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////
   AirportDateMap_T NetworkDate::getAirportDateMap () const {
-    return _networkDateStructure.getChildrenHolder();
-  }
-  
-  // //////////////////////////////////////////////////////////////////////
-  AirportDate* NetworkDate::
-  getAirportDate (const AirportDateKey_T& iKey) const {
-    return _networkDateStructure.getContentChild (iKey);
+    return _structure.getChildrenHolder<AirportDate>();
   }
 
-  // //////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////
   AirportDate* NetworkDate::getAirportDate (const AirportCode_T& iCode) const {
-    AirportDate* oAirportDate_ptr = NULL;
-    
-    AirportDateMap_T lAirportDateMap = getAirportDateMap ();
-
-    AirportDateMap_T::iterator itAirportDate = lAirportDateMap.find (iCode);
-
-    if (itAirportDate != lAirportDateMap.end()) {
-      oAirportDate_ptr = itAirportDate->second;
-    }
-    
-    return oAirportDate_ptr;
+    return _structure.getChildPtr<AirportDate> (iCode);
   }
   
 }

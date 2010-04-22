@@ -10,18 +10,18 @@
 namespace stdair {
   
   // Forward declarations
-  template <typename BOM_CONTENT, typename ITERATOR> struct BomIterator_T;
-  template <typename BOM_CONTENT> class BomChildrenHolderImp;
+  template <typename CONTENT, typename ITERATOR> struct BomIterator_T;
+  template <typename CONTENT> class BomChildrenHolderImp;
   
   /** Structure which handles the iterators for a bom list. */
   template <typename BOM> struct BomList_T {
 
   public:
-    /** Definition that allows to retrieve the corresponding BomStructure
+    /** Definition that allows to retrieve the corresponding Structure
         associated to the BOM. */
-    typedef typename BOM::BomStructure_T BomStructure_T;
+    typedef typename BOM::Structure_T Structure_T;
     /** Define the list of bom objects. */
-    typedef std::vector<BomStructure_T*> BomStructureList_T;
+    typedef std::vector<const Structure_T*> StructureList_T;
     /** Define the bom holder. */
     typedef BomChildrenHolderImp<BOM> BomHolder_T;
 
@@ -30,8 +30,8 @@ namespace stdair {
     // the iterator types specified below
     // /////////////////////////////////////////////////////////////////////////
     /** Define the bom list iterators. */
-    typedef BomIterator_T<BOM, typename BomStructureList_T::const_iterator> iterator;
-    typedef BomIterator_T<BOM, typename BomStructureList_T::const_reverse_iterator> reverse_iterator;
+    typedef BomIterator_T<BOM, typename StructureList_T::const_iterator> iterator;
+    typedef BomIterator_T<BOM, typename StructureList_T::const_reverse_iterator> reverse_iterator;
     // /////////////////////////////////////////////////////////////////////////
        
   public:

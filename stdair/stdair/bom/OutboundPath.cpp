@@ -4,19 +4,15 @@
 // STL
 #include <cassert>
 // STDAIR
-#include <stdair/bom/OutboundPathStructure.hpp>
-#include <stdair/bom/OutboundPath.hpp>
-#include <stdair/bom/SegmentDate.hpp>
-#include <stdair/bom/BomList.hpp>
-#include <stdair/bom/BomMap.hpp>
+#include <stdair/bom/BomSource.hpp>
 
 namespace stdair {
 
   // ////////////////////////////////////////////////////////////////////
-  OutboundPath::OutboundPath (const BomKey_T& iKey,
-                              BomStructure_T& ioOutboundPathStructure)
+  OutboundPath::OutboundPath (const Key_T& iKey,
+                              Structure_T& ioOutboundPathStructure)
     : OutboundPathContent (iKey),
-      _outboundPathStructure (ioOutboundPathStructure) {
+      _structure (ioOutboundPathStructure) {
   }
   
   // ////////////////////////////////////////////////////////////////////
@@ -47,22 +43,19 @@ namespace stdair {
     
   // ////////////////////////////////////////////////////////////////////
   const std::string OutboundPath::describeKey() const {
-    return _key.describe();
-  }
-
-  // ////////////////////////////////////////////////////////////////////
-  const std::string OutboundPath::describeShortKey() const {
-    return _key.toString();
+    std::ostringstream oStr;
+    oStr << _structure.describeParentKey() << ", " << describeShortKey();
+    return oStr.str();
   }
 
   // ////////////////////////////////////////////////////////////////////
   SegmentDateList_T OutboundPath::getSegmentDateList () const {
-    return _outboundPathStructure.getSegmentDateHolder();
+    return _structure.getChildrenHolder<SegmentDate>();
   }
 
   // ////////////////////////////////////////////////////////////////////
   SegmentDateMap_T OutboundPath::getSegmentDateMap () const {
-    return _outboundPathStructure.getSegmentDateHolder();
+    return _structure.getChildrenHolder<SegmentDate>();
   }
 
   // ////////////////////////////////////////////////////////////////////
@@ -136,13 +129,18 @@ namespace stdair {
     // Retrieve the off point description (reference date + airport code).
     const AirportCode_T& lDestination = getDestination();
     const Date_T& lReferenceDate = getOffDate();
-    
-    const AirportDateKey_T lAirportDateKey (lDestination);
-    const NetworkDateKey_T lNetworkDateKey (lReferenceDate);
+
     // Retrieve the destination airport corresponding to the destination
     // reference date and airport code.
-    oAirportDate_ptr = _outboundPathStructure.getAirportDate (lAirportDateKey,
-                                                              lNetworkDateKey);
+    // Get the Network parent.
+    const Network& lNetwork = 
+      _structure.getParent().getParent().getParent().getContent();
+    NetworkDate* lNetworkDate_ptr =
+      lNetwork.getNetworkDate (lReferenceDate);
+    if (lNetworkDate_ptr != NULL) {
+      oAirportDate_ptr =
+        lNetworkDate_ptr->getAirportDate (lDestination);
+    }
       
     return oAirportDate_ptr;
   }
@@ -184,7 +182,7 @@ namespace stdair {
     return oAirlineFlown;
   }
 
-  // //////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////
   const Duration_T OutboundPath::calculateElapsedTimeFromRouting () const {
     const SegmentDateList_T& lAllSegmentList = getSegmentDateList();
     SegmentDateList_T::iterator itSegmentDate = lAllSegmentList.begin();
@@ -229,6 +227,19 @@ namespace stdair {
     return oElapsedTime;
   }
 
+  // ////////////////////////////////////////////////////////////////////
+  void OutboundPath::
+  updateAfterAddingSegmentDate (const SegmentDate& iSegmentDate) {
+      // Increment the total flight time of the outbound path
+      const Duration_T lElapsed = iSegmentDate.getElapsedTime();
+      incrementTotalFlightTime (lElapsed);
+      // Increment the flight path code
+      std::ostringstream ostr;
+      FlightPathCode_T lPreviousFPCode = getCurrentFlightPathCode();
+      ostr << lPreviousFPCode
+           << iSegmentDate.getFlightNumber();
+      setFlightPathCode(ostr.str());
+  }
   
 }
 

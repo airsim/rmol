@@ -31,11 +31,4 @@ namespace stdair {
     return oStr.str();
   }
 
-  // ////////////////////////////////////////////////////////////////////
-  const std::string BookingClassKey_T::describe() const {
-    std::ostringstream oStr;
-    oStr << _parentKey.describe() << ", " << toString();
-    return oStr.str();
-  }
-
 }

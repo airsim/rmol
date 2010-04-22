@@ -12,19 +12,17 @@
 namespace stdair {
 
   // Forward declarations.
-  template <typename BOM_CONTENT> class AirlineFeatureStructure;
+  template <typename CONTENT> class Structure;
+  template <typename CONTENT> class BomChildrenHolderImp;
   template <typename BOM> struct BomList_T;
   template <typename BOM> struct BomMap_T;
   class AirlineFeature;
   
   /** Define the airline feature structure. */
-  typedef AirlineFeatureStructure<AirlineFeature> AirlineFeatureStructure_T;
-  
-  /** Define the airline feature structure list. */
-  typedef std::vector<AirlineFeatureStructure_T*> AirlineFeatureStructureList_T;
+  typedef Structure<AirlineFeature> AirlineFeatureStructure_T;
 
-  /** Define the airline feature structure map. */
-  typedef std::map<const std::string, AirlineFeatureStructure_T*> AirlineFeatureStructureMap_T;
+  /** Define the airline feature holder. */
+  typedef BomChildrenHolderImp<AirlineFeature> AirlineFeatureHolder_T;
 
   /** Define the airline feature list. */
   typedef BomList_T<AirlineFeature> AirlineFeatureList_T;

@@ -4,48 +4,33 @@
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
-// Boost
-#include <boost/shared_ptr.hpp>
-// STL
-#include <iosfwd>
 // STDAIR
-#include <stdair/STDAIR_Types.hpp>
-#include <stdair/bom/BomRoot.hpp>
-#include <stdair/bom/DemandStreamStructure.hpp>
 #include <stdair/bom/DemandStreamContent.hpp>
-#include <stdair/bom/BomRootTypes.hpp>
 #include <stdair/bom/DemandStreamTypes.hpp>
 
 namespace stdair {
-
-  // Forward declarations
-  struct DemandStreamKey_T;
+  // Forward declarations.
+  class BomRoot;
   
   /** Class modeling a demand stream. */
   class DemandStream  : public DemandStreamContent {
     friend class FacBomContent;
     
   public:
-    // //////////// Type definitions //////////////
+    // //////////////////////////////////////////////////////////////////
+    // See the explanations, within the BomRoot class, for all
+    // the types which require to be specified below
+    // //////////////////////////////////////////////////////////////////
+    /** Definition allowing to retrieve the associated BOM structure type. */
+    typedef DemandStreamStructure_T Structure_T;
+
     /** Definition allowing to retrieve the associated parent
         BOM content type. */
     typedef BomRoot Parent_T;
 
-    /** Definition allowing to retrieve the associated BOM structure type. */
-    typedef DemandStreamStructure_T BomStructure_T;
-
-    /** Definition allowing to retrieve the associated BOM key type. */
-    typedef DemandStreamKey_T BomKey_T;
-
-    /** Definition allowing to retrieve the associated 
-         BOM content child type. */
-    typedef DemandStream ContentChild_T;
-
-  private:
-    /** Retrieve the BOM structure object. */
-    BomStructure_T& getBomStructure () {
-      return _demandStreamStructure;
-    }
+    /** Define the list of children holder types. */
+    typedef boost::fusion::map< > ChildrenHolderMap_T;
+    // //////////////////////////////////////////////////////////////////
     
   public:
     // /////////// Display support methods /////////
@@ -62,17 +47,12 @@ namespace stdair {
     
     /** Get a string describing the whole key (differentiating two objects
         at any level). */
-    const std::string describeKey() const { return std::string (""); }
-
-    /** Get a string describing the short key (differentiating two objects
-        at the same level). */
-    const std::string describeShortKey() const { return std::string (""); }
-
+    const std::string describeKey() const { return _key.toString(); }
 
   protected:
     // ////////// Constructors and destructors /////////
     /** Constructor by default */
-    DemandStream (const BomKey_T&,
+    DemandStream (const Key_T&,
                   const ArrivalPatternCumulativeDistribution_T&,
                   const POSProbabilityMassFunction_T&,
                   const ChannelProbabilityMassFunction_T&,
@@ -86,12 +66,10 @@ namespace stdair {
                   const RandomSeed_T& iNumberOfRequestsSeed,
                   const RandomSeed_T& iRequestDateTimeSeed,
                   const RandomSeed_T& iDemandCharacteristicsSeed,
-                  BomStructure_T&);
+                  Structure_T&);
     /** Default constructors. */
     DemandStream ();
     DemandStream (const DemandStream&);
-    /** Initialization. */
-    void init();
     /** Destructor. */
     ~DemandStream ();
 
@@ -99,7 +77,7 @@ namespace stdair {
   protected:
     // ////////// Attributes //////////
     /** Reference structure. */
-    BomStructure_T& _demandStreamStructure;
+    Structure_T& _structure;
   };
 
 }

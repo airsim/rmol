@@ -12,19 +12,17 @@
 namespace stdair {
 
   // Forward declarations.
-  template <typename BOM_CONTENT> class BookingClassStructure;
+  template <typename CONTENT> class Structure;
+  template <typename CONTENT> class BomChildrenHolderImp;
   template <typename BOM> struct BomList_T;
   template <typename BOM> struct BomMap_T;
   class BookingClass;
   
   /** Define the booking class structure. */
-  typedef BookingClassStructure<BookingClass> BookingClassStructure_T;
+  typedef Structure<BookingClass> BookingClassStructure_T;
   
-  /** Define the booking class structure list. */
-  typedef std::vector<BookingClassStructure_T*> BookingClassStructureList_T;
-
-  /** Define the booking class structure map. */
-  typedef std::map<const std::string, BookingClassStructure_T*> BookingClassStructureMap_T;
+  /** Define the booking class holder. */
+  typedef BomChildrenHolderImp<BookingClass> BookingClassHolder_T;
 
   /** Define the booking class list. */
   typedef BomList_T<BookingClass> BookingClassList_T;

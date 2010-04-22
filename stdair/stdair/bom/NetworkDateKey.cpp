@@ -40,12 +40,5 @@ namespace stdair {
     oStr << _referenceDate;
     return oStr.str();
   }
-  
-  // ////////////////////////////////////////////////////////////////////
-  const std::string NetworkDateKey_T::describe() const {
-    std::ostringstream oStr;
-    oStr << _parentKey.describe() << ", " << toString();
-    return oStr.str();
-  }
 
 }

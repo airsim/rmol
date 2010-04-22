@@ -5,18 +5,11 @@
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // STDAIR
-#include <stdair/STDAIR_Types.hpp>
 #include <stdair/bom/BomKey.hpp>
-#include <stdair/bom/BomRootKey.hpp>
 
 namespace stdair {
   /** Key of inventory. */
   struct InventoryKey_T : public BomKey_T {
-    friend struct FlightDateKey_T;
-  public:
-    // /////////// Typedefs ////////////
-    /** Definition allowing to retrieve the parent key type. */
-    typedef BomRootKey_T ParentKey_T;
     
   private:
     // /////////// Default constructor //////////
@@ -51,13 +44,6 @@ namespace stdair {
        <br>For instance, "H" and "K" allow to differentiate among two
        marketing classes for the same segment-date. */
     const std::string toString() const;
-
-    /** Display of the key. */
-    const std::string describe() const;
-
-    // /////////// Setters /////////////
-    /** Set the parent key. */
-    void setParentKey (const ParentKey_T& iParentKey) const { }
 
   private:
     // Attributes

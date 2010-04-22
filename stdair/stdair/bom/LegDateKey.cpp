@@ -12,7 +12,7 @@ namespace stdair {
   }
   // ////////////////////////////////////////////////////////////////////
   LegDateKey_T::LegDateKey_T (const LegDateKey_T& iKey)
-    : _parentKey (iKey._parentKey), _boardingPoint (iKey._boardingPoint) {
+    : _boardingPoint (iKey._boardingPoint) {
   }
 
   // ////////////////////////////////////////////////////////////////////
@@ -32,13 +32,6 @@ namespace stdair {
   const std::string LegDateKey_T::toString() const {
     std::ostringstream oStr;
     oStr << _boardingPoint;
-    return oStr.str();
-  }
-
-  // ////////////////////////////////////////////////////////////////////
-  const std::string LegDateKey_T::describe() const {
-    std::ostringstream oStr;
-    oStr << _parentKey.describe() << ", " << toString();
     return oStr.str();
   }
 

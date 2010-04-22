@@ -5,18 +5,14 @@
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // STDAIR 
-#include <stdair/bom/AirportDate.hpp>
-#include <stdair/bom/OutboundPathStructure.hpp>
 #include <stdair/bom/OutboundPathContent.hpp>
-#include <stdair/bom/AirportDateTypes.hpp>
 #include <stdair/bom/OutboundPathTypes.hpp>
 #include <stdair/bom/SegmentDateTypes.hpp>
 
 namespace stdair {
   // Forward declarations
-  class FacBomContent;
+  class AirportDate;
   class SegmentDate;
-  struct OutboundPathKey_T;
 
   /** Class representing the actual functional/business content for a
       outbound path. */
@@ -24,30 +20,27 @@ namespace stdair {
     friend class FacBomContent;
 
   public:
-    // Type definitions
+    // //////////////////////////////////////////////////////////////////
+    // See the explanations, within the BomRoot class, for all
+    // the types which require to be specified below
+    // //////////////////////////////////////////////////////////////////
+    /** Definition allowing to retrieve the associated BOM structure type. */
+    typedef OutboundPathStructure_T Structure_T;
+
     /** Definition allowing to retrieve the associated parent
         BOM content type. */
     typedef AirportDate Parent_T;
 
-    /** Definition allowing to retrieve the associated BOM structure type. */
-    typedef OutboundPathStructure_T BomStructure_T;
-
-    /** Definition allowing to retrieve the associated BOM key type. */
-    typedef OutboundPathKey_T BomKey_T;
-
-    /** Definition allowing to retrieve the associated 
-         BOM content child type. */
-    typedef OutboundPath ContentChild_T;
-
-    /** Definition allowing to retrieve the specific SegmentDate type. */
-    typedef SegmentDate SegmentDateContent_T;
+    /** Define the list of children holder types. */
+    typedef boost::fusion::map<
+      boost::fusion::pair<SegmentDate, SegmentDateHolder_T*>
+      > ChildrenHolderMap_T;
+    // //////////////////////////////////////////////////////////////////
 
   public:
     // /////////// Getters /////////////
-    /** Get a SegmentDateList_T for iteration methods. */
+    /** Get a list or map of a children type for iteration methods. */
     SegmentDateList_T getSegmentDateList () const;
-
-    /** Get a SegmentDateMap_T for iteration methods. */
     SegmentDateMap_T getSegmentDateMap () const;
 
     /** Get the off date. */
@@ -60,31 +53,6 @@ namespace stdair {
     /** Get the first SegmentDate (constant) object of the list.
         <br>Return a NULL pointer if the list is empty. */
     const SegmentDate* getFirstSegmentDate () const;
-
-    
-  public:
-    // ///////// Setters //////////      
-
-  public:
-    // /////////// Display support methods /////////
-    /** Dump a Business Object into an output stream.
-        @param ostream& the output stream. */
-    void toStream (std::ostream& ioOut) const;
-
-    /** Read a Business Object from an input stream.
-        @param istream& the input stream. */
-    void fromStream (std::istream& ioIn);
-
-   /** Get the serialised version of the Business Object. */
-    std::string toString() const;
-    
-    /** Get a string describing the whole key (differentiating two objects
-        at any level). */
-    const std::string describeKey() const;
-
-    /** Get a string describing the short key (differentiating two objects
-        at the same level). */
-    const std::string describeShortKey() const;
 
   private:
     // ////////////// Business methods //////////////
@@ -131,34 +99,46 @@ namespace stdair {
         stop-over, and the elapsed time of the outbound-path is equal to the
         elapsed time of the single routing segment. */
     const Duration_T calculateElapsedTimeFromRouting ()const;
-
-
-  public:
-    // ////////////// Business methods //////////////
+    
     /** Update Airline Code. */
     void updateAirlineCode ();
+
+    /** Update the total flight time and the flight path code after
+        adding a segment-date. */
+    void updateAfterAddingSegmentDate (const SegmentDate&);
+
+  public:
+    // /////////// Display support methods /////////
+    /** Dump a Business Object into an output stream.
+        @param ostream& the output stream. */
+    void toStream (std::ostream& ioOut) const;
+
+    /** Read a Business Object from an input stream.
+        @param istream& the input stream. */
+    void fromStream (std::istream& ioIn);
+
+   /** Get the serialised version of the Business Object. */
+    std::string toString() const;
     
-  private:
-    /** Retrieve the BOM structure object. */
-    BomStructure_T& getBomStructure () {
-      return _outboundPathStructure;
-    }
+    /** Get a string describing the whole key (differentiating two objects
+        at any level). */
+    const std::string describeKey() const;
 
   protected:
     /** Constructors are private so as to force the usage of the Factory
         layer. */
+    /** Constructors. */
+    OutboundPath (const Key_T&, Structure_T&);
+    /** Destructor. */
+    ~OutboundPath();
     /** Default constructors. */
     OutboundPath ();
     OutboundPath (const OutboundPath&);
-    OutboundPath (const BomKey_T&, BomStructure_T&);
-
-    /** Destructor. */
-    virtual ~OutboundPath();
 
   protected:
     // Attributes
     /** Reference structure. */
-    BomStructure_T& _outboundPathStructure;
+    Structure_T& _structure;
   };
 
 }

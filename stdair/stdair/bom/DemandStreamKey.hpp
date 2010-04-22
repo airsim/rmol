@@ -5,19 +5,12 @@
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // StdAir
-#include <stdair/STDAIR_Types.hpp>
 #include <stdair/bom/BomKey.hpp>
-#include <stdair/bom/BomRootKey.hpp>
 
 namespace stdair {
 
   /** Key of demand-stream. */
   struct DemandStreamKey_T : public BomKey_T {
-  public:
-    // /////////// Typedefs ////////////
-    /** Definition allowing to retrieve the parent key type. */
-    typedef BomRootKey_T ParentKey_T;
-    
   public:
     // /////////// Construction ///////////
     /** Constructors. */
@@ -73,9 +66,6 @@ namespace stdair {
        <br>For instance, "H" and "K" allow to differentiate among two
        marketing classes for the same segment-stream. */
     const std::string toString() const;
-    
-    /** Display of the key. */
-    const std::string describe() const;
     
   private:
     // Attributes

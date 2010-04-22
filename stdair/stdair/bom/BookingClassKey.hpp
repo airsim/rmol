@@ -5,24 +5,16 @@
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // STDAIR
-#include <stdair/STDAIR_Types.hpp>
 #include <stdair/bom/BomKey.hpp>
-#include <stdair/bom/SegmentCabinKey.hpp>
 
 namespace stdair {
   /** Key of booking-class. */
   struct BookingClassKey_T : public BomKey_T {
     
   public:
-    // /////////// Typedefs ////////////
-    /** Definition allowing to retrieve the parent key type. */
-    typedef SegmentCabinKey_T ParentKey_T;
-    
-  public:
     // /////////// Construction ///////////
     /** Constructor. */
     BookingClassKey_T (const ClassCode_T& iClassCode);
-
     /** Destructor. */
     ~BookingClassKey_T ();
     
@@ -30,16 +22,6 @@ namespace stdair {
     /** Get the class code. */
     const ClassCode_T& getClassCode () const {
       return _classCode;
-    }
-
-    /** Get the airline code. */
-    const AirlineCode_T getAirlineCode () const {
-      return _parentKey.getAirlineCode();
-    }
-    
-    // /////////// Setters /////////////
-    void setParentKey (const ParentKey_T& iParentKey) {
-      _parentKey = iParentKey;
     }
     
     // /////////// Display support methods /////////
@@ -58,14 +40,8 @@ namespace stdair {
        marketing classes for the same segment-cabin. */
     const std::string toString() const;
     
-    /** Display of the key. */
-    const std::string describe() const;
-    
   private:
     // Attributes
-    /** Segment-cabin key.*/
-    ParentKey_T _parentKey;
-    
     /** Cabin code. */
     ClassCode_T _classCode;
   };

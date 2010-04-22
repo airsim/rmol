@@ -40,15 +40,4 @@ namespace stdair {
     return oStr.str();
   }
   
-  // ////////////////////////////////////////////////////////////////////
-  const std::string AirportDateKey_T::describe() const {
-    std::ostringstream oStr;
-    oStr << _parentKey.describe() << ", " << toString();
-    return oStr.str();
-  }
-
-  // //////////////////////////////////////////////////////////////////////
-  const Date_T& AirportDateKey_T::getBoardingDate() const {
-    return _parentKey.getReferenceDate();
-  }
 }

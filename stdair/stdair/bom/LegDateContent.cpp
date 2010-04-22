@@ -10,7 +10,7 @@
 namespace stdair {
 
   // ////////////////////////////////////////////////////////////////////
-  LegDateContent::LegDateContent (const BomKey_T& iKey) \
+  LegDateContent::LegDateContent (const Key_T& iKey) \
     : _key (iKey),
       _distance (DEFAULT_DISTANCE_VALUE),
       _capacity (DEFAULT_CABIN_CAPACITY),
@@ -22,7 +22,7 @@ namespace stdair {
   LegDateContent::~LegDateContent () {
   }
 
-  // //////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////
   const Duration_T LegDateContent::getTimeOffSet() const {
     // TimeOffSet = (OffTime - BoardingTime) + (OffDate - BoardingDate) * 24
     //              - ElapsedTime
@@ -33,7 +33,7 @@ namespace stdair {
     return oTimeOffSet;
   }
   
-  // //////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////
   void LegDateContent::setElapsedTime(const Duration_T& iElapsedTime) {
     // Set Elapsed time
     _elapsedTime = iElapsedTime;
@@ -41,7 +41,7 @@ namespace stdair {
     updateDistanceFromElapsedTime ();
   }
 
-  // //////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////
   void LegDateContent::updateDistanceFromElapsedTime () {
     const double lElapseInHours =
       static_cast<const double>(_elapsedTime.hours());

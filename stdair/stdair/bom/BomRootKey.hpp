@@ -5,7 +5,6 @@
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // STDAIR
-#include <stdair/STDAIR_Types.hpp>
 #include <stdair/bom/BomKey.hpp>
 
 namespace stdair {
@@ -38,8 +37,6 @@ namespace stdair {
     /** Display of the key. */
     const std::string describe() const;
     
-  private:
-    // Attributes
   };
 
 }

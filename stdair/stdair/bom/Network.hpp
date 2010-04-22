@@ -5,17 +5,14 @@
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // STDAIR 
-#include <stdair/bom/BomRoot.hpp>
-#include <stdair/bom/NetworkStructure.hpp>
+#include <stdair/bom/NetworkContent.hpp>
 #include <stdair/bom/NetworkTypes.hpp>
 #include <stdair/bom/NetworkDateTypes.hpp>
-#include <stdair/bom/NetworkContent.hpp>
 
 namespace stdair {
   // Forward declarations
-  class FacBomContent;
-  struct NetworkDateKey_T;
-  struct NetworkKey_T;
+  class BomRoot;
+  class NetworkDate;
   
   /** Class representing the actual functional/business content for
       a network. */
@@ -23,24 +20,33 @@ namespace stdair {
     friend class FacBomContent;
 
   public:
-    // /////////////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////////
     // See the explanations, within the BomRoot class, for all
     // the types which require to be specified below
-    // /////////////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////////
+    /** Definition allowing to retrieve the associated BOM structure type. */
+    typedef NetworkStructure_T Structure_T;
+    
     /** Definition allowing to retrieve the associated parent
         BOM content type. */
     typedef BomRoot Parent_T;
 
-    /** Definition allowing to retrieve the associated BOM structure type. */
-    typedef NetworkStructure_T BomStructure_T;
+    /** Define the list of children holder types. */
+    typedef boost::fusion::map<
+      boost::fusion::pair<NetworkDate, NetworkDateHolder_T*>
+      > ChildrenHolderMap_T;
+    // //////////////////////////////////////////////////////////////////
 
-    /** Definition allowing to retrieve the associated BOM key type. */
-    typedef NetworkKey_T BomKey_T;
+  public:
+    // /////////// Getters /////////////
+    /** Get a list or map of a children type for iteration methods. */
+    NetworkDateList_T getNetworkDateList () const;
+    NetworkDateMap_T getNetworkDateMap () const;
 
-    /** Definition allowing to retrieve the associated  BOM content child
-        type. */
-    typedef NetworkDate ContentChild_T;
-    // /////////////////////////////////////////////////////////////////////////
+    /** Retrieve, if existing, the NetworkDate corresponding to the
+        given Date .
+        <br>If not existing, return the NULL pointer. */
+    NetworkDate* getNetworkDate (const Date_T&) const;
 
   public:
     // /////////// Display support methods /////////
@@ -57,53 +63,23 @@ namespace stdair {
     
     /** Get a string describing the whole key (differentiating two objects
         at any level). */
-    const std::string describeKey() const;
-
-    /** Get a string describing the short key (differentiating two objects
-        at the same level). */
-    const std::string describeShortKey() const;
-
-  public:
-    // /////////// Getters /////////////
-    /** Get a NetworkDateList_T for iteration methods. */
-    NetworkDateList_T getNetworkDateList () const;
-
-    /** Get a NetworkDateMap_T for iteration methods. */
-    NetworkDateMap_T getNetworkDateMap () const;
-    
-    /** Retrieve, if existing, the NetworkDate corresponding to the
-        given NetworkDate key.
-        <br>If not existing, return the NULL pointer. */
-    NetworkDate* getNetworkDate (const NetworkDateKey_T&) const;
-
-    /** Retrieve, if existing, the NetworkDate corresponding to the
-        given Date .
-        <br>If not existing, return the NULL pointer. */
-    NetworkDate* getNetworkDate (const Date_T&) const;
- 
-
-  private:
-    /** Retrieve the BOM structure object. */
-    BomStructure_T& getBomStructure () {
-      return _networkStructure;
-    }
-    
+    const std::string describeKey() const;     
 
   protected:
     /** Constructors are private so as to force the usage of the Factory
         layer. */
+    /** Constructors. */
+    Network (const Key_T&, Structure_T&);
+    /** Destructor. */
+    virtual ~Network();
     /** Default constructors. */
     Network ();
     Network (const Network&);
-    Network (const BomKey_T&, BomStructure_T&);
-
-    /** Destructor. */
-    virtual ~Network();
 
   protected:
     // Attributes
     /** Reference structure. */
-    BomStructure_T& _networkStructure;
+    Structure_T& _structure;
   };
 
 }

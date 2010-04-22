@@ -15,12 +15,12 @@ namespace stdair {
   public:
     // Type definitions.
     /** Definition allowing to retrieve the associated BOM key type. */
-    typedef FlightDateKey_T BomKey_T;
+    typedef FlightDateKey_T Key_T;
 
   public:
     // /////////// Getters ///////////////
     /** Get the flight-date key. */
-    const BomKey_T& getKey() const {
+    const Key_T& getKey() const {
       return _key;
     }
     
@@ -118,28 +118,22 @@ namespace stdair {
 
    /** Get the serialised version of the Business Object. */
     virtual std::string toString() const = 0;
-    
-    /** Get a string describing the whole key (differentiating two objects
-        at any level). */
-    virtual const std::string describeKey() const = 0;
 
     /** Get a string describing the short key (differentiating two objects
         at the same level). */
-    virtual const std::string describeShortKey() const = 0;
-
+    const std::string describeShortKey() const { _key.toString(); }
     
   protected:
     /** Default constructors. */
-    FlightDateContent (const BomKey_T&);
+    FlightDateContent (const Key_T&);
     FlightDateContent (const FlightDateContent&);
-
     /** Destructor. */
     virtual ~FlightDateContent();
 
   protected:
     // Attributes
     /** The key of both structure and content objects. */
-    BomKey_T _key;
+    Key_T _key;
     
     /** Counter of all bookings into this flight. */
     NbOfBookings_T _bookingCounter;

@@ -7,16 +7,10 @@
 // STDAIR
 #include <stdair/STDAIR_Types.hpp>
 #include <stdair/bom/BomKey.hpp>
-#include <stdair/bom/AirportDateKey.hpp>
 
 namespace stdair {
   /** Key of OutboundPath. */
   struct OutboundPathKey_T : public BomKey_T {
-    
-  public:
-    // /////////// Typedefs ////////////
-    /** Definition allowing to retrieve the parent key type. */
-    typedef AirportDateKey_T ParentKey_T;
     
   public:
     // /////////// Construction ///////////
@@ -54,17 +48,6 @@ namespace stdair {
       return _boardingTime;
     }
     
-    /** Get boarding airport. */
-    const AirportCode_T& getBoardingPoint() const;
-    
-    /** Get boarding date. */
-    const Date_T& getBoardingDate() const;
-    
-    // /////////// Setters /////////////
-    void setParentKey (const ParentKey_T& iParentKey) {
-      _parentKey = iParentKey;
-    }
-    
     // /////////// Display support methods /////////
     /** Dump a Business Object Key into an output stream.
         @param ostream& the output stream. */
@@ -81,14 +64,8 @@ namespace stdair {
        marketing classes for the same segment-cabin. */
     const std::string toString() const;
     
-    /** Display of the key. */
-    const std::string describe() const;
-    
   private:
     // Attributes
-    /** Airport-date key.*/
-    ParentKey_T _parentKey;
-
     /** The off point. */
     AirportCode_T _destination;
 

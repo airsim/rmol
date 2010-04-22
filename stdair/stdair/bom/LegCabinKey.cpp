@@ -13,7 +13,7 @@ namespace stdair {
 
   // ////////////////////////////////////////////////////////////////////
   LegCabinKey_T::LegCabinKey_T (const LegCabinKey_T& iKey)
-    : _parentKey (iKey._parentKey), _cabinCode (iKey._cabinCode) {
+    : _cabinCode (iKey._cabinCode) {
   }
 
   // ////////////////////////////////////////////////////////////////////
@@ -33,13 +33,6 @@ namespace stdair {
   const std::string LegCabinKey_T::toString() const {
     std::ostringstream oStr;
     oStr << _cabinCode;
-    return oStr.str();
-  }
-  
-  // ////////////////////////////////////////////////////////////////////
-  const std::string LegCabinKey_T::describe() const {
-    std::ostringstream oStr;
-    oStr << _parentKey.describe() << ", " << toString();
     return oStr.str();
   }
 

@@ -47,12 +47,5 @@ namespace stdair {
          << " " << _preferredCabin;
     return oStr.str();
   }
-  
-  // ////////////////////////////////////////////////////////////////////
-  const std::string DemandStreamKey_T::describe() const {
-    std::ostringstream oStr;
-    oStr << toString();
-    return oStr.str();
-  }
 
 }

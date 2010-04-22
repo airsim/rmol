@@ -6,8 +6,11 @@
 #include <ostream>
 // StdAir
 #include <stdair/basic/BasConst_BomManager.hpp>
+#include <stdair/bom/BomChildrenHolderImp.hpp>
+#include <stdair/bom/Structure.hpp>
+#include <stdair/bom/BomList.hpp>
+#include <stdair/bom/BomMap.hpp>
 #include <stdair/bom/BomRoot.hpp>
-#include <stdair/bom/AirlineFeatureSet.hpp>
 #include <stdair/bom/AirlineFeature.hpp>
 #include <stdair/bom/BomList.hpp>
 #include <stdair/bom/BomMap.hpp>
@@ -27,7 +30,7 @@
 
 namespace stdair {
 
-  // //////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////
   void BomManager::display (std::ostream& oStream, const BomRoot& iBomRoot) {
     // Store current formatting flags of the given output stream
     std::ios::fmtflags oldFlags = oStream.flags();
@@ -57,7 +60,7 @@ namespace stdair {
     oStream.flags (oldFlags);
   }
   
-  // //////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////
   void BomManager::display (std::ostream& oStream, const Inventory& iInventory) {
     // Store current formatting flags of the given output stream
     std::ios::fmtflags oldFlags = oStream.flags();
@@ -79,7 +82,7 @@ namespace stdair {
     oStream.flags (oldFlags);
   }
   
-  // //////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////
   void BomManager::csvFlightDateDisplay (std::ostream& oStream,
                                          const FlightDate& iFlightDate) {
     // Store current formatting flags of the given output stream
@@ -124,7 +127,7 @@ namespace stdair {
     oStream.flags (oldFlags);
   }
   
-  // //////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////
   void BomManager::csvLegDateDisplay (std::ostream& oStream,
                                       const FlightDate& iFlightDate) {
     // Store current formatting flags of the given output stream
@@ -168,7 +171,7 @@ namespace stdair {
     oStream.flags (oldFlags);
   }
   
-  // //////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////
   void BomManager::csvLegCabinDisplay (std::ostream& oStream,
                                        const FlightDate& iFlightDate) {
     // Store current formatting flags of the given output stream
@@ -213,7 +216,7 @@ namespace stdair {
     oStream.flags (oldFlags);
   }
   
-  // //////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////
   void BomManager::csvBPVDisplay (std::ostream& oStream,
                                   const FlightDate& iFlightDate) {
     // Store current formatting flags of the given output stream
@@ -255,7 +258,7 @@ namespace stdair {
     oStream.flags (oldFlags);
   }
 
-  // //////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////
   void BomManager::csvSegmentCabinDisplay (std::ostream& oStream,
                                            const FlightDate& iFlightDate) {
     // Store current formatting flags of the given output stream
@@ -305,7 +308,7 @@ namespace stdair {
     oStream.flags (oldFlags);
   }
   
-  // //////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////
   void BomManager::display (std::ostream& oStream,
                             const SegmentCabin& iSegmentCabin) {
     // Store current formatting flags of the given output stream
@@ -328,7 +331,7 @@ namespace stdair {
     oStream.flags (oldFlags);
   }
 
-  // //////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////
   void BomManager::display (std::ostream& oStream,
                             const BookingClass& iBookingClass) {
     // Store current formatting flags of the given output stream
@@ -341,7 +344,7 @@ namespace stdair {
     oStream.flags (oldFlags);
   }
 
-  // //////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////
   void BomManager::display (std::ostream& oStream,
                             const Network& iNetwork) {
     // Store current formatting flags of the given output stream
@@ -365,7 +368,7 @@ namespace stdair {
     oStream.flags (oldFlags);
   }
   
-  // //////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////
   void BomManager::display (std::ostream& oStream,
                             const NetworkDate& iNetworkDate) {
     // Store current formatting flags of the given output stream
@@ -386,7 +389,7 @@ namespace stdair {
     oStream.flags (oldFlags);
   }
   
-  // //////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////
   void BomManager::display (std::ostream& oStream,
                             const AirportDate& iAirportDate) {
     // Store current formatting flags of the given output stream
@@ -408,7 +411,7 @@ namespace stdair {
     oStream.flags (oldFlags);
   }
   
-  // //////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////
   void BomManager::display (std::ostream& oStream,
                             const OutboundPath& iOutboundPath) {
     // Store current formatting flags of the given output stream
@@ -429,29 +432,7 @@ namespace stdair {
     oStream.flags (oldFlags);
   }
 
-  // //////////////////////////////////////////////////////////////////////
-  void BomManager::display (std::ostream& oStream,
-                            const AirlineFeatureSet& iAirlineFeatureSet) {
-    // Store current formatting flags of the given output stream
-    std::ios::fmtflags oldFlags = oStream.flags();
-
-    oStream << iAirlineFeatureSet.describeKey() << std::endl;
-
-    const AirlineFeatureList_T& lAirlineFeatureList =
-      iAirlineFeatureSet.getAirlineFeatureList();
-    for (AirlineFeatureList_T::iterator itAirlineFeature =
-           lAirlineFeatureList.begin();
-         itAirlineFeature != lAirlineFeatureList.end(); ++itAirlineFeature) {
-      const AirlineFeature& lCurrentAirlineFeature = *itAirlineFeature;
-      
-      oStream << lCurrentAirlineFeature.describeKey() << std::endl;
-    }
-    
-    // Reset formatting flags of the given output stream
-    oStream.flags (oldFlags);
-  }
-
-  // //////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////
   void BomManager::csvDisplay (std::ostream& oStream,
                                const BookingRequestStruct& iBookingRequest) {
     // Store current formatting flags of the given output stream

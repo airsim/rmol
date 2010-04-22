@@ -7,6 +7,8 @@
 // STL
 #include <iosfwd>
 #include <string>
+// STDAIR
+#include <stdair/STDAIR_Types.hpp>
 
 namespace stdair {
 
@@ -34,10 +36,6 @@ namespace stdair {
        marketing classes for the same segment-date. */
     virtual const std::string toString() const { return std::string("Hello!"); }
 
-    /** Display of the key.
-     <br>That string is unique at all levels.
-    */
-    virtual const std::string describe() const { return toString(); }
   };
 
 }

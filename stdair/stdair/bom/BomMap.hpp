@@ -6,8 +6,6 @@
 // //////////////////////////////////////////////////////////////////////
 // STL
 #include <map>
-// STDAIR
-#include <stdair/basic/BasTypes.hpp>
 
 namespace stdair {
   
@@ -19,11 +17,11 @@ namespace stdair {
   template <typename BOM> struct BomMap_T {
 
   public:
-    /** Definition that allows to retrieve the corresponding BomStructure
+    /** Definition that allows to retrieve the corresponding Structure
         associated to the BOM. */
-    typedef typename BOM::BomStructure_T BomStructure_T;
+    typedef typename BOM::Structure_T Structure_T;
     /** Define the map of bom objects. */
-    typedef std::map<const MapKey_T, BomStructure_T*> BomStructureMap_T;
+    typedef std::map<const MapKey_T, const Structure_T*> StructureMap_T;
     /** Define the bom holder. */
     typedef BomChildrenHolderImp<BOM> BomHolder_T;
 
@@ -33,9 +31,9 @@ namespace stdair {
     // /////////////////////////////////////////////////////////////////////////
     /** Define the bom map iterators. */
     typedef BomIterator_T<BOM,
-                          typename BomStructureMap_T::const_iterator> iterator;
+                          typename StructureMap_T::const_iterator> iterator;
     typedef BomIterator_T<BOM,
-                          typename BomStructureMap_T::const_reverse_iterator
+                          typename StructureMap_T::const_reverse_iterator
                           > reverse_iterator;
     // /////////////////////////////////////////////////////////////////////////
        

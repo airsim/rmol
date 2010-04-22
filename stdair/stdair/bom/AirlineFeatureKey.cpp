@@ -31,9 +31,4 @@ namespace stdair {
     return oStr.str();
   }
 
-  // ////////////////////////////////////////////////////////////////////
-  const std::string AirlineFeatureKey_T::describe() const {
-    return toString();
-  }
-
 }

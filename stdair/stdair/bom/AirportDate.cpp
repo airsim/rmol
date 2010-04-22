@@ -1,22 +1,18 @@
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
-// C
-#include <assert.h>
+// STL
+#include <cassert>
 // STDAIR
 #include <stdair/basic/BasConst_Inventory.hpp>
-#include <stdair/bom/AirportDateStructure.hpp>
-#include <stdair/bom/AirportDate.hpp>
-#include <stdair/bom/OutboundPath.hpp>
-#include <stdair/bom/BomList.hpp>
-#include <stdair/bom/BomMap.hpp>
+#include <stdair/bom/BomSource.hpp>
 
 namespace stdair {
 
   // ////////////////////////////////////////////////////////////////////
-  AirportDate::AirportDate (const BomKey_T& iKey, 
-                            BomStructure_T& ioAirportStructure)
-    : AirportDateContent (iKey), _airportDateStructure (ioAirportStructure) {
+  AirportDate::AirportDate (const Key_T& iKey, 
+                            Structure_T& ioAirportStructure)
+    : AirportDateContent (iKey), _structure (ioAirportStructure) {
   }
   
   // ////////////////////////////////////////////////////////////////////
@@ -35,34 +31,25 @@ namespace stdair {
   // ////////////////////////////////////////////////////////////////////
   std::string AirportDate::toString() const {
     std::ostringstream oStr;
-
-    // First, put the key of that level
     oStr << describeShortKey() << std::endl;
-
-    // Then, browse the children
-    // [...] (no child for now)
-    
     return oStr.str();
   }
     
   // ////////////////////////////////////////////////////////////////////
   const std::string AirportDate::describeKey() const {
-    return _key.describe();
-  }
-
-  // ////////////////////////////////////////////////////////////////////
-  const std::string AirportDate::describeShortKey() const {
-    return _key.toString();
+    std::ostringstream oStr;
+    oStr << _structure.describeParentKey() << ", " << describeShortKey();
+    return oStr.str();
   }
 
   // ////////////////////////////////////////////////////////////////////
   OutboundPathList_T AirportDate::getOutboundPathList () const {
-    return _airportDateStructure.getChildrenHolder();
+    return _structure.getChildrenHolder<OutboundPath>();
   }
 
   // ////////////////////////////////////////////////////////////////////
   OutboundPathMap_T AirportDate::getOutboundPathMap () const {
-    return _airportDateStructure.getChildrenHolder();
+    return _structure.getChildrenHolder<OutboundPath>();
   }
 
   

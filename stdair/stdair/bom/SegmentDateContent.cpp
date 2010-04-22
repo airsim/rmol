@@ -10,7 +10,7 @@
 namespace stdair {
 
   // ////////////////////////////////////////////////////////////////////
-  SegmentDateContent::SegmentDateContent (const BomKey_T& iKey)
+  SegmentDateContent::SegmentDateContent (const Key_T& iKey)
     : _key (iKey),
       _bookingCounter (DEFAULT_CLASS_NB_OF_BOOKINGS),
       _segmentRevenue (DEFAULT_REVENUE_VALUE),
@@ -23,7 +23,7 @@ namespace stdair {
   SegmentDateContent::~SegmentDateContent () {
   }
 
-  // //////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////
   const Duration_T SegmentDateContent::getTimeOffSet() const {
     // TimeOffSet = (OffTime - BoardingTime) + (OffDate - BoardingDate) * 24
     //              - ElapsedTime

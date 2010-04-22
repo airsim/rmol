@@ -11,7 +11,7 @@
 namespace stdair {
 
   // ////////////////////////////////////////////////////////////////////
-  SegmentCabinContent::SegmentCabinContent (const BomKey_T& iKey)
+  SegmentCabinContent::SegmentCabinContent (const Key_T& iKey)
     : _key (iKey),
       _capacity (DEFAULT_CABIN_CAPACITY),
       _blockSpace (DEFAULT_BLOCK_SPACE),

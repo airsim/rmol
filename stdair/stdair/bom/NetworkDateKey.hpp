@@ -5,19 +5,11 @@
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // STDAIR
-#include <stdair/STDAIR_Types.hpp>
 #include <stdair/bom/BomKey.hpp>
-#include <stdair/bom/NetworkKey.hpp>
 
 namespace stdair {
   /** Key of network-date. */
   struct NetworkDateKey_T : public BomKey_T {
-    friend struct AirportDateKey_T;
-
-  public:
-    // /////////// Typedefs ////////////
-    /** Definition allowing to retrieve the parent key type. */
-    typedef NetworkKey_T ParentKey_T;
     
   private:
     // /////////// Default constructor //////////
@@ -54,20 +46,8 @@ namespace stdair {
        marketing classes for the same segment-date. */
     const std::string toString() const;
 
-    /** Display of the key. */
-    const std::string describe() const;
-
-    // /////////// Setters ///////////////
-    /** Set the parent key. */
-    void setParentKey (const ParentKey_T& iParentKey) {
-      _parentKey = iParentKey;
-    }
-
   private:
     // Attributes
-    /** Network Key.*/
-    ParentKey_T _parentKey;
-
     /** The reference date of the network-date.
         <br> A network-date is a set of flight-dates which are linked together
         by a set of O&D products. Hence, the "dates" of those flight-dates

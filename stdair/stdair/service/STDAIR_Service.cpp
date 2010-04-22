@@ -37,11 +37,6 @@ namespace stdair {
     // The root of the BOM tree, on which all of the other BOM objects
     // will be attached, is being created with the STDAIR_Service constructor.
 
-    // Initialise the AirlineFeatureSet object, and attach it to the BomRoot
-    initAirlineFeatureSet ();
-    // Initialise the DemandStreamList object, and attach it to the BomRoot
-    initDemandStreamList ();
-    
     // Set the log file
     logInit (iLogParams);
 
@@ -55,11 +50,6 @@ namespace stdair {
     : _bomRoot (FacBomContent::instance().create<BomRoot>()) {
     // The root of the BOM tree, on which all of the other BOM objects
     // will be attached, is being created with the STDAIR_Service constructor.
-
-    // Initialise the AirlineFeatureSet object, and attach it to the BomRoot
-    initAirlineFeatureSet ();
-    // Initialise the DemandStreamList object, and attach it to the BomRoot
-    initDemandStreamList ();
 
     // Set the log file
     logInit (iLogParams);
@@ -89,18 +79,6 @@ namespace stdair {
 
   // //////////////////////////////////////////////////////////////////////
   void STDAIR_Service::init () {
-  }
-
-  // //////////////////////////////////////////////////////////////////////
-  void STDAIR_Service::initAirlineFeatureSet () {
-    // Delegate to the dedicated command
-    CmdBomManager::initAirlineFeatureSet (_bomRoot);
-  }
-
-  // //////////////////////////////////////////////////////////////////////
-  void STDAIR_Service::initDemandStreamList () {
-    // Delegate to the dedicated command
-    CmdBomManager::initDemandStreamList (_bomRoot);
   }
   
   // //////////////////////////////////////////////////////////////////////

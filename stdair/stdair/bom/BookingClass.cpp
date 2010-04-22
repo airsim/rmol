@@ -1,35 +1,34 @@
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
-// C
-#include <assert.h>
+// STL
+#include <cassert>
 // STDAIR
-#include <stdair/bom/BookingClassStructure.hpp>
-#include <stdair/bom/BookingClass.hpp>
+#include <stdair/bom/BomSource.hpp>
 
 namespace stdair {
 
   // ////////////////////////////////////////////////////////////////////
-  BookingClass::BookingClass (const BomKey_T& iKey,
-                              BomStructure_T& ioBookingClassStructure)
+  BookingClass::BookingClass (const Key_T& iKey,
+                              Structure_T& ioBookingClassStructure)
     : BookingClassContent (iKey),
-      _bookingClassStructure (ioBookingClassStructure) {
+      _structure (ioBookingClassStructure) {
   }
   
   // ////////////////////////////////////////////////////////////////////
   BookingClass::~BookingClass () {
   }
 
-  // //////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////
   void BookingClass::toStream (std::ostream& ioOut) const {
     ioOut << toString() << std::endl;
   }
 
-  // //////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////
   void BookingClass::fromStream (std::istream& ioIn) {
   }
 
-  // //////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////
   std::string BookingClass::toString() const {
     std::ostringstream oStr;
 
@@ -42,14 +41,17 @@ namespace stdair {
     return oStr.str();
   }
     
-  // //////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////
   const std::string BookingClass::describeKey() const {
-    return _key.describe();
+    std::ostringstream oStr;
+    oStr << _structure.describeParentKey() << ", " << describeShortKey();
+    return oStr.str();
   }
 
-  // //////////////////////////////////////////////////////////////////////
-  const std::string BookingClass::describeShortKey() const {
-    return _key.toString();
+  // ////////////////////////////////////////////////////////////////////
+  const AirlineCode_T& BookingClass::getAirlineCode () const {
+    return _structure.getParent().getParent().
+      getParent().getParent().getKey().getAirlineCode();
   }
   
 }

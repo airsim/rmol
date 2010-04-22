@@ -10,7 +10,7 @@ namespace stdair {
 
   // ////////////////////////////////////////////////////////////////////
   AirlineFeatureContent::
-  AirlineFeatureContent (const BomKey_T& iKey)
+  AirlineFeatureContent (const Key_T& iKey)
     : _key (iKey) {
   }
 

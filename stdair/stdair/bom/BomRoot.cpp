@@ -4,22 +4,13 @@
 // STL
 #include <cassert>
 // STDAIR
-#include <stdair/bom/BomRootStructure.hpp>
-#include <stdair/bom/BomRoot.hpp>
-#include <stdair/bom/BomList.hpp>
-#include <stdair/bom/BomMap.hpp>
-#include <stdair/bom/YieldStore.hpp>
-#include <stdair/bom/Inventory.hpp>
-#include <stdair/bom/Network.hpp>
-#include <stdair/bom/DemandStream.hpp>
-#include <stdair/service/Logger.hpp>
+#include <stdair/bom/BomSource.hpp>
 
 namespace stdair {
 
   // ////////////////////////////////////////////////////////////////////
-  BomRoot::BomRoot (const BomKey_T& iKey, BomStructure_T& ioBomRootStructure)
-    : BomRootContent (iKey), _bomRootStructure (ioBomRootStructure),
-      _airlineFeatureSet (NULL) {
+  BomRoot::BomRoot (const Key_T& iKey, Structure_T& ioBomRootStructure)
+    : BomRootContent (iKey), _structure (ioBomRootStructure) {
   }
 
   // ////////////////////////////////////////////////////////////////////
@@ -28,97 +19,79 @@ namespace stdair {
 
   // ////////////////////////////////////////////////////////////////////
   InventoryList_T BomRoot::getInventoryList () const {
-    return _bomRootStructure.getChildrenHolder();
+    return _structure.getChildrenHolder<Inventory>();
   }
 
   // ////////////////////////////////////////////////////////////////////
   InventoryMap_T BomRoot::getInventoryMap () const {
-    return _bomRootStructure.getChildrenHolder();
+    return _structure.getChildrenHolder<Inventory>();
   }
 
   // ////////////////////////////////////////////////////////////////////
   NetworkList_T BomRoot::getNetworkList () const {
-    return _bomRootStructure.getSecondChildrenHolder();
+    return _structure.getChildrenHolder<Network>();
   }
 
   // ////////////////////////////////////////////////////////////////////
   NetworkMap_T BomRoot::getNetworkMap () const {
-    return _bomRootStructure.getSecondChildrenHolder();
+    return _structure.getChildrenHolder<Network>();
   }
   
-  // //////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////
   DemandStreamList_T BomRoot::getDemandStreamList () const {
-    return _bomRootStructure.getDemandStreamHolder();
-  }
-
-  // //////////////////////////////////////////////////////////////////////
-  DemandStreamMap_T BomRoot::getDemandStreamMap () const {
-    return _bomRootStructure.getDemandStreamHolder();
+    return _structure.getChildrenHolder<DemandStream>();
   }
 
   // ////////////////////////////////////////////////////////////////////
-  YieldStore* BomRoot::getYieldStore (const AirlineCode_T& iAirlineCode) const {
-    YieldStore* oYieldStore_ptr = NULL;
+  DemandStreamMap_T BomRoot::getDemandStreamMap () const {
+    return _structure.getChildrenHolder<DemandStream>();
+  }
 
-    // TODO: migrate to the new StdAir structure (e.g., IN, FD, etc.)
-    /*
-    YieldStoreMap_T lYieldStoreMap = getYieldStoreMap ();
-    YieldStoreMap_T::iterator itInv = lYieldStoreMap.find (iAirlineCode);
+  // ////////////////////////////////////////////////////////////////////
+  AirlineFeatureList_T BomRoot::getAirlineFeatureList () const {
+    return _structure.getChildrenHolder<AirlineFeature>();
+  }
 
-    if (itInv != lYieldStoreMap.end()) {
-      oYieldStore_ptr = itInv->second;
-    }
-    */
-    
-    return oYieldStore_ptr;
+  // ////////////////////////////////////////////////////////////////////
+  AirlineFeatureMap_T BomRoot::getAirlineFeatureMap () const {
+    return _structure.getChildrenHolder<AirlineFeature>();
+  }
+
+  // ////////////////////////////////////////////////////////////////////
+  YieldStoreList_T BomRoot::getYieldStoreList () const {
+    return _structure.getChildrenHolder<YieldStore>();
+  }
+
+  // ////////////////////////////////////////////////////////////////////
+  YieldStoreMap_T BomRoot::getYieldStoreMap () const {
+    return _structure.getChildrenHolder<YieldStore>();
   }
 
   // ////////////////////////////////////////////////////////////////////
   Inventory* BomRoot::getInventory (const AirlineCode_T& iAirlineCode) const {
-    Inventory* oInventory_ptr = NULL;
-
-    InventoryMap_T lInventoryMap = getInventoryMap ();
-    InventoryMap_T::iterator itInv = lInventoryMap.find (iAirlineCode);
-
-    if (itInv != lInventoryMap.end()) {
-      oInventory_ptr = itInv->second;
-    }
-    
-    return oInventory_ptr;
+    return _structure.getChildPtr<Inventory> (iAirlineCode);
   }
 
   // ////////////////////////////////////////////////////////////////////
   Network* BomRoot::getNetwork (const NetworkID_T& iNetworkID) const {
-    Network* oNetwork_ptr = NULL;
+    return _structure.getChildPtr<Network> (iNetworkID);
+  }
 
-    NetworkMap_T lNetworkMap = getNetworkMap ();
-    NetworkMap_T::iterator itNetwork = lNetworkMap.find (iNetworkID);
-
-    if (itNetwork != lNetworkMap.end()) {
-      oNetwork_ptr = itNetwork->second;
-    }
-    
-    return oNetwork_ptr;
+  // ////////////////////////////////////////////////////////////////////
+  YieldStore* BomRoot::getYieldStore (const AirlineCode_T& iAirlineCode) const {
+    return _structure.getChildPtr<YieldStore> (iAirlineCode);
+  }
+  
+  // ////////////////////////////////////////////////////////////////////
+  AirlineFeature* BomRoot::
+  getAirlineFeature (const AirlineCode_T& iAirlineCode) const {
+    return _structure.getChildPtr<AirlineFeature> (iAirlineCode);
   }
 
   // ////////////////////////////////////////////////////////////////////
   DemandStream& BomRoot::
   getDemandStream (const DemandStreamKeyStr_T& iKey) const {
-    DemandStreamMap_T lDemandStreamMap = getDemandStreamMap ();
-
-    DemandStreamMap_T::iterator itDemandStream = lDemandStreamMap.find (iKey);
-    assert (itDemandStream != lDemandStreamMap.end());
-
-    DemandStream* oDemandStream_ptr = itDemandStream->second;
-    assert (oDemandStream_ptr != NULL);
-    
-    return *oDemandStream_ptr;
-  }
-  
-  // ////////////////////////////////////////////////////////////////////
-  AirlineFeatureSet& BomRoot::getAirlineFeatureSet() const {
-    assert (_airlineFeatureSet != NULL);
-    return *_airlineFeatureSet;
+    return _structure.getChild<DemandStream> (iKey);
   }
   
 }

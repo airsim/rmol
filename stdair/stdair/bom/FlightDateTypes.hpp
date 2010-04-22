@@ -12,19 +12,17 @@
 namespace stdair {
 
   // Forward declarations.
-  template <typename BOM_CONTENT> class FlightDateStructure;
+  template <typename CONTENT> class Structure;
+  template <typename CONTENT> class BomChildrenHolderImp;
   template <typename BOM> struct BomList_T;
   template <typename BOM> struct BomMap_T;
   class FlightDate;
   
   /** Define the FlightDate structure. */
-  typedef FlightDateStructure<FlightDate> FlightDateStructure_T;
+  typedef Structure<FlightDate> FlightDateStructure_T;
   
-  /** Define the flight-date structure list. */
-  typedef std::vector<FlightDateStructure_T*> FlightDateStructureList_T;
-
-  /** Define the flight-date structure map. */
-  typedef std::map<const std::string, FlightDateStructure_T*> FlightDateStructureMap_T;
+  /** Define the FlightDate holder. */
+  typedef BomChildrenHolderImp<FlightDate> FlightDateHolder_T;
 
   /** Define the flight-date list. */
   typedef BomList_T<FlightDate> FlightDateList_T;

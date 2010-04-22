@@ -5,16 +5,12 @@
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // STDAIR 
-#include <stdair/bom/SegmentCabin.hpp>
-#include <stdair/bom/BookingClassStructure.hpp>
 #include <stdair/bom/BookingClassContent.hpp>
-#include <stdair/bom/SegmentCabinTypes.hpp>
 #include <stdair/bom/BookingClassTypes.hpp>
 
 namespace stdair {
   // Forward declarations
-  class FacBomContent;
-  struct BookingClassKey_T;
+  class SegmentCabin;
 
   /** Class representing the actual functional/business content for a
       booking class. */
@@ -22,22 +18,25 @@ namespace stdair {
     friend class FacBomContent;
 
   public:
-    // Type definitions
+    // //////////////////////////////////////////////////////////////////
+    // See the explanations, within the BomRoot class, for all
+    // the types which require to be specified below
+    // //////////////////////////////////////////////////////////////////
+    /** Definition allowing to retrieve the associated BOM structure type. */
+    typedef BookingClassStructure_T Structure_T;
+
     /** Definition allowing to retrieve the associated parent
         BOM content type. */
     typedef SegmentCabin Parent_T;
 
-    /** Definition allowing to retrieve the associated BOM structure type. */
-    typedef BookingClassStructure_T BomStructure_T;
+    /** Define the list of children holder types. */
+    typedef boost::fusion::map< > ChildrenHolderMap_T;
+    // //////////////////////////////////////////////////////////////////
 
-    /** Definition allowing to retrieve the associated BOM key type. */
-    typedef BookingClassKey_T BomKey_T;
-
-    /** Definition allowing to retrieve the associated 
-         BOM content child type. */
-    typedef BookingClass ContentChild_T;
-
-
+    // /////////////// Getters ////////////////
+    /** Get the airline code of the segment. */
+    const AirlineCode_T& getAirlineCode () const;
+    
   public:
     // /////////// Display support methods /////////
     /** Dump a Business Object into an output stream.
@@ -55,31 +54,21 @@ namespace stdair {
         at any level). */
     const std::string describeKey() const;
 
-    /** Get a string describing the short key (differentiating two objects
-        at the same level). */
-    const std::string describeShortKey() const;
-
-  private:
-    /** Retrieve the BOM structure object. */
-    BomStructure_T& getBomStructure () {
-      return _bookingClassStructure;
-    }
-
   protected:
     /** Constructors are private so as to force the usage of the Factory
         layer. */
+    /** Constructors. */
+    BookingClass (const Key_T&, Structure_T&);
+    /** Destructor. */
+    virtual ~BookingClass();
     /** Default constructors. */
     BookingClass ();
     BookingClass (const BookingClass&);
-    BookingClass (const BomKey_T&, BomStructure_T&);
-
-    /** Destructor. */
-    virtual ~BookingClass();
 
   protected:
     // Attributes
     /** Reference structure. */
-    BomStructure_T& _bookingClassStructure;
+    Structure_T& _structure;
     
   };
 
