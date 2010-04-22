@@ -95,7 +95,7 @@ namespace stdair {
     
     /** Get a string describing the whole key (differentiating two objects
         at any level). */
-    const std::string describeShortKey() const { _key.toString(); }
+    const std::string describeShortKey() const { return _key.toString(); }
 
     
   protected:

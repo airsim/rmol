@@ -32,7 +32,7 @@ namespace stdair {
 
     /** Get a string describing the short key (differentiating two objects
         at the same level). */
-    const std::string describeShortKey() const { _key.toString(); }
+    const std::string describeShortKey() const { return _key.toString(); }
 
   public:
     // ////////// Getters ////////////
