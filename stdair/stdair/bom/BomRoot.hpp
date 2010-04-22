@@ -30,7 +30,9 @@ namespace stdair {
           <li>Parent_T: Type corresponding to the parent BOM
           class within that namespace (e.g., AIRSCHED here)</li>
           <li>ChildrenHolderMap_T: The map between the type of children and 
-          a pointer to the bom holder of this type (e.g., AIRSCHED here)</li>
+          a pointer to the bom holder of this type (e.g., AIRSCHED here).
+          All the pointers to the bom holder should be initialised to
+          NULL in the init() function.</li>
         </ul>
         <br><br>
         Note that the parent type of BomRoot is its own type.
