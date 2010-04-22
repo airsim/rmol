@@ -18,6 +18,12 @@ namespace stdair {
   }
 
   // ////////////////////////////////////////////////////////////////////
+  void LegCabin::init () {
+    _structure.initChildrenHolder<Bucket> ();
+    _structure.initChildrenHolder<SegmentCabin> ();
+  }
+  
+  // ////////////////////////////////////////////////////////////////////
   void LegCabin::toStream (std::ostream& ioOut) const {
     ioOut << toString() << std::endl;
   }

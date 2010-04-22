@@ -19,6 +19,11 @@ namespace stdair {
   }
 
   // ////////////////////////////////////////////////////////////////////
+  void Network::init () {
+    _structure.initChildrenHolder<NetworkDate>();
+  }
+
+  // ////////////////////////////////////////////////////////////////////
   void Network::toStream (std::ostream& ioOut) const {
     ioOut << toString() << std::endl;
   }

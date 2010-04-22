@@ -108,6 +108,15 @@ namespace stdair {
       return *lChild_ptr;
     }
 
+    // /////////// Business method ////////////
+    /** Initialise the pointer of children holder to NULL. */
+    template <typename CHILD>
+    void initChildrenHolder() {
+      BomChildrenHolderImp<CHILD>*& lHolder_ptr =
+        boost::fusion::at_key<CHILD> (_holderMap);
+      lHolder_ptr = NULL;
+    }
+
   public:
     // /////////// Display support methods /////////
     /** Dump a Business Object into an output stream.

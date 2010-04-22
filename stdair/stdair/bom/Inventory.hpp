@@ -86,6 +86,8 @@ namespace stdair {
     Inventory (const Key_T&, Structure_T&);
     /** Destructor. */
     ~Inventory();
+    /** Initialise all the pointers of children holder to NULL. */
+    void init();
     /** Default constructors. */
     Inventory ();
     Inventory (const Inventory&);

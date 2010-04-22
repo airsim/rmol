@@ -54,12 +54,15 @@ namespace stdair {
   protected:
     /** Constructors are private so as to force the usage of the Factory
         layer. */
+    /** Constructors. */
+    YieldStore (const Key_T& iKey, Structure_T& ioStructure);
+    /** Destructor. */
+    ~YieldStore();
+    /** Initialise all the pointers of children holder to NULL. */
+    void init();
     /** Default constructors. */
     YieldStore ();
     YieldStore (const YieldStore&);
-    YieldStore (const Key_T& iKey, Structure_T& ioStructure);
-    /** Destructor. */
-    virtual ~YieldStore();
 
   private:
     // Attributes

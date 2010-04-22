@@ -24,6 +24,10 @@ namespace stdair {
   }
 
   // ////////////////////////////////////////////////////////////////////
+  void AirlineFeature::init () {
+  }
+
+  // ////////////////////////////////////////////////////////////////////
   void AirlineFeature::
   init (const ForecasterMode_T& iForecastMode,
         const HistoricalDataLimit_T& iHistoricalDataLimit,

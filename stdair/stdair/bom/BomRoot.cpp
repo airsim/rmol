@@ -11,10 +11,20 @@ namespace stdair {
   // ////////////////////////////////////////////////////////////////////
   BomRoot::BomRoot (const Key_T& iKey, Structure_T& ioBomRootStructure)
     : BomRootContent (iKey), _structure (ioBomRootStructure) {
+    init();
   }
 
   // ////////////////////////////////////////////////////////////////////
   BomRoot::~BomRoot () {
+  }
+
+  // ////////////////////////////////////////////////////////////////////
+  void BomRoot::init() {
+    _structure.initChildrenHolder<Inventory>();
+    _structure.initChildrenHolder<Network>();
+    _structure.initChildrenHolder<AirlineFeature>();
+    _structure.initChildrenHolder<DemandStream>();
+    _structure.initChildrenHolder<YieldStore>();
   }
 
   // ////////////////////////////////////////////////////////////////////

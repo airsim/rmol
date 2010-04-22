@@ -55,7 +55,9 @@ namespace stdair {
     /** Constructors. */
     Bucket (const Key_T& iKey, Structure_T& ioStructure);
     /** Destructor. */
-  ~Bucket();
+    ~Bucket();
+    /** Initialise all the pointers of children holder to NULL. */
+    void init();
     /** Default constructors. */
     Bucket ();
     Bucket (const Bucket&);

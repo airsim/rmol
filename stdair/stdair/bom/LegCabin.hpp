@@ -68,7 +68,9 @@ namespace stdair {
     /** Constructors. */
     LegCabin (const Key_T& iKey, Structure_T&);
     /** Destructor. */
-    virtual ~LegCabin();
+    ~LegCabin();
+    /** Initialise all the pointers of children holder to NULL. */
+    void init();
     /** Default constructors. */
     LegCabin ();
     LegCabin (const LegCabin&);

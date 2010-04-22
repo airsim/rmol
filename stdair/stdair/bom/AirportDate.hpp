@@ -76,7 +76,9 @@ namespace stdair {
     /** Constructors. */
     AirportDate (const Key_T&, Structure_T&);
     /** Destructor. */
-    virtual ~AirportDate();
+    ~AirportDate();
+    /** Initialise all the pointers of children holder to NULL. */
+    void init();
     /** Default constructors. */
     AirportDate ();
     AirportDate (const AirportDate&);

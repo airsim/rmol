@@ -115,6 +115,8 @@ namespace stdair {
     BomRoot (const Key_T&, Structure_T&);
     /** Destructor. */
      ~BomRoot();
+    /** Initialise all the pointers of children holder to NULL. */
+    void init();
     /** Default constructors. */
     BomRoot ();
     BomRoot (const BomRoot&);

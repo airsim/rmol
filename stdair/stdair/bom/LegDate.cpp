@@ -18,6 +18,12 @@ namespace stdair {
   }
 
   // ////////////////////////////////////////////////////////////////////
+  void LegDate::init () {
+    _structure.initChildrenHolder<LegCabin> ();
+    _structure.initChildrenHolder<SegmentDate> ();
+  }
+
+  // ////////////////////////////////////////////////////////////////////
   void LegDate::toStream (std::ostream& ioOut) const {
     ioOut << toString() << std::endl;
   }

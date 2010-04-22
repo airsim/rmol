@@ -20,6 +20,11 @@ namespace stdair {
   }
 
   // ////////////////////////////////////////////////////////////////////
+  void OutboundPath::init () {
+    _structure.initChildrenHolder<SegmentDate>();
+  }
+
+  // ////////////////////////////////////////////////////////////////////
   void OutboundPath::toStream (std::ostream& ioOut) const {
     ioOut << toString() << std::endl;
   }

@@ -75,6 +75,8 @@ namespace stdair {
     LegDate (const Key_T&, Structure_T&);
     /** Destructor. */
     ~LegDate();
+    /** Initialise all the pointers of children holder to NULL. */
+    void init();
     /** Default constructors. */
     LegDate ();
     LegDate (const LegDate&);

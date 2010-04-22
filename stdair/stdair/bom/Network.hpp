@@ -71,7 +71,9 @@ namespace stdair {
     /** Constructors. */
     Network (const Key_T&, Structure_T&);
     /** Destructor. */
-    virtual ~Network();
+    ~Network();
+    /** Initialise all the pointers of children holder to NULL. */
+    void init();
     /** Default constructors. */
     Network ();
     Network (const Network&);

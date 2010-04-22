@@ -71,7 +71,9 @@ namespace stdair {
     /** Constructors. */
     NetworkDate (const Key_T&, Structure_T&);
     /** Destructor. */
-    virtual ~NetworkDate();
+    ~NetworkDate();
+    /** Initialise all the pointers of children holder to NULL. */
+    void init();
     /** Default constructors. */
     NetworkDate ();
     NetworkDate (const NetworkDate&);

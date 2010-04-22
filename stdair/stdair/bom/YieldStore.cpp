@@ -20,4 +20,8 @@ namespace stdair {
   YieldStore::~YieldStore () {
   }
 
+  // ////////////////////////////////////////////////////////////////////
+  void YieldStore::init () {
+  }
+
 }

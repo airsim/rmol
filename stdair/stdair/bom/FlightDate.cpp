@@ -21,6 +21,12 @@ namespace stdair {
   }
 
   // ////////////////////////////////////////////////////////////////////
+  void FlightDate::init() {
+    _structure.initChildrenHolder<SegmentDate>();
+    _structure.initChildrenHolder<LegDate>();
+  }
+  
+  // ////////////////////////////////////////////////////////////////////
   void FlightDate::toStream (std::ostream& ioOut) const {
     ioOut << toString() << std::endl;
   }

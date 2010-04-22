@@ -19,6 +19,12 @@ namespace stdair {
   }
 
   // ////////////////////////////////////////////////////////////////////
+  void SegmentCabin::init () {
+    _structure.initChildrenHolder<BookingClass> ();
+    _structure.initChildrenHolder<LegCabin> ();
+  }
+
+  // ////////////////////////////////////////////////////////////////////
   void SegmentCabin::toStream (std::ostream& ioOut) const {
     ioOut << toString() << std::endl;
   }

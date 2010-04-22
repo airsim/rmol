@@ -84,6 +84,8 @@ namespace stdair {
     FlightDate (const Key_T&, Structure_T&);
     /** Destructor. */
     ~FlightDate();
+    /** Initialise all the pointers of children holder to NULL. */
+    void init();
     /** Default constructors. */
     FlightDate ();
     FlightDate (const FlightDate&);

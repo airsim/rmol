@@ -19,6 +19,11 @@ namespace stdair {
   }
 
   // ////////////////////////////////////////////////////////////////////
+  void Inventory::init () {
+    _structure.initChildrenHolder<FlightDate> ();
+  }
+
+  // ////////////////////////////////////////////////////////////////////
   void Inventory::toStream (std::ostream& ioOut) const {
     ioOut << toString() << std::endl;
   }

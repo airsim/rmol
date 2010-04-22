@@ -67,11 +67,13 @@ namespace stdair {
                   const RandomSeed_T& iRequestDateTimeSeed,
                   const RandomSeed_T& iDemandCharacteristicsSeed,
                   Structure_T&);
+    /** Destructor. */
+    ~DemandStream ();
+    /** Initialise all the pointers of children holder to NULL. */
+    void init();
     /** Default constructors. */
     DemandStream ();
     DemandStream (const DemandStream&);
-    /** Destructor. */
-    ~DemandStream ();
 
     
   protected:

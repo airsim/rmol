@@ -63,12 +63,15 @@ namespace stdair {
     // ///////////////// Constructors and destructors /////////////////
     /** Constructors are private so as to force the usage of the Factory
         layer. */
+    /** Constructors. */
+    AirlineFeature (const Key_T&, Structure_T&);
+    /** Destructor. */
+    ~AirlineFeature();
+    /** Initialise all the pointers of children holder to NULL. */
+    void init();
     /** Default constructors. */
     AirlineFeature ();
     AirlineFeature (const AirlineFeature&);
-    AirlineFeature (const Key_T&, Structure_T&);
-    /** Destructor. */
-    virtual ~AirlineFeature();
 
     
   protected:

@@ -20,6 +20,11 @@ namespace stdair {
   }
 
   // ////////////////////////////////////////////////////////////////////
+  void AirportDate::init () {
+    _structure.initChildrenHolder<OutboundPath>();
+  }
+
+  // ////////////////////////////////////////////////////////////////////
   void AirportDate::toStream (std::ostream& ioOut) const {
     ioOut << toString() << std::endl;
   }
