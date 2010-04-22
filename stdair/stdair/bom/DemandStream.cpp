@@ -36,6 +36,7 @@ namespace stdair {
                            iDemandDistribution, iNumberOfRequestsSeed,
                            iRequestDateTimeSeed, iDemandCharacteristicsSeed),
       _structure (ioDemandStreamStructure) {
+    init ();
   }
 
   // ////////////////////////////////////////////////////////////////////

@@ -13,6 +13,7 @@ namespace stdair {
                               Structure_T& ioBookingClassStructure)
     : BookingClassContent (iKey),
       _structure (ioBookingClassStructure) {
+    init ();
   }
   
   // ////////////////////////////////////////////////////////////////////

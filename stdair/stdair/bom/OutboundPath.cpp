@@ -13,6 +13,7 @@ namespace stdair {
                               Structure_T& ioOutboundPathStructure)
     : OutboundPathContent (iKey),
       _structure (ioOutboundPathStructure) {
+    init ();
   }
   
   // ////////////////////////////////////////////////////////////////////

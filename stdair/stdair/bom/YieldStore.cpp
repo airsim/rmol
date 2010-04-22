@@ -14,6 +14,7 @@ namespace stdair {
   YieldStore::YieldStore (const Key_T& iKey,
                           Structure_T& ioYieldStoreStructure)
     : YieldStoreContent (iKey), _structure (ioYieldStoreStructure) {
+    init ();
   }
 
   // ////////////////////////////////////////////////////////////////////

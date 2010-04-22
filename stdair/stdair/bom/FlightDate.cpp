@@ -14,6 +14,7 @@ namespace stdair {
   FlightDate::FlightDate (const Key_T& iKey,
                           Structure_T& ioFlightStructure)
     : FlightDateContent (iKey), _structure (ioFlightStructure) {
+    init ();
   }
 
   // ////////////////////////////////////////////////////////////////////

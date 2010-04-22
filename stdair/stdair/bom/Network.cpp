@@ -12,6 +12,7 @@ namespace stdair {
   Network::Network (const Key_T& iKey,
                     Structure_T& ioNetworkStructure)
     : NetworkContent (iKey), _structure (ioNetworkStructure) {
+    init ();
   }
 
   // ////////////////////////////////////////////////////////////////////

@@ -17,6 +17,7 @@ namespace stdair {
                   Structure_T& ioAirlineFeatureStructure)
     : AirlineFeatureContent (iKey),
       _structure (ioAirlineFeatureStructure) {
+    init ();
   }
   
   // ////////////////////////////////////////////////////////////////////

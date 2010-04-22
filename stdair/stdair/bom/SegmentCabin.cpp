@@ -12,6 +12,7 @@ namespace stdair {
   SegmentCabin::SegmentCabin (const Key_T& iKey,
                               Structure_T& ioSegmentStructure)
     : SegmentCabinContent (iKey), _structure (ioSegmentStructure) {
+    init ();
   }
   
   // ////////////////////////////////////////////////////////////////////

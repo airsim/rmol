@@ -13,6 +13,7 @@ namespace stdair {
   SegmentDate::SegmentDate (const Key_T& iKey,
                             Structure_T& ioSegmentStructure)
     : SegmentDateContent (iKey), _structure (ioSegmentStructure) {
+    init ();
   }
   
   // ////////////////////////////////////////////////////////////////////

@@ -12,6 +12,7 @@ namespace stdair {
   Inventory::Inventory (const Key_T& iKey,
                         Structure_T& ioInventoryStructure)
     : InventoryContent (iKey), _structure (ioInventoryStructure) {
+    init ();
   }
 
   // ////////////////////////////////////////////////////////////////////

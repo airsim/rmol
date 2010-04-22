@@ -13,6 +13,7 @@ namespace stdair {
   AirportDate::AirportDate (const Key_T& iKey, 
                             Structure_T& ioAirportStructure)
     : AirportDateContent (iKey), _structure (ioAirportStructure) {
+    init ();
   }
   
   // ////////////////////////////////////////////////////////////////////

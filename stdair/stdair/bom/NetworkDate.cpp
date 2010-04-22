@@ -12,6 +12,7 @@ namespace stdair {
   NetworkDate::NetworkDate (const Key_T& iKey,
                             Structure_T& ioNetworkDateStructure)
     : NetworkDateContent (iKey), _structure (ioNetworkDateStructure) {
+    init ();
   }
 
   // ////////////////////////////////////////////////////////////////////
