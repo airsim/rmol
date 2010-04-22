@@ -73,7 +73,8 @@ namespace stdair {
     }
 
     // //////////////////////////////////////////////////////////////////
-    /** Link two child content objects, the second one into the first one. */
+    /** Link two child content objects, the second one into the first one,
+        using the short key. */
     template <typename PARENT, typename CHILD>
     static void addObjectToTheDedicatedList (PARENT& ioParent,
                                              const CHILD& iChild) {
@@ -89,11 +90,28 @@ namespace stdair {
     }
 
     // //////////////////////////////////////////////////////////////////
+    /** Link two child content objects, the second one into the first one,
+        using the full key. */
+    template <typename PARENT, typename CHILD>
+    static void addFullObjectToTheDedicatedList (PARENT& ioParent,
+                                             const CHILD& iChild) {
+           
+      // Link both the parent and child structure objects
+      const bool hasLinkBeenSuccessful = 
+        FacBomStructure::addFullObjectToTheDedicatedList (ioParent._structure,
+                                                          iChild._structure);
+
+      if (hasLinkBeenSuccessful == false) {
+        throw ObjectLinkingException();
+      }
+    }
+
+    // //////////////////////////////////////////////////////////////////
     /** Link two child content objects. */
     template <typename OBJECT1, typename OBJECT2>
     static void linkTwoObjects (OBJECT1& ioObject1, OBJECT2& ioObject2) {
-      addObjectToTheDedicatedList (ioObject1, ioObject2);
-      addObjectToTheDedicatedList (ioObject2, ioObject1);
+      addFullObjectToTheDedicatedList (ioObject1, ioObject2);
+      addFullObjectToTheDedicatedList (ioObject2, ioObject1);
     }
 
     // //////////////////////////////////////////////////////////////////

@@ -49,7 +49,8 @@ namespace stdair {
     }
 
     // //////////////////////////////////////////////////////////////////
-   /** Link two child structure objects, the second one into the first one. */
+    /** Link two child structure objects, the second one into the first one,
+        using the short key. */
     template <typename PARENT, typename CHILD>
     static bool addObjectToTheDedicatedList (PARENT& ioParent,
                                              const CHILD& iChild) {
@@ -66,6 +67,28 @@ namespace stdair {
       }
 
       return addObjectToHolder<CHILD_CONTENT_T> (*lChildrenHolder_ptr, iChild);
+    }
+
+    // //////////////////////////////////////////////////////////////////
+    /** Link two child structure objects, the second one into the first one,
+        using the full key. */
+    template <typename PARENT, typename CHILD>
+    static bool addFullObjectToTheDedicatedList (PARENT& ioParent,
+                                             const CHILD& iChild) {
+      // Retrive the bom children holder corresponding the the children type.
+      typedef typename CHILD::Content_T CHILD_CONTENT_T;
+      typedef BomChildrenHolderImp<CHILD_CONTENT_T> CHILDREN_HOLDER_T;
+      
+      CHILDREN_HOLDER_T*& lChildrenHolder_ptr =
+        boost::fusion::at_key<CHILD_CONTENT_T> (ioParent._holderMap);
+
+      // If the holder does not existe, then create it.
+      if (lChildrenHolder_ptr == NULL) {
+        lChildrenHolder_ptr = &instance().create<CHILDREN_HOLDER_T> ();
+      }
+
+      return addFullObjectToHolder<CHILD_CONTENT_T> (*lChildrenHolder_ptr,
+                                                     iChild);
     }
 
     // //////////////////////////////////////////////////////////////////
@@ -96,6 +119,34 @@ namespace stdair {
       // Retrieve the short key
       const typename STRUCTURE_T::Key_T& lKey = iStructure.getKey();
       const std::string& lKeyStr = lKey.toString();
+      
+      // Insert the structure object in the dedicated lists
+      typedef typename HOLDER_T::BomChildrenMap_T BOM_MAP_T;
+      const bool hasInsertBeenSuccessful = ioHolder._bomChildrenMap.
+        insert (typename BOM_MAP_T::value_type (lKeyStr, &iStructure)).second;
+      
+      if (hasInsertBeenSuccessful == false) {
+        return hasInsertBeenSuccessful;
+      }
+      
+      ioHolder._bomChildrenList.push_back (&iStructure);
+      
+      return true;
+    }
+
+    // //////////////////////////////////////////////////////////////////
+    /** Add a BOM object into a dedicated BOM holder by using the
+        full key of the object. */
+    template <typename CONTENT>
+    static bool addFullObjectToHolder (BomChildrenHolderImp<CONTENT>& ioHolder,
+                                       const typename CONTENT::Structure_T& iStructure) {
+      // Retrieve the bom structure type.
+      typedef typename CONTENT::Structure_T STRUCTURE_T;
+      // Define the bom holder type.
+      typedef BomChildrenHolderImp<CONTENT> HOLDER_T;
+      
+      // Retrieve the short key
+      const std::string& lKeyStr = iStructure.getContent().describeKey();
       
       // Insert the structure object in the dedicated lists
       typedef typename HOLDER_T::BomChildrenMap_T BOM_MAP_T;

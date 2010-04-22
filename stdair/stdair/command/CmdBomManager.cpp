@@ -48,15 +48,6 @@ namespace stdair {
 
     // Link the created inventory with the bom root.
     FacBomContent::linkWithParent (lInventory, ioBomRoot);
-
-    // DEBUG
-    STDAIR_LOG_DEBUG ("Generated inventory: " << iAirlineCode);
-    const InventoryList_T lInvList = ioBomRoot.getInventoryList();
-    for (InventoryList_T::iterator itInv = lInvList.begin();
-         itInv != lInvList.end(); ++itInv) {
-      const Inventory& lCurrentInv = *itInv;
-      STDAIR_LOG_DEBUG ("Current inventory: " << lCurrentInv.describeKey());
-    }
     
     return lInventory;
   }
