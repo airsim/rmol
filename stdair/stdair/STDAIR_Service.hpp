@@ -14,8 +14,6 @@ namespace stdair {
 
   // Forward declarations
   class BomRoot;
-  class YieldStore;
-  class Inventory;
   
   /** Interface for the STDAIR Services. */
   class STDAIR_Service {
@@ -42,18 +40,6 @@ namespace stdair {
 
     /** Destructor. */
     ~STDAIR_Service();
-
-    
-    /** Retrieve the Inventory corresponding to the given airline code
-        (Inventory key).
-        <br>If not existing, a ObjectNotFoundException exception is thrown. */
-    Inventory& getInventory (const AirlineCode_T& iAirlineCode) const;
-
-    /** Retrieve the Yield Store corresponding to the given airline code
-        (YieldStore key).
-        <br>If not existing, a ObjectNotFoundException exception is thrown. */
-    YieldStore& getYieldStore (const AirlineCode_T& iAirlineCode) const;
-
     
     // ///////////////// Getters ///////////////////
     /** Get a reference on the BomRoot object.
@@ -62,23 +48,6 @@ namespace stdair {
     BomRoot& getBomRoot () const {
       return _bomRoot;
     }
-
-  public:
-    // /////// Construction and Destruction helper methods ///////
-    /** Retrieve the Inventory corresponding to the given airline code
-        (Inventory key).
-        <br>If not existing, a ObjectNotFoundException exception is thrown. */
-    Inventory& createInventory (const AirlineCode_T& iAirlineCode) const;
-
-    /** Retrieve the YieldStore corresponding to the given airline code
-        (YieldStore key).
-        <br>If not existing, a ObjectNotFoundException exception is thrown. */
-    YieldStore& createYieldStore (const AirlineCode_T& iAirlineCode) const;
-
-    /** Add the airline-specific AirlineFeature object to its AirlineFeatureSet
-        parent. */
-    void addAirlineFeature (const AirlineCode_T& iAirlineCode) const;
-
     
   private:
     // /////// Construction and Destruction helper methods ///////
@@ -86,13 +55,10 @@ namespace stdair {
     STDAIR_Service ();
     /** Default copy constructor. */
     STDAIR_Service (const STDAIR_Service&);
-
     /** Initialise the log. */
     void logInit (const BasLogParams&);
-
     /** Initialise the database session. */
     void dbInit (const BasDBParams&);
-
     /** Initialise.
         <br>The static instance of the log service (Logger object) is created.
         <br>The static instance of the database session manager
@@ -103,10 +69,8 @@ namespace stdair {
         in any service context. However, some lock mechanism may be needed
         in order to secure the access to the corresponding resources. */
     void init ();
-
     /** Finalise. */
     void finalise ();
-
     
   private:
     // /////////////// Attributes ///////////////

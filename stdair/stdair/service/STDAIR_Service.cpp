@@ -82,67 +82,10 @@ namespace stdair {
   }
   
   // //////////////////////////////////////////////////////////////////////
-  void STDAIR_Service::
-  addAirlineFeature (const AirlineCode_T& iAirlineCode) const {
-    // Delegate to the dedicated command
-    CmdBomManager::addAirlineFeature (_bomRoot, iAirlineCode);
-  }
-  
-  // //////////////////////////////////////////////////////////////////////
   void STDAIR_Service::finalise () {
     //std::cout << "In STDAIR_Service destructor, before cleaning" << std::endl;
     FacSupervisor::cleanAll();
     //std::cout << "In STDAIR_Service destructor, after cleaning" << std::endl;
-  }
-
-  // //////////////////////////////////////////////////////////////////////
-  Inventory& STDAIR_Service::
-  getInventory (const AirlineCode_T& iAirlineCode) const {
-
-    Inventory* lInventory_ptr = _bomRoot.getInventory (iAirlineCode);
-    if (lInventory_ptr == NULL) {
-      throw ObjectNotFoundException();
-    }
-    assert (lInventory_ptr != NULL);
-    
-    return *lInventory_ptr;
-  }
-  
-  // //////////////////////////////////////////////////////////////////////
-  YieldStore& STDAIR_Service::
-  getYieldStore (const AirlineCode_T& iAirlineCode) const {
-
-    YieldStore* lYieldStore_ptr = _bomRoot.getYieldStore (iAirlineCode);
-    if (lYieldStore_ptr == NULL) {
-      throw ObjectNotFoundException();
-    }
-    assert (lYieldStore_ptr != NULL);
-    
-    return *lYieldStore_ptr;
-  }
-  
-  /**
-     Note that the AirlineFeature is linked both to the Inventory
-     and to the AirlineFeatureSet, which in turn is linked to the BomRoot.
-     There is therefore a duplication of the structure links.
-  */
-
-  // //////////////////////////////////////////////////////////////////////
-  Inventory& STDAIR_Service::
-  createInventory (const AirlineCode_T& iAirlineCode) const {
-    // Delegate to the dedicated command
-    Inventory& oInventory = 
-      CmdBomManager::getOrCreateInventory (_bomRoot, iAirlineCode);
-    return oInventory;
-  }
-
-  // //////////////////////////////////////////////////////////////////////
-  YieldStore& STDAIR_Service::
-  createYieldStore (const AirlineCode_T& iAirlineCode) const {
-    // Delegate to the dedicated command
-    YieldStore& oYieldStore = 
-      CmdBomManager::getOrCreateYieldStore (_bomRoot, iAirlineCode);
-    return oYieldStore;
   }
 
 }

@@ -13,58 +13,79 @@ namespace stdair {
   // Forward declarations
   class BomRoot;
   class Inventory;
+  class FlightDate;
+  class SegmentDate;
+  class SegmentCabin;
+  class LegDate;
+  class LegCabin;
+  class Bucket;
+  class Network;
+  class NetworkDate;
+  class AirportDate;
+  class OutboundPath;
+  class YieldStore;
+  class DemandStream;
+  struct FlightDateKey_T;
+  struct SegmentDateKey_T;
+  struct NetworkKey_T;
+  struct OutboundPathKey_T;
 
   /** Class wrapping utility functions for handling the BOM tree objects. */
   class CmdBomManager : public CmdAbstract {
   public:
-
-    /** If needed, create the Inventory corresponding to the given airline code
-        (Inventory key), link it to the BomRoot object and to the
-        associated AirlineFeature object, itself retrieved from the
-        AirlineFeatureSet object.
-        Otherwise, just retrieve the reference on the existing Inventory object
-        corresponding to the given airline code.
-        <br>If not existing, a ObjectNotFoundException exception is thrown.
-        @param BomRoot& Root of the BOM tree.
-        @param const AirlineCode_T& Airline code for the inventory to be
-               created . */
-    static Inventory& getOrCreateInventory (BomRoot&, const AirlineCode_T&);
-      
-    /** If needed, create the YieldStore corresponding to the given airline code
-        (YieldStore key), link it to the BomRoot object and to the
-        associated AirlineFeature object, itself retrieved from the
-        AirlineFeatureSet object.
-        Otherwise, just retrieve the reference on the existing YieldStore object
-        corresponding to the given airline code.
-        <br>If not existing, a ObjectNotFoundException exception is thrown.
-        @param BomRoot& Root of the BOM tree.
-        @param const AirlineCode_T& Airline code for the YieldStore to be
-               created . */
-    static YieldStore& getOrCreateYieldStore (BomRoot&, const AirlineCode_T&);
-      
-    /** Add the airline-specific AirlineFeature object to its AirlineFeatureSet
-        parent.
-        @param BomRoot& Root of the BOM tree.
-        @param const AirlineCode_T& Airline code for the inventory to be
-               created . */
-    static void addAirlineFeature (BomRoot&, const AirlineCode_T& iAirlineCode);
     
-  private:
-    // ///////////////////// Internal support methods ////////////////////////
-    /** Create the Inventory corresponding to the given airline code
-        (Inventory key).
+    /** Create the airline-specific AirlineFeature object to the BomRoot
+        and its corresponding Inventory.
         @param BomRoot& Root of the BOM tree.
         @param const AirlineCode_T& Airline code for the inventory to be
                created . */
-    static Inventory& createInventoryInternal (BomRoot&, const AirlineCode_T&);
-
+    static void createAirlineFeature (const BomRoot&, const AirlineCode_T&);
+      
     /** Create the YieldStore corresponding to the given airline code
-        (YieldStore key).
-        @param BomRoot& Root of the BOM tree.
-        @param const AirlineCode_T& Airline code for the YieldStore to be
-               created . */
-    static YieldStore& createYieldStoreInternal (BomRoot&,
-                                                 const AirlineCode_T&);
+        (YieldStore key). */
+    static YieldStore& createYieldStore (const BomRoot&, const AirlineCode_T&);
+
+    /** Create the inventory corresponding to the given airline code
+        (Inventory key), link it to the BomRoot object and to the
+        associated AirlineFeature object. */
+    static Inventory& createInventory (const BomRoot&, const AirlineCode_T&);
+
+    /** Create the flight-date corresponding to the given key. */
+    static FlightDate& createFlightDate (const Inventory&,
+                                         const FlightDateKey_T&);
+
+    /** Create the leg-date corresponding to the given boarding point. */
+    static LegDate& createLegDate (const FlightDate&, const AirportCode_T&);
+
+    /** Create the leg-cabin corresponding to the given cabin code. */
+    static LegCabin& createLegCabin (const LegDate&, const CabinCode_T&);
+    
+    /** Create the segment-date corresponding to the given key. */
+    static SegmentDate& createSegmentDate (const FlightDate&,
+                                           const SegmentDateKey_T&);
+
+    /** Create the segment-cabin corresponding to the given cabin code. */
+    static SegmentCabin& createSegmentCabin (const SegmentDate&, 
+                                             const CabinCode_T&);
+
+    /** Create the booking class corresponding to the given class code. */
+    static void createBookingClass (const SegmentCabin&, const ClassCode_T&);
+
+    /** Create the inventory corresponding to the given network key,
+        then link it to the BomRoot object. */
+    static Network& createNetwork (const BomRoot&, const NetworkKey_T&);
+    
+    /** Create the network-date corresponding to the given date. */
+    static NetworkDate& createNetworkDate (const Network&, const Date_T&);
+
+    /** Create the airport-date corresponding to the given boarding point. */
+    static AirportDate& createAirportDate (const NetworkDate&,
+                                           const AirportCode_T&);
+    
+    /** Create the outbound path  corresponding to the given key. */
+    static OutboundPath& createOutboundPath (const AirportDate&,
+                                             const OutboundPathKey_T&);
+    
   };
 
 }
