@@ -246,7 +246,7 @@ namespace stdair {
   /** Define the sub-class code (e.g., 0, 1, 2, etc.). The subclass is
       a sub-structure for the booking class, allowing to have specific
       rules for some criteria like POS. */
-  typedef std::string SubclassCode_T;
+  typedef unsigned short SubclassCode_T;
 
   /** Define the flight path code (code made by a suite of flight numbers). */
   typedef std::string FlightPathCode_T;
