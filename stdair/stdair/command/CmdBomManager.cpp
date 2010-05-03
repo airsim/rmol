@@ -129,14 +129,17 @@ namespace stdair {
   }
 
   // ////////////////////////////////////////////////////////////////////
-  void CmdBomManager::createBookingClass (const SegmentCabin& iSegmentCabin,
-                                          const ClassCode_T& iClassCode) {
+  BookingClass& CmdBomManager::
+  createBookingClass (const SegmentCabin& iSegmentCabin,
+                      const ClassCode_T& iClassCode) {
     // Instantiate a booking class object with the given class code
     const BookingClassKey_T lClassKey (iClassCode);
-    BookingClass& lClass =
+    BookingClass& oClass =
       FacBomContent::instance().create<BookingClass> (lClassKey);
     // Link the created booking-class with its parent segment-cabin.
-    FacBomContent::linkWithParent (lClass, iSegmentCabin);
+    FacBomContent::linkWithParent (oClass, iSegmentCabin);
+
+    return oClass;
   }  
 
   // //////////////////////////////////////////////////////////////////////

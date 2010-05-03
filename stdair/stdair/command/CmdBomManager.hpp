@@ -16,9 +16,9 @@ namespace stdair {
   class FlightDate;
   class SegmentDate;
   class SegmentCabin;
+  class BookingClass;
   class LegDate;
   class LegCabin;
-  class Bucket;
   class Network;
   class NetworkDate;
   class AirportDate;
@@ -69,7 +69,8 @@ namespace stdair {
                                              const CabinCode_T&);
 
     /** Create the booking class corresponding to the given class code. */
-    static void createBookingClass (const SegmentCabin&, const ClassCode_T&);
+    static BookingClass& createBookingClass (const SegmentCabin&,
+                                             const ClassCode_T&);
 
     /** Create the inventory corresponding to the given network key,
         then link it to the BomRoot object. */

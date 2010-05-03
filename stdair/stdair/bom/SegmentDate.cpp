@@ -105,6 +105,12 @@ namespace stdair {
   const FlightNumber_T& SegmentDate::getFlightNumber () const {
     return _structure.getParent().getKey().getFlightNumber();
   }
+
+  // ////////////////////////////////////////////////////////////////////
+  SegmentCabin* SegmentDate::
+  getSegmentCabin (const CabinCode_T& iCabinCode) const {
+    return _structure.getChildPtr<SegmentCabin> (iCabinCode);
+  }
   
 }
 

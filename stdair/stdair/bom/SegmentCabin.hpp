@@ -46,6 +46,11 @@ namespace stdair {
     BookingClassList_T getBookingClassList () const;
     BookingClassMap_T getBookingClassMap () const;
 
+    /** Retrieve, if existing, the BookingClass corresponding to the
+        given class code.
+        <br>If not existing, return the NULL pointer. */
+    BookingClass* getBookingClass (const ClassCode_T&) const;
+
   public:
     // /////////// Display support methods /////////
     /** Dump a Business Object into an output stream.

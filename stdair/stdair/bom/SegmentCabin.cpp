@@ -63,6 +63,12 @@ namespace stdair {
   BookingClassMap_T SegmentCabin::getBookingClassMap () const {
     return _structure.getChildrenHolder<BookingClass>();
   }
+
+  // ////////////////////////////////////////////////////////////////////
+  BookingClass* SegmentCabin::
+  getBookingClass (const ClassCode_T& iClassCode) const {
+    return _structure.getChildPtr<BookingClass> (iClassCode);
+  }
   
 }
 

@@ -54,6 +54,11 @@ namespace stdair {
     /** Get the airline code of the segment. */
     const AirlineCode_T& getAirlineCode () const;
 
+    /** Retrieve, if existing, the SegmentCabin corresponding to the
+        given cabin code.
+        <br>If not existing, return the NULL pointer. */
+    SegmentCabin* getSegmentCabin (const CabinCode_T&) const;
+
   public:
     // /////////// Business Methods //////////////
     /** States whether or not the given SegmentDate may connect with the
