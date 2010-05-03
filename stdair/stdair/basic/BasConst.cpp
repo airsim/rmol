@@ -136,8 +136,8 @@ namespace stdair {
   /** Default commited space value for Leg cabins. */
   const BlockSpace_T DEFAULT_BLOCK_SPACE = 0.0;
     
-  /** Default availability for BookingClass. */
-  const Availability_T DEFAULT_CLASS_AVAILABILITY = 0.0;
+  /** Default availability. */
+  const Availability_T DEFAULT_AVAILABILITY = 0.0;
 
   /** Default boolean for censorship flag given the status of
       availability for BookingClass. */
@@ -168,8 +168,8 @@ namespace stdair {
   /** Default closed class code. */
   const ClassCode_T DEFAULT_CLOSED_CLASS_CODE = "CC";
     
-  /** Default Fare value for BookingClass. */
-  const Fare_T DEFAULT_CLASS_FARE_VALUE = 0.0;
+  /** Default Fare value. */
+  const Fare_T DEFAULT_FARE_VALUE = 0.0;
 
   /** Default yield value for a virtual class. */
   const Yield_T DEFAULT_CLASS_YIELD_VALUE = 0.0;

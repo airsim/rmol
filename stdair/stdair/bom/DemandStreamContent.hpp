@@ -56,83 +56,83 @@ namespace stdair {
 
     /** Get the arrival pattern. */
     const ContinuousFloatDuration_T& getArrivalPattern() const {
-      return _demandCharacteristics.getArrivalPattern();
+      return _demandCharacteristics._arrivalPattern;
     }
 
     /** Get the POS probability mass. */
     const POSProbabilityMass_T& getPOSProbabilityMass() const {
-      return _demandCharacteristics.getPOSProbabilityMass();
+      return _demandCharacteristics._posProbabilityMass;
     }
 
     /** Get the channel probability mass. */
     const ChannelProbabilityMass_T& getChannelProbabilityMass() const {
-      return _demandCharacteristics.getChannelProbabilityMass();
+      return _demandCharacteristics._channelProbabilityMass;
     }
 
     /** Get the trip type probability mass. */
     const TripTypeProbabilityMass_T& getTripTypeProbabilityMass() const {
-      return _demandCharacteristics.getTripTypeProbabilityMass();
+      return _demandCharacteristics._tripTypeProbabilityMass;
     }
 
     /** Get the stay duration probability mass. */
     const StayDurationProbabilityMass_T& getStayDurationProbabilityMass() const {
-      return _demandCharacteristics.getStayDurationProbabilityMass();
+      return _demandCharacteristics._stayDurationProbabilityMass;
     }
 
     /** Get the frequent flyer probability mass. */
     const FrequentFlyerProbabilityMass_T& getFrequentFlyerProbabilityMass() const {
-      return _demandCharacteristics.getFrequentFlyerProbabilityMass();
+      return _demandCharacteristics._frequentFlyerProbabilityMass;
     }
 
     /** Get the preferred departure time cumulative distribution. */
     const PreferredDepartureTimeCumulativeDistribution_T& getPreferredDepartureTimeCumulativeDistribution () const {
-      return _demandCharacteristics.getPreferredDepartureTimeCumulativeDistribution();
+      return _demandCharacteristics._preferredDepartureTimeCumulativeDistribution;
     }
     
     /** Get the WTP cumulative distribution. */
     const WTPCumulativeDistribution_T& getWTPCumulativeDistribution() const {
-      return _demandCharacteristics.getWTPCumulativeDistribution();
+      return _demandCharacteristics._wtpCumulativeDistribution;
     }
 
     /** Get the value of time cumulative distribution. */
     const ValueOfTimeCumulativeDistribution_T& getValueOfTimeCumulativeDistribution() const {
-      return _demandCharacteristics.getValueOfTimeCumulativeDistribution();
+      return _demandCharacteristics._valueOfTimeCumulativeDistribution;
     }
 
     /** Get the mean number of requests. */
     const NbOfRequests_T& getMeanNumberOfRequests() const {
-      return _demandDistribution.getMeanNumberOfRequests();
+      return _demandDistribution._meanNumberOfRequests;
     }
     
     /** Get the standard deviation of number of requests. */
     const StandardDeviationValue_T& getStandardDeviationNumberOfRequests() const {
-      return _demandDistribution.getStandardDeviationNumberOfRequests();
+      return _demandDistribution._standardDeviationNumberOfRequests;
     }
     
     /** Get the cumulative probability of arrival pattern for last
         request generated so far. */
     const Probability_T& getCumulativeProbabilitySoFar () const {
-      return _randomGenerationContext.getCumulativeProbabilitySoFar();
+      return _randomGenerationContext._cumulativeProbabilitySoFar;
     }
     
     /** Get the number of requests generated so far. */
     const Count_T& getNumberOfRequestsGeneratedSoFar() const {
-      return _randomGenerationContext.getNumberOfRequestsGeneratedSoFar();
+      return _randomGenerationContext._numberOfRequestsGeneratedSoFar;
     }
     
     /** Get the seed of the random generator for the number of requests. */
     const RandomSeed_T& getNumberOfRequestsRandomGeneratorSeed () const {
-      return _numberOfRequestsRandomGenerator.getSeed();
+      return _numberOfRequestsRandomGenerator._seed;
     }
 
     /** Get the seed of the random generator for the request datetime. */
     const RandomSeed_T& getRequestDateTimeRandomGeneratorSeed () const {
-      return _requestDateTimeRandomGenerator.getSeed();
+      return _requestDateTimeRandomGenerator._seed;
     }
 
     /** Get the seed of the random generator for the demand characteristics. */
     const RandomSeed_T& getDemandCharacteristicsRandomGeneratorSeed () const {
-      return _demandCharacteristicsRandomGenerator.getSeed();
+      return _demandCharacteristicsRandomGenerator._seed;
     }
 
     /** Get the demand characteristics. */
@@ -150,14 +150,14 @@ namespace stdair {
     /** Set the cumulative probability of arrival pattern for last
         request generated so far. */
     void setCumulativeProbabilitySoFar (const Probability_T& iCumulativeProbability) {
-      _randomGenerationContext.
-        setCumulativeProbabilitySoFar (iCumulativeProbability);
+      _randomGenerationContext._cumulativeProbabilitySoFar = 
+        iCumulativeProbability;
     }
     
     /** Set the number of requests generated so far. */
     void setNumberOfRequestsGeneratedSoFar (const Count_T& iNumberOfRequests) {
-      _randomGenerationContext.
-        setNumberOfRequestsGeneratedSoFar (iNumberOfRequests);
+      _randomGenerationContext._numberOfRequestsGeneratedSoFar =
+        iNumberOfRequests;
     }
     
   public:

@@ -48,8 +48,8 @@ namespace stdair {
   /** Default commited space value for Leg cabins. */
   extern const BlockSpace_T DEFAULT_BLOCK_SPACE;
     
-  /** Default availability for BookingClass. */
-  extern const Availability_T DEFAULT_CLASS_AVAILABILITY;
+  /** Default availability. */
+  extern const Availability_T DEFAULT_AVAILABILITY;
 
   /** Default boolean for censorship flag given the status of 
       availability for BookingClass. */
@@ -74,8 +74,8 @@ namespace stdair {
   /** Default over-booking rate for BookingClass. */
   extern const OverbookingRate_T DEFAULT_CLASS_OVERBOOKING_RATE;
 
-  /** Default over-booking rate for BookingClass. */
-  extern const Fare_T DEFAULT_CLASS_FARE_VALUE;
+  /** Default fare. */
+  extern const Fare_T DEFAULT_FARE_VALUE;
 
   /** Default revenue value for BookingClass. */
   extern const Revenue_T DEFAULT_REVENUE_VALUE;

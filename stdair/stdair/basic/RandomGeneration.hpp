@@ -14,13 +14,6 @@ namespace stdair {
 
   /** Random generator. */
   struct RandomGeneration {
-  public:
-    // ///////////// Getters ///////////
-    /** Get the seed of the random generator. */
-    const RandomSeed_T& getSeed () const {
-      return _seed;
-    }
-    
     // //////////// Business Methods /////////////
     /** Generate a randomized number following a uniform distribution
         between 0 (included) and 1 (excluded). */
@@ -35,25 +28,20 @@ namespace stdair {
         specified by a mean and a standard deviation. */
     RealNumber_T generateNormal (const RealNumber_T&, const RealNumber_T&);
     
-  public:
     // ////////// Constructors and destructors /////////
     /** Constructor. */
     RandomGeneration (const RandomSeed_T&);
     /** Default constructors. */
     RandomGeneration ();
     RandomGeneration (const RandomGeneration&);
-    
     /** Destructor. */
-    virtual ~RandomGeneration ();
-  
+    ~RandomGeneration ();
     /** Initialize the random generator.
         <br>A uniform random number distribution is defined, which
         produces "real" values between 0 and 1 (0 inclusive, 1
         exclusive). */
     void init ();
 
-
-  private:
     // ////////// Attributes //////////
     /** The seed of the random generator.
         <br>The seed is unsigned, otherwise the wrong overload may be

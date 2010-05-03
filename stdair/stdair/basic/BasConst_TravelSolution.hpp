@@ -44,7 +44,7 @@ namespace stdair {
   extern const NbOfBookings_T DEFAULT_CLASS_NB_OF_BOOKINGS;
 
   /** Default value of Fare. */
-  extern const Fare_T DEFAULT_CLASS_FARE_VALUE;
+  extern const Fare_T DEFAULT_FARE_VALUE;
 
   /** Default nember of required seats by the demand. */
   extern const unsigned short DEFAULT_NUMBER_OF_REQUIRED_SEATS;

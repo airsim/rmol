@@ -16,8 +16,8 @@ namespace stdair {
     _capacity (DEFAULT_CABIN_CAPACITY),
     _soldSeat (DEFAULT_CLASS_NB_OF_BOOKINGS),
     _commitedSpace (DEFAULT_COMMITED_SPACE),
-    _availabilityPool (DEFAULT_CLASS_AVAILABILITY),
-    _availability (DEFAULT_CLASS_AVAILABILITY),
+    _availabilityPool (DEFAULT_AVAILABILITY),
+    _availability (DEFAULT_AVAILABILITY),
     _bidPriceVector (DEFAULT_BID_PRICE_VECTOR),
     _currentBidPrice (DEFAULT_BID_PRICE) {
   }

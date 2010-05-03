@@ -7,6 +7,7 @@
 #include <ostream>
 #include <sstream>
 // StdAir
+#include <stdair/basic/BasConst_BookingClass.hpp>
 #include <stdair/bom/OutboundPath.hpp>
 #include <stdair/bom/TravelSolutionStruct.hpp>
 
@@ -22,25 +23,21 @@ namespace stdair {
   TravelSolutionStruct::
   TravelSolutionStruct (const TravelSolutionStruct& iTravelSolutionStruct)
     : _outboundPath_ptr (iTravelSolutionStruct._outboundPath_ptr),
-      _bookingClassList (iTravelSolutionStruct._bookingClassList) {
+      _bookingClassList (iTravelSolutionStruct._bookingClassList),
+      _fare (iTravelSolutionStruct._fare),
+      _availability (iTravelSolutionStruct._availability) {
   }
   
   // ////////////////////////////////////////////////////////////////////
   TravelSolutionStruct::
   TravelSolutionStruct (OutboundPath& ioOutboundPath,
                         const BookingClassSTLList_T& iBookingClassList)
-    : _outboundPath_ptr (&ioOutboundPath),
-      _bookingClassList (iBookingClassList) {
+    : _outboundPath_ptr (&ioOutboundPath), _bookingClassList (iBookingClassList),
+      _fare (DEFAULT_FARE_VALUE), _availability (DEFAULT_AVAILABILITY) {
   }
 
   // ////////////////////////////////////////////////////////////////////
   TravelSolutionStruct::~TravelSolutionStruct () {
-  }
-      
-  // //////////////////////////////////////////////////////////////////////
-  OutboundPath& TravelSolutionStruct::getOutboundPath() const {
-    assert (_outboundPath_ptr != NULL);
-    return *_outboundPath_ptr;
   }
   
   // //////////////////////////////////////////////////////////////////////

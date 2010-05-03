@@ -56,9 +56,9 @@ namespace stdair {
   // ////////////////////////////////////////////////////////////////////
   void DemandStreamContent::init() {
     // Generate the number of requests
-    const RealNumber_T lMu = _demandDistribution.getMeanNumberOfRequests ();
+    const RealNumber_T lMu = _demandDistribution._meanNumberOfRequests;
     const RealNumber_T lSigma =
-      _demandDistribution.getStandardDeviationNumberOfRequests ();
+      _demandDistribution._standardDeviationNumberOfRequests;
     
     const RealNumber_T lRealNumberOfRequestsToBeGenerated =
       _numberOfRequestsRandomGenerator.generateNormal (lMu, lSigma);

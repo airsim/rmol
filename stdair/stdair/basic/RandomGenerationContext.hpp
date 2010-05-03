@@ -13,49 +13,20 @@ namespace stdair {
 
   /** Structure holding the context necessary for demand random generation. */
   struct RandomGenerationContext {
-
-  public:
-    // ///////////// Getters ///////////
-    /** Get the cumulative probability of arrival pattern for last
-        request generated so far. */
-    const Probability_T& getCumulativeProbabilitySoFar () const {
-      return _cumulativeProbabilitySoFar;
-    }
     
-    /** Get the number of requests generated so far. */
-    const Count_T& getNumberOfRequestsGeneratedSoFar () const {
-      return _numberOfRequestsGeneratedSoFar;
-    }
-    
-    /** Set the cumulative probability of arrival pattern for last
-        request generated so far. */
-    void setCumulativeProbabilitySoFar (const Probability_T& iCumulativeProbability) {
-      _cumulativeProbabilitySoFar = iCumulativeProbability;
-    }
-    
-    /** Set the number of requests generated so far. */
-    void setNumberOfRequestsGeneratedSoFar (const Count_T& iNumberOfRequests) {
-      _numberOfRequestsGeneratedSoFar = iNumberOfRequests;
-    }
-    
-  public:
     // ////////// Constructors and destructors /////////
     /** Constructor by default */
     RandomGenerationContext ();
     /** Default constructors. */
     RandomGenerationContext (const RandomGenerationContext&);
-
     /** Destructor */
-    virtual ~RandomGenerationContext ();
+    ~RandomGenerationContext ();
     
-  public:
     // /////////////// Business Methods //////////
     /** Increment counter of requests generated so far */
     void incrementGeneratedRequestsCounter ();
-    
-  
-  private:
-    // ////////// Attributes //////////
+
+        // ////////// Attributes //////////
     /** Cumulative probability in arrival pattern for last request
         generated so far (needed for sequential generation)*/
     Probability_T _cumulativeProbabilitySoFar;

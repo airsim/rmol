@@ -28,7 +28,7 @@ namespace stdair {
   extern const Distance_T DEFAULT_DISTANCE_VALUE;
 
   /** Default value of Fare. */
-  extern const Fare_T DEFAULT_CLASS_FARE_VALUE;
+  extern const Fare_T DEFAULT_FARE_VALUE;
 
   /** Default revenue value. */
   extern const Revenue_T DEFAULT_REVENUE_VALUE;

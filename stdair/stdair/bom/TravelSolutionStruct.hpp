@@ -9,6 +9,7 @@
 #include <string>
 #include <vector>
 // StdAir
+#include <stdair/STDAIR_Types.hpp>
 #include <stdair/basic/StructAbstract.hpp>
 #include <stdair/bom/BookingClassTypes.hpp>
 
@@ -21,13 +22,22 @@ namespace stdair {
   struct TravelSolutionStruct : public StructAbstract {
   public:
     // /////////// Getters ///////////////
-    /** Get the OutboundPath. */
-    OutboundPath& getOutboundPath() const;
-
-    /** Get the list of booking classes. */
+    /** Retrieve the attributes of the object. */
+    OutboundPath& getOutboundPath() const {
+      assert (_outboundPath_ptr != NULL);
+      return *_outboundPath_ptr;
+    }
     const BookingClassSTLList_T& getBookingClassList () const {
       return _bookingClassList;
     }
+    const Fare_T getFare() const { return _fare; }
+    const Availability_T getAvailability() const { return _availability; }
+
+  public:
+    // /////////// Setters ///////////////
+    /** Setter for some attributes. */
+    void setFare (const Fare_T& iFare) { _fare = iFare; }
+    void setAvailability (const Availability_T& iAvail) { _availability=iAvail; }
 
   public:
     // /////////// Display support method /////////////
@@ -69,6 +79,12 @@ namespace stdair {
 
     /** The list of booking classes which make the travel solution. */
     BookingClassSTLList_T _bookingClassList;
+
+    /** The fare of the travel solution. */
+    Fare_T _fare;
+
+    /** The availability of the travel solution. */
+    Availability_T _availability;
   };
 
 }

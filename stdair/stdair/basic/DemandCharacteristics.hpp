@@ -15,54 +15,7 @@ namespace stdair {
   
   /** Class modeling the characteristics of a demand type. */
   struct DemandCharacteristics {
-    
-  public:
-    // ///////////// Getters /////////// 
-    /** Get the arrival pattern. */
-    const ContinuousFloatDuration_T& getArrivalPattern() const {
-      return _arrivalPattern;
-    }
-
-    /** Get the point-of-sale probability mass. */
-    const POSProbabilityMass_T& getPOSProbabilityMass() const {
-      return _posProbabilityMass;
-    }
-    
-    /** Get the channel probability mass. */
-    const ChannelProbabilityMass_T& getChannelProbabilityMass() const {
-      return _channelProbabilityMass;
-    }
-
-    /** Get the trip type probability mass. */
-    const TripTypeProbabilityMass_T& getTripTypeProbabilityMass() const {
-      return _tripTypeProbabilityMass;
-    }
-    
-    /** Get the stay duration probability mass. */
-    const StayDurationProbabilityMass_T& getStayDurationProbabilityMass() const {
-      return _stayDurationProbabilityMass;
-    }
-
-    /** Get the frequent flyer probability mass. */
-    const FrequentFlyerProbabilityMass_T& getFrequentFlyerProbabilityMass() const {
-      return _frequentFlyerProbabilityMass;
-    }
-
-    /** Get the preferred departure time cumulative distribution. */
-    const PreferredDepartureTimeCumulativeDistribution_T& getPreferredDepartureTimeCumulativeDistribution () const {
-      return _preferredDepartureTimeCumulativeDistribution;
-    }
-
-    /** Get the WTP cumulative distribution. */
-    const WTPCumulativeDistribution_T& getWTPCumulativeDistribution() const {
-      return _wtpCumulativeDistribution;
-    }
-
-    /** Get the value of time cumulative distribution. */
-    const ValueOfTimeCumulativeDistribution_T& getValueOfTimeCumulativeDistribution () const {
-      return _valueOfTimeCumulativeDistribution;
-    }
-    
+        
   public:
     // ////////////// Display Support Methods //////////
     /** Display demand characteristics */
@@ -90,7 +43,7 @@ namespace stdair {
     /** Copy constructor. */
     DemandCharacteristics (const DemandCharacteristics&);
 
-  private:
+  public:
     // //////////////////// Attributes /////////////////////
     /** Arrival pattern (cumulative distribution of timing of arrival
         of requests (negative number of days between departure date

@@ -6,8 +6,7 @@
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // STL
-#include <map>
-#include <vector>
+#include <list>
 
 namespace stdair {
 
@@ -15,7 +14,7 @@ namespace stdair {
   struct TravelSolutionStruct;
   
   /** Define the booking class list. */
-  typedef std::vector<TravelSolutionStruct> TravelSolutionList_T;
+  typedef std::list<TravelSolutionStruct> TravelSolutionList_T;
 
 }
 #endif // __STDAIR_BOM_TRAVELSOLUTIONTYPES_HPP

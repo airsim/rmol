@@ -14,7 +14,7 @@ namespace stdair {
     : _key (iKey),
       _bookingCounter (DEFAULT_CLASS_NB_OF_BOOKINGS),
       _flightRevenue (DEFAULT_REVENUE_VALUE),
-      _flightAverageFare (DEFAULT_CLASS_FARE_VALUE),
+      _flightAverageFare (DEFAULT_FARE_VALUE),
       _flightASK (DEFAULT_DISTANCE_VALUE),
       _flightYield (DEFAULT_REVENUE_VALUE),
       _flightRPK (DEFAULT_DISTANCE_VALUE),
