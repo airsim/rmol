@@ -34,31 +34,6 @@ namespace stdair {
       return _key.getOffPoint();
     }
 
-    /** Get the booking counter. */
-    const NbOfBookings_T& getBookingCounter() const {
-      return _bookingCounter;
-    }
-
-    /** Get the total segment revenue. */
-    const Revenue_T& getRevenue () const {
-      return _segmentRevenue;
-    }
-
-    /** Get the segment average fare. */
-    const Fare_T& getAverageFare() const {
-      return _segmentAverageFare;
-    }
-
-    /** Get the unit revenue value for this segment. */
-    const Revenue_T& getUnitRevenue () const {
-      return _segmentUnitRevenue;
-    }
-
-    /** Get the Revenue Passanger Kilometer for this segment. */
-    const Distance_T& getRPK() const {
-      return _segmentRPK;
-    }
-
     /** Get the boarding date. */
     const Date_T& getBoardingDate () const {
       return _boardingDate;
@@ -102,11 +77,6 @@ namespace stdair {
     
   public:
     // ///////// Setters //////////
-    /** Set the revenue amount. */
-    void setRevenue (const Revenue_T& iSegmentRevenue) {
-      _segmentRevenue = iSegmentRevenue;
-    }
-
     /** Set the boarding date. */
     void setBoardingDate (const Date_T& iBoardingDate) {
       _boardingDate = iBoardingDate;
@@ -130,26 +100,6 @@ namespace stdair {
     /** Set the elapsed time. */
     void setElapsedTime (const Duration_T& iElapsedTime) {
       _elapsedTime = iElapsedTime;
-    }
-
-    /** Set the total number of bookings. */
-    void setBookingCounter (const NbOfBookings_T& iBookCounter) {
-      _bookingCounter = iBookCounter;
-    }
-
-    /** Set the average segment fare. */
-    void setAverageSegmentFare(Fare_T iSAFare) {
-      _segmentAverageFare = iSAFare;
-    }
-
-    /** Set the Revenue Passanger Kilometer. */
-    void setRPK (const Distance_T& iSegmentRPK) {
-      _segmentRPK = iSegmentRPK;
-    }
-      
-    /** Set the Unit Revenue. */
-    void setUnitRevenue (const Revenue_T& iSegmentURevenue) {
-      _segmentUnitRevenue = iSegmentURevenue;
     }
 
     /** Set the distance. */
@@ -187,21 +137,6 @@ namespace stdair {
     // Attributes
     /** The key of both structure and content objects. */
     Key_T _key;
-    
-    /** Counter of all bookings into this segment. */
-    NbOfBookings_T _bookingCounter;
-
-    /** Total amount of money earn with segment bookings. */
-    Revenue_T _segmentRevenue;
-
-    /** Value of the average fare of this segment date.*/
-    Fare_T _segmentAverageFare;
-
-    /** Value of the Unit Revenue (Revenue/ASK). */
-    Revenue_T _segmentUnitRevenue;
-
-    /** Value of the Revenue Passanger Kilometer for this segment date.*/
-    Distance_T _segmentRPK;
 
     /** Boarding Date. */
     Date_T _boardingDate;

@@ -69,21 +69,6 @@ namespace stdair {
       return _capacity;
     }
 
-    /** Get the Availability Seat Kilometer for this leg. */
-    const Distance_T& getASK() const {
-      return _legASK;
-    }
-
-    /** Get the number of sold seat. */
-    const NbOfBookings_T& getSoldSeat () const {
-      return _legSoldSeat;
-    }
-
-    /** Get the load factor value for this leg. */
-    const Revenue_T& getLoadFactor () const {
-      return _legLoadFactor;
-    }
-
     /** Get the date off set (off date - boarding date). */
     const DateOffSet_T getDateOffSet () const {
       return _offDate - _boardingDate;
@@ -122,11 +107,6 @@ namespace stdair {
       _offTime = iOffTime;
     }
 
-    /** Set the number of sold seat. */
-    void setSoldSeat (const NbOfBookings_T& iLSoldSeat) {
-      _legSoldSeat = iLSoldSeat;
-    }
-
     /** Set the elapsed time. */
     void setElapsedTime (const Duration_T&);
     
@@ -155,7 +135,7 @@ namespace stdair {
     LegDateContent (const Key_T&);
     LegDateContent (const LegDateContent&);
     /** Destructor. */
-    virtual ~LegDateContent();
+    ~LegDateContent();
 
   protected:
     // Attributes
@@ -185,16 +165,6 @@ namespace stdair {
 
     /** Capacity of the leg. */
     CabinCapacity_T _capacity;
-
-    /** Value of the Available Seat Kilometer for this leg.*/
-    Distance_T _legASK;
-
-    /** Sold seat into the leg. */
-    NbOfBookings_T  _legSoldSeat;
-     
-    /** Value of the Load Factor (ASK/RPK) or
-        (sold seats/ capacity) for the leg level. */
-    Revenue_T _legLoadFactor;
   };
 
 }

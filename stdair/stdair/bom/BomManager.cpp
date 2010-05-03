@@ -97,15 +97,7 @@ namespace stdair {
             << std::endl << std::endl;
 
     oStream << iFlightDate.getFlightNumber()
-            << " (" << iFlightDate.getFlightDate() << "), "
-            << iFlightDate.getBookingCounter() << ", "
-            << iFlightDate.getRevenue() << ", "
-            << iFlightDate.getAverageFare() << ", "
-            << iFlightDate.getASK() << ", "
-            << iFlightDate.getYield() << ", "
-            << iFlightDate.getRPK() << ", "
-            << iFlightDate.getUnitRevenue() << ", "
-            << iFlightDate.getLoadFactor() << ", " << std::endl;
+            << " (" << iFlightDate.getFlightDate() << std::endl;
     oStream << "******************************************" << std::endl;
     
     // Display the leg-dates
@@ -160,9 +152,6 @@ namespace stdair {
               << lCurrentLD.getElapsedTime() << ", "
               << lCurrentLD.getDistance() << ", "
               << lCurrentLD.getCapacity() << ", "
-              << lCurrentLD.getASK() << ", "
-              << lCurrentLD.getSoldSeat() << ", "
-              << lCurrentLD.getLoadFactor() << ", "
               << std::endl;
     }
     oStream << "******************************************" << std::endl;
@@ -294,11 +283,6 @@ namespace stdair {
                 << lCurrentSD.getTimeOffSet() << ") / "
                 << lCurrentSD.getElapsedTime() << ", "
                 << lCurrentSD.getDistance() << ", "
-                << lCurrentSD.getBookingCounter() << ", "
-                << lCurrentSD.getRevenue() << ", "
-                << lCurrentSD.getAverageFare() << ", "
-                << lCurrentSD.getUnitRevenue() << ", "
-                << lCurrentSD.getRPK() << ", "
                 << std::endl;
       }
     }

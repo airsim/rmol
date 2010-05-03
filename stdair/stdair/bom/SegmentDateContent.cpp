@@ -11,12 +11,7 @@ namespace stdair {
 
   // ////////////////////////////////////////////////////////////////////
   SegmentDateContent::SegmentDateContent (const Key_T& iKey)
-    : _key (iKey),
-      _bookingCounter (DEFAULT_CLASS_NB_OF_BOOKINGS),
-      _segmentRevenue (DEFAULT_REVENUE_VALUE),
-      _segmentAverageFare (DEFAULT_FARE_VALUE),
-      _segmentUnitRevenue (DEFAULT_REVENUE_VALUE),
-      _segmentRPK (DEFAULT_DISTANCE_VALUE) {
+    : _key (iKey) {
   }
 
   // ////////////////////////////////////////////////////////////////////

@@ -13,9 +13,7 @@ namespace stdair {
   LegDateContent::LegDateContent (const Key_T& iKey) \
     : _key (iKey),
       _distance (DEFAULT_DISTANCE_VALUE),
-      _capacity (DEFAULT_CABIN_CAPACITY),
-      _legSoldSeat (DEFAULT_CLASS_NB_OF_BOOKINGS),
-      _legLoadFactor (DEFAULT_REVENUE_VALUE) {
+      _capacity (DEFAULT_CABIN_CAPACITY) {
   }
 
   // ////////////////////////////////////////////////////////////////////
