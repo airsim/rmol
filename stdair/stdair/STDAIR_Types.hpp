@@ -385,9 +385,6 @@ namespace stdair {
   /** Mode of inventory control. */
   typedef std::string ControlMode_T;
 
-  /** Analysis status (true or false). */
-  typedef bool AnalysisStatus_T;
-
   /** Define the name of a multiplier. */
   typedef double Multiplier_T;
 

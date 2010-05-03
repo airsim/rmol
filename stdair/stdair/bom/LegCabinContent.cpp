@@ -13,7 +13,8 @@ namespace stdair {
   // ////////////////////////////////////////////////////////////////////
   LegCabinContent::LegCabinContent (const Key_T& iKey)
   : _key (iKey),
-    _capacity (DEFAULT_CABIN_CAPACITY),
+    _offeredCapacity (DEFAULT_CABIN_CAPACITY),
+    _physicalCapacity (DEFAULT_CABIN_CAPACITY),
     _soldSeat (DEFAULT_CLASS_NB_OF_BOOKINGS),
     _commitedSpace (DEFAULT_COMMITED_SPACE),
     _availabilityPool (DEFAULT_AVAILABILITY),

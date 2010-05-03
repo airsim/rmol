@@ -29,9 +29,14 @@ namespace stdair {
       return _key.getCabinCode();
     }
 
-    /** Get the cabin capacity. */
-    const CabinCapacity_T& getCapacity () const {
-      return _capacity;
+    /** Get the cabin offered capacity. */
+    const CabinCapacity_T& getOfferedCapacity () const {
+      return _offeredCapacity;
+    }
+
+    /** Get the cabin physical capacity. */
+    const CabinCapacity_T& getPhysicalCapacity () const {
+      return _physicalCapacity;
     }
 
     /** Get the number of sold seat. */
@@ -66,6 +71,12 @@ namespace stdair {
 
   public:
     // ///////////// Setters ///////////////
+    /** Set the offered and physical capacities. */
+    void setCapacities (const CabinCapacity_T& iCapacity) {
+      _offeredCapacity = iCapacity;
+      _physicalCapacity = iCapacity;
+    }
+    
     /** Set the number of sold seat. */
     void setSoldSeat (const NbOfBookings_T& iSoldSeat) {
       _soldSeat = iSoldSeat;
@@ -117,11 +128,9 @@ namespace stdair {
 
   public:
     // Test AIRINV
-    stdair::CapacityAdjustment_T _adjustment;
     stdair::CapacityAdjustment_T _dcsRegrade;
     stdair::AuthorizationLevel_T _au;
     stdair::UPR_T _upr;
-    stdair::NbOfBookings_T _nbOfBookings;
     stdair::Availability_T _nav;
     stdair::Availability_T _gav;
     stdair::OverbookingRate_T _acp;
@@ -135,8 +144,11 @@ namespace stdair {
     /** The key of both structure and content objects. */
     Key_T _key;
     
-    /** Capacity of the cabin. */
-    CabinCapacity_T _capacity;
+    /** Offered capacity of the cabin. */
+    CabinCapacity_T _offeredCapacity;
+
+    /** Physical capacity of the cabin. */
+    CabinCapacity_T _physicalCapacity;
 
     /** Sold seat into the cabin. */
     NbOfBookings_T  _soldSeat;

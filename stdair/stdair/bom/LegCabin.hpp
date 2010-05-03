@@ -41,11 +41,6 @@ namespace stdair {
     // //////////////////////////////////////////////////////////////////
 
   public:
-    // ///////// Setters //////////
-    /** Set the off cabin. */
-    void setCapacity (const CabinCapacity_T&, const AnalysisStatus_T&);
-    
-  public:
     // /////////// Display support methods /////////
     /** Dump a Business Object into an output stream.
         @param ostream& the output stream. */
