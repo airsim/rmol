@@ -189,7 +189,8 @@ namespace stdair {
   }
 
   // ////////////////////////////////////////////////////////////////////
-  const Duration_T OutboundPath::calculateElapsedTimeFromRouting () const {
+  const Duration_T OutboundPath::
+  calculateElapsedTimeFromRouting (const SegmentDate& iSegmentDate) const {
     const SegmentDateList_T& lAllSegmentList = getSegmentDateList();
     SegmentDateList_T::iterator itSegmentDate = lAllSegmentList.begin();
 
@@ -228,7 +229,15 @@ namespace stdair {
         lCurrentSegmentDate_ptr->getElapsedTime();
       oElapsedTime += currentElapsedTime;
     }
-      
+
+    SegmentDateList_T::reverse_iterator itLastSegmentDate =
+      lAllSegmentList.rbegin();
+    const SegmentDate& lLastSegmentDate = *itLastSegmentDate;
+    const Duration_T& lLastStop = iSegmentDate.getBoardingTime()
+      - lLastSegmentDate.getOffTime();
+    oElapsedTime += lLastStop;
+    oElapsedTime += iSegmentDate.getElapsedTime();
+    
     // Store the result
     return oElapsedTime;
   }

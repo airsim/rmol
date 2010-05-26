@@ -161,7 +161,19 @@ namespace stdair {
       
       return true;
     }
-
+    
+    // //////////////////////////////////////////////////////////////////
+    /** Clone the children holder.*/
+    template <typename HOLDER>
+    static void cloneChildrenHolder (HOLDER*& ioHolder_ptr,
+                                     const HOLDER& iReferenceHolder) {
+      if (ioHolder_ptr == NULL) {
+        ioHolder_ptr = &instance().create<HOLDER> ();
+      }
+      ioHolder_ptr->_bomChildrenMap = iReferenceHolder._bomChildrenMap;
+      ioHolder_ptr->_bomChildrenList = iReferenceHolder._bomChildrenList;
+    }
+    
   protected:
     /** Default Constructor.
         <br>This constructor is protected to ensure the class is structure. */

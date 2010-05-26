@@ -98,7 +98,7 @@ namespace stdair {
         <br>Of course, in case of mono-segment outbound pathes, there is no
         stop-over, and the elapsed time of the outbound-path is equal to the
         elapsed time of the single routing segment. */
-    const Duration_T calculateElapsedTimeFromRouting ()const;
+    const Duration_T calculateElapsedTimeFromRouting (const SegmentDate&) const;
     
     /** Update Airline Code. */
     void updateAirlineCode ();

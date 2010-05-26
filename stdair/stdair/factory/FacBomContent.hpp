@@ -68,6 +68,9 @@ namespace stdair {
                                               ioChild._structure);
 
       if (hasLinkBeenSuccessful == false) {
+        std::cout << "link with parent" << std::endl;
+        std::cout << ioParent.describeKey() << std::endl;
+        std::cout << ioChild.describeShortKey() << std::endl;
         throw ObjectLinkingException();
       }
     }
@@ -123,8 +126,13 @@ namespace stdair {
       typedef BomChildrenHolderImp<CHILD> CHILDREN_HOLDER_T;
       CHILDREN_HOLDER_T*& lChildrenHolder_ptr =
         boost::fusion::at_key<CHILD> (ioParent._structure._holderMap);
-      lChildrenHolder_ptr =
+      CHILDREN_HOLDER_T*& lReferenceChildrenHolder_ptr =
         boost::fusion::at_key<CHILD> (iReferenceParent._structure._holderMap);
+      assert (lReferenceChildrenHolder_ptr != NULL);
+      
+      FacBomStructure::
+        cloneChildrenHolder (lChildrenHolder_ptr,
+                             *lReferenceChildrenHolder_ptr);
     }
 
   private:

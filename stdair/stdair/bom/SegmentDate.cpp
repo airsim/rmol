@@ -79,20 +79,26 @@ namespace stdair {
   bool SegmentDate::
   isConnectable (const SegmentDate& iSegmentDate) const {
     bool oIsConnectable = false;
-    
-    const Date_T& lOffDate = getOffDate();
-    const Date_T& lBoardingDate = iSegmentDate.getBoardingDate();
-    const DateOffSet_T lDateOffSet = lBoardingDate - lOffDate;
-    const Duration_T lDateOffSetInHours (lDateOffSet.days() * 24, 0, 0);
-    
-    const Duration_T& lOffTime = getOffTime();
-    const Duration_T& lBoardingTime = iSegmentDate.getBoardingTime();
-    
-    const Duration_T lStopOverTime =
-      lBoardingTime - lOffTime + lDateOffSetInHours;
 
-    oIsConnectable = lStopOverTime >= DEFAULT_MINIMUM_CONNECTION_TIME;
+    const AirportCode_T lOffPoint = getOffPoint();
+    const AirportCode_T lBoardingPointOfNextSegment =
+      iSegmentDate.getBoardingPoint();
 
+    if (lOffPoint == lBoardingPointOfNextSegment) {
+      const Date_T& lOffDate = getOffDate();
+      const Date_T& lBoardingDate = iSegmentDate.getBoardingDate();
+      const DateOffSet_T lDateOffSet = lBoardingDate - lOffDate;
+      const Duration_T lDateOffSetInHours (lDateOffSet.days() * 24, 0, 0);
+      
+      const Duration_T& lOffTime = getOffTime();
+      const Duration_T& lBoardingTime = iSegmentDate.getBoardingTime();
+      
+      const Duration_T lStopOverTime =
+        lBoardingTime - lOffTime + lDateOffSetInHours;
+      
+      oIsConnectable = lStopOverTime >= DEFAULT_MINIMUM_CONNECTION_TIME;
+    }
+    
     return oIsConnectable;
   }
 
