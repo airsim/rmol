@@ -150,9 +150,11 @@ namespace stdair {
     /** Internal insertion function into a multimap. */
     const bool insert (const MapKey_T& iKey, const Structure_T& iStructure,
                        std::multimap<const MapKey_T, const Structure_T*>& ioMap){
-      ioMap.insert (typename std::multimap<const MapKey_T, const Structure_T*>::
-                    value_type (iKey, &iStructure));
-      return true;
+      const bool hasInsertionBeenSuccessful =
+        (ioMap.insert (typename std::multimap<const MapKey_T, const Structure_T*>::
+                       value_type (iKey, &iStructure))) != (ioMap.end());
+      
+      return hasInsertionBeenSuccessful;
     }
     
   private:
