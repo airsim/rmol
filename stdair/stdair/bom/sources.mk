@@ -10,6 +10,7 @@ bom_h_sources = \
 		$(top_srcdir)/stdair/bom/BomChildrenHolderImp.hpp \
 		$(top_srcdir)/stdair/bom/BomList.hpp \
 		$(top_srcdir)/stdair/bom/BomMap.hpp \
+		$(top_srcdir)/stdair/bom/BomMultimap.hpp \
 		$(top_srcdir)/stdair/bom/BomIterator.hpp \
 		$(top_srcdir)/stdair/bom/BomRootKey.hpp \
 		$(top_srcdir)/stdair/bom/YieldStoreKey.hpp \

@@ -31,6 +31,10 @@ namespace stdair {
         BOM content type. */
     typedef BomRoot Parent_T;
 
+    /** Definition allowing to retrieve the map/multimap type using by
+        BomChildrenHolder. */
+    typedef std::map<const MapKey_T, const Structure_T*> Map_T;
+
     /** Define the list of children holder types. */
     typedef boost::fusion::map<
       boost::fusion::pair<NetworkDate, NetworkDateHolder_T*>

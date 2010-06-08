@@ -16,6 +16,7 @@ namespace stdair {
   // Forward declarations.
   template <typename CONTENT> class BomChildrenHolderImp;
   template <typename CONTENT> class BomMap_T;
+  template <typename CONTENT> class BomMultimap_T;
   template <typename CONTENT> class BomList_T;
   
   /** Wrapper class aimed at holding the actual content, modeled
@@ -80,9 +81,10 @@ namespace stdair {
         boost::fusion::at_key<CHILD> (_holderMap);
 
       if (lHolder_ptr != NULL) {
+        // Look for the child in the map, then in the multimap
         BomMap_T<CHILD> lChildrenMap (*lHolder_ptr);
         typename BomMap_T<CHILD>::iterator itContentChild = 
-          lChildrenMap.find (iKey);        
+          lChildrenMap.find (iKey);
         if (itContentChild != lChildrenMap.end()) {
           oContentChild_ptr = itContentChild->second;
         }
@@ -95,8 +97,9 @@ namespace stdair {
     template <typename CHILD>
     CHILD& getChild (const MapKey_T& iKey) const {
       CHILD* lChild_ptr = NULL;
-        
-      BomMap_T<CHILD> lChildrenMap (getChildrenHolder<CHILD>());
+      
+      const BomChildrenHolderImp<CHILD>& lHolder = getChildrenHolder<CHILD>();
+      BomMap_T<CHILD> lChildrenMap (lHolder);
       
       typename BomMap_T<CHILD>::iterator itContentChild =
         lChildrenMap.find (iKey);
@@ -104,6 +107,7 @@ namespace stdair {
       if (itContentChild != lChildrenMap.end()) {
         lChild_ptr = itContentChild->second;
       }
+
       assert (lChild_ptr != NULL);
       return *lChild_ptr;
     }

@@ -47,7 +47,6 @@ namespace stdair {
     /** Default constructors. */
     BomChildrenHolder () { }
     BomChildrenHolder (const BomChildrenHolder&);
-
     /** Destructor. */
     ~BomChildrenHolder() { }
     

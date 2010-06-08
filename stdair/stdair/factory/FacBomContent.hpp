@@ -68,9 +68,6 @@ namespace stdair {
                                               ioChild._structure);
 
       if (hasLinkBeenSuccessful == false) {
-        std::cout << "link with parent" << std::endl;
-        std::cout << ioParent.describeKey() << std::endl;
-        std::cout << ioChild.describeShortKey() << std::endl;
         throw ObjectLinkingException();
       }
     }
@@ -173,7 +170,7 @@ namespace stdair {
         <br>This constructor is protected to ensure the class is content. */
     FacBomContent() {}
     /** Destructor. */
-    virtual ~FacBomContent();
+    ~FacBomContent();
     /** Destroyed all the object instantiated by this factory. */
     void clean();
  

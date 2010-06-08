@@ -54,7 +54,7 @@ namespace stdair {
   }
 
   // ////////////////////////////////////////////////////////////////////
-  OutboundPathMap_T AirportDate::getOutboundPathMap () const {
+  OutboundPathMultimap_T AirportDate::getOutboundPathMultimap () const {
     return _structure.getChildrenHolder<OutboundPath>();
   }
 

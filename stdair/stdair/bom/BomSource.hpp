@@ -7,6 +7,7 @@
 #include <stdair/bom/Structure.hpp>
 #include <stdair/bom/BomChildrenHolderImp.hpp>
 #include <stdair/bom/BomMap.hpp>
+#include <stdair/bom/BomMultimap.hpp>
 #include <stdair/bom/BomList.hpp>
 #include <stdair/bom/BomRoot.hpp>
 #include <stdair/bom/Network.hpp>

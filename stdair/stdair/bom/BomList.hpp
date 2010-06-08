@@ -61,7 +61,6 @@ namespace stdair {
     BomList_T ();
     BomList_T (const BomList_T& iBomList) : _bomHolder (iBomList._bomHolder) { }
     BomList_T (const BomHolder_T& iBomHolder) : _bomHolder (iBomHolder) { }
-
     /** Destructor. */
     ~BomList_T() { }
 

@@ -27,7 +27,8 @@ namespace stdair {
   public:
     /** Define lists of children BOM structures. */
     typedef std::vector<const Structure_T*> BomChildrenList_T;
-    typedef std::map<const std::string, const Structure_T*> BomChildrenMap_T;
+    /** Retrieve the map type of children BOM structures. */
+    typedef typename CONTENT::Map_T BomChildrenMap_T;
 
     /** Define the different types of iterators. */
     typedef BomIterator_T<CONTENT,
@@ -115,17 +116,43 @@ namespace stdair {
     MapReverseIterator_T mapREnd () const {
       return _bomChildrenMap.rend();
     }
-
     
     // /////////// Other operators /////////////
     /** Get the size of the list. */
     const unsigned int size () const {
-      return _bomChildrenMap.size();
+      return _bomChildrenList.size();
     }
 
     /** Retrieve, if existing, the bom corresponding to the given key. */
     MapIterator_T find (const MapKey_T& iKey) const {
       return _bomChildrenMap.find (iKey);
+    }
+
+  private:
+    /** Insert an element to the list and the map. */
+    const bool insert (const MapKey_T& iKey, const Structure_T& iStructure) {
+      const bool hasInsertionSuccessful = insert (iKey, iStructure,
+                                                  _bomChildrenMap);
+      if (hasInsertionSuccessful == true) {
+        _bomChildrenList.push_back (&iStructure);
+      }
+
+      return hasInsertionSuccessful;
+    }
+
+    /** Internal insertion function into a map. */
+    const bool insert (const MapKey_T& iKey, const Structure_T& iStructure,
+                       std::map<const MapKey_T, const Structure_T*>& ioMap) {
+      return ioMap.insert (typename std::map<const MapKey_T,const Structure_T*>::
+                           value_type (iKey, &iStructure)).second;
+    }
+
+    /** Internal insertion function into a multimap. */
+    const bool insert (const MapKey_T& iKey, const Structure_T& iStructure,
+                       std::multimap<const MapKey_T, const Structure_T*>& ioMap){
+      ioMap.insert (typename std::multimap<const MapKey_T, const Structure_T*>::
+                    value_type (iKey, &iStructure));
+      return true;
     }
     
   private:
@@ -140,10 +167,10 @@ namespace stdair {
   private:
     ///////////// Attributes //////////////
     /** List of children BOM structures. */
-    BomChildrenMap_T _bomChildrenMap;
+    BomChildrenList_T _bomChildrenList;
 
     /** Map of children BOM structures with their key. */
-    BomChildrenList_T _bomChildrenList;
+    BomChildrenMap_T _bomChildrenMap;
   };
   
 }

@@ -122,16 +122,9 @@ namespace stdair {
       
       // Insert the structure object in the dedicated lists
       typedef typename HOLDER_T::BomChildrenMap_T BOM_MAP_T;
-      const bool hasInsertBeenSuccessful = ioHolder._bomChildrenMap.
-        insert (typename BOM_MAP_T::value_type (lKeyStr, &iStructure)).second;
-      
-      if (hasInsertBeenSuccessful == false) {
-        return hasInsertBeenSuccessful;
-      }
-      
-      ioHolder._bomChildrenList.push_back (&iStructure);
-      
-      return true;
+      const bool hasInsertBeenSuccessful = ioHolder.insert (lKeyStr, iStructure);
+            
+      return hasInsertBeenSuccessful;
     }
 
     // //////////////////////////////////////////////////////////////////
@@ -150,16 +143,9 @@ namespace stdair {
       
       // Insert the structure object in the dedicated lists
       typedef typename HOLDER_T::BomChildrenMap_T BOM_MAP_T;
-      const bool hasInsertBeenSuccessful = ioHolder._bomChildrenMap.
-        insert (typename BOM_MAP_T::value_type (lKeyStr, &iStructure)).second;
-      
-      if (hasInsertBeenSuccessful == false) {
-        return hasInsertBeenSuccessful;
-      }
-      
-      ioHolder._bomChildrenList.push_back (&iStructure);
-      
-      return true;
+      const bool hasInsertBeenSuccessful = ioHolder.insert (lKeyStr, iStructure);
+            
+      return hasInsertBeenSuccessful;
     }
     
     // //////////////////////////////////////////////////////////////////
