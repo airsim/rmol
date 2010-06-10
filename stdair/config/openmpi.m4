@@ -199,7 +199,7 @@ MPIDIR="${OPENMPI_DEF_VERSION}-${OPENMPI_DEF_CC}"
 	# Derive the flags for compilation and linking
 	#
 	OPENMPI_CFLAGS="-I${OPENMPI_incdir} -I${OPENMPI_incdir}/openmpi -I${OPENMPI_incdir}/${MODE} ${MODEFLAG}"
-	OPENMPI_LIBS="-L${OPENMPI_libdir} -lmpi_cxx"
+	OPENMPI_LIBS="-L${OPENMPI_libdir} -lmpi_cxx -lmpi"
 
 	#
 	# Make the changes permanent
@@ -216,7 +216,7 @@ MPIDIR="${OPENMPI_DEF_VERSION}-${OPENMPI_DEF_CC}"
 	save_LIBS="$LIBS"
 	if test -z "$OPENMPI_LIBS"
 	then
-		OPENMPI_LIBS="-L/usr/lib${MODE}/openmpi/${MPIDIR} -lmpi_cxx"
+		OPENMPI_LIBS="-L/usr/lib${MODE}/openmpi/${MPIDIR} -lmpi_cxx -lmpi"
 	fi
 	LIBS="$LIBS $OPENMPI_LIBS"
 	AC_CHECK_LIB($OPENMPI_LIB, ompi_mpi_char,

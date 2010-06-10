@@ -200,7 +200,7 @@ MPIDIR="${MPICH2_DEF_VERSION}-${MPICH2_DEF_CC}"
 	# Derive the flags for compilation and linking
 	#
 	MPICH2_CFLAGS="-I${MPICH2_incdir} ${MODEFLAG}"
-	MPICH2_LIBS="-L${MPICH2_libdir} -lmpichcxx"
+	MPICH2_LIBS="-L${MPICH2_libdir} -lmpichcxx -lmpich"
 
 	#
 	# Make the changes permanent
@@ -217,7 +217,7 @@ MPIDIR="${MPICH2_DEF_VERSION}-${MPICH2_DEF_CC}"
 	save_LIBS="$LIBS"
 	if test -z "$MPICH2_LIBS"
 	then
-		MPICH2_LIBS="-L/usr/lib${MODE}/mpich2 -lmpich"
+		MPICH2_LIBS="-L/usr/lib${MODE}/mpich2 -lmpichcxx -lmpich"
 	fi
 	LIBS="$LIBS $MPICH2_LIBS"
 	AC_CHECK_LIB($MPICH2_LIBC, MPID_Comm_direct,
