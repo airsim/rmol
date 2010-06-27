@@ -6,9 +6,12 @@
 // //////////////////////////////////////////////////////////////////////
 // STL
 #include <cassert>
-// BOOST Fusion
+// Boost Fusion
+#include <boost/version.hpp>
+#if BOOST_VERSION >= 103500
 #include <boost/fusion/include/map.hpp>
 #include <boost/fusion/sequence/intrinsic/at_key.hpp>
+#endif // BOOST_VERSION >= 103500
 // STDAIR
 #include <stdair/bom/BomStructure.hpp>
 
@@ -64,8 +67,16 @@ namespace stdair {
     /** The the holder which corresponds to the CHILD type. */
     template <typename CHILD>
     BomChildrenHolderImp<CHILD>& getChildrenHolder () const {
+
+#if BOOST_VERSION >= 103500
       BomChildrenHolderImp<CHILD>* lHolder_ptr =
         boost::fusion::at_key<CHILD> (_holderMap);
+
+#else // BOOST_VERSION >= 103500
+      BomChildrenHolderImp<CHILD>* lHolder_ptr = NULL;
+
+#endif // BOOST_VERSION >= 103500
+
       assert (lHolder_ptr != NULL);
       return *lHolder_ptr;
     }
@@ -77,8 +88,14 @@ namespace stdair {
     CHILD* getChildPtr (const MapKey_T& iKey) const {
       CHILD* oContentChild_ptr = NULL;
       
+#if BOOST_VERSION >= 103500
       BomChildrenHolderImp<CHILD>* lHolder_ptr =
         boost::fusion::at_key<CHILD> (_holderMap);
+
+#else // BOOST_VERSION >= 103500
+      BomChildrenHolderImp<CHILD>* lHolder_ptr = NULL;
+
+#endif // BOOST_VERSION >= 103500
 
       if (lHolder_ptr != NULL) {
         // Look for the child in the map, then in the multimap
@@ -116,9 +133,12 @@ namespace stdair {
     /** Initialise the pointer of children holder to NULL. */
     template <typename CHILD>
     void initChildrenHolder() {
+
+#if BOOST_VERSION >= 103500
       BomChildrenHolderImp<CHILD>*& lHolder_ptr =
         boost::fusion::at_key<CHILD> (_holderMap);
       lHolder_ptr = NULL;
+#endif // BOOST_VERSION >= 103500
     }
 
   public:

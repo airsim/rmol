@@ -5,7 +5,11 @@
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // Boost Fusion
+#if BOOST_VERSION >= 103500
 #include <boost/fusion/include/map.hpp>
+#else // BOOST_VERSION >= 103500
+#include <boost/mpl/map.hpp>
+#endif // BOOST_VERSION >= 103500
 // StdAir 
 #include <stdair/bom/OutboundPathContent.hpp>
 #include <stdair/bom/OutboundPathTypes.hpp>
@@ -38,9 +42,13 @@ namespace stdair {
     typedef std::multimap<const MapKey_T, const Structure_T*> Map_T;
 
     /** Define the list of children holder types. */
+#if BOOST_VERSION >= 103500
     typedef boost::fusion::map<
       boost::fusion::pair<SegmentDate, SegmentDateHolder_T*>
       > ChildrenHolderMap_T;
+#else // BOOST_VERSION >= 103500
+    typedef boost::mpl::map< > ChildrenHolderMap_T;
+#endif // BOOST_VERSION >= 103500
     // //////////////////////////////////////////////////////////////////
 
   public:
