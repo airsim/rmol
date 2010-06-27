@@ -7,8 +7,6 @@
 // STL
 #include <iosfwd>
 #include <string>
-// BOOST Fusion
-#include <boost/fusion/include/map.hpp>
 // STDAIR
 #include <stdair/STDAIR_Types.hpp>
 

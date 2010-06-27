@@ -4,7 +4,9 @@
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
-// STDAIR 
+// Boost Fusion
+#include <boost/fusion/include/map.hpp>
+// StdAir 
 #include <stdair/bom/OutboundPathContent.hpp>
 #include <stdair/bom/OutboundPathTypes.hpp>
 #include <stdair/bom/SegmentDateTypes.hpp>
