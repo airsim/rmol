@@ -8,10 +8,10 @@
 #include <boost/version.hpp>
 #if BOOST_VERSION >= 103500
 #include <boost/filesystem.hpp>
-#else
+#else // BOOST_VERSION >= 103500
 #include <boost/filesystem/path.hpp>
 #include <boost/filesystem/operations.hpp>
-#endif
+#endif // BOOST_VERSION >= 103500
 // StdAir
 #include <stdair/basic/BasFileMgr.hpp>
 
@@ -33,7 +33,7 @@ namespace stdair {
     if (boostfs::is_regular (lPath) == true) {
       oFine = true;
     }
-#endif
+#endif // BOOST_VERSION >= 103500
 
     return oFine;
   }
