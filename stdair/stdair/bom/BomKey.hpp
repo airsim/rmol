@@ -36,6 +36,8 @@ namespace stdair {
        marketing classes for the same segment-date. */
     virtual const std::string toString() const { return std::string("Hello!"); }
 
+    /** Default destructor. */
+    virtual ~BomKey_T() {}
   };
 
 }
