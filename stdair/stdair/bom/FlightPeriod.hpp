@@ -4,7 +4,13 @@
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
-// STDAIR
+// Boost Fusion
+#if BOOST_VERSION >= 103500
+#include <boost/fusion/include/map.hpp>
+#else // BOOST_VERSION >= 103500
+#include <boost/mpl/map.hpp>
+#endif // BOOST_VERSION >= 103500
+// StdAir 
 #include <stdair/bom/FlightPeriodContent.hpp>
 #include <stdair/bom/FlightPeriodTypes.hpp>
 #include <stdair/bom/SegmentPeriodTypes.hpp>
@@ -38,9 +44,13 @@ namespace stdair {
     typedef std::map<const MapKey_T, const Structure_T*> Map_T;
 
     /** Define the list of children holder types. */
+#if BOOST_VERSION >= 103500
     typedef boost::fusion::map<
       boost::fusion::pair<SegmentPeriod, SegmentPeriodHolder_T*>
       > ChildrenHolderMap_T;
+#else // BOOST_VERSION >= 103500
+    typedef boost::mpl::map< > ChildrenHolderMap_T;
+#endif // BOOST_VERSION >= 103500
     // //////////////////////////////////////////////////////////////////
 
   public:
