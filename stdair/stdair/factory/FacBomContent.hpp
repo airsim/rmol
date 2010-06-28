@@ -5,8 +5,12 @@
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // STL
-#include <map>
-// STDAIR
+#include <cassert>
+// Boost Fusion
+#if BOOST_VERSION >= 103500
+#include <boost/fusion/include/at_key.hpp>
+#endif // BOOST_VERSION >= 103500
+// StdAir 
 #include <stdair/STDAIR_Types.hpp>
 #include <stdair/basic/BasConst_Inventory.hpp>
 #include <stdair/basic/DemandCharacteristicTypes.hpp>
