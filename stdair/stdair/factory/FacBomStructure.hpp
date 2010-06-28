@@ -13,7 +13,7 @@
 #if BOOST_VERSION >= 103500
 #include <boost/fusion/container/map.hpp>
 #include <boost/fusion/include/map.hpp>
-#include <boost/fusion/sequence/intrinsic/at_key.hpp>
+#include <boost/fusion/include/at_key.hpp>
 #else // BOOST_VERSION >= 103500
 #include <boost/mpl/map.hpp>
 #endif // BOOST_VERSION >= 103500
