@@ -8,11 +8,9 @@
 #include <cassert>
 #include <string>
 #include <vector>
-//#include <iostream>
 // Boost Fusion
+#include <boost/version.hpp>
 #if BOOST_VERSION >= 103500
-//#include <boost/fusion/container/map.hpp>
-//#include <boost/fusion/include/map.hpp>
 #include <boost/fusion/include/at_key.hpp>
 #else // BOOST_VERSION >= 103500
 #include <boost/mpl/map.hpp>
