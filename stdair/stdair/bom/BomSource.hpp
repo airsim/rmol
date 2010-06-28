@@ -22,6 +22,11 @@
 #include <stdair/bom/LegDate.hpp>
 #include <stdair/bom/LegCabin.hpp>
 #include <stdair/bom/Bucket.hpp>
+#include <stdair/bom/FlightPeriod.hpp>
+#include <stdair/bom/SegmentPeriod.hpp>
+#include <stdair/bom/ReachableUniverse.hpp>
+#include <stdair/bom/OriginDestinationSet.hpp>
+#include <stdair/bom/SegmentPathPeriod.hpp>
 #include <stdair/bom/DemandStream.hpp>
 #include <stdair/bom/AirlineFeature.hpp>
 #include <stdair/bom/YieldStore.hpp>

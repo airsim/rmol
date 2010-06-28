@@ -14,6 +14,7 @@
 #include <stdair/bom/BomRootContent.hpp>
 #include <stdair/bom/BomRootTypes.hpp>
 #include <stdair/bom/InventoryTypes.hpp>
+#include <stdair/bom/ReachableUniverseTypes.hpp>
 #include <stdair/bom/NetworkTypes.hpp>
 #include <stdair/bom/DemandStreamTypes.hpp>
 #include <stdair/bom/AirlineFeatureTypes.hpp>
@@ -62,6 +63,7 @@ namespace stdair {
 #if BOOST_VERSION >= 103500
     typedef boost::fusion::map<
       boost::fusion::pair<Inventory, InventoryHolder_T*>,
+      boost::fusion::pair<ReachableUniverse, ReachableUniverseHolder_T*>,
       boost::fusion::pair<Network, NetworkHolder_T*>,
       boost::fusion::pair<AirlineFeature, AirlineFeatureHolder_T*>,
       boost::fusion::pair<DemandStream, DemandStreamHolder_T*>,
@@ -77,6 +79,8 @@ namespace stdair {
     /** Get a list or map of a children type for iteration methods. */
     InventoryList_T getInventoryList () const;
     InventoryMap_T getInventoryMap () const;
+    ReachableUniverseList_T getReachableUniverseList () const;
+    ReachableUniverseMap_T getReachableUniverseMap () const;
     NetworkList_T getNetworkList () const;
     NetworkMap_T getNetworkMap () const;
     DemandStreamList_T getDemandStreamList () const;
@@ -90,6 +94,11 @@ namespace stdair {
         given airline code (Inventory key).
         <br>If not existing, return the NULL pointer. */
     Inventory* getInventory (const AirlineCode_T&) const;
+
+    /** Retrieve, if existing, the ReachableUniverse corresponding to the
+        given airport.
+        <br>If not existing, return the NULL pointer. */
+    ReachableUniverse* getReachableUniverse (const AirportCode_T&) const;
 
     /** Retrieve, if existing, the Network corresponding to the
         given airline code (Network key).

@@ -6,25 +6,7 @@
 #include <ostream>
 // StdAir
 #include <stdair/basic/BasConst_BomManager.hpp>
-#include <stdair/bom/BomChildrenHolderImp.hpp>
-#include <stdair/bom/Structure.hpp>
-#include <stdair/bom/BomList.hpp>
-#include <stdair/bom/BomMap.hpp>
-#include <stdair/bom/BomRoot.hpp>
-#include <stdair/bom/AirlineFeature.hpp>
-#include <stdair/bom/BomList.hpp>
-#include <stdair/bom/BomMap.hpp>
-#include <stdair/bom/Inventory.hpp>
-#include <stdair/bom/FlightDate.hpp>
-#include <stdair/bom/SegmentDate.hpp>
-#include <stdair/bom/LegDate.hpp>
-#include <stdair/bom/SegmentCabin.hpp>
-#include <stdair/bom/LegCabin.hpp>
-#include <stdair/bom/BookingClass.hpp>
-#include <stdair/bom/Network.hpp>
-#include <stdair/bom/NetworkDate.hpp>
-#include <stdair/bom/AirportDate.hpp>
-#include <stdair/bom/OutboundPath.hpp>
+#include <stdair/bom/BomSource.hpp>
 #include <stdair/bom/BookingRequestStruct.hpp>
 #include <stdair/bom/BomManager.hpp>
 
@@ -145,10 +127,10 @@ namespace stdair {
               << lCurrentLD.getOffPoint() << ", "
               << lCurrentLD.getBoardingDate() << " -> "
               << lCurrentLD.getOffDate() << " / "
-              << lCurrentLD.getDateOffSet() << ", "
+              << lCurrentLD.getDateOffset() << ", "
               << lCurrentLD.getBoardingTime() << " -> "
               << lCurrentLD.getOffTime() << " ("
-              << lCurrentLD.getTimeOffSet() << ") / "
+              << lCurrentLD.getTimeOffset() << ") / "
               << lCurrentLD.getElapsedTime() << ", "
               << lCurrentLD.getDistance() << ", "
               << lCurrentLD.getCapacity() << ", "
@@ -278,10 +260,10 @@ namespace stdair {
                 << lCurrentSC.getCabinCode() << ", "          
                 << lCurrentSD.getBoardingDate() << " -> "
                 << lCurrentSD.getOffDate() << " / "
-                << lCurrentSD.getDateOffSet() << ", "
+                << lCurrentSD.getDateOffset() << ", "
                 << lCurrentSD.getBoardingTime() << " -> "
                 << lCurrentSD.getOffTime() << " ("
-                << lCurrentSD.getTimeOffSet() << ") / "
+                << lCurrentSD.getTimeOffset() << ") / "
                 << lCurrentSD.getElapsedTime() << ", "
                 << lCurrentSD.getDistance() << ", "
                 << std::endl;

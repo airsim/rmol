@@ -22,6 +22,11 @@ bom_h_sources = \
 		$(top_srcdir)/stdair/bom/SegmentCabinKey.hpp \
 		$(top_srcdir)/stdair/bom/BookingClassKey.hpp \
 		$(top_srcdir)/stdair/bom/BucketKey.hpp \
+		$(top_srcdir)/stdair/bom/FlightPeriodKey.hpp \
+		$(top_srcdir)/stdair/bom/SegmentPeriodKey.hpp \
+		$(top_srcdir)/stdair/bom/ReachableUniverseKey.hpp \
+		$(top_srcdir)/stdair/bom/OriginDestinationSetKey.hpp \
+		$(top_srcdir)/stdair/bom/SegmentPathPeriodKey.hpp \
 		$(top_srcdir)/stdair/bom/NetworkKey.hpp \
 		$(top_srcdir)/stdair/bom/NetworkDateKey.hpp \
 		$(top_srcdir)/stdair/bom/AirportDateKey.hpp \
@@ -37,6 +42,11 @@ bom_h_sources = \
 		$(top_srcdir)/stdair/bom/LegCabinTypes.hpp \
 		$(top_srcdir)/stdair/bom/BookingClassTypes.hpp \
 		$(top_srcdir)/stdair/bom/BucketTypes.hpp \
+		$(top_srcdir)/stdair/bom/FlightPeriodTypes.hpp \
+		$(top_srcdir)/stdair/bom/SegmentPeriodTypes.hpp \
+		$(top_srcdir)/stdair/bom/ReachableUniverseTypes.hpp \
+		$(top_srcdir)/stdair/bom/OriginDestinationSetTypes.hpp \
+		$(top_srcdir)/stdair/bom/SegmentPathPeriodTypes.hpp \
 		$(top_srcdir)/stdair/bom/NetworkTypes.hpp \
 		$(top_srcdir)/stdair/bom/NetworkDateTypes.hpp \
 		$(top_srcdir)/stdair/bom/AirportDateTypes.hpp \
@@ -55,6 +65,11 @@ bom_h_sources = \
 		$(top_srcdir)/stdair/bom/LegCabinContent.hpp \
 		$(top_srcdir)/stdair/bom/BookingClassContent.hpp \
 		$(top_srcdir)/stdair/bom/BucketContent.hpp \
+		$(top_srcdir)/stdair/bom/FlightPeriodContent.hpp \
+		$(top_srcdir)/stdair/bom/SegmentPeriodContent.hpp \
+		$(top_srcdir)/stdair/bom/ReachableUniverseContent.hpp \
+		$(top_srcdir)/stdair/bom/OriginDestinationSetContent.hpp \
+		$(top_srcdir)/stdair/bom/SegmentPathPeriodContent.hpp \
 		$(top_srcdir)/stdair/bom/NetworkContent.hpp \
 		$(top_srcdir)/stdair/bom/NetworkDateContent.hpp \
 		$(top_srcdir)/stdair/bom/AirportDateContent.hpp \
@@ -71,6 +86,11 @@ bom_h_sources = \
 		$(top_srcdir)/stdair/bom/LegCabin.hpp \
 		$(top_srcdir)/stdair/bom/BookingClass.hpp \
 		$(top_srcdir)/stdair/bom/Bucket.hpp \
+		$(top_srcdir)/stdair/bom/FlightPeriod.hpp \
+		$(top_srcdir)/stdair/bom/SegmentPeriod.hpp \
+		$(top_srcdir)/stdair/bom/ReachableUniverse.hpp \
+		$(top_srcdir)/stdair/bom/OriginDestinationSet.hpp \
+		$(top_srcdir)/stdair/bom/SegmentPathPeriod.hpp \
 		$(top_srcdir)/stdair/bom/Network.hpp \
 		$(top_srcdir)/stdair/bom/NetworkDate.hpp \
 		$(top_srcdir)/stdair/bom/AirportDate.hpp \
@@ -97,6 +117,11 @@ bom_cc_sources = \
 		$(top_srcdir)/stdair/bom/SegmentCabinKey.cpp \
 		$(top_srcdir)/stdair/bom/BookingClassKey.cpp \
 		$(top_srcdir)/stdair/bom/BucketKey.cpp \
+		$(top_srcdir)/stdair/bom/FlightPeriodKey.cpp \
+		$(top_srcdir)/stdair/bom/SegmentPeriodKey.cpp \
+		$(top_srcdir)/stdair/bom/ReachableUniverseKey.cpp \
+		$(top_srcdir)/stdair/bom/OriginDestinationSetKey.cpp \
+		$(top_srcdir)/stdair/bom/SegmentPathPeriodKey.cpp \
 		$(top_srcdir)/stdair/bom/NetworkKey.cpp \
 		$(top_srcdir)/stdair/bom/NetworkDateKey.cpp \
 		$(top_srcdir)/stdair/bom/AirportDateKey.cpp \
@@ -112,6 +137,11 @@ bom_cc_sources = \
 		$(top_srcdir)/stdair/bom/LegCabinContent.cpp \
 		$(top_srcdir)/stdair/bom/BookingClassContent.cpp \
 		$(top_srcdir)/stdair/bom/BucketContent.cpp \
+		$(top_srcdir)/stdair/bom/FlightPeriodContent.cpp \
+		$(top_srcdir)/stdair/bom/SegmentPeriodContent.cpp \
+		$(top_srcdir)/stdair/bom/ReachableUniverseContent.cpp \
+		$(top_srcdir)/stdair/bom/OriginDestinationSetContent.cpp \
+		$(top_srcdir)/stdair/bom/SegmentPathPeriodContent.cpp \
 		$(top_srcdir)/stdair/bom/NetworkContent.cpp \
 		$(top_srcdir)/stdair/bom/NetworkDateContent.cpp \
 		$(top_srcdir)/stdair/bom/AirportDateContent.cpp \
@@ -128,6 +158,11 @@ bom_cc_sources = \
 		$(top_srcdir)/stdair/bom/LegCabin.cpp \
 		$(top_srcdir)/stdair/bom/BookingClass.cpp \
 		$(top_srcdir)/stdair/bom/Bucket.cpp \
+		$(top_srcdir)/stdair/bom/FlightPeriod.cpp \
+		$(top_srcdir)/stdair/bom/SegmentPeriod.cpp \
+		$(top_srcdir)/stdair/bom/ReachableUniverse.cpp \
+		$(top_srcdir)/stdair/bom/OriginDestinationSet.cpp \
+		$(top_srcdir)/stdair/bom/SegmentPathPeriod.cpp \
 		$(top_srcdir)/stdair/bom/Network.cpp \
 		$(top_srcdir)/stdair/bom/NetworkDate.cpp \
 		$(top_srcdir)/stdair/bom/AirportDate.cpp \

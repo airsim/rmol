@@ -19,8 +19,8 @@ namespace stdair {
   /** Default DOW String (e.g., "1111100"). */
   extern const DOW_String_T DEFAULT_DOW_STRING;
 
-  /** Default Date OffSet (e.g., 0). */
-  extern const DateOffSet_T DEFAULT_DATE_OFFSET;
+  /** Default Date Offset (e.g., 0). */
+  extern const DateOffset_T DEFAULT_DATE_OFFSET;
 
   /** Default Duration in days (e.g., 0). */
   extern const DayDuration_T DEFAULT_DAY_DURATION;

@@ -22,6 +22,7 @@ namespace stdair {
   // ////////////////////////////////////////////////////////////////////
   void Inventory::init () {
     _structure.initChildrenHolder<FlightDate> ();
+    _structure.initChildrenHolder<FlightPeriod> ();
   }
 
   // ////////////////////////////////////////////////////////////////////
@@ -46,6 +47,11 @@ namespace stdair {
   }
 
   // ////////////////////////////////////////////////////////////////////
+  const Inventory::Parent_T& Inventory::getParent () const {
+    return _structure.getParent().getContent();
+  }
+
+  // ////////////////////////////////////////////////////////////////////
   FlightDateList_T Inventory::getFlightDateList () const {
     return _structure.getChildrenHolder<FlightDate>();
   }
@@ -56,9 +62,25 @@ namespace stdair {
   }
 
   // ////////////////////////////////////////////////////////////////////
+  FlightPeriodList_T Inventory::getFlightPeriodList () const {
+    return _structure.getChildrenHolder<FlightPeriod>();
+  }
+
+  // ////////////////////////////////////////////////////////////////////
+  FlightPeriodMap_T Inventory::getFlightPeriodMap () const {
+    return _structure.getChildrenHolder<FlightPeriod>();
+  }
+
+  // ////////////////////////////////////////////////////////////////////
   FlightDate* Inventory::
   getFlightDate (const FlightDateKey_T& iKey) const {
     return _structure.getChildPtr<FlightDate> (iKey.toString());
+  }
+
+  // ////////////////////////////////////////////////////////////////////
+  FlightPeriod* Inventory::
+  getFlightPeriod (const FlightPeriodKey_T& iKey) const {
+    return _structure.getChildPtr<FlightPeriod> (iKey.toString());
   }
 }
 

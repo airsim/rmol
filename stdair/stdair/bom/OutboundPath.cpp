@@ -108,11 +108,6 @@ namespace stdair {
   }
 
   // ////////////////////////////////////////////////////////////////////
-  void OutboundPath::incrementTotalFlightTime (const Duration_T& iElapsed) {
-    _flightTime += iElapsed;      
-  }
-
-  // ////////////////////////////////////////////////////////////////////
   void OutboundPath::updateAirlineCode() {
     // TODO: to be optimised.
     std::ostringstream ostr;
@@ -163,7 +158,8 @@ namespace stdair {
       iOutboundPath.getFirstSegmentDate();
     assert (lBoardingSegment_ptr != NULL);
       
-    return lOffSegment_ptr->isConnectable (*lBoardingSegment_ptr);
+    //return lOffSegment_ptr->isConnectable (*lBoardingSegment_ptr);
+    return true;
   }
 
   // ////////////////////////////////////////////////////////////////////
@@ -245,9 +241,6 @@ namespace stdair {
   // ////////////////////////////////////////////////////////////////////
   void OutboundPath::
   updateAfterAddingSegmentDate (const SegmentDate& iSegmentDate) {
-      // Increment the total flight time of the outbound path
-      const Duration_T lElapsed = iSegmentDate.getElapsedTime();
-      incrementTotalFlightTime (lElapsed);
       // Increment the flight path code
       std::ostringstream ostr;
       FlightPathCode_T lPreviousFPCode = getCurrentFlightPathCode();

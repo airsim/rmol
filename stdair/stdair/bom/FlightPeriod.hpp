@@ -1,37 +1,37 @@
-#ifndef __STDAIR_BOM_SEGMENTDATE_HPP
-#define __STDAIR_BOM_SEGMENTDATE_HPP
+#ifndef __STDAIR_BOM_FLIGHTPERIOD_HPP
+#define __STDAIR_BOM_FLIGHTPERIOD_HPP
 
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
-// STDAIR 
-#include <stdair/bom/SegmentDateContent.hpp>
-#include <stdair/bom/SegmentDateTypes.hpp>
-#include <stdair/bom/LegDateTypes.hpp>
-#include <stdair/bom/SegmentCabinTypes.hpp>
+// STDAIR
+#include <stdair/bom/FlightPeriodContent.hpp>
+#include <stdair/bom/FlightPeriodTypes.hpp>
+#include <stdair/bom/SegmentPeriodTypes.hpp>
 
 namespace stdair {
   // Forward declarations
-  class FlightDate;
-  class LegDate;
-  class SegmentCabin;
+  class Inventory;
+  class SegmentPeriod;
+  struct SegmentPeriodKey_T;
   
   /** Class representing the actual functional/business content for a
-      segment-date. */
-  class SegmentDate : public SegmentDateContent {
+      flight-period. */
+  class FlightPeriod : public FlightPeriodContent {
     friend class FacBomContent;
 
   public:
+    // Type definitions
     // //////////////////////////////////////////////////////////////////
     // See the explanations, within the BomRoot class, for all
     // the types which require to be specified below
     // //////////////////////////////////////////////////////////////////
     /** Definition allowing to retrieve the associated BOM structure type. */
-    typedef SegmentDateStructure_T Structure_T;
+    typedef FlightPeriodStructure_T Structure_T;
 
     /** Definition allowing to retrieve the associated parent
         BOM content type. */
-    typedef FlightDate Parent_T;
+    typedef Inventory Parent_T;
 
     /** Definition allowing to retrieve the map/multimap type using by
         BomChildrenHolder. */
@@ -39,30 +39,24 @@ namespace stdair {
 
     /** Define the list of children holder types. */
     typedef boost::fusion::map<
-      boost::fusion::pair<SegmentCabin, SegmentCabinHolder_T*>,
-      boost::fusion::pair<LegDate, LegDateHolder_T*>
+      boost::fusion::pair<SegmentPeriod, SegmentPeriodHolder_T*>
       > ChildrenHolderMap_T;
     // //////////////////////////////////////////////////////////////////
-        
+
   public:
     // /////////// Getters /////////////
+    /** Get the parent object. */
+    const Parent_T& getParent () const;
+
     /** Get a list or map of a children type for iteration methods. */
-    SegmentCabinList_T getSegmentCabinList () const;
-    SegmentCabinMap_T getSegmentCabinMap () const;
-    LegDateList_T getLegDateList () const;
-    LegDateMap_T getLegDateMap () const;
+    SegmentPeriodList_T getSegmentPeriodList () const;
+    SegmentPeriodMap_T getSegmentPeriodMap () const;
 
-    /** Get the flight number of the segment. */
-    const FlightNumber_T& getFlightNumber () const;
-    
-    /** Get the airline code of the segment. */
-    const AirlineCode_T& getAirlineCode () const;
-
-    /** Retrieve, if existing, the SegmentCabin corresponding to the
-        given cabin code.
+    /** Retrieve, if existing, the SegmentPeriod corresponding to the
+        given SegmentPeriod key.
         <br>If not existing, return the NULL pointer. */
-    SegmentCabin* getSegmentCabin (const CabinCode_T&) const;
-
+    SegmentPeriod* getSegmentPeriod (const SegmentPeriodKey_T&) const;
+  
   public:
     // /////////// Display support methods /////////
     /** Dump a Business Object into an output stream.
@@ -73,7 +67,7 @@ namespace stdair {
         @param istream& the input stream. */
     void fromStream (std::istream& ioIn);
 
-   /** Get the serialised version of the Business Object. */
+    /** Get the serialised version of the Business Object. */
     std::string toString() const;
     
     /** Get a string describing the whole key (differentiating two objects
@@ -84,22 +78,21 @@ namespace stdair {
     /** Constructors are private so as to force the usage of the Factory
         layer. */
     /** Constructors. */
-    SegmentDate (const Key_T&, Structure_T&);
+    FlightPeriod (const Key_T&, Structure_T&);
     /** Destructor. */
-    ~SegmentDate();
+    ~FlightPeriod();
     /** Initialise all the pointers of children holder to NULL. */
     void init();
     /** Default constructors. */
-    SegmentDate ();
-    SegmentDate (const SegmentDate&);
+    FlightPeriod ();
+    FlightPeriod (const FlightPeriod&);
 
   protected:
     // Attributes
     /** Reference structure. */
     Structure_T& _structure;
-    
   };
 
 }
-#endif // __STDAIR_BOM_SEGMENTDATE_HPP
+#endif // __STDAIR_BOM_FLIGHTPERIOD_HPP
 

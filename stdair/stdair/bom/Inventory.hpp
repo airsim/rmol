@@ -14,13 +14,16 @@
 #include <stdair/bom/InventoryContent.hpp>
 #include <stdair/bom/InventoryTypes.hpp>
 #include <stdair/bom/FlightDateTypes.hpp>
+#include <stdair/bom/FlightPeriodTypes.hpp>
 
 namespace stdair {
   // Forward declarations
   class BomRoot;
   class FlightDate;
+  class FlightPeriod;
   class AirlineFeature;
   struct FlightDateKey_T;
+  struct FlightPeriodKey_T;
   
   /** Class representing the actual functional/business content for
       an airline inventory. */
@@ -46,7 +49,8 @@ namespace stdair {
     /** Define the list of children holder types. */
 #if BOOST_VERSION >= 103500
     typedef boost::fusion::map<
-      boost::fusion::pair<FlightDate, FlightDateHolder_T*>
+      boost::fusion::pair<FlightDate, FlightDateHolder_T*>,
+      boost::fusion::pair<FlightPeriod, FlightPeriodHolder_T*>
       > ChildrenHolderMap_T;
 #else // BOOST_VERSION >= 103500
     typedef boost::mpl::map< > ChildrenHolderMap_T;
@@ -72,9 +76,14 @@ namespace stdair {
 
   public:
     // /////////// Getters /////////////
+    /** Get the parent object. */
+    const Parent_T& getParent () const;
+
     /** Get a list or map of a children type for iteration methods. */
     FlightDateList_T getFlightDateList () const;
     FlightDateMap_T getFlightDateMap () const;
+    FlightPeriodList_T getFlightPeriodList () const;
+    FlightPeriodMap_T getFlightPeriodMap () const;
     
     /** Get the airline feature. */
     const AirlineFeature* getAirlineFeature () const {
@@ -85,6 +94,11 @@ namespace stdair {
         given flight number and flight date (FlightDate key).
         <br>If not existing, return the NULL pointer. */
     FlightDate* getFlightDate (const FlightDateKey_T&) const;
+
+    /** Retrieve, if existing, the FlightPeriod corresponding to the
+        given flight number and flight period (FlightPeriod key).
+        <br>If not existing, return the NULL pointer. */
+    FlightPeriod* getFlightPeriod (const FlightPeriodKey_T&) const;
     
   public:
     // /////////// Setters ////////////

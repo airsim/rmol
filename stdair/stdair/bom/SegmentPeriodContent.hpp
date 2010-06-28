@@ -1,25 +1,25 @@
-#ifndef __STDAIR_BOM_SEGMENTDATECONTENT_HPP
-#define __STDAIR_BOM_SEGMENTDATECONTENT_HPP
+#ifndef __STDAIR_BOM_SEGMENTPERIODCONTENT_HPP
+#define __STDAIR_BOM_SEGMENTPERIODCONTENT_HPP
 
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // STDAIR
 #include <stdair/bom/BomContent.hpp>
-#include <stdair/bom/SegmentDateKey.hpp>
+#include <stdair/bom/SegmentPeriodKey.hpp>
 
 namespace stdair {
 
-  /** Class representing the actual attributes for an airline segment-date. */
-  class SegmentDateContent : public BomContent {
+  /** Class representing the actual attributes for an airline segment-period. */
+  class SegmentPeriodContent : public BomContent {
   public:
     // Type definitions.
     /** Definition allowing to retrieve the associated BOM key type. */
-    typedef SegmentDateKey_T Key_T;
+    typedef SegmentPeriodKey_T Key_T;
 
   public:
     // /////////// Getters /////////////
-    /** Get the segment-date key. */
+    /** Get the segment-period key. */
     const Key_T& getKey() const {
       return _key;
     }
@@ -34,19 +34,9 @@ namespace stdair {
       return _key.getOffPoint();
     }
 
-    /** Get the boarding date. */
-    const Date_T& getBoardingDate () const {
-      return _boardingDate;
-    }
-
     /** Get the boarding time. */
     const Duration_T& getBoardingTime () const {
       return _boardingTime;
-    }
-
-    /** Get the off date. */
-    const Date_T& getOffDate () const {
-      return _offDate;
     }
 
     /** Get the off time. */
@@ -54,42 +44,26 @@ namespace stdair {
       return _offTime;
     }
 
+    /** Get the boarding date offset. */
+    const DateOffset_T& getBoardingDateOffset () const {
+      return _boardingDateOffset;
+    }
+
+    /** Get the off date offset. */
+    const DateOffset_T& getOffDateOffset () const {
+      return _offDateOffset;
+    }
+    
     /** Get the elapsed time. */
     const Duration_T& getElapsedTime() const {
       return _elapsedTime;
     }
 
-    /** Get the distance. */
-    const Distance_T& getDistance() const {
-      return _distance;
-    }
-
-    /** Get the date offset (off date - boarding date). */
-    const DateOffset_T getDateOffset () const {
-      return _offDate - _boardingDate;
-    }
-
-    /** Get the time offset between boarding and off points.
-        <br>It is defined as being:
-        TimeOffset = (OffTime - BoardingTime) + (OffDate - BoardingDate) * 24
-        - ElapsedTime. */
-    const Duration_T getTimeOffset() const;
-    
   public:
     // ///////// Setters //////////
-    /** Set the boarding date. */
-    void setBoardingDate (const Date_T& iBoardingDate) {
-      _boardingDate = iBoardingDate;
-    }
-
     /** Set the boarding time. */
     void setBoardingTime (const Duration_T& iBoardingTime) {
       _boardingTime = iBoardingTime;
-    }
-
-    /** Set the off date. */
-    void setOffDate (const Date_T& iOffDate) {
-      _offDate = iOffDate;
     }
 
     /** Set the off time. */
@@ -97,14 +71,19 @@ namespace stdair {
       _offTime = iOffTime;
     }
 
+    /** Set the boarding date offset. */
+    void setBoardingDateOffset (const DateOffset_T& iDateOffset) {
+      _boardingDateOffset = iDateOffset;
+    }
+
+    /** Set the off date offset. */
+    void setOffDateOffset (const DateOffset_T& iDateOffset) {
+      _offDateOffset = iDateOffset;
+    }
+
     /** Set the elapsed time. */
     void setElapsedTime (const Duration_T& iElapsedTime) {
       _elapsedTime = iElapsedTime;
-    }
-
-    /** Set the distance. */
-    void setDistance (const Distance_T& iDistance) {
-      _distance = iDistance;
     }
 
     
@@ -128,36 +107,21 @@ namespace stdair {
     
   protected:
     /** Default constructors. */
-    SegmentDateContent (const Key_T&);
-    SegmentDateContent (const SegmentDateContent&);
+    SegmentPeriodContent (const Key_T&);
+    SegmentPeriodContent (const SegmentPeriodContent&);
     /** Destructor. */
-    ~SegmentDateContent();
+    ~SegmentPeriodContent();
 
   protected:
     // Attributes
-    /** The key of both structure and content objects. */
     Key_T _key;
-
-    /** Boarding Date. */
-    Date_T _boardingDate;
-
-    /** Boarding Time. */
     Duration_T _boardingTime;
-
-    /** Off Date. */
-    Date_T _offDate;
-
-    /** Off Time. */
     Duration_T _offTime;
-
-    /** Elapsed Time. */
+    DateOffset_T _boardingDateOffset;
+    DateOffset_T _offDateOffset;
     Duration_T _elapsedTime;
-
-    /** Distance. */
-    Distance_T _distance;
-
   };
 
 }
-#endif // __STDAIR_BOM_SEGMENTDATECONTENT_HPP
+#endif // __STDAIR_BOM_SEGMENTPERIODCONTENT_HPP
 

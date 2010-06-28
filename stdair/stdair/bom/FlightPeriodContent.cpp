@@ -4,19 +4,17 @@
 // STL
 #include <cassert>
 // STDAIR
-#include <stdair/basic/BasConst_TravelSolution.hpp>
-#include <stdair/bom/OutboundPathContent.hpp>
+#include <stdair/bom/FlightPeriodContent.hpp>
 
 namespace stdair {
 
   // ////////////////////////////////////////////////////////////////////
-  OutboundPathContent::OutboundPathContent (const Key_T& iKey)
-    :  _key (iKey), _airlineCode (DEFAULT_AIRLINE_CODE),
-      _flightPathCode (DEFAULT_FLIGHTPATH_CODE) {
+  FlightPeriodContent::FlightPeriodContent (const Key_T& iKey)
+    : _key (iKey) {
   }
-  
+
   // ////////////////////////////////////////////////////////////////////
-  OutboundPathContent::~OutboundPathContent () {
+  FlightPeriodContent::~FlightPeriodContent () {
   }
 
 }

@@ -42,11 +42,11 @@ namespace stdair {
   const std::string DOW_STR[] = {"Mon", "Tue", "Wed", "Thu", "Fri",
                                  "Sat", "Sun"};
   
-  /** Default DOW String (e.g., "1111100"). */
-  const DOW_String_T DEFAULT_DOW_STRING ("1111100");
+  /** Default DOW String (e.g., "0000000"). */
+  const DOW_String_T DEFAULT_DOW_STRING ("0000000");
   
-  /** Default Date OffSet (e.g., 0). */
-  const DateOffSet_T DEFAULT_DATE_OFFSET (0);
+  /** Default Date Offset (e.g., 0). */
+  const DateOffset_T DEFAULT_DATE_OFFSET (0);
   
   //  // //////// General ///////
   /** Default date for the General. */

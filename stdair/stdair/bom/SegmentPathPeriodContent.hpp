@@ -1,21 +1,21 @@
-#ifndef __STDAIR_BOM_OUTBOUNDPATHCONTENT_HPP
-#define __STDAIR_BOM_OUTBOUNDPATHCONTENT_HPP
+#ifndef __STDAIR_BOM_SEGMENTPATHPERIODCONTENT_HPP
+#define __STDAIR_BOM_SEGMENTPATHPERIODCONTENT_HPP
 
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // STDAIR 
 #include <stdair/bom/BomContent.hpp>
-#include <stdair/bom/OutboundPathKey.hpp>
+#include <stdair/bom/SegmentPathPeriodKey.hpp>
 
 namespace stdair {
 
   /** Class representing the actual attributes for an airline outbound class. */
-  class OutboundPathContent : public BomContent {
+  class SegmentPathPeriodContent : public BomContent {
   public:
     // Type definitions.
     /** Definition allowing to retrieve the associated BOM key type. */
-    typedef OutboundPathKey_T Key_T;
+    typedef SegmentPathPeriodKey_T Key_T;
 
   public:
     // /////////// Getters ////////////
@@ -41,11 +41,6 @@ namespace stdair {
     /** Get the number of segments (part of the primary key). */
     const NbOfSegments_T& getNbOfSegments() const {
       return _key.getNbOfSegments();
-    }
-
-    /** Get the destination (part of the primary key). */
-    const AirportCode_T& getDestination() const {
-      return _key.getOffPoint();
     }
 
     /** Get the elapsed time (part of the primary key). */
@@ -95,10 +90,10 @@ namespace stdair {
     
   protected:
     /** Default constructors. */
-    OutboundPathContent (const Key_T&);
-    OutboundPathContent (const OutboundPathContent&);
+    SegmentPathPeriodContent (const Key_T&);
+    SegmentPathPeriodContent (const SegmentPathPeriodContent&);
     /** Destructor. */
-    ~OutboundPathContent();
+    ~SegmentPathPeriodContent();
 
   protected:
     // Attributes
@@ -113,5 +108,5 @@ namespace stdair {
   };
 
 }
-#endif // __STDAIR_BOM_OUTBOUNDPATHCONTENT_HPP
+#endif // __STDAIR_BOM_SEGMENTPATHPERIODCONTENT_HPP
 

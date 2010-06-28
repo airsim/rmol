@@ -69,16 +69,16 @@ namespace stdair {
       return _capacity;
     }
 
-    /** Get the date off set (off date - boarding date). */
-    const DateOffSet_T getDateOffSet () const {
+    /** Get the date offset (off date - boarding date). */
+    const DateOffset_T getDateOffset () const {
       return _offDate - _boardingDate;
     }
 
     /** Get the time off set between boarding and off points.
         <br>It is defined as being:
-        TimeOffSet = (OffTime - BoardingTime) + (OffDate - BoardingDate) * 24
+        TimeOffset = (OffTime - BoardingTime) + (OffDate - BoardingDate) * 24
         - ElapsedTime. */
-    const Duration_T getTimeOffSet() const;
+    const Duration_T getTimeOffset() const;
 
   public:
     // ///////// Setters //////////

@@ -19,14 +19,14 @@ namespace stdair {
   }
 
   // ////////////////////////////////////////////////////////////////////
-  const Duration_T SegmentDateContent::getTimeOffSet() const {
-    // TimeOffSet = (OffTime - BoardingTime) + (OffDate - BoardingDate) * 24
+  const Duration_T SegmentDateContent::getTimeOffset() const {
+    // TimeOffset = (OffTime - BoardingTime) + (OffDate - BoardingDate) * 24
     //              - ElapsedTime
-    Duration_T oTimeOffSet = (_offTime - _boardingTime);
-    const DateOffSet_T& lDateOffSet = getDateOffSet();
-    const Duration_T lDateOffSetInHours (lDateOffSet.days() * 24, 0, 0);
-    oTimeOffSet += lDateOffSetInHours - _elapsedTime;
-    return oTimeOffSet;
+    Duration_T oTimeOffset = (_offTime - _boardingTime);
+    const DateOffset_T& lDateOffset = getDateOffset();
+    const Duration_T lDateOffsetInHours (lDateOffset.days() * 24, 0, 0);
+    oTimeOffset += lDateOffsetInHours - _elapsedTime;
+    return oTimeOffset;
   }
 
 }

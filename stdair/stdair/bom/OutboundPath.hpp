@@ -68,11 +68,6 @@ namespace stdair {
         <br>Return a NULL pointer if the list is empty. */
     const SegmentDate* getFirstSegmentDate () const;
 
-  private:
-    // ////////////// Business methods //////////////
-    /** Increments the total flight time of the outbound path.*/
-    void incrementTotalFlightTime (const Duration_T&);
-
   public:
     /** Get the AirportDate corresponding to the destination of the
         outbound-path, i.e., the off point of the last segment-date

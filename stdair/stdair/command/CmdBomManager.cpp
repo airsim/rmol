@@ -11,7 +11,7 @@
 
 namespace stdair {
   
-  // //////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////
   void CmdBomManager::createAirlineFeature (const BomRoot& iBomRoot,
                                             const AirlineCode_T& iAirlineCode) {
     
@@ -30,7 +30,7 @@ namespace stdair {
     }
   }
 
-  // //////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////
   YieldStore& CmdBomManager::
   createYieldStore (const BomRoot& iBomRoot,
                     const AirlineCode_T& iAirlineCode) {
@@ -44,7 +44,7 @@ namespace stdair {
     return oYieldStore;
   }
 
-  // //////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////
   Inventory& CmdBomManager::
   createInventory (const BomRoot& iBomRoot,
                    const AirlineCode_T& iAirlineCode) {
@@ -61,7 +61,7 @@ namespace stdair {
     return oInventory;
   }
   
-  // //////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////
   FlightDate& CmdBomManager::
   createFlightDate (const Inventory& iInventory,
                     const FlightDateKey_T& iFlightDateKey) {
@@ -74,7 +74,7 @@ namespace stdair {
     return oFlightDate;
   }
 
-  // //////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////
   LegDate& CmdBomManager::
   createLegDate (const FlightDate& iFlightDate,
                  const AirportCode_T& iBoardingPoint) {
@@ -87,7 +87,7 @@ namespace stdair {
     return oLegDate;
   }
 
-  // //////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////
   LegCabin& CmdBomManager::
   createLegCabin (const LegDate& iLegDate,
                   const CabinCode_T& iCabinCode) {
@@ -101,7 +101,7 @@ namespace stdair {
     return oLegCabin;
   }
   
-  // //////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////
   SegmentDate& CmdBomManager::
   createSegmentDate (const FlightDate& iFlightDate,
                     const SegmentDateKey_T& iSegmentDateKey) {
@@ -114,7 +114,7 @@ namespace stdair {
     return oSegmentDate;
   }
 
-  // //////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////
   SegmentCabin& CmdBomManager::
   createSegmentCabin (const SegmentDate& iSegmentDate,
                       const CabinCode_T& iCabinCode) {
@@ -140,9 +140,76 @@ namespace stdair {
     FacBomContent::linkWithParent (oClass, iSegmentCabin);
 
     return oClass;
-  }  
+  } 
+  
+  // ////////////////////////////////////////////////////////////////////
+  FlightPeriod& CmdBomManager::
+  createFlightPeriod (const Inventory& iInventory,
+                      const FlightPeriodKey_T& iFlightPeriodKey) {
+    // Instantiate a flight-period object with the given key.
+    FlightPeriod& oFlightPeriod =
+      FacBomContent::instance().create<FlightPeriod> (iFlightPeriodKey);
+    // Link the created inventory with the inventory.
+    FacBomContent::linkWithParent (oFlightPeriod, iInventory);
+    
+    return oFlightPeriod;
+  } 
+  
+  // ////////////////////////////////////////////////////////////////////
+  SegmentPeriod& CmdBomManager::
+  createSegmentPeriod (const FlightPeriod& iFlightPeriod,
+                       const SegmentPeriodKey_T& iSegmentPeriodKey) {
+    // Instantiate a segment-period object with the given key.
+    SegmentPeriod& oSegmentPeriod =
+      FacBomContent::instance().create<SegmentPeriod> (iSegmentPeriodKey);
+    // Link the created segment-period with the flight-period.
+    FacBomContent::linkWithParent (oSegmentPeriod, iFlightPeriod);
+    
+    return oSegmentPeriod;
+  }
 
-  // //////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////
+  ReachableUniverse& CmdBomManager::
+  createReachableUniverse (const BomRoot& iBomRoot,
+                           const AirportCode_T& iOrigin) {
+    // Instantiate a reachable-universe with the given origin.
+    const ReachableUniverseKey_T lKey (iOrigin);
+    ReachableUniverse& oReachableUniverse =
+      FacBomContent::instance().create<ReachableUniverse> (lKey);
+    // Link the created reachable-universe to the bom root.
+    FacBomContent::linkWithParent (oReachableUniverse, iBomRoot);
+
+    return oReachableUniverse;
+  }
+
+  // ////////////////////////////////////////////////////////////////////
+  OriginDestinationSet& CmdBomManager::
+  createOriginDestinationSet (const ReachableUniverse& iReachableUniverse,
+                              const AirportCode_T& iDestination) {
+    // Instantiate a origin-destination set with the given destination.
+    const OriginDestinationSetKey_T lKey (iDestination);
+    OriginDestinationSet& oOriginDestinationSet =
+      FacBomContent::instance().create<OriginDestinationSet> (lKey);
+    // Link the created origin-destination set to the bom root.
+    FacBomContent::linkWithParent (oOriginDestinationSet, iReachableUniverse);
+
+    return oOriginDestinationSet;
+  } 
+  
+  // ////////////////////////////////////////////////////////////////////
+  SegmentPathPeriod& CmdBomManager::
+  createSegmentPathPeriod (const OriginDestinationSet& iOriginDestinationSet,
+                       const SegmentPathPeriodKey_T& iSegmentPathPeriodKey) {
+    // Instantiate a segment path period object with the given key.
+    SegmentPathPeriod& oSegmentPathPeriod =
+      FacBomContent::instance().create<SegmentPathPeriod>(iSegmentPathPeriodKey);
+    // Link the created segment path period with the origin-destination set.
+    FacBomContent::linkWithParent (oSegmentPathPeriod, iOriginDestinationSet);
+    
+    return oSegmentPathPeriod;
+  }
+
+  // ////////////////////////////////////////////////////////////////////
   Network& CmdBomManager::
   createNetwork (const BomRoot& iBomRoot,
                  const NetworkKey_T& iNetworkKey) {
@@ -155,7 +222,7 @@ namespace stdair {
     return oNetwork;
   }
   
-  // //////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////
   NetworkDate& CmdBomManager::
   createNetworkDate (const Network& iNetwork, const Date_T& iDate) {
     // Instantiate a network-date object with the given date.
@@ -168,7 +235,7 @@ namespace stdair {
     return oNetworkDate;
   }
 
-  // //////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////
   AirportDate& CmdBomManager::
   createAirportDate (const NetworkDate& iNetworkDate,
                  const AirportCode_T& iBoardingPoint) {
@@ -182,7 +249,7 @@ namespace stdair {
     return oAirportDate;
   }
   
-  // //////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////
   OutboundPath& CmdBomManager::
   createOutboundPath (const AirportDate& iAirportDate,
                     const OutboundPathKey_T& iOutboundPathKey) {

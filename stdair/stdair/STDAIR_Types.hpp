@@ -29,47 +29,36 @@ namespace stdair {
   class STDAIR_Service;
 
   // ///////// Exceptions ///////////
-  class RootException : public std::exception {
-  };
+  class RootException : public std::exception { };
 
-  class FileNotFoundException : public RootException {
-  };
+  class FileNotFoundException : public RootException { };
   
-  class NonInitialisedLogServiceException : public RootException {
-  };
+  class NonInitialisedLogServiceException : public RootException { };
 
-  class NonInitialisedDBSessionManagerException : public RootException {
-  };
+  class NonInitialisedDBSessionManagerException : public RootException { };
 
-  class NonInitialisedServiceException : public RootException {
-  };
+  class NonInitialisedServiceException : public RootException { };
 
-  class MemoryAllocationException : public RootException {
-  };
+  class MemoryAllocationException : public RootException { };
 
-  class ObjectLinkingException : public RootException {
-  };
+  class ObjectLinkingException : public RootException { };
 
-  class ParserException : public RootException {
-  };
+  class ParserException : public RootException { };
 
-  class CodeConversionException : public ParserException {
-  };
+  class CodeConversionException : public ParserException { };
 
-  class CodeDuplicationException : public ParserException {
-  };
+  class CodeDuplicationException : public ParserException { };
 
-  class ObjectNotFoundException : public RootException {
-  };
+  class ObjectCreationgDuplicationException : public ParserException { };
 
-  class SQLDatabaseException : public RootException {
-  };
+  class ObjectNotFoundException : public RootException { };
+
+  class SQLDatabaseException : public RootException { };
 
   class SQLDatabaseConnectionImpossibleException : public SQLDatabaseException {
   };
 
-  class DocumentNotFoundException : public RootException {
-  };
+  class DocumentNotFoundException : public RootException { };
 
   // /////////////// Log /////////////
   /** Level of logs. */
@@ -147,8 +136,8 @@ namespace stdair {
   /** Define the Day-Of-the-Week as a string. */
   typedef std::string DOW_String_T;
 
-  /** Define the Date Off-Set (e.g., -1 ). */
-  typedef boost::gregorian::date_duration DateOffSet_T;
+  /** Define the Date Offset (e.g., -1 ). */
+  typedef boost::gregorian::date_duration DateOffset_T;
 
   /** Define a duration in number of days. */
   typedef unsigned int DayDuration_T;

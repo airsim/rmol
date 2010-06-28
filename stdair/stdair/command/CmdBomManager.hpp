@@ -19,6 +19,11 @@ namespace stdair {
   class BookingClass;
   class LegDate;
   class LegCabin;
+  class FlightPeriod;
+  class SegmentPeriod;
+  class ReachableUniverse;
+  class OriginDestinationSet;
+  class SegmentPathPeriod;
   class Network;
   class NetworkDate;
   class AirportDate;
@@ -27,6 +32,9 @@ namespace stdair {
   class DemandStream;
   struct FlightDateKey_T;
   struct SegmentDateKey_T;
+  struct FlightPeriodKey_T;
+  struct SegmentPeriodKey_T;
+  struct SegmentPathPeriodKey_T;
   struct NetworkKey_T;
   struct OutboundPathKey_T;
 
@@ -71,6 +79,28 @@ namespace stdair {
     /** Create the booking class corresponding to the given class code. */
     static BookingClass& createBookingClass (const SegmentCabin&,
                                              const ClassCode_T&);
+
+    /** Create the flight-period corresponding to the given key. */
+    static FlightPeriod& createFlightPeriod (const Inventory&,
+                                             const FlightPeriodKey_T&);
+
+    /** Create the segment-period corresponding to the given key. */
+    static SegmentPeriod& createSegmentPeriod (const FlightPeriod&,
+                                               const SegmentPeriodKey_T&);
+
+    /** Create the reachable-universe corresponding to the origin airport. */
+    static ReachableUniverse& createReachableUniverse (const BomRoot&,
+                                                       const AirportCode_T&);
+
+    /** Create the origin-destination set corresponding to the
+        destination airport. */
+    static OriginDestinationSet&
+    createOriginDestinationSet (const ReachableUniverse&, const AirportCode_T&);
+
+    /** Create the segment path period corresponding to the given key. */
+    static SegmentPathPeriod&
+    createSegmentPathPeriod (const OriginDestinationSet&,
+                             const SegmentPathPeriodKey_T&);
 
     /** Create the inventory corresponding to the given network key,
         then link it to the BomRoot object. */
