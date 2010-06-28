@@ -9,11 +9,15 @@
 #include <string>
 #include <vector>
 #include <iostream>
-// BOOST Fusion
+// Boost Fusion
+#if BOOST_VERSION >= 103500
 #include <boost/fusion/container/map.hpp>
 #include <boost/fusion/include/map.hpp>
 #include <boost/fusion/sequence/intrinsic/at_key.hpp>
-// STDAIR
+#else // BOOST_VERSION >= 103500
+#include <boost/mpl/map.hpp>
+#endif // BOOST_VERSION >= 103500
+// StdAir 
 #include <stdair/STDAIR_Types.hpp>
 #include <stdair/basic/BasConst_Inventory.hpp>
 #include <stdair/bom/BomChildrenHolderImp.hpp>
@@ -58,6 +62,7 @@ namespace stdair {
       typedef typename CHILD::Content_T CHILD_CONTENT_T;
       typedef BomChildrenHolderImp<CHILD_CONTENT_T> CHILDREN_HOLDER_T;
       
+#if BOOST_VERSION >= 103500
       CHILDREN_HOLDER_T*& lChildrenHolder_ptr =
         boost::fusion::at_key<CHILD_CONTENT_T> (ioParent._holderMap);
 
@@ -67,6 +72,11 @@ namespace stdair {
       }
 
       return addObjectToHolder<CHILD_CONTENT_T> (*lChildrenHolder_ptr, iChild);
+      
+#else // BOOST_VERSION >= 103500
+      return true;
+      
+#endif // BOOST_VERSION >= 103500
     }
 
     // //////////////////////////////////////////////////////////////////
@@ -79,6 +89,7 @@ namespace stdair {
       typedef typename CHILD::Content_T CHILD_CONTENT_T;
       typedef BomChildrenHolderImp<CHILD_CONTENT_T> CHILDREN_HOLDER_T;
       
+#if BOOST_VERSION >= 103500
       CHILDREN_HOLDER_T*& lChildrenHolder_ptr =
         boost::fusion::at_key<CHILD_CONTENT_T> (ioParent._holderMap);
 
@@ -89,6 +100,11 @@ namespace stdair {
 
       return addFullObjectToHolder<CHILD_CONTENT_T> (*lChildrenHolder_ptr,
                                                      iChild);
+      
+#else // BOOST_VERSION >= 103500
+      return true;
+      
+#endif // BOOST_VERSION >= 103500
     }
 
     // //////////////////////////////////////////////////////////////////
