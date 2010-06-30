@@ -7,7 +7,8 @@
 // STDAIR
 #include <stdair/STDAIR_Types.hpp>
 #include <stdair/bom/BomKey.hpp>
-#include <stdair/bom/DoWStruct.hpp>
+#include <stdair/bom/PeriodStruct.hpp>
+#include <stdair/bom/SegmentPathPeriodTypes.hpp>
 
 namespace stdair {
   /** Key of SegmentPathPeriod. */
@@ -17,27 +18,26 @@ namespace stdair {
     // /////////// Construction ///////////
     /** Constructors. */
     SegmentPathPeriodKey_T ();
-    SegmentPathPeriodKey_T (const DatePeriod_T&, const DoWStruct_T&,
+    SegmentPathPeriodKey_T (const PeriodStruct_T&,
                             const Duration_T&,  const Duration_T&,
-                            const NbOfSegments_T&, const NbOfAirlines_T&);
+                            const DateOffsetList_T&, const NbOfAirlines_T&);
     
     /** Destructor. */
     ~SegmentPathPeriodKey_T ();
     
     // /////////// Getters //////////
-    /** Get the departure period. */
-    const DatePeriod_T& getDeparturePeriod () const {
-      return _dateRange;
+    /** Get the active days-of-week. */
+    const PeriodStruct_T& getPeriod () const {
+      return _period;
     }
 
-    /** Get the active days-of-week. */
-    const DoWStruct_T& getDoW () const {
-      return _dow;
+    const DateOffsetList_T& getBoardingDateOffsetList () const {
+      return _boardingDateOffsetList;
     }
     
     /** Get the number of segments. */
-    const NbOfSegments_T& getNbOfSegments() const {
-      return _nbOfSegments;
+    const NbOfSegments_T getNbOfSegments() const {
+      return _boardingDateOffsetList.size();
     }
     
     /** Get the number of airlines. */
@@ -53,6 +53,31 @@ namespace stdair {
     /** Get the boarding time. */
     const Duration_T& getBoardingTime () const {
       return _boardingTime;
+    }
+
+    // /////////// Setters //////////
+    /** Set the active days-of-week. */
+    void setPeriod (const PeriodStruct_T& iPeriod) {
+      _period = iPeriod;
+    }
+
+    void setBoardingDateOffsetList (const DateOffsetList_T& iList) {
+      _boardingDateOffsetList = iList;
+    }
+    
+    /** Set the number of airlines. */
+    void setNbOfAirlines (const NbOfAirlines_T& iNbOfAirlines) {
+      _nbOfAirlines = iNbOfAirlines;
+    }
+
+    /** Set the elapsed time. */
+    void setElapsedTime (const Duration_T& iElapsed) {
+      _elapsed = iElapsed;
+    }
+
+    /** Set the boarding time. */
+    void setBoardingTime (const Duration_T& iBoardingTime) {
+      _boardingTime = iBoardingTime;
     }
     
     // /////////// Display support methods /////////
@@ -70,14 +95,17 @@ namespace stdair {
        <br>For instance, "H" and "K" allow to differentiate among two
        marketing classes for the same segment-cabin. */
     const std::string toString() const;
+
+    // /////////// Business methods ////////////
+    /** Check if the key is valid (i.e. the departure period is valid). */
+    const bool isValid () const {
+      return _period.isValid ();
+    }
     
   private:
     // Attributes
     /** Departure peiod. */
-    DatePeriod_T _dateRange;
-
-    /** Active days-of-week. */
-    DoWStruct_T _dow;
+    PeriodStruct_T _period;
     
     /** The boarding time. */
     Duration_T _boardingTime;
@@ -85,8 +113,9 @@ namespace stdair {
     /** The elapsed time of the path. */
     Duration_T _elapsed;
 
-    /** Number of segments included in the path. */
-    NbOfSegments_T _nbOfSegments;
+    /** The list of boarding date offsets of the segments compare to
+        the first one. */
+    DateOffsetList_T _boardingDateOffsetList;
 
     /** Number of airlines included in the path. */
     NbOfAirlines_T _nbOfAirlines;

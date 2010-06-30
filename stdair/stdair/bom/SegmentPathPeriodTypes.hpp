@@ -8,6 +8,8 @@
 // STL
 #include <map>
 #include <vector>
+// STDAIR
+#include <stdair/STDAIR_Types.hpp>
 
 namespace stdair {
 
@@ -32,6 +34,10 @@ namespace stdair {
 
   typedef std::vector<const SegmentPathPeriod*> SegmentPathPeriodLightList_T;
   typedef std::vector<SegmentPathPeriodLightList_T>SegmentPathPeriodListList_T;
+
+  /** Define the vector of boarding date offsets of the member segments of
+      a segment path compare to the boarding date of the first segment. */
+  typedef std::vector <DateOffset_T> DateOffsetList_T;
   
 }
 #endif // __STDAIR_BOM_SEGMENTPATHPERIODTYPES_HPP

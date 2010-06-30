@@ -54,22 +54,9 @@ namespace stdair {
     /** Get the parent object. */
     const Parent_T& getParent () const;
 
-    /** Get the departure date range. */
-    const DatePeriod_T& getDeparturePeriod () const;
+    /** Get the departure period of the flight-date parent. */
+    const PeriodStruct_T& getPeriod () const;
 
-    /** Get the active days-of-week. */
-    const DoWStruct_T& getDoW () const;
-
-  public:
-    // /////////// Business Methods //////////////
-    /** States whether or not the given SegmentPeriod may connect with the
-        current one.
-        <br>Basically, the board time of the given SegmentPeriod should be
-        such as to allow the passenger connecting from the previous flight
-        (current SegmentPeriod object) to the next one (given SegmentPeriod). */
-    bool isConnectable (const SegmentPeriod&) const;
-
-  
   public:
     // /////////// Display support methods /////////
     /** Dump a Business Object into an output stream.

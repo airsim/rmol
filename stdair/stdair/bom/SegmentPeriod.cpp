@@ -50,14 +50,6 @@ namespace stdair {
     oStr << _structure.describeParentKey() << ", " << describeShortKey();
     return oStr.str();
   }
-  
-  // ////////////////////////////////////////////////////////////////////
-  bool SegmentPeriod::
-  isConnectable (const SegmentPeriod& iSegmentPeriod) const {
-    bool oIsConnectable = false;
-    
-    return oIsConnectable;
-  }
 
   // ////////////////////////////////////////////////////////////////////
   const SegmentPeriod::Parent_T& SegmentPeriod::getParent () const {
@@ -65,13 +57,8 @@ namespace stdair {
   }
 
   // ////////////////////////////////////////////////////////////////////
-  const DatePeriod_T& SegmentPeriod::getDeparturePeriod () const {
-    return getParent().getDeparturePeriod();
-  }
-
-  // ////////////////////////////////////////////////////////////////////
-  const DoWStruct_T& SegmentPeriod::getDoW () const {
-    return getParent().getDoW();
+  const PeriodStruct_T& SegmentPeriod::getPeriod () const {
+    return getParent().getPeriod();
   }
   
 }

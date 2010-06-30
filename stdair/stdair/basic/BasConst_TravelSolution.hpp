@@ -18,6 +18,9 @@ namespace stdair {
     
   /** Default Minimum connection time. */
   extern const Duration_T DEFAULT_MINIMUM_CONNECTION_TIME;
+    
+  /** Default maximum connection time. */
+  extern const Duration_T DEFAULT_MAXIMUM_CONNECTION_TIME;
 
   /** Null time duration (in boost::time_duration unit).*/
   extern const Duration_T NULL_BOOST_TIME_DURATION;

@@ -29,14 +29,9 @@ namespace stdair {
       return _key.getFlightNumber();
     }
 
-    /** Get the departure date range. */
-    const DatePeriod_T& getDeparturePeriod () const {
-      return _key.getDeparturePeriod();
-    }
-
-    /** Get the active days-of-week. */
-    const DoWStruct_T& getDoW () const {
-      return _key.getDoW();
+    /** Get the departure period (part of the key). */
+    const PeriodStruct_T& getPeriod () const {
+      return _key.getPeriod();
     }
 
   public:

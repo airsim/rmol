@@ -86,17 +86,7 @@ namespace stdair {
         2. There is no circle within the new segment path.
         3. The intersection of the two periods is non-empty.
     */
-    const SegmentPathPeriodKey_T connectWithAnotherSegment (const SegmentPathPeriod&) const;
-    
-    /** States whether or not the given SegmentPathPeriod may connect with the
-        current one.
-        <br>Basically, the board time of the given SegmentPathPeriod should be
-        such as to allow the passenger connecting from the previous flight
-        (current SegmentPathPeriod object) to the next one
-        (given SegmentPathPeriod).
-        <br>Note that this method relies on the eponym method of the
-        SegmentPeriod class. */
-    bool isConnectable (const SegmentPathPeriod&) const;
+    SegmentPathPeriodKey_T connectWithAnotherSegment (const SegmentPathPeriod&) const;
 
     /** Check if the given destination airport the departure point of
         one of the segment member. If yes, a circle exists. */
@@ -105,13 +95,6 @@ namespace stdair {
     /** State whether or not the given airline is flown by (at least) one of
         the segments of the internal list. */
     bool isAirlineFlown (const AirlineCode_T&) const;
-        
-    /** Update Airline Code. */
-    void updateAirlineCode ();
-
-    /** Update the total flight time and the flight path code after
-        adding a segment-date. */
-    void updateAfterAddingSegmentPeriod (const SegmentPeriod&);
 
   public:
     // /////////// Display support methods /////////

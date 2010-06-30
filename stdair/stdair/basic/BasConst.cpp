@@ -226,6 +226,9 @@ namespace stdair {
   /** Default Minimum connection time. */
   const Duration_T DEFAULT_MINIMUM_CONNECTION_TIME (0, 30, 0);
 
+  /** Default maximum connection time. */
+  const Duration_T DEFAULT_MAXIMUM_CONNECTION_TIME (24, 0, 0);
+
   /** Default Matching Indicator value. */
   const MatchingIndicator_T DEFAULT_MATCHING_INDICATOR (0.0);
 

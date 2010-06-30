@@ -6,7 +6,7 @@
 // //////////////////////////////////////////////////////////////////////
 // STDAIR
 #include <stdair/bom/BomKey.hpp>
-#include <stdair/bom/DoWStruct.hpp>
+#include <stdair/bom/PeriodStruct.hpp>
 
 namespace stdair {
   /** Key of flight-period. */
@@ -18,8 +18,7 @@ namespace stdair {
   public:
     // /////////// Construction ///////////
     /** Constructors. */
-    FlightPeriodKey_T (const FlightNumber_T&, const DatePeriod_T&,
-                       const DoWStruct_T&);
+    FlightPeriodKey_T (const FlightNumber_T&, const PeriodStruct_T&);
     FlightPeriodKey_T (const FlightPeriodKey_T&);
     /** Destructor. */
     ~FlightPeriodKey_T ();
@@ -30,14 +29,9 @@ namespace stdair {
       return _flightNumber;
     }
 
-    /** Get the departure date range. */
-    const DatePeriod_T& getDeparturePeriod () const {
-      return _dateRange;
-    }
-
     /** Get the active days-of-week. */
-    const DoWStruct_T& getDoW () const {
-      return _dow;
+    const PeriodStruct_T& getPeriod () const {
+      return _period;
     }
     
     // /////////// Display support methods /////////
@@ -61,11 +55,8 @@ namespace stdair {
     /** Flight number. */
     FlightNumber_T _flightNumber;
 
-    /** Departure period of the (first leg of the) flight. */
-    DatePeriod_T _dateRange;
-
-    /** DoW during the departure period. */
-    DoWStruct_T _dow;
+    /** Period during the departure period. */
+    PeriodStruct_T _period;
     
   };
 

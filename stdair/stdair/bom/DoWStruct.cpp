@@ -9,6 +9,13 @@
 #include <stdair/bom/DoWStruct.hpp>
 
 namespace stdair {
+
+  // ////////////////////////////////////////////////////////////////////
+  DoWStruct_T::DoWStruct_T () {
+    for (unsigned short i = 0; i < 7; ++i) {
+      _dowList.push_back (false);
+    }
+  }
   
   // ////////////////////////////////////////////////////////////////////
   DoWStruct_T::DoWStruct_T (const std::string& iDowString) {
@@ -69,6 +76,51 @@ namespace stdair {
       --iStd;
     }
     return _dowList.at (iStd);
+  }
+
+  // ////////////////////////////////////////////////////////////////////
+  void DoWStruct_T::setDayOfWeek (const unsigned short i, const bool iBool) {
+    assert (i >= 0 && i < 7);
+    _dowList.at (i) = iBool;
+  }
+
+  // ////////////////////////////////////////////////////////////////////
+  DoWStruct_T DoWStruct_T::shift (const long& iNbOfDays) const {
+    DoWStruct_T oDoW (DEFAULT_DOW_STRING);
+
+    for (short i = 0; i < 7; ++i) {
+      const bool lDoWBool = _dowList.at (i);
+      short lIndex = (i + iNbOfDays) % 7;
+      if (lIndex < 0) {
+        lIndex += 7;
+      }
+      oDoW.setDayOfWeek (lIndex, lDoWBool);
+    }
+    
+    return oDoW;
+  }
+
+  // ////////////////////////////////////////////////////////////////////
+  DoWStruct_T DoWStruct_T::intersection (const DoWStruct_T& iDoW) const {
+    DoWStruct_T oDoW (DEFAULT_DOW_STRING);
+    for (unsigned short i = 0; i < 7; ++i) {
+      if (getDayOfWeek(i) && iDoW.getDayOfWeek(i)) {
+        oDoW.setDayOfWeek (i, true);
+      } else {
+        oDoW.setDayOfWeek (i, false);
+      }
+    }
+    return oDoW;
+  }
+
+  // ////////////////////////////////////////////////////////////////////
+  const bool DoWStruct_T::isValid () const {
+    for (unsigned short i = 0; i < 7; ++i) {
+      if (getDayOfWeek(i)) {
+        return true;
+      }
+    }
+    return false;
   }
 
 }

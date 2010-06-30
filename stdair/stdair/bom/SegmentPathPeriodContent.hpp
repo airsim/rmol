@@ -23,24 +23,15 @@ namespace stdair {
     const Key_T& getKey() const {
       return _key;
     }
-    /** Get the airline code (from the whole outbound path). */
-    const AirlineCode_T& getAirlineCode() const {
-      return _airlineCode;
-    }
-
-    /** Get the flightPathCode (from the whole outbound path). */
-    const FlightPathCode_T& getFlightPathCode() const {
-      return _flightPathCode;
-    }
-
-    /** Get the current flightPathCode (from the whole outbound path). */
-    FlightPathCode_T getCurrentFlightPathCode() {
-      return _flightPathCode;
-    }
 
     /** Get the number of segments (part of the primary key). */
-    const NbOfSegments_T& getNbOfSegments() const {
+    const NbOfSegments_T getNbOfSegments() const {
       return _key.getNbOfSegments();
+    }
+
+    /** Get the boarding date offset list. */
+    const DateOffsetList_T& getBoardingDateOffsetList () const {
+      return _key.getBoardingDateOffsetList();
     }
 
     /** Get the elapsed time (part of the primary key). */
@@ -57,17 +48,10 @@ namespace stdair {
     const Duration_T& getBoardingTime() const {
       return _key.getBoardingTime();
     }
-   
-  public:
-    // /////////// Setters ////////////
-    /** Set Airline Code. */
-    void setAirlineCode (const AirlineCode_T& iAirlineCode) {
-      _airlineCode = iAirlineCode;
-    }
-    
-    /** Set the flight path Code. */
-    void setFlightPathCode (const FlightPathCode_T& iFPCode) {
-      _flightPathCode = iFPCode;
+
+    /** Get the departure period. */
+    const PeriodStruct_T& getDeparturePeriod () const {
+      return _key.getPeriod();
     }
     
   public:
@@ -99,12 +83,6 @@ namespace stdair {
     // Attributes
     /** The key of both structure and content objects. */
     Key_T _key;
-    
-    /** AirlineCode for the whole outboundPath.*/
-    AirlineCode_T _airlineCode;
-    
-    /** FlightPathCode (AirlineCode + flight numbers of all segments). */
-    FlightPathCode_T _flightPathCode;
   };
 
 }

@@ -100,6 +100,7 @@ bom_h_sources = \
 		$(top_srcdir)/stdair/bom/YieldStore.hpp \
 		$(top_srcdir)/stdair/bom/OptimizerStruct.hpp \
 		$(top_srcdir)/stdair/bom/DoWStruct.hpp \
+		$(top_srcdir)/stdair/bom/PeriodStruct.hpp \
 		$(top_srcdir)/stdair/bom/TravelSolutionStruct.hpp \
 		$(top_srcdir)/stdair/bom/BookingRequestStruct.hpp \
 		$(top_srcdir)/stdair/bom/AirlineStruct.hpp \
@@ -172,6 +173,7 @@ bom_cc_sources = \
 		$(top_srcdir)/stdair/bom/YieldStore.cpp \
 		$(top_srcdir)/stdair/bom/OptimizerStruct.cpp \
 		$(top_srcdir)/stdair/bom/DoWStruct.cpp \
+		$(top_srcdir)/stdair/bom/PeriodStruct.cpp \
 		$(top_srcdir)/stdair/bom/TravelSolutionStruct.cpp \
 		$(top_srcdir)/stdair/bom/BookingRequestStruct.cpp \
 		$(top_srcdir)/stdair/bom/AirlineStruct.cpp \

@@ -10,27 +10,23 @@ namespace stdair {
 
   // ////////////////////////////////////////////////////////////////////
   SegmentPathPeriodKey_T::SegmentPathPeriodKey_T ()
-    : _dateRange (BOOST_DEFAULT_DATE_PERIOD),
-      _dow (DEFAULT_DOW_STRING),
+    : _period (),
       _boardingTime (NULL_BOOST_TIME_DURATION),
       _elapsed (NULL_BOOST_TIME_DURATION),
-      _nbOfSegments (0),
       _nbOfAirlines (0){
   }
 
   // ////////////////////////////////////////////////////////////////////
   SegmentPathPeriodKey_T::
-  SegmentPathPeriodKey_T (const DatePeriod_T& iDeparturePeriod,
-                          const DoWStruct_T& iDoW,
+  SegmentPathPeriodKey_T (const PeriodStruct_T& iPeriod,
                           const Duration_T& iBoardingTime,
                           const Duration_T& iElapsedTime,
-                          const NbOfSegments_T& iNbOfSegments,
+                          const DateOffsetList_T& iBoardingDateOffsetList,
                           const NbOfAirlines_T& iNbOfAirlines)
-    : _dateRange (iDeparturePeriod),
-      _dow (iDoW),
+    : _period (iPeriod),
       _boardingTime (iBoardingTime),
       _elapsed (iElapsedTime),
-      _nbOfSegments (iNbOfSegments),
+      _boardingDateOffsetList (iBoardingDateOffsetList),
       _nbOfAirlines (iNbOfAirlines){
   }
   
@@ -50,9 +46,15 @@ namespace stdair {
   // ////////////////////////////////////////////////////////////////////
   const std::string SegmentPathPeriodKey_T::toString() const {
     std::ostringstream oStr;
-    oStr << _dateRange << ", " << _dow.describeShort () << ", "
-         << _boardingTime << ", "  << _elapsed << ", "
-         << _nbOfSegments << ", " << _nbOfAirlines ;
+    oStr << _period.describeShort () << ", "
+         << _boardingTime << ", "  << _elapsed << ", ";
+    for (DateOffsetList_T::const_iterator itOffset =
+           _boardingDateOffsetList.begin();
+         itOffset != _boardingDateOffsetList.end(); ++itOffset) {
+      oStr << *itOffset << ", ";
+    }
+
+    oStr << _nbOfAirlines ;
     return oStr.str();
   }
   

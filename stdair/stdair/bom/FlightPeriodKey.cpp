@@ -8,15 +8,13 @@ namespace stdair {
 
   // ////////////////////////////////////////////////////////////////////
   FlightPeriodKey_T::FlightPeriodKey_T (const FlightNumber_T& iFlightNumber,
-                                        const DatePeriod_T& iDatePeriod,
-                                        const DoWStruct_T& iDoW)
-    : _flightNumber (iFlightNumber), _dateRange (iDatePeriod), _dow (iDoW) {
+                                        const PeriodStruct_T& iPeriod)
+    : _flightNumber (iFlightNumber), _period (iPeriod) {
   }
 
   // ////////////////////////////////////////////////////////////////////
   FlightPeriodKey_T::FlightPeriodKey_T (const FlightPeriodKey_T& iKey)
-    : _flightNumber (iKey._flightNumber), _dateRange (iKey._dateRange),
-      _dow (iKey._dow) {
+    : _flightNumber (iKey._flightNumber), _period (iKey._period) {
   }
 
   // ////////////////////////////////////////////////////////////////////
@@ -35,8 +33,7 @@ namespace stdair {
   // ////////////////////////////////////////////////////////////////////
   const std::string FlightPeriodKey_T::toString() const {
     std::ostringstream oStr;
-    oStr << _flightNumber << ", " << _dateRange << ", "
-         << _dow.describeShort();
+    oStr << _flightNumber << ", " << _period.describeShort();
     return oStr.str();
   }
 

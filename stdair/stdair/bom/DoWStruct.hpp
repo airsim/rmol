@@ -19,16 +19,22 @@ namespace stdair {
   public:
     /** Define the bit set representing the DoW. */
     typedef std::vector<bool> BooleanList_T;
-      
-    /** Attributes. */
-    BooleanList_T _dowList;
 
+  public:
+    // //////////////// Getters ///////////////
     /** Get the i-th day of the week (Monday being the first one). */
     bool getDayOfWeek (const unsigned short i) const;
       
     /** Get the i-th day of the week (Sunday being the first one). */
     bool getStandardDayOfWeek (const unsigned short i) const;
-      
+
+  public:
+    // //////////////// Setters ///////////////
+    /** Set the new value for the i-th day-of-week. */
+    void setDayOfWeek (const unsigned short, const bool);
+    
+  public:
+    // //////////////// Display methods ///////////////
     /** Display explicitly (e.g., "Mon.Tue.Wed.Thu.Fri."). */
     const std::string describe() const;
 
@@ -36,15 +42,29 @@ namespace stdair {
     const std::string describeShort() const;
 
   public:
+    // ///////////////// Business Methods ////////////////
+    /** Build a new DoW struct by shifting the current DoW by a given number. */
+    DoWStruct_T shift (const long&) const;
+
+    /** Build a new DoW struct by intersecting two DoW structs. */
+    DoWStruct_T intersection (const DoWStruct_T&) const;
+
+    /** Return if the DoW struct is valid (i.e., has at least one "true"). */
+    const bool isValid () const;
+    
+  public:
     /** Constructor from a given bit set (e.g., "0000011" for the
         week-ends). */
     DoWStruct_T (const std::string& iDowString);
-
-    /** Default constructor. */
+    /** Default constructors. */
     DoWStruct_T ();
-
-    /** Default constructor. */
     DoWStruct_T (const DoWStruct_T&);
+    /** Default destructor. */
+    ~DoWStruct_T () { }
+    
+  private:
+    /** Attributes. */
+    BooleanList_T _dowList;
   };
 
 }

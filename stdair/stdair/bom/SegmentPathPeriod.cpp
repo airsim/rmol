@@ -4,6 +4,7 @@
 // STL
 #include <cassert>
 // STDAIR
+#include <stdair/basic/BasConst_TravelSolution.hpp>
 #include <stdair/bom/BomSource.hpp>
 
 namespace stdair {
@@ -112,91 +113,143 @@ namespace stdair {
     assert (lLastSegment_ptr != NULL);
     return lLastSegment_ptr->getOffPoint();
   }  
-  
-  // ////////////////////////////////////////////////////////////////////
-  void SegmentPathPeriod::updateAirlineCode() {
-    // TODO: to be optimised.
-    // std::ostringstream ostr;
-    // SegmentPeriodList_T lSegmentPeriodList = getSegmentPeriodList();
-    
-    // for (SegmentPeriodList_T::iterator itSegmentPeriod = 
-    //        lSegmentPeriodList.begin();
-    //      itSegmentPeriod != lSegmentPeriodList.end(); ++itSegmentPeriod) {
-    //   const SegmentPeriod& lSegmentPeriod = *itSegmentPeriod;
-    //   ostr << lSegmentPeriod.getAirlineCode();
-    // }
-    
-    // const AirlineCode_T lAirlineCode (ostr.str());
-    // setAirlineCode(lAirlineCode);
-  }
 
   // ////////////////////////////////////////////////////////////////////
   bool SegmentPathPeriod::
   isAirlineFlown (const AirlineCode_T& iAirlineCode) const {
     bool oAirlineFlown = false;
 
-    // const SegmentPeriodList_T& lSegmentPeriodList = getSegmentPeriodList ();
-    // for (SegmentPeriodList_T::iterator itSegmentPeriod =
-    //        lSegmentPeriodList.begin();
-    //      itSegmentPeriod != lSegmentPeriodList.end(); ++itSegmentPeriod) {
-    //   const SegmentPeriod& lSegmentPeriod = *itSegmentPeriod;
+    const SegmentPeriodList_T& lSegmentPeriodList = getSegmentPeriodList ();
+    for (SegmentPeriodList_T::iterator itSegmentPeriod =
+           lSegmentPeriodList.begin();
+         itSegmentPeriod != lSegmentPeriodList.end(); ++itSegmentPeriod) {
+      const SegmentPeriod& lSegmentPeriod = *itSegmentPeriod;
 
-    //   const AirlineCode_T& lSegmentAirlineCode =
-    //     lSegmentPeriod.getAirlineCode();
-    //   if (lSegmentAirlineCode == iAirlineCode) {
-    //     oAirlineFlown = true;
-    //     break;
-    //   }
-    // }
+      const AirlineCode_T& lSegmentAirlineCode =
+        lSegmentPeriod.getParent().getParent().getAirlineCode();
+      if (lSegmentAirlineCode == iAirlineCode) {
+        oAirlineFlown = true;
+        break;
+      }
+    }
 
     return oAirlineFlown;
   }
 
   // ////////////////////////////////////////////////////////////////////
-  void SegmentPathPeriod::
-  updateAfterAddingSegmentPeriod (const SegmentPeriod& iSegmentPeriod) {
-    // Increment the flight path code
-    // std::ostringstream ostr;
-    // FlightPathCode_T lPreviousFPCode = getCurrentFlightPathCode();
-    // ostr << lPreviousFPCode
-    //      << iSegmentPeriod.getFlightNumber();
-    // setFlightPathCode(ostr.str());
-  }
-
-  // ////////////////////////////////////////////////////////////////////
-  const SegmentPathPeriodKey_T SegmentPathPeriod::
+  SegmentPathPeriodKey_T SegmentPathPeriod::
   connectWithAnotherSegment(const SegmentPathPeriod& iSingleSegmentPath) const {
     SegmentPathPeriodKey_T oSegmentPathPeriodKey;
 
     // Retrieve the (only) segment period of the single segment path.
-    const SegmentPeriod* lSegmentPeriod_ptr = getFirstSegmentPeriod ();
-    assert (lSegmentPeriod_ptr != NULL);
+    const SegmentPeriod* lNextSegmentPeriod_ptr =
+      iSingleSegmentPath.getFirstSegmentPeriod ();
+    assert (lNextSegmentPeriod_ptr != NULL);
 
-    // Check if the new segment period will create a circle.
-    const AirportCode_T& lDestination = lSegmentPeriod_ptr->getOffPoint();
-    if (checkCircle (lDestination) == true) {
+    // Retrive the last segment period of the current segment path and check
+    // if the combination of the last segment and the next segment that we
+    // want to add to the current segment path will create a new segment
+    // (i.e., the two segment period belongs to the same flight number).
+    const SegmentPeriod* lLastSegmentPeriod_ptr = getLastSegmentPeriod ();
+    assert (lLastSegmentPeriod_ptr != NULL);
+    const FlightPeriod& lLastFlightPeriod = lLastSegmentPeriod_ptr->getParent();
+    const FlightPeriod& lNextFlightPeriod = lNextSegmentPeriod_ptr->getParent();
+    if (lLastFlightPeriod.getFlightNumber()==lNextFlightPeriod.getFlightNumber()
+        && lLastFlightPeriod.getParent().getAirlineCode() ==
+        lNextFlightPeriod.getParent().getAirlineCode()) {
       return oSegmentPathPeriodKey;
     }
     
+    // Check if the new segment period will create a circle.
+    const AirportCode_T& lDestination = lNextSegmentPeriod_ptr->getOffPoint();
+    if (checkCircle (lDestination) == true) {
+      return oSegmentPathPeriodKey;
+    }
 
+    // Check if a passenger can connect from the last segment of the
+    // current segment path to the first segment of the to-be-added
+    // segment path. If yes, build a new departure period for the new
+    // segment path.
+    DateOffsetList_T lBoardingDateOffsetList = 
+      getBoardingDateOffsetList();
+    const PeriodStruct_T& lCurrentDeparturePeriod = getDeparturePeriod();
+    const PeriodStruct_T& lNextDeparturePeriod =
+      iSingleSegmentPath.getDeparturePeriod();
+    const Duration_T& lLastOffTime = lLastSegmentPeriod_ptr->getOffTime();
+    const Duration_T& lNextBoardingTime =
+      lNextSegmentPeriod_ptr->getBoardingTime();
+    // If the next boarding time is later than the last off time, check if
+    // the passengers will have enough time for the transfer. If the next
+    // boarding time is earlier than the last off time, check if the passengers
+    // can connect to a flight in the next day.
+    if (lNextBoardingTime >= lLastOffTime) {
+      const Duration_T lStopTime = lNextBoardingTime - lLastOffTime;
+      if (lStopTime < DEFAULT_MINIMUM_CONNECTION_TIME) {
+        return oSegmentPathPeriodKey;
+      } else {
+        // Calulcate the date offset of the next segment compare to
+        // the first one. In this case, this value is equal to the offset
+        // of the off date of the last segment compare to the boarding date
+        // of the first segment.
+        const DateOffset_T& lLastBoardingDateOffset =
+          lBoardingDateOffsetList.at (getNbOfSegments() - 1);
+        const DateOffset_T lNextBoardingDateOffset =
+          lLastBoardingDateOffset + lNextSegmentPeriod_ptr->getOffDateOffset()
+          - lNextSegmentPeriod_ptr->getBoardingDateOffset();
+        const DateOffset_T lNegativeNextBoardingDateOffset =
+          DateOffset_T (0) - lNextBoardingDateOffset;
+
+        // Compute the adjusted departure period of the next segment by
+        // substracting the origin one with the boarding date offset.
+        const PeriodStruct_T lAdjustedNextDeparturePeriod =
+          lNextDeparturePeriod.addDateOffset (lNegativeNextBoardingDateOffset);
+
+        // Build the intersection of the two periods.
+        const PeriodStruct_T lNewDeparturePeriod =
+          lCurrentDeparturePeriod.intersection (lAdjustedNextDeparturePeriod);
+        Duration_T lNewElapsed = getElapsedTime() + lStopTime +
+          lNextSegmentPeriod_ptr->getElapsedTime();
+        lBoardingDateOffsetList.push_back (lNextBoardingDateOffset);
+        oSegmentPathPeriodKey.setPeriod (lNewDeparturePeriod);
+        oSegmentPathPeriodKey.setElapsedTime (lNewElapsed);
+      }
+    } else {
+      const Duration_T lStopTime = 
+        lNextBoardingTime - lLastOffTime + Duration_T (24, 0, 0);
+      if (lStopTime < DEFAULT_MINIMUM_CONNECTION_TIME) {
+        return oSegmentPathPeriodKey;
+      } else {
+        // Calulcate the date offset of the next segment compare to
+        // the first one.
+        const DateOffset_T& lLastBoardingDateOffset =
+          lBoardingDateOffsetList.at (getNbOfSegments() - 1);
+        const DateOffset_T lNextBoardingDateOffset =
+          lLastBoardingDateOffset + lNextSegmentPeriod_ptr->getOffDateOffset()
+          - lNextSegmentPeriod_ptr->getBoardingDateOffset() + DateOffset_T (1);
+        const DateOffset_T lNegativeNextBoardingDateOffset =
+          DateOffset_T (0) - lNextBoardingDateOffset;
+
+        // Compute the adjusted departure period of the next segment by
+        // substracting the origin one with the boarding date offset.
+        const PeriodStruct_T lAdjustedNextDeparturePeriod =
+          lNextDeparturePeriod.addDateOffset (lNegativeNextBoardingDateOffset);
+
+        // Build the intersection of the two periods.
+        const PeriodStruct_T lNewDeparturePeriod =
+          lCurrentDeparturePeriod.intersection (lAdjustedNextDeparturePeriod);
+        Duration_T lNewElapsed = getElapsedTime() + lStopTime +
+          lNextSegmentPeriod_ptr->getElapsedTime();
+        lBoardingDateOffsetList.push_back (lNextBoardingDateOffset);
+        oSegmentPathPeriodKey.setPeriod (lNewDeparturePeriod);
+        oSegmentPathPeriodKey.setElapsedTime (lNewElapsed);
+      }
+    }
+    
+    const Duration_T& lBoardingTime = getBoardingTime();
+    oSegmentPathPeriodKey.setBoardingTime (lBoardingTime);
+    oSegmentPathPeriodKey.setBoardingDateOffsetList (lBoardingDateOffsetList);
+    
     return oSegmentPathPeriodKey;
-  }
-
-  // ////////////////////////////////////////////////////////////////////
-  bool SegmentPathPeriod::
-  isConnectable (const SegmentPathPeriod& iSegmentPathPeriod) const {
-    // Delegate the check on the two (potentially) connecting SegmentPeriod
-    // objects, i.e., the last SegmentPeriod of the current SegmentPathPeriod,
-    // and the first SegmentPeriod of the given SegmentPathPeriod.
-    const SegmentPeriod* lOffSegment_ptr = getLastSegmentPeriod();
-    assert (lOffSegment_ptr != NULL);
-
-    const SegmentPeriod* lBoardingSegment_ptr =
-      iSegmentPathPeriod.getFirstSegmentPeriod();
-    assert (lBoardingSegment_ptr != NULL);
-      
-    return lOffSegment_ptr->isConnectable (*lBoardingSegment_ptr);
-    // TODO
   }
 
   // ////////////////////////////////////////////////////////////////////
