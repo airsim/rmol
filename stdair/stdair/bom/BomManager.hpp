@@ -18,6 +18,11 @@ namespace stdair {
   class SegmentDate;
   class SegmentCabin;
   class BookingClass;
+  class ReachableUniverse;
+  class OriginDestinationSet;
+  class SegmentPathPeriod;
+  class FlightPeriod;
+  class SegmentPeriod;
   class Network;
   class NetworkDate;
   class AirportDate;
@@ -128,6 +133,25 @@ namespace stdair {
                             const BookingRequestStruct& iBookingRequest);
     /** Helper fuction to display an interger. */
     static void intDisplay (std::ostream&, const int&);
+    
+    /** Recursively display (dump in the underlying output log stream)
+        the objects of the given BOM tree.
+        @param std::ostream& Output stream in which the BOM tree should be
+               logged/dumped.
+        @param const BomRoot& Root of the BOM tree to be displayed. */
+    static void displaySegmentPathNetwork (std::ostream&, const BomRoot&);
+
+    /** Recursively display (dump in the underlying output log stream)
+        the objects of the given BOM tree. */
+    static void display (std::ostream&, const ReachableUniverse&);
+
+    /** Recursively display (dump in the underlying output log stream)
+        the objects of the given BOM tree. */
+    static void display (std::ostream&, const OriginDestinationSet&);
+    
+    /** Recursively display (dump in the underlying output log stream)
+        the objects of the given BOM tree. */
+    static void display (std::ostream&, const SegmentPathPeriod&);
   };    
 
 }

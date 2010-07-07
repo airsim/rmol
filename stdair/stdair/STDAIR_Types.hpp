@@ -467,6 +467,13 @@ namespace stdair {
 
   /** Key of a STL map. */
   typedef std::string MapKey_T;
+
+  /** List of keys. */
+  typedef std::vector<std::string> KeyList_T;
+
+  /** Map between the cabin codes and the booking class codes within
+      each cabin. */
+  typedef std::map<CabinCode_T, ClassList_String_T> CabinBookingClassMap_T;
   
 }
 #endif // __STDAIR_STDAIR_TYPES_HPP

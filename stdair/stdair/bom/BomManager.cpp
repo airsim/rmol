@@ -492,5 +492,97 @@ namespace stdair {
       oStream << dInt;
     }
   }
+
+  // ////////////////////////////////////////////////////////////////////
+  void BomManager::displaySegmentPathNetwork (std::ostream& oStream,
+                                              const BomRoot& iBomRoot) {
+    // Store current formatting flags of the given output stream
+    std::ios::fmtflags oldFlags = oStream.flags();
+
+    oStream << std::endl;
+
+    // Browse the reachable universe objects.
+    const ReachableUniverseList_T& lRUList = iBomRoot.getReachableUniverseList();
+    for (ReachableUniverseList_T::iterator itRU = lRUList.begin();
+         itRU != lRUList.end(); ++itRU) {
+      const ReachableUniverse& lCurrentRU = *itRU;
+
+      display (oStream, lCurrentRU);
+    }
+
+    // Reset formatting flags of the given output stream
+    oStream.flags (oldFlags);
+  }
+
+  // ////////////////////////////////////////////////////////////////////
+  void BomManager::display (std::ostream& oStream,
+                            const ReachableUniverse& iReachableUniverse) {
+    // Store current formatting flags of the given output stream
+    std::ios::fmtflags oldFlags = oStream.flags();
+
+    oStream << std::endl << "Reachable Universe level: "
+            << iReachableUniverse.describeShortKey() << std::endl;
+
+    // Browse the origin-destination set objects.
+    const OriginDestinationSetList_T& lODSetList =
+      iReachableUniverse.getOriginDestinationSetList ();
+    for (OriginDestinationSetList_T::iterator itODS = lODSetList.begin();
+         itODS != lODSetList.end(); ++itODS) {
+      const OriginDestinationSet& lCurrentODS = *itODS;
+
+      display (oStream, lCurrentODS);
+    }
+
+    // Reset formatting flags of the given output stream
+    oStream.flags (oldFlags);
+  }
+
+  // ////////////////////////////////////////////////////////////////////
+  void BomManager::display (std::ostream& oStream,
+                            const OriginDestinationSet& iOriginDestinationSet) {
+    // Store current formatting flags of the given output stream
+    std::ios::fmtflags oldFlags = oStream.flags();
+
+    oStream << "Origine-Destination Set level: "
+            << iOriginDestinationSet.describeShortKey () << std::endl;
+    
+    // Browse the segment path period objects.
+    const SegmentPathPeriodList_T& lSegmentPathPeriodList =
+      iOriginDestinationSet.getSegmentPathPeriodList ();
+    for (SegmentPathPeriodList_T::iterator itSegmentPath =
+           lSegmentPathPeriodList.begin();
+         itSegmentPath != lSegmentPathPeriodList.end(); ++itSegmentPath) {
+      const SegmentPathPeriod& lCurrentSegmentPath = *itSegmentPath;
+
+      display (oStream, lCurrentSegmentPath);
+    }
+
+    // Reset formatting flags of the given output stream
+    oStream.flags (oldFlags);
+  }
+
+  // ////////////////////////////////////////////////////////////////////
+  void BomManager::display (std::ostream& oStream,
+                            const SegmentPathPeriod& iSegmentPathPeriod) {
+    // Store current formatting flags of the given output stream
+    std::ios::fmtflags oldFlags = oStream.flags();
+
+    oStream << "Segment Path Period level: "
+            << iSegmentPathPeriod.describeShortKey () << std::endl;
+
+    // Browse the segment period objects.
+    const SegmentPeriodList_T& lSegmentPeriodList =
+      iSegmentPathPeriod.getSegmentPeriodList();
+    for (SegmentPeriodList_T::iterator itSegmentPeriod =
+           lSegmentPeriodList.begin();
+         itSegmentPeriod != lSegmentPeriodList.end(); ++itSegmentPeriod) {
+      const SegmentPeriod& lCurrentSegmentPeriod = *itSegmentPeriod;
+      oStream << "Segment Period details: "
+              << lCurrentSegmentPeriod.describeKey() << std::endl;
+    }
+
+    // Reset formatting flags of the given output stream
+    oStream.flags (oldFlags);
+  }
   
 }

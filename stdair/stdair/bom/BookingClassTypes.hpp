@@ -28,11 +28,7 @@ namespace stdair {
   typedef BomList_T<BookingClass> BookingClassList_T;
 
   /** Define the booking class map. */
-  typedef BomMap_T<BookingClass> BookingClassMap_T;
-  
-  /** Define the STL list of booking classes. */
-  typedef std::vector<BookingClass*> BookingClassSTLList_T;
-      
+  typedef BomMap_T<BookingClass> BookingClassMap_T;      
 }
 #endif // __STDAIR_BOM_BOOKINGCLASSTYPES_HPP
 

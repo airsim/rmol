@@ -59,6 +59,11 @@ namespace stdair {
       return _elapsedTime;
     }
 
+    /** Get the cabin booking class map. */
+    const CabinBookingClassMap_T& getCabinBookingClassMap () const {
+      return _cabinBookingClassMap;
+    }
+
   public:
     // ///////// Setters //////////
     /** Set the boarding time. */
@@ -85,6 +90,11 @@ namespace stdair {
     void setElapsedTime (const Duration_T& iElapsedTime) {
       _elapsedTime = iElapsedTime;
     }
+
+    /** Add a pair cabin code and list of class codes within the cabin to the
+        cabin booking class map. */
+    void addCabinBookingClassList (const CabinCode_T&, 
+                                   const ClassList_String_T&);
 
     
   public:
@@ -120,6 +130,7 @@ namespace stdair {
     DateOffset_T _boardingDateOffset;
     DateOffset_T _offDateOffset;
     Duration_T _elapsedTime;
+    CabinBookingClassMap_T _cabinBookingClassMap;
   };
 
 }

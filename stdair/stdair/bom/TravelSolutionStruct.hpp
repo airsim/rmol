@@ -14,21 +14,15 @@
 #include <stdair/bom/BookingClassTypes.hpp>
 
 namespace stdair {
-
-  // Forward declarations
-  class OutboundPath;
-  
   /** Structure holding the elements of a travel solution. */
   struct TravelSolutionStruct : public StructAbstract {
   public:
     // /////////// Getters ///////////////
-    /** Retrieve the attributes of the object. */
-    OutboundPath& getOutboundPath() const {
-      assert (_outboundPath_ptr != NULL);
-      return *_outboundPath_ptr;
+    const KeyList_T& getSegmentDateKeyList () {
+      return _segmentDateKeyList;
     }
-    const BookingClassSTLList_T& getBookingClassList () const {
-      return _bookingClassList;
+    const ClassList_String_T& getBookingClassKeyList () const { 
+      return _bookingClassKeyList; 
     }
     const Fare_T getFare() const { return _fare; }
     const Availability_T getAvailability() const { return _availability; }
@@ -38,6 +32,12 @@ namespace stdair {
     /** Setter for some attributes. */
     void setFare (const Fare_T& iFare) { _fare = iFare; }
     void setAvailability (const Availability_T& iAvail) { _availability=iAvail; }
+    void addSegmentDateKey (const std::string& iKey) {
+      _segmentDateKeyList.push_back (iKey);
+    }
+    void addBookingClassKey (const char iKey) {
+      _bookingClassKeyList.push_back (iKey);
+    }
 
   public:
     // /////////// Display support method /////////////
@@ -51,35 +51,24 @@ namespace stdair {
 
     /** Display of the structure. */
     const std::string describe() const;
-
-    /** Get a string describing the whole key (differentiating two objects
-        at any level). */
-    const std::string describeKey() const;
-
-    /** Get a string describing the short key (differentiating two objects
-        at the same level). */
-    const std::string describeShortKey() const;
-
   
   public:
     // //////////// Constructors & Destructor ///////////////
     /** Main constructor. */
-    TravelSolutionStruct (OutboundPath&, const BookingClassSTLList_T&);
+    TravelSolutionStruct ();
     /** Destructor. */
     ~TravelSolutionStruct ();
     /** Default copy constructor. */
     TravelSolutionStruct (const TravelSolutionStruct&);
-    /** Default constructor, not to be used. */
-    TravelSolutionStruct ();
     
   private:
     // ///////////////////// Attributes //////////////////////
-    /** The outbound path associated to this solution.*/
-    OutboundPath* _outboundPath_ptr;
-
-    /** The list of booking classes which make the travel solution. */
-    BookingClassSTLList_T _bookingClassList;
-
+    /** The list of segment-date whole keys which make the travel solution. */
+    KeyList_T _segmentDateKeyList;
+    
+    /** The list of booking class  keys which make the travel solution. */
+    ClassList_String_T _bookingClassKeyList;
+    
     /** The fare of the travel solution. */
     Fare_T _fare;
 

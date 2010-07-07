@@ -73,7 +73,25 @@ namespace stdair {
         of the last segment. */
     const AirportCode_T& getDestination () const;
 
+    public:
+    // /////////// Display support methods /////////
+    /** Dump a Business Object into an output stream.
+        @param ostream& the output stream. */
+    void toStream (std::ostream& ioOut) const;
+
+    /** Read a Business Object from an input stream.
+        @param istream& the input stream. */
+    void fromStream (std::istream& ioIn);
+
+   /** Get the serialised version of the Business Object. */
+    std::string toString() const;
+    
+    /** Get a string describing the whole key (differentiating two objects
+        at any level). */
+    const std::string describeKey() const;
+
   public:
+    // ////////////// Busniess methods ////////////////
     /** Check if the (i-1)-length segment path period can be fused with the
         single segment segment path period in order to create an i-length
         segment path period. The function will return a valid or non-valid
@@ -96,22 +114,10 @@ namespace stdair {
         the segments of the internal list. */
     bool isAirlineFlown (const AirlineCode_T&) const;
 
-  public:
-    // /////////// Display support methods /////////
-    /** Dump a Business Object into an output stream.
-        @param ostream& the output stream. */
-    void toStream (std::ostream& ioOut) const;
+    /** Check if the given departure date is included in the departure period
+        of the segment path. */
+    bool isDepartureDateValid (const Date_T&) const;
 
-    /** Read a Business Object from an input stream.
-        @param istream& the input stream. */
-    void fromStream (std::istream& ioIn);
-
-   /** Get the serialised version of the Business Object. */
-    std::string toString() const;
-    
-    /** Get a string describing the whole key (differentiating two objects
-        at any level). */
-    const std::string describeKey() const;
 
   protected:
     /** Constructors are private so as to force the usage of the Factory

@@ -194,8 +194,8 @@ namespace stdair {
         const DateOffset_T& lLastBoardingDateOffset =
           lBoardingDateOffsetList.at (getNbOfSegments() - 1);
         const DateOffset_T lNextBoardingDateOffset =
-          lLastBoardingDateOffset + lNextSegmentPeriod_ptr->getOffDateOffset()
-          - lNextSegmentPeriod_ptr->getBoardingDateOffset();
+          lLastBoardingDateOffset + lLastSegmentPeriod_ptr->getOffDateOffset()
+          - lLastSegmentPeriod_ptr->getBoardingDateOffset();
         const DateOffset_T lNegativeNextBoardingDateOffset =
           DateOffset_T (0) - lNextBoardingDateOffset;
 
@@ -224,8 +224,8 @@ namespace stdair {
         const DateOffset_T& lLastBoardingDateOffset =
           lBoardingDateOffsetList.at (getNbOfSegments() - 1);
         const DateOffset_T lNextBoardingDateOffset =
-          lLastBoardingDateOffset + lNextSegmentPeriod_ptr->getOffDateOffset()
-          - lNextSegmentPeriod_ptr->getBoardingDateOffset() + DateOffset_T (1);
+          lLastBoardingDateOffset + lLastSegmentPeriod_ptr->getOffDateOffset()
+          - lLastSegmentPeriod_ptr->getBoardingDateOffset() + DateOffset_T (1);
         const DateOffset_T lNegativeNextBoardingDateOffset =
           DateOffset_T (0) - lNextBoardingDateOffset;
 
@@ -266,6 +266,28 @@ namespace stdair {
       }
     }
     return false;
+  }
+
+  // ////////////////////////////////////////////////////////////////////
+  bool SegmentPathPeriod::
+  isDepartureDateValid (const Date_T& iDepartureDate) const {
+    const PeriodStruct_T& lPeriod = getDeparturePeriod ();
+
+    // Check if the departure date is within the date range.
+    const DatePeriod_T& lDeparturePeriod = lPeriod.getDateRange ();
+    if (lDeparturePeriod.contains (iDepartureDate) == false) {
+      return false;
+    }
+
+    // Check if the departure date is valid within the DOW.
+    // 0 = Sunday, 1 = Monday, etc.
+    const short lDay = iDepartureDate.day_of_week ();
+    const DoWStruct_T& lDoW = lPeriod.getDoW ();
+    if (lDoW.getStandardDayOfWeek (lDay) == false) {
+      return false;
+    }
+
+    return true;
   }
   
 }
