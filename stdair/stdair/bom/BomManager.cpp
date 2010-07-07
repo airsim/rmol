@@ -25,18 +25,7 @@ namespace stdair {
 
       // Call recursively the display() method on the children objects
       display (oStream, lCurrentInventory);
-    }    
-
-    // Browse the Network objects
-    const NetworkList_T& lNetworkList= iBomRoot.getNetworkList ();
-    for (NetworkList_T::iterator itInv = lNetworkList.begin();
-         itInv != lNetworkList.end(); ++itInv) {
-      const Network& lCurrentNetwork = *itInv;
-
-      // Call recursively the display() method on the children objects
-      oStream << std::endl;
-      display (oStream, lCurrentNetwork);
-    }    
+    } 
 
     // Reset formatting flags of the given output stream
     oStream.flags (oldFlags);
@@ -306,94 +295,6 @@ namespace stdair {
 
     // Booking-class level
     oStream << iBookingClass.describeKey() << std::endl;
-    
-    // Reset formatting flags of the given output stream
-    oStream.flags (oldFlags);
-  }
-
-  // ////////////////////////////////////////////////////////////////////
-  void BomManager::display (std::ostream& oStream,
-                            const Network& iNetwork) {
-    // Store current formatting flags of the given output stream
-    std::ios::fmtflags oldFlags = oStream.flags();
-
-    oStream << "Network: " << std::endl;
-
-    int j = 1;
-    const NetworkDateList_T& lNetworkDateList = iNetwork.getNetworkDateList();
-    for (NetworkDateList_T::iterator itNetworkDate =
-           lNetworkDateList.begin();
-         itNetworkDate != lNetworkDateList.end(); ++itNetworkDate, ++j) {
-      const NetworkDate& lCurrentNetworkDate = *itNetworkDate;
-      
-
-      // Call recursively the display() method on the children objects
-      display (oStream, lCurrentNetworkDate);
-    }
-    
-    // Reset formatting flags of the given output stream
-    oStream.flags (oldFlags);
-  }
-  
-  // ////////////////////////////////////////////////////////////////////
-  void BomManager::display (std::ostream& oStream,
-                            const NetworkDate& iNetworkDate) {
-    // Store current formatting flags of the given output stream
-    std::ios::fmtflags oldFlags = oStream.flags();
-
-    oStream << iNetworkDate.describeKey() << std::endl;
-
-    const AirportDateList_T& lAirportDateList= iNetworkDate.getAirportDateList();
-    for (AirportDateList_T::iterator itAirportDate = lAirportDateList.begin();
-         itAirportDate != lAirportDateList.end(); ++itAirportDate) {
-      const AirportDate& lCurrentAirportDate = *itAirportDate;
-      
-      // Call recursively the display() method on the children objects
-      display (oStream, lCurrentAirportDate);
-    }
-    
-    // Reset formatting flags of the given output stream
-    oStream.flags (oldFlags);
-  }
-  
-  // ////////////////////////////////////////////////////////////////////
-  void BomManager::display (std::ostream& oStream,
-                            const AirportDate& iAirportDate) {
-    // Store current formatting flags of the given output stream
-    std::ios::fmtflags oldFlags = oStream.flags();
-    
-    oStream << iAirportDate.describeKey() << std::endl;
-
-    const OutboundPathList_T& lOutboundPathList =
-      iAirportDate.getOutboundPathList();
-    for (OutboundPathList_T::iterator itPath = lOutboundPathList.begin();
-         itPath != lOutboundPathList.end(); ++itPath) {
-      const OutboundPath& lCurrentOutboundPath = *itPath;
-      
-      // Call recursively the display() method on the children objects
-      display (oStream, lCurrentOutboundPath);
-    }
-    
-    // Reset formatting flags of the given output stream
-    oStream.flags (oldFlags);
-  }
-  
-  // ////////////////////////////////////////////////////////////////////
-  void BomManager::display (std::ostream& oStream,
-                            const OutboundPath& iOutboundPath) {
-    // Store current formatting flags of the given output stream
-    std::ios::fmtflags oldFlags = oStream.flags();
-
-    oStream << iOutboundPath.describeKey() << std::endl;
-
-    const SegmentDateList_T& lSegmentDateList =
-      iOutboundPath.getSegmentDateList();
-    for (SegmentDateList_T::iterator itSegmentDate = lSegmentDateList.begin();
-         itSegmentDate != lSegmentDateList.end(); ++itSegmentDate) {
-      const SegmentDate& lCurrentSegmentDate = *itSegmentDate;
-      
-      oStream << lCurrentSegmentDate.describeKey() << std::endl;
-    }
     
     // Reset formatting flags of the given output stream
     oStream.flags (oldFlags);

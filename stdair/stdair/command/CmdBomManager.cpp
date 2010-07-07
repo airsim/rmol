@@ -208,58 +208,5 @@ namespace stdair {
     
     return oSegmentPathPeriod;
   }
-
-  // ////////////////////////////////////////////////////////////////////
-  Network& CmdBomManager::
-  createNetwork (const BomRoot& iBomRoot,
-                 const NetworkKey_T& iNetworkKey) {
-    // Instantiate an network object with the given key
-    Network& oNetwork =
-      FacBomContent::instance().create<Network> (iNetworkKey);
-    // Link the created inventory with the bom root.
-    FacBomContent::linkWithParent (oNetwork, iBomRoot);
-    
-    return oNetwork;
-  }
-  
-  // ////////////////////////////////////////////////////////////////////
-  NetworkDate& CmdBomManager::
-  createNetworkDate (const Network& iNetwork, const Date_T& iDate) {
-    // Instantiate a network-date object with the given date.
-    const NetworkDateKey_T lNetworkDateKey (iDate);
-    NetworkDate& oNetworkDate =
-      FacBomContent::instance().create<NetworkDate> (lNetworkDateKey);
-    // Link the created network with the bom root
-    FacBomContent::linkWithParent (oNetworkDate, iNetwork);
-    
-    return oNetworkDate;
-  }
-
-  // ////////////////////////////////////////////////////////////////////
-  AirportDate& CmdBomManager::
-  createAirportDate (const NetworkDate& iNetworkDate,
-                 const AirportCode_T& iBoardingPoint) {
-    // Instantiate a airport-date object with the given boarding point
-    AirportDateKey_T lAirportDateKey (iBoardingPoint);
-    AirportDate& oAirportDate =
-      FacBomContent::instance().create<AirportDate> (lAirportDateKey);
-    // Link the created airport-date with the network-date.
-    FacBomContent::linkWithParent (oAirportDate, iNetworkDate);
-    
-    return oAirportDate;
-  }
-  
-  // ////////////////////////////////////////////////////////////////////
-  OutboundPath& CmdBomManager::
-  createOutboundPath (const AirportDate& iAirportDate,
-                    const OutboundPathKey_T& iOutboundPathKey) {
-    // Instantiate a outbound path object with the given key.
-    OutboundPath& oOutboundPath =
-      FacBomContent::instance().create<OutboundPath> (iOutboundPathKey);
-    // Link the created outbound path with the airport-date
-    FacBomContent::linkWithParent (oOutboundPath, iAirportDate);
-    
-    return oOutboundPath;
-  }
   
 }

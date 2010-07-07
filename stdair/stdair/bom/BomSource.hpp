@@ -10,10 +10,6 @@
 #include <stdair/bom/BomMultimap.hpp>
 #include <stdair/bom/BomList.hpp>
 #include <stdair/bom/BomRoot.hpp>
-#include <stdair/bom/Network.hpp>
-#include <stdair/bom/NetworkDate.hpp>
-#include <stdair/bom/AirportDate.hpp>
-#include <stdair/bom/OutboundPath.hpp>
 #include <stdair/bom/Inventory.hpp>
 #include <stdair/bom/FlightDate.hpp>
 #include <stdair/bom/SegmentDate.hpp>

@@ -22,7 +22,6 @@ namespace stdair {
   void BomRoot::init() {
     _structure.initChildrenHolder<Inventory>();
     _structure.initChildrenHolder<ReachableUniverse>();
-    _structure.initChildrenHolder<Network>();
     _structure.initChildrenHolder<AirlineFeature>();
     _structure.initChildrenHolder<DemandStream>();
     _structure.initChildrenHolder<YieldStore>();
@@ -46,16 +45,6 @@ namespace stdair {
   // ////////////////////////////////////////////////////////////////////
   ReachableUniverseMap_T BomRoot::getReachableUniverseMap () const {
     return _structure.getChildrenHolder<ReachableUniverse>();
-  }
-
-  // ////////////////////////////////////////////////////////////////////
-  NetworkList_T BomRoot::getNetworkList () const {
-    return _structure.getChildrenHolder<Network>();
-  }
-
-  // ////////////////////////////////////////////////////////////////////
-  NetworkMap_T BomRoot::getNetworkMap () const {
-    return _structure.getChildrenHolder<Network>();
   }
   
   // ////////////////////////////////////////////////////////////////////
@@ -97,11 +86,6 @@ namespace stdair {
   ReachableUniverse* BomRoot::
   getReachableUniverse (const AirportCode_T& iAirportCode) const {
     return _structure.getChildPtr<ReachableUniverse> (iAirportCode);
-  }
-
-  // ////////////////////////////////////////////////////////////////////
-  Network* BomRoot::getNetwork (const NetworkID_T& iNetworkID) const {
-    return _structure.getChildPtr<Network> (iNetworkID);
   }
 
   // ////////////////////////////////////////////////////////////////////

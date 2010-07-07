@@ -27,10 +27,6 @@ bom_h_sources = \
 		$(top_srcdir)/stdair/bom/ReachableUniverseKey.hpp \
 		$(top_srcdir)/stdair/bom/OriginDestinationSetKey.hpp \
 		$(top_srcdir)/stdair/bom/SegmentPathPeriodKey.hpp \
-		$(top_srcdir)/stdair/bom/NetworkKey.hpp \
-		$(top_srcdir)/stdair/bom/NetworkDateKey.hpp \
-		$(top_srcdir)/stdair/bom/AirportDateKey.hpp \
-		$(top_srcdir)/stdair/bom/OutboundPathKey.hpp \
 		$(top_srcdir)/stdair/bom/AirlineFeatureKey.hpp \
 		$(top_srcdir)/stdair/bom/DemandStreamKey.hpp \
 		$(top_srcdir)/stdair/bom/BomRootTypes.hpp \
@@ -47,10 +43,6 @@ bom_h_sources = \
 		$(top_srcdir)/stdair/bom/ReachableUniverseTypes.hpp \
 		$(top_srcdir)/stdair/bom/OriginDestinationSetTypes.hpp \
 		$(top_srcdir)/stdair/bom/SegmentPathPeriodTypes.hpp \
-		$(top_srcdir)/stdair/bom/NetworkTypes.hpp \
-		$(top_srcdir)/stdair/bom/NetworkDateTypes.hpp \
-		$(top_srcdir)/stdair/bom/AirportDateTypes.hpp \
-		$(top_srcdir)/stdair/bom/OutboundPathTypes.hpp \
 		$(top_srcdir)/stdair/bom/AirlineFeatureTypes.hpp \
 		$(top_srcdir)/stdair/bom/TravelSolutionTypes.hpp \
 		$(top_srcdir)/stdair/bom/DemandStreamTypes.hpp \
@@ -70,10 +62,6 @@ bom_h_sources = \
 		$(top_srcdir)/stdair/bom/ReachableUniverseContent.hpp \
 		$(top_srcdir)/stdair/bom/OriginDestinationSetContent.hpp \
 		$(top_srcdir)/stdair/bom/SegmentPathPeriodContent.hpp \
-		$(top_srcdir)/stdair/bom/NetworkContent.hpp \
-		$(top_srcdir)/stdair/bom/NetworkDateContent.hpp \
-		$(top_srcdir)/stdair/bom/AirportDateContent.hpp \
-		$(top_srcdir)/stdair/bom/OutboundPathContent.hpp \
 		$(top_srcdir)/stdair/bom/AirlineFeatureContent.hpp \
 		$(top_srcdir)/stdair/bom/DemandStreamContent.hpp \
 		$(top_srcdir)/stdair/bom/YieldStoreContent.hpp \
@@ -91,10 +79,6 @@ bom_h_sources = \
 		$(top_srcdir)/stdair/bom/ReachableUniverse.hpp \
 		$(top_srcdir)/stdair/bom/OriginDestinationSet.hpp \
 		$(top_srcdir)/stdair/bom/SegmentPathPeriod.hpp \
-		$(top_srcdir)/stdair/bom/Network.hpp \
-		$(top_srcdir)/stdair/bom/NetworkDate.hpp \
-		$(top_srcdir)/stdair/bom/AirportDate.hpp \
-		$(top_srcdir)/stdair/bom/OutboundPath.hpp \
 		$(top_srcdir)/stdair/bom/AirlineFeature.hpp \
 		$(top_srcdir)/stdair/bom/DemandStream.hpp \
 		$(top_srcdir)/stdair/bom/YieldStore.hpp \
@@ -123,10 +107,6 @@ bom_cc_sources = \
 		$(top_srcdir)/stdair/bom/ReachableUniverseKey.cpp \
 		$(top_srcdir)/stdair/bom/OriginDestinationSetKey.cpp \
 		$(top_srcdir)/stdair/bom/SegmentPathPeriodKey.cpp \
-		$(top_srcdir)/stdair/bom/NetworkKey.cpp \
-		$(top_srcdir)/stdair/bom/NetworkDateKey.cpp \
-		$(top_srcdir)/stdair/bom/AirportDateKey.cpp \
-		$(top_srcdir)/stdair/bom/OutboundPathKey.cpp \
 		$(top_srcdir)/stdair/bom/AirlineFeatureKey.cpp \
 		$(top_srcdir)/stdair/bom/DemandStreamKey.cpp \
 		$(top_srcdir)/stdair/bom/BomRootContent.cpp \
@@ -143,10 +123,6 @@ bom_cc_sources = \
 		$(top_srcdir)/stdair/bom/ReachableUniverseContent.cpp \
 		$(top_srcdir)/stdair/bom/OriginDestinationSetContent.cpp \
 		$(top_srcdir)/stdair/bom/SegmentPathPeriodContent.cpp \
-		$(top_srcdir)/stdair/bom/NetworkContent.cpp \
-		$(top_srcdir)/stdair/bom/NetworkDateContent.cpp \
-		$(top_srcdir)/stdair/bom/AirportDateContent.cpp \
-		$(top_srcdir)/stdair/bom/OutboundPathContent.cpp \
 		$(top_srcdir)/stdair/bom/AirlineFeatureContent.cpp \
 		$(top_srcdir)/stdair/bom/DemandStreamContent.cpp \
 		$(top_srcdir)/stdair/bom/YieldStoreContent.cpp \
@@ -164,10 +140,6 @@ bom_cc_sources = \
 		$(top_srcdir)/stdair/bom/ReachableUniverse.cpp \
 		$(top_srcdir)/stdair/bom/OriginDestinationSet.cpp \
 		$(top_srcdir)/stdair/bom/SegmentPathPeriod.cpp \
-		$(top_srcdir)/stdair/bom/Network.cpp \
-		$(top_srcdir)/stdair/bom/NetworkDate.cpp \
-		$(top_srcdir)/stdair/bom/AirportDate.cpp \
-		$(top_srcdir)/stdair/bom/OutboundPath.cpp \
 		$(top_srcdir)/stdair/bom/AirlineFeature.cpp \
 		$(top_srcdir)/stdair/bom/DemandStream.cpp \
 		$(top_srcdir)/stdair/bom/YieldStore.cpp \

@@ -16,7 +16,6 @@
 #include <stdair/bom/BomRootTypes.hpp>
 #include <stdair/bom/InventoryTypes.hpp>
 #include <stdair/bom/ReachableUniverseTypes.hpp>
-#include <stdair/bom/NetworkTypes.hpp>
 #include <stdair/bom/DemandStreamTypes.hpp>
 #include <stdair/bom/AirlineFeatureTypes.hpp>
 #include <stdair/bom/YieldStoreTypes.hpp>
@@ -65,7 +64,6 @@ namespace stdair {
     typedef boost::fusion::map<
       boost::fusion::pair<Inventory, InventoryHolder_T*>,
       boost::fusion::pair<ReachableUniverse, ReachableUniverseHolder_T*>,
-      boost::fusion::pair<Network, NetworkHolder_T*>,
       boost::fusion::pair<AirlineFeature, AirlineFeatureHolder_T*>,
       boost::fusion::pair<DemandStream, DemandStreamHolder_T*>,
       boost::fusion::pair<YieldStore, YieldStoreHolder_T*>
@@ -82,8 +80,6 @@ namespace stdair {
     InventoryMap_T getInventoryMap () const;
     ReachableUniverseList_T getReachableUniverseList () const;
     ReachableUniverseMap_T getReachableUniverseMap () const;
-    NetworkList_T getNetworkList () const;
-    NetworkMap_T getNetworkMap () const;
     DemandStreamList_T getDemandStreamList () const;
     DemandStreamMap_T getDemandStreamMap () const;
     AirlineFeatureList_T getAirlineFeatureList () const;
@@ -100,11 +96,6 @@ namespace stdair {
         given airport.
         <br>If not existing, return the NULL pointer. */
     ReachableUniverse* getReachableUniverse (const AirportCode_T&) const;
-
-    /** Retrieve, if existing, the Network corresponding to the
-        given airline code (Network key).
-        <br>If not existing, return the NULL pointer. */
-    Network* getNetwork (const NetworkID_T&) const;
 
     /** Retrieve, if existing, the YieldStore corresponding to the
         given airline code (YieldStore key).

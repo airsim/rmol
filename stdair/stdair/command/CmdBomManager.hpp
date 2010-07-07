@@ -24,10 +24,6 @@ namespace stdair {
   class ReachableUniverse;
   class OriginDestinationSet;
   class SegmentPathPeriod;
-  class Network;
-  class NetworkDate;
-  class AirportDate;
-  class OutboundPath;
   class YieldStore;
   class DemandStream;
   struct FlightDateKey_T;
@@ -101,21 +97,6 @@ namespace stdair {
     static SegmentPathPeriod&
     createSegmentPathPeriod (const OriginDestinationSet&,
                              const SegmentPathPeriodKey_T&);
-
-    /** Create the inventory corresponding to the given network key,
-        then link it to the BomRoot object. */
-    static Network& createNetwork (const BomRoot&, const NetworkKey_T&);
-    
-    /** Create the network-date corresponding to the given date. */
-    static NetworkDate& createNetworkDate (const Network&, const Date_T&);
-
-    /** Create the airport-date corresponding to the given boarding point. */
-    static AirportDate& createAirportDate (const NetworkDate&,
-                                           const AirportCode_T&);
-    
-    /** Create the outbound path  corresponding to the given key. */
-    static OutboundPath& createOutboundPath (const AirportDate&,
-                                             const OutboundPathKey_T&);
     
   };
 

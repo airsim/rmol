@@ -7,7 +7,6 @@
 #include <stdair/basic/BasChronometer.hpp>
 #include <stdair/bom/BomManager.hpp> // for display()
 #include <stdair/bom/BomRoot.hpp>
-#include <stdair/bom/Network.hpp>
 #include <stdair/bom/Inventory.hpp>
 #include <stdair/bom/YieldStore.hpp>
 #include <stdair/factory/FacSupervisor.hpp>
