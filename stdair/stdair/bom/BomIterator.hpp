@@ -8,6 +8,9 @@
 #include <cassert>
 #include <vector>
 #include <map>
+// BOOST
+#include <boost/shared_ptr.hpp>
+#include <boost/make_shared.hpp>
 
 namespace stdair {
   
@@ -25,6 +28,7 @@ namespace stdair {
     
     // Define the pair of string and pointer of CONTENT.
     typedef typename std::pair<std::string, CONTENT*> value_type;
+    typedef boost::shared_ptr<value_type> value_type_shared_ptr;
 
     // Definition allowing the retrieve the ITERATOR type.
     typedef ITERATOR iterator_type;
@@ -111,7 +115,7 @@ namespace stdair {
     }
 
     /** Dereferencing operator for iterators on a map. */
-    value_type* operator-> () {
+    value_type_shared_ptr operator-> () {
       const MapKey_T& lKey = _itStructureObject->first;
       const Structure_T* lBomStruct_ptr =
         _itStructureObject->second;
@@ -119,28 +123,14 @@ namespace stdair {
       CONTENT* lBomContent_ptr = 
         BomStructure::getContentPtr<CONTENT> (*lBomStruct_ptr);
       assert (lBomContent_ptr != NULL);
-
-      // See the comment below, at the definition of the _intermediateValue
-      // attribute
-      _intermediateValue.first = lKey;
-      _intermediateValue.second = lBomContent_ptr;
       
-      return &_intermediateValue;
+      return boost::make_shared<value_type> (lKey, lBomContent_ptr);
     }
 
   private:
     ///////////// Attributes //////////////
     /** Iterator for the current BOM structure on the non-ordered list. */
     iterator_type _itStructureObject;
-
-    /** Helper attribute.
-        <br>It is necessary to define that value at the attribute
-        level, because the operator->() method needs to return a
-        pointer on it. If that value be temporary, i.e., created at
-        the fly when the operator->() method returns, we would return
-        a pointer on a temporary value, which is not good. */
-    value_type _intermediateValue;
-    
   };
 
 

@@ -204,14 +204,14 @@ int main (int argc, char* argv[]) {
          itInv != lInventoryList.end(); ++itInv) {
       const stdair::Inventory& lCurrentInventory = *itInv;
       STDAIR_LOG_DEBUG ("Inventory: " << lCurrentInventory.toString());
-
-      const stdair::FlightDateList_T& lFlightDateList = 
-	lCurrentInventory.getFlightDateList ();
-      for (stdair::FlightDateList_T::iterator itFlightDate = 
-	     lFlightDateList.begin();
-	   itFlightDate != lFlightDateList.end(); ++itFlightDate) {
-	const stdair::FlightDate& lCurrentFlightDate = *itFlightDate;
-	STDAIR_LOG_DEBUG ("FlightDate: " << lCurrentFlightDate.describeKey());
+      
+      const stdair::FlightDateMap_T& lFlightDateMap = 
+        lCurrentInventory.getFlightDateMap ();
+      for (stdair::FlightDateMap_T::iterator itFlightDate = 
+             lFlightDateMap.begin();
+           itFlightDate != lFlightDateMap.end(); ++itFlightDate) {
+        const stdair::FlightDate* lCurrentFlightDate = itFlightDate->second;
+        STDAIR_LOG_DEBUG ("FlightDate: " << lCurrentFlightDate->describeKey());
       }
     }
     
