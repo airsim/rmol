@@ -28,13 +28,16 @@ namespace stdair {
     
     // Define the pair of string and pointer of CONTENT.
     typedef typename std::pair<std::string, CONTENT*> value_type;
-    typedef boost::shared_ptr<value_type> value_type_shared_ptr;
 
     // Definition allowing the retrieve the ITERATOR type.
     typedef ITERATOR iterator_type;
     
     // Definition allowing the retrieve the difference type of the ITERATOR.
     typedef typename ITERATOR::difference_type difference_type;
+
+  private:
+    // Define the pair of string and pointer of CONTENT.
+    typedef boost::shared_ptr<value_type> value_type_shared_ptr;
 
   public:
     /** Normal constructor. */
