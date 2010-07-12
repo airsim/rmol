@@ -10,7 +10,6 @@
 #include <map>
 // BOOST
 #include <boost/shared_ptr.hpp>
-#include <boost/make_shared.hpp>
 
 namespace stdair {
   
@@ -126,8 +125,11 @@ namespace stdair {
       CONTENT* lBomContent_ptr = 
         BomStructure::getContentPtr<CONTENT> (*lBomStruct_ptr);
       assert (lBomContent_ptr != NULL);
-      
-      return boost::make_shared<value_type> (lKey, lBomContent_ptr);
+
+      // The object (value_type) will be deleted when the caller will leave
+      // the scope from where that method is called. So, there is no memory
+      // leak thanks to the boost::shared_ptr around value_type.
+      return value_type_shared_ptr (new value_type (lKey, lBomContent_ptr));
     }
 
   private:
