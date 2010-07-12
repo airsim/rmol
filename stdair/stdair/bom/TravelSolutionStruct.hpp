@@ -18,7 +18,7 @@ namespace stdair {
   struct TravelSolutionStruct : public StructAbstract {
   public:
     // /////////// Getters ///////////////
-    const KeyList_T& getSegmentDateKeyList () {
+    const KeyList_T& getSegmentDateKeyList () const {
       return _segmentDateKeyList;
     }
     const ClassList_String_T& getBookingClassKeyList () const { 
