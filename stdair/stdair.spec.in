@@ -5,33 +5,26 @@ Name:           @PACKAGE@
 Version:        @VERSION@
 Release:        @RPM_RELEASE@%{?dist}
 
-Summary:        C++ library of Revenue Management and Optimisation classes and functions
+Summary:        C++ Standard Airline IT Object Library
 
 Group:          System Environment/Libraries 
 License:        LGPLv2
 URL:            http://%{name}.sourceforge.net
-Source0:        http://downloads.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
+Source0:        http://downloads.sourceforge.net/%{name}/%{name}-%{version}.tar.bz2
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:  gsl-devel
 BuildRequires:  boost-devel
 BuildRequires:  cppunit-devel
 #Requires:       
 
 %description
-@PACKAGE_NAME@ is a C++ library of Revenue Management and Optimisation classes 
-and functions. Typically, that library may be used by service providers
-(e.g., airlines offering flight seats, hotels offering rooms, rental car
-companies offering rental days, broadcasting company offering advertisement 
-slots, theaters offering seats, etc.) to help in optimising their revenues from
-seat capacities.
-Most of the algorithms implemented are public and documented in the following
-book:
-The Theory and practice of Revenue Management, by Kalyan T. Talluri and
-Garrett J. van Ryzin, Kluwer Academic Publishers, 2004, ISBN 1-4020-7701-7
+@PACKAGE_NAME@ aims at providing a clean API, and the corresponding C++
+implementation, for the basis of Airline IT Business Object Model (BOM),
+ie, to be used by several other Open Source projects, such as RMOL, 
+Air-Sched, Travel-CCM, OpenTREP, etc.
 
-Install the %{name} package if you need a library for high-level
-revenue management functionality.
+Install the %{name} package if you need a library for Airline IT Standard 
+C++ fundaments.
 
 %package        devel
 Summary:        Header files, libraries and development documentation for %{name}
@@ -51,11 +44,12 @@ Summary:        HTML documentation for the @PACKAGE_NAME@ library
 Group:          Documentation
 %if 0%{?fedora} >= 10
 BuildArch:      noarch
-BuildRequires:  texlive-latex, texlive-dvips
+BuildRequires:  texlive-latex
 %endif
 %if 0%{?fedora} < 10
-BuildRequires:  tetex-latex, tetex-dvips
+BuildRequires:  tetex-latex
 %endif
+%{?el5:BuildRequires: tetex-latex}
 BuildRequires:  doxygen, ghostscript
 
 %description doc
@@ -81,10 +75,8 @@ rm -rf $RPM_BUILD_ROOT
 make install DESTDIR=$RPM_BUILD_ROOT
 %find_lang %{name}
 # remove unpackaged files from the buildroot
-#rm -f $RPM_BUILD_ROOT%{_includedir}/%{name}/config.h
 rm -f $RPM_BUILD_ROOT%{_infodir}/dir
 rm -f $RPM_BUILD_ROOT%{_libdir}/lib%{name}.la
-# chmod 644 doc/html/installdox doc/html/*.png doc/html/*.ico
 rm -rf %{mydocs} && mkdir -p %{mydocs}
 mv $RPM_BUILD_ROOT%{_docdir}/%{name}-%{version}/html %{mydocs}
 
@@ -129,29 +121,5 @@ fi
 
 
 %changelog
-* Mon May 11 2009 Denis Arnaud <denis.arnaud_fedora@m4x.org> 0.22.0-1
-- Upstream integration
-
-* Sun May 10 2009 Denis Arnaud <denis.arnaud_fedora@m4x.org> 0.21.0-3
-- Removed dependencies on specific versions (for EL 5)
-
-* Sat May 09 2009 Denis Arnaud <denis.arnaud_fedora@m4x.org> 0.21.0-2
-- Removed dependencies on specific versions (for EL 5)
-
-* Mon May 04 2009 Denis Arnaud <denis.arnaud_fedora@m4x.org> 0.21.0-1
-- Upstream integration
-
-* Sun May 03 2009 Denis Arnaud <denis.arnaud_fedora@m4x.org> 0.20.0-3
-- Added dependency on libicu for Boost 1.37 (Fedora 11)
-
-* Sun May 03 2009 Denis Arnaud <denis.arnaud_fedora@m4x.org> 0.20.0-2
-- Added dependency on libicu-devel for Boost 1.37 (Fedora 11)
-
-* Sun May 03 2009 Denis Arnaud <denis.arnaud_fedora@m4x.org> 0.20.0-1
-- Upstream integration
-
-* Sun Mar 25 2009 Denis Arnaud <denis.arnaud_fedora@m4x.org> 0.19.0-1
-- RPM release for Fedora 10
-
-* Wed Mar  4 2009 Denis Arnaud <denis.arnaud_fedora@m4x.org> 0.18.0-1
-- Second RPM release
+* Wed Jul  13 2010 Son Nguyen Kim <nguyenkims@gmail.com> 0.1.0-1
+- First RPM release
