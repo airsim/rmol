@@ -1,0 +1,37 @@
+.TH StdAir 1 "13 July 2010"
+.SH NAME
+stdair-config - script to get version number and compiler flags of the installed StdAir library
+.SH SYNOPSIS
+.B stdair-config
+[\-\-prefix]  [\-\-version] [\-\-libs] [\-\-cflags]
+.SH DESCRIPTION
+.PP
+\fIstdair-config\fP is a tool that is used to configure to determine
+the compiler and linker flags that should be used to compile
+and link programs that use \fIStdAir\fP. It is also used internally
+to the .m4 macros for GNU autoconf that are included with \fIStdAir\fP.
+.
+.SH OPTIONS
+\fIstdair-config\fP accepts the following options:
+.TP 8
+.B  \-\-version
+Print the currently installed version of \fIStdAir\fP on the standard output.
+.TP 8
+.B  \-\-libs
+Print the linker flags that are necessary to link a \fIStdAir\fP program, with cblas
+.TP 8
+.B  \-\-cflags
+Print the compiler flags that are necessary to compile a \fIStdAir\fP program.
+.TP 8
+.B  \-\-prefix
+Show the StdAir installation prefix.
+.SH SEE ALSO
+.BR boost-config (1)
+.SH COPYRIGHT
+Copyright \(co  2010 Denis Arnaud
+
+Permission to use, copy, modify, and distribute this software and its
+documentation for any purpose and without fee is hereby granted,
+provided that the above copyright notice appear in all copies and that
+both that copyright notice and this permission notice appear in
+supporting documentation.
