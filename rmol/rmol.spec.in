@@ -1,5 +1,5 @@
 #
-%define mydocs __tmp_docdir
+%global mydocs __tmp_docdir
 #
 Name:           @PACKAGE@
 Version:        @VERSION@
@@ -10,8 +10,8 @@ Summary:        C++ library of Revenue Management and Optimisation classes and f
 Group:          System Environment/Libraries 
 License:        LGPLv2
 URL:            http://%{name}.sourceforge.net
-Source0:        http://downloads.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
-BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+Source0:        http://downloads.sourceforge.net/%{name}/%{name}-%{version}.tar.bz2
+%{?el5:BuildRoot: %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)}
 
 BuildRequires:  gsl-devel
 BuildRequires:  boost-devel
