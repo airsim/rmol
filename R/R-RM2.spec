@@ -2,7 +2,7 @@
 
 Name:             R-%{packname}
 Version:          0.0
-Release:          4%{?dist}
+Release:          5%{?dist}
 Source0:          ftp://cran.r-project.org/pub/R/contrib/main/%{packname}_%{version}.tar.gz
 License:          GPLv3+
 URL:              http://cran.r-project.org/web/packages/RM2/
@@ -46,19 +46,18 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-, root, root, -)
 %dir %{_datadir}/R/library/%{packname}
-%doc %{_datadir}/R/library/%{packname}/latex
 %doc %{_datadir}/R/library/%{packname}/html
-%doc %{_datadir}/R/library/%{packname}/man
 %doc %{_datadir}/R/library/%{packname}/DESCRIPTION
-%{_datadir}/R/library/%{packname}/CONTENTS
 %{_datadir}/R/library/%{packname}/INDEX
 %{_datadir}/R/library/%{packname}/NAMESPACE
 %{_datadir}/R/library/%{packname}/Meta
 %{_datadir}/R/library/%{packname}/R
-%{_datadir}/R/library/%{packname}/R-ex
 %{_datadir}/R/library/%{packname}/help
 
 %changelog
+* Tue Jul 14 2010 Denis Arnaud <denis.arnaud_fedora@m4x.org> 0.0-5
+- Update spec for R 2.10.0 (fixes the same bug as FTBFS bug #539041)
+
 * Tue Jul 07 2009 Denis Arnaud <denis.arnaud_fedora@m4x.org> 0.0-4
 - Removed commented lines and unused variables/macros
 

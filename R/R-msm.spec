@@ -1,8 +1,8 @@
 %global packname msm
 
 Name:             R-%{packname}
-Version:          0.9.1
-Release:          2%{?dist}
+Version:          0.9.7
+Release:          1%{?dist}
 Source0:          ftp://cran.r-project.org/pub/R/contrib/main/%{packname}_%{version}.tar.gz
 License:          GPLv2+
 URL:              http://cran.r-project.org/web/packages/msm/
@@ -64,23 +64,23 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-, root, root, -)
 %dir %{_libdir}/R/library/%{packname}
-%doc %{_libdir}/R/library/%{packname}/latex
 %doc %{_libdir}/R/library/%{packname}/data
 %doc %{_libdir}/R/library/%{packname}/doc
 %doc %{_libdir}/R/library/%{packname}/html
-%doc %{_libdir}/R/library/%{packname}/man
 %doc %{_libdir}/R/library/%{packname}/DESCRIPTION
 %doc %{_libdir}/R/library/%{packname}/NEWS
-%{_libdir}/R/library/%{packname}/CONTENTS
 %{_libdir}/R/library/%{packname}/INDEX
 %{_libdir}/R/library/%{packname}/NAMESPACE
 %{_libdir}/R/library/%{packname}/Meta
 %{_libdir}/R/library/%{packname}/R
-%{_libdir}/R/library/%{packname}/R-ex
 %{_libdir}/R/library/%{packname}/help
 %{_libdir}/R/library/%{packname}/libs/%{packname}.so
 
 %changelog
+* Tue Jul 14 2010 Denis Arnaud <denis.arnaud_fedora@m4x.org> 0.9.7-1
+- Update to 0.9.7
+- Update spec for R 2.10.0 (fixes the same bug as FTBFS bug #539041)
+
 * Tue Jul 14 2009 Denis Arnaud <denis.arnaud_fedora@m4x.org> 0.9.1-2
 - Suppressed the unused definition of the packrel variable
 
@@ -92,3 +92,4 @@ rm -rf $RPM_BUILD_ROOT
 
 * Sun May 03 2009 Denis Arnaud <denis.arnaud_fedora@m4x.org> 0.8.2-1
 - Initial package creation
+
