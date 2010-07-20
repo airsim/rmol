@@ -1,11 +1,12 @@
-## factory sub-directory
+## stdair/factory sub-directory
 include $(top_srcdir)/Makefile.common
 include $(srcdir)/sources.mk
 
-noinst_LTLIBRARIES= libfac.la
+#
+noinst_LTLIBRARIES = libstdairfac.la
 
-libfac_la_SOURCES= $(fac_h_sources) $(fac_cc_sources) 
-libfac_la_CXXFLAGS =
+libstdairfac_la_SOURCES = $(stdair_fac_h_sources) $(stdair_fac_cc_sources) 
+libstdairfac_la_CXXFLAGS =
 
 
 # Header files

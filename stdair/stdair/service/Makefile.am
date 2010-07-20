@@ -1,13 +1,14 @@
-## service sub-directory
+## stdair/service sub-directory
 include $(top_srcdir)/Makefile.common
 include $(srcdir)/sources.mk
 
 #
-noinst_LTLIBRARIES= libsvc.la
+noinst_LTLIBRARIES= libstdairsvc.la
 
-libsvc_la_SOURCES= $(svc_h_sources) $(svc_cc_sources) 
-libsvc_la_CXXFLAGS = $(SOCI_CFLAGS) $(MYSQL_CFLAGS)
-libsvc_la_LDFLAGS = $(SOCI_LIBS) $(MYSQL_LIBS)
+libstdairsvc_la_SOURCES = $(stdair_svc_h_sources) $(stdair_svc_cc_sources) 
+libstdairsvc_la_CXXFLAGS = $(SOCI_CFLAGS) $(MYSQL_CFLAGS)
+libstdairsvc_la_LDFLAGS = $(SOCI_LIBS) $(MYSQL_LIBS)
+
 
 # Header files
 pkgincludedir = $(includedir)/stdair/service

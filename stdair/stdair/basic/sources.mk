@@ -1,4 +1,4 @@
-bas_h_sources = \
+stdair_bas_h_sources = \
 				$(top_srcdir)/stdair/basic/BasTypes.hpp \
 				$(top_srcdir)/stdair/basic/BasConst_General.hpp \
 				$(top_srcdir)/stdair/basic/BasConst_Request.hpp \
@@ -24,7 +24,7 @@ bas_h_sources = \
 				$(top_srcdir)/stdair/basic/RandomGeneration.hpp \
 				$(top_srcdir)/stdair/basic/RandomGenerationContext.hpp \
 				$(top_srcdir)/stdair/basic/DictionaryManager.hpp
-bas_cc_sources = \
+stdair_bas_cc_sources = \
 				$(top_srcdir)/stdair/basic/BasConst.cpp \
 				$(top_srcdir)/stdair/basic/BasChronometer.cpp \
 				$(top_srcdir)/stdair/basic/BasFileMgr.cpp \

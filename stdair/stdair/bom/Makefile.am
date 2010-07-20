@@ -1,12 +1,13 @@
-## bom sub-directory
+## stdair/bom sub-directory
 include $(top_srcdir)/Makefile.common
 include $(srcdir)/sources.mk
 
-noinst_LTLIBRARIES= libbom.la
+#
+noinst_LTLIBRARIES= libstdairbom.la
 
-libbom_la_SOURCES = $(bom_h_sources) $(bom_cc_sources) 
-libbom_la_CXXFLAGS = $(BOOST_CFLAGS) 
-libbom_la_LDFLAGS =
+libstdairbom_la_SOURCES = $(stdair_bom_h_sources) $(stdair_bom_cc_sources) 
+libstdairbom_la_CXXFLAGS = $(BOOST_CFLAGS) 
+libstdairbom_la_LDFLAGS =
 
 
 # Header files

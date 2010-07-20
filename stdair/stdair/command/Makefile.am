@@ -1,14 +1,14 @@
-## command sub-directory
+## stdair/command sub-directory
 include $(top_srcdir)/Makefile.common
 include $(srcdir)/sources.mk
 
 #
-noinst_LTLIBRARIES = libcmd.la
+noinst_LTLIBRARIES = libstdaircmd.la
 
-libcmd_la_SOURCES = $(cmd_h_sources) $(cmd_cc_sources) 
-libcmd_la_CXXFLAGS = $(BOOST_CFLAGS) $(SOCI_CFLAGS)
-libcmd_la_LIBADD =
-libcmd_la_LDFLAGS = $(BOOST_LIBS) $(SOCI_LIBS)
+libstdaircmd_la_SOURCES = $(stdair_cmd_h_sources) $(stdair_cmd_cc_sources) 
+libstdaircmd_la_CXXFLAGS = $(BOOST_CFLAGS) $(SOCI_CFLAGS)
+libstdaircmd_la_LIBADD =
+libstdaircmd_la_LDFLAGS = $(BOOST_LIBS) $(SOCI_LIBS)
 
 
 # Header files

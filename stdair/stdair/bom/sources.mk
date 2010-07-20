@@ -1,4 +1,4 @@
-bom_h_sources = \
+stdair_bom_h_sources = \
 		$(top_srcdir)/stdair/bom/BomSource.hpp \
 		$(top_srcdir)/stdair/bom/BomTypes.hpp \
 		$(top_srcdir)/stdair/bom/BomStructure.hpp \
@@ -91,7 +91,7 @@ bom_h_sources = \
 		$(top_srcdir)/stdair/bom/AirlineStruct.hpp \
 		$(top_srcdir)/stdair/bom/EventStruct.hpp \
 		$(top_srcdir)/stdair/bom/EventQueue.hpp
-bom_cc_sources = \
+stdair_bom_cc_sources = \
 		$(top_srcdir)/stdair/bom/BomManager.cpp \
 		$(top_srcdir)/stdair/bom/BomRootKey.cpp \
 		$(top_srcdir)/stdair/bom/YieldStoreKey.cpp \

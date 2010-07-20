@@ -1,13 +1,13 @@
-## basic sub-directory
+## stdair/basic sub-directory
 include $(top_srcdir)/Makefile.common
 include $(srcdir)/sources.mk
 
 #
-noinst_LTLIBRARIES= libbas.la
+noinst_LTLIBRARIES= libstdairbas.la
 
-libbas_la_SOURCES = $(bas_h_sources) $(bas_cc_sources) 
-libbas_la_CXXFLAGS = $(BOOST_CFLAGS) 
-libbas_la_LDFLAGS =
+libstdairbas_la_SOURCES = $(stdair_bas_h_sources) $(stdair_bas_cc_sources) 
+libstdairbas_la_CXXFLAGS = $(BOOST_CFLAGS) 
+libstdairbas_la_LDFLAGS =
 
 
 # Header files

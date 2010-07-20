@@ -1,4 +1,4 @@
-## top directory
+## stdair top directory
 include $(top_srcdir)/Makefile.common
 
 ACLOCAL_AMFLAGS = -I config
@@ -52,7 +52,7 @@ snapshot-src:
         $(MAKE) dist distdir=@PACKAGE_TARNAME@-`date +"%Y%m%d"`
 
 snapshot-html:
-	$(MAKE) -C doc dist-html html_tarname=@PACKAGE_TARNAME@-html-doc-`date +"%Y%m%d"`
+	$(MAKE) -C doc dist-html html_tarname=@PACKAGE_TARNAME@-doc-`date +"%Y%m%d"`
 
 upload: upload-src upload-html
 
@@ -61,6 +61,6 @@ upload-src: dist
 	@PACKAGE_TARNAME@-@VERSION@.tar.bz2
 
 upload-html: dist-html
-	@UPLOAD_COMMAND@ @PACKAGE_TARNAME@-html-doc-@VERSION@.tar.gz \
-	@PACKAGE_TARNAME@-html-doc-@VERSION@.tar.bz2
+	@UPLOAD_COMMAND@ @PACKAGE_TARNAME@-doc-@VERSION@.tar.gz \
+	@PACKAGE_TARNAME@-doc-@VERSION@.tar.bz2
 

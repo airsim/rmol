@@ -1,14 +1,14 @@
-## dbadaptor sub-directory
+## stdair/dbadaptor sub-directory
 include $(top_srcdir)/Makefile.common
 include $(srcdir)/sources.mk
 
 #
-noinst_LTLIBRARIES= libdba.la
+noinst_LTLIBRARIES= libstdairdba.la
 
-libdba_la_SOURCES= $(dba_h_sources) $(dba_cc_sources) 
-libdba_la_CXXFLAGS = $(SOCI_CFLAGS)
-libdba_la_LIBADD =
-libdba_la_LDFLAGS = $(SOCI_LIBS)
+libstdairdba_la_SOURCES= $(stdair_dba_h_sources) $(stdair_dba_cc_sources) 
+libstdairdba_la_CXXFLAGS = $(SOCI_CFLAGS)
+libstdairdba_la_LIBADD =
+libstdairdba_la_LDFLAGS = $(SOCI_LIBS)
 
 
 # Header files
