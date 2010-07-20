@@ -1,3 +1,4 @@
+# rmol
 include $(top_srcdir)/Makefile.common
 include $(srcdir)/core/sources.mk
 

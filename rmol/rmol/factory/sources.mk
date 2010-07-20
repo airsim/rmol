@@ -1,4 +1,5 @@
-fac_h_sources = $(top_srcdir)/rmol/factory/FacSupervisor.hpp \
+rmol_fac_h_sources = \
+		$(top_srcdir)/rmol/factory/FacSupervisor.hpp \
 		$(top_srcdir)/rmol/factory/FacBomAbstract.hpp \
 		$(top_srcdir)/rmol/factory/FacServiceAbstract.hpp \
 		$(top_srcdir)/rmol/factory/FacRmolServiceContext.hpp \
@@ -9,7 +10,8 @@ fac_h_sources = $(top_srcdir)/rmol/factory/FacSupervisor.hpp \
 		$(top_srcdir)/rmol/factory/FacPartialSumHolderHolder.hpp \
 		$(top_srcdir)/rmol/factory/FacPartialSumHolder.hpp \
 		$(top_srcdir)/rmol/factory/FacStudyStatManager.hpp
-fac_cc_sources = $(top_srcdir)/rmol/factory/FacSupervisor.cpp \
+rmol_fac_cc_sources = \
+		$(top_srcdir)/rmol/factory/FacSupervisor.cpp \
 		$(top_srcdir)/rmol/factory/FacBomAbstract.cpp \
 		$(top_srcdir)/rmol/factory/FacServiceAbstract.cpp \
 		$(top_srcdir)/rmol/factory/FacRmolServiceContext.cpp \

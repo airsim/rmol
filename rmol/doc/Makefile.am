@@ -27,14 +27,14 @@ html-local: html/index.html
 html/index.html: doxygen_html.cfg \
 	$(doc_local_sources) $(html_local_sources) \
 	$(doc_tutorial_sources) $(cpp_tutorial_sources) \
-	$(service_h_sources) $(service_cc_sources) \
-	$(batches_h_sources) $(batches_cc_sources) \
-	$(bas_h_sources) $(bas_cc_sources) \
-	$(fld_h_sources) $(fld_cc_sources) \
-	$(bom_h_sources) $(bom_cc_sources) \
-	$(fac_h_sources) $(fac_cc_sources) \
-	$(cmd_h_sources) $(cmd_cc_sources) \
-	$(svc_h_sources) $(svc_cc_sources)
+	$(rmol_service_h_sources) $(rmol_service_cc_sources) \
+	$(rmol_batches_h_sources) $(rmol_batches_cc_sources) \
+	$(rmol_bas_h_sources) $(rmol_bas_cc_sources) \
+	$(rmol_fld_h_sources) $(rmol_fld_cc_sources) \
+	$(rmol_bom_h_sources) $(rmol_bom_cc_sources) \
+	$(rmol_fac_h_sources) $(rmol_fac_cc_sources) \
+	$(rmol_cmd_h_sources) $(rmol_cmd_cc_sources) \
+	$(rmol_svc_h_sources) $(rmol_svc_cc_sources)
 	doxygen $<; \
 	if test -d html; then \
 		cp $(srcdir)/images/rmol_logo.png html; \

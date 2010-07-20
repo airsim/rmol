@@ -1,3 +1,4 @@
+# rmol/batches
 include $(top_srcdir)/Makefile.common
 include $(srcdir)/sources.mk
 
@@ -9,7 +10,7 @@ MAINTAINERCLEANFILES = Makefile.in
 # Binaries (batches)
 bin_PROGRAMS = rmol
 
-rmol_SOURCES = $(batches_h_sources) $(batches_cc_sources)
+rmol_SOURCES = $(rmol_batches_h_sources) $(rmol_batches_cc_sources)
 rmol_CXXFLAGS = $(BOOST_CFLAGS)
 #rmol_LDADD = 
 rmol_LDFLAGS = $(BOOST_PROGRAM_OPTIONS_LIB) $(GSL_LIBS) \
