@@ -12,7 +12,7 @@ SUBDIRS =
 # Library
 lib_LTLIBRARIES = libstdair.la
 
-libstdair_la_SOURCES = $(service_h_sources) $(service_cc_sources)
+libstdair_la_SOURCES = $(stdair_service_h_sources) $(stdair_service_cc_sources)
 libstdair_la_LIBADD = \
 			$(top_builddir)/stdair/basic/libstdairbas.la \
 			$(top_builddir)/stdair/bom/libstdairbom.la \
