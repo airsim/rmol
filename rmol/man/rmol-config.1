@@ -6,10 +6,10 @@ rmol-config - script to get version number and compiler flags of the installed R
 [\-\-prefix]  [\-\-version] [\-\-libs] [\-\-cflags]
 .SH DESCRIPTION
 .PP
-\fIrmol-config\fP is a tool that is used to configure to determine
+\fIrmol-config\fP is a tool that is used by configure to determine
 the compiler and linker flags that should be used to compile
-and link programs that use \fIRMOL\fP. It is also used internally
-to the .m4 macros for GNU autoconf that are included with \fIRMOL\fP.
+and link programs that use \fIRmol\fP. It is also used internally
+by the .m4 macros, that are included with \fIRmol\fP, for GNU autoconf.
 .
 .SH OPTIONS
 \fIrmol-config\fP accepts the following options:
@@ -18,21 +18,17 @@ to the .m4 macros for GNU autoconf that are included with \fIRMOL\fP.
 Print the currently installed version of \fIRMOL\fP on the standard output.
 .TP 8
 .B  \-\-libs
-Print the linker flags that are necessary to link a \fIRMOL\fP program, with cblas
+Print the linker flags that are necessary to link a \fIRMOL\fP library
 .TP 8
 .B  \-\-cflags
-Print the compiler flags that are necessary to compile a \fIRMOL\fP program.
+Print the compiler flags that are necessary to compile a \fIRMOL\fP library.
 .TP 8
 .B  \-\-prefix
 Show the RMOL installation prefix.
 .SH SEE ALSO
-.BR gtk-config (1),
-.BR gnome-config (1)
+.BR boost-config (1)
 .SH COPYRIGHT
-Copyright \(co  2007 Denis Arnaud
+Copyright \(co  2010 Denis Arnaud
 
-Permission to use, copy, modify, and distribute this software and its
-documentation for any purpose and without fee is hereby granted,
-provided that the above copyright notice appear in all copies and that
-both that copyright notice and this permission notice appear in
-supporting documentation.
+See the COPYING file for more information on the (LGPLv2) license, or
+directly on Internet: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
