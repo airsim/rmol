@@ -78,4 +78,4 @@ uninstall-local:
 	rm -rf $(DESTDIR)$(docdir)
 
 clean-local:
-	rm -rf html *.log *.tag
+	rm -rf html latex *.log *.tag
