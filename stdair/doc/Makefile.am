@@ -15,6 +15,7 @@ SUBDIRS = images tutorial local
 docdir = @docdir@
 
 html_tarname = @PACKAGE_TARNAME@-doc-@PACKAGE_VERSION@
+tex_tarname = @PACKAGE_TARNAME@-tex-@PACKAGE_VERSION@
 
 noinst_DATA = sourceforge/howto_release_stdair.html.in
 EXTRA_DIST = $(noinst_DATA)
@@ -49,12 +50,27 @@ dist-html: html-local
 		bzip2 -9 -c > $(top_builddir)/$(html_tarname).tar.bz2
 	rm -rf $(top_builddir)/$(html_tarname)
 
+dist-tex: html-local
+	cp -a $(top_builddir)/doc/latex $(top_builddir)/$(tex_tarname)
+	tar chof - $(top_builddir)/$(tex_tarname) | \
+		gzip --best -c > $(top_builddir)/$(tex_tarname).tar.gz
+	tar chof - $(top_builddir)/$(tex_tarname) | \
+		bzip2 -9 -c > $(top_builddir)/$(tex_tarname).tar.bz2
+	rm -rf $(top_builddir)/$(tex_tarname)
+
 install-data-local: html-local
 	$(mkinstalldirs) $(DESTDIR)$(docdir)
 	if test -d html; then \
 		$(mkinstalldirs) $(DESTDIR)$(docdir)/html; \
 		for f in html/*; do \
 			$(INSTALL_DATA) $$f $(DESTDIR)$(docdir)/html; \
+		done \
+	fi
+	$(mkinstalldirs) $(DESTDIR)$(docdir)
+	if test -d latex; then \
+		$(mkinstalldirs) $(DESTDIR)$(docdir)/latex; \
+		for f in latex/*; do \
+			$(INSTALL_DATA) $$f $(DESTDIR)$(docdir)/latex; \
 		done \
 	fi
 

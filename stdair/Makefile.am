@@ -44,8 +44,11 @@ uninstall-local:
 dist-html:
 	$(MAKE) -C doc dist-html
 
+dist-tex:
+	$(MAKE) -C doc dist-tex
 
-snapshot: snapshot-src snapshot-html
+
+snapshot: snapshot-src snapshot-html snapshot-tex
 
 
 snapshot-src:
@@ -54,7 +57,10 @@ snapshot-src:
 snapshot-html:
 	$(MAKE) -C doc dist-html html_tarname=@PACKAGE_TARNAME@-doc-`date +"%Y%m%d"`
 
-upload: upload-src upload-html
+snapshot-tex:
+	$(MAKE) -C doc dist-tex tex_tarname=@PACKAGE_TARNAME@-tex-`date +"%Y%m%d"`
+
+upload: upload-src upload-html upload-tex
 
 upload-src: dist
 	@UPLOAD_COMMAND@ @PACKAGE_TARNAME@-@VERSION@.tar.gz \
@@ -64,3 +70,6 @@ upload-html: dist-html
 	@UPLOAD_COMMAND@ @PACKAGE_TARNAME@-doc-@VERSION@.tar.gz \
 	@PACKAGE_TARNAME@-doc-@VERSION@.tar.bz2
 
+upload-tex: dist-tex
+	@UPLOAD_COMMAND@ @PACKAGE_TARNAME@-tex-@VERSION@.tar.gz \
+	@PACKAGE_TARNAME@-tex-@VERSION@.tar.bz2
