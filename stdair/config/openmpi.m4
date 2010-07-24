@@ -132,7 +132,7 @@ MPIDIR="${OPENMPI_DEF_VERSION}-${OPENMPI_DEF_CC}"
 	# Look for OpenMPI configuration
 	#
 	# OpenMPI configuration binary
-	OPENMPI_VERBIN1=ompi_info
+	OPENMPI_VERBIN=ompi_info
 
 	AC_MSG_CHECKING([for OpenMPI configuration])
 	OPENMPI_verdir=
@@ -169,7 +169,7 @@ MPIDIR="${OPENMPI_DEF_VERSION}-${OPENMPI_DEF_CC}"
 	# Derive the full version, e.g., 1.3.3
 	if test ! -z "$OPENMPI_verdir"
 	then
-		OPENMPI_VERSION=`${OPENMPI_verdir}/${OPENMPI_VERBIN} | grep "Open MPI:" | cut -d: -f2 | cut -d\  -f2`
+		OPENMPI_VERSION=`${OPENMPI_verdir}/${OPENMPI_VERBIN} -v ompi full | grep "Open MPI:" | cut -d: -f2 | cut -d\  -f2`
 	fi
 	if test -z "${OPENMPI_VERSION}" ; then
 	   OPENMPI_VERSION=${OPENMPI_DEF_VERSION}
