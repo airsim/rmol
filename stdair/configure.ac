@@ -2,7 +2,7 @@
 #-------------------------------------------------------------------
 AC_PREREQ(2.59)
 AC_COPYRIGHT([Copyright (C) 2007-2010  Denis Arnaud <denis_arnaud@users.sourceforge.net>])
-AC_INIT([STDAIR],[0.2.0],[denis_arnaud@users.sourceforge.net],[stdair])
+AC_INIT([STDAIR],[99.99.99],[denis_arnaud@users.sourceforge.net],[stdair])
 AC_CONFIG_HEADER([stdair/config.h])
 AC_CONFIG_SRCDIR([stdair/bom/BomKey.hpp])
 AC_CONFIG_AUX_DIR([config])
@@ -15,7 +15,7 @@ RPM_RELEASE="1"
 AC_SUBST(RPM_RELEASE)
 
 # Shared library versioning
-GENERIC_LIBRARY_VERSION="0:2:0"
+GENERIC_LIBRARY_VERSION="99:99:99"
 #                        | | |
 #                 +------+ | +---+
 #                 |        |     |
