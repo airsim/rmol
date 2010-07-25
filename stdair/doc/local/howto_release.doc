@@ -41,23 +41,23 @@ Prepare the branch for its creation on the Subversion repository:
 \verbatim 
 cd ~/dev
 cd stdairsvn/branches/stdair
-mkdir 0.1.0
-svn add 0.1.0
-svn ci -m "[Branch 0.1.0] Prepared the branch 0.1.0 to be copied from head of the trunk."
+mkdir 0.2.0
+svn add 0.2.0
+svn ci -m "[Branch 0.2.0] Prepared the branch 0.2.0 to be copied from head of the trunk."
 \endverbatim 
 
 \section check_release_revision Check Subversion revision for the release
 
 Check to which Subversion revision the release corresponds to. For instance
-the <a href="http://sourceforge.net/apps/trac/stdair/changeset/220/">StdAir
-	release 0.1.0 corresponds to Subversion revision r218</a>.
-The trunk <tt>configure.ac</tt> file specifies a fake release number, namely
+the <a href="http://sourceforge.net/apps/trac/stdair/changeset/233/">StdAir
+	release 0.2.0 corresponds to Subversion revision r233</a>.
+The trunk \c configure.ac file specifies a fake release number, namely
 99.99.99,
 for current (head) development. When a release is made, two Subversion 
 revisions are committed with, as the sole change, the release number within
-the <tt>configure.ac</tt> file:
+the \c configure.ac file:
 - one revision is committed with the to-be-released version number (e.g.,
-  0.1.0) and commit message prefixed with "[Release x.y.z]",
+  0.2.0) and commit message prefixed with "[Release x.y.z]",
 - and another one with the release number back to 99.99.99 and message stating
   "[Release] Back to working version (99.99.99)."
 .
@@ -75,18 +75,18 @@ svn log configure.ac | less
 Create a release branch by copying the
 <a href="https://stdair.svn.sourceforge.net/svnroot/stdair/trunk/stdair">source
    tree</a> to be released, from the found revision (e.g., 
-<a href="http://sourceforge.net/apps/trac/stdair/changeset/218">r218</a>)
+<a href="http://sourceforge.net/apps/trac/stdair/changeset/233">r233</a>)
 into the dedicated 
-<a href="https://stdair.svn.sourceforge.net/svnroot/stdair/branches/stdair/0.1.0">'branches' sub-directory of the Subversion repository</a>, e.g.:
+<a href="https://stdair.svn.sourceforge.net/svnroot/stdair/branches/stdair/0.2.0">'branches' sub-directory of the Subversion repository</a>, e.g.:
 \verbatim 
-svn copy -r218 \
+svn copy -r233 \
  https://stdair.svn.sourceforge.net/svnroot/stdair/trunk/stdair \
- https://stdair.svn.sourceforge.net/svnroot/stdair/branches/stdair/0.1.0/main \
- -m "[Release] Created the main 0.1.0 release branch, from revision r218."
+ https://stdair.svn.sourceforge.net/svnroot/stdair/branches/stdair/0.2.0/main \
+ -m "[Release] Created the main 0.2.0 release branch, from revision r233."
 \endverbatim 
 
 Check the results:<br>
-\c firefox -new-tab \"<a href="http://sourceforge.net/apps/trac/stdair/browser/branches/stdair/0.1.0/main">http://sourceforge.net/apps/trac/stdair/browser/branches/stdair/0.1.0/main</a>\"
+\c firefox -new-tab \"<a href="http://sourceforge.net/apps/trac/stdair/browser/branches/stdair/0.2.0/main">http://sourceforge.net/apps/trac/stdair/browser/branches/stdair/0.2.0/main</a>\"
 
 
 \section checkout_new_release Check-out the new release
@@ -95,7 +95,7 @@ Check-out the release StdAir sources from the branch, so that patches
 may be made (for instance, on the RPM specification file):
 \verbatim 
 cd ~/dev
-cd stdairsvn/branches/stdair/0.1.0
+cd stdairsvn/branches/stdair/0.2.0
 svn up
 cd main
 \endverbatim 
@@ -121,13 +121,13 @@ developers only) or, if really needed, on a dedicated <b>development</b> branch.
 Create the distribution packages using the following command:<br>
 \verbatim 
 cd ~/dev
-cd stdairsvn/branches/stdair/0.1.0/main
+cd stdairsvn/branches/stdair/0.2.0/main
 ./autogen.sh && make distcheck
 \endverbatim 
 
 
 This will configure, compile and check the package. The output packages will
-be named, for instance, \c stdair-0.1.0.tar.gz and \c stdair-0.1.0.tar.bz2.
+be named, for instance, \c stdair-0.2.0.tar.gz and \c stdair-0.2.0.tar.bz2.
 
 
 \section generate_rpm_packages Generation the RPM packages
@@ -136,7 +136,7 @@ Optionally, generate the RPM package (for instance, for
 <a href="http://fedoraproject.org">Fedora</a>/<a href="http://www.redhat.com">RedHat</a>):
 \verbatim 
 cd ~/dev
-cd stdairsvn/branches/stdair/0.1.0/main
+cd stdairsvn/branches/stdair/0.2.0/main
 ./autogen.sh && make dist
 \endverbatim 
 
@@ -144,10 +144,10 @@ To perform this step, autoconf, automake and libtool tools have to be
 available in the system.
 \verbatim 
 cp stdair.spec ~/dev/packages/SPECS \
-  && cp stdair-0.1.0.tar.bz2 ~/dev/packages/SOURCES
+  && cp stdair-0.2.0.tar.bz2 ~/dev/packages/SOURCES
 cd ~/dev/packages/SPECS
 rpmbuild -ba stdair.spec
-rpmlint -i ../SPECS/stdair.spec ../SRPMS/stdair-0.1.0-1.fc13.src.rpm \
+rpmlint -i ../SPECS/stdair.spec ../SRPMS/stdair-0.2.0-1.fc13.src.rpm \
   ../RPMS/i686/stdair-*
 \endverbatim 
 
@@ -167,9 +167,9 @@ Create the documentation packages using the following command:
 \c make dist-html and \c make dist-tex
 
 The output documentation packages will be named, for instance:
-- \c stdair-doc-0.1.0.tar.gz and \c stdair-doc-0.1.0.tar.bz2 for the
+- \c stdair-doc-0.2.0.tar.gz and \c stdair-doc-0.2.0.tar.bz2 for the
   HTML documentation.
-- \c stdair-pdf-0.1.0.tar.gz and \c stdair-pdf-0.1.0.tar.bz2 for the
+- \c stdair-pdf-0.2.0.tar.gz and \c stdair-pdf-0.2.0.tar.bz2 for the
   PDF documentation.
 
 
@@ -186,7 +186,7 @@ In order to update the Web site files, either:
 - <a href="https://sourceforge.net/apps/trac/sourceforge/wiki/Shell%20service#Accessingyourfileswithothertools">synchronise them with rsync and SSH</a>:
 \verbatim 
 cd ~/dev
-cd stdairsvn/branches/stdair/0.1.0/main
+cd stdairsvn/branches/stdair/0.2.0/main
 rsync -aiv doc/html joe,stdair@web.sourceforge.net:htdocs/
 \endverbatim 
 where \c -aiv options mean:
