@@ -8,47 +8,46 @@
 <div style="float:right; width:200px; background-color: #eeeeff; 
      border: 1px solid #b0b0b0; margin: 0 0 10px 20px; padding: 10px; 
      font-size: 90%;">
+\endhtmlonly
 
-<b>Getting Started:</b>
-<ul>
-<li><a href="features.html">Features</a></li>
-<li><a href="installation.html">Installation</a></li>
-<li><a href="linking.html">Linking with StdAir</a></li>
-<li><a href="users_guide.html">Short Introduction to StdAir</a></li>
-<li><a href="tutorial.html">Some Tutorial Examples</a></li>
-<li><a href="verification.html">StdAir Verification</a></li>
-<li><a href="copyright.html">Copyright and License</a></li>
-<li><a href="help_wanted.html">Make a Difference</a></li>
-<li><a href="authors.html">Authors</a></li>
-</ul>
+\section getting_started Getting Started
+- <a href="features.html">Features</a>
+- <a href="installation.html">Installation</a>
+- <a href="linking.html">Linking with StdAir</a>
+- <a href="users__guide.html">Short Introduction to StdAir</a>
+- <a href="tutorial.html">Some Tutorial Examples</a>
+- <a href="verification.html">StdAir Verification</a>
+- <a href="copyright.html">Copyright and License</a>
+- <a href="help__wanted.html">Make a Difference</a>
+- <a href="howto__release.html">Make a new release</a>
+- <a href="authors.html">Authors</a>
 
-<a href="http://sourceforge.net/projects/stdair/"><b>StdAir at SourceForge:</b></a>
-<ul>
-<li><a href="http://sourceforge.net/project/showfiles.php?group_id=267760">Download StdAir</a></li>
-<li><a href="http://stdair.sourceforge.net/RPM-GPG-KEY-freshrpms-free">RPM-GPG-Key</a> for StdAir RPMs (save the file, and type 'rpm --import RPM-GPG-KEY-freshrpms-free' as root)</li>
-<li><a href="http://sourceforge.net/tracker/?group_id=267760&atid=882290">Bug Reports</a></li>
-<li><a href="http://sourceforge.net/tracker/?group_id=267760&atid=882293">Feature Requests</a></li>
-<li><a href="http://sourceforge.net/tracker/?group_id=267760&atid=882292">Submit Patches</a></li>
-<li><a href="http://sourceforge.net/tracker/?group_id=267760&atid=882291">Support Request</a></li>
-<li><a href="http://sourceforge.net/mail/?group_id=267760">Mailing lists</a></li>
-<li><a href="http://sourceforge.net/forum/forum.php?forum_id=613897">Discuss about Development issues</a></li>
-<li><a href="http://sourceforge.net/forum/forum.php?forum_id=613896">Ask for Help</a></li>
-<li><a href="http://sourceforge.net/forum/forum.php?forum_id=613895">Discuss StdAir</a></li>
-</ul>
 
-<b>StdAir Development:</b>
-<ul>
-<li><a href="http://stdair.svn.sourceforge.net/viewvc/stdair/">SVN Repository</a></li>
-<li><a href="codingrules.html">Coding Rules</a></li>
-<li><a href="documentation.html">Documentation Rules</a></li>
-<li><a href="test.html">Test Rules</a></li>
-</ul>
+\section at_sourceforge StdAir at SourceForge
+- <a href="http://sourceforge.net/projects/stdair/">Project page</a>
+- <a href="http://sourceforge.net/project/showfiles.php?group_id=267760">Download StdAir</a>
+- <a href="https://sourceforge.net/apps/trac/stdair/newticket">Open a ticket fora bug or feature</a>
+- <a href="http://sourceforge.net/mail/?group_id=267760">Mailing lists</a>
+- <a href="https://sourceforge.net/apps/phpbb/stdair/">Forums</a>
+  - <a href="https://sourceforge.net/apps/phpbb/stdair/viewforum.php?f=1">Discuss about Development issues</a>
+  - <a href="https://sourceforge.net/apps/phpbb/stdair/viewforum.php?f=2">Ask for Help</a>
+  - <a href="https://sourceforge.net/apps/phpbb/stdair/viewforum.php?f=3">Discuss StdAir</a>
 
-<b>External Libraries:</b>
-<ul>
-<li><a href="http://www.gnu.org/software/gsl">GSL</a></li>
-</ul>
 
+\section development StdAir Development
+- <a href="http://stdair.svn.sourceforge.net/viewvc/stdair/">SVN Repository</a>
+- <a href="codingrules.html">Coding Rules</a>
+- <a href="documentation.html">Documentation Rules</a>
+- <a href="test.html">Test Rules</a>
+
+
+\section external_libs External Libraries
+- <a href="http://www.boost.org">Boost (C++ STL extensions)</a>
+- <a href="http://dev.mysql.com/">MySQL client</a>
+- <a href="http://soci.sourceforge.net/">SOCI (C++ DB API)</a>
+
+
+\htmlonly
 </div>
 <!-- end of left margin -->
 \endhtmlonly

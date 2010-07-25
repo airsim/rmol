@@ -1,9 +1,9 @@
 /*!
-\page verification IT++ Supported Systems
+\page verification StdAir Supported Systems
 
 \section toc Table of Contents
 - \ref intro
-- \ref itpp_3_10
+- \ref stdair_3_10
   - \ref linux
     - \ref fedora_atlas
     - \ref gentoo_acml
@@ -22,15 +22,15 @@
     - \ref msvc_mkl
   - \ref unix
     - \ref sunos59
-- \ref itpp_3_9_1
-- \ref itpp_3_9_0
-- \ref itpp_3_8_1
+- \ref stdair_3_9_1
+- \ref stdair_3_9_0
+- \ref stdair_3_8_1
 
 
 \section intro Introdution
 
-This page is intended to provide a list of IT++ supported systems, i.e. the
-systems on which configuration, installation and testing process of the IT++
+This page is intended to provide a list of StdAir supported systems, i.e. the
+systems on which configuration, installation and testing process of the StdAir
 library has been sucessful. Results are grouped based on minor release
 number. Therefore, only the latest tests for bug-fix releases are included.
 Besides, the information on this page is divided into sections dependent on
@@ -40,11 +40,11 @@ Where necessary, some extra information is given for each tested
 configuration, e.g. external libraries installed, configuration commands
 used, etc.
 
-If you manage to compile, install and test the IT++ library on a system not
+If you manage to compile, install and test the StdAir library on a system not
 mentioned below, please let us know, so we could update this database.
 
 
-\section itpp_3_10 IT++ 3.10.x
+\section stdair_3_10 StdAir 3.10.x
 
 \subsection linux Linux Systems
 
@@ -53,7 +53,7 @@ mentioned below, please let us know, so we could update this database.
 - <b>Platform</b>: Intel Pentium 4
 - <b>Operating System</b>: Fedora Core 4 (x86)
 - <b>Compiler</b>: g++ (GCC) 4.0.2 20051125
-- <b>IT++ release</b>: 3.10.0
+- <b>StdAir release</b>: 3.10.0
 - <b>External Libraries</b>: From FC4 distribution:
   - <tt>fftw3.i386-3.0.1-3</tt>
   - <tt>fftw3-devel.i386-3.0.1-3</tt>
@@ -62,7 +62,7 @@ mentioned below, please let us know, so we could update this database.
   - <tt>blas.i386-3.0-35.fc4</tt>
   - <tt>lapack.i386-3.0-35.fc4</tt>
 - <b>Tests Status</b>: All tests PASSED
-- <b>Comments</b>: IT++ configured with:
+- <b>Comments</b>: StdAir configured with:
 \code
 % CXXFLAGS="-O3 -pipe -march=pentium4" ./configure
 \endcode
@@ -75,7 +75,7 @@ mentioned below, please let us know, so we could update this database.
 - <b>Platform</b>: AMD Sempron 3000+
 - <b>Operating System</b>: Gentoo Linux 2006.0 (x86 arch)
 - <b>Compiler(s)</b>: g++ (GCC) 3.4.5
-- <b>IT++ release</b>: 3.10.1
+- <b>StdAir release</b>: 3.10.1
 - <b>External Libraries</b>: Compiled and installed from portage tree: 
   - <tt>sci-libs/acml-3.0.0</tt>
 - <b>Tests Status</b>: All tests PASSED
@@ -85,7 +85,7 @@ mentioned below, please let us know, so we could update this database.
 % eselect blas set ACML
 % eselect lapack set ACML
 \endcode
-  IT++ configured with:
+  StdAir configured with:
 \code
 % export CPPFLAGS="-I/usr/include/acml"
 % ./configure --with-blas="-lblas"
@@ -99,7 +99,7 @@ mentioned below, please let us know, so we could update this database.
 - <b>Platform</b>: Intel Pentium M Centrino
 - <b>Operating System</b>: Gentoo Linux 2006.0 (x86)
 - <b>Compiler</b>: g++ (GCC) 3.4.5
-- <b>IT++ release</b>: 3.10.1
+- <b>StdAir release</b>: 3.10.1
 - <b>External Libraries</b>: Compiled and installed from portage tree:
   - <tt>sci-libs/fftw-3.1</tt>
   - <tt>sci-libs/blas-atlas-3.6.0-r1</tt>
@@ -111,7 +111,7 @@ mentioned below, please let us know, so we could update this database.
 % eselect blas set ATLAS
 % eselect lapack set ATLAS
 \endcode
-  IT++ configured with:
+  StdAir configured with:
 \code
 % ./configure --with-blas="-lblas"
 \endcode
@@ -124,11 +124,11 @@ mentioned below, please let us know, so we could update this database.
 - <b>Platform</b>: Intel Pentium M Centrino
 - <b>Operating System</b>: Gentoo Linux 2006.0 (x86 arch)
 - <b>Compiler</b>: g++ (GCC) 3.4.5
-- <b>IT++ release</b>: 3.10.0
+- <b>StdAir release</b>: 3.10.0
 - <b>External Libraries</b>: Intel Math Kernel Library (MKL) 8.0.1
   installed manually in the following directory: <tt>/opt/intel/mkl/8.0.1</tt>
 - <b>Tests Status</b>: All tests PASSED
-- <b>Comments</b>: IT++ configured using the following commands:
+- <b>Comments</b>: StdAir configured using the following commands:
 \code 
 % export LDFLAGS="-L/opt/intel/mkl/8.0.1/lib/32"
 % export CPPFLAGS="-I/opt/intel/mkl/8.0.1/include"
@@ -143,7 +143,7 @@ mentioned below, please let us know, so we could update this database.
 - <b>Platform</b>: Intel Pentium M Centrino
 - <b>Operating System</b>: Gentoo Linux 2006.0 (x86)
 - <b>Compiler</b>: g++ (GCC) 3.4.5
-- <b>IT++ release</b>: 3.10.1
+- <b>StdAir release</b>: 3.10.1
 - <b>External Libraries</b>: Compiled and installed from portage tree:
   - <tt>sci-libs/fftw-3.1</tt>
   - <tt>sci-libs/blas-reference-19940131-r2</tt>
@@ -156,7 +156,7 @@ mentioned below, please let us know, so we could update this database.
 % blas-config reference
 % lapack-config reference
 \endcode
-  IT++ configured with:
+  StdAir configured with:
 \code
 % ./configure --with-blas="-lblas"
 \endcode
@@ -164,15 +164,15 @@ mentioned below, please let us know, so we could update this database.
 - <b>Tester</b>: Adam Piatyszek (ediap)
 
 
-\subsubsection rhel Red Hat Enterprise Linux with IT++ External
+\subsubsection rhel Red Hat Enterprise Linux with StdAir External
 
 - <b>Platform</b>: Intel Pentium 4
 - <b>Operating System</b>: Red Hat Enterprise Linux AS release 4 (Nahant
   Update 2)  
 - <b>Compiler</b>: g++ (GCC) 3.4.4 20050721 (Red Hat 3.4.4-2)
-- <b>IT++ release</b>: 3.10.0
+- <b>StdAir release</b>: 3.10.0
 - <b>External Libraries</b>: BLAS, CBLAS, LAPACK and FFTW libraries from
-  IT++ External 2.1.1 package
+  StdAir External 2.1.1 package
 - <b>Tests Status</b>: All tests PASSED
 - <b>Date</b>: March 7, 2006
 - <b>Tester</b>: Erik G. Larsson
@@ -183,7 +183,7 @@ mentioned below, please let us know, so we could update this database.
 - <b>Platform</b>: Intel Pentium 4 CPU 3.20GHz (64-bit)
 - <b>Operating System</b>: SUSE Linux 10.0 (x86_64)
 - <b>Compiler(s)</b>: g++ (GCC) 4.0.2
-- <b>IT++ release</b>: 3.10.0
+- <b>StdAir release</b>: 3.10.0
 - <b>External Libraries</b>: BLAS, LAPACK and FFTW libraries installed from 
   OpenSuse 10.0 RPM repository:
   - <tt>blas-3.0-926</tt>
@@ -192,7 +192,7 @@ mentioned below, please let us know, so we could update this database.
   - <tt>fftw3-threads-3.0.1-114</tt>
   - <tt>fftw3-devel-3.0.1-114</tt>
 - <b>Tests Status</b>: All tests PASSED
-- <b>Comments</b>: IT++ configured with:
+- <b>Comments</b>: StdAir configured with:
 \code
 % export CXXFLAGS="-m64 -march=nocona -O3 -pipe"
 % ./configure --with-lapack="/usr/lib64/liblapack.so.3"
@@ -206,11 +206,11 @@ mentioned below, please let us know, so we could update this database.
 - <b>Platform</b>: Intel Pentium 4 CPU 3.20GHz (64-bit)
 - <b>Operating System</b>: SUSE Linux 10.0 (x86_64)
 - <b>Compiler(s)</b>: g++ (GCC) 4.0.2
-- <b>IT++ release</b>: 3.10.0
+- <b>StdAir release</b>: 3.10.0
 - <b>External Libraries</b>: Intel Math Kernel Library (MKL) 8.0.1
   installed manually in the following directory: <tt>/opt/intel/mkl/8.0.1</tt>
 - <b>Tests Status</b>: All tests PASSED
-- <b>Comments</b>: IT++ configured with:
+- <b>Comments</b>: StdAir configured with:
 \code
 % export CXXFLAGS="-m64 -march=nocona -O3 -pipe"
 % export LDFLAGS="-L/opt/intel/mkl/8.0.1/lib/em64t"
@@ -228,13 +228,13 @@ mentioned below, please let us know, so we could update this database.
 - <b>Platform</b>: AMD Sempron 3000+
 - <b>Operating System</b>: Microsoft Windows XP SP2, Cygwin 1.5.19-4
 - <b>Compiler(s)</b>: g++ (GCC) 3.4.4 (cygming special)
-- <b>IT++ release</b>: 3.10.1
+- <b>StdAir release</b>: 3.10.1
 - <b>External Libraries</b>: Installed from Cygwin's repository: 
   - <tt>fftw-3.0.1-2</tt>
   - <tt>fftw-dev-3.0.1-1</tt>
   - <tt>lapack-3.0-4</tt>
 - <b>Tests Status</b>: All tests PASSED
-- <b>Comments</b>: Only static library can be built. IT++ configured with:
+- <b>Comments</b>: Only static library can be built. StdAir configured with:
 \code
 % ./configure
 \endcode
@@ -247,18 +247,18 @@ mentioned below, please let us know, so we could update this database.
 - <b>Platform</b>: AMD Sempron 3000+
 - <b>Operating System</b>: Microsoft Windows XP SP2, Cygwin 1.5.19-4
 - <b>Compiler(s)</b>: g++ (GCC) 3.4.4 (cygming special)
-- <b>IT++ release</b>: 3.10.1
+- <b>StdAir release</b>: 3.10.1
 - <b>External Libraries</b>: Installed from Cygwin's repository: 
   - <tt>fftw-3.0.1-2</tt>
   - <tt>fftw-dev-3.0.1-1</tt>
   .
-  ATLAS BLAS and LAPACK libraries from IT++ External 2.1.1 package
+  ATLAS BLAS and LAPACK libraries from StdAir External 2.1.1 package
   configured using:
 \code
 % ./configure --enable-atlas --disable-fftw
 \endcode
 - <b>Tests Status</b>: All tests PASSED
-- <b>Comments</b>: Only static library can be built. IT++ configured with:
+- <b>Comments</b>: Only static library can be built. StdAir configured with:
 \code
 % export LDFLAGS="-L/usr/local/lib"
 % ./configure
@@ -272,12 +272,12 @@ mentioned below, please let us know, so we could update this database.
 - <b>Platform</b>: AMD Sempron 3000+
 - <b>Operating System</b>: Microsoft Windows XP SP2, Cygwin 1.5.19-4
 - <b>Compiler(s)</b>: g++ (GCC) 3.4.4 (cygming special)
-- <b>IT++ release</b>: 3.10.2
+- <b>StdAir release</b>: 3.10.2
 - <b>External Libraries</b>:  ACML version 3.1.0 
   (<tt>acml3.1.0-32-win32-g77.exe</tt>) installed into a default directory, 
   i.e. <tt>"c:\Program Files\AMD\acml3.1.0"</tt>
 - <b>Tests Status</b>: All tests PASSED
-- <b>Comments</b>: Only static library can be built. IT++ configured with:
+- <b>Comments</b>: Only static library can be built. StdAir configured with:
 \code
 % export LDFLAGS="-L/cygdrive/c/Progra~1/AMD/acml3.1.0/gnu32/lib"
 % export CPPFLAGS="-I/cygdrive/c/Progra~1/AMD/acml3.1.0/gnu32/include"
@@ -292,12 +292,12 @@ mentioned below, please let us know, so we could update this database.
 - <b>Platform</b>: AMD Sempron 3000+
 - <b>Operating System</b>: Microsoft Windows XP SP2, MinGW 5.0.2, MSYS 1.0.10
 - <b>Compiler(s)</b>: g++ (GCC) 3.4.4 (mingw special)
-- <b>IT++ release</b>: 3.10.2
+- <b>StdAir release</b>: 3.10.2
 - <b>External Libraries</b>: ACML version 3.1.0 
   (<tt>acml3.1.0-32-win32-g77.exe</tt>) installed into a default directory, 
   i.e. <tt>"c:\Program Files\AMD\acml3.1.0"</tt>
 - <b>Tests Status</b>: All tests PASSED
-- <b>Comments</b>: Only static library can be built. IT++ configured with:
+- <b>Comments</b>: Only static library can be built. StdAir configured with:
 \code
 % export LDFLAGS="-L/c/Progra~1/AMD/acml3.1.0/gnu32/lib"
 % export CPPFLAGS="-I/c/Progra~1/AMD/acml3.1.0/gnu32/include"
@@ -307,16 +307,16 @@ mentioned below, please let us know, so we could update this database.
 - <b>Tester</b>: Adam Piatyszek (ediap)
 
 
-\subsubsection mingw_netlib Microsoft Windows XP with MinGW, MSYS and IT++ External
+\subsubsection mingw_netlib Microsoft Windows XP with MinGW, MSYS and StdAir External
 
 - <b>Platform</b>: AMD Sempron 3000+
 - <b>Operating System</b>: Microsoft Windows XP SP2, MinGW 5.0.2, MSYS 1.0.10
 - <b>Compiler(s)</b>: g++ (GCC) 3.4.4 (mingw special)
-- <b>IT++ release</b>: 3.10.5
+- <b>StdAir release</b>: 3.10.5
 - <b>External Libraries</b>: BLAS, CBLAS, LAPACK and FFTW libraries from
-  IT++ External 2.2.0 package
+  StdAir External 2.2.0 package
 - <b>Tests Status</b>: All tests PASSED
-- <b>Comments</b>: Only static library can be built. IT++ configured with:
+- <b>Comments</b>: Only static library can be built. StdAir configured with:
 \code
 % export LDFLAGS="-L/usr/local/lib"
 % export CPPFLAGS="-I/usr/local/include"
@@ -332,14 +332,14 @@ mentioned below, please let us know, so we could update this database.
 - <b>Platform</b>: AMD Sempron 3000+
 - <b>Operating System</b>: Microsoft Windows XP SP2
 - <b>Compiler(s)</b>: Microsoft Visual C++ 2005 .NET
-- <b>IT++ release</b>: 3.10.5
+- <b>StdAir release</b>: 3.10.5
 - <b>External Libraries</b>: Intel Math Kernel Library (MKL) 8.1 installed
   manually in the following directory:
   <tt>"C:\Program Files\Intel\MKL\8.1"</tt>
-- <b>Tests Status</b>: Not fully tested. Some IT++ based programs compiled
+- <b>Tests Status</b>: Not fully tested. Some StdAir based programs compiled
   and run with success.
-- <b>Comments</b>: Only static library can be built. IT++ built by opening 
-  the <tt>"win32\itpp.vcproj"</tt> project file in MSVC++ and executing
+- <b>Comments</b>: Only static library can be built. StdAir built by opening 
+  the <tt>"win32\stdair.vcproj"</tt> project file in MSVC++ and executing
   <tt>"Build -> Build Solution"</tt> command from menu.
 - <b>Date</b>: August 11, 2006
 - <b>Tester</b>: Adam Piatyszek (ediap)
@@ -347,21 +347,21 @@ mentioned below, please let us know, so we could update this database.
 
 \subsection unix Unix Systems
 
-\subsubsection sunos59 SunOS 5.9 with IT++ External
+\subsubsection sunos59 SunOS 5.9 with StdAir External
 
 - <b>Platform</b>: SUNW, Sun-Blade-100 (SPARC)
 - <b>Operating System</b>: SunOS 5.9 Generic_112233-10
 - <b>Compiler(s)</b>: g++ (GCC) 3.4.5
-- <b>IT++ release</b>: 3.10.2
+- <b>StdAir release</b>: 3.10.2
 - <b>External Libraries</b>: BLAS, CBLAS, LAPACK and FFTW libraries from
-  IT++ External 2.1.1 package. The following configuration command has been
+  StdAir External 2.1.1 package. The following configuration command has been
   used:
 \code
 % export CFLAGS="-mcpu=ultrasparc -O2 -pipe -funroll-all-loops"
 % ./configure
 \endcode
 - <b>Tests Status</b>: All tests PASSED
-- <b>Comments</b>: IT++ configured with:
+- <b>Comments</b>: StdAir configured with:
 \code
 % export LDFLAGS="-L/usr/local/lib"
 % export CPPFLAGS="-I/usr/local/include"
@@ -375,9 +375,9 @@ mentioned below, please let us know, so we could update this database.
 
 
 /*!
-\page verification_old IT++ Supported Systems (Previous Releases)
+\page verification_old StdAir Supported Systems (Previous Releases)
 
-\section itpp_3_9_1 IT++ 3.9.1
+\section stdair_3_9_1 StdAir 3.9.1
 
 \htmlonly
 
@@ -425,7 +425,7 @@ platforms: </p>
   <td valign="top">January 26, 2006</td>
   <td valign="top">From SUSE distribution: <tt>fftw3-3.0.1-114.i586</tt>,
     <tt>fftw3-devel-3.0.1-114.i586</tt>;<br>
-    From <tt>itpp-external-2.0.0</tt>: <tt>CBLAS</tt>, <tt>LAPACK</tt></td>
+    From <tt>stdair-external-2.0.0</tt>: <tt>CBLAS</tt>, <tt>LAPACK</tt></td>
   <td valign="top">OK</td>
   <td valign="top">Could not compile atlas-3.6.0</td>
   <td valign="top">Zbigniew Dlugaszewski</td>
@@ -446,7 +446,7 @@ platforms: </p>
 
 \endhtmlonly
 
-\section itpp_3_9_0 IT++ 3.9.0
+\section stdair_3_9_0 StdAir 3.9.0
 
 \htmlonly
 
@@ -539,7 +539,7 @@ platforms: </p>
 
 \endhtmlonly
 
-\section itpp_3_8_1 IT++ 3.8.1
+\section stdair_3_8_1 StdAir 3.8.1
 
 \htmlonly
 

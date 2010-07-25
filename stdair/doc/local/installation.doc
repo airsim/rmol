@@ -1,341 +1,522 @@
 /*!
-\page installation IT++ Installation
+\page installation StdAir Installation
 
 \section toc Table of Contents
+- \ref rpm_linux
 - \ref requirements
-- \ref download
-- \ref compilation
-- \ref macosx
-- \ref localinst
-- \ref msvc
+- \ref basic_instructions
+- \ref compilers
+- \ref compiling_for_multi_arch
+- \ref installation_names
+- \ref optional_features
+- \ref particular_systems
+- \ref specifying_system_type
+- \ref sharing_defaults
+- \ref defining_variables
+- \ref configure_invocation
 
 
-\section requirements IT++ Requirements
+\section rpm_linux Fedora/RedHat Linux distributions
 
-IT++ should compile without errors or warnings on most GNU/Linux systems,
+Note that on
+<a href="http://fedoraproject.org">Fedora</a>/<a href="http://www.redhat.com">RedHat</a>
+Linux distributions, RPM packages are available and can be installed
+with your usual package manager. For instance:<br>
+<code> yum -y install stdair-devel stdair-doc </code>
+
+RPM packages can also be available on the
+<a href="http://sourceforge.net/project/showfiles.php?group_id=267760">SourceForge download site</a>.
+
+
+\section requirements StdAir Requirements
+
+StdAir should compile without errors or warnings on most GNU/Linux systems,
 on UNIX systems like Solaris SunOS, and on POSIX based environments for
 Microsoft Windows like Cygwin or MinGW with MSYS. It can be also built on
 Microsoft Windows NT/2000/XP using Microsoft's Visual C++ .NET, but our 
 support for this compiler is limited. For GNU/Linux, SunOS, Cygwin and MinGW
 we assume that you have at least the following GNU software installed on
 your computer:
-- <a href="http://www.gnu.org/software/make/">GNU make</a>, version 3.72.1
-or later (check version with <tt>`make --version'</tt>)
-- <a href="http://gcc.gnu.org/">GCC</a> - GNU Compilers Collection (gcc, g++
-and g77 or gfortran), version 3.3.x or later (check version with <tt>`gcc
---version'</tt>)
+- GNU Autotools:
+  - <a href="http://www.gnu.org/software/autoconf/">autoconf</a>, 
+  - <a href="http://www.gnu.org/software/automake/">automake</a>,
+  - <a href="http://www.gnu.org/software/libtool/">libtool</a>, 
+  - <a href="http://www.gnu.org/software/make/">make</a>, version 3.72.1
+  or later (check version with \c `make --version')
+- <a href="http://gcc.gnu.org/">GCC</a> - GNU C++ Compiler (g++), version 4.3.x
+  or later (check version with \c `gcc --version')
+- <a href="http://www.boost.org/">Boost</a> - C++ STL extensions, version 1.35
+  or later (check version with
+  \c `grep "define BOOST_LIB_VERSION" /usr/include/boost/version.hpp')
+- <a href="http://dev.mysql.com/">MySQL</a> - Database client libraries, 
+  version 5.0 or later (check version with \c `mysql --version')
+- <a href="http://soci.sourceforge.net/">SOCI</a> - C++ database client 
+  library wrapper, version 3.0.0 or later (check version with 
+  \c `soci-config --version')
 .
-To perform tests, two command line programs: \c sed and \c diff are
-required. Optionally, you might need a few additional programs, i.e. 
+Optionally, you might need a few additional programs:
 <a href="http://www.doxygen.org/">Doxygen</a>, 
 <a href="http://www.latex-project.org/">LaTeX</a>,
 <a href="http://www.radicaleye.com/dvips.html">Dvips</a> and 
 <a href="http://www.cs.wisc.edu/~ghost/">Ghostscript</a>, to generate the
-HTML documentation. 
+HTML and PDF documentation.
 
 We strongly recommend that you use recent stable releases of the GCC, if
 possible. We do not actively work on supporting older versions of the GCC,
 and they may therefore (without prior notice) become unsupported in future
-releases of IT++.
-
-In order to use all functionality provided by the IT++ library, it is
-recommended that you have some external libraries compiled and installed in
-your computer. The basic set of them is: 
-<a href="http://www.netlib.org/blas/">BLAS</a>,
-<a href="http://www.netlib.org/lapack/">LAPACK</a> and
-<a href="http://www.fftw.org/">FFTW</a> (version 3.0.0 or later). To improve
-some vector based operations a C interface of BLAS, namely
-<a href="http://www.netlib.org/blas/">CBLAS</a>, is also recommended.
-
-Instead of NetLib's reference BLAS, CBLAS and LAPACK implementations, some
-optimized platform-specific libraries can be used as well, i.e.:
-- <a href="http://math-atlas.sourceforge.net/">ATLAS</a> (<em>Automatically
-  Tuned Linear Algebra Software</em>) - includes optimised BLAS, CBLAS and a
-  limited set of LAPACK routines (version 3.6.0 or later)
-- <a href="http://www.intel.com/cd/software/products/asmo-na/eng/perflib/mkl/">MKL</a>  
-  (<em>Intel Math Kernel Library</em>) - includes all required BLAS, CBLAS,
-  LAPACK and FFT routines (version 8.0.0 or later; FFTW not required)
-- <a href="http://developer.amd.com/acml.aspx">ACML</a> (<em>AMD Core Math
-  Library</em>) - includes BLAS, CBLAS, LAPACK and FFT routines (version
-  2.5.3 or later; FFTW not required)
-
-It is possible to compile and use IT++ without these libraries, but the
-functionality will be reduced. We therefore recommend that you take some
-time and effort to provide these external libraries in your system. Please
-note, that some of them (FFTW, BLAS and LAPACK) are usually included in
-most modern Linux distributions.
+releases of StdAir.
 
 
-\section download Obtaining the IT++ Source Codes
+\section basic_instructions Basic Installation
 
-IT++ is released under the GNU General Public License (GPL) and hence the
-source code of the IT++ library is available for free download. To obtain
-the IT++ source code, visit the project pages on SourceForge:
-- <a href="http://itpp.sourceforge.net/">http://itpp.sourceforge.net/</a>
-.
-and download the file named \c itpp-\<VERSION\>.tar.gz or 
-\c itpp-\<VERSION\>.tar.bz2, where \c \<VERSION\> is the latest release
-number, e.g. 3.9.0.
+   Briefly, the shell commands \c `./configure; make; make install' 
+should configure, build, and install this package.  The following
+more-detailed instructions are generic; see the \c `README' file for
+instructions specific to this package.  Some packages provide this
+\c `INSTALL' file but do not implement all of the features documented
+below.  The lack of an optional feature in a given package is not
+necessarily a bug.  More recommendations for GNU packages can be found
+in the info page corresponding to "Makefile Conventions: 
+(standards)Makefile Conventions".
+
+   The \c `configure' shell script attempts to guess correct values for
+various system-dependent variables used during compilation.  It uses
+those values to create a \c `Makefile' in each directory of the package.
+It may also create one or more \c `.h' files containing system-dependent
+definitions.  Finally, it creates a shell script \c `config.status' that
+you can run in the future to recreate the current configuration, and a
+file \c `config.log' containing compiler output (useful mainly for
+debugging \c `configure').
+
+   It can also use an optional file (typically called \c `config.cache'
+and enabled with \c `--cache-file=config.cache' or simply \c `-C') that 
+saves the results of its tests to speed up reconfiguring.  Caching is
+disabled by default to prevent problems with accidental use of stale
+cache files.
+
+   If you need to do unusual things to compile the package, please try
+to figure out how `configure' could check whether to do them, and mail
+diffs or instructions to the address given in the \c `README' so they can
+be considered for the next release.  If you are using the cache, and at
+some point \c `config.cache' contains results you don't want to keep, you
+may remove or edit it.
+
+   The file \c `configure.ac' (or \c `configure.in') is used to create
+\c `configure' by a program called \c `autoconf'.  You need \c `configure.ac'
+if you want to change it or regenerate \c `configure' using a newer version
+of \c `autoconf'.
+
+The simplest way to compile this package is:
+-# \c `cd' to the directory containing the package's source code and type
+   \c `./configure' to configure the package for your system.
+   Running \c `configure' might take a while.  While running, it prints
+   some messages telling which features it is checking for.
+-# Type \c `make' to compile the package.
+-# Optionally, type \c `make check' to run any self-tests that come with
+   the package, generally using the just-built uninstalled binaries.
+-# Type \c `make install' to install the programs and any data files and
+   documentation.  When installing into a prefix owned by root, it is
+   recommended that the package be configured and built as a regular
+   user, and only the `make install' phase executed with root
+   privileges.
+-# Optionally, type \c `make installcheck' to repeat any self-tests, but
+   this time using the binaries in their final installed location.
+   This target does not install anything.  Running this target as a
+   regular user, particularly if the prior \c `make install' required
+   root privileges, verifies that the installation completed
+   correctly.
+-# You can remove the program binaries and object files from the
+   source code directory by typing \c `make clean'.  To also remove the
+   files that \c `configure' created (so you can compile the package for
+   a different kind of computer), type \c `make distclean'.  There is
+   also a \c `make maintainer-clean' target, but that is intended mainly
+   for the package's developers.  If you use it, you may have to get
+   all sorts of other programs in order to regenerate files that came
+   with the distribution.
+-# Often, you can also type \c `make uninstall' to remove the installed
+   files again.  In practice, not all packages have tested that
+   uninstallation works correctly, even though it is required by the
+   GNU Coding Standards.
+-# Some packages, particularly those that use Automake, provide \c `make
+   distcheck', which can by used by developers to test that all other
+   targets like \c `make install' and \c `make uninstall' work correctly.
+   This target is generally not run by end users.
 
 
-\section compilation General IT++ Configuration, Compilation and Installation Instructions
+\section compilers Compilers and Options
 
-Assuming that you have already downloaded the latest IT++ sources, untar
-and unpack the sources, and enter the unpacked directory. Depending on the
-package type you have downloaded, use the following commands:
+   Some systems require unusual options for compilation or linking that
+the \c `configure' script does not know about.  Run \c `./configure --help'
+for details on some of the pertinent environment variables.
 
-\verbatim 
-% gzip -cd itpp-<VERSION>.tar.gz | tar xf - 
-% cd itpp-<VERSION> 
-\endverbatim
-
-\verbatim 
-% bzip2 -cd itpp-<VERSION>.tar.bz2 | tar xf - 
-% cd itpp-<VERSION> 
-\endverbatim
-
-Since version 3.9.0, the IT++ library uses autoconf, automake and libtool
-for preparing Makefiles and configuration script, so the compilation
-procedure resembles a standard, well-known GNU method, i.e. 
-
-\verbatim 
-% ./configure
-% make
-\endverbatim
-
-The \c `configure' command can be invoked with additional switches and
-options (run <tt>`./configure --help'</tt> to get a list of them). The
-most important are:
-- \c `--prefix=PREFIX' - set top installation directory to a certain \c
-  PREFIX value. By default it is set to \c `/usr/local', so <tt>`make
-  install'</tt> will install appropriate files into \c `/usr/local/include',
-  \c `/usr/local/lib`, etc.
-- \c `--enable-debug' - build an extra library named \c `libitpp_debug.*'
-  using special debugging flags for compiler and linker (disabled by default)
-- \c `--enable-exceptions' - enable exceptions handling of run-time errors
-  instead of aborting the program (disabled by default)
-- \c `--disable-html-doc' - do not generate and install the HTML
-  documentation (enabled by default)
-- \c `--disable-shared' - do not build the shared version of the library
-  (enabled by default for non Windows based platforms)
-- \c `--disable-static' - do not build the static version of the library
-  (enabled by default for Windows based platforms)
-.
-Plese note that each \c `--enable-\<OPTION\>' switch can be replaced
-with its opposite switch \c `--disable-\<OPTION\>'.
-
-Since version 3.99.0, a modularization of the library has been introduced.
-Therefore, several additional switches have been added to the configure
-script, which can be used to disable building some of the library
-components. Here is a list of them:
-- \c `--disable-comm' - do not build the `Communications' module
-- \c `--disable-fixed' - do not build the `Fixed-point' module
-- \c `--disable-optim' - do not build the `Numerical optimisations' module
-- \c `--disable-protocol' - do not include the `Protocols' module
-- \c `--disable-signal' - do not build the `Signal processing' module
-- \c `--disable-srccode' - do not build the `Source coding' module
-
-By default, the \c `configure' script checks for a few external libraries,
-which might be used by the IT++ library (cf. \ref requirements). BLAS and
-LAPACK libraries require a fortran compiler for linking. Therefore, if no
-fortran compiler can be found, only some FFT library is searched.
-Otherwise, the detection procedure is as follows:
--# First, the presence of a BLAS library among the MKL, ACML, ATLAS and
-   NetLib's reference BLAS is checked. If one of the above mentioned can be
-   used, \c HAVE_BLAS is defined.
--# If the BLAS library can be found, the C interface of BLAS, namely CBLAS,
-   is detected. The CBLAS is provided by default by the MKL, ATLAS and
-   NetLib's reference CBLAS libraries. The ACML has also a C interface of
-   BLAS, which can be used, but it is not compatible with the standard
-   CBLAS. On success, \c HAVE_CBLAS is defined.
--# Next, some LAPACK library is searched, but only if a BLAS library
-   is available. Full set of LAPACK routines can be found in the MKL, ACML
-   and NetLib's reference LAPACK libraries. Besides, the ATLAS contains a
-   subset of optimised LAPACK routines, which can be used with NetLib's LAPACK
-   library (this is described in the ATLAS documentation). If a LAPACK
-   library can be found, \c HAVE_LAPACK is defined.
--# Finally, a set of separate checks for some FFT library is executed.
-   Currently three different libraries providing FFT/IFFT routines can be
-   used: MKL, ACML and FFTW. If at least one of them is found, \c HAVE_FFT
-   id defined. Besides, one of the following: \c HAVE_FFT_MKL8, \c
-   HAVE_FFT_ACML or \c HAVE_FFTW3 is defined. 
-
-If some external libraries are installed in a non-standard location in your
-system, e.g. MKL in <tt>`/opt/intel/mkl/8.0.1'</tt>, the \c `configure' script 
-will not detect them automatically. In such a case, you should use LDFLAGS
-and CPPFLAGS environment variables to define additional directories to be
-searched for libraries (LDFLAGS) and include files (CPPFLAGS). For instance,
-to configure IT++ to link to the MKL 8.0.1 external library, which is
-installed in <tt>`/opt/intel/mkl/8.0.1'</tt> directory, you should use the
-following commands:
+   You can give \c `configure' initial values for configuration parameters
+by setting variables in the command line or in the environment.  Here
+is an example:
 
 \verbatim
-% export LDFLAGS="-L/opt/intel/mkl/8.0.1/lib/32"
-% export CPPFLAGS="-I/opt/intel/mkl/8.0.1/include"
-% ./configure
+./configure CC=c99 CFLAGS=-g LIBS=-lposix
 \endverbatim
 
-In the case that external libraries have non-standard names, e.g.
-<tt>`libcblas-3.a'</tt> for CBLAS, you might specify them to the configure
-using \c `--with-\<LIBNAME\>' switches, where \c \<LIBNAME\> is one of the
-following: \c `blas', \c `cblas', \c `lapack' or \c `fft'. You might use
-more then one library names by quoting them with doublequotes, e.g.
+   *Note \ref defining_variables for more details.
+
+
+\section compiling_for_multi_arch Compiling For Multiple Architectures
+
+   You can compile the package for more than one kind of computer at the
+same time, by placing the object files for each architecture in their
+own directory.  To do this, you can use GNU `make'.  `cd' to the
+directory where you want the object files and executables to go and run
+the `configure' script.  `configure' automatically checks for the
+source code in the directory that `configure' is in and in `..'.  This
+is known as a "VPATH" build.
+
+   With a non-GNU `make', it is safer to compile the package for one
+architecture at a time in the source code directory.  After you have
+installed the package for one architecture, use `make distclean' before
+reconfiguring for another architecture.
+
+   On MacOS X 10.5 and later systems, you can create libraries and
+executables that work on multiple system types--known as "fat" or
+"universal" binaries--by specifying multiple `-arch' options to the
+compiler but only a single `-arch' option to the preprocessor.  Like
+this:
 
 \verbatim
-% ./configure --with-blas="-latlas -lblas"
+./configure CC="gcc -arch i386 -arch x86_64 -arch ppc -arch ppc64" \
+            CXX="g++ -arch i386 -arch x86_64 -arch ppc -arch ppc64" \
+            CPP="gcc -E" CXXCPP="g++ -E"
 \endverbatim
 
-If there is only one library specified, you can use a simplified notation
-without the preceding `-l', e.g. \c `--with-fft=fftw3' instead of \c 
-`--with-fftw=-lfftw3'.
+   This is not guaranteed to produce working output in all cases, you
+may have to build one architecture at a time and combine the results
+using the `lipo' tool if you have problems.
 
-Although it is not recommended, you can intentionally prevent detection of
-some external libraries. To do this you should use \c
-`--without-\<LIBNAME\>' or \c `--with-\<LIBNAME\>=no', e.g.:
+
+\section installation_names Installation Names
+
+   By default, \c `make install' installs the package's commands under
+\c `/usr/local/bin', include files under \c `/usr/local/include', etc.  You
+can specify an installation prefix other than \c `/usr/local' by giving
+\c `configure' the option \c `--prefix=PREFIX', where \c PREFIX must be an
+absolute file name.
+
+   You can specify separate installation prefixes for
+architecture-specific files and architecture-independent files.  If you
+pass the option \c `--exec-prefix=PREFIX' to `configure', the package uses
+\c PREFIX as the prefix for installing programs and libraries.
+Documentation and other data files still use the regular prefix.
+
+   In addition, if you use an unusual directory layout you can give
+options like \c `--bindir=DIR' to specify different values for particular
+kinds of files.  Run `configure --help' for a list of the directories
+you can set and what kinds of files go in them.  In general, the
+default for these options is expressed in terms of \c `${prefix}', so that
+specifying just \c `--prefix' will affect all of the other directory
+specifications that were not explicitly provided.
+
+   The most portable way to affect installation locations is to pass the
+correct locations to \c `configure'; however, many packages provide one or
+both of the following shortcuts of passing variable assignments to the
+\c `make install' command line to change installation locations without
+having to reconfigure or recompile.
+
+   The first method involves providing an override variable for each
+affected directory.  For example,
+\c `make install prefix=/alternate/directory' will choose an alternate location
+for all directory configuration variables that were expressed in terms of
+\c `${prefix}'.  Any directories that were specified during \c `configure',
+but not in terms of \c `${prefix}', must each be overridden at install
+time for the entire installation to be relocated.  The approach of
+makefile variable overrides for each directory variable is required by
+the GNU Coding Standards, and ideally causes no recompilation.
+However, some platforms have known limitations with the semantics of
+shared libraries that end up requiring recompilation when using this
+method, particularly noticeable in packages that use GNU Libtool.
+
+   The second method involves providing the \c `DESTDIR' variable.  For
+example, \c `make install DESTDIR=/alternate/directory' will prepend
+\c `/alternate/directory' before all installation names.  The approach of
+\c `DESTDIR' overrides is not required by the GNU Coding Standards, and
+does not work on platforms that have drive letters.  On the other hand,
+it does better at avoiding recompilation issues, and works well even
+when some directory options were not specified in terms of \c `${prefix}'
+at \c `configure' time.
+
+
+\section optional_features Optional Features
+
+   If the package supports it, you can cause programs to be installed
+with an extra prefix or suffix on their names by giving \c `configure' the
+option \c `--program-prefix=PREFIX' or \c `--program-suffix=SUFFIX'.
+
+   Some packages pay attention to \c `--enable-FEATURE' options to
+\c `configure', where \c FEATURE indicates an optional part of the package.
+They may also pay attention to \c `--with-PACKAGE' options, where \c PACKAGE
+is something like \c `gnu-as' or \c `x' (for the X Window System).  The
+\c `README' should mention any \c `--enable-' and \c `--with-' options that 
+the package recognizes.
+
+   For packages that use the X Window System, \c `configure' can usually
+find the X include and library files automatically, but if it doesn't,
+you can use the \c `configure' options \c `--x-includes=DIR' and
+\c `--x-libraries=DIR' to specify their locations.
+
+   Some packages offer the ability to configure how verbose the
+execution of `make' will be.  For these packages, running \c `./configure
+--enable-silent-rules' sets the default to minimal output, which can be
+overridden with \c `make V=1'; while running \c `./configure
+--disable-silent-rules' sets the default to verbose, which can be
+overridden with \c `make V=0'.
+
+
+\section particular_systems Particular systems
+
+   On HP-UX, the default C compiler is not ANSI C compatible.  If GNU
+CC is not installed, it is recommended to use the following options in
+order to use an ANSI C compiler:
 
 \verbatim
-% ./configure --without-cblas --without-lapack
+./configure CC="cc -Ae -D_XOPEN_SOURCE=500"
 \endverbatim
 
-It is recommended to set CXXFLAGS environment variable with some
-compiler- and platform-specific optimisation flags before invoking the 
-\c `configure' command. For example, in the case of using the Intel Pentium
-4 processor one might employ the following flags:
+and if that doesn't work, install pre-built binaries of GCC for HP-UX.
+
+   On OSF/1 a.k.a. Tru64, some versions of the default C compiler cannot
+parse its \c `<wchar.h>' header file.  The option \c `-nodtk' can be used as
+a workaround.  If GNU CC is not installed, it is therefore recommended
+to try
 
 \verbatim
-% CXXFLAGS="-O3 -pipe -march=pentium4" ./configure
+./configure CC="cc"
 \endverbatim
 
-In the case of Sun's UltraSPARC 64-bit platform and GCC compiler, the flags
-might be set as follows:
+and if that doesn't work, try
 
 \verbatim
-% export CXXFLAGS="-O3 -pipe -mcpu=v9 -m64"
-% ./confiugre
+./configure CC="cc -nodtk"
 \endverbatim
 
-If CXXFLAGS is not set in the environment, it will be initialised with
-the default flags, i.e. <tt>"-DASSERT_LEVEL=1 -O3 -pipe"</tt>.
+   On Solaris, don't put \c `/usr/ucb' early in your \c `PATH'.  This
+directory contains several dysfunctional programs; working variants of
+these programs are available in \c `/usr/bin'.  So, if you need \c `/usr/ucb'
+in your \c `PATH', put it _after_ \c `/usr/bin'.
 
-When the configuration process is finished, a status message is displayed. 
-For instance, after having invoked the following configuration
-command on a recent Gentoo Linux system:
+   On Haiku, software installed for all users goes in \c `/boot/common',
+not \c `/usr/local'.  It is recommended to use the following options:
 
 \verbatim
-% ./configure --with-blas="-lblas"
+./configure --prefix=/boot/common
 \endverbatim
 
-one can observe something like this:
+
+\section specifying_system_type Specifying the System Type
+
+   There may be some features \c `configure' cannot figure out
+automatically, but needs to determine by the type of machine the package
+will run on.  Usually, assuming the package is built to be run on the
+_same_ architectures, `configure' can figure that out, but if it prints
+a message saying it cannot guess the machine type, give it the
+\c `--build=TYPE' option.  \c TYPE can either be a short name for the 
+system type, such as \c `sun4', or a canonical name which has the form 
+\c CPU-COMPANY-SYSTEM
+
+where \c SYSTEM can have one of these forms:
+- \c OS
+- \c KERNEL-OS
+
+   See the file `config.sub' for the possible values of each field.  If
+\c `config.sub' isn't included in this package, then this package doesn't
+need to know the machine type.
+
+   If you are _building_ compiler tools for cross-compiling, you should
+use the option \c `--target=TYPE' to select the type of system they will
+produce code for.
+
+   If you want to _use_ a cross compiler, that generates code for a
+platform different from the build platform, you should specify the
+"host" platform (i.e., that on which the generated programs will
+eventually be run) with \c `--host=TYPE'.
+
+
+\section sharing_defaults Sharing Defaults
+
+   If you want to set default values for \c `configure' scripts to share,
+you can create a site shell script called \c `config.site' that gives
+default values for variables like \c `CC', \c `cache_file', and \c `prefix'.
+\c `configure' looks for \c `PREFIX/share/config.site' if it exists, then
+\c `PREFIX/etc/config.site' if it exists.  Or, you can set the
+\c `CONFIG_SITE' environment variable to the location of the site script.
+A warning: not all \c `configure' scripts look for a site script.
+
+
+\section defining_variables Defining Variables
+
+   Variables not defined in a site shell script can be set in the
+environment passed to \c `configure'.  However, some packages may run
+configure again during the build, and the customized values of these
+variables may be lost.  In order to avoid this problem, you should set
+them in the \c `configure' command line, using \c `VAR=value'.
+For example:
+\verbatim
+./configure CC=/usr/local2/bin/gcc
+\endverbatim
+
+causes the specified \c `gcc' to be used as the C compiler (unless it is
+overridden in the site shell script).
+
+Unfortunately, this technique does not work for \c `CONFIG_SHELL' due to
+an Autoconf bug.  Until the bug is fixed you can use this workaround:
+\verbatim
+CONFIG_SHELL=/bin/bash /bin/bash ./configure CONFIG_SHELL=/bin/bash
+\endverbatim
+
+
+\section configure_invocation `configure' Invocation
+
+   \c `configure' recognizes the following options to control how it
+operates.
+- \c `--help', \c `-h' print a summary of all of the options to `configure',
+  and exit.
+- \c `--help=short', \c `--help=recursive' print a summary of the options
+  unique to this package's \c `configure', and exit.
+  The \c `short' variant lists options used only in the top level, while 
+  the \c `recursive' variant lists options also present in any nested packages.
+- \c `--version', `-V' print the version of Autoconf used to generate
+  the `configure' script, and exit.
+- \c `--cache-file=FILE' enable the cache: use and save the results of the
+  tests in \c FILE, traditionally \c `config.cache'.
+  \c FILE defaults to \c `/dev/null' to disable caching.
+- \c `--config-cache', \c `-C' alias for \c `--cache-file=config.cache'.
+- \c `--quiet', \c `--silent', \c `-q' do not print messages saying which 
+  checks are being made.  To suppress all normal output, redirect it to
+  `/dev/null' (any error messages will still be shown).
+- \c `--srcdir=DIR' look for the package's source code in directory \c DIR.
+  Usually \c `configure' can determine that directory automatically.
+- \c `--prefix=DIR' use \c DIR as the installation prefix.
+  *note \ref installation_names for more details, including other options 
+  available for fine-tuning the installation locations.
+-c \c `--no-create', \c `-n' run the configure checks, but stop before creating
+  any output files.
+
+\c `configure' also accepts some other, not widely useful, options.  Run
+\c `configure --help' for more details.
+
+The \c `configure' script produces an ouput like this:
 
 \verbatim
 ------------------------------------------------------------------------------
-itpp-3.99.0 library configuration:
+stdair-99.99.99 library configuration:
 ------------------------------------------------------------------------------
 
 Directories:
-  - prefix ......... : /usr/local
-  - exec_prefix .... : ${prefix}
-  - includedir ..... : ${prefix}/include
-  - libdir ......... : ${exec_prefix}/lib
-  - docdir ......... : ${prefix}/share/doc/itpp-3.99.0
+  - prefix ............ : /home/dan/dev/deliveries/stdair-99.99.99
+  - exec_prefix ....... : ${prefix}
+  - includedir ........ : ${prefix}/include
+  - libdir ............ : ${exec_prefix}/lib
+  - docdir ............ : ${datarootdir}/doc/stdair-99.99.99
+  - mandir ............ : ${datarootdir}/man
+  - infodir ........... : ${datarootdir}/info
 
 Switches:
-  - debug .......... : no
-  - exceptions ..... : no
-  - html-doc ....... : yes
-  - shared ......... : yes
-  - static ......... : no
+  - exceptions ........ : yes
+  - use-nls ........... : 
+  - info-doc .......... : yes
+  - html-doc .......... : yes
+  - shared ............ : yes
+  - static ............ : no
 
 Documentation tools:
-  - doxygen ........ : yes
-  - latex .......... : yes
-  - dvips .......... : yes
-  - ghostscript .... : yes
+  - texinfo ........... : 
+  - doxygen ........... : yes
+  - latex ............. : yes
+  - dvips ............. : yes
+  - ghostscript ....... : yes
 
 Testing tools:
-  - diff ........... : yes
-  - sed ............ : yes
-
-Optional modules:
-  - comm ........... : yes
-  - fixed .......... : yes
-  - optim .......... : yes
-  - protocol ....... : yes
-  - signal ......... : yes
-  - srccode ........ : yes
-
-External libs:
-  - BLAS ........... : yes
-    * MKL .......... : no
-    * ACML ......... : no
-    * ATLAS ........ : yes
-  - CBLAS .......... : yes
-  - LAPACK ......... : yes
-  - FFT ............ : yes
-    * MKL .......... : no
-    * ACML ......... : no
-    * FFTW ......... : yes
+  - diff .............. : yes
+  - sed ............... : yes
 
 Compiler/linker flags/libs/defs:
-  - CXX ............ : g++
-  - F77 ............ : gfortran
-  - CXXFLAGS ....... : -DASSERT_LEVEL=1 -O3 -fno-exceptions -pipe
-  - CXXFLAGS_DEBUG . : 
-  - CPPFLAGS ....... : 
-  - LDFLAGS ........ : 
-  - LIBS ........... : -lfftw3 -llapack -lcblas -lblas -lgfortran
+  - CXX ............... : g++
+  - CFLAGS ............ : -g -Wall
+  - CXXFLAGS .......... : -g -Wall
+  - CPPFLAGS .......... : 
+  - FFLAGS ............ : 
+  - LDFLAGS ........... : 
+  - LIBS .............. : 
+
+External libraries:
+  - Boost ............. :
+    o BOOST_VERSION ... : 1_41
+    o BOOST_CFLAGS .... : -pthread -I/usr/include
+    o BOOST_LIBS ...... : -L/usr/lib64
+    o BOOST_DT_LIB .... : -lboost_date_time
+    o BOOST_PO_LIB .... : -lboost_program_options
+    o BOOST_FS_LIB .... : -lboost_filesystem
+
+  - MySQL ............. :
+    o MYSQL_version ... : 5.1.47
+    o MYSQL_CFLAGS .... : -I/usr/include/mysql
+    o MYSQL_LIBS ...... : -L/usr/lib64/mysql -lmysqlclient
+
+  - SOCI .............. :
+    o SOCI_version .... : 3.0.0
+    o SOCI_CFLAGS ..... : -DSOCI_HEADERS_BURIED -DSOCI_MYSQL_HEADERS_BURIED -I/usr/include/mysql 
+    o SOCI_LIBS ....... : -L/usr/lib64/mysql -lmysqlclient  -lsoci_core -lsoci_mysql -ldl
+
+  - ExtraCC ........... :
+    o EXTRACC_VERSION . : 
+    o EXTRACC_CFLAGS .. : 
+    o EXTRACC_LIBS .... : 
+
+  - CPPUNIT ........... :
+    o CPPUNIT_VERSION . : 1.12.1
+    o CPPUNIT_CFLAGS .. : 
+    o CPPUNIT_LIBS .... : -lcppunit -ldl
 
 ------------------------------------------------------------------------------
-Now type 'make && make install' to build and install itpp-3.99.0 library
+Now type 'make && make install' to build and install stdair-99.99.99 library
 ------------------------------------------------------------------------------
 
 \endverbatim
-
-Now, it is time for compiling and linking the IT++ library. To do so,
-please simply run the following command:
-
-\verbatim
-% make
-\endverbatim
-
-IT++ should compile without any errors or warnings. If this is not the
-case, please submit a bug-report on the IT++ project page at SourceForge.
-Please include information about your OS, compiler version, external
-libraries and their versions, etc.
 
 It is recommended that you check if your library has been compiled and
 linked properly and works as expected. To do so, you should execute the
-testing process:
-
+testing process \c `make check'. As a result, you should obtain a similar
+report:
 \verbatim
-% make check
-\endverbatim
-
-As a result, you should obtain a similar report:
-
-\verbatim
-------------------------------------------------------------------------------
-Test `array_test' PASSED.
-------------------------------------------------------------------------------
-Test `bessel_test' PASSED.
-------------------------------------------------------------------------------
 
 [...]
 
-------------------------------------------------------------------------------
-Test `window_test' PASSED.
-------------------------------------------------------------------------------
-Test `histogram_test' PASSED.
-------------------------------------------------------------------------------
-Test `stat_test' PASSED.
-------------------------------------------------------------------------------
+make[4]: Entering directory `/home/dan/dev/sim/stdairsvn/trunk/stdair/test/stdair'
+PASS: mpled_bom
+StandardAirlineITTestSuite::testStandardAirlineIT. : OK
+OK (1 tests)
+PASS: StandardAirlineITTestSuite
+==================
+All 2 tests passed
+==================
+make[4]: Leaving directory `/home/dan/dev/sim/stdairsvn/trunk/stdair/test/stdair'
+
+[...]
+
+==================
+All 0 tests passed
+==================
+make[3]: Leaving directory `/home/dan/dev/sim/stdairsvn/trunk/stdair/test'
+make[2]: Leaving directory `/home/dan/dev/sim/stdairsvn/trunk/stdair/test'
+make[1]: Leaving directory `/home/dan/dev/sim/stdairsvn/trunk/stdair/test'
+make[1]: Entering directory `/home/dan/dev/sim/stdairsvn/trunk/stdair'
+make[1]: Nothing to be done for `check-am'.
+make[1]: Leaving directory `/home/dan/dev/sim/stdairsvn/trunk/stdair'
+
 \endverbatim
 
 Check if all the executed tests PASSED. If not, please contact us by filling
-a bug-report.
+a <a href="https://sourceforge.net/apps/trac/stdair/newticket">bug-report</a>.
 
 Finally, you should install the compiled and linked library, include files
-and (optionally) HTML documentation by typing:
+and (optionally) HTML and PDF documentation by typing:
 
 \verbatim
 % make install
@@ -347,251 +528,15 @@ the root (administrator) access to perform this step.
 Eventually, you might invoke the following command
 
 \verbatim
-% make clean
+make clean
 \endverbatim
 
 to remove all files created during compilation process, or even
 
 \verbatim
-% make distclean
+make distclean
 \endverbatim
 
 to remove all files generated by the \c `configure' script.
-
-
-\section macosx Instructions for IT++ Configuration on MacOS X
-
-To compile and use IT++ under Mac OS X, you should install the latest
-version of Apple's developer tools. The tools are delivered with MacOS X,
-but you may need to unpack them. The configuration procedure is similar to
-the one described above.
-
-There is one known problem with configuration on MacOS X. Here is the error
-message that might occur:
-
-\verbatim
-checking for Fortran libraries of g77... -lcrt2.o -L/sw/lib/gcc/powerpc-apple-da
-rwin8.4.0/3.4.3 -L/sw/lib/gcc/powerpc-apple-darwin8.4.0/3.4.3/../../.. -lm -lfrt
-begin -lg2c -lSystemStubs -lSystem -lmx /usr/lib/gcc/powerpc-apple-darwin8/4.0.1
-/libgcc.a 
-checking for dummy main to link with Fortran libraries... unknown 
-configure: error: linking to Fortran libraries from C fails 
-See `config.log' for more details. 
-\endverbatim
-
-We have found out that this error is caused by a possible bug in an autoconf
-macro, which is responsible for setting FLIBS used for linking with fortran
-libraries. The problem is with "-lcrt2.o", which shouldn't be there.
-
-The known solution is to set FLIBS by hand, e.g.:
-
-\verbatim
-% FLIBS="-L/sw/lib -lg2c" ./configure 
-\endverbatim
-
-or if it does not work, use the FLIBS detected by the autoconf omitting "-lcrt2.o":
-
-\verbatim
-% FLIBS="-L/sw/lib/gcc/powerpc-apple-darwin8.4.0/3.4.3 -L/sw/lib -lm -lfrtbegin 
--lg2c -lSystemStubs -lSystem -lmx /usr/lib/gcc/powerpc-apple-darwin8/4.0.1/libg
-cc.a"
-% ./configure 
-\endverbatim
-
-BLAS and LAPACK support can be obtained with the \c vecLib framework, but
-you must then use Apple's GCC compiler. Hence, only FFTW is then needed to
-be installed externally.
-
-
-\section localinst How To Set Up a Local, Dual-config IT++ Installation without Being Root
-
-This section presents a walkthrough of how to easily set up an IT++
-environment without being root (all files are installed locally). The
-installation results in two parallel versions of the IT++ library, one
-version with debugging features enabled (this is slow in general but
-can be valuable during the development phase) and one version which is
-complied with maximum optimization. When compiling executables, one
-can then easily generate two versions of a program: one for debugging
-and one for maximum runtime efficiency. See the Makefile below for an
-example.
-
-The philosophy behind this installation is:
-- to locally compile and install all required external libraries (lapack,
-  cblas, blas and fftw) from sources; this is because not all systems
-  provide these libraries as ready to use binaries
-- to install two parallel IT++ libraries: one optimized and one for
-  debugging
-- to use static linking only (this gives larger executables but is sometimes
-  useful for debugging purposes)
-
-The source code will reside in the directories itpp-external-2.3.0 and
-itpp-3.10.5. The libraries will be created in the directories
-it++external-2.3.0 and it++3.10.5.
-
-The installation procedure goes as follows (\c $HOME can be replaced by any
-directory where you have write access):
-<ol>
-<li> Download itpp-external-2.3.0.tar.gz and itpp-3.10.5.tar.gz. Save
-them in your \c $HOME directory, and unpack them:
-\verbatim
-% cd $HOME
-% tar xzf itpp-external-2.3.0.tar.gz
-% tar xzf itpp-3.10.5.tar.gz
-\endverbatim
-</li>
-
-<li> Compile and install the external libs
-\verbatim
-% cd $HOME/itpp-external-2.3.0
-% make distclean
-% ./configure --prefix=$HOME/it++external-2.3.0 --disable-shared [--enable-atlas]
-% make && make install
-\endverbatim
-</li>
-
-<li> Compile and install the optimized and debugging IT++ libraries:
-\verbatim
-% export LDFLAGS=-L$HOME/it++external-2.3.0/lib
-% export CPPFLAGS=-I$HOME/it++external-2.3.0/include
-% cd $HOME/itpp-3.10.5
-% make distclean
-% ./configure --disable-shared --enable-static --enable-debug --prefix=$HOME/it++3.10.5
-% make && make install
-% make check
-\endverbatim
-</li>
-
-<li> Check that all tests resulted in "PASSED" </li>
-
-<li> Go to a temporary directory, and create the following program \c
-example.cpp:
-\code
-#include <itpp/itbase.h>
-using namespace itpp;
-using namespace std;
-
-int main()
-{
-  for (int i = 0; i < 10; i++) {
-    mat X = randn(500, 500);
-    mat Z = chol(X * X.transpose());
-    cout << Z(0, 0) << endl;
-  }
-
-  for (int i = 0; i < 10; i++) {
-    cvec a = fft(to_cvec(randn(10000)));
-    cout << a(5) << endl;
-  }
-
-  it_assert0(1==0,"Debugging was on!");
-}
-\endcode
-
-Also, in the same directory, create the following \c Makefile:
-\verbatim
-FLAGS_DEBUG = `$(HOME)/it++3.10.5/bin/itpp-config --cflags-debug`
-FLAGS_OPT   = `$(HOME)/it++3.10.5/bin/itpp-config --cflags-opt`
-
-LIBS_DEBUG  = `$(HOME)/it++3.10.5/bin/itpp-config --libs-debug`
-LIBS_OPT    = `$(HOME)/it++3.10.5/bin/itpp-config --libs-opt`
-
-example: example.cpp
-	g++ $(FLAGS_DEBUG) example.cpp -o example_debug  $(LIBS_DEBUG)
-	g++ $(FLAGS_OPT) example.cpp -o example_opt  $(LIBS_OPT)
-\endverbatim
-
-This \c Makefile produces two programs: \c example_opt and \c example_debug.
-The former is optimized for performance but offers no debugging or
-assertions. The latter includes debugging info and is compiled with all
-assertions enabled (this generally gives "safe" but slow code).
-
-Run \c make and try the programs \c example_opt and \c example_debug. If
-this works the library is ready to use. (The program \c example_debug should
-exit with an assertion error.) </li>
-
-<li> If you want to conserve disk space, clean up all temporary files:
-\verbatim
-% cd $HOME/itpp-external-2.3.0
-% make distclean
-% cd $HOME/itpp-3.10.5
-% make distclean
-\endverbatim
-
-To conserve even more diskspace (remove all sources) then do
-\verbatim
-% rm -rf $HOME/itpp-external-2.3.0
-% rm -rf $HOME/itpp-3.10.5
-\endverbatim
-</li>
-</ol>
-
-Note: the \c make \c distclean commands in some steps may result in an error
-message; just ignore this. But the command is recommended because it
-guarantees that you start with a clean directory, in the event you would
-repeat the installation procedure.
-
-
-\section msvc IT++ Compilation and Installation using Microsoft Visual C++ .NET and Intel MKL
-
-It is possible to compile and link the IT++ library using the 
-<a href="http://msdn.microsoft.com/visualc/">Microsoft Visual C++ .NET</a>
-compiler and
-<a href="http://www.intel.com/cd/software/products/asmo-na/eng/perflib/mkl/">Intel
-Math Kernel Library (MKL)</a>.
-
-First of all you need to install the MKL libraries into your system. This
-documentation assumes that you have already downloaded an installer with
-Intel MKL 8.1 for Windows. Please follow the default steps of the MKL
-installer, which should install files into 
-<tt>"C:\Program Files\Intel\MKL\8.1"</tt> location on your disk. During the
-installation procedure, the MKL installer ask if PATH, LIB and INCLUDE
-environment variables should be set appropriately. Check this option, since
-this step is required for for Windows to find the MKL dll files. After
-waiting a few dozens of seconds you should have the MKL libraries installed
-on your computer.
-
-The next step is to compile and link the IT++ library. Assuming that you
-have already downloaded and unpacked the IT++ package, you should find a
-MSVC++ .NET project file <tt>itpp.vcproj</tt> in the <tt>win32</tt>
-sub-directory. Open this project file in the MSVC++ .NET environment. There
-are two default targets prepared for compilation and linking: <tt>Debug</tt>
-and <tt>Release</tt>. The former can be used to compile a non-optimised
-version of the library for debugging purposes, named
-<tt>itpp_debug.lib</tt>, whereas the latter one should produce an optimised
-library named <tt>itpp.lib</tt>. Both libraries are static ones and they
-should be created in <tt>win32/libs</tt> sub-directory.
-
-Finally, you can start using the IT++ library with your own programs and
-link them with IT++ and MKL. Observe that several things need to be
-correctly set up:
-- The IT++ include directory must be defined. Settings for this can be found
-in the menu <tt>"Tools -&gt; Options -&gt; Projects and Solutions -&gt; VC++
-Directories -&gt; Include files"</tt>. Add a path to 
-<tt>"<IT++ source directory>"</tt>, e.g. <tt>"C:\itpp-3.10.4"</tt>.
-- The IT++ library directory must be defined. Settings for this can be found
-in the menu <tt>"Tools -&gt; Options -&gt; Projects and Solutions -&gt; VC++
-Directories -&gt; Library files"</tt>. Add a path to 
-<tt>"<IT++ source directory>\win32\libs"</tt>, e.g.
-<tt>"C:\itpp-3.10.4\win32\libs"</tt>.
-- The MKL library directory must be defined. Add another library path with
-<tt>"C:\Program Files\Intel\MKL\8.1\ia32\lib"</tt>.
-- Linking with IT++ and MKL must be set up. Do this by marking your project
-and go to the menu <tt>"Project -&gt; Properties -&gt; Configuration
-Properties -&gt; Linker -&gt; Input -&gt; Additional Dependencies"</tt>.
-There you need to add <tt>itpp_debug.lib</tt> or <tt>itpp.lib</tt> depending
-on whether Debug or Release mode are being used. Furthermore, you need to
-add <tt>mkl_c_dll.lib</tt>.
-- The runtime library for linking needs to be set to <tt>Multi-threaded
-Debug</tt> or <tt>Multi-threaded</tt>. This option can be set in the menu
-<tt>"Project -&gt; Properties -&gt; Configuration Properties -&gt; C/C++
--&gt; Code Generation -&gt; Runtime Library"</tt>.
-- Two additional definitions: <tt>_CRT_SECURE_NO_DEPRECATE</tt> and
-<tt>_CRT_NONSTDC_NO_DEPRECATE</tt>, which disable warnings on C Standard
-Library and POSIX-compilant function names, might be also added in
-<tt>"Project -&gt; Properties -&gt; Configuration Properties -&gt; C/C++
--&gt; Preprocessor -&gt; Preprocessor Definitions"</tt>.
-
-Please note that Project settings for your program must be made for both the
-Debug and Release modes.
 
 */
