@@ -1,0 +1,180 @@
+<!-- 
+The following tags are permitted: a, b, blockquote, br, code, dd, div,
+dl, dt, em, hr, i, li, ol, p, pre, strong, tt, ul, u. All other tags will be
+stripped. All tags aside from the following must be closed: br, hr, li, p.
+Failure to close tags may result in HTML output which is not rendered
+properly. Any style attributes or on* attributes (such as mouseover) will be
+stripped. JavaScript will result in the total stripping of HTML tags from
+your input. Please limit your input to properly formed HTML snippets
+conforming to the above rules. 
+-->
+
+<h2> How to release a new version of StdAir </h2>
+
+
+<p> This document describes briefly the recommended procedure of releasing a
+  new version of StdAir using a Linux development machine and the SourceForge
+  project site. </p>
+
+<p> The following steps are required to make a release of the distribution
+  package: </p>
+
+<ul>
+
+<li> Initialisation: check out locally the full Subversion project:<br>
+  <code>
+	cd ~<br>
+	mkdir -p dev<br>
+	cd ~/dev<br>
+	svn co <a href="https://stdair.svn.sourceforge.net/svnroot/stdair">https://stdair.svn.sourceforge.net/svnroot/stdair</a> stdairsvn
+  </code>
+</li>
+
+<li> Prepare the branch for its creation on the Subversion repository:<br>
+  <code>
+	cd ~/dev<br>
+	cd stdairsvn/branches/stdair<br>
+	mkdir 0.1.0<br>
+	svn add 0.1.0<br>
+	svn ci -m "[Branch 0.1.0] Prepared the branch 0.1.0 to be copied from head 
+	of the trunk."
+  </code>
+</li>
+
+<li> Check to which Subversion revision the release corresponds to. For instance
+  the <a href="http://sourceforge.net/apps/trac/stdair/changeset/220/">StdAir
+	release 0.1.0 corresponds to Subversion revision r218</a>.
+  The trunk <tt>configure.ac</tt> file specifies a fake release number, namely
+  99.99.99,
+  for current (head) development. When a release is made, two Subversion 
+  revisions are committed with, as the sole change, the release number within
+  the <tt>configure.ac</tt> file. One revision is committed with the
+  to-be-released version number (e.g., 0.1.0) and commit message prefixed with
+  "[Release x.y.z]", and another one with the release number back to 
+  99.99.99 and message stating "[Release] Back to working version (99.99.99)."
+  That way, it is then easy to spot the starting point of any release within
+  the Subversion repository, with something like:<br>
+  <code>cd ~/dev<br>
+	cd stdairsvn/trunk/stdair<br>
+	svn log configure.ac | less</code>
+</li>
+
+<li> Create a release branch by copying the source tree to be released
+  into the dedicated 
+  <a href="https://sourceforge.net/apps/trac/stdair/browser/branches/stdair">'branches' sub-directory of the Subversion repository</a>, e.g.:<br>
+  <code>
+	svn copy -<a href="http://sourceforge.net/apps/trac/stdair/changeset/218">r218</a> \<br>
+	<a href="https://stdair.svn.sourceforge.net/svnroot/stdair/trunk/stdair">https://stdair.svn.sourceforge.net/svnroot/stdair/trunk/stdair</a> \<br>
+	<a href="https://stdair.svn.sourceforge.net/svnroot/stdair/branches/stdair/0.1.0/main">https://stdair.svn.sourceforge.net/svnroot/stdair/branches/stdair/0.1.0/main</a> \<br>
+	-m "[Release] Created the main 0.1.0 release branch, from revision
+	<a href="http://sourceforge.net/apps/trac/stdair/changeset/218">r218</a>."<br>
+  </code>
+  # Check the results:<br>
+  <code>
+	firefox -new-tab "<a href="http://sourceforge.net/apps/trac/stdair/browser/branches/stdair/0.1.0/main">http://sourceforge.net/apps/trac/stdair/browser/branches/stdair/0.1.0/main</a>"
+  </code>
+</li>
+
+<li> Check-out the release StdAir sources from the branch, so that patches
+may be made (for instance, on the RPM specification file):<br>
+  <code>
+	cd ~/dev<br>
+	cd stdairsvn/branches/stdair/0.1.0<br>
+	svn up<br>
+	cd main
+  </code>
+</li>
+
+<li> <b>Only if needed</b>, alter a few files on the branch.<br>
+<b>Note that the release branch is not the place where to develop for a 
+release.</b>
+The <b>release</b> branch is aimed at keeping track of a release and of all
+the patches having made their way into that branch, so that the software
+can always be generated according to that release.<br>
+Developments for a particular release should be made on the trunk (e.g., by
+adding features not activated by default, but activated the release developers 
+only) or, if really needed, on a dedicated <b>development</b> branch.
+</li>
+
+<li> Create the distribution packages using the following command:<br>
+  <code>
+	cd ~/dev<br>
+	cd stdairsvn/branches/stdair/0.1.0/main<br>
+	./autogen.sh && make distcheck<br>
+  </code>
+  This will configure, compile and check the package. The output packages will
+  be named <tt>stdair-0.1.0.tar.gz</tt> and <tt>stdair-0.1.0.tar.bz2</tt>, for
+  instance.
+</li>
+
+<li> Optionally, generate the RPM package (for instance, for Fedora/RedHat)<br>
+  <code>
+	cd ~/dev<br>
+	cd stdairsvn/branches/stdair/0.1.0/main<br>
+	./autogen.sh && make dist<br>
+  </code>
+  # To perform this step, autoconf, automake and libtool tools have to be
+  available in the system.<br>
+  <code>
+	cp stdair.spec ~/dev/packages/SPECS \<br>
+	&& cp stdair-0.1.0.tar.bz2 ~/dev/packages/SOURCES<br>
+	cd ~/dev/packages/SPECS<br>
+	rpmbuild -ba stdair.spec<br>
+	rpmlint -i ../SPECS/stdair.spec ../SRPMS/stdair-0.1.0-1.fc13.src.rpm \<br>
+	../RPMS/i686/stdair-*<br>
+  </code>
+</li>
+
+<li> Update the <tt>NEWS</tt> and <tt>ChangeLog</tt> files with appropriate
+  information, including what has changed since the previous release. Then
+  commit the changes into the 
+  <a href="https://sourceforge.net/apps/trac/stdair/browser">StdAir's 
+	Subversion (SVN) repository</a>.
+</li>
+
+<li> Create the documentation packages using the following command:<br>
+  <code>make dist-html</code><br>
+  The output documentation packages will be
+  named <tt>stdair-doc-0.1.0.tar.gz</tt>
+  and <tt>stdair-doc-0.1.0.tar.bz2</tt>, for example.
+</li>
+
+<li> Upload the distribution and documentation packages to the SourceForge
+  server. Check
+  <a href="https://sourceforge.net/apps/trac/sourceforge/wiki/Release%20files%20for%20download#SCP">SourceForge help page on uploading software</a>.
+</li>
+
+<li> In order to update the Web site files, either:
+  <ul>
+   <li> <a href="https://sourceforge.net/apps/trac/sourceforge/wiki/Shell%20service#Accessingyourfileswithothertools">synchronise
+		them with rsync and SSH</a>:<br>
+	 <code>
+	   cd ~/dev<br>
+	   cd stdairsvn/branches/stdair/0.1.0/main<br>
+	   rsync -aiv doc/html joe,stdair@web.sourceforge.net:htdocs/<br>
+	 </code>
+	 where <tt>-aiv</tt> options mean:
+	 <ul>
+	   <li> -a: archive/mirror mode; equals -rlptgoD (no -H,-A,-X)</li>
+	   <li> -v: increase verbosity</li>
+	   <li> -i: output a change-summary for all updates</li>
+     </ul>
+   </li>
+   <li> or use the
+	 <a href="https://sourceforge.net/apps/trac/sourceforge/wiki/Shell%20service">SourceForge Shell service</a>.
+   </li>
+  </ul>
+</li>
+
+<li> Do a new post on the
+  <a href="https://sourceforge.net/apps/wordpress/stdair/wp-admin/">SourceForge hosted WordPress blog</a> and update, if necessary,
+  <a href="https://sourceforge.net/apps/trac/stdair/report">Trac tickets</a>.
+</li>
+
+<li> Finally, you should send an announcement to
+  <a href="mailto:stdair-announce@lists.sourceforge.net">stdair-announce@lists.sourceforge.net</a>
+  (see <a href="https://lists.sourceforge.net/lists/listinfo/stdair-announce">https://lists.sourceforge.net/lists/listinfo/stdair-announce</a>
+  for the archives)</p>
+</li>
+</ul>
+

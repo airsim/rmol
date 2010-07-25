@@ -1,3 +1,4 @@
+# stdair/doc/local sub-directory
 include $(top_srcdir)/Makefile.common
 include $(srcdir)/sources.mk
 

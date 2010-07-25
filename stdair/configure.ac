@@ -222,15 +222,13 @@ AC_CONFIG_FILES(
 	stdair/service/Makefile
 	stdair/core/Makefile
 	stdair/batches/Makefile
-        man/Makefile
+	man/Makefile
 	doc/Makefile
 	doc/images/Makefile
 	doc/tutorial/Makefile
 	doc/tutorial/src/Makefile
 	doc/local/Makefile
-	doc/local/index.doc
 	doc/doxygen_html.cfg
-	doc/sourceforge/howto_release_stdair.html
 	extracppunit/Makefile
 	test/Makefile
 	test/samples/Makefile
