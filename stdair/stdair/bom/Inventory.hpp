@@ -1,3 +1,6 @@
+/**
+ * @ingroup BomStructure
+ */
 #ifndef __STDAIR_BOM_INVENTORY_HPP
 #define __STDAIR_BOM_INVENTORY_HPP
 
@@ -18,6 +21,7 @@
 #include <stdair/bom/FlightPeriodTypes.hpp>
 
 namespace stdair {
+
   // Forward declarations
   class BomRoot;
   class FlightDate;
@@ -26,8 +30,10 @@ namespace stdair {
   struct FlightDateKey_T;
   struct FlightPeriodKey_T;
   
-  /** Class representing the actual functional/business content for
-      an airline inventory. */
+  /**
+   * @brief Class representing the actual functional/business content for
+   * an airline inventory.
+   */
   class Inventory : public InventoryContent {
     friend class FacBomContent;
 

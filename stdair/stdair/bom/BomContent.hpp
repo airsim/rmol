@@ -1,3 +1,8 @@
+/**
+ * @defgroup BomContent Content part of the Business Object Model (BOM)
+ * @author Anh Quan Nguyen <quannaus@users.sourceforge.net>
+ * @date 20/01/2010
+ */
 #ifndef __STDAIR_BOM_BOMCONTENT_HPP
 #define __STDAIR_BOM_BOMCONTENT_HPP
 
@@ -7,12 +12,14 @@
 // STL
 #include <iosfwd>
 #include <string>
-// STDAIR
+// StdAir
 #include <stdair/STDAIR_Types.hpp>
 
 namespace stdair {
 
-  /** Base class for the Business Object Model (BOM) layer. */
+  /**
+   * @brief Base class for the Business Object Model (BOM) layer
+   */
   class BomContent {
     friend class FacBomContent;
   public:

@@ -1,3 +1,8 @@
+/**
+ * @defgroup BomStructure Structure part of the Business Object Model (BOM)
+ * @author Anh Quan Nguyen <quannaus@users.sourceforge.net>
+ * @date 20/01/2010
+ */
 #ifndef __STDAIR_BOM_BOMSTRUCTURE_HPP
 #define __STDAIR_BOM_BOMSTRUCTURE_HPP
 
@@ -12,7 +17,9 @@
 
 namespace stdair {
 
-  /** Base class for the Business Object Model (BOM) tree structure. */
+  /**
+   * @brief Base class for the Business Object Model (BOM) tree structure.
+   */
   class BomStructure {
     friend class FacBomStructure;
     friend class FacBomContent;

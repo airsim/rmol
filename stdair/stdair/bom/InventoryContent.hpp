@@ -1,18 +1,24 @@
+/**
+ * @ingroup BomContent
+ */
 #ifndef __STDAIR_BOM_INVENTORYCONTENT_HPP
 #define __STDAIR_BOM_INVENTORYCONTENT_HPP
 
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
-// STDAIR
+// StdAir
 #include <stdair/bom/BomContent.hpp>
 #include <stdair/bom/InventoryKey.hpp>
 
 namespace stdair {
 
-  /** Class representing the actual attributes for an airline inventory. */
+  /**
+   * @brief Class representing the actual attributes for an airline inventory
+   */
   class InventoryContent : public BomContent {
   public :
+    
     // Type definitions
     /** Definition allowing to retrieve the associated BOM key type. */
     typedef InventoryKey_T Key_T;
