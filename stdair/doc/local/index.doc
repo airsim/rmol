@@ -55,8 +55,9 @@
 \section about About StdAir
 
 StdAir is a C++ library of classes and functions modeling typical
-airline IT business objects. For instance, it is used by the Airline
-Schedule C++ library project (http://www.sourceforge.net/projects/air-sched).
+airline IT business objects. For instance, it is used by the C++
+Revenue Management Open Library project
+(http://sourceforge.net/projects/rmol/).
 
 StdAir makes an extensive use of existing open-source libraries for
 increased functionality, speed and accuracy. In particular <a
