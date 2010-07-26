@@ -1,5 +1,5 @@
 /*!
-\page authors StdAir People
+\page authors People
 
 
 \section admins Project Admins
@@ -25,7 +25,9 @@
 
 \section distributors Distribution Maintainers
 
--  Denis Arnaud <denis_arnaud@users.sourceforge.net> (\ref N)
+- <a href="http://fedoraproject.org">Fedora</a>/<a href="http://www.redhat.com">RedHat</a>:
+  Denis Arnaud <denis_arnaud@users.sourceforge.net> (\ref N)
+- <a href="http://www.debian.org">Debian</a>: Emmanuel Bastien <ebastien@users.sourceforge.net> (\ref N)
 
 \note
 \anchor N
