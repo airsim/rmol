@@ -11,17 +11,17 @@
 \endhtmlonly
 
 \section getting_started Getting Started
-- <a href="features.html">Features</a>
-- <a href="installation.html">Installation</a>
-- <a href="linking.html">Linking with StdAir</a>
-- <a href="users__guide.html">Short Introduction to StdAir</a>
-- <a href="tutorial.html">Some Tutorial Examples</a>
-- <a href="verification.html">StdAir Verification</a>
-- <a href="copyright.html">Copyright and License</a>
-- <a href="help__wanted.html">Make a Difference</a>
-- <a href="howto__release.html">Make a new release</a>
-- <a href="authors.html">Authors</a>
 
+- \ref features
+- \ref installation
+- \ref linking
+- \ref users_guide
+- \ref tutorial
+- \ref verification
+- \ref copyright
+- \ref help_wanted
+- \ref howto_release
+- \ref authors
 
 \section at_sourceforge StdAir at SourceForge
 - <a href="http://sourceforge.net/projects/stdair/">Project page</a>
@@ -36,9 +36,9 @@
 
 \section development StdAir Development
 - <a href="http://stdair.svn.sourceforge.net/viewvc/stdair/">SVN Repository</a>
-- <a href="codingrules.html">Coding Rules</a>
-- <a href="documentation.html">Documentation Rules</a>
-- <a href="test.html">Test Rules</a>
+- \ref coding_rules
+- \ref documentation
+- \ref test
 
 
 \section external_libs External Libraries
