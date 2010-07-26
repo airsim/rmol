@@ -1,9 +1,9 @@
 #
-%define mydocs __tmp_docdir
+%global mydocs __tmp_docdir
 #
-Name:           @PACKAGE@
-Version:        @VERSION@
-Release:        @RPM_RELEASE@%{?dist}
+Name:           stdair
+Version:        99.99.99
+Release:        1%{?dist}
 
 Summary:        C++ Standard Airline IT Object Library
 
@@ -11,14 +11,14 @@ Group:          System Environment/Libraries
 License:        LGPLv2
 URL:            http://sourceforge.net/projects/%{name}/
 Source0:        http://downloads.sourceforge.net/%{name}/%{name}-%{version}.tar.bz2
-BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+%{?el5:BuildRoot: %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)}
 
 BuildRequires:  boost-devel
 BuildRequires:  cppunit-devel
 #Requires:       
 
 %description
-@PACKAGE_NAME@ aims at providing a clean API, and the corresponding C++
+%{name} aims at providing a clean API, and the corresponding C++
 implementation, for the basis of Airline IT Business Object Model (BOM),
 that is, to be used by several other Open Source projects, such as RMOL, 
 Air-Sched, Travel-CCM, OpenTREP, etc.
@@ -40,7 +40,7 @@ development documentation for %{name}. If you would like to develop
 programs using %{name}, you will need to install %{name}-devel.
 
 %package doc
-Summary:        HTML documentation for the @PACKAGE_NAME@ library
+Summary:        HTML documentation for the %{name} library
 Group:          Documentation
 %if 0%{?fedora} >= 10
 BuildArch:      noarch
@@ -53,8 +53,8 @@ BuildRequires:  tetex-latex
 BuildRequires:  doxygen, ghostscript
 
 %description doc
-This package contains the documentation in the HTML format of the @PACKAGE_NAME@
-library. The documentation is the same as at the @PACKAGE_NAME@ web page.
+This package contains the documentation in the HTML format of the %{name}
+library. The documentation is the same as at the %{name} web page.
 
 
 %prep
@@ -113,6 +113,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
-* Wed Jul  13 2010 Son Nguyen Kim <nguyenkims@gmail.com> 0.1.0-1
+* Sun Jul 26 2010 Son Nguyen Kim <nguyenkims@gmail.com> 99.99.99-1
+- Upstream update
+
+* Wed Jul 13 2010 Son Nguyen Kim <nguyenkims@gmail.com> 0.1.0-1
 - First RPM release
 

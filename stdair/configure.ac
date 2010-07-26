@@ -210,7 +210,6 @@ AC_CONFIG_FILES(
 	Makefile
 	stdair-config
 	stdair.pc
-	stdair.spec
 	stdair.m4
 	stdair/Makefile
 	stdair/basic/Makefile
