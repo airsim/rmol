@@ -184,16 +184,12 @@ namespace RMOL {
                                 BucketHolder& ioBucketHolder) {
     
     // Create the aggregated class/bucket.
-    FldYieldRange aYieldRange = FldYieldRange::FldYieldRange (0);
-    FldDistributionParameters aDistribParams =
-      FldDistributionParameters::FldDistributionParameters (0,0);
-    Demand& aDemand =
-      FacDemand::instance().create (aDistribParams, aYieldRange);
+    FldYieldRange aYieldRange = FldYieldRange (0);
+    FldDistributionParameters aDistribParams = FldDistributionParameters (0,0);
+    Demand& aDemand = FacDemand::instance().create(aDistribParams, aYieldRange);
     Bucket& aBucket = FacBucket::instance().create (aYieldRange, aDemand);
     
-    Emsr::heuristicOptimisationByEmsrB (iCabinCapacity,
-                                        ioBucketHolder,
-                                        aBucket);
+    Emsr::heuristicOptimisationByEmsrB(iCabinCapacity, ioBucketHolder, aBucket);
   }
 
   // //////////////////////////////////////////////////////////////////////
