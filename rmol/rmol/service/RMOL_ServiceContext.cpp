@@ -119,7 +119,7 @@ namespace RMOL {
     GeneratedDemandVector_T& lDemandVector = *itLastVector;
     lDemandVector.reserve (K);
     const FldDistributionParameters aDistributionParam =
-      FldDistributionParameters::FldDistributionParameters (iMean, iDeviation);
+      FldDistributionParameters (iMean, iDeviation);
     const Gaussian gaussianDemandGenerator (aDistributionParam);
 
     // Generate K numbers
