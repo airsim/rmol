@@ -1,52 +1,39 @@
+// //////////////////////////////////////////////////////////////////////
+// Import section
+// //////////////////////////////////////////////////////////////////////
 // STL
 #include <iostream>
 #include <string>
 // CPPUNIT
 #include <extracppunit/CppUnitCore.hpp>
-// STDAIR
-//#include <stdair/STDAIR_Service.hpp>
-// STDAIR Test Suite
+// StdAir Test Suite
+#include <test/stdair/StdairTestLib.hpp>
 #include <test/stdair/StandardAirlineITTestSuite.hpp>
 
 // //////////////////////////////////////////////////////////////////////
-void testStandardAirlineITHelper() {
-
-  try {
-    
-    // Output log File
-    const std::string lLogFilename ("StandardAirlineITTestSuite.log");
-    
-    // Set the log parameters
-    std::ofstream logOutputFile;
-
-    // Open and clean the log outputfile
-    logOutputFile.open (lLogFilename.c_str());
-    logOutputFile.clear();
-    
-    // Initialise the stdair BOM
-    // STDAIR::STDAIR_Service stdairService (logOutputFile);
-    
-  } catch (const std::exception& stde) {
-    std::cerr << "Standard exception: " << stde.what() << std::endl;
-    
-  } catch (...) {
-    std::cerr << "Unknown exception" << std::endl;
-  }
+void StandardAirlineITTestSuite::testServiceInitialisation() {
+  CPPUNIT_ASSERT_NO_THROW ( StdairTestLib::testServiceInitialisation(); );
 }
 
 // //////////////////////////////////////////////////////////////////////
-void StandardAirlineITTestSuite::testStandardAirlineIT() {
-  CPPUNIT_ASSERT_NO_THROW (testStandardAirlineITHelper(););
+void StandardAirlineITTestSuite::testMPLStructure() {
+  CPPUNIT_ASSERT_NO_THROW ( StdairTestLib::testMPLStructure(); );
 }
 
 // //////////////////////////////////////////////////////////////////////
-// void StandardAirlineITTestSuite::errorCase () {
-//  CPPUNIT_ASSERT (false);
-// }
+void StandardAirlineITTestSuite::testBomStructureInstantiation() {
+  CPPUNIT_ASSERT_NO_THROW ( StdairTestLib::testBomStructureInstantiation(); );
+}
+
+// //////////////////////////////////////////////////////////////////////
+void StandardAirlineITTestSuite::testErrorCase () {
+  const bool shouldBeFalse = StdairTestLib::testErrorCase();
+  CPPUNIT_ASSERT ( shouldBeFalse );
+}
 
 // //////////////////////////////////////////////////////////////////////
 StandardAirlineITTestSuite::StandardAirlineITTestSuite () {
-  _describeKey << "Running test on STDAIR Optimisation function";  
+  _describeKey << "Running test on StdAir initialisation";  
 }
 
 // /////////////// M A I N /////////////////

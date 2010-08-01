@@ -28,6 +28,7 @@ html-local: html/index.html
 html/index.html: doxygen_html.cfg \
 	$(doc_local_sources) $(html_local_sources) \
 	$(doc_tutorial_sources) $(cpp_tutorial_sources) \
+	$(stdair_test_lib_h_sources) $(stdair_test_lib_cc_sources) \
 	$(stdair_service_h_sources) $(stdair_service_cc_sources) \
 	$(stdair_bas_h_sources) $(stdair_bas_cc_sources) \
 	$(stdair_bom_h_sources) $(stdair_bom_cc_sources) \

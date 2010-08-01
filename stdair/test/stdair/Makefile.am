@@ -1,5 +1,6 @@
 ## test/stdair sub-directory
 include $(top_srcdir)/Makefile.common
+include $(srcdir)/sources.mk
 
 MAINTAINERCLEANFILES = Makefile.in
 
@@ -9,14 +10,21 @@ SUBDIRS =
 EXTRA_DIST =
 ##
 
-check_PROGRAMS = mpled_bom StandardAirlineITTestSuite
-TESTS = $(check_PROGRAMS)
-XFAIL_TESTS = #IndexBuildingTestSuite
+##
+# Test library
+noinst_LTLIBRARIES = libstdairtest.la
 
-#
-mpled_bom_SOURCES = mpled_bom.cpp
-mpled_bom_CXXFLAGS = $(BOOST_CFLAGS)
-mpled_bom_LDADD = $(BOOST_LIB)
+libstdairtest_la_SOURCES = $(stdair_test_lib_h_sources) \
+	$(stdair_test_lib_cc_sources)
+libstdairtest_la_CXXFLAGS =
+libstdairtest_la_LDFLAGS = $(top_builddir)/stdair/core/libstdair.la
+
+
+##
+# Test binaries
+check_PROGRAMS = StandardAirlineITTestSuite
+TESTS = $(check_PROGRAMS)
+XFAIL_TESTS = #FailingTestSuite
 
 #
 StandardAirlineITTestSuite_SOURCES = StandardAirlineITTestSuite.hpp \
@@ -25,5 +33,5 @@ StandardAirlineITTestSuite_CXXFLAGS= $(BOOST_CFLAGS) $(CPPUNIT_CFLAGS)
 StandardAirlineITTestSuite_LDADD = 
 StandardAirlineITTestSuite_LDFLAGS = $(BOOST_LIBS) $(CPPUNIT_LIBS) \
 	$(top_builddir)/extracppunit/libextracppunit.la \
+	$(top_builddir)/test/stdair/libstdairtest.la \
 	$(top_builddir)/stdair/core/libstdair.la
-
