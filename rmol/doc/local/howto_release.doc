@@ -77,16 +77,16 @@ Create a release branch by copying the
    tree</a> to be released, from the found revision (e.g., 
 <a href="http://sourceforge.net/apps/trac/rmol/changeset/233">r233</a>)
 into the dedicated 
-<a href="https://rmol.svn.sourceforge.net/svnroot/rmol/branches/rmol/0.2.0">'branches' sub-directory of the Subversion repository</a>, e.g.:
+<a href="https://rmol.svn.sourceforge.net/svnroot/rmol/branches/rmol/0.23.0">'branches' sub-directory of the Subversion repository</a>, e.g.:
 \verbatim 
 svn copy -r233 \
  https://rmol.svn.sourceforge.net/svnroot/rmol/trunk/rmol \
- https://rmol.svn.sourceforge.net/svnroot/rmol/branches/rmol/0.2.0/main \
- -m "[Release] Created the main 0.2.0 release branch, from revision r233."
+ https://rmol.svn.sourceforge.net/svnroot/rmol/branches/rmol/0.23.0/main \
+ -m "[Release] Created the main 0.23.0 release branch, from revision r233."
 \endverbatim 
 
 Check the results:<br>
-\c firefox -new-tab \"<a href="http://sourceforge.net/apps/trac/rmol/browser/branches/rmol/0.2.0/main">http://sourceforge.net/apps/trac/rmol/browser/branches/rmol/0.2.0/main</a>\"
+\c firefox -new-tab \"<a href="http://sourceforge.net/apps/trac/rmol/browser/branches/rmol/0.23.0/main">http://sourceforge.net/apps/trac/rmol/browser/branches/rmol/0.23.0/main</a>\"
 
 
 \section checkout_new_release Check-out the new release
@@ -95,7 +95,7 @@ Check-out the release RMOL sources from the branch, so that patches
 may be made (for instance, on the RPM specification file):
 \verbatim 
 cd ~/dev
-cd rmolsvn/branches/rmol/0.2.0
+cd rmolsvn/branches/rmol/0.23.0
 svn up
 cd main
 \endverbatim 
