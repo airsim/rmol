@@ -126,7 +126,7 @@ STRIP_FROM_PATH        = @top_srcdir@/
 STRIP_FROM_INC_PATH    = @top_srcdir@/
 
 # If the SHORT_NAMES tag is set to YES, doxygen will generate much shorter
-# (but less readable) file names. This can be useful is your file systems
+# (but less readable) file names. This can be useful if your file systems
 # doesn't support long names like on DOS, Mac, or CD-ROM.
 
 SHORT_NAMES            = NO
@@ -576,7 +576,6 @@ WARN_LOGFILE           = doxygen_html.log
 
 INPUT                  = @top_srcdir@/@PACKAGE@ \
                          @top_srcdir@/doc/local \
-                         @top_builddir@/doc/local \
                          @top_srcdir@/doc/tutorial
 
 # This tag can be used to specify the character encoding of the source files
@@ -1353,13 +1352,13 @@ TAGFILES               =
 # When a file name is specified after GENERATE_TAGFILE, doxygen will create
 # a tag file that is based on the input files it reads.
 
-GENERATE_TAGFILE       = doxygen_html.tag
+GENERATE_TAGFILE       = html/doxygen_@PACKAGE@.tag
 
 # If the ALLEXTERNALS tag is set to YES all external classes will be listed
 # in the class index. If set to NO only the inherited external classes
 # will be listed.
 
-ALLEXTERNALS           = NO
+ALLEXTERNALS           = YES
 
 # If the EXTERNAL_GROUPS tag is set to YES all external groups will be listed
 # in the modules index. If set to NO, only the current project's groups will

@@ -21,7 +21,7 @@ let us know.
 - Help us to port StdAir to new platforms. If you manage to compile StdAir on a
 new platform, then tell us how you did it.
 - Send us your code. If you have a good StdAir compatible code, which you can
-release under the GPL, and you think it should be included in StdAir, then
+release under the LGPL, and you think it should be included in StdAir, then
 send it to us.
 - Become an StdAir developer. Send us an e-mail and tell what you can do for
 StdAir.

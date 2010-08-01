@@ -51,11 +51,11 @@ svn ci -m "[Branch 0.2.0] Prepared the branch 0.2.0 to be copied from head of th
 Check to which Subversion revision the release corresponds to. For instance
 the <a href="http://sourceforge.net/apps/trac/stdair/changeset/233/">StdAir
 	release 0.2.0 corresponds to Subversion revision r233</a>.
-The trunk \c configure.ac file specifies a fake release number, namely
+The trunk <tt>configure.ac</tt> file specifies a fake release number, namely
 99.99.99,
 for current (head) development. When a release is made, two Subversion 
 revisions are committed with, as the sole change, the release number within
-the \c configure.ac file:
+the <tt>configure.ac</tt> file:
 - one revision is committed with the to-be-released version number (e.g.,
   0.2.0) and commit message prefixed with "[Release x.y.z]",
 - and another one with the release number back to 99.99.99 and message stating
@@ -127,7 +127,8 @@ cd stdairsvn/branches/stdair/0.2.0/main
 
 
 This will configure, compile and check the package. The output packages will
-be named, for instance, \c stdair-0.2.0.tar.gz and \c stdair-0.2.0.tar.bz2.
+be named, for instance, <tt>stdair-0.2.0.tar.gz</tt> and
+<tt>stdair-0.2.0.tar.bz2</tt>.
 
 
 \section generate_rpm_packages Generation the RPM packages
@@ -164,13 +165,13 @@ commit the changes into the
 \section create_doc_packages Create the documentation packages
 
 Create the documentation packages using the following command:
-\c make dist-html and \c make dist-tex
+<tt>make dist-html</tt> and <tt>make dist-tex</tt>
 
 The output documentation packages will be named, for instance:
-- \c stdair-doc-0.2.0.tar.gz and \c stdair-doc-0.2.0.tar.bz2 for the
-  HTML documentation.
-- \c stdair-pdf-0.2.0.tar.gz and \c stdair-pdf-0.2.0.tar.bz2 for the
-  PDF documentation.
+- <tt>stdair-doc-0.2.0.tar.gz</tt> and <tt>stdair-doc-0.2.0.tar.bz2</tt>
+  for the HTML documentation.
+- <tt>stdair-pdf-0.2.0.tar.gz</tt> and <tt>stdair-pdf-0.2.0.tar.bz2</tt>
+  for the PDF documentation.
 
 
 \section upload_files Upload the files to SourceForge
@@ -187,23 +188,31 @@ In order to update the Web site files, either:
 \verbatim 
 cd ~/dev
 cd stdairsvn/branches/stdair/0.2.0/main
-rsync -aiv doc/html joe,stdair@web.sourceforge.net:htdocs/
+rsync -aiv doc/html/ joe,stdair@web.sourceforge.net:htdocs/
 \endverbatim 
 where \c -aiv options mean:
   - \c -a: archive/mirror mode; equals \c -rlptgoD
     (no \c -H, \c -A, \c -X)
   - \c -v: increase verbosity
   - \c -i: output a change-summary for all updates
+  - Note the trailing slashes (/) at the end of both the source and target 
+    directories. It means that the content of the source directory 
+    (<tt>doc/html</tt>), rather than the directory itself, has to be copied
+    into the content of the target directory.
 - or use the
  <a href="https://sourceforge.net/apps/trac/sourceforge/wiki/Shell%20service">SourceForge Shell service</a>.
 
 
 \section post_news Make a new post
 
-- submit a new entry in the <a href="https://sourceforge.net/news/submit.php?group_id=267760">SourceForge project-related news feed</a>
-- make a new post on the <a href="https://sourceforge.net/apps/wordpress/stdair/wp-admin/">SourceForge hosted WordPress blog</a>
+- submit a new entry in the
+  <a href="https://sourceforge.net/news/submit.php?group_id=267760">SourceForge
+  project-related news feed</a>
+- make a new post on the
+  <a href="https://sourceforge.net/apps/wordpress/stdair/wp-admin/">SourceForge
+  hosted WordPress blog</a>
 - and update, if necessary,
-<a href="https://sourceforge.net/apps/trac/stdair/report">Trac tickets</a>.
+  <a href="https://sourceforge.net/apps/trac/stdair/report">Trac tickets</a>.
 
 
 \section send_announce Send an email on the announcement mailing-list

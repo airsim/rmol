@@ -5,6 +5,7 @@
 - \ref intro
 - \ref pkgconfig
 - \ref stdair_config
+- \ref autotools
 - \ref dynamiclinking
 
 
@@ -53,23 +54,6 @@ you can now do that with the following command:
 g++ `stdair-config --cflags` -o my_prog my_prog.cpp `stdair-config --libs`
 \endcode
 
-If you would like to use the same optimisation flags (\c CXXFLAGS), as those
-used for compiling the StdAir library, you might try the following command:
-
-\code
-g++ `stdair-config --cflags-opt` -o my_prog_opt my_prog.cpp \
- `stdair-config --libs-opt`
-\endcode
-
-Moreover, if you compiled and installed the \c `libstdair_debug.*' library by
-using \c `--enable-debug' swich to configure, you can compile and link your
-program with debugging options using the following command instead:
-
-\code
-g++ `stdair-config --cflags-debug` -o my_prog_debug my_prog.cpp \
- `stdair-config --libs-debug`
-\endcode
-
 A list of \c `stdair-config' options can be obtained by typing:
 
 \code
@@ -82,6 +66,19 @@ its location \c `$prefix/bin' to the \c PATH environment variable, e.g.:
 \code
 export PATH=/usr/local/bin:$PATH
 \endcode
+
+
+\section autotools M4 macro for the GNU Autotools
+
+A M4 macro file is delivered with StdAir, namely `stdair.m4', which
+can be found in, e.g., `/usr/share/aclocal'. When used by a
+`configure' script, thanks to he <tt>`AM_PATH_STDAIR'</tt> macro
+(specified in the M4 macro file), the following Makefile variables are
+then defined:
+- <tt>`STDAIR_VERSION'</tt> (e.g., defined to 0.2.0)
+- <tt>`STDAIR_CFLAGS'</tt> (e.g., defined to <tt>`-I${prefix}/include'</tt>)
+- <tt>`STDAIR_LIBS'</tt> (e.g., defined to <tt>`-L${prefix}/lib -lstdair'</tt>)
+
 
 
 \section dynamiclinking Using StdAir with dynamic linking

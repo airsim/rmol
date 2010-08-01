@@ -17,9 +17,8 @@ docdir = @docdir@
 html_tarname = @PACKAGE_TARNAME@-doc-@PACKAGE_VERSION@
 pdf_tarname = @PACKAGE_TARNAME@-pdf-@PACKAGE_VERSION@
 
-#noinst_DATA = sourceforge/howto_release_stdair.html.in
-#EXTRA_DIST = $(noinst_DATA)
-EXTRA_DIST =
+noinst_DATA =
+EXTRA_DIST = $(noinst_DATA)
 
 # Targets
 all-local: html-local

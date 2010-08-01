@@ -4,9 +4,9 @@
 \section doc_general General Rules
 
 All classes in StdAir should be properly documented with Doxygen
-comments in include (\c `.hpp') files. Source (\c `.cpp') files should be
-documented according to a normal standard for well documented C++
-code.
+comments in include (<tt>.hpp</tt>) files. Source (<tt>.cpp</tt>)
+files should be documented according to a normal standard for well
+documented C++ code.
 
 An example of how the interface of a class shall be documented in StdAir
 is shown here:
@@ -75,11 +75,9 @@ Doxygen's \c \\file, \c \\brief and \c \\author tags, \c \$Date\$ and
  * \file 
  * \brief Brief description of the file here
  * \author Names of the authors who contributed to this code
+ * \date Date
  * 
  * Detailed description of the file here if needed.
- *
- * $Date: 2005-12-13 12:27:39 +0100 (mar, 13 déc 2005) $
- * $Revision: 93 $ 
  *
  * -------------------------------------------------------------------------
  *
@@ -87,19 +85,7 @@ Doxygen's \c \\file, \c \\brief and \c \\author tags, \c \$Date\$ and
  *
  * Copyright (C) 2009-2010  (see AUTHORS file for a list of contributors)
  *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published 
- * by the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
+ * See COPYING file for license information
  *
  * -------------------------------------------------------------------------
  */
@@ -121,8 +107,8 @@ the documentation. The following code example defines the group \c
 \endverbatim
 
 
-The following example shows how to document the function \c
-`myFunction' and how to add it to the group \c `my_group':
+The following example shows how to document the function \c myFunction
+and how to add it to the group \c my_group:
 
 \verbatim
 /*!
