@@ -576,7 +576,8 @@ WARN_LOGFILE           = doxygen_html.log
 
 INPUT                  = @top_srcdir@/@PACKAGE@ \
                          @top_srcdir@/doc/local \
-                         @top_srcdir@/doc/tutorial
+                         @top_srcdir@/doc/tutorial \
+						 @top_srcdir@/test
 
 # This tag can be used to specify the character encoding of the source files
 # that doxygen parses. Internally doxygen uses the UTF-8 encoding, which is
@@ -653,7 +654,7 @@ EXAMPLE_PATTERNS       = *.hpp \
 # commands irrespective of the value of the RECURSIVE tag.
 # Possible values are YES and NO. If left blank NO is used.
 
-EXAMPLE_RECURSIVE      = NO
+EXAMPLE_RECURSIVE      = YES
 
 # The IMAGE_PATH tag can be used to specify one or more files or
 # directories that contain image that are included in the documentation (see
