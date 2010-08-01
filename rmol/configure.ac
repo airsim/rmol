@@ -343,17 +343,16 @@ AC_CONFIG_FILES(
 	Makefile
 	rmol-config
 	rmol.pc
-	rmol.spec
 	rmol.m4
-    	stdair/Makefile
-    	stdair/basic/Makefile
-    	stdair/bom/Makefile
+	stdair/Makefile
+	stdair/basic/Makefile
+	stdair/bom/Makefile
 	stdair/dbadaptor/Makefile
-    	stdair/factory/Makefile
+	stdair/factory/Makefile
 	stdair/command/Makefile
 	stdair/service/Makefile
 	stdair/config/Makefile
-    	stdair/core/Makefile
+	stdair/core/Makefile
 	stdair/batches/Makefile
 	rmol/Makefile
 	rmol/basic/Makefile
@@ -373,9 +372,7 @@ AC_CONFIG_FILES(
 	doc/tutorial/Makefile
 	doc/tutorial/src/Makefile
 	doc/local/Makefile
-	doc/local/index.doc
 	doc/doxygen_html.cfg
-	doc/sourceforge/howto_release_rmol.html
 	po/Makefile.in
 	extracppunit/Makefile
 	test/Makefile
