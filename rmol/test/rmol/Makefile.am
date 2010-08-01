@@ -52,6 +52,4 @@ bomsforforecaster_SOURCES = bomsforforecaster.cpp
 bomsforforecaster_CXXFLAGS= $(BOOST_CFLAGS) $(CPPUNIT_CFLAGS)
 bomsforforecaster_LDADD = 
 bomsforforecaster_LDFLAGS = $(BOOST_LIBS) \
-	$(top_builddir)/rmol/core/librmol.la \
-	$(top_builddir)/rmol/service/libsvc.la
-
+	$(top_builddir)/rmol/core/librmol.la

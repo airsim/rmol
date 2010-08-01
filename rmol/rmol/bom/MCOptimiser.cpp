@@ -295,7 +295,7 @@ namespace RMOL {
     for (short j = 1 ; j <= nbOfClasses - 1; 
 	 ++j, ioBucketHolder.iterate(), ioPSHolderHolder.iterate()) {
       // DEBUG
-      std::cout << "K" << j << " = " << Kj << std::endl;
+      STDAIR_LOG_DEBUG ("K" << j << " = " << Kj);
 
       /** Retrieve Bucket(j) (current) and Bucket(j+1) (next). */
       Bucket& currentBucket = ioBucketHolder.getCurrentBucket();
@@ -538,7 +538,7 @@ namespace RMOL {
     //const int cabinCapacityInt = static_cast<int> (iCabinCapacity);
     for (short j = 1 ; j <= nbOfClasses - 1; ++j, ioBucketHolder.iterate()) {
       // DEBUG
-      std::cout << "K" << j << " = " << Kj << std::endl;
+      STDAIR_LOG_DEBUG ("K" << j << " = " << Kj);
       
       /** Retrieve Bucket(j) (current) and Bucket(j+1) (next). */
       Bucket& currentBucket = ioBucketHolder.getCurrentBucket();
@@ -555,12 +555,12 @@ namespace RMOL {
       const unsigned int lj = Kj - std::floor (Kj * (pj - pj1) / pj);
 
       // DEBUG
-      std::cout << "l" << j << " = " << lj << std::endl;
+      STDAIR_LOG_DEBUG ("l" << j << " = " << lj);
 
       /*
-      std::cout << "p(j+1) = " << pj1 << std::endl
-                << "p(j) = " << pj << std::endl
-                << "Kj = " << Kj << std::endl;
+      STDAIR_LOG_DEBUG ("p(j+1) = " << pj1 << std::endl
+                        << "p(j) = " << pj << std::endl
+                        << "Kj = " << Kj);
       */
       
       /** Consistency check. */
