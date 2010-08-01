@@ -83,9 +83,9 @@ Doxygen's \c \\file, \c \\brief and \c \\author tags, \c \$Date\$ and
  *
  * StdAir - C++ Standard Airline IT Object Library
  *
- * Copyright (C) 2009-2010  (see AUTHORS file for a list of contributors)
+ * Copyright (C) 2009-2010  (/see authors file for a list of contributors)
  *
- * See COPYING file for license information
+ * /see copyright file for license information
  *
  * -------------------------------------------------------------------------
  */
