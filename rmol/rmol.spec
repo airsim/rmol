@@ -1,9 +1,9 @@
 #
 %global mydocs __tmp_docdir
 #
-Name:           @PACKAGE@
-Version:        @VERSION@
-Release:        @RPM_RELEASE@%{?dist}
+Name:           rmol
+Version:        99.99.99
+Release:        1%{?dist}
 
 Summary:        C++ library of Revenue Management and Optimisation classes and functions
 
@@ -16,10 +16,10 @@ Source0:        http://downloads.sourceforge.net/%{name}/%{name}-%{version}.tar.
 BuildRequires:  gsl-devel
 BuildRequires:  boost-devel
 BuildRequires:  cppunit-devel
-#Requires:       
+
 
 %description
-@PACKAGE_NAME@ is a C++ library of Revenue Management and Optimisation classes 
+%{name} is a C++ library of Revenue Management and Optimisation classes 
 and functions. Typically, that library may be used by service providers
 (e.g., airlines offering flight seats, hotels offering rooms, rental car
 companies offering rental days, broadcasting company offering advertisement 
@@ -47,7 +47,7 @@ development documentation for %{name}. If you would like to develop
 programs using %{name}, you will need to install %{name}-devel.
 
 %package doc
-Summary:        HTML documentation for the @PACKAGE_NAME@ library
+Summary:        HTML documentation for the %{name} library
 Group:          Documentation
 %if 0%{?fedora} >= 10
 BuildArch:      noarch
@@ -60,8 +60,8 @@ BuildRequires:  tetex-latex
 BuildRequires:  doxygen, ghostscript
 
 %description doc
-This package contains the documentation in the HTML format of the @PACKAGE_NAME@
-library. The documentation is the same as at the @PACKAGE_NAME@ web page.
+This package contains the documentation in the HTML format of the %{name}
+library. The documentation is the same as at the %{name} web page.
 
 
 %prep
