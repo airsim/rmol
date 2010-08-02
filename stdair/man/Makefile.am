@@ -11,6 +11,8 @@ MAN_SRC = $(MAN_SRC_BASE).$(MAN_SRC_SUFFIX)
 EXTRA_DIST = $(man_MANS) $(MAN_SRC)
 
 #
+all-local: man-local
+
 man-local: doxygen_man.cfg $(MAN_SRC)
 	doxygen $<; \
 	mv -f man3/* . && rmdir man3
