@@ -64,6 +64,9 @@ namespace stdair {
   /** Number of milliseconds in one second */
   const Count_T MILLISECONDS_IN_ONE_SECOND = 1000;
 
+  /** Default random seed. */
+  const RandomSeed_T DEFAULT_RANDOM_SEED = 120765987;
+
 
   // //////// Fare Rules ///////
   /** Default saturdayStay value (false). */

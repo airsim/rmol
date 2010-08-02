@@ -50,5 +50,8 @@ namespace stdair {
 
   /** Default epsilon duration. */
   extern const Duration_T DEFAULT_EPSILON_DURATION;
+
+  /** Default random seed. */
+  extern const RandomSeed_T DEFAULT_RANDOM_SEED;
 }
 #endif // __STDAIR_BAS_BASCONST_GENERAL_HPP
