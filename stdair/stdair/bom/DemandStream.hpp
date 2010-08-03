@@ -64,6 +64,11 @@ namespace stdair {
         at any level). */
     const std::string describeKey() const { return _key.toString(); }
 
+  public:
+    // ////////// Business Methods //////////
+    /** Reset all the contexts of the demand stream. */
+    void reset ();
+    
   protected:
     // ////////// Constructors and destructors /////////
     /** Constructor by default */

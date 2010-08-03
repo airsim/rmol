@@ -26,6 +26,9 @@ namespace stdair {
     /** Increment counter of requests generated so far */
     void incrementGeneratedRequestsCounter ();
 
+    /** Reset the counters. */
+    void reset ();
+
         // ////////// Attributes //////////
     /** Cumulative probability in arrival pattern for last request
         generated so far (needed for sequential generation)*/

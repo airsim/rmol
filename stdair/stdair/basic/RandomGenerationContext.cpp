@@ -29,4 +29,10 @@ namespace stdair {
     ++_numberOfRequestsGeneratedSoFar;
   }
 
+  // //////////////////////////////////////////////////////////////////////
+  void RandomGenerationContext::reset () {
+    _cumulativeProbabilitySoFar = 0.0;
+    _numberOfRequestsGeneratedSoFar = 0;
+  }
+
 }
