@@ -2,20 +2,20 @@
 
 #
 MAN_SRC_SUFFIX = doc
-MAN_TARGET_SUFFIX = 3
+MAN_TARGET_SUFFIX = 1
+MAN_DIR = man$(MAN_TARGET_SUFFIX)
 
-man_MANS = stdair.3 stdair-config.1
-MAN_SRC_BASE = stdair_man
-MAN_SRC = $(MAN_SRC_BASE).$(MAN_SRC_SUFFIX)
+MAN_SRC = stdair.doc stdair-config.doc
+man_MANS = $(MAN_SRC:%.doc=%.$(MAN_TARGET_SUFFIX))
 
-EXTRA_DIST = $(man_MANS) $(MAN_SRC)
+#EXTRA_DIST = $(man_MANS)
 
 #
 all-local: man-local
 
 man-local: doxygen_man.cfg $(MAN_SRC)
-	doxygen $<; \
-	mv -f man3/* . && rmdir man3
+	doxygen $< $(MAN_SRC); \
+	mv -f $(MAN_DIR)/* . && rmdir $(MAN_DIR)
 
 clean-local:
-	rm -f $(MAN_SRC_BASE).$(MAN_TARGET_SUFFIX)
+	rm -f $(man_MANS)
