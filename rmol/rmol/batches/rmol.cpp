@@ -1,6 +1,5 @@
-// C
-#include <assert.h>
 // STL
+#include <cassert>
 #include <iostream>
 #include <sstream>
 #include <fstream>
@@ -9,6 +8,8 @@
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/date_time/gregorian/gregorian.hpp>
 #include <boost/program_options.hpp>
+// StdAir
+#include <stdair/service/Logger.hpp>
 // RMOL
 #include <rmol/RMOL_Service.hpp>
 #include <rmol/config/rmol-paths.hpp>
@@ -17,6 +18,10 @@
 // //////// Constants //////
 /** Default name and location for the log file. */
 const std::string K_RMOL_DEFAULT_LOG_FILENAME ("rmol.log");
+
+/** Default for the input type. It can be either built-in or provided by an
+    input file. That latter must then be given with the -i/--input option. */
+const bool K_RMOL_DEFAULT_BUILT_IN_INPUT = false;
 
 /** Default name and location for the (CSV) input file. */
 const std::string K_RMOL_DEFAULT_INPUT_FILENAME ("../../test/samples/rm01.csv");
@@ -67,9 +72,12 @@ const int K_RMOL_EARLY_RETURN_STATUS = 99;
 int readConfiguration(int argc, char* argv[], 
                       int& ioRandomDraws, double& ioCapacity, 
                       RMOL::SellupProbabilityVector_T& ioSellupProbabilityVector,
-                      short& ioMethod, std::string& ioInputFilename, 
-                      std::string& ioLogFilename) {
+                      short& ioMethod, bool& ioIsBuiltin,
+                      std::string& ioInputFilename, std::string& ioLogFilename){
 
+  // Default for the built-in input
+  ioIsBuiltin = K_RMOL_DEFAULT_BUILT_IN_INPUT;
+  
   // Initialise the sell-up probability vector with default values
   initDefaultValuesForSellupProbabilityVector (ioSellupProbabilityVector);
     
@@ -96,6 +104,8 @@ int readConfiguration(int argc, char* argv[],
     ("method,m",
      boost::program_options::value<short>(&ioMethod)->default_value(K_RMOL_DEFAULT_METHOD), 
      "Revenue Management method to be used (0 = Monte-Carlo, 1 = Dynamic Programming, 2 = EMSR, 3 = EMSR-a, 4 = EMSR-b, 5 = EMSR-a with sell up probability)")
+    ("builtin,b",
+     "The cabin set up can be either built-in or parsed from an input file. That latter must then be given with the -i/--input option")
     ("input,i",
      boost::program_options::value< std::string >(&ioInputFilename)->default_value(K_RMOL_DEFAULT_INPUT_FILENAME),
      "(CVS) input file for the demand distributions")
@@ -149,9 +159,17 @@ int readConfiguration(int argc, char* argv[],
     return K_RMOL_EARLY_RETURN_STATUS;
   }
 
-  if (vm.count ("input")) {
-    ioInputFilename = vm["input"].as< std::string >();
-    std::cout << "Input filename is: " << ioInputFilename << std::endl;
+  if (vm.count ("builtin")) {
+    ioIsBuiltin = true;
+  }
+  const std::string isBuiltinStr = (ioIsBuiltin == true)?"yes":"no";
+  std::cout << "The BOM should be built-in? " << isBuiltinStr << std::endl;
+
+  if (ioIsBuiltin == false) {
+    if (vm.count ("input")) {
+      ioInputFilename = vm["input"].as< std::string >();
+      std::cout << "Input filename is: " << ioInputFilename << std::endl;
+    }
   }
 
   if (vm.count ("log")) {
@@ -195,6 +213,9 @@ int main (int argc, char* argv[]) {
     // 2 = EMSR, 3 = EMSR-a, 4 = EMSR-b, 5 = EMSR-a with sell up probability)
     short lMethod = 0;   
     
+    // Built-in
+    bool isBuiltin;
+    
     // Input file name
     std::string lInputFilename;
 
@@ -204,17 +225,11 @@ int main (int argc, char* argv[]) {
     // Call the command-line option parser
     const int lOptionParserStatus = 
       readConfiguration (argc, argv, lRandomDraws, lCapacity,
-                         lSellupProbabilityVector, lMethod, lInputFilename,
-                         lLogFilename);
+                         lSellupProbabilityVector, lMethod,
+                         isBuiltin, lInputFilename, lLogFilename);
 
     if (lOptionParserStatus == K_RMOL_EARLY_RETURN_STATUS) {
       return 0;
-    }
-
-    // Check wether or not a (CSV) input file should be read
-    bool hasInputFile = false;
-    if (lInputFilename.empty() == false) {
-      hasInputFile = true;
     }
 
     // Set the log parameters
@@ -229,24 +244,32 @@ int main (int argc, char* argv[]) {
     RMOL::RMOL_Service rmolService (lLogParams, lAirlineCode, lCapacity);
     rmolService.setUpStudyStatManager();
     
-    if (hasInputFile) {
-      // Read the input file
-      rmolService.readFromInputFile (lInputFilename);
-      
-    } else {
+    if (isBuiltin == true) {
       // No input file has been provided. So, process a sample.
+
+      // DEBUG
+      STDAIR_LOG_DEBUG ("rmol will build the BOM tree from built-in specifications.");
       
       // STEP 0.
       // List of demand distribution parameters (mean and standard deviation)
       
-      // Class/bucket 1: N (20, 9), p1 = 100
-      rmolService.addBucket (100.0, 20, 9);
+      // Class/bucket 1: p1 = 110, N (15, 9)
+      rmolService.addBucket (110.0, 15, 9);
       
-      // Class/bucket 2: N (45, 12), p2 = 70
-      rmolService.addBucket (70.0, 45, 12);
+      // Class/bucket 2: p2 = 75, N (40, 12)
+      rmolService.addBucket (75.0, 40, 12);
       
-      // Class/bucket 3: no need to define a demand distribution, p3 = 42
-      rmolService.addBucket (42.0, 0, 0);
+      // Class/bucket 3: p3 = 48, no need to define a demand distribution
+      //                 (it can be considered very big)
+      rmolService.addBucket (48.0, 0, 0);
+      
+    } else {
+      // DEBUG
+      STDAIR_LOG_DEBUG ("rmol will parse " << lInputFilename
+                        << " and build the corresponding BOM tree.");
+      
+      // Parse the input file
+      rmolService.readFromInputFile (lInputFilename);
     }
     
     switch (lMethod) {

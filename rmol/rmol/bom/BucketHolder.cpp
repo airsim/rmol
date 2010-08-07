@@ -77,10 +77,11 @@ namespace RMOL {
   // //////////////////////////////////////////////////////////////////////
   const std::string BucketHolder::display() const {
     std::ostringstream oStr;
-    oStr << shortDisplay();
+    oStr << shortDisplay() << std::endl;
+    
     // Generate a CSV (Comma Separated Values) output
     oStr << "Class; Price; Mean; Std Dev; Protection; Cum. Protection; Cum. Bkg Limit; "
-          << std::endl;
+         << std::endl;
 
     BucketList_T::const_iterator itBucket = _bucketList.begin();
     for (short j=1; itBucket != _bucketList.end(); itBucket++, j++) {

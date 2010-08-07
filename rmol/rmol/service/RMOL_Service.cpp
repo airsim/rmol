@@ -229,7 +229,7 @@ namespace RMOL {
     
     // DEBUG
     STDAIR_LOG_DEBUG ("Optimisation by Monte-Carlo performed in "
-                    << lOptimisationMeasure);
+                      << lOptimisationMeasure);
     STDAIR_LOG_DEBUG ("Resulting buckets: " << oBucketHolder_ptr->display());
 
     std::ostringstream logStream;
