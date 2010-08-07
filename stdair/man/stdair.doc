@@ -1,40 +1,46 @@
 /*!
-\page stdair C++ Standard Airline IT Object Library
+\page stdair
+	  C++ Standard Airline IT Object Library
 
 \section sec_synopsis SYNOPSIS
 
-\code
-#include <stdair/...>
-\endcode
+<b>stdair</b> <tt>[--prefix] [-v|--version] [-h|--help] [-b|--builtin] [-i|--input <path-to-input>] [-l|--log <path-to-output-log-file>]</tt>
 
 \section sec_description DESCRIPTION
 
-The Standard Airline IT (STDAIR) library is a collection of routines
-for travel market simulation. The routines are written from scratch by
-the StdAir team in C++, and present a modern Applications Programming
-Interface (API) for C/C++ programmers, allowing wrappers to be written
-for very high level languages.
+\e stdair is a small program showing how to use the StdAir library.
 
-The library covers the following areas:
-- (Airline) Network-related classes:
-  - Network, ReachableUniverse
-- (Air) Travel-related classes:
-  - TravelSolution, OriginDestination, 
-- (Airline) Inventory-related classes:
-  - Inventory, FlightDate, SegmentDate, SegmentCabin, BookingClass, 
-    LegDate, LegCabin, 
-    Bucket
-- (Airline) Schedule-related classes:
-  - FlightPeriod, SegmentPeriod, LegPeriod
-- (Simulated) Passenger-related demand classes:
-  - DemandStream, BookingRequest
-- (Air) Price-related classes:
-  - YieldStore
-- Architecture
+\e stdair accepts the following options:
+
+ \b --prefix<br>
+    Show the StdAir installation prefix.
+
+ \b -v, \b --version<br>
+    Print the currently installed version of StdAir on the standard output.
+
+ \b -h, \b --help<br>
+    Produce that message and show usage.
+
+ \b -b, \b --builtin<br>
+    The sample BOM tree can be either built-in or parsed from an input
+    file.  When that option is selected, an input file must then be
+    given with the -i/--input option. When that option is not selected,
+    the \b stdair program builds a simple use case directly from internal
+    hard-coded parameters (demand distribution details and resource/cabin
+    capacities).
+
+ \b -i, \b --input <path-to-input-file><br>
+    Path (absolute or relative) of the (CVS) input file specifying the demand
+    distribution parameters and resource (cabin) capacities.<br>
+
+ \b -l, \b --log <path-to-output-log-file><br>
+    Path (absolute or relative) of the output log file.
+
+See the output of the <tt>`stdair --help'</tt> command for default options.
 
 
 \section sec_see_also SEE ALSO
-\b stdair-config(1)
+\b stdair-config(1), \b stdair-library(3)
 
 
 \section sec_support SUPPORT
