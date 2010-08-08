@@ -51,7 +51,8 @@ namespace stdair {
     for (DateOffsetList_T::const_iterator itOffset =
            _boardingDateOffsetList.begin();
          itOffset != _boardingDateOffsetList.end(); ++itOffset) {
-      oStr << *itOffset << ", ";
+      const DateOffset_T& lDateOffset = *itOffset;
+      oStr << lDateOffset.days() << ", ";
     }
 
     oStr << _nbOfAirlines ;

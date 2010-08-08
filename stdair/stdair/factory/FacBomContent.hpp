@@ -10,6 +10,10 @@
 #include <boost/version.hpp>
 #if BOOST_VERSION >= 103500
 #include <boost/fusion/include/at_key.hpp>
+#else // BOOST_VERSION >= 103500
+/** \todo Find a better alternative for boost::fusion::at_key() 
+          for Boost 1.33 */
+#include <boost/spirit/fusion/iterator/next.hpp>
 #endif // BOOST_VERSION >= 103500
 // StdAir 
 #include <stdair/STDAIR_Types.hpp>
@@ -124,6 +128,7 @@ namespace stdair {
     template <typename PARENT, typename CHILD>    
     static void cloneChildrenHolder (PARENT& ioParent,
                                      const PARENT& iReferenceParent) {
+#if BOOST_VERSION >= 103500
       // Clone the list of children.
       typedef BomChildrenHolderImp<CHILD> CHILDREN_HOLDER_T;
       CHILDREN_HOLDER_T*& lChildrenHolder_ptr =
@@ -135,6 +140,7 @@ namespace stdair {
       FacBomStructure::
         cloneChildrenHolder (lChildrenHolder_ptr,
                              *lReferenceChildrenHolder_ptr);
+#endif // BOOST_VERSION >= 103500
     }
 
   private:

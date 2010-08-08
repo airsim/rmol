@@ -6,10 +6,8 @@
 #include <iosfwd>
 #include <ostream>
 #include <sstream>
-// Boost
-#include <boost/math/distributions/normal.hpp>
 // Math
-#include <math.h>
+#include <cmath>
 // STDAIR
 #include <stdair/basic/BasConst_General.hpp>
 #include <stdair/bom/DemandStreamContent.hpp>

@@ -80,7 +80,7 @@ namespace stdair {
 
   // ////////////////////////////////////////////////////////////////////
   void DoWStruct_T::setDayOfWeek (const unsigned short i, const bool iBool) {
-    assert (i >= 0 && i < 7);
+    assert (i < 7);
     _dowList.at (i) = iBool;
   }
 

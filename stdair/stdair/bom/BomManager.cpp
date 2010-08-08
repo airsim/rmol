@@ -5,6 +5,7 @@
 #include <cassert>
 #include <ostream>
 // StdAir
+#include <stdair/STDAIR_Types.hpp>
 #include <stdair/basic/BasConst_BomManager.hpp>
 #include <stdair/bom/BomSource.hpp>
 #include <stdair/bom/BookingRequestStruct.hpp>
@@ -109,20 +110,20 @@ namespace stdair {
     for (LegDateList_T::iterator itLD = lLDList.begin();
          itLD != lLDList.end(); ++itLD) {
       const LegDate& lCurrentLD = *itLD;
-      
-      oStream << iFlightDate.getFlightNumber()
-              << " (" << iFlightDate.getFlightDate() << "), "
-              << lCurrentLD.getBoardingPoint() << "-"
-              << lCurrentLD.getOffPoint() << ", "
-              << lCurrentLD.getBoardingDate() << " -> "
-              << lCurrentLD.getOffDate() << " / "
-              << lCurrentLD.getDateOffset() << ", "
-              << lCurrentLD.getBoardingTime() << " -> "
-              << lCurrentLD.getOffTime() << " ("
-              << lCurrentLD.getTimeOffset() << ") / "
-              << lCurrentLD.getElapsedTime() << ", "
-              << lCurrentLD.getDistance() << ", "
-              << lCurrentLD.getCapacity() << ", "
+      const DateOffset_T lDateOffset = lCurrentLD.getDateOffset();      
+      oStream << iFlightDate.getFlightNumber();
+      oStream << " (" << iFlightDate.getFlightDate() << "), ";
+      oStream << lCurrentLD.getBoardingPoint() << "-";
+      oStream << lCurrentLD.getOffPoint() << ", ";
+      oStream << lCurrentLD.getBoardingDate() << " -> ";
+      oStream << lCurrentLD.getOffDate() << " / ";
+      oStream << lDateOffset.days() << ", ";
+      oStream << lCurrentLD.getBoardingTime() << " -> ";
+      oStream << lCurrentLD.getOffTime() << " (";
+      oStream << lCurrentLD.getTimeOffset() << ") / ";
+      oStream << lCurrentLD.getElapsedTime() << ", ";
+      oStream << lCurrentLD.getDistance() << ", ";
+      oStream << lCurrentLD.getCapacity() << ", "
               << std::endl;
     }
     oStream << "******************************************" << std::endl;
@@ -243,13 +244,14 @@ namespace stdair {
       for (SegmentCabinList_T::iterator itSC = lSCList.begin();
            itSC != lSCList.end(); ++itSC) {
         const SegmentCabin& lCurrentSC = *itSC;
+        const DateOffset_T lDateOffset = lCurrentSD.getDateOffset();
         
         oStream << lCurrentSD.getBoardingPoint() << "-"
                 << lCurrentSD.getOffPoint() << ", "
                 << lCurrentSC.getCabinCode() << ", "          
                 << lCurrentSD.getBoardingDate() << " -> "
                 << lCurrentSD.getOffDate() << " / "
-                << lCurrentSD.getDateOffset() << ", "
+                << lDateOffset.days() << ", "
                 << lCurrentSD.getBoardingTime() << " -> "
                 << lCurrentSD.getOffTime() << " ("
                 << lCurrentSD.getTimeOffset() << ") / "

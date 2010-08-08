@@ -11,7 +11,7 @@ namespace stdair {
 
   // ////////////////////////////////////////////////////////////////////
   SegmentPeriodContent::SegmentPeriodContent (const Key_T& iKey)
-    : _key (iKey) {
+    : _key (iKey), _boardingDateOffset (0), _offDateOffset (0) {
   }
 
   // ////////////////////////////////////////////////////////////////////
@@ -23,9 +23,9 @@ namespace stdair {
   addCabinBookingClassList (const CabinCode_T& iCabinCode,
                             const ClassList_String_T& iClassCodeList) {
     const bool insert = _cabinBookingClassMap.
-      insert (CabinBookingClassMap_T::value_type (iCabinCode, iClassCodeList)).second;
-    assert (insert == true);                                                    
+      insert (CabinBookingClassMap_T::value_type (iCabinCode, 
+						  iClassCodeList)).second;
+    assert (insert == true);
   }
 
 }
-
