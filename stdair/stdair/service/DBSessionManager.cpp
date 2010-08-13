@@ -10,8 +10,8 @@
 #include <soci/core/soci.h>
 #include <soci/backends/mysql/soci-mysql.h>
 #else // SOCI_HEADERS_BURIED
-#include <soci/soci.h>
-#include <soci/soci-mysql.h>
+#include <soci.h>
+#include <mysql/soci-mysql.h>
 #endif // SOCI_HEADERS_BURIED
 // StdAir
 #include <stdair/basic/BasDBParams.hpp>

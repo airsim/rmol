@@ -8,7 +8,7 @@
 #if defined(SOCI_HEADERS_BURIED)
 #include <soci/core/soci.h>
 #else // SOCI_HEADERS_BURIED
-#include <soci/soci.h>
+#include <soci.h>
 #endif // SOCI_HEADERS_BURIED
 
 // Forward declarations
