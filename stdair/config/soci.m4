@@ -122,19 +122,38 @@ AC_DEFUN([AX_SOCI],
 #	esac
 
 
+	SOCI_areHeadersBuried=
+
 	#
-	# Look for Soci Core API headers
+	# Look for Soci Core API headers (case of buried headers)
 	#
 	AC_MSG_CHECKING([for Soci include directory])
 	SOCI_incdir=
 	for m in $SOCI_inc_check
 	do
-		if test -d "$m" && (test -f "$m/soci/core/soci.h" || test -f "$m/soci/soci.h")
+		if test -d "$m" && test -f "$m/soci/core/soci.h"
 		then
 			SOCI_incdir=$m
+			SOCI_areHeadersBuried=true
 			break
 		fi
 	done
+
+	#
+	# if Soci Code API headers not found, look for non-buried headers
+	#
+
+	if test -z "$SOCI_incdir"
+	then
+		for m in $SOCI_inc_check
+		do
+			if test -d "$m" && test -f "$m/soci.h"
+			then
+				SOCI_incdir=$m
+				break
+			fi
+		done
+	fi	
 
 	if test -z "$SOCI_incdir"
 	then
@@ -156,7 +175,15 @@ AC_DEFUN([AX_SOCI],
 	then
 		SOCI_LIBS="-L${SOCI_libdir}"
 	fi
-	SOCI_CFLAGS="-DSOCI_HEADERS_BURIED -DSOCI_MYSQL_HEADERS_BURIED ${MYSQL_CFLAGS} ${SOCI_CFLAGS}"
+	
+	if test "$SOCI_areHeadersBuried" = true
+	then
+		AC_MSG_RESULT(Soci headers are buried.)
+		SOCI_CFLAGS="-DSOCI_HEADERS_BURIED -DSOCI_MYSQL_HEADERS_BURIED ${SOCI_CFLAGS}"
+	fi
+
+        SOCI_CFLAGS="${MYSQL_CFLAGS} ${SOCI_CFLAGS}"
+
 	SOCI_LIBS="${MYSQL_LIBS} ${SOCI_LIBS} -l${SOCI_CORE_LIB} -l${SOCI_MYSQL_LIB} -ldl"
 	AC_SUBST(SOCI_CFLAGS)
 	AC_SUBST(SOCI_LIBS)
