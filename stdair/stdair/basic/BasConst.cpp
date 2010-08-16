@@ -142,6 +142,9 @@ namespace stdair {
   /** Default availability. */
   const Availability_T DEFAULT_AVAILABILITY = 0.0;
 
+  /** Maximal offered capacity in a cabin. */
+  const Availability_T MAXIMAL_AVAILABILITY = 9999.0;
+
   /** Default boolean for censorship flag given the status of
       availability for BookingClass. */
   const CensorshipFlag_T DEFAULT_CLASS_CENSORSHIPFLAG = false;
@@ -226,11 +229,11 @@ namespace stdair {
 
     
   // //////// Travel Solutions ///////
-  /** Default Minimum connection time. */
-  const Duration_T DEFAULT_MINIMUM_CONNECTION_TIME (0, 30, 0);
+  /** Default Minimal connection time. */
+  const Duration_T DEFAULT_MINIMAL_CONNECTION_TIME (0, 30, 0);
 
-  /** Default maximum connection time. */
-  const Duration_T DEFAULT_MAXIMUM_CONNECTION_TIME (24, 0, 0);
+  /** Default maximal connection time. */
+  const Duration_T DEFAULT_MAXIMAL_CONNECTION_TIME (24, 0, 0);
 
   /** Default Matching Indicator value. */
   const MatchingIndicator_T DEFAULT_MATCHING_INDICATOR (0.0);
@@ -249,14 +252,14 @@ namespace stdair {
   /** Default Bid-Price Vector. */
   const BidPriceVector_T DEFAULT_BID_PRICE_VECTOR = std::vector<BidPrice_T>();
 
-  /** Maximum number of legs linked to a single flight-date.
+  /** Maximal number of legs linked to a single flight-date.
       <br>Note that the number of derived segments is n*(n+1)/2 if n
       is the number of legs. */
-  const unsigned short MAXIMUM_NUMBER_OF_LEGS_IN_FLIGHT = 7;
+  const unsigned short MAXIMAL_NUMBER_OF_LEGS_IN_FLIGHT = 7;
   
-  /** Maximum number of segments linked to a single O&D
+  /** Maximal number of segments linked to a single O&D
       (Origin & Destination). */
-  const unsigned short MAXIMUM_NUMBER_OF_SEGMENTS_IN_OND = 3;
+  const unsigned short MAXIMAL_NUMBER_OF_SEGMENTS_IN_OND = 3;
 
   
   // ////////// BomManager-related constants ///////////

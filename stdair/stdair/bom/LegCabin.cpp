@@ -52,6 +52,12 @@ namespace stdair {
     oStr << _structure.describeParentKey() << ", " << describeShortKey();
     return oStr.str();
   }
+
+  // ////////////////////////////////////////////////////////////////////
+  void LegCabin::updateFromReservation (const NbOfBookings_T& iNbOfBookings) {
+    _commitedSpace += iNbOfBookings;
+    _availabilityPool = _offeredCapacity - _commitedSpace;
+  }
   
 }
 

@@ -80,7 +80,12 @@ namespace stdair {
 
   // ////////////////////////////////////////////////////////////////////
   SegmentDate* FlightDate::getSegmentDate (const SegmentDateKey_T& iKey) const {
-    return _structure.getChildPtr<SegmentDate> (iKey.toString() );
+    return _structure.getChildPtr<SegmentDate> (iKey.toString());
+  }
+
+  // ////////////////////////////////////////////////////////////////////
+  SegmentDate* FlightDate::getSegmentDate (const std::string& iKey) const {
+    return _structure.getChildPtr<SegmentDate> (iKey);
   }
 }
 

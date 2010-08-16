@@ -72,6 +72,11 @@ namespace stdair {
         at any level). */
     const std::string describeKey() const;
 
+  public:
+    // /////////// Business methods //////////
+    /** Register a sale. */
+    void updateFromReservation (const NbOfBookings_T&);
+
   protected:
     /** Constructors are private so as to force the usage of the Factory
         layer. */

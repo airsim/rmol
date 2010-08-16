@@ -60,6 +60,8 @@ namespace stdair {
     /** Get a list or map of a children type for iteration methods. */
     BookingClassList_T getBookingClassList () const;
     BookingClassMap_T getBookingClassMap () const;
+    LegCabinList_T getLegCabinList () const;
+    LegCabinMap_T getLegCabinMap () const;
 
     /** Retrieve, if existing, the BookingClass corresponding to the
         given class code.
@@ -82,6 +84,11 @@ namespace stdair {
     /** Get a string describing the whole key (differentiating two objects
         at any level). */
     const std::string describeKey() const;
+
+  public:
+    // /////////// Business methods //////////
+    /** Register a sale. */
+    void updateFromReservation (const NbOfBookings_T&);
     
   protected:
     /** Constructors are private so as to force the usage of the Factory

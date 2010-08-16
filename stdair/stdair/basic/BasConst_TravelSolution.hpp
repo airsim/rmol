@@ -16,11 +16,11 @@ namespace stdair {
   /** Default distance value (kilometers). */
   extern const Distance_T DEFAULT_DISTANCE_VALUE;
     
-  /** Default Minimum connection time. */
-  extern const Duration_T DEFAULT_MINIMUM_CONNECTION_TIME;
+  /** Default Minimal connection time. */
+  extern const Duration_T DEFAULT_MINIMAL_CONNECTION_TIME;
     
-  /** Default maximum connection time. */
-  extern const Duration_T DEFAULT_MAXIMUM_CONNECTION_TIME;
+  /** Default maximal connection time. */
+  extern const Duration_T DEFAULT_MAXIMAL_CONNECTION_TIME;
 
   /** Null time duration (in boost::time_duration unit).*/
   extern const Duration_T NULL_BOOST_TIME_DURATION;

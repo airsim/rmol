@@ -74,6 +74,7 @@ namespace stdair {
         given SegmentDate key.
         <br>If not existing, return the NULL pointer. */
     SegmentDate* getSegmentDate (const SegmentDateKey_T&) const;
+    SegmentDate* getSegmentDate (const std::string&) const;
   
   public:
     // /////////// Display support methods /////////

@@ -101,6 +101,7 @@ namespace stdair {
         given flight number and flight date (FlightDate key).
         <br>If not existing, return the NULL pointer. */
     FlightDate* getFlightDate (const FlightDateKey_T&) const;
+    FlightDate* getFlightDate (const std::string&) const;
 
     /** Retrieve, if existing, the FlightPeriod corresponding to the
         given flight number and flight period (FlightPeriod key).

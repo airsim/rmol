@@ -78,6 +78,12 @@ namespace stdair {
   }
 
   // ////////////////////////////////////////////////////////////////////
+  FlightDate* Inventory::
+  getFlightDate (const std::string& iKey) const {
+    return _structure.getChildPtr<FlightDate> (iKey);
+  }
+
+  // ////////////////////////////////////////////////////////////////////
   FlightPeriod* Inventory::
   getFlightPeriod (const FlightPeriodKey_T& iKey) const {
     return _structure.getChildPtr<FlightPeriod> (iKey.toString());

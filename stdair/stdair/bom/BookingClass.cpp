@@ -58,6 +58,11 @@ namespace stdair {
     return _structure.getParent().getParent().
       getParent().getParent().getKey().getAirlineCode();
   }
+
+  // ////////////////////////////////////////////////////////////////////
+  void BookingClass::sell (const NbOfBookings_T& iNbOfBookings) {
+    _nbOfBookings += iNbOfBookings;
+  }
   
 }
 

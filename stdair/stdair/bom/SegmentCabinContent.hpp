@@ -54,26 +54,6 @@ namespace stdair {
       return _availabilityPool;
     }
 
-    /** Get the total cabin revenue. */
-    const Revenue_T& getRevenue () const {
-      return _cabinRevenue;
-    }
-
-    /** Get the cabin average fare. */
-    const Fare_T& getAverageFare() const {
-      return _cabinAverageFare;
-    }
-
-    /** Get the unit revenue value for this cabin. */
-    const Revenue_T& getUnitRevenue () const {
-      return _cabinUnitRevenue;
-    }
-
-    /** Get the Revenue Passanger Kilometer for this cabin. */
-    const Distance_T& getRPK() const {
-      return _cabinRPK;
-    }
-
     /** Retrive the current Bid-Price. */
     const BidPrice_T& getCurrentBidPrice () const {
       return _currentBidPrice;
@@ -109,26 +89,6 @@ namespace stdair {
     /** Set the value of availability pool. */
     void setAvailabilityPool (const Availability_T& iAvailabilityPool) {
       _availabilityPool = iAvailabilityPool;
-    }
-
-    /** Set the revenue amount. */
-    void setRevenue (const Revenue_T& iCabinRevenue) {
-      _cabinRevenue = iCabinRevenue;
-    }
-
-    /** Set the average cabin fare. */
-    void setAverageCabinFare(Fare_T iCAFare) {
-      _cabinAverageFare = iCAFare;
-    }
-
-    /** Set the Revenue Passanger Kilometer. */
-    void setRPK (const Distance_T& iCabinRPK) {
-      _cabinRPK = iCabinRPK;
-    }
-      
-    /** Set the Unit Revenue. */
-    void setUnitRevenue (const Revenue_T& iCabinURevenue) {
-      _cabinUnitRevenue = iCabinURevenue;
     }
 
   public:
@@ -181,18 +141,6 @@ namespace stdair {
 
     /** Current BidPrice. */
     BidPrice_T _currentBidPrice;
-
-    /** Total amount of money earned with cabin bookings. */
-    Revenue_T _cabinRevenue;
-
-    /** Value of the average fare of this cabin.*/
-    Fare_T _cabinAverageFare;
-
-    /** Value of the Unit Revenue (Revenue/ASK). */
-    Revenue_T _cabinUnitRevenue;
-
-    /** Value of the Revenue Passanger Kilometer for this cabin.*/
-    Distance_T _cabinRPK;
   };
 
 }

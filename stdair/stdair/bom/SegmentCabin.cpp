@@ -65,9 +65,24 @@ namespace stdair {
   }
 
   // ////////////////////////////////////////////////////////////////////
+  LegCabinList_T SegmentCabin::getLegCabinList () const {
+    return _structure.getChildrenHolder<LegCabin>();
+  }
+
+  // ////////////////////////////////////////////////////////////////////
+  LegCabinMap_T SegmentCabin::getLegCabinMap () const {
+    return _structure.getChildrenHolder<LegCabin>();
+  }
+
+  // ////////////////////////////////////////////////////////////////////
   BookingClass* SegmentCabin::
   getBookingClass (const ClassCode_T& iClassCode) const {
     return _structure.getChildPtr<BookingClass> (iClassCode);
+  }
+
+  // ////////////////////////////////////////////////////////////////////
+  void SegmentCabin::updateFromReservation (const NbOfBookings_T& iNbOfBookings){
+    _commitedSpace += iNbOfBookings;
   }
   
 }

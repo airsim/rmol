@@ -76,7 +76,7 @@ namespace stdair {
   addSegmentPathPeriod (const SegmentPathPeriod& iSegmentPathPeriod) {
     const NbOfSegments_T& lNbOfSegments = iSegmentPathPeriod.getNbOfSegments ();
     assert (lNbOfSegments > 0
-            && lNbOfSegments <= MAXIMUM_NUMBER_OF_SEGMENTS_IN_OND);
+            && lNbOfSegments <= MAXIMAL_NUMBER_OF_SEGMENTS_IN_OND);
 
     // If needed, initialise the list of lists with empty fixed-length
     // segment path period lists.

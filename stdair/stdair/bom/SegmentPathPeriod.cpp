@@ -184,7 +184,7 @@ namespace stdair {
     // can connect to a flight in the next day.
     if (lNextBoardingTime >= lLastOffTime) {
       const Duration_T lStopTime = lNextBoardingTime - lLastOffTime;
-      if (lStopTime < DEFAULT_MINIMUM_CONNECTION_TIME) {
+      if (lStopTime < DEFAULT_MINIMAL_CONNECTION_TIME) {
         return oSegmentPathPeriodKey;
       } else {
         // Calulcate the date offset of the next segment compare to
@@ -216,7 +216,7 @@ namespace stdair {
     } else {
       const Duration_T lStopTime = 
         lNextBoardingTime - lLastOffTime + Duration_T (24, 0, 0);
-      if (lStopTime < DEFAULT_MINIMUM_CONNECTION_TIME) {
+      if (lStopTime < DEFAULT_MINIMAL_CONNECTION_TIME) {
         return oSegmentPathPeriodKey;
       } else {
         // Calulcate the date offset of the next segment compare to

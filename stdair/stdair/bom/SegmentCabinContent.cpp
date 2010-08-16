@@ -19,11 +19,7 @@ namespace stdair {
       _commitedSpace (DEFAULT_COMMITED_SPACE),
       _availabilityPool (DEFAULT_AVAILABILITY),
       _bidPriceVector (DEFAULT_BID_PRICE_VECTOR),
-      _currentBidPrice (DEFAULT_BID_PRICE),
-      _cabinRevenue (DEFAULT_REVENUE_VALUE),
-      _cabinAverageFare (DEFAULT_FARE_VALUE),
-      _cabinUnitRevenue (DEFAULT_REVENUE_VALUE),
-      _cabinRPK (DEFAULT_DISTANCE_VALUE) {
+      _currentBidPrice (DEFAULT_BID_PRICE) {
   }
 
   // ////////////////////////////////////////////////////////////////////
