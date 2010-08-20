@@ -4,7 +4,7 @@ AC_PREREQ(2.59)
 AC_COPYRIGHT([Copyright (C) 2007-2010  Denis Arnaud <denis_arnaud@users.sourceforge.net>])
 AC_INIT([STDAIR],[99.99.99],[denis_arnaud@users.sourceforge.net],[stdair])
 AC_CONFIG_HEADER([stdair/config.h])
-AC_CONFIG_SRCDIR([stdair/bom/BomKey.hpp])
+AC_CONFIG_SRCDIR([stdair/bom/BomRoot.hpp])
 AC_CONFIG_AUX_DIR([config])
 AM_INIT_AUTOMAKE
 AM_PATH_CPPUNIT(1.10)
