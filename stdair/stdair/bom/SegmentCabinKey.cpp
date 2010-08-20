@@ -7,30 +7,30 @@
 namespace stdair {
 
   // ////////////////////////////////////////////////////////////////////
-  SegmentCabinKey_T::SegmentCabinKey_T (const CabinCode_T& iCabinCode)
+  SegmentCabinKey::SegmentCabinKey (const CabinCode_T& iCabinCode)
     : _cabinCode (iCabinCode) {
   }
 
   // ////////////////////////////////////////////////////////////////////
-  SegmentCabinKey_T::SegmentCabinKey_T (const SegmentCabinKey_T& iKey)
+  SegmentCabinKey::SegmentCabinKey (const SegmentCabinKey& iKey)
     : _cabinCode (iKey._cabinCode) {
   }
 
   // ////////////////////////////////////////////////////////////////////
-  SegmentCabinKey_T::~SegmentCabinKey_T () {
+  SegmentCabinKey::~SegmentCabinKey () {
   }
 
   // ////////////////////////////////////////////////////////////////////
-  void SegmentCabinKey_T::toStream (std::ostream& ioOut) const {
+  void SegmentCabinKey::toStream (std::ostream& ioOut) const {
     ioOut << "SegmentCabinKey: " << toString() << std::endl;
   }
 
   // ////////////////////////////////////////////////////////////////////
-  void SegmentCabinKey_T::fromStream (std::istream& ioIn) {
+  void SegmentCabinKey::fromStream (std::istream& ioIn) {
   }
 
   // ////////////////////////////////////////////////////////////////////
-  const std::string SegmentCabinKey_T::toString() const {
+  const std::string SegmentCabinKey::toString() const {
     std::ostringstream oStr;
     oStr << _cabinCode;
     return oStr.str();

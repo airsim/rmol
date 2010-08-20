@@ -4,92 +4,39 @@
 // STL
 #include <cassert>
 // STDAIR
-#include <stdair/basic/BasConst_TravelSolution.hpp>
-#include <stdair/bom/BomSource.hpp>
+#include <stdair/basic/BasConst_BookingClass.hpp>
+#include <stdair/bom/SegmentDate.hpp>
 
 namespace stdair {
 
   // ////////////////////////////////////////////////////////////////////
-  SegmentDate::SegmentDate (const Key_T& iKey,
-                            Structure_T& ioSegmentStructure)
-    : SegmentDateContent (iKey), _structure (ioSegmentStructure) {
-    init ();
+  SegmentDate::SegmentDate (const Key_T& iKey)
+    : _key (iKey) {
   }
-  
+
   // ////////////////////////////////////////////////////////////////////
   SegmentDate::~SegmentDate () {
-  }
-
-  // ////////////////////////////////////////////////////////////////////
-  void SegmentDate::init () {
-    _structure.initChildrenHolder<SegmentCabin>();
-    _structure.initChildrenHolder<LegDate>();
-  }
-
-  // ////////////////////////////////////////////////////////////////////
-  void SegmentDate::toStream (std::ostream& ioOut) const {
-    ioOut << toString() << std::endl;
-  }
-
-  // ////////////////////////////////////////////////////////////////////
-  void SegmentDate::fromStream (std::istream& ioIn) {
   }
 
   // ////////////////////////////////////////////////////////////////////
   std::string SegmentDate::toString() const {
     std::ostringstream oStr;
 
-    // First, put the key of that level
-    oStr << describeShortKey() << std::endl;
-
-    // Then, browse the children
-    // [...] (no child for now)
+    oStr << describeKey() << std::endl;
     
     return oStr.str();
   }
-    
-  // ////////////////////////////////////////////////////////////////////
-  const std::string SegmentDate::describeKey() const {
-    std::ostringstream oStr;
-    oStr << _structure.describeParentKey() << ", " << describeShortKey();
-    return oStr.str();
-  }
 
   // ////////////////////////////////////////////////////////////////////
-  SegmentCabinList_T SegmentDate::getSegmentCabinList () const {
-    return _structure.getChildrenHolder<SegmentCabin>();
+  const Duration_T SegmentDate::getTimeOffset() const {
+    // TimeOffset = (OffTime - BoardingTime) + (OffDate - BoardingDate) * 24
+    //              - ElapsedTime
+    Duration_T oTimeOffset = (_offTime - _boardingTime);
+    const DateOffset_T& lDateOffset = getDateOffset();
+    const Duration_T lDateOffsetInHours (lDateOffset.days() * 24, 0, 0);
+    oTimeOffset += lDateOffsetInHours - _elapsedTime;
+    return oTimeOffset;
   }
 
-  // ////////////////////////////////////////////////////////////////////
-  SegmentCabinMap_T SegmentDate::getSegmentCabinMap () const {
-    return _structure.getChildrenHolder<SegmentCabin>();
-  }
-
-  // ////////////////////////////////////////////////////////////////////
-  LegDateMap_T SegmentDate::getLegDateMap () const {
-    return _structure.getChildrenHolder<LegDate>();
-  }
-  
-  // ////////////////////////////////////////////////////////////////////
-  LegDateList_T SegmentDate::getLegDateList () const {
-    return _structure.getChildrenHolder<LegDate>();
-  }
-
-  // ////////////////////////////////////////////////////////////////////
-  const AirlineCode_T& SegmentDate::getAirlineCode () const {
-    return _structure.getParent().getParent().getKey().getAirlineCode();
-  }
-
-  // ////////////////////////////////////////////////////////////////////
-  const FlightNumber_T& SegmentDate::getFlightNumber () const {
-    return _structure.getParent().getKey().getFlightNumber();
-  }
-
-  // ////////////////////////////////////////////////////////////////////
-  SegmentCabin* SegmentDate::
-  getSegmentCabin (const CabinCode_T& iCabinCode) const {
-    return _structure.getChildPtr<SegmentCabin> (iCabinCode);
-  }
-  
 }
 

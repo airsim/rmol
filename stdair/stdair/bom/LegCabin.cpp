@@ -4,52 +4,33 @@
 // STL
 #include <cassert>
 // STDAIR
-#include <stdair/bom/BomSource.hpp>
+#include <stdair/basic/BasConst_BookingClass.hpp>
+#include <stdair/basic/BasConst_Inventory.hpp>
+#include <stdair/bom/LegCabin.hpp>
 
 namespace stdair {
 
   // ////////////////////////////////////////////////////////////////////
-  LegCabin::LegCabin (const Key_T& iKey, Structure_T& ioLegStructure)
-    : LegCabinContent (iKey),  _structure (ioLegStructure) {
-    init ();
+  LegCabin::LegCabin (const Key_T& iKey)
+  : _key (iKey),
+    _offeredCapacity (DEFAULT_CABIN_CAPACITY),
+    _physicalCapacity (DEFAULT_CABIN_CAPACITY),
+    _soldSeat (DEFAULT_CLASS_NB_OF_BOOKINGS),
+    _commitedSpace (DEFAULT_COMMITED_SPACE),
+    _availabilityPool (DEFAULT_AVAILABILITY),
+    _availability (DEFAULT_AVAILABILITY),
+    _bidPriceVector (DEFAULT_BID_PRICE_VECTOR),
+    _currentBidPrice (DEFAULT_BID_PRICE) {
   }
-  
+
   // ////////////////////////////////////////////////////////////////////
   LegCabin::~LegCabin () {
   }
 
   // ////////////////////////////////////////////////////////////////////
-  void LegCabin::init () {
-    _structure.initChildrenHolder<Bucket> ();
-    _structure.initChildrenHolder<SegmentCabin> ();
-  }
-  
-  // ////////////////////////////////////////////////////////////////////
-  void LegCabin::toStream (std::ostream& ioOut) const {
-    ioOut << toString() << std::endl;
-  }
-
-  // ////////////////////////////////////////////////////////////////////
-  void LegCabin::fromStream (std::istream& ioIn) {
-  }
-
-  // ////////////////////////////////////////////////////////////////////
   std::string LegCabin::toString() const {
     std::ostringstream oStr;
-
-    // First, put the key of that level
-    oStr << describeShortKey() << std::endl;
-
-    // Then, browse the children
-    // [...] (no child for now)
-    
-    return oStr.str();
-  }
-    
-  // ////////////////////////////////////////////////////////////////////
-  const std::string LegCabin::describeKey() const {
-    std::ostringstream oStr;
-    oStr << _structure.describeParentKey() << ", " << describeShortKey();
+    oStr << describeKey() << std::endl;
     return oStr.str();
   }
 
@@ -58,6 +39,6 @@ namespace stdair {
     _commitedSpace += iNbOfBookings;
     _availabilityPool = _offeredCapacity - _commitedSpace;
   }
-  
+
 }
 

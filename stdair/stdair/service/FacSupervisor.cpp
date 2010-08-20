@@ -4,9 +4,9 @@
 // STL
 #include <cassert>
 // StdAir
-#include <stdair/factory/FacBomStructure.hpp>
-#include <stdair/factory/FacBomContent.hpp>
-#include <stdair/factory/FacSupervisor.hpp>
+#include <stdair/bom/RelationShipAbstract.hpp>
+#include <stdair/factory/FacAbstract.hpp>
+#include <stdair/service/FacSupervisor.hpp>
 #include <stdair/service/Logger.hpp>
 #include <stdair/service/DBSessionManager.hpp>
 
@@ -24,51 +24,51 @@ namespace stdair {
   }
 
   // //////////////////////////////////////////////////////////////////////
-  void FacSupervisor::
-  registerBomStructureFactory (FacBomStructure* ioFacBomStructure_ptr) {
-    _facBomStructurePool.push_back (ioFacBomStructure_ptr);
-  }
-
-  // //////////////////////////////////////////////////////////////////////
-  void FacSupervisor::
-  registerBomContentFactory (FacBomContent* ioFacBomContent_ptr) {
-    _facBomContentPool.push_back (ioFacBomContent_ptr);
-  }
-
-  // //////////////////////////////////////////////////////////////////////
   FacSupervisor::~FacSupervisor() {
-    cleanBomStructureLayer();
-    cleanBomContentLayer();
+    cleanBomLayer();
+    cleanRelationShips();
   }
 
   // //////////////////////////////////////////////////////////////////////
-  void FacSupervisor::cleanBomStructureLayer() {
-    for (BomStructureFactoryPool_T::const_iterator itFactory =
-           _facBomStructurePool.begin();
-         itFactory != _facBomStructurePool.end(); itFactory++) {
-      const FacBomStructure* currentFactory_ptr = *itFactory;
+  void FacSupervisor::
+  registerFacBom (FacAbstract* ioFac_ptr) {
+    _facPool.push_back (ioFac_ptr);
+  }
+
+  // //////////////////////////////////////////////////////////////////////
+  void FacSupervisor::
+  registerRelationShip (RelationShipAbstract* ioRelationShip_ptr) {
+    _relationShipPool.push_back (ioRelationShip_ptr);
+  }
+
+  // //////////////////////////////////////////////////////////////////////
+  void FacSupervisor::cleanBomLayer() {
+    for (FactoryPool_T::const_iterator itFactory =
+           _facPool.begin();
+         itFactory != _facPool.end(); itFactory++) {
+      const FacAbstract* currentFactory_ptr = *itFactory;
       assert (currentFactory_ptr != NULL);
 
       delete (currentFactory_ptr); currentFactory_ptr = NULL;
     }
 
-    // Empty the pool of BomStructure Factories
-    _facBomStructurePool.clear();
+    // Empty the pool of factories
+    _facPool.clear();
   }
 
   // //////////////////////////////////////////////////////////////////////
-  void FacSupervisor::cleanBomContentLayer() {
-    for (BomContentFactoryPool_T::const_iterator itFactory =
-           _facBomContentPool.begin();
-         itFactory != _facBomContentPool.end(); itFactory++) {
-      const FacBomContent* currentFactory_ptr = *itFactory;
-      assert (currentFactory_ptr != NULL);
+  void FacSupervisor::cleanRelationShips() {
+    for (RelationShipPool_T::const_iterator itRS =
+           _relationShipPool.begin();
+         itRS != _relationShipPool.end(); itRS++) {
+      const RelationShipAbstract* currentRelationShip_ptr = *itRS;
+      assert (currentRelationShip_ptr != NULL);
 
-      delete (currentFactory_ptr); currentFactory_ptr = NULL;
+      delete (currentRelationShip_ptr); currentRelationShip_ptr = NULL;
     }
 
-    // Empty the pool of BomContent Factories
-    _facBomContentPool.clear();
+    // Empty the pool of relations ships
+    _relationShipPool.clear();
   }
 
   // //////////////////////////////////////////////////////////////////////

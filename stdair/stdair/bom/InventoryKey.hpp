@@ -5,23 +5,23 @@
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // STDAIR
-#include <stdair/bom/BomKey.hpp>
+#include <stdair/bom/KeyAbstract.hpp>
 
 namespace stdair {
   /** Key of inventory. */
-  struct InventoryKey_T : public BomKey_T {
+  struct InventoryKey : public KeyAbstract {
     
   private:
     // /////////// Default constructor //////////
-    InventoryKey_T () { };
+    InventoryKey () { };
     
   public:
     // /////////// Construction ///////////
     /** Constructors. */
-    InventoryKey_T (const AirlineCode_T& iAirlineCode);
-    InventoryKey_T (const InventoryKey_T&);
+    InventoryKey (const AirlineCode_T& iAirlineCode);
+    InventoryKey (const InventoryKey&);
     /** Destructor. */
-    ~InventoryKey_T ();
+    ~InventoryKey ();
     
     // /////////// Getters //////////
     /** Get the airline code. */

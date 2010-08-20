@@ -10,6 +10,7 @@
 // StdAir
 #include <stdair/STDAIR_Types.hpp>
 #include <stdair/basic/StructAbstract.hpp>
+#include <stdair/bom/BookingRequestTypes.hpp>
 
 namespace stdair {
 

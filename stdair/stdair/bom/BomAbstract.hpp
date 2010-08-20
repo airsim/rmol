@@ -1,10 +1,10 @@
 /**
- * @defgroup BomStructure Structure part of the Business Object Model (BOM)
+ * @defgroup BomAbstract Abstract part of the Business Object Model (BOM)
  * @author Anh Quan Nguyen <quannaus@users.sourceforge.net>
  * @date 20/01/2010
  */
-#ifndef __STDAIR_BOM_BOMSTRUCTURE_HPP
-#define __STDAIR_BOM_BOMSTRUCTURE_HPP
+#ifndef __STDAIR_BOM_BOMABSTRACT_HPP
+#define __STDAIR_BOM_BOMABSTRACT_HPP
 
 // //////////////////////////////////////////////////////////////////////
 // Import section
@@ -12,19 +12,16 @@
 // STL
 #include <iosfwd>
 #include <string>
-// STDAIR
+// StdAir
 #include <stdair/STDAIR_Types.hpp>
 
 namespace stdair {
 
   /**
-   * @brief Base class for the Business Object Model (BOM) tree structure.
+   * @brief Base class for the Business Object Model (BOM) layer
    */
-  class BomStructure {
-    friend class FacBomStructure;
-    friend class FacBomContent;
+  class BomAbstract {
   public:
-
     // /////////// Display support methods /////////
     /** Dump a Business Object into an output stream.
         @param ostream& the output stream. */
@@ -36,28 +33,18 @@ namespace stdair {
 
    /** Get the serialised version of the Business Object. */
     virtual std::string toString() const = 0;
+
     
   protected:
     /** Protected Default Constructor to ensure this class is abtract. */
-    BomStructure() {}
-    BomStructure(const BomStructure&) {}
-
-    /** Destructor. */
-    virtual ~BomStructure() {}
-    
+    BomAbstract() {}
+    BomAbstract(const BomAbstract&) {}
   public:
-    /**
-       Template function aimed at retrieving the bom content pointer from a
-       bom structure.
-    */
-    template <typename CONTENT>
-    static CONTENT* getContentPtr (const typename CONTENT::Structure_T& iStructure) {
-      return iStructure._content;
-    }
-    
-  };
-  
+    /** Destructor. */
+    virtual ~BomAbstract() {}
+ };
 }
+
 /**
    Piece of code given by Nicolai M. Josuttis, Section 13.12.1 "Implementing
    Output Operators" (p653) of his book "The C++ Standard Library: A Tutorial
@@ -67,7 +54,7 @@ template <class charT, class traits>
 inline
 std::basic_ostream<charT, traits>&
 operator<< (std::basic_ostream<charT, traits>& ioOut,
-            const stdair::BomStructure& iBom) {
+            const stdair::BomAbstract& iBom) {
   /**
      string stream:
       - with same format
@@ -95,10 +82,10 @@ template <class charT, class traits>
 inline
 std::basic_istream<charT, traits>&
 operator>> (std::basic_istream<charT, traits>& ioIn,
-            stdair::BomStructure& ioBom) {
+            stdair::BomAbstract& ioBom) {
   // Fill Bom object with input stream
   ioBom.fromStream (ioIn);
   return ioIn;
 }
 
-#endif // __STDAIR_BOM_BOMSTRUCTURE_HPP
+#endif // __STDAIR_BOM_BOMABSTRACT_HPP

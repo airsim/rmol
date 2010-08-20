@@ -4,68 +4,57 @@
 // STL
 #include <cassert>
 // STDAIR
-#include <stdair/bom/BomSource.hpp>
+#include <stdair/basic/BasConst_General.hpp>
+#include <stdair/bom/LegDate.hpp>
 
 namespace stdair {
 
   // ////////////////////////////////////////////////////////////////////
-  LegDate::LegDate (const Key_T& iKey, Structure_T& ioLegStructure)
-    : LegDateContent (iKey), _structure (ioLegStructure) {
-    init ();
+  LegDate::LegDate (const Key_T& iKey) \
+    : _key (iKey),
+      _distance (DEFAULT_DISTANCE_VALUE),
+      _capacity (DEFAULT_CABIN_CAPACITY) {
   }
-  
+
   // ////////////////////////////////////////////////////////////////////
   LegDate::~LegDate () {
-  }
-
-  // ////////////////////////////////////////////////////////////////////
-  void LegDate::init () {
-    _structure.initChildrenHolder<LegCabin> ();
-    _structure.initChildrenHolder<SegmentDate> ();
-  }
-
-  // ////////////////////////////////////////////////////////////////////
-  void LegDate::toStream (std::ostream& ioOut) const {
-    ioOut << toString() << std::endl;
-  }
-
-  // ////////////////////////////////////////////////////////////////////
-  void LegDate::fromStream (std::istream& ioIn) {
   }
 
   // ////////////////////////////////////////////////////////////////////
   std::string LegDate::toString() const {
     std::ostringstream oStr;
 
-    // First, put the key of that level
-    oStr << describeShortKey() << std::endl;
-
-    // Then, browse the children
-    // [...] (no child for now)
+    oStr << describeKey() << std::endl;
     
     return oStr.str();
   }
-    
+
   // ////////////////////////////////////////////////////////////////////
-  const std::string LegDate::describeKey() const {
-    std::ostringstream oStr;
-    oStr << _structure.describeParentKey() << ", " << describeShortKey();
-    return oStr.str();
+  const Duration_T LegDate::getTimeOffset() const {
+    // TimeOffset = (OffTime - BoardingTime) + (OffDate - BoardingDate) * 24
+    //              - ElapsedTime
+    Duration_T oTimeOffset = (_offTime - _boardingTime);
+    const DateOffset_T& lDateOffset = getDateOffset();
+    const Duration_T lDateOffsetInHours (lDateOffset.days() * 24, 0, 0);
+    oTimeOffset += lDateOffsetInHours - _elapsedTime;
+    return oTimeOffset;
+  }
+  
+  // ////////////////////////////////////////////////////////////////////
+  void LegDate::setElapsedTime(const Duration_T& iElapsedTime) {
+    // Set Elapsed time
+    _elapsedTime = iElapsedTime;
+    // Update distance according to the mean plane speed
+    updateDistanceFromElapsedTime ();
   }
 
   // ////////////////////////////////////////////////////////////////////
-  LegCabinList_T LegDate::getLegCabinList () const {
-    return _structure.getChildrenHolder<LegCabin>();
-  }
-
-  // ////////////////////////////////////////////////////////////////////
-  LegCabinMap_T LegDate::getLegCabinMap () const {
-    return _structure.getChildrenHolder<LegCabin>();
-  }
-
-  // ////////////////////////////////////////////////////////////////////
-  LegCabin* LegDate::getLegCabin (const CabinCode_T& iCabinCode) const {
-    return _structure.getChildPtr<LegCabin> (iCabinCode);
+  void LegDate::updateDistanceFromElapsedTime () {
+    const double lElapseInHours =
+      static_cast<const double>(_elapsedTime.hours());
+    const long int lDistance =
+      static_cast<const long int>(DEFAULT_FLIGHT_SPEED*lElapseInHours);
+    _distance = lDistance;
   }
   
 }

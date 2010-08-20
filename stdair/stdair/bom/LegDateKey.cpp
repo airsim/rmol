@@ -7,29 +7,29 @@
 namespace stdair {
 
   // ////////////////////////////////////////////////////////////////////
-  LegDateKey_T::LegDateKey_T (const AirportCode_T& iBoardingPoint) 
+  LegDateKey::LegDateKey (const AirportCode_T& iBoardingPoint) 
     : _boardingPoint (iBoardingPoint) {
   }
   // ////////////////////////////////////////////////////////////////////
-  LegDateKey_T::LegDateKey_T (const LegDateKey_T& iKey)
+  LegDateKey::LegDateKey (const LegDateKey& iKey)
     : _boardingPoint (iKey._boardingPoint) {
   }
 
   // ////////////////////////////////////////////////////////////////////
-  LegDateKey_T::~LegDateKey_T () {
+  LegDateKey::~LegDateKey () {
   }
 
   // ////////////////////////////////////////////////////////////////////
-  void LegDateKey_T::toStream (std::ostream& ioOut) const {
+  void LegDateKey::toStream (std::ostream& ioOut) const {
     ioOut << "LegDateKey: " << toString() << std::endl;
   }
 
   // ////////////////////////////////////////////////////////////////////
-  void LegDateKey_T::fromStream (std::istream& ioIn) {
+  void LegDateKey::fromStream (std::istream& ioIn) {
   }
 
   // ////////////////////////////////////////////////////////////////////
-  const std::string LegDateKey_T::toString() const {
+  const std::string LegDateKey::toString() const {
     std::ostringstream oStr;
     oStr << _boardingPoint;
     return oStr.str();

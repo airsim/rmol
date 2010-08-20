@@ -5,19 +5,19 @@
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // STDAIR
-#include <stdair/bom/BomKey.hpp>
+#include <stdair/bom/KeyAbstract.hpp>
 
 namespace stdair {
   /** Key of AirlineFeature. */
-  struct AirlineFeatureKey_T : public BomKey_T {
+  struct AirlineFeatureKey : public KeyAbstract {
     
   public:
     // /////////// Construction ///////////
     /** Constructor. */
-    AirlineFeatureKey_T (const AirlineCode_T& iAirlineCode);
+    AirlineFeatureKey (const AirlineCode_T& iAirlineCode);
 
     /** Destructor. */
-    ~AirlineFeatureKey_T ();
+    ~AirlineFeatureKey ();
     
     // /////////// Getters //////////
     /** Get the airline code. */

@@ -5,22 +5,22 @@
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // STDAIR
-#include <stdair/bom/BomKey.hpp>
+#include <stdair/bom/KeyAbstract.hpp>
 
 namespace stdair {
   /** Key of segment-period. */
-  struct SegmentPeriodKey_T : public BomKey_T {
+  struct SegmentPeriodKey : public KeyAbstract {
 
   private:
     // /////////// Default constructor //////////
-    SegmentPeriodKey_T () { };
+    SegmentPeriodKey () { };
   public:
     // /////////// Construction ///////////
     /** Constructors. */
-    SegmentPeriodKey_T (const AirportCode_T&, const AirportCode_T&);
-    SegmentPeriodKey_T (const SegmentPeriodKey_T&);
+    SegmentPeriodKey (const AirportCode_T&, const AirportCode_T&);
+    SegmentPeriodKey (const SegmentPeriodKey&);
     /** Destructor. */
-    ~SegmentPeriodKey_T ();
+    ~SegmentPeriodKey ();
     
     // /////////// Getters //////////
     /** Get the boardinging point. */

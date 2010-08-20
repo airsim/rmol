@@ -7,31 +7,31 @@
 namespace stdair {
 
   // ////////////////////////////////////////////////////////////////////
-  FlightDateKey_T::FlightDateKey_T (const FlightNumber_T& iFlightNumber,
+  FlightDateKey::FlightDateKey (const FlightNumber_T& iFlightNumber,
                                     const Date_T& iFlightDate)
     : _flightNumber (iFlightNumber), _flightDate (iFlightDate) {
   }
 
   // ////////////////////////////////////////////////////////////////////
-  FlightDateKey_T::FlightDateKey_T (const FlightDateKey_T& iKey)
+  FlightDateKey::FlightDateKey (const FlightDateKey& iKey)
     : _flightNumber (iKey._flightNumber), _flightDate (iKey._flightDate) {
   }
 
   // ////////////////////////////////////////////////////////////////////
-  FlightDateKey_T::~FlightDateKey_T () {
+  FlightDateKey::~FlightDateKey () {
   }
 
   // ////////////////////////////////////////////////////////////////////
-  void FlightDateKey_T::toStream (std::ostream& ioOut) const {
+  void FlightDateKey::toStream (std::ostream& ioOut) const {
     ioOut << "FlightDateKey: " << toString() << std::endl;
   }
 
   // ////////////////////////////////////////////////////////////////////
-  void FlightDateKey_T::fromStream (std::istream& ioIn) {
+  void FlightDateKey::fromStream (std::istream& ioIn) {
   }
 
   // ////////////////////////////////////////////////////////////////////
-  const std::string FlightDateKey_T::toString() const {
+  const std::string FlightDateKey::toString() const {
     std::ostringstream oStr;
     oStr << _flightNumber << ", " << _flightDate;
     return oStr.str();

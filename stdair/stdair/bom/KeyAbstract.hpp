@@ -1,11 +1,11 @@
 /**
- * @defgroup BomKey Part of the Business Object Model (BOM) handling
+ * @defgroup KeyAbstract Part of the Business Object Model (BOM) handling
  *           (hash-like )keys
  * @author Anh Quan Nguyen <quannaus@users.sourceforge.net>
  * @date 20/01/2010
  */
-#ifndef __STDAIR_BOM_BOMKEY_HPP
-#define __STDAIR_BOM_BOMKEY_HPP
+#ifndef __STDAIR_BOM_KEYABSTRACT_HPP
+#define __STDAIR_BOM_KEYABSTRACT_HPP
 
 // //////////////////////////////////////////////////////////////////////
 // Import section
@@ -25,7 +25,7 @@ namespace stdair {
    * to differentiate two segment-dates under a given flight-date,
    * but does not allow to differentiate two segemnt-dates in general.
    */
-  struct BomKey_T {
+  struct KeyAbstract {
   public:
 
     // /////////// Display support methods /////////
@@ -55,7 +55,7 @@ namespace stdair {
     /**
      * @brief Default destructor.
      */
-    virtual ~BomKey_T() {}
+    virtual ~KeyAbstract() {}
   };
 
 }
@@ -69,7 +69,7 @@ template <class charT, class traits>
 inline
 std::basic_ostream<charT, traits>&
 operator<< (std::basic_ostream<charT, traits>& ioOut,
-            const stdair::BomKey_T& iBom) {
+            const stdair::KeyAbstract& iKey) {
   /**
      string stream:
       - with same format
@@ -80,7 +80,7 @@ operator<< (std::basic_ostream<charT, traits>& ioOut,
   ostr.width (0);
 
   // Fill string stream
-  iBom.toStream (ostr);
+  iKey.toStream (ostr);
 
   // Print string stream
   ioOut << ostr.str();
@@ -97,10 +97,10 @@ template <class charT, class traits>
 inline
 std::basic_istream<charT, traits>&
 operator>> (std::basic_istream<charT, traits>& ioIn,
-            stdair::BomKey_T& ioBom) {
-  // Fill Bom object with input stream
-  ioBom.fromStream (ioIn);
+            stdair::KeyAbstract& ioKey) {
+  // Fill Key object with input stream
+  ioKey.fromStream (ioIn);
   return ioIn;
 }
 
-#endif // __STDAIR_BOM_BOMKEY_HPP
+#endif // __STDAIR_BOM_KEYABSTRACT_HPP

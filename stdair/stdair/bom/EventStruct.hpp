@@ -7,7 +7,6 @@
 // STDAIR
 #include <stdair/STDAIR_Types.hpp>
 #include <stdair/bom/BookingRequestTypes.hpp>
-#include <stdair/bom/DemandStreamKey.hpp>
 
 namespace stdair {
 
@@ -37,6 +36,7 @@ namespace stdair {
       return _demandStreamKey;
     }
 
+  public:
     // ///////////////// Business Methods /////////////////
     /** Move the event forward in time by one nanosecond. */
     void moveForwardInTime ();
@@ -47,12 +47,10 @@ namespace stdair {
     EventStruct (const EventType_T&, const DateTime_T&,
                  const DemandStreamKeyStr_T&, BookingRequestPtr_T);
     EventStruct (const DateTime_T&);
-    
     /** Copy constructor. */
     EventStruct (const EventStruct&);
-  
     /** Destructor. */
-    virtual ~EventStruct ();
+    ~EventStruct ();
   
   private:
     /** Default constructors. */
@@ -61,16 +59,12 @@ namespace stdair {
 
   private:
     // ////////// Attributes //////////
-    
     /** Event type */
     EventType_T _eventType;
-    
     /** Event datetime */
     DateTime_T _eventDateTime;
-
     /** The demand stream which generated this event. */
     DemandStreamKeyStr_T _demandStreamKey;
-    
     /** Pointer to Request event */
     BookingRequestPtr_T _request;
 

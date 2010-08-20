@@ -4,73 +4,122 @@
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
-// Boost Fusion
-#include <boost/version.hpp>
-#if BOOST_VERSION >= 103500
-#include <boost/fusion/include/map.hpp>
-#else // BOOST_VERSION >= 103500
-#include <boost/mpl/map.hpp>
-#endif // BOOST_VERSION >= 103500
-// StdAir 
-#include <stdair/bom/LegCabinContent.hpp>
+// STDAIR 
+#include <stdair/bom/BomAbstract.hpp>
+#include <stdair/bom/LegCabinKey.hpp>
 #include <stdair/bom/LegCabinTypes.hpp>
-#include <stdair/bom/BucketTypes.hpp>
-#include <stdair/bom/SegmentCabinTypes.hpp>
 
 namespace stdair {
-  // Forward declarations
-  class LegDate;
-  class Bucket;
-  class SegmentCabin;
-  
-  /** Class representing the actual functional/business content for a
-      leg-date. */
-  class LegCabin : public LegCabinContent {
-    friend class FacBomContent;
+
+  /** Class representing the actual attributes for an airline leg-cabin. */
+  class LegCabin : public BomAbstract {
+    template <typename BOM> friend class FacBom;
 
   public:
-    // //////////////////////////////////////////////////////////////////
-    // See the explanations, within the BomRoot class, for all
-    // the types which require to be specified below
-    // //////////////////////////////////////////////////////////////////
-    /** Definition allowing to retrieve the associated BOM structure type. */
-    typedef LegCabinStructure_T Structure_T;
+    // Type definitions.
+    /** Definition allowing to retrieve the associated BOM key type. */
+    typedef LegCabinKey Key_T;
 
-    /** Definition allowing to retrieve the associated parent
-        BOM content type. */
-    typedef LegDate Parent_T;
+  public:
+    // /////////// Getters ////////////
+     /** Get the leg-cabin key. */
+    const Key_T& getKey() const {
+      return _key;
+    }
+    
+    /** Get the cabin code (from key). */
+    const CabinCode_T& getCabinCode() const {
+      return _key.getCabinCode();
+    }
 
-    /** Definition allowing to retrieve the map/multimap type using by
-        BomChildrenHolder. */
-    typedef std::map<const MapKey_T, const Structure_T*> Map_T;
+    /** Get the cabin offered capacity. */
+    const CabinCapacity_T& getOfferedCapacity () const {
+      return _offeredCapacity;
+    }
 
-    /** Define the list of children holder types. */
-#if BOOST_VERSION >= 103500
-    typedef boost::fusion::map<
-      boost::fusion::pair<Bucket, BucketHolder_T*>,
-      boost::fusion::pair<SegmentCabin, SegmentCabinHolder_T*>
-      > ChildrenHolderMap_T;
-#else // BOOST_VERSION >= 103500
-    typedef boost::mpl::map< > ChildrenHolderMap_T;
-#endif // BOOST_VERSION >= 103500
-    // //////////////////////////////////////////////////////////////////
+    /** Get the cabin physical capacity. */
+    const CabinCapacity_T& getPhysicalCapacity () const {
+      return _physicalCapacity;
+    }
+
+    /** Get the number of sold seat. */
+    const NbOfBookings_T& getSoldSeat () const {
+      return _soldSeat;
+    }
+
+    /** Get the value of commited space. */
+    const CommitedSpace_T& getCommitedSpace () const {
+      return _commitedSpace;
+    }
+
+    /** Get the value of the availability pool. */
+    const Availability_T& getAvailabilityPool () const {
+      return _availabilityPool;
+    }
+
+    /** Get the value of the availability. */
+    const Availability_T& getAvailability () const {
+      return _availability;
+    }
+
+    /** Retrive the current Bid-Price. */
+    const BidPrice_T& getCurrentBidPrice () const {
+      return _currentBidPrice;
+    }
+    
+    /** Retrive the Bid-Price Vector. */
+    BidPriceVector_T& getBidPriceVector () {
+      return _bidPriceVector;
+    }
+
+  public:
+    // ///////////// Setters ///////////////
+    /** Set the offered and physical capacities. */
+    void setCapacities (const CabinCapacity_T& iCapacity) {
+      _offeredCapacity = iCapacity;
+      _physicalCapacity = iCapacity;
+    }
+    
+    /** Set the number of sold seat. */
+    void setSoldSeat (const NbOfBookings_T& iSoldSeat) {
+      _soldSeat = iSoldSeat;
+    }
+
+    /** Set the value of commited space. */
+    void setCommitedSpace (const CommitedSpace_T& iCommitedSpace) {
+      _commitedSpace = iCommitedSpace;
+    }
+
+    /** Set the value of availability pool. */
+    void setAvailabilityPool (const Availability_T& iAvailabilityPool) {
+      _availabilityPool = iAvailabilityPool;
+    }
+
+    /** Set the value of availability. */
+    void setAvailability (const Availability_T& iAvailability) {
+      _availability = iAvailability;
+    }
+
+    /** Set the current Bid-Price. */
+    void setCurrentBidPrice (const BidPrice_T& iBidPrice) {
+      _currentBidPrice = iBidPrice;
+    }
 
   public:
     // /////////// Display support methods /////////
     /** Dump a Business Object into an output stream.
         @param ostream& the output stream. */
-    void toStream (std::ostream& ioOut) const;
+    void toStream (std::ostream& ioOut) const { ioOut << toString(); }
 
     /** Read a Business Object from an input stream.
         @param istream& the input stream. */
-    void fromStream (std::istream& ioIn);
+    void fromStream (std::istream& ioIn) { }
 
    /** Get the serialised version of the Business Object. */
     std::string toString() const;
     
-    /** Get a string describing the whole key (differentiating two objects
-        at any level). */
-    const std::string describeKey() const;
+    /** Get a string describing the  key. */
+    const std::string describeKey() const { return _key.toString(); }
 
   public:
     // /////////// Business methods //////////
@@ -78,22 +127,53 @@ namespace stdair {
     void updateFromReservation (const NbOfBookings_T&);
 
   protected:
-    /** Constructors are private so as to force the usage of the Factory
-        layer. */
-    /** Constructors. */
-    LegCabin (const Key_T& iKey, Structure_T&);
+    /** Default constructors. */
+    LegCabin (const Key_T&);
+    LegCabin (const LegCabin&);
     /** Destructor. */
     ~LegCabin();
-    /** Initialise all the pointers of children holder to NULL. */
-    void init();
-    /** Default constructors. */
-    LegCabin ();
-    LegCabin (const LegCabin&);
 
+  public:
+    // Test AIRINV
+    stdair::CapacityAdjustment_T _dcsRegrade;
+    stdair::AuthorizationLevel_T _au;
+    stdair::UPR_T _upr;
+    stdair::Availability_T _nav;
+    stdair::Availability_T _gav;
+    stdair::OverbookingRate_T _acp;
+    stdair::NbOfBookings_T _etb;
+    stdair::NbOfBookings_T _staffNbOfBookings;
+    stdair::NbOfBookings_T _wlNbOfBookings;
+    stdair::NbOfBookings_T _groupNbOfBookings;
+    
   protected:
     // Attributes
-    /** Reference structure. */
-    Structure_T& _structure;
+    /** The key of both structure and  objects. */
+    Key_T _key;
+    
+    /** Offered capacity of the cabin. */
+    CabinCapacity_T _offeredCapacity;
+
+    /** Physical capacity of the cabin. */
+    CabinCapacity_T _physicalCapacity;
+
+    /** Sold seat into the cabin. */
+    NbOfBookings_T  _soldSeat;
+
+    /** Commited space for all segmentCabin composed by this LegCabin. */
+    CommitedSpace_T  _commitedSpace;
+
+    /** Availability Pool between capacity and commited spaces. */
+    Availability_T _availabilityPool;
+
+    /** Availability Pool between capacity and commited spaces. */
+    Availability_T _availability;
+
+    /** Bid Price Vector. */
+    BidPriceVector_T _bidPriceVector;
+
+    /** Current BidPrice. */
+    BidPrice_T _currentBidPrice;
   };
 
 }

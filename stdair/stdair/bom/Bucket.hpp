@@ -4,49 +4,29 @@
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
-// Boost Fusion
-#include <boost/version.hpp>
-#if BOOST_VERSION >= 103500
-#include <boost/fusion/include/map.hpp>
-#else // BOOST_VERSION >= 103500
-#include <boost/mpl/map.hpp>
-#endif // BOOST_VERSION >= 103500
-// StdAir 
-#include <stdair/bom/BucketContent.hpp>
+// STDAIR 
+#include <stdair/bom/BomAbstract.hpp>
+#include <stdair/bom/BucketKey.hpp>
 #include <stdair/bom/BucketTypes.hpp>
 
 namespace stdair {
-  // Forward declarations.
-  class LegCabin;
-  
-  /** Class representing the actual functional/business content
-      for the Bom root. */
-  class Bucket : public BucketContent {
-    friend class FacBomContent;
+
+  /** Class representing the actual attributes for an airline booking class. */
+  class Bucket : public BomAbstract {
+    template <typename BOM> friend class FacBom;
     
   public:
-    // //////////////////////////////////////////////////////////////////
-    // See the explanations, within the BomRoot class, for all
-    // the types which require to be specified below
-    // //////////////////////////////////////////////////////////////////
-    /** Definition allowing to retrieve the associated BOM structure type. */
-    typedef BucketStructure_T Structure_T;
+    // Type definitions.
+    /** Definition allowing to retrieve the associated BOM key type. */
+    typedef BucketKey Key_T;
 
-    /** Definition allowing to retrieve the associated parent. */
-    typedef LegCabin Parent_T;
+  public:
+    // /////////// Getters ////////////
+    /** Get the booking class key. */
+    const Key_T& getKey() const {
+      return _key;
+    }
 
-    /** Definition allowing to retrieve the map/multimap type using by
-        BomChildrenHolder. */
-    typedef std::map<const MapKey_T, const Structure_T*> Map_T;
-        
-    /** Define the list of children holder types. */
-#if BOOST_VERSION >= 103500
-    typedef boost::fusion::map< > ChildrenHolderMap_T;
-#else // BOOST_VERSION >= 103500
-    typedef boost::mpl::map< > ChildrenHolderMap_T;
-#endif // BOOST_VERSION >= 103500
-    // //////////////////////////////////////////////////////////////////
-    
   public:
     // /////////// Display support methods /////////
     /** Dump a Business Object into an output stream.
@@ -58,31 +38,30 @@ namespace stdair {
     void fromStream (std::istream& ioIn) { }
 
    /** Get the serialised version of the Business Object. */
-    std::string toString() const { return describeKey(); }
+    std::string toString() const;
     
-    /** Get a string describing the whole key (differentiating two objects
-        at any level). */
-    const std::string describeKey() const;
-
+    /** Get a string describing the  key. */
+    const std::string describeKey() const { return _key.toString(); }
+    
   protected:
-    /** Constructors are private so as to force the usage of the Factory
-        layer. */
-    /** Constructors. */
-    Bucket (const Key_T& iKey, Structure_T& ioStructure);
+    /** Default constructors. */
+    Bucket (const Key_T&);
+    Bucket (const Bucket&);
     /** Destructor. */
     ~Bucket();
-    /** Initialise all the pointers of children holder to NULL. */
-    void init();
-    /** Default constructors. */
-    Bucket ();
-    Bucket (const Bucket&);
 
-  private:
+  public:
     // Attributes
-    /** Reference structure. */
-    Structure_T& _structure;
+    /** The key of both structure and  objects. */
+    Key_T _key;
+    // test AIRINV
+    stdair::Yield_T _yieldRangeUpperValue;
+    stdair::CabinCapacity_T _availability;
+    stdair::NbOfSeats_T _nbOfSeats;
+    stdair::SeatIndex_T _seatIndex;
 
   };
 
 }
 #endif // __STDAIR_BOM_BUCKET_HPP
+

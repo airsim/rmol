@@ -66,7 +66,7 @@ namespace stdair {
     /** The list of segment-date whole keys which make the travel solution. */
     KeyList_T _segmentDateKeyList;
     
-    /** The list of booking class  keys which make the travel solution. */
+    /** The list of booking class keys which make the travel solution. */
     ClassList_String_T _bookingClassKeyList;
     
     /** The fare of the travel solution. */

@@ -3,9 +3,14 @@
 // //////////////////////////////////////////////////////////////////////
 // STL
 #include <cassert>
-// StdAir
-#include <stdair/command/CmdBomManager.hpp>
+// STDAIR
+#include <stdair/bom/BomAbstract.hpp>
+#include <stdair/factory/FacAbstract.hpp>
 
 namespace stdair {
-
+    
+  // //////////////////////////////////////////////////////////////////////
+  FacAbstract::~FacAbstract() {
+  }
+  
 }

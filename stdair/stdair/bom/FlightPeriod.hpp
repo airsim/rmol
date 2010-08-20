@@ -4,104 +4,66 @@
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
-// Boost Fusion
-#include <boost/version.hpp>
-#if BOOST_VERSION >= 103500
-#include <boost/fusion/include/map.hpp>
-#else // BOOST_VERSION >= 103500
-#include <boost/mpl/map.hpp>
-#endif // BOOST_VERSION >= 103500
-// StdAir 
-#include <stdair/bom/FlightPeriodContent.hpp>
+// STDAIR 
+#include <stdair/bom/BomAbstract.hpp>
+#include <stdair/bom/FlightPeriodKey.hpp>
 #include <stdair/bom/FlightPeriodTypes.hpp>
-#include <stdair/bom/SegmentPeriodTypes.hpp>
 
 namespace stdair {
-  // Forward declarations
-  class Inventory;
-  class SegmentPeriod;
-  struct SegmentPeriodKey_T;
-  
-  /** Class representing the actual functional/business content for a
-      flight-period. */
-  class FlightPeriod : public FlightPeriodContent {
-    friend class FacBomContent;
+
+  /** Class representing the actual attributes for an airline flight-period. */
+  class FlightPeriod : public BomAbstract {
+    template <typename BOM> friend class FacBom;
 
   public:
-    // Type definitions
-    // //////////////////////////////////////////////////////////////////
-    // See the explanations, within the BomRoot class, for all
-    // the types which require to be specified below
-    // //////////////////////////////////////////////////////////////////
-    /** Definition allowing to retrieve the associated BOM structure type. */
-    typedef FlightPeriodStructure_T Structure_T;
-
-    /** Definition allowing to retrieve the associated parent
-        BOM content type. */
-    typedef Inventory Parent_T;
-
-    /** Definition allowing to retrieve the map/multimap type using by
-        BomChildrenHolder. */
-    typedef std::map<const MapKey_T, const Structure_T*> Map_T;
-
-    /** Define the list of children holder types. */
-#if BOOST_VERSION >= 103500
-    typedef boost::fusion::map<
-      boost::fusion::pair<SegmentPeriod, SegmentPeriodHolder_T*>
-      > ChildrenHolderMap_T;
-#else // BOOST_VERSION >= 103500
-    typedef boost::mpl::map< > ChildrenHolderMap_T;
-#endif // BOOST_VERSION >= 103500
-    // //////////////////////////////////////////////////////////////////
+    // Type definitions.
+    /** Definition allowing to retrieve the associated BOM key type. */
+    typedef FlightPeriodKey Key_T;
 
   public:
-    // /////////// Getters /////////////
-    /** Get the parent object. */
-    const Parent_T& getParent () const;
+    // /////////// Getters ///////////////
+    /** Get the flight-period key. */
+    const Key_T& getKey () const {
+      return _key;
+    }
+    
+    /** Get the flight number (part of the primary key). */
+    const FlightNumber_T& getFlightNumber () const {
+      return _key.getFlightNumber();
+    }
 
-    /** Get a list or map of a children type for iteration methods. */
-    SegmentPeriodList_T getSegmentPeriodList () const;
-    SegmentPeriodMap_T getSegmentPeriodMap () const;
+    /** Get the departure period (part of the key). */
+    const PeriodStruct_T& getPeriod () const {
+      return _key.getPeriod();
+    }
 
-    /** Retrieve, if existing, the SegmentPeriod corresponding to the
-        given SegmentPeriod key.
-        <br>If not existing, return the NULL pointer. */
-    SegmentPeriod* getSegmentPeriod (const SegmentPeriodKey_T&) const;
-  
   public:
     // /////////// Display support methods /////////
     /** Dump a Business Object into an output stream.
         @param ostream& the output stream. */
-    void toStream (std::ostream& ioOut) const;
+    void toStream (std::ostream& ioOut) const { ioOut << toString(); }
 
     /** Read a Business Object from an input stream.
         @param istream& the input stream. */
-    void fromStream (std::istream& ioIn);
+    void fromStream (std::istream& ioIn) { }
 
-    /** Get the serialised version of the Business Object. */
+   /** Get the serialised version of the Business Object. */
     std::string toString() const;
     
-    /** Get a string describing the whole key (differentiating two objects
-        at any level). */
-    const std::string describeKey() const;
-
+    /** Get a string describing the  key. */
+    const std::string describeKey() const { return _key.toString(); }
+    
   protected:
-    /** Constructors are private so as to force the usage of the Factory
-        layer. */
-    /** Constructors. */
-    FlightPeriod (const Key_T&, Structure_T&);
+    /** Default constructors. */
+    FlightPeriod (const Key_T&);
+    FlightPeriod (const FlightPeriod&);
     /** Destructor. */
     ~FlightPeriod();
-    /** Initialise all the pointers of children holder to NULL. */
-    void init();
-    /** Default constructors. */
-    FlightPeriod ();
-    FlightPeriod (const FlightPeriod&);
 
   protected:
     // Attributes
-    /** Reference structure. */
-    Structure_T& _structure;
+    /** The key of both structure and  objects. */
+    Key_T _key;
   };
 
 }

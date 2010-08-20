@@ -5,22 +5,22 @@
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // STDAIR
-#include <stdair/bom/BomKey.hpp>
+#include <stdair/bom/KeyAbstract.hpp>
 
 namespace stdair {
   /** Key of segment-cabin. */
-  struct SegmentCabinKey_T : public BomKey_T {
+  struct SegmentCabinKey : public KeyAbstract {
 
   private:
     // /////////// Default constructor //////////
-    SegmentCabinKey_T () { };
+    SegmentCabinKey () { };
   public:
     // /////////// Construction ///////////
     /** Constructor. */
-    SegmentCabinKey_T (const CabinCode_T& iCabinCode);
-    SegmentCabinKey_T (const SegmentCabinKey_T&);
+    SegmentCabinKey (const CabinCode_T& iCabinCode);
+    SegmentCabinKey (const SegmentCabinKey&);
     /** Destructor. */
-    ~SegmentCabinKey_T ();
+    ~SegmentCabinKey ();
     
     // /////////// Getters //////////
     /** Get the cabin code. */

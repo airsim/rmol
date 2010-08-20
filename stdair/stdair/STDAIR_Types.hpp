@@ -39,11 +39,17 @@ namespace stdair {
 
   class NonInitialisedServiceException : public RootException { };
 
+  class NonInitialisedContainerException : public RootException { };
+
+  class NonInitialisedRelationShip : public RootException { };
+
   class MemoryAllocationException : public RootException { };
 
   class ObjectLinkingException : public RootException { };
 
   class ParserException : public RootException { };
+
+  class DocumentNotFoundException : public RootException { };
 
   class CodeConversionException : public ParserException { };
 
@@ -57,8 +63,6 @@ namespace stdair {
 
   class SQLDatabaseConnectionImpossibleException : public SQLDatabaseException {
   };
-
-  class DocumentNotFoundException : public RootException { };
 
   // /////////////// Log /////////////
   /** Level of logs. */
@@ -216,7 +220,7 @@ namespace stdair {
   typedef double MeanValue_T;
 
   /** Define a standard deviation value (e.g., 1.5). */
-  typedef double StandardDeviationValue_T;
+  typedef double StdDevValue_T;
 
   /** Define the cabin capacity (resource, e.g., 200 seats).
       <br>The capacity is expressed as a double to cope with overbooking. */
@@ -421,9 +425,6 @@ namespace stdair {
   /** Probability */
   typedef float Probability_T;
 
-  /** Dictionary key. */
-  typedef unsigned char DictionaryKey_T;
-
   // //////////////////////////////////////////////////////////////////////
   // Date / Time
   /** Time duration in (integer) number of seconds */
@@ -476,4 +477,82 @@ namespace stdair {
   typedef std::map<CabinCode_T, ClassList_String_T> CabinBookingClassMap_T;
   
 }
+
+#define CATCH \
+  catch (const stdair::FileNotFoundException& ex) {  \
+   std::cerr << "FileNotFoundException" << std::endl; \
+   return -1; \
+   \
+  } catch (const stdair::NonInitialisedLogServiceException& ex) {  \
+   std::cerr << "NonInitialisedLogServiceException" << std::endl; \
+   return -1; \
+   \
+  } catch (const stdair::NonInitialisedDBSessionManagerException& ex) {  \
+   std::cerr << "NonInitialisedDBSessionManagerException" << std::endl; \
+   return -1; \
+   \
+  } catch (const stdair::NonInitialisedServiceException& ex) {  \
+   std::cerr << "NonInitialisedServiceException" << std::endl; \
+   return -1; \
+   \
+  } catch (const stdair::NonInitialisedContainerException& ex) {  \
+   std::cerr << "NonInitialisedContainerException" << std::endl; \
+   return -1; \
+   \
+  } catch (const stdair::NonInitialisedRelationShip& ex) {  \
+   std::cerr << "NonInitialisedRelationShip" << std::endl; \
+   return -1; \
+   \
+  } catch (const stdair::MemoryAllocationException& ex) {  \
+   std::cerr << "MemoryAllocationException" << std::endl; \
+   return -1; \
+   \
+  } catch (const stdair::ObjectLinkingException& ex) {  \
+   std::cerr << "ObjectLinkingException" << std::endl; \
+   return -1; \
+   \
+  } catch (const stdair::CodeConversionException& ex) {  \
+   std::cerr << "CodeConversionException" << std::endl; \
+   return -1; \
+   \
+  } catch (const stdair::CodeDuplicationException& ex) {  \
+   std::cerr << "CodeDuplicationException" << std::endl; \
+   return -1; \
+   \
+  } catch (const stdair::ObjectCreationgDuplicationException& ex) {  \
+   std::cerr << "ObjectCreationgDuplicationException" << std::endl; \
+   return -1; \
+   \
+  } catch (const stdair::ObjectNotFoundException& ex) {  \
+   std::cerr << "ObjectNotFoundException" << std::endl; \
+   return -1; \
+   \
+  } catch (const stdair::DocumentNotFoundException& ex) {  \
+   std::cerr << "DocumentNotFoundException" << std::endl; \
+   return -1; \
+   \
+  } catch (const stdair::SQLDatabaseConnectionImpossibleException& ex) {  \
+   std::cerr << "SQLDatabaseConnectionImpossibleException" << std::endl; \
+   return -1; \
+   \
+  } catch (const stdair::SQLDatabaseException& ex) {  \
+   std::cerr << "SQLDatabaseException" << std::endl; \
+   return -1; \
+   \
+  } catch (const stdair::ParserException& ex) {  \
+   std::cerr << "ParserException" << std::endl; \
+   return -1; \
+   \
+  } catch (const stdair::RootException& ex) { \
+   std::cerr << "RootException" << std::endl; \
+   return -1; \
+   \
+  } catch (const std::exception& stde) { \
+   std::cerr << "Standard exception: " << stde.what() << std::endl; \
+   return -1; \
+   \
+  } catch (...) { \
+   return -1; \
+  } \
+
 #endif // __STDAIR_STDAIR_TYPES_HPP

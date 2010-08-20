@@ -7,30 +7,30 @@
 namespace stdair {
 
   // ////////////////////////////////////////////////////////////////////
-  LegCabinKey_T::LegCabinKey_T (const CabinCode_T& iCabinCode)
+  LegCabinKey::LegCabinKey (const CabinCode_T& iCabinCode)
     : _cabinCode (iCabinCode) {
   }
 
   // ////////////////////////////////////////////////////////////////////
-  LegCabinKey_T::LegCabinKey_T (const LegCabinKey_T& iKey)
+  LegCabinKey::LegCabinKey (const LegCabinKey& iKey)
     : _cabinCode (iKey._cabinCode) {
   }
 
   // ////////////////////////////////////////////////////////////////////
-  LegCabinKey_T::~LegCabinKey_T () {
+  LegCabinKey::~LegCabinKey () {
   }
 
   // ////////////////////////////////////////////////////////////////////
-  void LegCabinKey_T::toStream (std::ostream& ioOut) const {
+  void LegCabinKey::toStream (std::ostream& ioOut) const {
     ioOut << "LegCabinKey: " << toString() << std::endl;
   }
 
   // ////////////////////////////////////////////////////////////////////
-  void LegCabinKey_T::fromStream (std::istream& ioIn) {
+  void LegCabinKey::fromStream (std::istream& ioIn) {
   }
 
   // ////////////////////////////////////////////////////////////////////
-  const std::string LegCabinKey_T::toString() const {
+  const std::string LegCabinKey::toString() const {
     std::ostringstream oStr;
     oStr << _cabinCode;
     return oStr.str();

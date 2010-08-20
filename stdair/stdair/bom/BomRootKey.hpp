@@ -5,18 +5,18 @@
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // STDAIR
-#include <stdair/bom/BomKey.hpp>
+#include <stdair/bom/KeyAbstract.hpp>
 
 namespace stdair {
   /** Key of the BOM structure root. */
-  struct BomRootKey_T : public BomKey_T {
+  struct BomRootKey : public KeyAbstract {
 
   public:
     // /////////// Construction ///////////
     /** Constructor. */
-    BomRootKey_T ();
+    BomRootKey ();
     /** Destructor. */
-    ~BomRootKey_T ();
+    ~BomRootKey ();
     
     // /////////// Display support methods /////////
     /** Dump a Business Object Key into an output stream.

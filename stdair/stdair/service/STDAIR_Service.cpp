@@ -9,9 +9,9 @@
 #include <stdair/bom/BomRoot.hpp>
 #include <stdair/bom/Inventory.hpp>
 #include <stdair/bom/YieldStore.hpp>
-#include <stdair/factory/FacSupervisor.hpp>
-#include <stdair/factory/FacBomContent.hpp>
+#include <stdair/factory/FacBom.hpp>
 #include <stdair/command/CmdBomManager.hpp>
+#include <stdair/service/FacSupervisor.hpp>
 #include <stdair/service/Logger.hpp>
 #include <stdair/service/DBSessionManager.hpp>
 #include <stdair/STDAIR_Service.hpp>
@@ -20,19 +20,19 @@ namespace stdair {
 
   // //////////////////////////////////////////////////////////////////////
   STDAIR_Service::STDAIR_Service ()
-    : _bomRoot (FacBomContent::instance().create<BomRoot>()) {
+    : _bomRoot (FacBom<BomRoot>::instance().create()) {
     assert (false);
   }
 
   // //////////////////////////////////////////////////////////////////////
   STDAIR_Service::STDAIR_Service (const STDAIR_Service& iService) 
-    : _bomRoot (FacBomContent::instance().create<BomRoot>()) {
+    : _bomRoot (FacBom<BomRoot>::instance().create()) {
     assert (false);
   }
 
   // //////////////////////////////////////////////////////////////////////
   STDAIR_Service::STDAIR_Service (const BasLogParams& iLogParams)  
-    : _bomRoot (FacBomContent::instance().create<BomRoot>()) {
+    : _bomRoot (FacBom<BomRoot>::instance().create()) {
     // The root of the BOM tree, on which all of the other BOM objects
     // will be attached, is being created with the STDAIR_Service constructor.
 
@@ -45,8 +45,8 @@ namespace stdair {
 
   // //////////////////////////////////////////////////////////////////////
   STDAIR_Service::STDAIR_Service (const BasLogParams& iLogParams,
-                                  const BasDBParams& iDBParams)  
-    : _bomRoot (FacBomContent::instance().create<BomRoot>()) {
+                                  const BasDBParams& iDBParams) 
+    : _bomRoot (FacBom<BomRoot>::instance().create()) { 
     // The root of the BOM tree, on which all of the other BOM objects
     // will be attached, is being created with the STDAIR_Service constructor.
 

@@ -7,25 +7,25 @@
 namespace stdair {
 
   // ////////////////////////////////////////////////////////////////////
-  BookingClassKey_T::BookingClassKey_T (const ClassCode_T& iClassCode)
+  BookingClassKey::BookingClassKey (const ClassCode_T& iClassCode)
     : _classCode (iClassCode) {
   }
 
   // ////////////////////////////////////////////////////////////////////
-  BookingClassKey_T::~BookingClassKey_T () {
+  BookingClassKey::~BookingClassKey () {
   }
 
   // ////////////////////////////////////////////////////////////////////
-  void BookingClassKey_T::toStream (std::ostream& ioOut) const {
+  void BookingClassKey::toStream (std::ostream& ioOut) const {
     ioOut << "BookingClassKey: " << toString() << std::endl;
   }
 
   // ////////////////////////////////////////////////////////////////////
-  void BookingClassKey_T::fromStream (std::istream& ioIn) {
+  void BookingClassKey::fromStream (std::istream& ioIn) {
   }
 
   // ////////////////////////////////////////////////////////////////////
-  const std::string BookingClassKey_T::toString() const {
+  const std::string BookingClassKey::toString() const {
     std::ostringstream oStr;
     oStr << _classCode;
     return oStr.str();

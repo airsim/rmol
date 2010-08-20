@@ -5,22 +5,22 @@
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // STDAIR
-#include <stdair/bom/BomKey.hpp>
+#include <stdair/bom/KeyAbstract.hpp>
 
 namespace stdair {
   /** Key of segment-date. */
-  struct SegmentDateKey_T : public BomKey_T {
+  struct SegmentDateKey : public KeyAbstract {
 
   private:
     // /////////// Default constructor //////////
-    SegmentDateKey_T () { };
+    SegmentDateKey () { };
   public:
     // /////////// Construction ///////////
     /** Constructors. */
-    SegmentDateKey_T (const AirportCode_T&, const AirportCode_T&);
-    SegmentDateKey_T (const SegmentDateKey_T&);
+    SegmentDateKey (const AirportCode_T&, const AirportCode_T&);
+    SegmentDateKey (const SegmentDateKey&);
     /** Destructor. */
-    ~SegmentDateKey_T ();
+    ~SegmentDateKey ();
     
     // /////////// Getters //////////
     /** Get the boardinging point. */

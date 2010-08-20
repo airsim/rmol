@@ -5,18 +5,18 @@
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // STDAIR
-#include <stdair/bom/BomKey.hpp>
+#include <stdair/bom/KeyAbstract.hpp>
 
 namespace stdair {
   /** Key of booking-class. */
-  struct BookingClassKey_T : public BomKey_T {
+  struct BookingClassKey : public KeyAbstract {
     
   public:
     // /////////// Construction ///////////
     /** Constructor. */
-    BookingClassKey_T (const ClassCode_T& iClassCode);
+    BookingClassKey (const ClassCode_T& iClassCode);
     /** Destructor. */
-    ~BookingClassKey_T ();
+    ~BookingClassKey ();
     
     // /////////// Getters //////////
     /** Get the class code. */

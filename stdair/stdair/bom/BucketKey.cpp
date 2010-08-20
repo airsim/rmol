@@ -7,24 +7,24 @@
 namespace stdair {
 
   // ////////////////////////////////////////////////////////////////////
-  BucketKey_T::BucketKey_T () {
+  BucketKey::BucketKey () {
   }
 
   // ////////////////////////////////////////////////////////////////////
-  BucketKey_T::~BucketKey_T () {
+  BucketKey::~BucketKey () {
   }
 
   // ////////////////////////////////////////////////////////////////////
-  void BucketKey_T::toStream (std::ostream& ioOut) const {
+  void BucketKey::toStream (std::ostream& ioOut) const {
     ioOut << "BucketKey: " << toString() << std::endl;
   }
 
   // ////////////////////////////////////////////////////////////////////
-  void BucketKey_T::fromStream (std::istream& ioIn) {
+  void BucketKey::fromStream (std::istream& ioIn) {
   }
 
   // ////////////////////////////////////////////////////////////////////
-  const std::string BucketKey_T::toString() const {
+  const std::string BucketKey::toString() const {
     std::ostringstream oStr;
     return oStr.str();
   }

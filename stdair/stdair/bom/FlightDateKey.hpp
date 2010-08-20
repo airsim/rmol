@@ -5,22 +5,22 @@
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // STDAIR
-#include <stdair/bom/BomKey.hpp>
+#include <stdair/bom/KeyAbstract.hpp>
 
 namespace stdair {
   /** Key of flight-date. */
-  struct FlightDateKey_T : public BomKey_T {
+  struct FlightDateKey : public KeyAbstract {
     
   private:
     // /////////// Default constructor //////////
-    FlightDateKey_T () { };
+    FlightDateKey () { };
   public:
     // /////////// Construction ///////////
     /** Constructors. */
-    FlightDateKey_T (const FlightNumber_T&, const Date_T&);
-    FlightDateKey_T (const FlightDateKey_T&);
+    FlightDateKey (const FlightNumber_T&, const Date_T&);
+    FlightDateKey (const FlightDateKey&);
     /** Destructor. */
-    ~FlightDateKey_T ();
+    ~FlightDateKey ();
     
     // /////////// Getters //////////
     /** Get the flight number. */

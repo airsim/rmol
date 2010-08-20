@@ -1,8 +1,7 @@
 stdair_fac_h_sources = \
-		$(top_srcdir)/stdair/factory/FacSupervisor.hpp \
-		$(top_srcdir)/stdair/factory/FacBomStructure.hpp \
-		$(top_srcdir)/stdair/factory/FacBomContent.hpp 
+		$(top_srcdir)/stdair/factory/FacAbstract.hpp \
+		$(top_srcdir)/stdair/factory/FacBomManager.hpp \
+		$(top_srcdir)/stdair/factory/FacBom.hpp
 stdair_fac_cc_sources = \
-		$(top_srcdir)/stdair/factory/FacSupervisor.cpp \
-		$(top_srcdir)/stdair/factory/FacBomStructure.cpp \
-		$(top_srcdir)/stdair/factory/FacBomContent.cpp
+		$(top_srcdir)/stdair/factory/FacAbstract.cpp \
+		$(top_srcdir)/stdair/factory/FacBomManager.cpp

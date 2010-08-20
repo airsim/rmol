@@ -5,24 +5,24 @@
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // STDAIR
-#include <stdair/bom/BomKey.hpp>
+#include <stdair/bom/KeyAbstract.hpp>
 
 namespace stdair {
 
   /** Key of YieldStore. */
-  struct YieldStoreKey_T : public BomKey_T {
+  struct YieldStoreKey : public KeyAbstract {
     
   private:
     // /////////// Default constructor //////////
-    YieldStoreKey_T () { };
+    YieldStoreKey () { };
     
   public:
     // /////////// Construction ///////////
     /** Constructors. */
-    YieldStoreKey_T (const AirlineCode_T& iAirlineCode);
-    YieldStoreKey_T (const YieldStoreKey_T&);
+    YieldStoreKey (const AirlineCode_T& iAirlineCode);
+    YieldStoreKey (const YieldStoreKey&);
     /** Destructor. */
-    ~YieldStoreKey_T ();
+    ~YieldStoreKey ();
     
     // /////////// Getters //////////
     /** Get the airline code. */

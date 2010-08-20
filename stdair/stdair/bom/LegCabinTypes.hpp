@@ -7,28 +7,20 @@
 // //////////////////////////////////////////////////////////////////////
 // STL
 #include <map>
-#include <vector>
+#include <list>
+// STDAIR
+#include <stdair/STDAIR_Types.hpp>
 
 namespace stdair {
 
   // Forward declarations.
-  template <typename CONTENT> class Structure;
-  template <typename CONTENT> class BomChildrenHolderImp;
-  template <typename BOM> struct BomList_T;
-  template <typename BOM> struct BomMap_T;
   class LegCabin;
-  
-  /** Define the LegCabin structure. */
-  typedef Structure<LegCabin> LegCabinStructure_T;
-  
-  /** Define the LegCabin holder. */
-  typedef BomChildrenHolderImp<LegCabin> LegCabinHolder_T;
 
  /** Define the leg-cabin list. */
-  typedef BomList_T<LegCabin> LegCabinList_T;
+  typedef std::list<LegCabin*> LegCabinList_T;
 
   /** Define the leg-cabin map. */
-  typedef BomMap_T<LegCabin> LegCabinMap_T;
+  typedef std::map<const MapKey_T, LegCabin*> LegCabinMap_T;
 
 }
 #endif // __STDAIR_BOM_LEGCABINTYPES_HPP

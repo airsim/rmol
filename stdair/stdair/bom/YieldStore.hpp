@@ -4,50 +4,22 @@
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
-// Boost Fusion
-#include <boost/version.hpp>
-#if BOOST_VERSION >= 103500
-#include <boost/fusion/include/map.hpp>
-#else // BOOST_VERSION >= 103500
-#include <boost/mpl/map.hpp>
-#endif // BOOST_VERSION >= 103500
-// StdAir 
-#include <stdair/bom/YieldStoreContent.hpp>
+// STDAIR
+#include <stdair/bom/BomAbstract.hpp>
+#include <stdair/bom/YieldStoreKey.hpp>
 #include <stdair/bom/YieldStoreTypes.hpp>
 
 namespace stdair {
 
-  // Forward declarations.
-  class BomRoot;
-  
-  /** Class representing the actual functional/business content
-      for the Bom root. */
-  class YieldStore : public YieldStoreContent {
-    friend class FacBomContent;
-    
-  public:
-    // //////////////////////////////////////////////////////////////////
-    // See the explanations, within the BomRoot class, for all
-    // the types which require to be specified below
-    // //////////////////////////////////////////////////////////////////
-    /** Definition allowing to retrieve the associated BOM structure type. */
-    typedef YieldStoreStructure_T Structure_T;
+  /** Class representing the actual attributes for an airline YieldStore. */
+  class YieldStore : public BomAbstract {
+    template <typename BOM> friend class FacBom;
 
-    /** Definition allowing to retrieve the associated parent. */
-    typedef BomRoot Parent_T;
+  public :
+    // Type definitions
+    /** Definition allowing to retrieve the associated BOM key type. */
+    typedef YieldStoreKey Key_T;
 
-    /** Definition allowing to retrieve the map/multimap type using by
-        BomChildrenHolder. */
-    typedef std::map<const MapKey_T, const Structure_T*> Map_T;
-    
-    /** Define the list of children holder types. */
-#if BOOST_VERSION >= 103500
-    typedef boost::fusion::map< > ChildrenHolderMap_T;
-#else // BOOST_VERSION >= 103500
-    typedef boost::mpl::map< > ChildrenHolderMap_T;
-#endif // BOOST_VERSION >= 103500
-    // //////////////////////////////////////////////////////////////////
-    
   public:
     // /////////// Display support methods /////////
     /** Dump a Business Object into an output stream.
@@ -59,31 +31,36 @@ namespace stdair {
     void fromStream (std::istream& ioIn) { }
 
    /** Get the serialised version of the Business Object. */
-    std::string toString() const { return describeKey(); }
+    std::string toString() const;
     
-    /** Get a string describing the whole key (differentiating two objects
-        at any level). */
+    /** Get a string describing the key. */
     const std::string describeKey() const { return _key.toString(); }
 
+  public:
+    // ////////// Getters ////////////
+    /** Get the YieldStore key. */
+    const Key_T& getKey() const {
+      return _key;
+    }
+
+    /** Get the airline code. */
+    const AirlineCode_T& getAirlineCode () const {
+      return _key.getAirlineCode();
+    }
     
   protected:
-    /** Constructors are private so as to force the usage of the Factory
-        layer. */
-    /** Constructors. */
-    YieldStore (const Key_T& iKey, Structure_T& ioStructure);
+    /** Default constructors. */
+    YieldStore (const Key_T&);
+    YieldStore (const YieldStore&);
     /** Destructor. */
     ~YieldStore();
-    /** Initialise all the pointers of children holder to NULL. */
-    void init();
-    /** Default constructors. */
-    YieldStore ();
-    YieldStore (const YieldStore&);
 
-  private:
+  protected:
     // Attributes
-    /** Reference structure. */
-    Structure_T& _structure;
+    /** The key of both structure and  objects. */
+    Key_T _key;
   };
 
 }
 #endif // __STDAIR_BOM_YIELDSTORE_HPP
+

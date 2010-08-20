@@ -7,28 +7,20 @@
 // //////////////////////////////////////////////////////////////////////
 // STL
 #include <map>
-#include <vector>
+#include <list>
+// STDAIR
+#include <stdair/STDAIR_Types.hpp>
 
 namespace stdair {
 
   // Forward declarations.
-  template <typename CONTENT> class Structure;
-  template <typename CONTENT> class BomChildrenHolderImp;
-  template <typename BOM> struct BomList_T;
-  template <typename BOM> struct BomMap_T;
   class FlightDate;
-  
-  /** Define the FlightDate structure. */
-  typedef Structure<FlightDate> FlightDateStructure_T;
-  
-  /** Define the FlightDate holder. */
-  typedef BomChildrenHolderImp<FlightDate> FlightDateHolder_T;
 
   /** Define the flight-date list. */
-  typedef BomList_T<FlightDate> FlightDateList_T;
+  typedef std::list<FlightDate*> FlightDateList_T;
 
   /** Define the flight-date map. */
-  typedef BomMap_T<FlightDate> FlightDateMap_T;
+  typedef std::map<const MapKey_T, FlightDate*> FlightDateMap_T;
 }
 #endif // __STDAIR_BOM_FLIGHTDATETYPES_HPP
 

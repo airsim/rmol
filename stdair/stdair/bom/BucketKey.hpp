@@ -5,19 +5,19 @@
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // STDAIR
-#include <stdair/bom/BomKey.hpp>
+#include <stdair/bom/KeyAbstract.hpp>
 
 namespace stdair {
   /** Key of booking-class. */
-  struct BucketKey_T : public BomKey_T {
+  struct BucketKey : public KeyAbstract {
     
   public:
     // /////////// Construction ///////////
     /** Constructor. */
-    BucketKey_T ();
+    BucketKey ();
 
     /** Destructor. */
-    ~BucketKey_T ();
+    ~BucketKey ();
     
     // /////////// Display support methods /////////
     /** Dump a Business Object Key into an output stream.

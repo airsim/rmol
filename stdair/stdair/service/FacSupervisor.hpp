@@ -1,28 +1,26 @@
-#ifndef __STDAIR_FAC_FACSUPERVISOR_HPP
-#define __STDAIR_FAC_FACSUPERVISOR_HPP
+#ifndef __STDAIR_SVC_FACSUPERVISOR_HPP
+#define __STDAIR_SVC_FACSUPERVISOR_HPP
 
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // STL
 #include <iosfwd>
-#include <vector>
+#include <list>
 // StdAir
 #include <stdair/STDAIR_Types.hpp>
 
 namespace stdair {
-
   // Forward declarations
-  class FacBomStructure;
-  class FacBomContent;
+  class FacAbstract;
+  class RelationShipAbstract;
 
   /** Singleton class to register and clean all Factories. */
   class FacSupervisor {
   public:
-
     /** Define the pool (list) of factories. */
-    typedef std::vector<FacBomStructure*> BomStructureFactoryPool_T;
-    typedef std::vector<FacBomContent*> BomContentFactoryPool_T;
+    typedef std::list<FacAbstract*> FactoryPool_T;
+    typedef std::list<RelationShipAbstract*> RelationShipPool_T;
     
     /** Provide the unique (static) instance of the FacSupervisor object.
         <br>The singleton is instantiated when first used.
@@ -30,28 +28,22 @@ namespace stdair {
     static FacSupervisor& instance();
 
     /** Register a newly instantiated concrete factory for the
-        BomStructure layer.
+        Bom layer.
         <br>When a concrete Factory is firstly instantiated
         this factory have to register itself to the FacSupervisor
-        @param FacBomStructure* The concrete Factory to register. */
-    void registerBomStructureFactory (FacBomStructure*);
+        @param FacBom* The concrete Factory to register. */
+    void registerFacBom (FacAbstract*);
 
-    /** Register a newly instantiated concrete factory for the
-        BomContent layer.
-        <br>When a concrete Factory is firstly instantiated
-        this factory have to register itself to the FacSupervisor
-        @param FacBomContent* The concrete Factory to register. */
-    void registerBomContentFactory (FacBomContent*);
+    /** Register a newly instantiated concrete relation ship. */
+    void registerRelationShip (RelationShipAbstract*);
 
     /** Clean all registered object.
         <br>Call the clean method of all the instantiated factories
         for the BomStructure layer. */
-    void cleanBomStructureLayer();
+    void cleanBomLayer();
 
-    /** Clean all the registered object.
-        <br>Call the clean method of all the instantiated factories
-        for the BomContent layer. */
-    void cleanBomContentLayer();
+    /** Clean all registered relation ships. */
+    void cleanRelationShips();
 
     /** Delete the static instance of the Logger object. */
     static void cleanLoggerService();
@@ -77,16 +69,13 @@ namespace stdair {
     FacSupervisor () {}
     FacSupervisor (const FacSupervisor&) {}
 
-
   private:
     /** The unique instance.*/
     static FacSupervisor* _instance;
-
-    /** List of instantiated factories for the BomStructure layer. */
-    BomStructureFactoryPool_T _facBomStructurePool;
-
-    /** List of instantiated factories for the BomContent layer. */
-    BomContentFactoryPool_T _facBomContentPool;
+    /** List of instantiated factories for the BOM layer. */
+    FactoryPool_T _facPool;
+    /** List of instantiated relation ships. */
+    RelationShipPool_T _relationShipPool;
   };
 }  
-#endif // __STDAIR_FAC_FACSUPERVISOR_HPP
+#endif // __STDAIR_SVC_FACSUPERVISOR_HPP

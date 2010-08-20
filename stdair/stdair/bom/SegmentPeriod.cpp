@@ -3,63 +3,38 @@
 // //////////////////////////////////////////////////////////////////////
 // STL
 #include <cassert>
-#include <iostream>
-#include <algorithm>
 // STDAIR
-#include <stdair/bom/BomSource.hpp>
+#include <stdair/basic/BasConst_BookingClass.hpp>
+#include <stdair/bom/SegmentPeriod.hpp>
 
 namespace stdair {
 
   // ////////////////////////////////////////////////////////////////////
-  SegmentPeriod::SegmentPeriod (const Key_T& iKey,
-                          Structure_T& ioSegmentStructure)
-    : SegmentPeriodContent (iKey), _structure (ioSegmentStructure) {
-    init ();
+  SegmentPeriod::SegmentPeriod (const Key_T& iKey)
+    : _key (iKey), _boardingDateOffset (0), _offDateOffset (0) {
   }
 
   // ////////////////////////////////////////////////////////////////////
   SegmentPeriod::~SegmentPeriod () {
-  }
-
-  // ////////////////////////////////////////////////////////////////////
-  void SegmentPeriod::init() {
-  }
-  
-  // ////////////////////////////////////////////////////////////////////
-  void SegmentPeriod::toStream (std::ostream& ioOut) const {
-    ioOut << toString() << std::endl;
-  }
-
-  // ////////////////////////////////////////////////////////////////////
-  void SegmentPeriod::fromStream (std::istream& ioIn) {
   }
   
   // ////////////////////////////////////////////////////////////////////
   std::string SegmentPeriod::toString() const {
     std::ostringstream oStr;
     
-    // First, put the key of that level
-    oStr << describeShortKey() << std::endl;
+    oStr << describeKey() << std::endl;
 
     return oStr.str();
   }
-    
-  // ////////////////////////////////////////////////////////////////////
-  const std::string SegmentPeriod::describeKey() const {
-    std::ostringstream oStr;
-    oStr << _structure.describeParentKey() << ", " << describeShortKey();
-    return oStr.str();
-  }
 
   // ////////////////////////////////////////////////////////////////////
-  const SegmentPeriod::Parent_T& SegmentPeriod::getParent () const {
-    return _structure.getParent().getContent();
+  void SegmentPeriod::
+  addCabinBookingClassList (const CabinCode_T& iCabinCode,
+                            const ClassList_String_T& iClassCodeList) {
+    const bool insert = _cabinBookingClassMap.
+      insert (CabinBookingClassMap_T::value_type (iCabinCode, 
+						  iClassCodeList)).second;
+    assert (insert == true);
   }
 
-  // ////////////////////////////////////////////////////////////////////
-  const PeriodStruct_T& SegmentPeriod::getPeriod () const {
-    return getParent().getPeriod();
-  }
-  
 }
-

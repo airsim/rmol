@@ -5,27 +5,22 @@
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
+// STL
+#include <map>
+#include <list>
+// STDAIR
+#include <stdair/STDAIR_Types.hpp>
 
 namespace stdair {
 
   // Forward declarations.
-  template <typename CONTENT> class Structure;
-  template <typename CONTENT> class BomChildrenHolderImp;
-  template <typename BOM> struct BomList_T;
-  template <typename BOM> struct BomMap_T;
   class YieldStore;
-  
-  /** Define the BomRootStructure. */
-  typedef Structure<YieldStore> YieldStoreStructure_T;
-
-  /** Define the Inventory holder type. */
-  typedef BomChildrenHolderImp<YieldStore> YieldStoreHolder_T;
 
   /** Define the Inventory list. */
-  typedef BomList_T<YieldStore> YieldStoreList_T;
+  typedef std::list<YieldStore*> YieldStoreList_T;
   
   /** Define the Inventory map. */
-  typedef BomMap_T<YieldStore> YieldStoreMap_T;
+  typedef std::map<const MapKey_T, YieldStore*> YieldStoreMap_T;
   
 }
 #endif // __STDAIR_BOM_YIELDSTORETYPES_HPP

@@ -15,8 +15,8 @@ namespace stdair {
   
   /** Event queue. */
   struct EventQueue : public StructAbstract {
-
   public:
+    // ////////// Display methods //////////
    /** Read a Business Object from an input stream.
         @param istream& the input stream. */
     void fromStream (std::istream& ioIn) {}

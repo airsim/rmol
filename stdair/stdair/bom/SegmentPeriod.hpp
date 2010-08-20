@@ -4,93 +4,133 @@
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
-// Boost Fusion
-#include <boost/version.hpp>
-#if BOOST_VERSION >= 103500
-#include <boost/fusion/include/map.hpp>
-#else // BOOST_VERSION >= 103500
-#include <boost/mpl/map.hpp>
-#endif // BOOST_VERSION >= 103500
-// StdAir 
-#include <stdair/bom/SegmentPeriodContent.hpp>
+// STDAIR
+#include <stdair/bom/BomAbstract.hpp>
+#include <stdair/bom/SegmentPeriodKey.hpp>
 #include <stdair/bom/SegmentPeriodTypes.hpp>
 
 namespace stdair {
-  // Forward declarations
-  class FlightPeriod;
-  
-  /** Class representing the actual functional/business content for a
-      segment-period. */
-  class SegmentPeriod : public SegmentPeriodContent {
-    friend class FacBomContent;
+
+  /** Class representing the actual attributes for an airline segment-period. */
+  class SegmentPeriod : public BomAbstract {
+    template <typename BOM> friend class FacBom;
 
   public:
-    // Type definitions
-    // //////////////////////////////////////////////////////////////////
-    // See the explanations, within the BomRoot class, for all
-    // the types which require to be specified below
-    // //////////////////////////////////////////////////////////////////
-    /** Definition allowing to retrieve the associated BOM structure type. */
-    typedef SegmentPeriodStructure_T Structure_T;
+    // Type definitions.
+    /** Definition allowing to retrieve the associated BOM key type. */
+    typedef SegmentPeriodKey Key_T;
 
-    /** Definition allowing to retrieve the associated parent
-        BOM content type. */
-    typedef FlightPeriod Parent_T;
-
-    /** Definition allowing to retrieve the map/multimap type using by
-        BomChildrenHolder. */
-    typedef std::map<const MapKey_T, const Structure_T*> Map_T;
-
-    /** Define the list of children holder types. */
-#if BOOST_VERSION >= 103500
-    typedef boost::fusion::map< > ChildrenHolderMap_T;
-#else // BOOST_VERSION >= 103500
-    typedef boost::mpl::map< > ChildrenHolderMap_T;
-#endif // BOOST_VERSION >= 103500
-    // //////////////////////////////////////////////////////////////////
- 
   public:
     // /////////// Getters /////////////
-    /** Get the parent object. */
-    const Parent_T& getParent () const;
+    /** Get the segment-period key. */
+    const Key_T& getKey() const {
+      return _key;
+    }
+    
+    /** Get the boarding point (part of the primary key). */
+    const AirportCode_T& getBoardingPoint () const {
+      return _key.getBoardingPoint();
+    }
 
-    /** Get the departure period of the flight-date parent. */
-    const PeriodStruct_T& getPeriod () const;
+    /** Get the off point (part of the primary key). */
+    const AirportCode_T& getOffPoint () const {
+      return _key.getOffPoint();
+    }
 
+    /** Get the boarding time. */
+    const Duration_T& getBoardingTime () const {
+      return _boardingTime;
+    }
+
+    /** Get the off time. */
+    const Duration_T& getOffTime () const {
+      return _offTime;
+    }
+
+    /** Get the boarding date offset. */
+    const DateOffset_T& getBoardingDateOffset () const {
+      return _boardingDateOffset;
+    }
+
+    /** Get the off date offset. */
+    const DateOffset_T& getOffDateOffset () const {
+      return _offDateOffset;
+    }
+    
+    /** Get the elapsed time. */
+    const Duration_T& getElapsedTime() const {
+      return _elapsedTime;
+    }
+
+    /** Get the cabin booking class map. */
+    const CabinBookingClassMap_T& getCabinBookingClassMap () const {
+      return _cabinBookingClassMap;
+    }
+
+  public:
+    // ///////// Setters //////////
+    /** Set the boarding time. */
+    void setBoardingTime (const Duration_T& iBoardingTime) {
+      _boardingTime = iBoardingTime;
+    }
+
+    /** Set the off time. */
+    void setOffTime (const Duration_T& iOffTime) {
+      _offTime = iOffTime;
+    }
+
+    /** Set the boarding date offset. */
+    void setBoardingDateOffset (const DateOffset_T& iDateOffset) {
+      _boardingDateOffset = iDateOffset;
+    }
+
+    /** Set the off date offset. */
+    void setOffDateOffset (const DateOffset_T& iDateOffset) {
+      _offDateOffset = iDateOffset;
+    }
+
+    /** Set the elapsed time. */
+    void setElapsedTime (const Duration_T& iElapsedTime) {
+      _elapsedTime = iElapsedTime;
+    }
+
+    /** Add a pair cabin code and list of class codes within the cabin to the
+        cabin booking class map. */
+    void addCabinBookingClassList (const CabinCode_T&, 
+                                   const ClassList_String_T&);
+    
   public:
     // /////////// Display support methods /////////
     /** Dump a Business Object into an output stream.
         @param ostream& the output stream. */
-    void toStream (std::ostream& ioOut) const;
+    void toStream (std::ostream& ioOut) const { ioOut << toString(); }
 
     /** Read a Business Object from an input stream.
         @param istream& the input stream. */
-    void fromStream (std::istream& ioIn);
+    void fromStream (std::istream& ioIn) { }
 
-    /** Get the serialised version of the Business Object. */
+   /** Get the serialised version of the Business Object. */
     std::string toString() const;
     
-    /** Get a string describing the whole key (differentiating two objects
-        at any level). */
-    const std::string describeKey() const;
-
+    /** Get a string describing the  key. */
+    const std::string describeKey() const { return _key.toString(); }
+    
   protected:
-    /** Constructors are private so as to force the usage of the Factory
-        layer. */
-    /** Constructors. */
-    SegmentPeriod (const Key_T&, Structure_T&);
+    /** Default constructors. */
+    SegmentPeriod (const Key_T&);
+    SegmentPeriod (const SegmentPeriod&);
     /** Destructor. */
     ~SegmentPeriod();
-    /** Initialise all the pointers of children holder to NULL. */
-    void init();
-    /** Default constructors. */
-    SegmentPeriod ();
-    SegmentPeriod (const SegmentPeriod&);
 
   protected:
     // Attributes
-    /** Reference structure. */
-    Structure_T& _structure;
+    Key_T _key;
+    Duration_T _boardingTime;
+    Duration_T _offTime;
+    DateOffset_T _boardingDateOffset;
+    DateOffset_T _offDateOffset;
+    Duration_T _elapsedTime;
+    CabinBookingClassMap_T _cabinBookingClassMap;
   };
 
 }

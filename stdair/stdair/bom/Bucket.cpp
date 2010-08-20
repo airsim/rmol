@@ -4,29 +4,25 @@
 // STL
 #include <cassert>
 // STDAIR
-#include <stdair/bom/BomSource.hpp>
+#include <stdair/bom/Bucket.hpp>
 
 namespace stdair {
 
   // ////////////////////////////////////////////////////////////////////
-  Bucket::Bucket (const Key_T& iKey, Structure_T& ioBucketStructure)
-    : BucketContent (iKey), _structure (ioBucketStructure) {
-    init ();
+  Bucket::Bucket (const Key_T& iKey)
+    : _key (iKey) {
   }
 
   // ////////////////////////////////////////////////////////////////////
   Bucket::~Bucket () {
   }
-
-  // ////////////////////////////////////////////////////////////////////
-  void Bucket::init () {
-  }
     
   // ////////////////////////////////////////////////////////////////////
-  const std::string Bucket::describeKey() const {
+  std::string Bucket::toString() const {
     std::ostringstream oStr;
-    oStr << _structure.describeParentKey() << ", " << describeShortKey();
+    oStr <<  describeKey();
     return oStr.str();
   }
   
 }
+

@@ -5,22 +5,22 @@
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // STDAIR
-#include <stdair/bom/BomKey.hpp>
+#include <stdair/bom/KeyAbstract.hpp>
 
 namespace stdair {
   /** Key of leg-cabin. */
-  struct LegCabinKey_T : public BomKey_T {
+  struct LegCabinKey : public KeyAbstract {
 
   private:
     // /////////// Default constructor //////////
-    LegCabinKey_T () { };
+    LegCabinKey () { };
   public:
     // /////////// Construction ///////////
     /** Constructors. */
-    LegCabinKey_T (const CabinCode_T& iCabinCode);
-    LegCabinKey_T (const LegCabinKey_T&);
+    LegCabinKey (const CabinCode_T& iCabinCode);
+    LegCabinKey (const LegCabinKey&);
     /** Destructor. */
-    ~LegCabinKey_T ();
+    ~LegCabinKey ();
     
     // /////////// Getters //////////
     /** Get the cabin code. */

@@ -4,102 +4,169 @@
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
-// Boost Fusion
-#include <boost/version.hpp>
-#if BOOST_VERSION >= 103500
-#include <boost/fusion/include/map.hpp>
-#else // BOOST_VERSION >= 103500
-#include <boost/mpl/map.hpp>
-#endif // BOOST_VERSION >= 103500
-// StdAir 
-#include <stdair/bom/LegDateContent.hpp>
+// STDAIR 
+#include <stdair/bom/BomAbstract.hpp>
+#include <stdair/bom/LegDateKey.hpp>
 #include <stdair/bom/LegDateTypes.hpp>
-#include <stdair/bom/LegCabinTypes.hpp>
-#include <stdair/bom/SegmentDateTypes.hpp>
 
 namespace stdair {
-  // Forward declarations
-  class FlightDate;
-  class LegCabin;
-  class SegmentDate;
 
-  /** Class representing the actual functional/business content for a
-      leg-date. */
-  class LegDate : public LegDateContent {
-    friend class FacBomContent;
+  /** Class representing the actual attributes for an airline leg-date. */
+  class LegDate : public BomAbstract {
+    template <typename BOM> friend class FacBom;
 
   public:
-    // //////////////////////////////////////////////////////////////////
-    // See the explanations, within the BomRoot class, for all
-    // the types which require to be specified below
-    // //////////////////////////////////////////////////////////////////
-    /** Definition allowing to retrieve the associated BOM structure type. */
-    typedef LegDateStructure_T Structure_T;
-    
-    /** Definition allowing to retrieve the associated parent
-        BOM content type. */
-    typedef FlightDate Parent_T;
+    // Type definitions.
+    /** Definition allowing to retrieve the associated BOM key type. */
+    typedef LegDateKey Key_T;
 
-    /** Definition allowing to retrieve the map/multimap type using by
-        BomChildrenHolder. */
-    typedef std::map<const MapKey_T, const Structure_T*> Map_T;
-
-    /** Define the list of children holder types. */
-#if BOOST_VERSION >= 103500
-    typedef boost::fusion::map<
-      boost::fusion::pair<LegCabin, LegCabinHolder_T*>,
-      boost::fusion::pair<SegmentDate, SegmentDateHolder_T*>
-      > ChildrenHolderMap_T;
-#else // BOOST_VERSION >= 103500
-    typedef boost::mpl::map< > ChildrenHolderMap_T;
-#endif // BOOST_VERSION >= 103500
-    // //////////////////////////////////////////////////////////////////
-    
   public:
-    // /////////// Getters //////////// 
-    /** Get a list or map of a children type for iteration methods. */
-    LegCabinList_T getLegCabinList () const;
-    LegCabinMap_T getLegCabinMap () const;
-   
-    /** Retrieve, if existing, the LegCabin corresponding to the
-        given cabin code.
-        <br>If not existing, return the NULL pointer. */
-    LegCabin* getLegCabin (const CabinCode_T&) const;
+    // /////////// Getters /////////////
+    /** Get the leg-date key. */
+    const Key_T& getKey() const {
+      return _key;
+    }
+
+    /** Get the boarding point (part of the primary key). */
+    const AirportCode_T& getBoardingPoint () const {
+      return _key.getBoardingPoint();
+    }
+
+    /** Get the off point. */
+    const AirportCode_T& getOffPoint () const {
+      return _offPoint;
+    }
+
+    /** Get the boarding date. */
+    const Date_T& getBoardingDate () const {
+      return _boardingDate;
+    }
+
+    /** Get the boarding time. */
+    const Duration_T& getBoardingTime () const {
+      return _boardingTime;
+    }
+
+    /** Get the off date. */
+    const Date_T& getOffDate () const {
+      return _offDate;
+    }
+
+    /** Get the off time. */
+    const Duration_T& getOffTime () const {
+      return _offTime;
+    }
+
+    /** Get the elapsed time. */
+    const Duration_T& getElapsedTime() const {
+      return _elapsedTime;
+    }
+
+    /** Get the distance. */
+    const Distance_T& getDistance() const {
+      return _distance;
+    }
+
+    /** Get the leg capacity. */
+    const CabinCapacity_T& getCapacity () const {
+      return _capacity;
+    }
+
+    /** Get the date offset (off date - boarding date). */
+    const DateOffset_T getDateOffset () const {
+      return _offDate - _boardingDate;
+    }
+
+    /** Get the time off set between boarding and off points.
+        <br>It is defined as being:
+        TimeOffset = (OffTime - BoardingTime) + (OffDate - BoardingDate) * 24
+        - ElapsedTime. */
+    const Duration_T getTimeOffset() const;
+
+  public:
+    // ///////// Setters //////////
+    /** Set the off point. */
+    void setOffPoint (const AirportCode_T& iOffPoint) {
+      _offPoint = iOffPoint;
+    }
+
+    /** Set the boarding date. */
+    void setBoardingDate (const Date_T& iBoardingDate) {
+      _boardingDate = iBoardingDate;
+    }
+
+    /** Set the boarding time. */
+    void setBoardingTime (const Duration_T& iBoardingTime) {
+      _boardingTime = iBoardingTime;
+    }
+
+    /** Set the off date. */
+    void setOffDate (const Date_T& iOffDate) {
+      _offDate = iOffDate;
+    }
+
+    /** Set the off time. */
+    void setOffTime (const Duration_T& iOffTime) {
+      _offTime = iOffTime;
+    }
+
+    /** Set the elapsed time. */
+    void setElapsedTime (const Duration_T&);
+    
+    /** Method computing the distance of the segment (in kilometers).*/
+    void updateDistanceFromElapsedTime ();
     
   public:
     // /////////// Display support methods /////////
     /** Dump a Business Object into an output stream.
         @param ostream& the output stream. */
-    void toStream (std::ostream& ioOut) const;
+    void toStream (std::ostream& ioOut) const { ioOut << toString(); }
 
     /** Read a Business Object from an input stream.
         @param istream& the input stream. */
-    void fromStream (std::istream& ioIn);
+    void fromStream (std::istream& ioIn) { }
 
    /** Get the serialised version of the Business Object. */
     std::string toString() const;
     
-    /** Get a string describing the whole key (differentiating two objects
-        at any level). */
-    const std::string describeKey() const;
+    /** Get a string describing the  key. */
+    const std::string describeKey() const { return _key.toString(); }
 
   protected:
-    /** Constructors are private so as to force the usage of the Factory
-        layer. */
-    /** Constructors. */
-    LegDate (const Key_T&, Structure_T&);
+    /** Default constructors. */
+    LegDate (const Key_T&);
+    LegDate (const LegDate&);
     /** Destructor. */
     ~LegDate();
-    /** Initialise all the pointers of children holder to NULL. */
-    void init();
-    /** Default constructors. */
-    LegDate ();
-    LegDate (const LegDate&);
 
   protected:
     // Attributes
-    /** Reference structure. */
-    Structure_T& _structure;
+    /** The key of both structure and  objects. */
+    Key_T _key;
+    
+    /** Off Point. */
+    AirportCode_T _offPoint;
+
+    /** Boarding Date. */
+    Date_T _boardingDate;
+
+    /** Boarding Time. */
+    Duration_T _boardingTime;
+
+    /** Off Date. */
+    Date_T _offDate;
+
+    /** Off Time. */
+    Duration_T _offTime;
+
+    /** Elapsed Time. */
+    Duration_T _elapsedTime;
+
+    /** Distance. */
+    Distance_T _distance;
+
+    /** Capacity of the leg. */
+    CabinCapacity_T _capacity;
   };
 
 }

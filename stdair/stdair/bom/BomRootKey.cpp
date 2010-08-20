@@ -7,24 +7,24 @@
 namespace stdair {
 
   // ////////////////////////////////////////////////////////////////////
-  BomRootKey_T::BomRootKey_T () {
+  BomRootKey::BomRootKey () {
   }
 
   // ////////////////////////////////////////////////////////////////////
-  BomRootKey_T::~BomRootKey_T () {
+  BomRootKey::~BomRootKey () {
   }
 
   // ////////////////////////////////////////////////////////////////////
-  void BomRootKey_T::toStream (std::ostream& ioOut) const {
-    ioOut << "BomRootStructureKey: " << toString() << std::endl;
+  void BomRootKey::toStream (std::ostream& ioOut) const {
+    ioOut << "BomRootKey: " << toString() << std::endl;
   }
   
   // ////////////////////////////////////////////////////////////////////
-  void BomRootKey_T::fromStream (std::istream& ioIn) {
+  void BomRootKey::fromStream (std::istream& ioIn) {
   }
   
   // ////////////////////////////////////////////////////////////////////
-  const std::string BomRootKey_T::toString() const {
+  const std::string BomRootKey::toString() const {
     std::ostringstream oStr;
     oStr << " -- ROOT -- ";
     return oStr.str();
