@@ -17,6 +17,18 @@
 #include <stdair/bom/BomRoot.hpp>
 #include <stdair/bom/Inventory.hpp>
 #include <stdair/bom/InventoryTypes.hpp>
+#include <stdair/bom/FlightDate.hpp>
+#include <stdair/bom/FlightDateTypes.hpp>
+#include <stdair/bom/LegDate.hpp>
+#include <stdair/bom/LegDateTypes.hpp>
+#include <stdair/bom/LegCabin.hpp>
+#include <stdair/bom/LegCabinTypes.hpp>
+#include <stdair/bom/SegmentDate.hpp>
+#include <stdair/bom/SegmentDateTypes.hpp>
+#include <stdair/bom/SegmentCabin.hpp>
+#include <stdair/bom/SegmentCabinTypes.hpp>
+#include <stdair/bom/BookingClass.hpp>
+#include <stdair/bom/BookingClassTypes.hpp>
 #include <stdair/factory/FacBomManager.hpp>
 #include <stdair/service/Logger.hpp>
 #include <stdair/config/stdair-paths.hpp>
@@ -32,7 +44,8 @@ const std::string K_STDAIR_DEFAULT_INPUT_FILENAME ("../../test/samples/stdair01.
     input file. That latter must then be given with the -i option. */
 const bool K_STDAIR_DEFAULT_BUILT_IN_INPUT = false;
 
-/** Early return status (so that it can be differentiated from an error). */
+/** Early return status (so that it can be differentiated from an
+    error). */
 const int K_STDAIR_EARLY_RETURN_STATUS = 99;
 
 // ///////// Parsing of Options & Configuration /////////
@@ -144,28 +157,332 @@ void buildSampleBom() {
     // DEBUG
     STDAIR_LOG_DEBUG ("StdAir will build the BOM tree from built-in specifications.");
 
-    // Create the bom root.
+    // ///////////// Step 0.0: Initialisation ////////////
+    // Create the root of the Bom tree (i.e., a BomRoot object)
     stdair::BomRoot& lBomRoot =
       stdair::FacBom<stdair::BomRoot>::instance().create();
 
-    // Create the inventories.
+    // Step 0.1: Inventory level
+    // Create an Inventory for BA
     stdair::InventoryKey lBAKey ("BA");
     stdair::Inventory& lBAInv =
       stdair::FacBom<stdair::Inventory>::instance().create (lBAKey);
     stdair::FacBomManager::addToList (lBomRoot, lBAInv);
+
+    // Create an Inventory for AF
     stdair::InventoryKey lAFKey ("AF");
     stdair::Inventory& lAFInv =
       stdair::FacBom<stdair::Inventory>::instance().create (lAFKey);
     stdair::FacBomManager::addToList (lBomRoot, lAFInv);
 
-    // Display the BOM root.
+    // ////// BA ///////    
+    // Step 0.2: Flight-date level
+    // Create a FlightDate (BA15/10-JUN-2010) for BA's Inventory
+    stdair::FlightNumber_T lFlightNumber = 15;
+    stdair::Date_T lDate (2010, 6, 10);
+    stdair::FlightDateKey lFlightDateKey (lFlightNumber, lDate);
+
+    stdair::FlightDate& lBA15_20100610_FD =
+      stdair::FacBom<stdair::FlightDate>::instance().create (lFlightDateKey);
+    stdair::FacBomManager::addToList (lBAInv, lBA15_20100610_FD);
+    
+    // Display the flight-date
+    // STDAIR_LOG_DEBUG ("FlightDate: " << lBA15_20100610_FD.toString());
+    
+    // Step 0.3: Segment-date level
+    // Create a first SegmentDate (LHR-SYD) for BA's Inventory
+    const stdair::AirportCode_T lLHR ("LHR");
+    const stdair::AirportCode_T lSYD ("SYD");
+    stdair::SegmentDateKey lSegmentDateKey (lLHR, lSYD);
+
+    stdair::SegmentDate& lLHRSYDSegment =
+      stdair::FacBom<stdair::SegmentDate>::instance().create (lSegmentDateKey);
+    stdair::FacBomManager::addToList (lBA15_20100610_FD, lLHRSYDSegment);
+
+    // Display the segment-date
+    // STDAIR_LOG_DEBUG ("SegmentDate: " << lLHRSYDSegment.toString());
+
+    // Create a second SegmentDate (LHR-BKK) for BA's Inventory
+    const stdair::AirportCode_T lBKK ("BKK");
+    lSegmentDateKey = stdair::SegmentDateKey (lLHR, lBKK);
+
+    stdair::SegmentDate& lLHRBKKSegment =
+      stdair::FacBom<stdair::SegmentDate>::instance().create (lSegmentDateKey);
+    stdair::FacBomManager::addToList (lBA15_20100610_FD, lLHRBKKSegment);
+
+    // Display the segment-date
+    // STDAIR_LOG_DEBUG ("SegmentDate: " << lLHRBKKSegment.toString());
+
+
+    // Create a third SegmentDate (BKK-SYD) for BA's Inventory
+    lSegmentDateKey = stdair::SegmentDateKey (lBKK, lSYD);
+
+    stdair::SegmentDate& lBKKSYDSegment =
+      stdair::FacBom<stdair::SegmentDate>::instance().create (lSegmentDateKey);
+    stdair::FacBomManager::addToList (lBA15_20100610_FD, lBKKSYDSegment);
+
+    // Display the segment-date
+    // STDAIR_LOG_DEBUG ("SegmentDate: " << lBKKSYDSegment.toString());
+
+    // Step 0.4: Leg-date level
+    // Create a first LegDate (LHR) for BA's Inventory
+    stdair::LegDateKey lLegDateKey (lLHR);
+
+    stdair::LegDate& lLHRLeg =
+      stdair::FacBom<stdair::LegDate>::instance().create (lLegDateKey);
+    stdair::FacBomManager::addToList (lBA15_20100610_FD, lLHRLeg);
+
+    // Display the leg-date
+    // STDAIR_LOG_DEBUG ("LegDate: " << lLHRLeg.toString());
+    
+    // Create a second LegDate (BKK)
+    lLegDateKey = stdair::LegDateKey (lBKK);
+
+    stdair::LegDate& lBKKLeg =
+      stdair::FacBom<stdair::LegDate>::instance().create (lLegDateKey);
+    stdair::FacBomManager::addToList (lBA15_20100610_FD, lBKKLeg);
+
+    // Display the leg-date
+    // STDAIR_LOG_DEBUG ("LegDate: " << lBKKLeg.toString());
+
+    // Step 0.5: segment-cabin level
+    // Create a SegmentCabin (Y) for the Segment LHR-BKK of BA's Inventory
+    const stdair::CabinCode_T lY ("Y");
+    stdair::SegmentCabinKey lYSegmentCabinKey (lY);
+
+    stdair::SegmentCabin& lLHRBKKSegmentYCabin =
+      stdair::FacBom<stdair::SegmentCabin>::instance().create(lYSegmentCabinKey);
+    stdair::FacBomManager::addToList (lLHRBKKSegment, lLHRBKKSegmentYCabin);
+
+    // Display the segment-cabin
+    // STDAIR_LOG_DEBUG ("SegmentCabin: " << lLHRBKKSegmentYCabin.toString());
+
+    // Create a SegmentCabin (Y) of the Segment BKK-SYD;
+    stdair::SegmentCabin& lBKKSYDSegmentYCabin =
+      stdair::FacBom<stdair::SegmentCabin>::instance().create(lYSegmentCabinKey);
+    stdair::FacBomManager::addToList (lBKKSYDSegment, lBKKSYDSegmentYCabin);
+     
+    // Display the segment-cabin
+    // STDAIR_LOG_DEBUG ("SegmentCabin: " << lBKKSYDSegmentYCabin.toString());
+
+    // Create a SegmentCabin (Y) of the Segment LHR-SYD;
+    stdair::SegmentCabin& lLHRSYDSegmentYCabin =
+      stdair::FacBom<stdair::SegmentCabin>::instance().create(lYSegmentCabinKey);
+    stdair::FacBomManager::addToList (lLHRSYDSegment, lLHRSYDSegmentYCabin);
+      
+    // Display the segment-cabin
+    // STDAIR_LOG_DEBUG ("SegmentCabin: " << lLHRSYDSegmentYCabin.toString());
+
+    // Step 0.6: leg-cabin level
+    // Create a LegCabin (Y) for the Leg LHR-BKK on BA's Inventory
+    stdair::LegCabinKey lYLegCabinKey (lY);
+
+    stdair::LegCabin& lLHRLegYCabin =
+      stdair::FacBom<stdair::LegCabin>::instance().create (lYLegCabinKey);
+    stdair::FacBomManager::addToList (lLHRLeg, lLHRLegYCabin);
+
+    // Display the leg-cabin
+    // STDAIR_LOG_DEBUG ("LegCabin: " << lLHRLegYCabin.toString());
+
+    // Create a LegCabin (Y) for the Leg BKK-SYD
+    stdair::LegCabin& lBKKLegYCabin =
+      stdair::FacBom<stdair::LegCabin>::instance().create (lYLegCabinKey);
+    stdair::FacBomManager::addToList (lBKKLeg, lBKKLegYCabin);
+
+    // Display the leg-cabin
+    // STDAIR_LOG_DEBUG ("LegCabin: " << lBKKLegYCabin.toString());
+
+    // Step 0.7: booking class level
+    // Create a BookingClass (Q) for the Segment LHR-BKK, cabin Y on BA's Inv
+    const stdair::ClassCode_T lQ ("Q");
+    stdair::BookingClassKey lQBookingClassKey (lQ);
+
+    stdair::BookingClass& lLHRBKKSegmentYCabinQClass =
+      stdair::FacBom<stdair::BookingClass>::instance().create(lQBookingClassKey);
+    stdair::FacBomManager::addToList (lLHRBKKSegmentYCabin,
+                                      lLHRBKKSegmentYCabinQClass);
+
+    // Display the booking class
+    // STDAIR_LOG_DEBUG ("BookingClass: "
+    //                   << lLHRBKKSegmentYCabinQClass.toString());
+
+    // Create a BookingClass (Q) for the Segment BKK-LHR, cabin Y
+    stdair::BookingClass& lBKKSYDSegmentYCabinQClass =
+      stdair::FacBom<stdair::BookingClass>::instance().create(lQBookingClassKey);
+    stdair::FacBomManager::addToList (lBKKSYDSegmentYCabin,
+                                      lBKKSYDSegmentYCabinQClass);
+
+    // Display the booking class
+    // STDAIR_LOG_DEBUG ("BookingClass: "
+    //                   << lLHRBKKSegmentYCabinQClass.toString());
+
+    // Create a BookingClass (Q) for the Segment LHR-SYD, cabin Y
+    stdair::BookingClass& lLHRSYDSegmentYCabinQClass =
+      stdair::FacBom<stdair::BookingClass>::instance().create(lQBookingClassKey);
+    stdair::FacBomManager::addToList (lLHRSYDSegmentYCabin,
+                                      lLHRSYDSegmentYCabinQClass);
+
+    // Display the booking class
+    // STDAIR_LOG_DEBUG ("BookingClass: "
+    //                   << lLHRBKKSegmentYCabinQClass.toString());
+
+    
+    // ////// AF ///////    
+    // Step 0.2: Flight-date level
+    // Create a FlightDate (AF102/20-MAR-2010) for AF's Inventory
+    lFlightNumber = 102;
+    lDate = stdair::Date_T (2010, 3, 20);
+    lFlightDateKey = stdair::FlightDateKey (lFlightNumber, lDate);
+
+    stdair::FlightDate& lAF102_20100320_FD =
+      stdair::FacBom<stdair::FlightDate>::instance().create (lFlightDateKey);
+    stdair::FacBomManager::addToList (lAFInv, lAF102_20100320_FD);
+    
+    // Display the flight-date
+    // STDAIR_LOG_DEBUG ("FlightDate: " << lAF102_20100320_FD.toString());
+
+    // Step 0.3: Segment-date level
+    // Create a SegmentDate (CDG-SFO) for AF's Inventory
+    const stdair::AirportCode_T lCDG ("CDG");
+    const stdair::AirportCode_T lSFO ("SFO");
+    lSegmentDateKey = stdair::SegmentDateKey (lCDG, lSFO);
+
+    stdair::SegmentDate& lCDGSFOSegment =
+      stdair::FacBom<stdair::SegmentDate>::instance().create (lSegmentDateKey);
+    stdair::FacBomManager::addToList (lAF102_20100320_FD, lCDGSFOSegment);
+
+    // Display the segment-date
+    // STDAIR_LOG_DEBUG ("SegmentDate: " << lCDGSFOSegment.toString());
+
+    // Step 0.4: Leg-date level
+    // Create a LegDate (CDG) for AF's Inventory
+    lLegDateKey = stdair::LegDateKey (lCDG);
+
+    stdair::LegDate& lCDGLeg =
+      stdair::FacBom<stdair::LegDate>::instance().create (lLegDateKey);
+    stdair::FacBomManager::addToList (lAF102_20100320_FD, lCDGLeg);
+
+    // Display the leg-date
+    // STDAIR_LOG_DEBUG ("LegDate: " << lCDGLeg.toString());
+
+    // Step 0.5: segment-cabin level
+    // Create a SegmentCabin (Y) for the Segment CDG-SFO of AF's Inventory
+    stdair::SegmentCabin& lCDGSFOSegmentYCabin =
+      stdair::FacBom<stdair::SegmentCabin>::instance().create(lYSegmentCabinKey);
+    stdair::FacBomManager::addToList (lCDGSFOSegment, lCDGSFOSegmentYCabin);
+
+    // Display the segment-cabin
+    // STDAIR_LOG_DEBUG ("SegmentCabin: " << lCDGSFOSegmentYCabin.toString());
+
+    // Step 0.6: leg-cabin level
+    // Create a LegCabin (Y) for the Leg CDG-SFO on AF's Inventory
+    stdair::LegCabin& lCDGLegYCabin =
+      stdair::FacBom<stdair::LegCabin>::instance().create (lYLegCabinKey);
+    stdair::FacBomManager::addToList (lCDGLeg, lCDGLegYCabin);
+
+    // Display the leg-cabin
+    // STDAIR_LOG_DEBUG ("LegCabin: " << lLHRLegYCabin.toString());
+
+    // Step 0.7: booking class level
+    // Create a BookingClass (Q) for the Segment CDG-SFO, cabin Y on AF's Inv
+    stdair::BookingClass& lCDGSFOSegmentYCabinQClass =
+      stdair::FacBom<stdair::BookingClass>::instance().create(lQBookingClassKey);
+    stdair::FacBomManager::addToList (lCDGSFOSegmentYCabin,
+                                      lCDGSFOSegmentYCabinQClass);
+
+    // Display the booking class
+    // STDAIR_LOG_DEBUG ("BookingClass: "
+    //                   << lCDGSFOSegmentYCabinQClass.toString());
+
+    
+    // /////////// Step 1.0: Display the BOM tree //////////
+    // 1.1. Inventory level
     const stdair::InventoryList_T& lInventoryList =
       stdair::BomManager::getList<stdair::Inventory> (lBomRoot);
     for (stdair::InventoryList_T::const_iterator itInv = lInventoryList.begin();
          itInv != lInventoryList.end(); ++itInv) {
       const stdair::Inventory* lInv_ptr = *itInv;
       assert (lInv_ptr != NULL);
+
+      // STDAIR_LOG_DEBUG ("Inventory: " << lInv_ptr->describeKey());
       STDAIR_LOG_DEBUG (lInv_ptr->describeKey());
+
+      // 1.2. FlightDate level
+      const stdair::FlightDateList_T& lFlightDateList =
+        stdair::BomManager::getList<stdair::FlightDate> (*lInv_ptr);
+      for (stdair::FlightDateList_T::const_iterator itFD=lFlightDateList.begin();
+         itFD != lFlightDateList.end(); ++itFD) {
+        const stdair::FlightDate* lFD_ptr = *itFD;
+        assert (lFD_ptr != NULL);
+
+        // STDAIR_LOG_DEBUG ("FlightDate: " << lFD_ptr->toString());
+        STDAIR_LOG_DEBUG ("  " << lFD_ptr->toString());
+
+        // 1.4. LegDate level
+        const stdair::LegDateList_T& lLegDateList =
+          stdair::BomManager::getList<stdair::LegDate> (*lFD_ptr);
+        for (stdair::LegDateList_T::const_iterator itLD =
+               lLegDateList.begin();
+             itLD != lLegDateList.end(); ++itLD) {
+          const stdair::LegDate* lLD_ptr = *itLD;
+          assert (lFD_ptr != NULL);
+          
+          // STDAIR_LOG_DEBUG ("LegDate: " << lLD_ptr->toString());
+          STDAIR_LOG_DEBUG ("    " << lLD_ptr->toString());
+
+          // 1.6. LegCabin level
+          const stdair::LegCabinList_T& lLegCabinList =
+            stdair::BomManager::getList<stdair::LegCabin> (*lLD_ptr);
+          for (stdair::LegCabinList_T::const_iterator itLC =
+                 lLegCabinList.begin();
+               itLC != lLegCabinList.end(); ++itLC) {
+            const stdair::LegCabin* lLC_ptr = *itLC;
+            assert (lFD_ptr != NULL);
+            
+            // STDAIR_LOG_DEBUG ("LegCabin: " << lLC_ptr->toString());
+            STDAIR_LOG_DEBUG ("    " << lLC_ptr->toString());
+          }
+        }
+
+        // 1.3. SegmentDate level
+        const stdair::SegmentDateList_T& lSegmentDateList =
+          stdair::BomManager::getList<stdair::SegmentDate> (*lFD_ptr);
+        for (stdair::SegmentDateList_T::const_iterator itSD =
+               lSegmentDateList.begin();
+             itSD != lSegmentDateList.end(); ++itSD) {
+          const stdair::SegmentDate* lSD_ptr = *itSD;
+          assert (lFD_ptr != NULL);
+          
+          // STDAIR_LOG_DEBUG ("SegmentDate: " << lSD_ptr->toString());
+          STDAIR_LOG_DEBUG ("    " << lSD_ptr->toString());
+
+          // 1.5. SegmentCabin level
+          const stdair::SegmentCabinList_T& lSegmentCabinList =
+            stdair::BomManager::getList<stdair::SegmentCabin> (*lSD_ptr);
+          for (stdair::SegmentCabinList_T::const_iterator itSC =
+                 lSegmentCabinList.begin();
+               itSC != lSegmentCabinList.end(); ++itSC) {
+            const stdair::SegmentCabin* lSC_ptr = *itSC;
+            assert (lFD_ptr != NULL);
+            
+            // STDAIR_LOG_DEBUG ("SegmentCabin: " << lSC_ptr->toString());
+            STDAIR_LOG_DEBUG ("    " << lSC_ptr->toString());
+
+            // 1.7. BookingClass level
+            const stdair::BookingClassList_T& lBookingClassList =
+              stdair::BomManager::getList<stdair::BookingClass> (*lSC_ptr);
+            for (stdair::BookingClassList_T::const_iterator itBC =
+                   lBookingClassList.begin();
+                 itBC != lBookingClassList.end(); ++itBC) {
+              const stdair::BookingClass* lBC_ptr = *itBC;
+              assert (lFD_ptr != NULL);
+              
+              // STDAIR_LOG_DEBUG ("BookingClass: " << lBC_ptr->toString());
+              STDAIR_LOG_DEBUG ("    " << lBC_ptr->toString());
+            }
+          }
+        }
+      }
     }
 
   } catch (const std::exception& stde) {

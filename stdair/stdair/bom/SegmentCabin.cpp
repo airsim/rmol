@@ -29,9 +29,7 @@ namespace stdair {
   // ////////////////////////////////////////////////////////////////////
   std::string SegmentCabin::toString() const {
     std::ostringstream oStr;
-
-    oStr << describeKey() << std::endl;
-    
+    oStr << describeKey();
     return oStr.str();
   }
 

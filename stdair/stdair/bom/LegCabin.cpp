@@ -30,7 +30,7 @@ namespace stdair {
   // ////////////////////////////////////////////////////////////////////
   std::string LegCabin::toString() const {
     std::ostringstream oStr;
-    oStr << describeKey() << std::endl;
+    oStr << describeKey();
     return oStr.str();
   }
 

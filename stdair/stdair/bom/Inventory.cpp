@@ -19,7 +19,7 @@ namespace stdair {
   // ////////////////////////////////////////////////////////////////////
   std::string Inventory::toString() const {
     std::ostringstream oStr;
-    oStr << _key.toString();
+    oStr << describeKey();
     return oStr.str();
   }
 

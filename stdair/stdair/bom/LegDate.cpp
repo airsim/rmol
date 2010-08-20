@@ -23,9 +23,7 @@ namespace stdair {
   // ////////////////////////////////////////////////////////////////////
   std::string LegDate::toString() const {
     std::ostringstream oStr;
-
-    oStr << describeKey() << std::endl;
-    
+    oStr << describeKey();
     return oStr.str();
   }
 

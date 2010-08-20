@@ -20,9 +20,7 @@ namespace stdair {
   // ////////////////////////////////////////////////////////////////////
   std::string FlightDate::toString() const {
     std::ostringstream oStr;
-    
-    oStr << describeKey() << std::endl;
-
+    oStr << describeKey();
     return oStr.str();
   }
 

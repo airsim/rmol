@@ -9,6 +9,7 @@
 #include <stdair/bom/OptimizerStruct.hpp>
 
 namespace stdair {
+
   // ///////////////////////////////////////////////////////////////////    
   OptimizerStruct_T::OptimizerStruct_T () {
   }
