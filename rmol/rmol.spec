@@ -49,12 +49,9 @@ programs using %{name}, you will need to install %{name}-devel.
 %package doc
 Summary:        HTML documentation for the %{name} library
 Group:          Documentation
-%if 0%{?fedora} >= 10
+%if 0%{?fedora}
 BuildArch:      noarch
 BuildRequires:  texlive-latex
-%endif
-%if 0%{?fedora} < 10
-BuildRequires:  tetex-latex
 %endif
 %{?el5:BuildRequires: tetex-latex}
 BuildRequires:  doxygen, ghostscript
@@ -78,8 +75,10 @@ find . -type f -name '*.[hc]pp' -exec chmod 644 {} \;
 make %{?_smp_mflags}
 
 %install
-rm -rf $RPM_BUILD_ROOT
-make install DESTDIR=$RPM_BUILD_ROOT
+# On Fedora, the BuildRoot is automatically cleaned. Which is not the case for
+# RedHat. See: https://fedoraproject.org/wiki/Packaging/Guidelines#BuildRoot_tag
+%if %{?rhel:rm -rf $RPM_BUILD_ROOT}
+make install DESTDIR=$RPM_BUILD_ROOT INSTALL="install -p"
 %find_lang %{name}
 # remove unpackaged files from the buildroot
 #rm -f $RPM_BUILD_ROOT%{_includedir}/%{name}/config.h
