@@ -27,8 +27,11 @@ namespace stdair {
     // //////////////////////////////////////////////////////////////////
     // Internal type definitions.
     typedef std::list<CHILD*> ChildrenList_T;
+    typedef std::list<std::pair<MapKey_T, CHILD*> > ChildrenDetailedList_T;
     typedef std::map<const MapKey_T, CHILD*> ChildrenMap_T;
     typedef std::map<const PARENT*, ChildrenList_T> ParentChildrentList_T;
+    typedef std::map<const PARENT*,
+                     ChildrenDetailedList_T> ParentChildrentDetailedList_T;
     typedef std::map<const PARENT*, ChildrenMap_T> ParentChildrentMap_T;
     typedef std::map<const CHILD*, PARENT*> ChildParentMap_T;
     // //////////////////////////////////////////////////////////////////
@@ -43,6 +46,7 @@ namespace stdair {
     // ////////////////////// Business Methods /////////////////////////
     /** Getter of the children conainter given the PARENT pointer. */
     ChildrenList_T& getChildrenList (const PARENT&);
+    ChildrenDetailedList_T& getChildrenDetailedList (const PARENT&);
     ChildrenMap_T& getChildrenMap (const PARENT&);
 
     /** Getter of the PARENT given the CHILD. */
@@ -57,11 +61,13 @@ namespace stdair {
 
     /** Check if the list/map of children has been initialised. */
     bool hasChildrenList (const PARENT&);
+    bool hasChildrenDetailedList (const PARENT&);
     bool hasChildrenMap (const PARENT&);
 
   private:
     /** Add the given CHILD to the children containter of the given PARENT. */
     void addChildToTheList (const PARENT&, CHILD&); 
+    void addChildToTheDetailedList (const PARENT&, CHILD&, const MapKey_T&); 
     void addChildToTheMap (const PARENT&, CHILD&); 
     void addChildToTheMap (const PARENT&, CHILD&, const MapKey_T&); 
 
@@ -79,6 +85,7 @@ namespace stdair {
     static RelationShip* _instance;
     /** The containers of relation ships. */
     ParentChildrentList_T _parentChildrenList;
+    ParentChildrentDetailedList_T _parentChildrenDetailedList;
     ParentChildrentMap_T _parentChildrenMap;
     ChildParentMap_T _childParentMap;    
   };
@@ -117,6 +124,24 @@ namespace stdair {
 
   // ////////////////////////////////////////////////////////////////////
   template <typename PARENT, typename CHILD>
+  typename RelationShip<PARENT, CHILD>::ChildrenDetailedList_T&
+  RelationShip<PARENT, CHILD>::getChildrenDetailedList (const PARENT& iParent) {
+    ParentChildrentDetailedList_T& lParentChildrenDetailedList =
+      instance()._parentChildrenDetailedList;
+    typename ParentChildrentDetailedList_T::iterator itDetailedList =
+      lParentChildrenDetailedList.find (&iParent);
+    
+    if (itDetailedList == lParentChildrenDetailedList.end()) {
+      STDAIR_LOG_ERROR ("Cannot find the detailed list within: "
+                        << iParent.describeKey());
+      throw NonInitialisedContainerException ();
+    }
+
+    return itDetailedList->second;
+  }
+
+  // ////////////////////////////////////////////////////////////////////
+  template <typename PARENT, typename CHILD>
   typename RelationShip<PARENT, CHILD>::ChildrenMap_T&
   RelationShip<PARENT, CHILD>::getChildrenMap (const PARENT& iParent) {
     ParentChildrentMap_T& lParentChildrenMap = instance()._parentChildrenMap;
@@ -139,6 +164,20 @@ namespace stdair {
       lParentChildrenList.find (&iParent);
     
     if (itList == lParentChildrenList.end()) {
+      return false;
+    }
+    return true;
+  }
+
+  // ////////////////////////////////////////////////////////////////////
+  template <typename PARENT, typename CHILD> bool RelationShip<PARENT, CHILD>::
+  hasChildrenDetailedList (const PARENT& iParent) {
+    ParentChildrentDetailedList_T& lParentChildrenDetailedList =
+      instance()._parentChildrenDetailedList;
+    typename ParentChildrentDetailedList_T::iterator itDetailedList =
+      lParentChildrenDetailedList.find (&iParent);
+    
+    if (itDetailedList == lParentChildrenDetailedList.end()) {
       return false;
     }
     return true;
@@ -221,6 +260,16 @@ namespace stdair {
   addChildToTheList (const PARENT& iParent, CHILD& ioChild) {
     ParentChildrentList_T& lParentChildrenList = instance()._parentChildrenList;
     lParentChildrenList[&iParent].push_back (&ioChild);
+  }
+
+  // ////////////////////////////////////////////////////////////////////
+  template <typename PARENT, typename CHILD> void RelationShip<PARENT, CHILD>::
+  addChildToTheDetailedList (const PARENT& iParent, CHILD& ioChild,
+                             const MapKey_T& iKey) {
+    ParentChildrentDetailedList_T& lParentChildrenDetailedList = 
+      instance()._parentChildrenDetailedList;
+    lParentChildrenDetailedList[&iParent].
+      push_back (std::pair<const MapKey_T, CHILD*> (iKey, &ioChild));
   }
 
   // ////////////////////////////////////////////////////////////////////

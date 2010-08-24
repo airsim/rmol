@@ -23,6 +23,8 @@ namespace stdair {
     template <typename PARENT, typename CHILD>
     static void addToList (const PARENT&, CHILD&);
     template <typename PARENT, typename CHILD>
+    static void addToDetailedList (const PARENT&, CHILD&, const MapKey_T&);
+    template <typename PARENT, typename CHILD>
     static void addToMap (const PARENT&, CHILD&);
     template <typename PARENT, typename CHILD>
     static void addToMap (const PARENT&, CHILD&, const MapKey_T&);
@@ -37,7 +39,7 @@ namespace stdair {
 
     /** Clone the list of children between two objects. */
     template <typename CHILD, typename PARENT>
-    static void cloneChildrenList (const PARENT&, const PARENT&);
+    static void cloneChildrenDetailedList (const PARENT&, const PARENT&);
     
   };
 
@@ -51,6 +53,15 @@ namespace stdair {
   template <typename PARENT, typename CHILD> void FacBomManager::
   addToList (const PARENT& iParent, CHILD& ioChild) {
     RelationShip<PARENT, CHILD>::instance().addChildToTheList (iParent, ioChild);
+  }
+
+  // ////////////////////////////////////////////////////////////////////
+  template <typename PARENT, typename CHILD> void FacBomManager::
+  addToDetailedList (const PARENT& iParent, CHILD& ioChild,
+                     const MapKey_T& iKey) {
+    RelationShip<PARENT, CHILD>::instance().addChildToTheDetailedList (iParent,
+                                                                       ioChild,
+                                                                       iKey);
   }
 
   // ////////////////////////////////////////////////////////////////////
@@ -89,10 +100,10 @@ namespace stdair {
 
   // ////////////////////////////////////////////////////////////////////
   template <typename CHILD, typename PARENT> void FacBomManager::
-  cloneChildrenList (const PARENT& iP1, const PARENT& iP2) {
-    const std::list<CHILD*>& lList =
-      RelationShip<PARENT, CHILD>::instance().getChildrenList (iP2);
-    RelationShip<PARENT, CHILD>::instance()._parentChildrenList[&iP1] = lList;
+  cloneChildrenDetailedList (const PARENT& iP1, const PARENT& iP2) {
+    const std::list<std::pair<MapKey_T, CHILD*> >& lDetailedList =
+      RelationShip<PARENT, CHILD>::instance().getChildrenDetailedList (iP2);
+    RelationShip<PARENT, CHILD>::instance()._parentChildrenDetailedList[&iP1] = lDetailedList;
   }
 
 }

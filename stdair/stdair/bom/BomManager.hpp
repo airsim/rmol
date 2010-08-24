@@ -18,11 +18,15 @@ namespace stdair {
     template <typename CHILD, typename PARENT>
     static std::list<CHILD*>& getList (const PARENT&);
     template <typename CHILD, typename PARENT>
+    static std::list<std::pair<MapKey_T, CHILD*> >& getDetailedList (const PARENT&);
+    template <typename CHILD, typename PARENT>
     static std::map<const MapKey_T, CHILD*>& getMap (const PARENT&);
 
     /** Check if the list/map of children has been initialised. */
     template <typename CHILD, typename PARENT>    
     static bool hasList (const PARENT&);
+    template <typename CHILD, typename PARENT>    
+    static bool hasDetailedList (const PARENT&);
     template <typename CHILD, typename PARENT>    
     static bool hasMap (const PARENT&);
 
@@ -47,6 +51,14 @@ namespace stdair {
   }
 
   // ////////////////////////////////////////////////////////////////////
+  template <typename CHILD, typename PARENT>
+  std::list<std::pair<MapKey_T, CHILD*> >& BomManager::
+  getDetailedList (const PARENT& iParent) {
+    return RelationShip<PARENT, CHILD>::
+      instance().getChildrenDetailedList (iParent);
+  }
+
+  // ////////////////////////////////////////////////////////////////////
   template <typename CHILD, typename PARENT> std::map<const MapKey_T, CHILD*>&
   BomManager::getMap (const PARENT& iParent) {
     return RelationShip<PARENT, CHILD>::instance().getChildrenMap (iParent);
@@ -56,6 +68,13 @@ namespace stdair {
   template <typename CHILD, typename PARENT> 
   bool BomManager::hasList (const PARENT& iParent) {
     return RelationShip<PARENT, CHILD>::instance().hasChildrenList (iParent);
+  }
+
+  // ////////////////////////////////////////////////////////////////////
+  template <typename CHILD, typename PARENT> 
+  bool BomManager::hasDetailedList (const PARENT& iParent) {
+    return RelationShip<PARENT, CHILD>::
+      instance().hasChildrenDetailedList (iParent);
   }
 
   // ////////////////////////////////////////////////////////////////////
