@@ -28,11 +28,8 @@ namespace stdair {
     // Internal type definitions.
     typedef std::list<CHILD*> ChildrenList_T;
     typedef std::map<const MapKey_T, CHILD*> ChildrenMap_T;
-    typedef std::multimap<const MapKey_T, CHILD*> ChildrenMultimap_T;
     typedef std::map<const PARENT*, ChildrenList_T> ParentChildrentList_T;
     typedef std::map<const PARENT*, ChildrenMap_T> ParentChildrentMap_T;
-    typedef std::map<const PARENT*,
-                     ChildrenMultimap_T> ParentChildrentMultimap_T;
     typedef std::map<const CHILD*, PARENT*> ChildParentMap_T;
     // //////////////////////////////////////////////////////////////////
 
@@ -47,7 +44,6 @@ namespace stdair {
     /** Getter of the children conainter given the PARENT pointer. */
     ChildrenList_T& getChildrenList (const PARENT&);
     ChildrenMap_T& getChildrenMap (const PARENT&);
-    ChildrenMultimap_T& getChildrenMultimap (const PARENT&);
 
     /** Getter of the PARENT given the CHILD. */
     PARENT& getParent (const CHILD&);
@@ -59,13 +55,15 @@ namespace stdair {
     /** Return the CHILD corresponding the the given string key. */
     CHILD& getChild (const PARENT&, const MapKey_T&);
 
+    /** Check if the list/map of children has been initialised. */
+    bool hasChildrenList (const PARENT&);
+    bool hasChildrenMap (const PARENT&);
+
   private:
     /** Add the given CHILD to the children containter of the given PARENT. */
     void addChildToTheList (const PARENT&, CHILD&); 
     void addChildToTheMap (const PARENT&, CHILD&); 
     void addChildToTheMap (const PARENT&, CHILD&, const MapKey_T&); 
-    void addChildToTheMultimap (const PARENT&, CHILD&); 
-    void addChildToTheMultimap (const PARENT&, CHILD&, const MapKey_T&);
 
     /** Link the CHILD with the PARENT. */
     void linkWithParent (PARENT&, const CHILD&);
@@ -82,7 +80,6 @@ namespace stdair {
     /** The containers of relation ships. */
     ParentChildrentList_T _parentChildrenList;
     ParentChildrentMap_T _parentChildrenMap;
-    ParentChildrentMultimap_T _parentChildrenMultimap;
     ChildParentMap_T _childParentMap;    
   };
 
@@ -135,21 +132,29 @@ namespace stdair {
   }
 
   // ////////////////////////////////////////////////////////////////////
-  template <typename PARENT, typename CHILD>
-  typename RelationShip<PARENT, CHILD>::ChildrenMultimap_T&
-  RelationShip<PARENT, CHILD>::getChildrenMultimap (const PARENT& iParent) {
-    ParentChildrentMultimap_T& lParentChildrenMultimap = 
-      instance()._parentChildrenMultimap;
-    typename ParentChildrentMultimap_T::iterator itMultimap =
-      lParentChildrenMultimap.find (&iParent);
+  template <typename PARENT, typename CHILD> bool RelationShip<PARENT, CHILD>::
+  hasChildrenList (const PARENT& iParent) {
+    ParentChildrentList_T& lParentChildrenList = instance()._parentChildrenList;
+    typename ParentChildrentList_T::iterator itList =
+      lParentChildrenList.find (&iParent);
     
-    if (itMultimap == lParentChildrenMultimap.end()) {
-      STDAIR_LOG_ERROR ("Cannot find the multimap within: "
-                        << iParent.describeKey());
-      throw NonInitialisedContainerException ();
+    if (itList == lParentChildrenList.end()) {
+      return false;
     }
+    return true;
+  }
 
-    return itMultimap->second;
+  // ////////////////////////////////////////////////////////////////////
+  template <typename PARENT, typename CHILD> bool RelationShip<PARENT, CHILD>::
+  hasChildrenMap (const PARENT& iParent) {
+    ParentChildrentMap_T& lParentChildrenMap = instance()._parentChildrenMap;
+    typename ParentChildrentMap_T::iterator itMap =
+      lParentChildrenMap.find (&iParent);
+    
+    if (itMap == lParentChildrenMap.end()) {
+      return false;
+    }
+    return true;
   }
 
   // ////////////////////////////////////////////////////////////////////
@@ -171,8 +176,7 @@ namespace stdair {
   template <typename PARENT, typename CHILD>
   CHILD* RelationShip<PARENT, CHILD>::
   getChildPtr (const PARENT& iParent, const MapKey_T& iKey) {
-    // Look for the child in the map, then the multimap.
-    // 1. Map
+
     ParentChildrentMap_T lParentChildrenMap = instance()._parentChildrenMap;
     typename ParentChildrentMap_T::iterator itMap =
       lParentChildrenMap.find (&iParent);
@@ -181,23 +185,6 @@ namespace stdair {
       ChildrenMap_T& lChildrenMap = itMap->second;
       typename ChildrenMap_T::iterator itChild = lChildrenMap.find (iKey);
       if (itChild != lChildrenMap.end()) {
-        CHILD* oChild_ptr = itChild->second;
-        assert (oChild_ptr);
-        return oChild_ptr;
-      }
-    }
-
-    // 2. Multimap
-    ParentChildrentMultimap_T lParentChildrenMultimap =
-      instance()._parentChildrenMultimap;
-    typename ParentChildrentMultimap_T::iterator itMultimap =
-      lParentChildrenMultimap.find (&iParent);
-
-    if (itMultimap != lParentChildrenMultimap.end()) {
-      ChildrenMultimap_T& lChildrenMultimap = itMultimap->second;
-      typename ChildrenMultimap_T::iterator itChild =
-        lChildrenMultimap.find (iKey);
-      if (itChild != lChildrenMultimap.end()) {
         CHILD* oChild_ptr = itChild->second;
         assert (oChild_ptr);
         return oChild_ptr;
@@ -211,8 +198,7 @@ namespace stdair {
   template <typename PARENT, typename CHILD>
   CHILD& RelationShip<PARENT, CHILD>::
   getChild (const PARENT& iParent, const MapKey_T& iKey) {
-    // Look for the child in the map, then the multimap.
-    // 1. Map
+
     ParentChildrentMap_T lParentChildrenMap = instance()._parentChildrenMap;
     typename ParentChildrentMap_T::iterator itMap =
       lParentChildrenMap.find (&iParent);
@@ -221,23 +207,6 @@ namespace stdair {
       ChildrenMap_T& lChildrenMap = itMap->second;
       typename ChildrenMap_T::iterator itChild = lChildrenMap.find (iKey);
       if (itChild != lChildrenMap.end()) {
-        CHILD* oChild_ptr = itChild->second;
-        assert (oChild_ptr);
-        return *oChild_ptr;
-      }
-    }
-
-    // 2. Multimap
-    ParentChildrentMultimap_T lParentChildrenMultimap =
-      instance()._parentChildrenMultimap;
-    typename ParentChildrentMultimap_T::iterator itMultimap =
-      lParentChildrenMultimap.find (&iParent);
-
-    if (itMultimap != lParentChildrenMultimap.end()) {
-      ChildrenMultimap_T& lChildrenMultimap = itMultimap->second;
-      typename ChildrenMultimap_T::iterator itChild =
-        lChildrenMultimap.find (iKey);
-      if (itChild != lChildrenMultimap.end()) {
         CHILD* oChild_ptr = itChild->second;
         assert (oChild_ptr);
         return *oChild_ptr;
@@ -285,27 +254,6 @@ namespace stdair {
                         << iParent.describeKey() << "; " << iKey)
       throw ObjectLinkingException ();
     }
-  }
-
-  // ////////////////////////////////////////////////////////////////////
-  template <typename PARENT, typename CHILD> void RelationShip<PARENT, CHILD>::
-  addChildToTheMultimap (const PARENT& iParent, CHILD& ioChild) {
-    ParentChildrentMultimap_T& lParentChildrenMultimap =
-      instance()._parentChildrenMultimap;
-    
-    const MapKey_T& lKey = ioChild.describeKey ();
-    bool insertionSucceeded = lParentChildrenMultimap[&iParent].
-      insert (typename ChildrenMultimap_T::value_type (lKey, &ioChild)).second;
-  }
-
-  // ////////////////////////////////////////////////////////////////////
-  template <typename PARENT, typename CHILD> void RelationShip<PARENT, CHILD>::
-  addChildToTheMultimap (const PARENT& iParent, CHILD& ioChild,
-                         const MapKey_T& iKey) {
-    ParentChildrentMultimap_T& lParentChildrenMultimap =
-      instance()._parentChildrenMultimap;
-    bool insertionSucceeded = lParentChildrenMultimap[&iParent].
-      insert (typename ChildrenMultimap_T::value_type (iKey, &ioChild)).second;
   }
 
   // ////////////////////////////////////////////////////////////////////

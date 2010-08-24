@@ -20,6 +20,12 @@ namespace stdair {
     template <typename CHILD, typename PARENT>
     static std::map<const MapKey_T, CHILD*>& getMap (const PARENT&);
 
+    /** Check if the list/map of children has been initialised. */
+    template <typename CHILD, typename PARENT>    
+    static bool hasList (const PARENT&);
+    template <typename CHILD, typename PARENT>    
+    static bool hasMap (const PARENT&);
+
     /** Getter of the PARENT given the CHILD. */
     template <typename PARENT, typename CHILD>
     static PARENT& getParent (const CHILD&);
@@ -44,6 +50,18 @@ namespace stdair {
   template <typename CHILD, typename PARENT> std::map<const MapKey_T, CHILD*>&
   BomManager::getMap (const PARENT& iParent) {
     return RelationShip<PARENT, CHILD>::instance().getChildrenMap (iParent);
+  }
+
+  // ////////////////////////////////////////////////////////////////////
+  template <typename CHILD, typename PARENT> 
+  bool BomManager::hasList (const PARENT& iParent) {
+    return RelationShip<PARENT, CHILD>::instance().hasChildrenList (iParent);
+  }
+
+  // ////////////////////////////////////////////////////////////////////
+  template <typename CHILD, typename PARENT> 
+  bool BomManager::hasMap (const PARENT& iParent) {
+    return RelationShip<PARENT, CHILD>::instance().hasChildrenMap (iParent);
   }
 
   // ////////////////////////////////////////////////////////////////////
