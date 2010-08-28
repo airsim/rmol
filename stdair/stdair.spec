@@ -14,6 +14,7 @@ Source0:        http://downloads.sourceforge.net/%{name}/%{name}-%{version}.tar.
 %{?el5:BuildRoot: %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)}
 
 BuildRequires:  boost-devel
+BuildRequires:  soci-mysql-devel
 BuildRequires:  cppunit-devel
 
 
@@ -31,8 +32,6 @@ Summary:        Header files, libraries and development documentation for %{name
 Group:          Development/Libraries
 Requires:       %{name} = %{version}-%{release}
 Requires:       pkgconfig
-Requires(post): info
-Requires(preun): info
 
 %description    devel
 This package contains the header files, static libraries and
@@ -56,7 +55,6 @@ library. The documentation is the same as at the %{name} web page.
 
 %prep
 %setup -q
-# find ./doc -type f -perm 755 -exec chmod 644 {} \;
 # Fix some permissions and formats
 rm -f INSTALL
 chmod -x AUTHORS ChangeLog COPYING NEWS README
@@ -73,10 +71,9 @@ make %{?_smp_mflags}
 %if %{?rhel:rm -rf $RPM_BUILD_ROOT}
 make install DESTDIR=$RPM_BUILD_ROOT INSTALL="install -p"
 # remove unpackaged files from the buildroot
-rm -f $RPM_BUILD_ROOT%{_infodir}/dir
 rm -f $RPM_BUILD_ROOT%{_libdir}/lib%{name}.la
 rm -f $RPM_BUILD_ROOT%{_libdir}/libextracppunit.la
-rm -rf %{mydocs} && mkdir -p %{mydocs}
+mkdir -p %{mydocs}
 mv $RPM_BUILD_ROOT%{_docdir}/%{name}-%{version}/html %{mydocs}
 
 %clean
@@ -92,7 +89,7 @@ rm -rf $RPM_BUILD_ROOT
 %doc AUTHORS ChangeLog COPYING NEWS README
 %{_bindir}/%{name}
 %{_libdir}/lib*.so.*
-%{_mandir}/man3/%{name}.3.*
+%{_mandir}/man1/%{name}.1.*
 
 %files devel
 %defattr(-,root,root,-)
@@ -104,11 +101,12 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/%{name}.pc
 %{_datadir}/aclocal/%{name}.m4
 %{_mandir}/man1/%{name}-config.1.*
+%{_mandir}/man3/%{name}.3.*
 
 %files doc
 %defattr(-,root,root,-)
 %doc %{mydocs}/html
-%doc AUTHORS ChangeLog COPYING NEWS README
+%doc COPYING
 
 
 %changelog
@@ -117,4 +115,3 @@ rm -rf $RPM_BUILD_ROOT
 
 * Wed Jul 13 2010 Son Nguyen Kim <nguyenkims@gmail.com> 0.1.0-1
 - First RPM release
-
