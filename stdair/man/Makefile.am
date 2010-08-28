@@ -45,9 +45,12 @@ man-local: doxygen_man.cfg $(MAN_SRC)
 	&& sed -i -e "s/\(^\.TH\ \".*\"\ \)1\(\ .*\)/\13\2/g" $(MAN_GEN_MANS)
 
 install-data-local: man-local
-	$(mkinstalldirs) $(mandir)/man1 $(mandir)/man3
-	$(INSTALL_DATA) $(MAN_CMD_MANS) $(mandir)/man1
-	$(INSTALL_DATA) $(MAN_GEN_MANS) $(mandir)/man3
+	$(mkinstalldirs) $(DESTDIR)$(mandir)/man1 $(DESTDIR)$(mandir)/man3
+	$(INSTALL_DATA) $(MAN_CMD_MANS) $(DESTDIR)$(mandir)/man1
+	$(INSTALL_DATA) $(MAN_GEN_MANS) $(DESTDIR)$(mandir)/man3
+
+uninstall-local:
+	rm -rf $(DESTDIR)$(mandir)
 
 clean-local:
 	rm -f $(man_MANS) $(MAN_GEN_MANS)
