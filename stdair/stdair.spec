@@ -68,7 +68,7 @@ make %{?_smp_mflags}
 %install
 # On Fedora, the BuildRoot is automatically cleaned. Which is not the case for
 # RedHat. See: https://fedoraproject.org/wiki/Packaging/Guidelines#BuildRoot_tag
-%if %{?rhel:rm -rf $RPM_BUILD_ROOT}
+%{?rhel:rm -rf $RPM_BUILD_ROOT}
 make install DESTDIR=$RPM_BUILD_ROOT INSTALL="install -p"
 # remove unpackaged files from the buildroot
 rm -f $RPM_BUILD_ROOT%{_libdir}/lib%{name}.la
