@@ -101,7 +101,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/%{name}.pc
 %{_datadir}/aclocal/%{name}.m4
 %{_mandir}/man1/%{name}-config.1.*
-%{_mandir}/man3/%{name}.3.*
+%{_mandir}/man3/%{name}-library.3.*
 
 %files doc
 %defattr(-,root,root,-)
@@ -118,3 +118,4 @@ rm -rf $RPM_BUILD_ROOT
 
 * Wed Jul 13 2010 Son Nguyen Kim <nguyenkims@gmail.com> 0.1.0-1
 - First RPM release
+
