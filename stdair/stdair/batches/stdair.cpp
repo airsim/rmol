@@ -164,13 +164,13 @@ void buildSampleBom() {
 
     // Step 0.1: Inventory level
     // Create an Inventory for BA
-    stdair::InventoryKey lBAKey ("BA");
+    const stdair::InventoryKey lBAKey ("BA");
     stdair::Inventory& lBAInv =
       stdair::FacBom<stdair::Inventory>::instance().create (lBAKey);
     stdair::FacBomManager::addToList (lBomRoot, lBAInv);
 
     // Create an Inventory for AF
-    stdair::InventoryKey lAFKey ("AF");
+    const stdair::InventoryKey lAFKey ("AF");
     stdair::Inventory& lAFInv =
       stdair::FacBom<stdair::Inventory>::instance().create (lAFKey);
     stdair::FacBomManager::addToList (lBomRoot, lAFInv);
