@@ -102,9 +102,11 @@ rm -rf $RPM_BUILD_ROOT
 %files devel
 %defattr(-,root,root,-)
 %{_includedir}/%{name}
+# When the extracc package will be approved, the following line has to be removed
 %{_includedir}/extracppunit
 %{_bindir}/%{name}-config
 %{_libdir}/lib%{name}.so
+# When the extracc package will be approved, the following line has to be removed
 %{_libdir}/libextracppunit.so
 %{_libdir}/pkgconfig/%{name}.pc
 %{_datadir}/aclocal/%{name}.m4
