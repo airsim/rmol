@@ -15,6 +15,9 @@ Source0:        http://downloads.sourceforge.net/%{name}/%{name}-%{version}.tar.
 
 BuildRequires:  boost-devel
 BuildRequires:  soci-mysql-devel
+# When the extracc package will be approved, uncomment the following line
+# (see https://bugzilla.redhat.com/show_bug.cgi?id=616881 for more details)
+#BuildRequires:  extracc-devel
 BuildRequires:  cppunit-devel
 
 
@@ -41,11 +44,8 @@ programs using %{name}, you will need to install %{name}-devel.
 %package doc
 Summary:        HTML documentation for the %{name} library
 Group:          Documentation
-%if 0%{?fedora}
-BuildArch:      noarch
-BuildRequires:  texlive-latex
-%endif
-%{?el5:BuildRequires: tetex-latex}
+%{?fedora:BuildArch:      noarch}
+BuildRequires:  tex(latex)
 BuildRequires:  doxygen, ghostscript
 
 %description doc
@@ -55,8 +55,10 @@ library. The documentation is the same as at the %{name} web page.
 
 %prep
 %setup -q
-# Fix some permissions and formats
+# The INSTALL package is not relevant for RPM package users
+# (e.g., see https://bugzilla.redhat.com/show_bug.cgi?id=489233#c4)
 rm -f INSTALL
+# Fix some permissions and formats
 chmod -x AUTHORS ChangeLog COPYING NEWS README
 find . -type f -name '*.[hc]pp' -exec chmod 644 {} \;
 
@@ -69,15 +71,21 @@ make %{?_smp_mflags}
 # On Fedora, the BuildRoot is automatically cleaned. Which is not the case for
 # RedHat. See: https://fedoraproject.org/wiki/Packaging/Guidelines#BuildRoot_tag
 %{?rhel:rm -rf $RPM_BUILD_ROOT}
+
 make install DESTDIR=$RPM_BUILD_ROOT INSTALL="install -p"
-# remove unpackaged files from the buildroot
+
+# Remove unpackaged files from the buildroot
 rm -f $RPM_BUILD_ROOT%{_libdir}/lib%{name}.la
+# When the extracc package will be approved, the following line has to be removed
 rm -f $RPM_BUILD_ROOT%{_libdir}/libextracppunit.la
+
 mkdir -p %{mydocs}
 mv $RPM_BUILD_ROOT%{_docdir}/%{name}-%{version}/html %{mydocs}
 
+%if 0%{?rhel}
 %clean
 rm -rf $RPM_BUILD_ROOT
+%endif
 
 %post -p /sbin/ldconfig
 
