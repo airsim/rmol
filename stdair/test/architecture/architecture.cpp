@@ -2,35 +2,46 @@
 #include <cassert>
 #include <iostream>
 #include <string>
-#include <stdair/factory/FacBomContent.hpp>
-#include <stdair/bom/BomSource.hpp>
-#include "BomRoot.hpp"
-#include "Inventory.hpp"
-#include "Structure.hpp"
-#include "StructureTypes.hpp"
+// StdAir
+#include <stdair/bom/BomRoot.hpp>
+#include <stdair/bom/BomManager.hpp>
+#include <stdair/factory/FacBom.hpp>
+#include <stdair/factory/FacBomManager.hpp>
+// Local
+//#include <test/architecture/BomRoot.hpp>
+#include <test/architecture/Inventory.hpp>
 
 // ////////// M A I N //////////////
 int main (int argc, char* argv[]) {
+
   // Step 0.0: initialisation
   // Create the root of the Bom tree (i.e., a BomRoot object)
-  BomRoot& lBomRoot =
-    stdair::FacBomContent::instance().create<BomRoot>();
+  stdair::BomRoot& lBomRoot =
+    stdair::FacBom<stdair::BomRoot>::instance().create();
         
   // Step 0.1: Inventory level
   // Create an Inventory (BA)
   const stdair::AirlineCode_T lAirlineCode ("BA");
-  stdair::InventoryKey_T lInventoryKey (lAirlineCode);
-  
-  Inventory& lInventory =
-    stdair::FacBomContent::instance().create<Inventory>(lInventoryKey);
-  stdair::FacBomContent::linkWithParent (lInventory, lBomRoot);
+  const stdair::InventoryKey lBAKey (lAirlineCode);
+  myairline::Inventory& lBAInv =
+    stdair::FacBom<myairline::Inventory>::instance().create (lBAKey);
+  stdair::FacBomManager::addToList (lBomRoot, lBAInv);
 
-  const InventoryList_T& lInventoryList =
-    lBomRoot._structure.getChildrenHolder<Inventory>();
-  for (InventoryList_T::iterator itInv = lInventoryList.begin();
-       itInv != lInventoryList.end(); ++itInv) {
-    const Inventory& lCurrentInventory = *itInv;
-    std::cout << "Inventory: " << lCurrentInventory.toString() << std::endl;
+  // Create an Inventory for AF
+  const stdair::InventoryKey lAFKey ("AF");
+  myairline::Inventory& lAFInv =
+    stdair::FacBom<myairline::Inventory>::instance().create (lAFKey);
+  stdair::FacBomManager::addToList (lBomRoot, lAFInv);
+
+  // Browse the inventories
+  const myairline::InventoryList_T& lInventoryList =
+      stdair::BomManager::getList<myairline::Inventory> (lBomRoot);
+  for (myairline::InventoryList_T::const_iterator itInv =
+         lInventoryList.begin(); itInv != lInventoryList.end(); ++itInv) {
+    const myairline::Inventory* lInv_ptr = *itInv;
+    assert (lInv_ptr != NULL);
+    
+    std::cout << "Inventory: " << lInv_ptr->toString() << std::endl;
   }
   
   return 0;
