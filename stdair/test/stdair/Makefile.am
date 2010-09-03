@@ -14,10 +14,12 @@ EXTRA_DIST =
 # Test library
 noinst_LTLIBRARIES = libstdairtest.la
 
-libstdairtest_la_SOURCES = $(stdair_test_lib_h_sources) \
+libstdairtest_la_SOURCES = \
+	$(stdair_test_lib_h_sources) \
 	$(stdair_test_lib_cc_sources)
 libstdairtest_la_CXXFLAGS =
-libstdairtest_la_LDFLAGS = $(top_builddir)/stdair/core/libstdair.la
+libstdairtest_la_LDFLAGS = \
+	$(top_builddir)/stdair/core/libstdair.la
 
 
 ##
@@ -27,11 +29,11 @@ TESTS = $(check_PROGRAMS)
 XFAIL_TESTS = #FailingTestSuite
 
 #
-StandardAirlineITTestSuite_SOURCES = StandardAirlineITTestSuite.hpp \
-									StandardAirlineITTestSuite.cpp
-StandardAirlineITTestSuite_CXXFLAGS= $(BOOST_CFLAGS) $(CPPUNIT_CFLAGS)
+StandardAirlineITTestSuite_SOURCES = \
+	StandardAirlineITTestSuite.hpp \
+	StandardAirlineITTestSuite.cpp
+StandardAirlineITTestSuite_CXXFLAGS= $(BOOST_CFLAGS) $(CPPUNIT_CFLAGS) $(EXTRACC_CFLAGS)
 StandardAirlineITTestSuite_LDADD = 
-StandardAirlineITTestSuite_LDFLAGS = $(BOOST_LIBS) $(CPPUNIT_LIBS) \
-	$(top_builddir)/extracppunit/libextracppunit.la \
+StandardAirlineITTestSuite_LDFLAGS = $(BOOST_LIBS) $(CPPUNIT_LIBS) $(EXTRACC_LIBS)\
 	$(top_builddir)/test/stdair/libstdairtest.la \
 	$(top_builddir)/stdair/core/libstdair.la
