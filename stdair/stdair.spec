@@ -123,6 +123,9 @@ rm -rf $RPM_BUILD_ROOT
 * Sun Aug 30 2010 Son Nguyen Kim <nguyenkims@gmail.com> 99.99.99-1
 - Upstream update
 
+* Fri Sep 03 2010 Son Nguyen Kim <nguyenkims@gmail.com> 0.4.0-1
+- Replace extracc external ref to dependency
+
 * Sun Aug 29 2010 Son Nguyen Kim <nguyenkims@gmail.com> 0.3.0-1
 - Upstream update
 
