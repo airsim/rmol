@@ -49,6 +49,10 @@ namespace stdair {
     ChildrenDetailedList_T& getChildrenDetailedList (const PARENT&);
     ChildrenMap_T& getChildrenMap (const PARENT&);
 
+    /** Getter of the attribute holders. */
+    const ParentChildrentList_T& getParentChildrenList ();
+    const ParentChildrentMap_T& getParentChildrenMap ();
+
     /** Getter of the PARENT given the CHILD. */
     PARENT& getParent (const CHILD&);
 
@@ -154,6 +158,20 @@ namespace stdair {
     }
 
     return itMap->second;
+  }
+
+  // ////////////////////////////////////////////////////////////////////
+  template <typename PARENT, typename CHILD>
+  const typename RelationShip<PARENT, CHILD>::ParentChildrentList_T&
+  RelationShip<PARENT, CHILD>::getParentChildrenList () {
+    return instance()._parentChildrenList;
+  }
+
+  // ////////////////////////////////////////////////////////////////////
+  template <typename PARENT, typename CHILD>
+  const typename RelationShip<PARENT, CHILD>::ParentChildrentMap_T&
+  RelationShip<PARENT, CHILD>::getParentChildrenMap () {
+    return instance()._parentChildrenMap;
   }
 
   // ////////////////////////////////////////////////////////////////////

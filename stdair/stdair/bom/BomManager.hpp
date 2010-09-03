@@ -22,6 +22,14 @@ namespace stdair {
     template <typename CHILD, typename PARENT>
     static std::map<const MapKey_T, CHILD*>& getMap (const PARENT&);
 
+    /** Get the map of parent and children holder. */
+    template <typename PARENT, typename CHILD>
+    static const std::map<const PARENT*, 
+                          std::list<CHILD*> >& getParentChildrenList();
+    template <typename PARENT, typename CHILD>
+    static const std::map<const PARENT*,
+                    std::map<const MapKey_T, CHILD*> >& getParentChildrenMap();
+
     /** Check if the list/map of children has been initialised. */
     template <typename CHILD, typename PARENT>    
     static bool hasList (const PARENT&);
@@ -38,10 +46,16 @@ namespace stdair {
         If such a CHILD does not exist, return NULL. */
     template <typename CHILD, typename PARENT>
     static CHILD* getChildPtr (const PARENT&, const MapKey_T&);
+    template <typename BOM>
+    static  BOM* const getObjectPtr (const std::map<const MapKey_T, BOM*>&,
+                                     const MapKey_T&);
 
     /** Return the CHILD corresponding the the given string key. */
     template <typename CHILD, typename PARENT>
     static CHILD& getChild (const PARENT&, const MapKey_T&);
+    template <typename BOM>
+    static BOM& getObject (const std::map<const MapKey_T, BOM*>&,
+                           const MapKey_T&);
   };
 
   // ////////////////////////////////////////////////////////////////////
@@ -62,6 +76,20 @@ namespace stdair {
   template <typename CHILD, typename PARENT> std::map<const MapKey_T, CHILD*>&
   BomManager::getMap (const PARENT& iParent) {
     return RelationShip<PARENT, CHILD>::instance().getChildrenMap (iParent);
+  }
+
+  // ////////////////////////////////////////////////////////////////////
+  template <typename PARENT, typename CHILD> 
+  const std::map<const PARENT*, std::list<CHILD*> >& BomManager::
+  getParentChildrenList() {
+    return RelationShip<PARENT, CHILD>::instance().getParentChildrenList();
+  }
+
+  // ////////////////////////////////////////////////////////////////////
+  template <typename PARENT, typename CHILD>
+  const std::map<const PARENT*, std::map<const MapKey_T, CHILD*> >& BomManager::
+  getParentChildrenMap() {
+    return RelationShip<PARENT, CHILD>::instance().getParentChildrenMap();
   }
 
   // ////////////////////////////////////////////////////////////////////
@@ -99,6 +127,30 @@ namespace stdair {
   template <typename CHILD, typename PARENT>
   CHILD& BomManager::getChild (const PARENT& iParent, const MapKey_T& iKey) {
     return RelationShip<PARENT, CHILD>::instance().getChild (iParent, iKey);
+  }
+
+  // ////////////////////////////////////////////////////////////////////
+  template <typename BOM>
+  BOM* const BomManager::getObjectPtr (const std::map<const MapKey_T,BOM*>& iMap,
+                                      const MapKey_T& iKey) {
+    typename std::map<const MapKey_T, BOM*>::const_iterator it = iMap.find (iKey);
+    if (it == iMap.end()) {
+      return NULL;
+    }
+    BOM* const oBom_ptr = it->second;
+    assert (oBom_ptr != NULL);
+    return oBom_ptr;
+  }
+
+  // ////////////////////////////////////////////////////////////////////
+  template <typename BOM>
+  BOM& BomManager::getObject (const std::map<const MapKey_T, BOM*>& iMap,
+                              const MapKey_T& iKey) {
+    typename std::map<const MapKey_T, BOM*>::const_iterator it = iMap.find (iKey);
+    assert (it != iMap.end());
+    BOM* const oBom_ptr = it->second;
+    assert (oBom_ptr != NULL);
+    return *oBom_ptr;
   }
 }
 
