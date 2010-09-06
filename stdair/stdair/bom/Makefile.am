@@ -12,4 +12,5 @@ libstdairbom_la_LDFLAGS =
 
 # Header files
 pkgincludedir = $(includedir)/stdair/bom
-pkginclude_HEADERS = $(bom_h_sources)
+pkginclude_HEADERS = $(stdair_bom_h_sources)
+

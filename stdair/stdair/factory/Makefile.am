@@ -11,4 +11,5 @@ libstdairfac_la_CXXFLAGS =
 
 # Header files
 pkgincludedir = $(includedir)/stdair/factory
-pkginclude_HEADERS = $(fac_h_sources)
+pkginclude_HEADERS = $(stdair_fac_h_sources)
+

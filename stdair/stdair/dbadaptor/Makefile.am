@@ -13,4 +13,5 @@ libstdairdba_la_LDFLAGS = $(SOCI_LIBS)
 
 # Header files
 pkgincludedir = $(includedir)/stdair/dbadaptor
-pkginclude_HEADERS = $(dba_h_sources)
+pkginclude_HEADERS = $(stdair_dba_h_sources)
+

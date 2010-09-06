@@ -12,4 +12,5 @@ libstdairbas_la_LDFLAGS =
 
 # Header files
 pkgincludedir = $(includedir)/stdair/basic
-pkginclude_HEADERS = $(bas_h_sources)
+pkginclude_HEADERS = $(stdair_bas_h_sources)
+

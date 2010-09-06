@@ -27,4 +27,5 @@ libstdair_la_LDFLAGS = \
 
 #
 pkgincludedir = $(includedir)/stdair
-pkginclude_HEADERS = $(service_h_sources)
+pkginclude_HEADERS = $(stdair_service_h_sources)
+

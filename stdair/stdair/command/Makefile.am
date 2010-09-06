@@ -13,4 +13,5 @@ libstdaircmd_la_LDFLAGS = $(BOOST_LIBS) $(SOCI_LIBS)
 
 # Header files
 pkgincludedir = $(includedir)/stdair/command
-pkginclude_HEADERS = $(cmd_h_sources)
+pkginclude_HEADERS = $(stdair_cmd_h_sources)
+

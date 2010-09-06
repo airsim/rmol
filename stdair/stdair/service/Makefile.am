@@ -12,4 +12,5 @@ libstdairsvc_la_LDFLAGS = $(SOCI_LIBS) $(MYSQL_LIBS)
 
 # Header files
 pkgincludedir = $(includedir)/stdair/service
-pkginclude_HEADERS = $(svc_h_sources)
+pkginclude_HEADERS = $(stdair_svc_h_sources)
+
