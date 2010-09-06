@@ -25,3 +25,4 @@ librmol_la_LDFLAGS = \
 	$(BOOST_FILESYSTEM_LIB) \
 	$(top_builddir)/stdair/core/libstdair.la \
 	$(GSL_LIBS) -version-info $(GENERIC_LIBRARY_VERSION)
+

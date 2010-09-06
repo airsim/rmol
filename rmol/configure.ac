@@ -113,10 +113,10 @@ fi
 #       thus directly accessible within the extracppunit directory.
 #       When that library will be widely avaible on Linux distributions,
 #       the external reference can be removed and the following line uncommented.
-#AM_PATH_EXTRACC
-#AC_SUBST(EXTRACC_VERSION)
-#AC_SUBST(EXTRACC_CFLAGS)
-#AC_SUBST(EXTRACC_LIBS)
+AM_PATH_EXTRACC
+AC_SUBST(EXTRACC_VERSION)
+AC_SUBST(EXTRACC_CFLAGS)
+AC_SUBST(EXTRACC_LIBS)
 
 # ---------------------------------------------------------
 # GSL (GNU Scientific Library: http://gnu.org/projects/gsl)
@@ -185,6 +185,17 @@ AC_SUBST(SOCI_VERSION)
 AC_SUBST(SOCI_CFLAGS)
 AC_SUBST(SOCI_LIBS)
 
+# -----------------------------------------------------------------------------
+# Support for StdAir (): http://sf.net/projects/stdair
+# -----------------------------------------------------------------------------
+# Note: the StdAir is now imported as a Subversion external reference,
+#       thus directly accessible within the extracppunit directory.
+#       When that library will be widely avaible on Linux distributions,
+#       the external reference can be removed and the following line uncommented.
+AM_PATH_STDAIR
+AC_SUBST(STDAIR_VERSION)
+AC_SUBST(STDAIR_CFLAGS)
+AC_SUBST(STDAIR_LIBS)
 
 # -------------------------------------------------------------------
 # Support for documentation
@@ -454,6 +465,11 @@ External libraries:
     o SOCI_VERSION .... : ${SOCI_VERSION}
     o SOCI_CFLAGS ..... : ${SOCI_CFLAGS}
     o SOCI_LIBS ....... : ${SOCI_LIBS}
+
+   - StdAir ........... :
+    o STDAIR_VERSION .. : ${STDAIR_VERSION}
+    o STDAIR_CFLAGS ... : ${STDAIR_CFLAGS}
+    o STDAIR_LIBS ..... : ${STDAIR_LIBS}
 
   - ExtraCC ........... :
     o EXTRACC_VERSION . : ${EXTRACC_VERSION}
