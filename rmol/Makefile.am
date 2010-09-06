@@ -25,8 +25,7 @@ MAINTAINERCLEANFILES = Makefile.in aclocal.m4 configure \
 EXTRA_DIST =
 
 # Build in these directories:
-SUBDIRS = stdair rmol win32 po man $(INFO_DOC_DIR) $(HTML_DOC_DIR) \
-	samples extracppunit $(TEST_DIR)
+SUBDIRS = rmol win32 po man $(INFO_DOC_DIR) $(HTML_DOC_DIR) samples $(TEST_DIR)
 
 
 # Configuration helpers

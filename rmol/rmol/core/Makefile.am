@@ -22,7 +22,6 @@ librmol_la_LIBADD = \
 	$(top_builddir)/rmol/service/librmolsvc.la
 librmol_la_LDFLAGS = \
 	$(BOOST_DATE_TIME_LIB) $(BOOST_PROGRAM_OPTIONS_LIB) \
-	$(BOOST_FILESYSTEM_LIB) \
-	$(top_builddir)/stdair/core/libstdair.la \
-	$(GSL_LIBS) -version-info $(GENERIC_LIBRARY_VERSION)
+	$(BOOST_FILESYSTEM_LIB) $(STDAIR_LIBS) $(GSL_LIBS) \
+	-version-info $(GENERIC_LIBRARY_VERSION)
 

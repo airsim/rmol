@@ -351,16 +351,6 @@ AC_CONFIG_FILES(
 	rmol-config
 	rmol.pc
 	rmol.m4
-	stdair/Makefile
-	stdair/basic/Makefile
-	stdair/bom/Makefile
-	stdair/dbadaptor/Makefile
-	stdair/factory/Makefile
-	stdair/command/Makefile
-	stdair/service/Makefile
-	stdair/config/Makefile
-	stdair/core/Makefile
-	stdair/batches/Makefile
 	rmol/Makefile
 	rmol/basic/Makefile
 	rmol/field/Makefile
@@ -381,10 +371,8 @@ AC_CONFIG_FILES(
 	doc/local/Makefile
 	doc/doxygen_html.cfg
 	po/Makefile.in
-	extracppunit/Makefile
 	test/Makefile
 	test/samples/Makefile
-	test/stdair/Makefile
 	test/rmol/Makefile
 	win32/Makefile)
 AC_OUTPUT
@@ -485,3 +473,4 @@ External libraries:
 Now type 'make && make install' to build and install $PACKAGE-$VERSION library
 ------------------------------------------------------------------------------
 "
+
