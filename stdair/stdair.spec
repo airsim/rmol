@@ -15,10 +15,7 @@ Source0:        http://downloads.sourceforge.net/%{name}/%{name}-%{version}.tar.
 
 BuildRequires:  boost-devel
 BuildRequires:  soci-mysql-devel
-# When the extracc package will be approved, uncomment the following line
-# (see https://bugzilla.redhat.com/show_bug.cgi?id=616881 for more details)
-#BuildRequires:  extracc-devel
-BuildRequires:  cppunit-devel
+BuildRequires:  extracc-devel
 
 
 %description
@@ -76,8 +73,6 @@ make install DESTDIR=$RPM_BUILD_ROOT INSTALL="install -p"
 
 # Remove unpackaged files from the buildroot
 rm -f $RPM_BUILD_ROOT%{_libdir}/lib%{name}.la
-# When the extracc package will be approved, the following line has to be removed
-rm -f $RPM_BUILD_ROOT%{_libdir}/libextracppunit.la
 
 mkdir -p %{mydocs}
 mv $RPM_BUILD_ROOT%{_docdir}/%{name}-%{version}/html %{mydocs}
@@ -102,12 +97,8 @@ rm -rf $RPM_BUILD_ROOT
 %files devel
 %defattr(-,root,root,-)
 %{_includedir}/%{name}
-# When the extracc package will be approved, the following line has to be removed
-%{_includedir}/extracppunit
 %{_bindir}/%{name}-config
 %{_libdir}/lib%{name}.so
-# When the extracc package will be approved, the following line has to be removed
-%{_libdir}/libextracppunit.so
 %{_libdir}/pkgconfig/%{name}.pc
 %{_datadir}/aclocal/%{name}.m4
 %{_mandir}/man1/%{name}-config.1.*
