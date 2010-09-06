@@ -8,7 +8,7 @@ include $(top_srcdir)/stdair/factory/sources.mk
 include $(top_srcdir)/stdair/dbadaptor/sources.mk
 include $(top_srcdir)/stdair/command/sources.mk
 include $(top_srcdir)/stdair/service/sources.mk
-include $(top_srcdir)/stdair/core/sources.mk
+include $(top_srcdir)/stdair/sources.mk
 
 SUBDIRS = images tutorial local
 

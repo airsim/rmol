@@ -211,8 +211,7 @@ AC_CONFIG_FILES(
 	stdair/command/Makefile
 	stdair/config/Makefile
 	stdair/service/Makefile
-	stdair/core/Makefile
-	stdair/batches/Makefile
+	batches/Makefile
 	man/Makefile
 	doc/Makefile
 	doc/images/Makefile

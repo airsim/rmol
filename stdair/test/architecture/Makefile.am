@@ -12,6 +12,6 @@ architecture_SOURCES = $(architecture_h_sources) $(architecture_cc_sources)
 architecture_CXXFLAGS = $(BOOST_CFLAGS)
 architecture_LDADD = $(BOOST_LIB)
 architecture_LDFLAGS = $(BOOST_PROGRAM_OPTIONS_LIB) \
-	$(top_builddir)/stdair/core/libstdair.la
+	$(top_builddir)/stdair/libstdair.la
 
 EXTRA_DIST =
