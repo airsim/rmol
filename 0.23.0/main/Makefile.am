@@ -49,7 +49,7 @@ snapshot: snapshot-src snapshot-html
 
 
 snapshot-src:
-        $(MAKE) dist distdir=@PACKAGE_TARNAME@-`date +"%Y%m%d"`
+	$(MAKE) dist distdir=@PACKAGE_TARNAME@-`date +"%Y%m%d"`
 
 snapshot-html:
 	$(MAKE) -C doc dist-html html_tarname=@PACKAGE_TARNAME@-doc-`date +"%Y%m%d"`

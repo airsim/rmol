@@ -130,6 +130,9 @@ fi
 
 
 %changelog
+* Tue Sep 07 2010 Denis Arnaud <denis.arnaud_fedora@m4x.org> 0.23.1-1
+- Upstream integration
+
 * Tue Sep 15 2009 Denis Arnaud <denis.arnaud_fedora@m4x.org> 0.23.0-1
 - Upstream integration
 
@@ -159,3 +162,4 @@ fi
 
 * Wed Mar  4 2009 Denis Arnaud <denis.arnaud_fedora@m4x.org> 0.18.0-1
 - Second RPM release
+
