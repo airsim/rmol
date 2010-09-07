@@ -109,10 +109,6 @@ fi
 # -----------------------------------------------------------------------------
 # Support for ExtraCC (Extra-CruiseControl): http://sf.net/projects/extracc
 # -----------------------------------------------------------------------------
-# Note: the ExtraCC is now imported as a Subversion external reference,
-#       thus directly accessible within the extracppunit directory.
-#       When that library will be widely avaible on Linux distributions,
-#       the external reference can be removed and the following line uncommented.
 AM_PATH_EXTRACC
 AC_SUBST(EXTRACC_VERSION)
 AC_SUBST(EXTRACC_CFLAGS)
@@ -188,10 +184,6 @@ AC_SUBST(SOCI_LIBS)
 # -----------------------------------------------------------------------------
 # Support for StdAir (): http://sf.net/projects/stdair
 # -----------------------------------------------------------------------------
-# Note: the StdAir is now imported as a Subversion external reference,
-#       thus directly accessible within the extracppunit directory.
-#       When that library will be widely avaible on Linux distributions,
-#       the external reference can be removed and the following line uncommented.
 AM_PATH_STDAIR
 AC_SUBST(STDAIR_VERSION)
 AC_SUBST(STDAIR_CFLAGS)
@@ -454,7 +446,7 @@ External libraries:
     o SOCI_CFLAGS ..... : ${SOCI_CFLAGS}
     o SOCI_LIBS ....... : ${SOCI_LIBS}
 
-   - StdAir ........... :
+  - StdAir ............ :
     o STDAIR_VERSION .. : ${STDAIR_VERSION}
     o STDAIR_CFLAGS ... : ${STDAIR_CFLAGS}
     o STDAIR_LIBS ..... : ${STDAIR_LIBS}
