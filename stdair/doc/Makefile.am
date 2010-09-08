@@ -2,13 +2,13 @@
 include $(top_srcdir)/doc/local/sources.mk
 include $(top_srcdir)/doc/tutorial/sources.mk
 include $(top_srcdir)/doc/tutorial/src/sources.mk
-#include $(top_srcdir)/stdair/basic/sources.mk
-#include $(top_srcdir)/stdair/bom/sources.mk
-#include $(top_srcdir)/stdair/factory/sources.mk
-#include $(top_srcdir)/stdair/dbadaptor/sources.mk
-#include $(top_srcdir)/stdair/command/sources.mk
-#include $(top_srcdir)/stdair/service/sources.mk
-#include $(top_srcdir)/stdair/sources.mk
+include $(top_srcdir)/stdair/basic/sources.mk
+include $(top_srcdir)/stdair/bom/sources.mk
+include $(top_srcdir)/stdair/factory/sources.mk
+include $(top_srcdir)/stdair/dbadaptor/sources.mk
+include $(top_srcdir)/stdair/command/sources.mk
+include $(top_srcdir)/stdair/service/sources.mk
+include $(top_srcdir)/stdair/sources.mk
 
 SUBDIRS = images tutorial local
 
