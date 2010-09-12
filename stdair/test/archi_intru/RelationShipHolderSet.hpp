@@ -73,8 +73,11 @@ namespace stdair {
         return oSecondBom_ptr;
       }
       oRSH_ptr = &*itRSH;
-      
-      oSecondBom_ptr = oRSH_ptr->find (iSecondBomKey);
+
+      // Calculate the RelationShipHolder key (usually, it is "key1,key2")
+      const std::string& lRSHKey =
+        RelationShipHolder_T::keyCalculator (iFirstBom.getKey(), iSecondBomKey);
+      oSecondBom_ptr = oRSH_ptr->find (lRSHKey);
 
       return oSecondBom_ptr;
     }

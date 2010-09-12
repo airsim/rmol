@@ -7,13 +7,12 @@
 #include <sstream>
 #include <string>
 #include <vector>
-// Boost
-#include <boost/intrusive/list.hpp>
 // Local
 #include <test/archi_intru/BomRoot.hpp>
 #include <test/archi_intru/FlightDate.hpp>
 #include <test/archi_intru/FacBom.hpp>
 #include <test/archi_intru/FacRelationShipRoot.hpp>
+#include <test/archi_intru/BomManager.hpp>
 #include <test/archi_intru/TestBomUsage.hpp>
 
 /** Alias for the boost::intrusive namespace. */
@@ -64,6 +63,9 @@ bool TestBomUsage::testBomBuilding() {
                               stdair::FlightDate>::addToList (*_bomRoot,
                                                               lFDLH434);
 
+  // DEBUG
+  std::cout << stdair::BomManager::display (*_bomRoot);
+  
   return oTestSuccessfull;
 }
 

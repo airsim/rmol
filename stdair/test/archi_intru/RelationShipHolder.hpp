@@ -32,9 +32,16 @@ namespace stdair {
     // ///////////////////////////////////////////
     
   public:
+    /** Key calculator. */
+    static std::string keyCalculator (const std::string& iKey1,
+                                      const std::string& iKey2) {
+      return (iKey1 + "," + iKey2);
+    }
+    
+    /** Constructor. */
     RelationShipHolder (FIRST_BOM& ioFirstBom, SECOND_BOM& ioSecondBom)
-      : RelationShipHolderAbstract (ioFirstBom.getKey() + ","
-                                    + ioSecondBom.getKey()),
+      : RelationShipHolderAbstract (keyCalculator (ioFirstBom.getKey(),
+                                                   ioSecondBom.getKey())),
         _firstBom (ioFirstBom) {
     }
     
