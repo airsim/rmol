@@ -83,7 +83,8 @@ namespace stdair {
       _relationShipHolderSet.addToList (*lRS_ptr);
     }
     
-    /** Add a child/sibling to the dedicated list of the parent/sibling. */
+    /** Search for a child/sibling from the dedicated list of the
+        parents/siblings. */
     static SECOND_BOM* find (const FIRST_BOM& iFirstBom,
                              const std::string& iSecondBomKey) {
       SECOND_BOM* oSecondBom_ptr =
@@ -91,7 +92,8 @@ namespace stdair {
       return oSecondBom_ptr;
     }
     
-    /** Add a child/sibling to the dedicated list of the parent/sibling. */
+    /** Search for a child/sibling from the dedicated list of the
+        parents/siblings. */
     SECOND_BOM* findImpl (const FIRST_BOM& iFirstBom,
                           const std::string& iSecondBomKey) {
       SECOND_BOM* oSecondBom_ptr =
