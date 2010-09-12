@@ -5,7 +5,9 @@
 //#include <string>
 //#include <vector>
 // Local
-#include <test/archi_intru/TestManager.hpp>
+#include <test/archi_intru/TestIntrusive.hpp>
+#include <test/archi_intru/BomRoot.hpp>
+#include <test/archi_intru/FlightDate.hpp>
 
 // /////////////////////////// M A I N /////////////////////////
 /** Main.
@@ -17,19 +19,7 @@
 int main (int argc, char* argv[]) {
 
   //
-  TestManager lTestManager;
-  
-  // Initialise the internal (STL) vector, (Boost.Intrusive) list and set
-  lTestManager.init();
-  
-  // Now test lists
-  lTestManager.testIntrusiveList();
-  
-  // Now, test iterator_to()
-  lTestManager.testIntrusiveIteratorTo();
-  
-  // Now, test sets
-  lTestManager.testIntrusiveSets();
+  TestIntrusive::test();
   
   return 0;
 }

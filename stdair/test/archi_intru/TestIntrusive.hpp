@@ -1,5 +1,5 @@
-#ifndef __INTRUSIVE_TST_TESTMANAGER_HPP
-#define __INTRUSIVE_TST_TESTMANAGER_HPP
+#ifndef __INTRUSIVE_TST_TESTINTRUSIVE_HPP
+#define __INTRUSIVE_TST_TESTINTRUSIVE_HPP
 
 // //////////////////////////////////////////////////////////////////////
 // Import section
@@ -10,16 +10,19 @@
 #include <test/archi_intru/FlightDate.hpp>
 
 /** Class wrapping test functions. */
-class TestManager {
+class TestIntrusive {
 public:
   /** Destructor. */
-  ~TestManager();
+  ~TestIntrusive();
   
 public:
+  /** Perform the full test set. */
+  static bool test();
+  
+private:
   /** Initialise the internal vector, list and set. */
   void init();
 
-private:
   /** Fill the standard (STL) vector. */
   void initStandard();
 
@@ -38,7 +41,7 @@ private:
   */
   void clean();
 
-public:
+private:
   /** Optimized search functions */
   stdair::FlightDate* getFromSet (const std::string& iKey);
 
@@ -60,4 +63,4 @@ private:
   stdair::FlightDateChildSet _flightDateChildSet;
 };
 
-#endif // __INTRUSIVE_TST_TESTMANAGER_HPP
+#endif // __INTRUSIVE_TST_TESTINTRUSIVE_HPP

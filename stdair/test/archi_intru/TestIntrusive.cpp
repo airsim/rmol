@@ -11,24 +11,24 @@
 #include <boost/intrusive/list.hpp>
 // Local
 #include <test/archi_intru/FlightDate.hpp>
-#include <test/archi_intru/TestManager.hpp>
+#include <test/archi_intru/TestIntrusive.hpp>
 
 /** Alias for the boost::intrusive namespace. */
 namespace bi = boost::intrusive;
 
 // //////////////////////////////////////////////////////////////////////
-TestManager::~TestManager() {
+TestIntrusive::~TestIntrusive() {
   clean();
 }
 
 // //////////////////////////////////////////////////////////////////////
-void TestManager::init() {
+void TestIntrusive::init() {
   initStandard();
   initIntrusive();
 }
 
 // //////////////////////////////////////////////////////////////////////
-void TestManager::initStandard() {
+void TestIntrusive::initStandard() {
   // Create several FlightDate objects, each one with a different value
   for (int idx = 0; idx < 100; ++idx) {
     stdair::FlightDate* lFlightDate_ptr = new stdair::FlightDate (idx);
@@ -39,7 +39,7 @@ void TestManager::initStandard() {
 }
 
 // //////////////////////////////////////////////////////////////////////
-void TestManager::initIntrusive() {
+void TestIntrusive::initIntrusive() {
   // Now insert them in the same order as in vector in the member hook list
   for (stdair::FlightDateVector_T::iterator itFlight(_flightDateVector.begin()),
          itend (_flightDateVector.end()); itFlight != itend; ++itFlight) {
@@ -60,13 +60,13 @@ void TestManager::initIntrusive() {
 }
 
 // //////////////////////////////////////////////////////////////////////
-void TestManager::clean() {
+void TestIntrusive::clean() {
   _flightDateChildSet.clear();
   _flightDateChildList.clear_and_dispose(delete_disposer<stdair::FlightDate>());
 }
   
 // //////////////////////////////////////////////////////////////////////
-stdair::FlightDate* TestManager::getFromSet (const std::string& iKey) {
+stdair::FlightDate* TestIntrusive::getFromSet (const std::string& iKey) {
   stdair::FlightDate* oFlightDate_ptr = NULL;
   stdair::FlightDateChildSet::iterator itFlight =
     _flightDateChildSet.find (iKey, StrExpComp<stdair::FlightDate>());
@@ -78,7 +78,7 @@ stdair::FlightDate* TestManager::getFromSet (const std::string& iKey) {
 }
 
 // //////////////////////////////////////////////////////////////////////
-bool TestManager::testIntrusiveList() {
+bool TestIntrusive::testIntrusiveList() {
   bool oTestSuccessfull = true;
     
   stdair::FlightDateChildList::iterator mit (_flightDateChildList.begin()),
@@ -102,7 +102,7 @@ bool TestManager::testIntrusiveList() {
 }
 
 // //////////////////////////////////////////////////////////////////////
-bool TestManager::testIntrusiveIteratorTo() {
+bool TestIntrusive::testIntrusiveIteratorTo() {
   bool oTestSuccessfull = true;
     
   stdair::FlightDateChildList::iterator itChild(_flightDateChildList.begin());
@@ -121,7 +121,7 @@ bool TestManager::testIntrusiveIteratorTo() {
 }
 
 // //////////////////////////////////////////////////////////////////////
-bool TestManager::testIntrusiveSets() {
+bool TestIntrusive::testIntrusiveSets() {
   bool oTestSuccessfull = true;
     
   stdair::FlightDateChildSet::iterator itChild (_flightDateChildSet.begin()),
@@ -149,5 +149,27 @@ bool TestManager::testIntrusiveSets() {
     }
   }
     
+  return oTestSuccessfull;
+}
+
+// //////////////////////////////////////////////////////////////////////
+bool TestIntrusive::test() {
+  bool oTestSuccessfull = true;
+
+  //
+  TestIntrusive lTestIntrusive;
+  
+  // Initialise the internal (STL) vector, (Boost.Intrusive) list and set
+  lTestIntrusive.init();
+  
+  // Now test lists
+  lTestIntrusive.testIntrusiveList();
+  
+  // Now, test iterator_to()
+  lTestIntrusive.testIntrusiveIteratorTo();
+  
+  // Now, test sets
+  lTestIntrusive.testIntrusiveSets();
+
   return oTestSuccessfull;
 }
