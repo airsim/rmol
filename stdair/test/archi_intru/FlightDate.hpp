@@ -5,8 +5,8 @@
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // STL
-#include <cassert>
 #include <string>
+#include <vector>
 // Boost.Intrusive
 #include <boost/intrusive/list.hpp>
 #include <boost/intrusive/set.hpp>
@@ -67,5 +67,6 @@ namespace stdair {
   typedef bi::member_hook <FlightDate, bi::set_member_hook<>,
                            &FlightDate::_childSetHook> FlightDateSetMemberOption;
   typedef bi::set<FlightDate, FlightDateSetMemberOption> FlightDateChildSet;
+  
 }
 #endif // __INTRUSIVE_BOM_FLIGHTDATE_HPP

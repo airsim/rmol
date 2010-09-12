@@ -1,16 +1,11 @@
 // STL
 #include <cassert>
-#include <iostream>
-#include <sstream>
-#include <string>
-#include <vector>
-// Boost
-#include <boost/intrusive/list.hpp>
+//#include <iostream>
+//#include <sstream>
+//#include <string>
+//#include <vector>
 // Local
 #include <test/archi_intru/TestManager.hpp>
-
-/** Alias for the boost::intrusive namespace. */
-namespace bi = boost::intrusive;
 
 // /////////////////////////// M A I N /////////////////////////
 /** Main.
@@ -24,10 +19,8 @@ int main (int argc, char* argv[]) {
   //
   TestManager lTestManager;
   
-  // Fill the standard (STL) vector
-  lTestManager.initStandard();
-
-  lTestManager.initIntrusive();
+  // Initialise the internal (STL) vector, (Boost.Intrusive) list and set
+  lTestManager.init();
   
   // Now test lists
   lTestManager.testIntrusiveList();
