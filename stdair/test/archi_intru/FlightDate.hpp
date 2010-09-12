@@ -53,12 +53,17 @@ namespace stdair {
     /** Get a string describing the  key. */
     const std::string describeKey() const { return _key; }
   };
+  
+  // ///////////////// Type definitions /////////////
+  /** Standard (STL) list (vector) of BOM FlightDate objects (pointers). */
+  typedef std::vector<stdair::FlightDate*> FlightDateVector_T;
 
-  /** List of child-type FlightDate objects. */
+  /** (Boost.Intrusive) List of child-type FlightDate objects. */
   typedef bi::member_hook <FlightDate, bi::list_member_hook<>,
                            &FlightDate::_childListHook> FlightDateListMemberOption;
   typedef bi::list<FlightDate, FlightDateListMemberOption> FlightDateChildList;
 
+  /** (Boost.Intrusive) Set of child-type FlightDate objects. */
   typedef bi::member_hook <FlightDate, bi::set_member_hook<>,
                            &FlightDate::_childSetHook> FlightDateSetMemberOption;
   typedef bi::set<FlightDate, FlightDateSetMemberOption> FlightDateChildSet;
