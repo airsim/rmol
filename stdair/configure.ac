@@ -223,6 +223,7 @@ AC_CONFIG_FILES(
 	test/samples/Makefile
 	test/inheritance/Makefile
 	test/architecture/Makefile
+	test/archi_intru/Makefile
 	test/mpl/Makefile
 	test/mpl/contrib/Makefile
 	test/stdair/Makefile

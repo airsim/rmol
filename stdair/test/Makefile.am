@@ -4,7 +4,7 @@ include $(top_srcdir)/Makefile.common
 MAINTAINERCLEANFILES = Makefile.in
 
 ##
-SUBDIRS = samples inheritance mpl architecture stdair
+SUBDIRS = samples inheritance mpl architecture archi_intru stdair
 
 EXTRA_DIST =
 ##
