@@ -8,7 +8,9 @@ archi_intru_h_sources = \
 		$(top_srcdir)/test/archi_intru/FlightDate.hpp \
 		$(top_srcdir)/test/archi_intru/LegDate.hpp \
 		$(top_srcdir)/test/archi_intru/SegmentDate.hpp \
-		$(top_srcdir)/test/archi_intru/TestIntrusive.hpp
+		$(top_srcdir)/test/archi_intru/TestIntrusive.hpp \
+		$(top_srcdir)/test/archi_intru/TestBomUsage.hpp
 archi_intru_cc_sources = \
 		$(top_srcdir)/test/archi_intru/FacSupervisor.cpp \
-		$(top_srcdir)/test/archi_intru/TestIntrusive.cpp
+		$(top_srcdir)/test/archi_intru/TestIntrusive.cpp \
+		$(top_srcdir)/test/archi_intru/TestBomUsage.cpp

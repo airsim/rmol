@@ -6,8 +6,7 @@
 //#include <vector>
 // Local
 #include <test/archi_intru/TestIntrusive.hpp>
-#include <test/archi_intru/BomRoot.hpp>
-#include <test/archi_intru/FlightDate.hpp>
+#include <test/archi_intru/TestBomUsage.hpp>
 
 // /////////////////////////// M A I N /////////////////////////
 /** Main.
@@ -19,7 +18,15 @@
 int main (int argc, char* argv[]) {
 
   //
-  TestIntrusive::test();
+  const bool lTestIntrusiveSuccessfull = TestIntrusive::test();
+  
+  //
+  const bool lTestBomUsageSuccessfull = TestBomUsage::test();
+
+  if (lTestIntrusiveSuccessfull == false
+      || lTestBomUsageSuccessfull == false) {
+    return 1;
+  }
   
   return 0;
 }
