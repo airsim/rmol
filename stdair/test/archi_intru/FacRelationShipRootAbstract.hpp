@@ -1,5 +1,5 @@
-#ifndef __INTRUSIVE_BOM_RELATIONSHIPABSTRACT_HPP
-#define __INTRUSIVE_BOM_RELATIONSHIPABSTRACT_HPP
+#ifndef __INTRUSIVE_BOM_FACRELATIONSHIPROOTABSTRACT_HPP
+#define __INTRUSIVE_BOM_FACRELATIONSHIPROOTABSTRACT_HPP
 
 // //////////////////////////////////////////////////////////////////////
 // Import section
@@ -7,8 +7,6 @@
 // STL
 #include <iosfwd>
 #include <string>
-// StdAir
-#include <stdair/STDAIR_Types.hpp>
 
 namespace stdair {
 
@@ -26,4 +24,4 @@ namespace stdair {
  };
 
 }
-#endif // __INTRUSIVE_BOM_RELATIONSHIPABSTRACT_HPP
+#endif // __INTRUSIVE_BOM_FACRELATIONSHIPROOTABSTRACT_HPP

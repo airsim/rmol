@@ -5,6 +5,7 @@
 #include <cassert>
 // Local
 #include <test/archi_intru/FacRelationShipRootAbstract.hpp>
+#include <test/archi_intru/FacAbstract.hpp>
 #include <test/archi_intru/FacSupervisor.hpp>
 
 namespace stdair {
@@ -22,13 +23,35 @@ namespace stdair {
 
   // //////////////////////////////////////////////////////////////////////
   FacSupervisor::~FacSupervisor() {
+    cleanBomLayer();
     cleanFacRelationShipRoots();
+  }
+
+  // //////////////////////////////////////////////////////////////////////
+  void FacSupervisor::
+  registerFacBom (FacAbstract* ioFac_ptr) {
+    _facPool.push_back (ioFac_ptr);
   }
 
   // //////////////////////////////////////////////////////////////////////
   void FacSupervisor::
   registerFacRelationShipRoot (FacRelationShipRootAbstract* ioFacRelationShipRoot_ptr) {
     _facRelationShipRootPool.push_back (ioFacRelationShipRoot_ptr);
+  }
+
+  // //////////////////////////////////////////////////////////////////////
+  void FacSupervisor::cleanBomLayer() {
+    for (FactoryPool_T::const_iterator itFactory =
+           _facPool.begin();
+         itFactory != _facPool.end(); itFactory++) {
+      const FacAbstract* currentFactory_ptr = *itFactory;
+      assert (currentFactory_ptr != NULL);
+
+      delete (currentFactory_ptr); currentFactory_ptr = NULL;
+    }
+
+    // Empty the pool of factories
+    _facPool.clear();
   }
 
   // //////////////////////////////////////////////////////////////////////

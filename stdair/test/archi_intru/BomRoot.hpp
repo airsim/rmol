@@ -7,8 +7,14 @@
 // STL
 #include <cassert>
 #include <string>
-// 
+// Boost.Intrusive
+#include <boost/intrusive/list.hpp>
+#include <boost/intrusive/set.hpp>
+// Local
 #include <test/archi_intru/BomAbstract.hpp>
+
+/** Alias for the boost::intrusive namespace. */
+namespace bi = boost::intrusive;
 
 namespace stdair {
 
@@ -17,6 +23,10 @@ namespace stdair {
   public:
     BomRoot (const std::string& iKey) : BomAbstract (iKey)  {}
     BomRoot (const int idx) : BomAbstract (idx) {}
+
+  public:
+    bi::list_member_hook<> _childListHook;
+    bi::set_member_hook<> _childSetHook;
 
   public:
     // /////////// Display support methods /////////

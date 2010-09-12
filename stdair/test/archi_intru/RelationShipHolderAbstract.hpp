@@ -1,5 +1,5 @@
-#ifndef __INTRUSIVE_BOM_BOMABSTRACT_HPP
-#define __INTRUSIVE_BOM_BOMABSTRACT_HPP
+#ifndef __INTRUSIVE_BOM_RELATIONSHIPHOLDERABSTRACT_HPP
+#define __INTRUSIVE_BOM_RELATIONSHIPHOLDERABSTRACT_HPP
 
 // //////////////////////////////////////////////////////////////////////
 // Import section
@@ -14,12 +14,12 @@
 
 namespace stdair {
 
-  /** BomAbstract. */
-  class BomAbstract {
+  /** RelationShipHolderAbstract. */
+  class RelationShipHolderAbstract {
   public:
     /** Constructors. */
-    BomAbstract (const std::string& iKey) : _key (iKey)  {}
-    BomAbstract (const int idx) {
+    RelationShipHolderAbstract (const std::string& iKey) : _key (iKey)  {}
+    RelationShipHolderAbstract (const int idx) {
       std::ostringstream oStr;
       oStr << idx;
       _key = oStr.str();
@@ -33,30 +33,34 @@ namespace stdair {
     /** Default constructors.
         <br>They are kept private, so as to forbid their use (only the
         public constructors should be used). */
-    BomAbstract () {}
-    BomAbstract (const BomAbstract&) {}
+    RelationShipHolderAbstract () {}
+    RelationShipHolderAbstract (const RelationShipHolderAbstract&) {}
 
   public:
     // Comparison operators
-    friend bool operator< (const BomAbstract& a, const BomAbstract& b) {
+    friend bool operator< (const RelationShipHolderAbstract& a,
+                           const RelationShipHolderAbstract& b) {
       return a._key < b._key;
     }
 
-    friend bool operator> (const BomAbstract& a, const BomAbstract& b) {
+    friend bool operator> (const RelationShipHolderAbstract& a,
+                           const RelationShipHolderAbstract& b) {
       return a._key > b._key;
     }
 
-    friend bool operator== (const BomAbstract& a, const BomAbstract& b) {
+    friend bool operator== (const RelationShipHolderAbstract& a,
+                            const RelationShipHolderAbstract& b) {
       return a._key == b._key;
     }
 
-    friend bool operator!= (const BomAbstract& a, const BomAbstract& b) {
+    friend bool operator!= (const RelationShipHolderAbstract& a,
+                            const RelationShipHolderAbstract& b) {
       return a._key != b._key;
     }
 
     // The hash function
-    friend std::size_t hash_value (const BomAbstract& iBom) {
-      return boost::hash<std::string>() (iBom._key);
+    friend std::size_t hash_value (const RelationShipHolderAbstract& iRelationShipHolder) {
+      return boost::hash<std::string>() (iRelationShipHolder._key);
     }
 
   public:
@@ -87,7 +91,7 @@ template <class charT, class traits>
 inline
 std::basic_ostream<charT, traits>&
 operator<< (std::basic_ostream<charT, traits>& ioOut,
-            const stdair::BomAbstract& iBom) {
+            const stdair::RelationShipHolderAbstract& iRelationShipHolder) {
   /**
      string stream:
       - with same format
@@ -98,7 +102,7 @@ operator<< (std::basic_ostream<charT, traits>& ioOut,
   ostr.width (0);
 
   // Fill string stream
-  iBom.toStream (ostr);
+  iRelationShipHolder.toStream (ostr);
 
   // Print string stream
   ioOut << ostr.str();
@@ -115,10 +119,10 @@ template <class charT, class traits>
 inline
 std::basic_istream<charT, traits>&
 operator>> (std::basic_istream<charT, traits>& ioIn,
-            stdair::BomAbstract& ioBom) {
-  // Fill Bom object with input stream
-  ioBom.fromStream (ioIn);
+            stdair::RelationShipHolderAbstract& ioRelationShipHolder) {
+  // Fill RelationShipHolder object with input stream
+  ioRelationShipHolder.fromStream (ioIn);
   return ioIn;
 }
 
-#endif // __INTRUSIVE_BOM_BOMABSTRACT_HPP
+#endif // __INTRUSIVE_BOM_RELATIONSHIPHOLDERABSTRACT_HPP

@@ -10,7 +10,9 @@
 // Boost
 #include <boost/intrusive/list.hpp>
 // Local
+#include <test/archi_intru/FacBom.hpp>
 #include <test/archi_intru/FlightDate.hpp>
+#include <test/archi_intru/IntrusiveHelper.hpp>
 #include <test/archi_intru/TestIntrusive.hpp>
 
 /** Alias for the boost::intrusive namespace. */
@@ -31,10 +33,10 @@ void TestIntrusive::init() {
 void TestIntrusive::initStandard() {
   // Create several FlightDate objects, each one with a different value
   for (int idx = 0; idx < 100; ++idx) {
-    stdair::FlightDate* lFlightDate_ptr = new stdair::FlightDate (idx);
-    assert (lFlightDate_ptr != NULL);
-      
-    _flightDateVector.push_back (lFlightDate_ptr);
+    stdair::FlightDate& lFlightDate =
+      stdair::FacBom<stdair::FlightDate>::instance().create (idx);
+    
+    _flightDateVector.push_back (&lFlightDate);
   }
 }
 

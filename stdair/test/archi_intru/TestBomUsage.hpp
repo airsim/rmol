@@ -18,6 +18,10 @@ public:
 public:
   /** Perform the full test set. */
   static bool test();
+
+private:
+  /** Test the building of the BOM tree. */
+  bool testBomBuilding();
   
 private:
   /** Initialise. */

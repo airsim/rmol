@@ -9,6 +9,7 @@
 #include <boost/intrusive/set.hpp>
 // Local
 #include <test/archi_intru/FacSupervisor.hpp>
+#include <test/archi_intru/FacRelationShipRootAbstract.hpp>
 #include <test/archi_intru/RelationShipHolder.hpp>
 
 /** Alias for the boost::intrusive namespace. */
@@ -18,15 +19,24 @@ namespace stdair {
 
   /** Class holding the list of all the relationship objects of a given type. */
   template <typename FIRST_BOM, typename SECOND_BOM>
-  class FacRelationShipRoot {
+  class FacRelationShipRoot : public FacRelationShipRootAbstract {
   public:
     // ///////////////////////////////////////////
+    /** Type definition for the specific relationship. */
+    typedef RelationShipHolder<FIRST_BOM, SECOND_BOM> RelationShipHolder_T;
+    
     /** Type definition for a list of relationship holder objects. */
-    typedef bi::list<RelationShipHolder<FIRST_BOM,
-                                        SECOND_BOM> > RelationShipHolderList_T;
+    typedef bi::member_hook <RelationShipHolder_T,
+                             bi::list_member_hook<>,
+                             &RelationShipHolder_T::_childListHook> RSHolderListMemberOption;
+    typedef bi::list<RelationShipHolder_T,
+                     RSHolderListMemberOption> RelationShipHolderList_T;
     /** Type definition for a set of relationship holder objects. */
-    typedef bi::set<RelationShipHolder<FIRST_BOM,
-                                       SECOND_BOM> > RelationShipHolderSet_T;
+    typedef bi::member_hook <RelationShipHolder_T,
+                             bi::set_member_hook<>,
+                             &RelationShipHolder_T::_childSetHook> RSHolderSetMemberOption;
+    typedef bi::set<RelationShipHolder_T,
+                    RSHolderSetMemberOption> RelationShipHolderSet_T;
     // ///////////////////////////////////////////
 
   public:
@@ -51,8 +61,10 @@ namespace stdair {
     
     /** Add a child/sibling to the dedicated list of the parent/sibling. */
     void addToListImpl (FIRST_BOM& ioFirstBom, SECOND_BOM& ioSecondBom) {
-      _relationShipHolderList.push_back (ioFirstBom, ioSecondBom);
-      _relationShipHolderSet.insert (ioFirstBom, ioSecondBom);
+      RelationShipHolder_T* lRS_ptr = new RelationShipHolder_T (ioFirstBom,
+                                                                ioSecondBom);
+      _relationShipHolderList.push_back (*lRS_ptr);
+      _relationShipHolderSet.insert (*lRS_ptr);
     }
     
   private:
