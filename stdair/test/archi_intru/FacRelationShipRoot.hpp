@@ -1,9 +1,11 @@
-#ifndef __INTRUSIVE_FAC_FACRELATIONSHIPHOLDER_HPP
-#define __INTRUSIVE_FAC_FACRELATIONSHIPHOLDER_HPP
+#ifndef __INTRUSIVE_FAC_FACRELATIONSHIPROOT_HPP
+#define __INTRUSIVE_FAC_FACRELATIONSHIPROOT_HPP
 
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
+// STL
+#include <cassert>
 // Boost.Intrusive
 #include <boost/intrusive/list.hpp>
 #include <boost/intrusive/set.hpp>
@@ -11,6 +13,7 @@
 #include <test/archi_intru/FacSupervisor.hpp>
 #include <test/archi_intru/FacRelationShipRootAbstract.hpp>
 #include <test/archi_intru/RelationShipHolder.hpp>
+#include <test/archi_intru/RelationShipHolderSet.hpp>
 
 /** Alias for the boost::intrusive namespace. */
 namespace bi = boost::intrusive;
@@ -22,23 +25,32 @@ namespace stdair {
   class FacRelationShipRoot : public FacRelationShipRootAbstract {
   public:
     // ///////////////////////////////////////////
-    /** Type definition for the specific relationship. */
+    /** Type definition for the specific relationship class. */
     typedef RelationShipHolder<FIRST_BOM, SECOND_BOM> RelationShipHolder_T;
-    
-    /** Type definition for a list of relationship holder objects. */
+    /** Type definition for a list of relationship objects. */
+    /*
     typedef bi::member_hook <RelationShipHolder_T,
                              bi::list_member_hook<>,
-                             &RelationShipHolder_T::_childListHook> RSHolderListMemberOption;
+                             &RelationShipHolder_T::_childListHook> RSHListMemberOption;
     typedef bi::list<RelationShipHolder_T,
-                     RSHolderListMemberOption> RelationShipHolderList_T;
-    /** Type definition for a set of relationship holder objects. */
+                     RSHListMemberOption> RelationShipHolderList_T;
+    */
+    /** Type definition for a set of relationship objects. */
+    /*
     typedef bi::member_hook <RelationShipHolder_T,
                              bi::set_member_hook<>,
-                             &RelationShipHolder_T::_childSetHook> RSHolderSetMemberOption;
+                             &RelationShipHolder_T::_childSetHook> RSHSetMemberOption;
     typedef bi::set<RelationShipHolder_T,
-                    RSHolderSetMemberOption> RelationShipHolderSet_T;
+                    RSHSetMemberOption> RelationShipHolderSet_T;
+    */
     // ///////////////////////////////////////////
 
+    // ///////////////////////////////////////////
+    /** Type definition for the specific relationship holder (set) class. */
+    typedef RelationShipHolderSet<FIRST_BOM,
+                                  SECOND_BOM> RelationShipHolderHolder_T;
+    // ///////////////////////////////////////////
+    
   public:
     /** Provide the unique instance.
         <br>The singleton is instantiated when first used.
@@ -52,6 +64,11 @@ namespace stdair {
       }
       return *_instance;
     }
+
+  public:
+    /** Constructor. */
+    FacRelationShipRoot() : _relationShipHolderSet () {
+    }
     
   public:
     /** Add a child/sibling to the dedicated list of the parent/sibling. */
@@ -63,15 +80,28 @@ namespace stdair {
     void addToListImpl (FIRST_BOM& ioFirstBom, SECOND_BOM& ioSecondBom) {
       RelationShipHolder_T* lRS_ptr = new RelationShipHolder_T (ioFirstBom,
                                                                 ioSecondBom);
-      _relationShipHolderList.push_back (*lRS_ptr);
-      _relationShipHolderSet.insert (*lRS_ptr);
+      _relationShipHolderSet.addToList (*lRS_ptr);
+    }
+    
+    /** Add a child/sibling to the dedicated list of the parent/sibling. */
+    static SECOND_BOM* find (const FIRST_BOM& iFirstBom,
+                             const std::string& iSecondBomKey) {
+      SECOND_BOM* oSecondBom_ptr =
+        instance().findImpl (iFirstBom, iSecondBomKey);
+      return oSecondBom_ptr;
+    }
+    
+    /** Add a child/sibling to the dedicated list of the parent/sibling. */
+    SECOND_BOM* findImpl (const FIRST_BOM& iFirstBom,
+                          const std::string& iSecondBomKey) {
+      SECOND_BOM* oSecondBom_ptr =
+        _relationShipHolderSet.find (iFirstBom, iSecondBomKey);
+      return oSecondBom_ptr;
     }
     
   private:
-    /** List of relationship holder objects. */
-    RelationShipHolderList_T _relationShipHolderList;
     /** Set of relationship holder objects. */
-    RelationShipHolderSet_T _relationShipHolderSet;
+    RelationShipHolderHolder_T _relationShipHolderSet;
 
   private:
     /** The unique instance. */
@@ -84,4 +114,4 @@ namespace stdair {
   FacRelationShipRoot<FIRST_BOM, SECOND_BOM>::_instance = NULL;
   
 }
-#endif // __INTRUSIVE_FAC_FACRELATIONSHIPHOLDER_HPP
+#endif // __INTRUSIVE_FAC_FACRELATIONSHIPROOT_HPP

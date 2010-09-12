@@ -6,8 +6,12 @@
 // //////////////////////////////////////////////////////////////////////
 // STL
 #include <string>
+// Boost.Intrusive
+#include <boost/intrusive/list.hpp>
+#include <boost/intrusive/set.hpp>
 // Local
 #include <test/archi_intru/RelationShipHolderAbstract.hpp>
+#include <test/archi_intru/IntrusiveHelper.hpp>
 
 /** Alias for the boost::intrusive namespace. */
 namespace bi = boost::intrusive;
@@ -22,19 +26,37 @@ namespace stdair {
     // ///////////////////////////////////////////
     /** Type definition for a list of either children or siblings. */
     typedef bi::member_hook <SECOND_BOM,
-                             bi::list_member_hook<>,
-                             &SECOND_BOM::_childListHook> SecondBomListMemberOption;
-    typedef bi::list<SECOND_BOM, SecondBomListMemberOption> SecondBomList_T;
+                             bi::set_member_hook<>,
+                             &SECOND_BOM::_childSetHook> SecondBomSetMemberOption;
+    typedef bi::set<SECOND_BOM, SecondBomSetMemberOption> SecondBomSet_T;
     // ///////////////////////////////////////////
     
   public:
     RelationShipHolder (FIRST_BOM& ioFirstBom, SECOND_BOM& ioSecondBom)
-      : _firstBom (ioFirstBom) {
+      : RelationShipHolderAbstract (ioFirstBom.getKey() + ","
+                                    + ioSecondBom.getKey()),
+        _firstBom (ioFirstBom) {
     }
     
   public:
     bi::list_member_hook<> _childListHook;
     bi::set_member_hook<> _childSetHook;
+
+  public:
+    /** Search for a child/sibling from the dedicated list of the
+        parents/siblings. */
+    SECOND_BOM* find (const std::string& iSecondBomKey) {
+      SECOND_BOM* oSecondBom_ptr = NULL;
+      
+      typename SecondBomSet_T::iterator itSecondBom =
+        _secondBomSet.find (iSecondBomKey, StrExpComp<SECOND_BOM>());
+      if (itSecondBom == _secondBomSet.end()) {
+        return oSecondBom_ptr;
+      }
+      oSecondBom_ptr = &*itSecondBom;
+
+      return oSecondBom_ptr;
+    }
     
   public:
     // /////////// Display support methods /////////
@@ -53,7 +75,7 @@ namespace stdair {
     /** Relationship, holding a list of children or siblings for a
         given parent/Bom object. */
     FIRST_BOM& _firstBom;
-    SecondBomList_T _secondBomList;
+    SecondBomSet_T _secondBomSet;
   };
 
 }

@@ -7,6 +7,7 @@ archi_intru_h_sources = \
 		$(top_srcdir)/test/archi_intru/IntrusiveHelper.hpp \
 		$(top_srcdir)/test/archi_intru/RelationShipHolderAbstract.hpp \
 		$(top_srcdir)/test/archi_intru/RelationShipHolder.hpp \
+		$(top_srcdir)/test/archi_intru/RelationShipHolderSet.hpp \
 		$(top_srcdir)/test/archi_intru/BomAbstract.hpp \
 		$(top_srcdir)/test/archi_intru/BomRoot.hpp \
 		$(top_srcdir)/test/archi_intru/FlightDate.hpp \

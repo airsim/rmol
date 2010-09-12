@@ -7,7 +7,7 @@
 #include <sstream>
 #include <string>
 #include <vector>
-// Boost
+// Boost.Intrusive
 #include <boost/intrusive/list.hpp>
 // Local
 #include <test/archi_intru/FacBom.hpp>
@@ -165,13 +165,22 @@ bool TestIntrusive::test() {
   lTestIntrusive.init();
   
   // Now test lists
-  lTestIntrusive.testIntrusiveList();
+  oTestSuccessfull = lTestIntrusive.testIntrusiveList();
+  if (oTestSuccessfull == false) {
+    return oTestSuccessfull;
+  }
   
   // Now, test iterator_to()
-  lTestIntrusive.testIntrusiveIteratorTo();
+  oTestSuccessfull = lTestIntrusive.testIntrusiveIteratorTo();
+  if (oTestSuccessfull == false) {
+    return oTestSuccessfull;
+  }
   
   // Now, test sets
-  lTestIntrusive.testIntrusiveSets();
+  oTestSuccessfull = lTestIntrusive.testIntrusiveSets();
+  if (oTestSuccessfull == false) {
+    return oTestSuccessfull;
+  }
 
   return oTestSuccessfull;
 }

@@ -9,9 +9,16 @@
 // Local
 #include <test/archi_intru/FlightDate.hpp>
 
+// Forward declarations
+namespace stdair {
+  class BomRoot;
+}
+
 /** Class wrapping test functions. */
 class TestBomUsage {
 public:
+  /** Constructor. */
+  TestBomUsage();
   /** Destructor. */
   ~TestBomUsage();
   
@@ -23,6 +30,9 @@ private:
   /** Test the building of the BOM tree. */
   bool testBomBuilding();
   
+  /** Test the search within the BOM tree. */
+  bool testBomSearching();
+  
 private:
   /** Initialise. */
   void init();
@@ -31,6 +41,7 @@ private:
   void clean();
 
 private:
+  stdair::BomRoot* _bomRoot;
 };
 
 #endif // __INTRUSIVE_TST_TESTBOMUSAGE_HPP
