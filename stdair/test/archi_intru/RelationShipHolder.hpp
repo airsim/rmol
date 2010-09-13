@@ -44,14 +44,14 @@ namespace stdair {
                                                    ioSecondBom.getKey())),
         _firstBom (ioFirstBom) {
     }
-    /** Destructor. */
-    ~RelationShipHolder() {}
   private:
     /** Default constructors.
         <br>They are kept private, so as to forbid their use (only the
         public constructors should be used). */
     RelationShipHolder () {}
     RelationShipHolder (const RelationShipHolder&) {}
+    /** Destructor. */
+    ~RelationShipHolder() {}
     
   public:
     bi::list_member_hook<> _childListHook;

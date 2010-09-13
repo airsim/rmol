@@ -49,8 +49,14 @@ namespace stdair {
 
   public:
     /** Constructor. */
-    FacRelationShipRoot() : _relationShipHolderSet () {
-    }
+    FacRelationShipRoot() : _relationShipHolderSet ("DefaultRSHSet") {}
+  private:
+    /** Default constructors.
+        <br>They are kept private, so as to forbid their use (only the
+        public constructors should be used). */
+    FacRelationShipRoot (const FacRelationShipRoot&) {}
+    /** Destructor. */
+    ~FacRelationShipRoot() {}
     
   public:
     /** Add a child/sibling to the dedicated list of the parent/sibling. */

@@ -20,11 +20,14 @@ namespace stdair {
 
   /** FlightDate. */
   class FlightDate : public BomAbstract {
+    template <typename BOM> friend class FacBom;
+    template <typename NODE> friend struct delete_disposer;
   public:
     /** Constructors. */
     FlightDate (const std::string& iKey) : BomAbstract (iKey)  {}
     FlightDate (const int idx) : BomAbstract (idx) {}
-    /** Destructor. */
+    /** Destructor.
+        <br>Note: it should be private, but there is still a compilation bug. */
     ~FlightDate() {}
   private:
     /** Default constructors.

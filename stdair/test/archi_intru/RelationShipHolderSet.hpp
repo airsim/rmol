@@ -23,6 +23,7 @@ namespace stdair {
       children or a Bom object and its siblings. */
   template <typename FIRST_BOM, typename SECOND_BOM>
   class RelationShipHolderSet : public RelationShipHolderAbstract {
+    template <typename ONE, typename SECOND> friend class FacRelationShipRoot;
   public:
     // ///////////////////////////////////////////
     /** Type definition for the specific relationship class. */
@@ -45,9 +46,18 @@ namespace stdair {
 
   public:
     /** Constructor. */
-    RelationShipHolderSet ()
-      : RelationShipHolderAbstract ("RelationShipHolderSet") {
+    RelationShipHolderSet (const std::string& iKey)
+      : RelationShipHolderAbstract (iKey) {
     }
+  private:
+    /** Default constructors.
+        <br>They are kept private, so as to forbid their use (only the
+        public constructors should be used). */
+    RelationShipHolderSet ()
+      : RelationShipHolderAbstract ("RelationShipHolderSet") {}
+    RelationShipHolderSet (const RelationShipHolderSet&) {}
+    /** Destructor. */
+    ~RelationShipHolderSet() {}
     
   public:
     bi::list_member_hook<> _childListHook;

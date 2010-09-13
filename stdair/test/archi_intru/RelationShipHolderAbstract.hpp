@@ -25,7 +25,7 @@ namespace stdair {
       _key = oStr.str();
     }
     /** Destructor. */
-    ~RelationShipHolderAbstract() {}
+    virtual ~RelationShipHolderAbstract() {}
     
   protected:
     /** Default constructors.
