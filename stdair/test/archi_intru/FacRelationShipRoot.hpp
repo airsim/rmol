@@ -27,25 +27,7 @@ namespace stdair {
     // ///////////////////////////////////////////
     /** Type definition for the specific relationship class. */
     typedef RelationShipHolder<FIRST_BOM, SECOND_BOM> RelationShipHolder_T;
-    /** Type definition for a list of relationship objects. */
-    /*
-    typedef bi::member_hook <RelationShipHolder_T,
-                             bi::list_member_hook<>,
-                             &RelationShipHolder_T::_childListHook> RSHListMemberOption;
-    typedef bi::list<RelationShipHolder_T,
-                     RSHListMemberOption> RelationShipHolderList_T;
-    */
-    /** Type definition for a set of relationship objects. */
-    /*
-    typedef bi::member_hook <RelationShipHolder_T,
-                             bi::set_member_hook<>,
-                             &RelationShipHolder_T::_childSetHook> RSHSetMemberOption;
-    typedef bi::set<RelationShipHolder_T,
-                    RSHSetMemberOption> RelationShipHolderSet_T;
-    */
-    // ///////////////////////////////////////////
 
-    // ///////////////////////////////////////////
     /** Type definition for the specific relationship holder (set) class. */
     typedef RelationShipHolderSet<FIRST_BOM,
                                   SECOND_BOM> RelationShipHolderHolder_T;
