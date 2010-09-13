@@ -7,7 +7,7 @@ noinst_LTLIBRARIES = librmolcmd.la
 
 librmolcmd_la_SOURCES = $(rmol_cmd_h_sources) $(rmol_cmd_cc_sources) 
 librmolcmd_la_CXXFLAGS = $(BOOST_CFLAGS) $(STDAIR_CFLAGS)
-librmolbas_la_LDFLAGS =
+librmolcmd_la_LDFLAGS =
 
 #
 #pkgincludedir = $(includedir)/@PACKAGE@/command
