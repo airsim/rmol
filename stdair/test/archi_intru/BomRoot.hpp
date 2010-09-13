@@ -21,8 +21,17 @@ namespace stdair {
   /** BomRoot. */
   class BomRoot : public BomAbstract {
   public:
+    /** Constructors. */
     BomRoot (const std::string& iKey) : BomAbstract (iKey)  {}
     BomRoot (const int idx) : BomAbstract (idx) {}
+    /** Destructor. */
+    ~BomRoot() {}
+  private:
+    /** Default constructors.
+        <br>They are kept private, so as to forbid their use (only the
+        public constructors should be used). */
+    BomRoot () {}
+    BomRoot (const BomRoot&) {}
 
   public:
     bi::list_member_hook<> _childListHook;

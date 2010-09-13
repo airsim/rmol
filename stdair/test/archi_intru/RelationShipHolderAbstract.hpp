@@ -24,10 +24,8 @@ namespace stdair {
       oStr << idx;
       _key = oStr.str();
     }
-    /** Get the key. */
-    const std::string& getKey() const {
-      return _key;
-    }
+    /** Destructor. */
+    ~RelationShipHolderAbstract() {}
     
   protected:
     /** Default constructors.
@@ -36,6 +34,12 @@ namespace stdair {
     RelationShipHolderAbstract () {}
     RelationShipHolderAbstract (const RelationShipHolderAbstract&) {}
 
+  public:
+    /** Get the key. */
+    const std::string& getKey() const {
+      return _key;
+    }
+    
   public:
     // Comparison operators
     friend bool operator< (const RelationShipHolderAbstract& a,
