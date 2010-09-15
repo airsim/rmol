@@ -1,9 +1,8 @@
 stdair_bom_h_sources = \
 		$(top_srcdir)/stdair/bom/BomAbstract.hpp \
 		$(top_srcdir)/stdair/bom/KeyAbstract.hpp \
-		$(top_srcdir)/stdair/bom/RelationShipAbstract.hpp \
-		$(top_srcdir)/stdair/bom/RelationShip.hpp \
 		$(top_srcdir)/stdair/bom/BomManager.hpp \
+		$(top_srcdir)/stdair/bom/BomHolderKey.hpp \
 		$(top_srcdir)/stdair/bom/BomRootKey.hpp \
 		$(top_srcdir)/stdair/bom/YieldStoreKey.hpp \
 		$(top_srcdir)/stdair/bom/InventoryKey.hpp \
@@ -32,6 +31,7 @@ stdair_bom_h_sources = \
 		$(top_srcdir)/stdair/bom/BookingRequestTypes.hpp \
 		$(top_srcdir)/stdair/bom/EventTypes.hpp \
 		$(top_srcdir)/stdair/bom/YieldStoreTypes.hpp \
+		$(top_srcdir)/stdair/bom/BomHolder.hpp \
 		$(top_srcdir)/stdair/bom/BomRoot.hpp \
 		$(top_srcdir)/stdair/bom/Inventory.hpp \
 		$(top_srcdir)/stdair/bom/FlightDate.hpp \
@@ -55,6 +55,7 @@ stdair_bom_h_sources = \
 		$(top_srcdir)/stdair/bom/EventQueue.hpp
 stdair_bom_cc_sources = \
 		$(top_srcdir)/stdair/bom/BomManager.cpp \
+		$(top_srcdir)/stdair/bom/BomHolderKey.cpp \
 		$(top_srcdir)/stdair/bom/BomRootKey.cpp \
 		$(top_srcdir)/stdair/bom/YieldStoreKey.cpp \
 		$(top_srcdir)/stdair/bom/InventoryKey.cpp \

@@ -14,6 +14,7 @@ namespace stdair {
   /** Class representing the actual attributes for an airline leg-cabin. */
   class LegCabin : public BomAbstract {
     template <typename BOM> friend class FacBom;
+    friend class FacBomManager;
 
   public:
     // Type definitions.
@@ -23,19 +24,16 @@ namespace stdair {
   public:
     // /////////// Getters ////////////
      /** Get the leg-cabin key. */
-    const Key_T& getKey() const {
-      return _key;
-    }
+    const Key_T& getKey() const { return _key; }
+
+    /** Get the parent object. */
+    BomAbstract* const getParent() const { return _parent; }
     
     /** Get the cabin code (from key). */
-    const CabinCode_T& getCabinCode() const {
-      return _key.getCabinCode();
-    }
+    const CabinCode_T& getCabinCode() const { return _key.getCabinCode(); }
 
     /** Get the cabin offered capacity. */
-    const CabinCapacity_T& getOfferedCapacity () const {
-      return _offeredCapacity;
-    }
+    const CabinCapacity_T& getOfferedCapacity () const {return _offeredCapacity;}
 
     /** Get the cabin physical capacity. */
     const CabinCapacity_T& getPhysicalCapacity () const {
@@ -43,14 +41,10 @@ namespace stdair {
     }
 
     /** Get the number of sold seat. */
-    const NbOfBookings_T& getSoldSeat () const {
-      return _soldSeat;
-    }
+    const NbOfBookings_T& getSoldSeat () const { return _soldSeat; }
 
     /** Get the value of commited space. */
-    const CommitedSpace_T& getCommitedSpace () const {
-      return _commitedSpace;
-    }
+    const CommitedSpace_T& getCommitedSpace () const { return _commitedSpace; }
 
     /** Get the value of the availability pool. */
     const Availability_T& getAvailabilityPool () const {
@@ -58,19 +52,16 @@ namespace stdair {
     }
 
     /** Get the value of the availability. */
-    const Availability_T& getAvailability () const {
-      return _availability;
-    }
+    const Availability_T& getAvailability () const { return _availability; }
 
     /** Retrive the current Bid-Price. */
-    const BidPrice_T& getCurrentBidPrice () const {
-      return _currentBidPrice;
-    }
+    const BidPrice_T& getCurrentBidPrice () const { return _currentBidPrice; }
     
     /** Retrive the Bid-Price Vector. */
-    BidPriceVector_T& getBidPriceVector () {
-      return _bidPriceVector;
-    }
+    BidPriceVector_T& getBidPriceVector () { return _bidPriceVector; }
+
+    /** Get the map of children holders. */
+    const HolderMap_T& getHolderMap() const { return _holderMap; }
 
   public:
     // ///////////// Setters ///////////////
@@ -147,33 +138,17 @@ namespace stdair {
     stdair::NbOfBookings_T _groupNbOfBookings;
     
   protected:
-    // Attributes
-    /** The key of both structure and  objects. */
     Key_T _key;
-    
-    /** Offered capacity of the cabin. */
+    BomAbstract* _parent;
     CabinCapacity_T _offeredCapacity;
-
-    /** Physical capacity of the cabin. */
     CabinCapacity_T _physicalCapacity;
-
-    /** Sold seat into the cabin. */
     NbOfBookings_T  _soldSeat;
-
-    /** Commited space for all segmentCabin composed by this LegCabin. */
     CommitedSpace_T  _commitedSpace;
-
-    /** Availability Pool between capacity and commited spaces. */
     Availability_T _availabilityPool;
-
-    /** Availability Pool between capacity and commited spaces. */
     Availability_T _availability;
-
-    /** Bid Price Vector. */
     BidPriceVector_T _bidPriceVector;
-
-    /** Current BidPrice. */
     BidPrice_T _currentBidPrice;
+    HolderMap_T _holderMap;
   };
 
 }

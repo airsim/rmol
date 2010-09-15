@@ -14,6 +14,7 @@ namespace stdair {
   /** Class representing the actual attributes for an airline segment-cabin. */
   class SegmentCabin : public BomAbstract {
     template <typename BOM> friend class FacBom;
+    friend class FacBomManager;
     
   public:
     // Type definitions.
@@ -23,35 +24,25 @@ namespace stdair {
   public:
     // /////////// Getters ///////////// 
     /** Get the segment-cabin key. */
-    const Key_T& getKey() const {
-      return _key;
-    }
+    const Key_T& getKey() const { return _key; }
+
+    /** Get the parent object. */
+    BomAbstract* const getParent() const { return _parent; }
     
     /** Get the cabin code (primary key). */
-    const CabinCode_T& getCabinCode() const {
-      return _key.getCabinCode();
-    }
+    const CabinCode_T& getCabinCode() const { return _key.getCabinCode(); }
     
-
     /** Get the off cabin. */
-    const CabinCapacity_T& getCapacity () const {
-      return _capacity;
-    }
+    const CabinCapacity_T& getCapacity () const { return _capacity; }
 
     /** Get the number of reserved seats. */
-    const BlockSpace_T& getBlockSpace () const {
-      return _blockSpace;
-    }
+    const BlockSpace_T& getBlockSpace () const { return _blockSpace; }
 
     /** Get the booking counter. */
-    const NbOfBookings_T& getBookingCounter () const {
-      return _bookingCounter;
-    }
+    const NbOfBookings_T& getBookingCounter () const { return _bookingCounter; }
 
     /** Get the commited Space value. */
-    const CommitedSpace_T& getCommitedSpace () const {
-      return _commitedSpace;
-    }
+    const CommitedSpace_T& getCommitedSpace () const { return _commitedSpace; }
 
     /** Get the availability pool value. */
     const Availability_T& getAvailabilityPool () const {
@@ -59,21 +50,18 @@ namespace stdair {
     }
 
     /** Retrive the current Bid-Price. */
-    const BidPrice_T& getCurrentBidPrice () const {
-      return _currentBidPrice;
-    }
+    const BidPrice_T& getCurrentBidPrice () const { return _currentBidPrice; }
 
     /** Retrive the Bid-Price Vector. */
-    BidPriceVector_T& getBidPriceVector () {
-      return _bidPriceVector;
-    }
+    BidPriceVector_T& getBidPriceVector () { return _bidPriceVector; }
+
+    /** Get the map of children holders. */
+    const HolderMap_T& getHolderMap() const { return _holderMap; }
 
   public:
     // ///////// Setters //////////
     /** Set the cabin capacity. */
-    void setCapacity (const CabinCapacity_T& iCapacity) {
-      _capacity = iCapacity;
-    }
+    void setCapacity (const CabinCapacity_T& iCapacity) { _capacity = iCapacity;}
 
     /** Set the number of reserved seats. */
     void setBlockSpace (const BlockSpace_T& iBlockSpace) {
@@ -126,29 +114,16 @@ namespace stdair {
 
   protected:
     // Attributes
-    /** The key of both structure and  objects. */
     Key_T _key;
-
-    /** Capacity of the cabin. */
+    BomAbstract* _parent;
     CabinCapacity_T _capacity;
-
-    /** Reserved seats in the cabin. */
-    BlockSpace_T _blockSpace;      
-
-    /** Counter of all bookings into the cabin. */
+    BlockSpace_T _blockSpace;     
     NbOfBookings_T _bookingCounter;
-
-    /** Commited space (seat unity) */
     CommitedSpace_T _commitedSpace;
-
-    /** Value of the availibility pool */
     Availability_T _availabilityPool;
-
-    /** Bid Price Vector. */
     BidPriceVector_T _bidPriceVector;
-
-    /** Current BidPrice. */
     BidPrice_T _currentBidPrice;
+    HolderMap_T _holderMap;
   };
 
 }

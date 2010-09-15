@@ -3,26 +3,24 @@
 // //////////////////////////////////////////////////////////////////////
 // STL
 #include <cassert>
-// STDAIR
-#include <stdair/bom/FlightDate.hpp>
+// Local
+#include <test/archi_static_cast/Inventory.hpp>
 
-namespace stdair {
+namespace myairline {
 
   // ////////////////////////////////////////////////////////////////////
-  FlightDate::FlightDate (const Key_T& iKey)
-    : _key (iKey), _parent (NULL) {
+  Inventory::Inventory (const Key_T& iKey) : _key (iKey) {
   }
 
   // ////////////////////////////////////////////////////////////////////
-  FlightDate::~FlightDate () {
+  Inventory::~Inventory () {
   }
-  
+
   // ////////////////////////////////////////////////////////////////////
-  std::string FlightDate::toString() const {
+  std::string Inventory::toString() const {
     std::ostringstream oStr;
     oStr << describeKey();
     return oStr.str();
   }
-
+  
 }
-

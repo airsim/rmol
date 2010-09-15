@@ -1,34 +1,33 @@
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
-// STL
-#include <cassert>
 // STDAIR
-#include <stdair/basic/BasConst_BookingClass.hpp>
-#include <stdair/basic/BasConst_Yield.hpp>
-#include <stdair/bom/BookingClass.hpp>
+#include <stdair/bom/BomHolderKey.hpp>
 
 namespace stdair {
 
   // ////////////////////////////////////////////////////////////////////
-  BookingClass::BookingClass (const Key_T& iKey) : _key (iKey), _parent (NULL) {
+  BomHolderKey::BomHolderKey () {
   }
 
   // ////////////////////////////////////////////////////////////////////
-  BookingClass::~BookingClass () {
+  BomHolderKey::~BomHolderKey () {
   }
 
   // ////////////////////////////////////////////////////////////////////
-  std::string BookingClass::toString() const {
+  void BomHolderKey::toStream (std::ostream& ioOut) const {
+    ioOut << "BomHolderKey: " << toString() << std::endl;
+  }
+  
+  // ////////////////////////////////////////////////////////////////////
+  void BomHolderKey::fromStream (std::istream& ioIn) {
+  }
+  
+  // ////////////////////////////////////////////////////////////////////
+  const std::string BomHolderKey::toString() const {
     std::ostringstream oStr;
-    oStr << describeKey();
+    oStr << " -- HOLDER -- ";
     return oStr.str();
-  }
-
-  // ////////////////////////////////////////////////////////////////////
-  void BookingClass::sell (const NbOfBookings_T& iNbOfBookings) {
-    _nbOfBookings += iNbOfBookings;
   }
   
 }
-

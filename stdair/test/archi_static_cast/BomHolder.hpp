@@ -1,27 +1,27 @@
-#ifndef __STDAIR_BOM_BOMROOT_HPP
-#define __STDAIR_BOM_BOMROOT_HPP
+#ifndef __MYAIRLINE_BOMHOLDER_HPP
+#define __MYAIRLINE_BOMHOLDER_HPP
 
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
-// STDAIR
+// STL
+#include <string>
+#include <list>
+// StdAir 
 #include <stdair/bom/BomAbstract.hpp>
 #include <stdair/bom/BomRootKey.hpp>
 
-namespace stdair {
-  /** Class representing the actual attributes for the Bom root. */
-  class BomRoot : public BomAbstract {
-    template <typename BOM> friend class FacBom;
-    friend class FacBomManager;
+namespace myairline {
+  /** Class representing the holders of BOM. */
+  template <typename BOM>
+  class BomHolder : public stdair::BomAbstract {
+    template <typename> friend class FacBom;
+    friend class BomManager;
     
   public:
-    /** Definition allowing to retrieve the associated BOM key type. */
-    typedef BomRootKey Key_T;
-
-  public:
-    // /////////// Getters //////////////
-    const Key_T& getKey() const { return _key; }
-    const HolderMap_T& getHolderMap() const { return _holderMap; }
+    typedef stdair::BomRootKey Key_T;
+    // Definition of diffrent container types.
+    typedef std::list<BOM*> BomList_T;
 
   public:
     // /////////// Display support methods /////////
@@ -34,24 +34,24 @@ namespace stdair {
     void fromStream (std::istream& ioIn) { }
 
    /** Get the serialised version of the Business Object. */
-    std::string toString() const;
+    std::string toString() const { return ""; }
     
     /** Get a string describing the  key. */
-    const std::string describeKey() const { return _key.toString(); }
+    const std::string describeKey() const { return ""; }
     
   protected:
     /** Default constructors. */
-    BomRoot ();
-    BomRoot (const BomRoot&);
-    BomRoot (const Key_T& iKey);
+    BomHolder ();
+    BomHolder (const BomHolder&);
+    BomHolder (const Key_T& iKey) : _key (iKey) { }
     /** Destructor. */
-    ~BomRoot();
+    ~BomHolder() { };
 
-  protected:
+  public:
     // Attributes
     Key_T _key;
-    HolderMap_T _holderMap;
+    BomList_T _bomList;
   };
-
-}
-#endif // __STDAIR_BOM_BOMROOT_HPP
+  
+}  
+#endif // __MYAIRLINE_BOMHOLDER_HPP

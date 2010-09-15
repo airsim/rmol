@@ -12,6 +12,8 @@
 // STL
 #include <iosfwd>
 #include <string>
+#include <map>
+#include <typeinfo>
 // StdAir
 #include <stdair/STDAIR_Types.hpp>
 
@@ -42,7 +44,10 @@ namespace stdair {
   public:
     /** Destructor. */
     virtual ~BomAbstract() {}
- };
+  };
+
+  /* Define the map of object holder type. */
+  typedef std::map<const std::type_info*, BomAbstract*> HolderMap_T;
 }
 
 /**

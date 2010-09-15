@@ -14,6 +14,7 @@ namespace stdair {
   /** Class representing the actual attributes for an airline booking class. */
   class BookingClass : public BomAbstract {
     template <typename BOM> friend class FacBom;
+    friend class FacBomManager;
 
   public:
     // Type definitions.
@@ -23,14 +24,16 @@ namespace stdair {
   public:
     // /////////// Getters ////////////
     /** Get the booking class key. */
-    const Key_T& getKey() const {
-      return _key;
-    }
+    const Key_T& getKey() const { return _key; }
     
     /** Get the booking code (part of the primary key). */
-    const ClassCode_T& getClassCode() const {
-      return _key.getClassCode();
-    }
+    const ClassCode_T& getClassCode() const { return _key.getClassCode(); }
+
+    /** Get the parent object. */
+    BomAbstract* const getParent() const { return _parent; }
+
+    /** Get the map of children holders. */
+    const HolderMap_T& getHolderMap() const { return _holderMap; }
 
   public:
     // /////////// Display support methods /////////
@@ -63,6 +66,7 @@ namespace stdair {
   public:
     // Attributes
     Key_T _key;
+    BomAbstract* _parent;
     SubclassCode_T _subclassCode;
     AuthorizationLevel_T _cumulatedProtection;
     AuthorizationLevel_T _protection;
@@ -78,6 +82,7 @@ namespace stdair {
     Availability_T _netClassAvailability;
     Availability_T _segmentAvailability;
     Availability_T _netRevenueAvailability;
+    HolderMap_T _holderMap;
     
   };
 

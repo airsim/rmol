@@ -14,6 +14,7 @@ namespace stdair {
   /** Class representing the actual attributes for an airline segment-period. */
   class SegmentPeriod : public BomAbstract {
     template <typename BOM> friend class FacBom;
+    friend class FacBomManager;
 
   public:
     // Type definitions.
@@ -23,9 +24,10 @@ namespace stdair {
   public:
     // /////////// Getters /////////////
     /** Get the segment-period key. */
-    const Key_T& getKey() const {
-      return _key;
-    }
+    const Key_T& getKey() const { return _key; }
+
+    /** Get the parent object. */
+    BomAbstract* const getParent() const { return _parent; }
     
     /** Get the boarding point (part of the primary key). */
     const AirportCode_T& getBoardingPoint () const {
@@ -33,19 +35,13 @@ namespace stdair {
     }
 
     /** Get the off point (part of the primary key). */
-    const AirportCode_T& getOffPoint () const {
-      return _key.getOffPoint();
-    }
+    const AirportCode_T& getOffPoint () const { return _key.getOffPoint(); }
 
     /** Get the boarding time. */
-    const Duration_T& getBoardingTime () const {
-      return _boardingTime;
-    }
+    const Duration_T& getBoardingTime () const { return _boardingTime; }
 
     /** Get the off time. */
-    const Duration_T& getOffTime () const {
-      return _offTime;
-    }
+    const Duration_T& getOffTime () const { return _offTime; }
 
     /** Get the boarding date offset. */
     const DateOffset_T& getBoardingDateOffset () const {
@@ -53,19 +49,18 @@ namespace stdair {
     }
 
     /** Get the off date offset. */
-    const DateOffset_T& getOffDateOffset () const {
-      return _offDateOffset;
-    }
+    const DateOffset_T& getOffDateOffset () const { return _offDateOffset; }
     
     /** Get the elapsed time. */
-    const Duration_T& getElapsedTime() const {
-      return _elapsedTime;
-    }
+    const Duration_T& getElapsedTime() const { return _elapsedTime; }
 
     /** Get the cabin booking class map. */
     const CabinBookingClassMap_T& getCabinBookingClassMap () const {
       return _cabinBookingClassMap;
     }
+
+    /** Get the map of children holders. */
+    const HolderMap_T& getHolderMap() const { return _holderMap; }
 
   public:
     // ///////// Setters //////////
@@ -75,9 +70,7 @@ namespace stdair {
     }
 
     /** Set the off time. */
-    void setOffTime (const Duration_T& iOffTime) {
-      _offTime = iOffTime;
-    }
+    void setOffTime (const Duration_T& iOffTime) { _offTime = iOffTime; }
 
     /** Set the boarding date offset. */
     void setBoardingDateOffset (const DateOffset_T& iDateOffset) {
@@ -125,12 +118,14 @@ namespace stdair {
   protected:
     // Attributes
     Key_T _key;
+    BomAbstract* _parent;
     Duration_T _boardingTime;
     Duration_T _offTime;
     DateOffset_T _boardingDateOffset;
     DateOffset_T _offDateOffset;
     Duration_T _elapsedTime;
     CabinBookingClassMap_T _cabinBookingClassMap;
+    HolderMap_T _holderMap;
   };
 
 }

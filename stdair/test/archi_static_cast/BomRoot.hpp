@@ -1,36 +1,36 @@
-#ifndef __STDAIR_BOM_BUCKET_HPP
-#define __STDAIR_BOM_BUCKET_HPP
+#ifndef __MYAIRLINE_BOMROOT_HPP
+#define __MYAIRLINE_BOMROOT_HPP
 
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
-// STDAIR 
+// STL
+#include <string>
+#include <map>
+// StdAir 
 #include <stdair/bom/BomAbstract.hpp>
-#include <stdair/bom/BucketKey.hpp>
-#include <stdair/bom/BucketTypes.hpp>
+#include <stdair/bom/BomRootKey.hpp>
+// Aichi TEST
+#include <test/archi_static_cast/Types.hpp>
 
-namespace stdair {
-
-  /** Class representing the actual attributes for an airline booking class. */
-  class Bucket : public BomAbstract {
+namespace myairline {
+  
+  /** Class representing the actual attributes for the Bom root. */
+  class BomRoot : public stdair::BomAbstract {
     template <typename BOM> friend class FacBom;
-    friend class FacBomManager;
+    class FacBomManager;
+    class BomManager;
     
   public:
-    // Type definitions.
     /** Definition allowing to retrieve the associated BOM key type. */
-    typedef BucketKey Key_T;
+    typedef stdair::BomRootKey Key_T;
 
   public:
-    // /////////// Getters ////////////
-    /** Get the booking class key. */
-    const Key_T& getKey() const { return _key; }
-
-    /** Get the parent object. */
-    BomAbstract* const getParent() const { return _parent; }
-
-    /** Get the map of children holders. */
-    const HolderMap_T& getHolderMap() const { return _holderMap; }
+    // /////////// Getters //////////////
+    /** Get the BomRoot key. */
+    const Key_T& getKey() const {
+      return _key;
+    }
 
   public:
     // /////////// Display support methods /////////
@@ -50,24 +50,20 @@ namespace stdair {
     
   protected:
     /** Default constructors. */
-    Bucket (const Key_T&);
-    Bucket (const Bucket&);
+    BomRoot ();
+    BomRoot (const BomRoot&);
+    BomRoot (const Key_T& iKey);
     /** Destructor. */
-    ~Bucket();
+    ~BomRoot();
 
   public:
     // Attributes
+    /** The key of both structure and  objects. */
     Key_T _key;
-    BomAbstract* _parent;
+
+    /** The list of children holders. */
     HolderMap_T _holderMap;
-    // test AIRINV
-    stdair::Yield_T _yieldRangeUpperValue;
-    stdair::CabinCapacity_T _availability;
-    stdair::NbOfSeats_T _nbOfSeats;
-    stdair::SeatIndex_T _seatIndex;
-
   };
-
-}
-#endif // __STDAIR_BOM_BUCKET_HPP
-
+  
+}  
+#endif // __MYAIRLINE_BOMROOT_HPP

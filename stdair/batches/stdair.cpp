@@ -167,13 +167,13 @@ void buildSampleBom() {
     const stdair::InventoryKey lBAKey ("BA");
     stdair::Inventory& lBAInv =
       stdair::FacBom<stdair::Inventory>::instance().create (lBAKey);
-    stdair::FacBomManager::addToList (lBomRoot, lBAInv);
+    stdair::FacBomManager::instance().addToList (lBomRoot, lBAInv);
 
     // Create an Inventory for AF
     const stdair::InventoryKey lAFKey ("AF");
     stdair::Inventory& lAFInv =
       stdair::FacBom<stdair::Inventory>::instance().create (lAFKey);
-    stdair::FacBomManager::addToList (lBomRoot, lAFInv);
+    stdair::FacBomManager::instance().addToList (lBomRoot, lAFInv);
 
     // ////// BA ///////    
     // Step 0.2: Flight-date level
@@ -184,7 +184,7 @@ void buildSampleBom() {
 
     stdair::FlightDate& lBA15_20100610_FD =
       stdair::FacBom<stdair::FlightDate>::instance().create (lFlightDateKey);
-    stdair::FacBomManager::addToList (lBAInv, lBA15_20100610_FD);
+    stdair::FacBomManager::instance().addToList (lBAInv, lBA15_20100610_FD);
     
     // Display the flight-date
     // STDAIR_LOG_DEBUG ("FlightDate: " << lBA15_20100610_FD.toString());
@@ -197,7 +197,8 @@ void buildSampleBom() {
 
     stdair::SegmentDate& lLHRSYDSegment =
       stdair::FacBom<stdair::SegmentDate>::instance().create (lSegmentDateKey);
-    stdair::FacBomManager::addToList (lBA15_20100610_FD, lLHRSYDSegment);
+    stdair::FacBomManager::instance().addToList (lBA15_20100610_FD,
+                                                 lLHRSYDSegment);
 
     // Display the segment-date
     // STDAIR_LOG_DEBUG ("SegmentDate: " << lLHRSYDSegment.toString());
@@ -208,7 +209,8 @@ void buildSampleBom() {
 
     stdair::SegmentDate& lLHRBKKSegment =
       stdair::FacBom<stdair::SegmentDate>::instance().create (lSegmentDateKey);
-    stdair::FacBomManager::addToList (lBA15_20100610_FD, lLHRBKKSegment);
+    stdair::FacBomManager::instance().addToList (lBA15_20100610_FD,
+                                                 lLHRBKKSegment);
 
     // Display the segment-date
     // STDAIR_LOG_DEBUG ("SegmentDate: " << lLHRBKKSegment.toString());
@@ -219,7 +221,8 @@ void buildSampleBom() {
 
     stdair::SegmentDate& lBKKSYDSegment =
       stdair::FacBom<stdair::SegmentDate>::instance().create (lSegmentDateKey);
-    stdair::FacBomManager::addToList (lBA15_20100610_FD, lBKKSYDSegment);
+    stdair::FacBomManager::instance().addToList (lBA15_20100610_FD,
+                                                 lBKKSYDSegment);
 
     // Display the segment-date
     // STDAIR_LOG_DEBUG ("SegmentDate: " << lBKKSYDSegment.toString());
@@ -230,7 +233,7 @@ void buildSampleBom() {
 
     stdair::LegDate& lLHRLeg =
       stdair::FacBom<stdair::LegDate>::instance().create (lLegDateKey);
-    stdair::FacBomManager::addToList (lBA15_20100610_FD, lLHRLeg);
+    stdair::FacBomManager::instance().addToList (lBA15_20100610_FD, lLHRLeg);
 
     // Display the leg-date
     // STDAIR_LOG_DEBUG ("LegDate: " << lLHRLeg.toString());
@@ -240,7 +243,7 @@ void buildSampleBom() {
 
     stdair::LegDate& lBKKLeg =
       stdair::FacBom<stdair::LegDate>::instance().create (lLegDateKey);
-    stdair::FacBomManager::addToList (lBA15_20100610_FD, lBKKLeg);
+    stdair::FacBomManager::instance().addToList (lBA15_20100610_FD, lBKKLeg);
 
     // Display the leg-date
     // STDAIR_LOG_DEBUG ("LegDate: " << lBKKLeg.toString());
@@ -252,7 +255,8 @@ void buildSampleBom() {
 
     stdair::SegmentCabin& lLHRBKKSegmentYCabin =
       stdair::FacBom<stdair::SegmentCabin>::instance().create(lYSegmentCabinKey);
-    stdair::FacBomManager::addToList (lLHRBKKSegment, lLHRBKKSegmentYCabin);
+    stdair::FacBomManager::instance().addToList (lLHRBKKSegment,
+                                                 lLHRBKKSegmentYCabin);
 
     // Display the segment-cabin
     // STDAIR_LOG_DEBUG ("SegmentCabin: " << lLHRBKKSegmentYCabin.toString());
@@ -260,7 +264,8 @@ void buildSampleBom() {
     // Create a SegmentCabin (Y) of the Segment BKK-SYD;
     stdair::SegmentCabin& lBKKSYDSegmentYCabin =
       stdair::FacBom<stdair::SegmentCabin>::instance().create(lYSegmentCabinKey);
-    stdair::FacBomManager::addToList (lBKKSYDSegment, lBKKSYDSegmentYCabin);
+    stdair::FacBomManager::instance().addToList (lBKKSYDSegment,
+                                                 lBKKSYDSegmentYCabin);
      
     // Display the segment-cabin
     // STDAIR_LOG_DEBUG ("SegmentCabin: " << lBKKSYDSegmentYCabin.toString());
@@ -268,7 +273,8 @@ void buildSampleBom() {
     // Create a SegmentCabin (Y) of the Segment LHR-SYD;
     stdair::SegmentCabin& lLHRSYDSegmentYCabin =
       stdair::FacBom<stdair::SegmentCabin>::instance().create(lYSegmentCabinKey);
-    stdair::FacBomManager::addToList (lLHRSYDSegment, lLHRSYDSegmentYCabin);
+    stdair::FacBomManager::instance().addToList (lLHRSYDSegment,
+                                                 lLHRSYDSegmentYCabin);
       
     // Display the segment-cabin
     // STDAIR_LOG_DEBUG ("SegmentCabin: " << lLHRSYDSegmentYCabin.toString());
@@ -279,7 +285,7 @@ void buildSampleBom() {
 
     stdair::LegCabin& lLHRLegYCabin =
       stdair::FacBom<stdair::LegCabin>::instance().create (lYLegCabinKey);
-    stdair::FacBomManager::addToList (lLHRLeg, lLHRLegYCabin);
+    stdair::FacBomManager::instance().addToList (lLHRLeg, lLHRLegYCabin);
 
     // Display the leg-cabin
     // STDAIR_LOG_DEBUG ("LegCabin: " << lLHRLegYCabin.toString());
@@ -287,7 +293,7 @@ void buildSampleBom() {
     // Create a LegCabin (Y) for the Leg BKK-SYD
     stdair::LegCabin& lBKKLegYCabin =
       stdair::FacBom<stdair::LegCabin>::instance().create (lYLegCabinKey);
-    stdair::FacBomManager::addToList (lBKKLeg, lBKKLegYCabin);
+    stdair::FacBomManager::instance().addToList (lBKKLeg, lBKKLegYCabin);
 
     // Display the leg-cabin
     // STDAIR_LOG_DEBUG ("LegCabin: " << lBKKLegYCabin.toString());
@@ -299,8 +305,8 @@ void buildSampleBom() {
 
     stdair::BookingClass& lLHRBKKSegmentYCabinQClass =
       stdair::FacBom<stdair::BookingClass>::instance().create(lQBookingClassKey);
-    stdair::FacBomManager::addToList (lLHRBKKSegmentYCabin,
-                                      lLHRBKKSegmentYCabinQClass);
+    stdair::FacBomManager::instance().addToList (lLHRBKKSegmentYCabin,
+                                                 lLHRBKKSegmentYCabinQClass);
 
     // Display the booking class
     // STDAIR_LOG_DEBUG ("BookingClass: "
@@ -309,9 +315,9 @@ void buildSampleBom() {
     // Create a BookingClass (Q) for the Segment BKK-LHR, cabin Y
     stdair::BookingClass& lBKKSYDSegmentYCabinQClass =
       stdair::FacBom<stdair::BookingClass>::instance().create(lQBookingClassKey);
-    stdair::FacBomManager::addToList (lBKKSYDSegmentYCabin,
-                                      lBKKSYDSegmentYCabinQClass);
-
+    stdair::FacBomManager::instance().addToList (lBKKSYDSegmentYCabin,
+                                                 lBKKSYDSegmentYCabinQClass);
+    
     // Display the booking class
     // STDAIR_LOG_DEBUG ("BookingClass: "
     //                   << lLHRBKKSegmentYCabinQClass.toString());
@@ -319,8 +325,8 @@ void buildSampleBom() {
     // Create a BookingClass (Q) for the Segment LHR-SYD, cabin Y
     stdair::BookingClass& lLHRSYDSegmentYCabinQClass =
       stdair::FacBom<stdair::BookingClass>::instance().create(lQBookingClassKey);
-    stdair::FacBomManager::addToList (lLHRSYDSegmentYCabin,
-                                      lLHRSYDSegmentYCabinQClass);
+    stdair::FacBomManager::instance().addToList (lLHRSYDSegmentYCabin,
+                                                 lLHRSYDSegmentYCabinQClass);
 
     // Display the booking class
     // STDAIR_LOG_DEBUG ("BookingClass: "
@@ -336,7 +342,7 @@ void buildSampleBom() {
 
     stdair::FlightDate& lAF102_20100320_FD =
       stdair::FacBom<stdair::FlightDate>::instance().create (lFlightDateKey);
-    stdair::FacBomManager::addToList (lAFInv, lAF102_20100320_FD);
+    stdair::FacBomManager::instance().addToList (lAFInv, lAF102_20100320_FD);
     
     // Display the flight-date
     // STDAIR_LOG_DEBUG ("FlightDate: " << lAF102_20100320_FD.toString());
@@ -349,7 +355,8 @@ void buildSampleBom() {
 
     stdair::SegmentDate& lCDGSFOSegment =
       stdair::FacBom<stdair::SegmentDate>::instance().create (lSegmentDateKey);
-    stdair::FacBomManager::addToList (lAF102_20100320_FD, lCDGSFOSegment);
+    stdair::FacBomManager::instance().addToList (lAF102_20100320_FD,
+                                                 lCDGSFOSegment);
 
     // Display the segment-date
     // STDAIR_LOG_DEBUG ("SegmentDate: " << lCDGSFOSegment.toString());
@@ -360,7 +367,7 @@ void buildSampleBom() {
 
     stdair::LegDate& lCDGLeg =
       stdair::FacBom<stdair::LegDate>::instance().create (lLegDateKey);
-    stdair::FacBomManager::addToList (lAF102_20100320_FD, lCDGLeg);
+    stdair::FacBomManager::instance().addToList (lAF102_20100320_FD, lCDGLeg);
 
     // Display the leg-date
     // STDAIR_LOG_DEBUG ("LegDate: " << lCDGLeg.toString());
@@ -369,7 +376,8 @@ void buildSampleBom() {
     // Create a SegmentCabin (Y) for the Segment CDG-SFO of AF's Inventory
     stdair::SegmentCabin& lCDGSFOSegmentYCabin =
       stdair::FacBom<stdair::SegmentCabin>::instance().create(lYSegmentCabinKey);
-    stdair::FacBomManager::addToList (lCDGSFOSegment, lCDGSFOSegmentYCabin);
+    stdair::FacBomManager::instance().addToList (lCDGSFOSegment,
+                                                 lCDGSFOSegmentYCabin);
 
     // Display the segment-cabin
     // STDAIR_LOG_DEBUG ("SegmentCabin: " << lCDGSFOSegmentYCabin.toString());
@@ -378,7 +386,7 @@ void buildSampleBom() {
     // Create a LegCabin (Y) for the Leg CDG-SFO on AF's Inventory
     stdair::LegCabin& lCDGLegYCabin =
       stdair::FacBom<stdair::LegCabin>::instance().create (lYLegCabinKey);
-    stdair::FacBomManager::addToList (lCDGLeg, lCDGLegYCabin);
+    stdair::FacBomManager::instance().addToList (lCDGLeg, lCDGLegYCabin);
 
     // Display the leg-cabin
     // STDAIR_LOG_DEBUG ("LegCabin: " << lLHRLegYCabin.toString());
@@ -387,8 +395,8 @@ void buildSampleBom() {
     // Create a BookingClass (Q) for the Segment CDG-SFO, cabin Y on AF's Inv
     stdair::BookingClass& lCDGSFOSegmentYCabinQClass =
       stdair::FacBom<stdair::BookingClass>::instance().create(lQBookingClassKey);
-    stdair::FacBomManager::addToList (lCDGSFOSegmentYCabin,
-                                      lCDGSFOSegmentYCabinQClass);
+    stdair::FacBomManager::instance().addToList (lCDGSFOSegmentYCabin,
+                                                 lCDGSFOSegmentYCabinQClass);
 
     // Display the booking class
     // STDAIR_LOG_DEBUG ("BookingClass: "

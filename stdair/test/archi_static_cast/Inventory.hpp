@@ -1,5 +1,5 @@
-#ifndef __STDAIR_BOM_INVENTORY_HPP
-#define __STDAIR_BOM_INVENTORY_HPP
+#ifndef __MYAIRLINE_INVENTORY_HPP
+#define __MYAIRLINE_INVENTORY_HPP
 
 // //////////////////////////////////////////////////////////////////////
 // Import section
@@ -7,23 +7,19 @@
 // StdAir
 #include <stdair/bom/BomAbstract.hpp>
 #include <stdair/bom/InventoryKey.hpp>
-#include <stdair/bom/InventoryTypes.hpp>
+// Aichi TEST
+#include <test/archi_static_cast/Types.hpp>
 
-namespace stdair {
-  // Forward declarations.
-  class AirlineFeature;
-  
-  /**
-   * @brief Class representing the actual attributes for an airline inventory
-   */
-  class Inventory : public BomAbstract {
+namespace myairline {
+
+  class Inventory : public stdair::BomAbstract {
     template <typename BOM> friend class FacBom;
-    friend class FacBomManager;
+    class BomManager;
 
   public :
     // Type definitions
     /** Definition allowing to retrieve the associated BOM key type. */
-    typedef InventoryKey Key_T;
+    typedef stdair::InventoryKey Key_T;
 
   public:
     // /////////// Display support methods /////////
@@ -43,16 +39,14 @@ namespace stdair {
 
   public:
     // ////////// Getters ////////////
-    const Key_T& getKey() const { return _key; }
-    const AirlineCode_T& getAirlineCode() const { return _key.getAirlineCode();}
-    BomAbstract* const getParent() const { return _parent; }
-    const HolderMap_T& getHolderMap() const { return _holderMap; }
+    /** Get the inventory key. */
+    const Key_T& getKey() const {
+      return _key;
+    }
     
-  public:
-    // /////////// Setters ////////////
-    /** Set the airline feature. */
-    void setAirlineFeature (const AirlineFeature* ioAirlineFeaturePtr) {
-      _airlineFeature = ioAirlineFeaturePtr;
+    /** Get the airline code. */
+    const stdair::AirlineCode_T& getAirlineCode () const {
+      return _key.getAirlineCode();
     }
 
   protected:
@@ -62,14 +56,14 @@ namespace stdair {
     /** Destructor. */
     ~Inventory();
 
-  protected:
+  public:
     // Attributes
+    /** The key of both structure and  objects. */
     Key_T _key;
-    BomAbstract* _parent;
-    const AirlineFeature* _airlineFeature;
+
+    /** The list of children holders. */
     HolderMap_T _holderMap;
   };
-
+  
 }
-#endif // __STDAIR_BOM_INVENTORY_HPP
-
+#endif // __MYAIRLINE_INVENTORY_HPP

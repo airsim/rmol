@@ -14,6 +14,7 @@ namespace stdair {
   /** Class representing the actual attributes for an airline YieldStore. */
   class YieldStore : public BomAbstract {
     template <typename BOM> friend class FacBom;
+    friend class FacBomManager;
 
   public :
     // Type definitions
@@ -25,6 +26,9 @@ namespace stdair {
     /** Dump a Business Object into an output stream.
         @param ostream& the output stream. */
     void toStream (std::ostream& ioOut) const { ioOut << toString(); }
+
+    /** Get the parent object. */
+    BomAbstract* const getParent() const { return _parent; }
 
     /** Read a Business Object from an input stream.
         @param istream& the input stream. */
@@ -39,9 +43,7 @@ namespace stdair {
   public:
     // ////////// Getters ////////////
     /** Get the YieldStore key. */
-    const Key_T& getKey() const {
-      return _key;
-    }
+    const Key_T& getKey() const { return _key; }
 
     /** Get the airline code. */
     const AirlineCode_T& getAirlineCode () const {
@@ -59,6 +61,7 @@ namespace stdair {
     // Attributes
     /** The key of both structure and  objects. */
     Key_T _key;
+    BomAbstract* _parent;
   };
 
 }

@@ -4,7 +4,6 @@
 // STL
 #include <cassert>
 // StdAir
-#include <stdair/bom/RelationShipAbstract.hpp>
 #include <stdair/factory/FacAbstract.hpp>
 #include <stdair/service/FacSupervisor.hpp>
 #include <stdair/service/Logger.hpp>
@@ -26,19 +25,12 @@ namespace stdair {
   // //////////////////////////////////////////////////////////////////////
   FacSupervisor::~FacSupervisor() {
     cleanBomLayer();
-    cleanRelationShips();
   }
 
   // //////////////////////////////////////////////////////////////////////
   void FacSupervisor::
   registerFacBom (FacAbstract* ioFac_ptr) {
     _facPool.push_back (ioFac_ptr);
-  }
-
-  // //////////////////////////////////////////////////////////////////////
-  void FacSupervisor::
-  registerRelationShip (RelationShipAbstract* ioRelationShip_ptr) {
-    _relationShipPool.push_back (ioRelationShip_ptr);
   }
 
   // //////////////////////////////////////////////////////////////////////
@@ -54,21 +46,6 @@ namespace stdair {
 
     // Empty the pool of factories
     _facPool.clear();
-  }
-
-  // //////////////////////////////////////////////////////////////////////
-  void FacSupervisor::cleanRelationShips() {
-    for (RelationShipPool_T::const_iterator itRS =
-           _relationShipPool.begin();
-         itRS != _relationShipPool.end(); itRS++) {
-      const RelationShipAbstract* currentRelationShip_ptr = *itRS;
-      assert (currentRelationShip_ptr != NULL);
-
-      delete (currentRelationShip_ptr); currentRelationShip_ptr = NULL;
-    }
-
-    // Empty the pool of relations ships
-    _relationShipPool.clear();
   }
 
   // //////////////////////////////////////////////////////////////////////

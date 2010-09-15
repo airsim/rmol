@@ -14,6 +14,7 @@ namespace stdair {
   /** Class representing the actual attributes for an airline segment-date. */
   class SegmentDate : public BomAbstract {
     template <typename BOM> friend class FacBom;
+    friend class FacBomManager;
     
   public:
     // Type definitions.
@@ -23,9 +24,10 @@ namespace stdair {
   public:
     // /////////// Getters /////////////
     /** Get the segment-date key. */
-    const Key_T& getKey() const {
-      return _key;
-    }
+    const Key_T& getKey() const { return _key; }
+
+    /** Get the parent object. */
+    BomAbstract* const getParent() const { return _parent; }
     
     /** Get the boarding point (part of the primary key). */
     const AirportCode_T& getBoardingPoint () const {
@@ -33,44 +35,31 @@ namespace stdair {
     }
 
     /** Get the off point (part of the primary key). */
-    const AirportCode_T& getOffPoint () const {
-      return _key.getOffPoint();
-    }
+    const AirportCode_T& getOffPoint () const { return _key.getOffPoint(); }
 
     /** Get the boarding date. */
-    const Date_T& getBoardingDate () const {
-      return _boardingDate;
-    }
+    const Date_T& getBoardingDate () const { return _boardingDate; }
 
     /** Get the boarding time. */
-    const Duration_T& getBoardingTime () const {
-      return _boardingTime;
-    }
+    const Duration_T& getBoardingTime () const { return _boardingTime; }
 
     /** Get the off date. */
-    const Date_T& getOffDate () const {
-      return _offDate;
-    }
+    const Date_T& getOffDate () const {return _offDate; }
 
     /** Get the off time. */
-    const Duration_T& getOffTime () const {
-      return _offTime;
-    }
+    const Duration_T& getOffTime () const { return _offTime; }
 
     /** Get the elapsed time. */
-    const Duration_T& getElapsedTime() const {
-      return _elapsedTime;
-    }
+    const Duration_T& getElapsedTime() const { return _elapsedTime; }
 
     /** Get the distance. */
-    const Distance_T& getDistance() const {
-      return _distance;
-    }
+    const Distance_T& getDistance() const { return _distance; }
 
     /** Get the date offset (off date - boarding date). */
-    const DateOffset_T getDateOffset () const {
-      return _offDate - _boardingDate;
-    }
+    const DateOffset_T getDateOffset () const { return _offDate - _boardingDate;}
+
+    /** Get the map of children holders. */
+    const HolderMap_T& getHolderMap() const { return _holderMap; }
 
     /** Get the time offset between boarding and off points.
         <br>It is defined as being:
@@ -91,14 +80,10 @@ namespace stdair {
     }
 
     /** Set the off date. */
-    void setOffDate (const Date_T& iOffDate) {
-      _offDate = iOffDate;
-    }
+    void setOffDate (const Date_T& iOffDate) { _offDate = iOffDate; }
 
     /** Set the off time. */
-    void setOffTime (const Duration_T& iOffTime) {
-      _offTime = iOffTime;
-    }
+    void setOffTime (const Duration_T& iOffTime) { _offTime = iOffTime; }
 
     /** Set the elapsed time. */
     void setElapsedTime (const Duration_T& iElapsedTime) {
@@ -106,9 +91,7 @@ namespace stdair {
     }
 
     /** Set the distance. */
-    void setDistance (const Distance_T& iDistance) {
-      _distance = iDistance;
-    }
+    void setDistance (const Distance_T& iDistance) { _distance = iDistance; }
 
   public:
     // /////////// Display support methods /////////
@@ -138,24 +121,14 @@ namespace stdair {
     // Attributes
     /** The key of both structure and  objects. */
     Key_T _key;
-
-    /** Boarding Date. */
+    BomAbstract* _parent;
     Date_T _boardingDate;
-
-    /** Boarding Time. */
     Duration_T _boardingTime;
-
-    /** Off Date. */
     Date_T _offDate;
-
-    /** Off Time. */
     Duration_T _offTime;
-
-    /** Elapsed Time. */
     Duration_T _elapsedTime;
-
-    /** Distance. */
     Distance_T _distance;
+    HolderMap_T _holderMap;
 
   };
 

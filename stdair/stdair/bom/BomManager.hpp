@@ -7,151 +7,185 @@
 // STL
 #include <iosfwd>
 // STDAIR
-#include <stdair/bom/RelationShip.hpp>
+#include <stdair/STDAIR_Types.hpp>
+#include <stdair/bom/BomAbstract.hpp>
+#include <stdair/bom/BomHolder.hpp>
+#include <stdair/service/Logger.hpp>
 
 namespace stdair {
   
   /** Utility class for StdAir objects. */
   class BomManager {
+    friend class FacBomManager;
+    
   public:
-    /** Get the list of BOM objects within the given parent. */
-    template <typename CHILD, typename PARENT>
-    static std::list<CHILD*>& getList (const PARENT&);
-    template <typename CHILD, typename PARENT>
-    static std::list<std::pair<MapKey_T, CHILD*> >& getDetailedList (const PARENT&);
-    template <typename CHILD, typename PARENT>
-    static std::map<const MapKey_T, CHILD*>& getMap (const PARENT&);
+    /** Get the container of object2 within the object1. */
+    template <typename OBJECT2, typename OBJECT1>
+    static const std::list<OBJECT2*>& getList (const OBJECT1&);
+    template <typename OBJECT2, typename OBJECT1>
+    static const std::map<const MapKey_T, OBJECT2*>& getMap (const OBJECT1&);
 
-    /** Get the map of parent and children holder. */
-    template <typename PARENT, typename CHILD>
-    static const std::map<const PARENT*, 
-                          std::list<CHILD*> >& getParentChildrenList();
-    template <typename PARENT, typename CHILD>
-    static const std::map<const PARENT*,
-                    std::map<const MapKey_T, CHILD*> >& getParentChildrenMap();
-
-    /** Check if the list/map of children has been initialised. */
-    template <typename CHILD, typename PARENT>    
-    static bool hasList (const PARENT&);
-    template <typename CHILD, typename PARENT>    
-    static bool hasDetailedList (const PARENT&);
-    template <typename CHILD, typename PARENT>    
-    static bool hasMap (const PARENT&);
+    /** Check if the list/map of object2 has benn initialised. */
+    template <typename OBJECT2, typename OBJECT1>
+    static bool hasList (const OBJECT1&);
+    template <typename OBJECT2, typename OBJECT1>
+    static bool hasMap (const OBJECT1&);
 
     /** Getter of the PARENT given the CHILD. */
     template <typename PARENT, typename CHILD>
     static PARENT& getParent (const CHILD&);
 
-    /** Return the CHILD pointer corresponding to the given string key.
-        If such a CHILD does not exist, return NULL. */
-    template <typename CHILD, typename PARENT>
-    static CHILD* getChildPtr (const PARENT&, const MapKey_T&);
-    template <typename BOM>
-    static  BOM* const getObjectPtr (const std::map<const MapKey_T, BOM*>&,
-                                     const MapKey_T&);
+    /** Return the OBJECT2 pointer corresponding to the given string key.
+        If such a OBJECT2 does not exist, return NULL. */
+    template <typename OBJECT2, typename OBJECT1>
+    static OBJECT2* getObjectPtr (const OBJECT1&, const MapKey_T&);
 
-    /** Return the CHILD corresponding the the given string key. */
-    template <typename CHILD, typename PARENT>
-    static CHILD& getChild (const PARENT&, const MapKey_T&);
-    template <typename BOM>
-    static BOM& getObject (const std::map<const MapKey_T, BOM*>&,
-                           const MapKey_T&);
+    /** Return the OBJECT2 corresponding the the given string key. */
+    template <typename OBJECT2, typename OBJECT1>
+    static OBJECT2& getObject (const OBJECT1&, const MapKey_T&);
+
+
+  private:
+    /** Get the holder of object2 within the object1. If the holder does not
+        exist, then throw an exception. */
+    template <typename OBJECT2, typename OBJECT1>
+    static const BomHolder<OBJECT2>& getBomHolder (const OBJECT1&);
   };
 
   // ////////////////////////////////////////////////////////////////////
-  template <typename CHILD, typename PARENT> std::list<CHILD*>& BomManager::
-  getList (const PARENT& iParent) {
-    return RelationShip<PARENT, CHILD>::instance().getChildrenList (iParent);
-  }
+  template <typename OBJECT2, typename OBJECT1> 
+  const BomHolder<OBJECT2>& BomManager::getBomHolder (const OBJECT1& iObject1) {
+    const HolderMap_T& lHolderMap = iObject1.getHolderMap();
+    
+    HolderMap_T::const_iterator itHolder = lHolderMap.find (&typeid (OBJECT2));
+    
+    if (itHolder == lHolderMap.end()) {
+      std::string lName (typeid (OBJECT2).name());
+      
+      STDAIR_LOG_ERROR ("Cannot find the holder of type " << lName
+                        << " within: " << iObject1.describeKey());
+      throw NonInitialisedContainerException ();
+    } 
+    
+    const BomHolder<OBJECT2>* lBomHolder_ptr = 
+      static_cast<const BomHolder<OBJECT2>*> (itHolder->second);
+    assert (lBomHolder_ptr != NULL);
 
-  // ////////////////////////////////////////////////////////////////////
-  template <typename CHILD, typename PARENT>
-  std::list<std::pair<MapKey_T, CHILD*> >& BomManager::
-  getDetailedList (const PARENT& iParent) {
-    return RelationShip<PARENT, CHILD>::
-      instance().getChildrenDetailedList (iParent);
+    return *lBomHolder_ptr;
   }
-
+  
   // ////////////////////////////////////////////////////////////////////
-  template <typename CHILD, typename PARENT> std::map<const MapKey_T, CHILD*>&
-  BomManager::getMap (const PARENT& iParent) {
-    return RelationShip<PARENT, CHILD>::instance().getChildrenMap (iParent);
+  template <typename OBJECT2, typename OBJECT1>
+  const std::list<OBJECT2*>& BomManager::getList (const OBJECT1& iObject1) {
+    const BomHolder<OBJECT2>& lBomHolder = getBomHolder<OBJECT2> (iObject1);
+    return lBomHolder._bomList;
   }
-
+  
   // ////////////////////////////////////////////////////////////////////
-  template <typename PARENT, typename CHILD> 
-  const std::map<const PARENT*, std::list<CHILD*> >& BomManager::
-  getParentChildrenList() {
-    return RelationShip<PARENT, CHILD>::instance().getParentChildrenList();
+  template <typename OBJECT2, typename OBJECT1>
+  const std::map<const MapKey_T, OBJECT2*>& BomManager::
+  getMap (const OBJECT1& iObject1) {
+    const BomHolder<OBJECT2>& lBomHolder = getBomHolder<OBJECT2> (iObject1);
+    return lBomHolder._bomMap;
   }
-
+  
   // ////////////////////////////////////////////////////////////////////
-  template <typename PARENT, typename CHILD>
-  const std::map<const PARENT*, std::map<const MapKey_T, CHILD*> >& BomManager::
-  getParentChildrenMap() {
-    return RelationShip<PARENT, CHILD>::instance().getParentChildrenMap();
+  template <typename OBJECT2, typename OBJECT1>
+  bool BomManager::hasList (const OBJECT1& iObject1) {
+    const HolderMap_T& lHolderMap = iObject1.getHolderMap();
+    HolderMap_T::const_iterator itHolder = lHolderMap.find (&typeid (OBJECT2));
+    
+    if (itHolder == lHolderMap.end()) {
+      return false;
+    }
+    const BomHolder<OBJECT2>* lBomHolder_ptr = 
+      static_cast<const BomHolder<OBJECT2>*> (itHolder->second);
+    assert (lBomHolder_ptr != NULL);
+
+    return !lBomHolder_ptr._bomList.empty();
   }
-
+  
   // ////////////////////////////////////////////////////////////////////
-  template <typename CHILD, typename PARENT> 
-  bool BomManager::hasList (const PARENT& iParent) {
-    return RelationShip<PARENT, CHILD>::instance().hasChildrenList (iParent);
-  }
+  template <typename OBJECT2, typename OBJECT1>
+  bool BomManager::hasMap (const OBJECT1& iObject1) {
+    const HolderMap_T& lHolderMap = iObject1.getHolderMap();
+    HolderMap_T::const_iterator itHolder = lHolderMap.find (&typeid (OBJECT2));
+    
+    if (itHolder == lHolderMap.end()) {
+      return false;
+    }
+    const BomHolder<OBJECT2>* lBomHolder_ptr = 
+      static_cast<const BomHolder<OBJECT2>*> (itHolder->second);
+    assert (lBomHolder_ptr != NULL);
 
-  // ////////////////////////////////////////////////////////////////////
-  template <typename CHILD, typename PARENT> 
-  bool BomManager::hasDetailedList (const PARENT& iParent) {
-    return RelationShip<PARENT, CHILD>::
-      instance().hasChildrenDetailedList (iParent);
-  }
-
-  // ////////////////////////////////////////////////////////////////////
-  template <typename CHILD, typename PARENT> 
-  bool BomManager::hasMap (const PARENT& iParent) {
-    return RelationShip<PARENT, CHILD>::instance().hasChildrenMap (iParent);
+    return !lBomHolder_ptr._bomMap.empty();
   }
 
   // ////////////////////////////////////////////////////////////////////
   template <typename PARENT, typename CHILD>
   PARENT& BomManager::getParent (const CHILD& iChild) {
-    return RelationShip<PARENT, CHILD>::instance().getParent (iChild);
+    PARENT* const lParent_ptr =
+      static_cast<PARENT* const> (iChild.getParent());
+    assert (lParent_ptr != NULL);
+
+    return *lParent_ptr; 
   }
 
   // ////////////////////////////////////////////////////////////////////
-  template <typename CHILD, typename PARENT>
-  CHILD* BomManager::getChildPtr (const PARENT& iParent, const MapKey_T& iKey) {
-    return RelationShip<PARENT, CHILD>::instance().getChildPtr (iParent, iKey);
-  }
+  template <typename OBJECT2, typename OBJECT1>
+  OBJECT2* BomManager::getObjectPtr (const OBJECT1& iObject1, 
+                                     const MapKey_T& iKey) {
+    OBJECT2* oBom_ptr = NULL;
+    
+    typedef std::map<const MapKey_T, OBJECT2*> BomMap_T;
+    const HolderMap_T& lHolderMap = iObject1.getHolderMap();
 
-  // ////////////////////////////////////////////////////////////////////
-  template <typename CHILD, typename PARENT>
-  CHILD& BomManager::getChild (const PARENT& iParent, const MapKey_T& iKey) {
-    return RelationShip<PARENT, CHILD>::instance().getChild (iParent, iKey);
-  }
+    typename HolderMap_T::const_iterator itHolder = 
+      lHolderMap.find (&typeid (OBJECT2));
+    
+    if (itHolder != lHolderMap.end()) {
+    
+      BomHolder<OBJECT2>* const lBomHolder_ptr = 
+        static_cast<BomHolder<OBJECT2>* const> (itHolder->second);
+      assert (lBomHolder_ptr != NULL);
+    
+      BomMap_T& lBomMap =  lBomHolder_ptr->_bomMap;
+    
+      typename BomMap_T::iterator itBom = lBomMap.find (iKey);
 
-  // ////////////////////////////////////////////////////////////////////
-  template <typename BOM>
-  BOM* const BomManager::getObjectPtr (const std::map<const MapKey_T,BOM*>& iMap,
-                                      const MapKey_T& iKey) {
-    typename std::map<const MapKey_T, BOM*>::const_iterator it = iMap.find (iKey);
-    if (it == iMap.end()) {
-      return NULL;
+      if (itBom != lBomMap.end()) {
+        oBom_ptr = itBom->second;
+        assert (oBom_ptr != NULL);
+      }
     }
-    BOM* const oBom_ptr = it->second;
-    assert (oBom_ptr != NULL);
+
     return oBom_ptr;
   }
 
   // ////////////////////////////////////////////////////////////////////
-  template <typename BOM>
-  BOM& BomManager::getObject (const std::map<const MapKey_T, BOM*>& iMap,
-                              const MapKey_T& iKey) {
-    typename std::map<const MapKey_T, BOM*>::const_iterator it = iMap.find (iKey);
-    assert (it != iMap.end());
-    BOM* const oBom_ptr = it->second;
+  template <typename OBJECT2, typename OBJECT1>
+  OBJECT2& BomManager::getObject (const OBJECT1& iObject1, const MapKey_T& iKey){
+    
+    typedef std::map<const MapKey_T, OBJECT2*> BomMap_T;
+    const BomMap_T& lBomMap = getMap<OBJECT2> (iObject1);
+    
+    typename BomMap_T::const_iterator itBom = lBomMap.find (iKey);
+
+    if (itBom == lBomMap.end()) {
+      std::string lName (typeid (OBJECT2).name());
+      
+      STDAIR_LOG_ERROR ("Cannot find the objet of type " << lName
+                        << " with key " << iKey << " within: " 
+                        << iObject1.describeKey());
+      assert (false);
+    }
+    
+    OBJECT2* oBom_ptr = itBom->second;
     assert (oBom_ptr != NULL);
+
     return *oBom_ptr;
   }
+  
 }
 
 #endif // __STDAIR_BOM_BOMMANAGER_HPP

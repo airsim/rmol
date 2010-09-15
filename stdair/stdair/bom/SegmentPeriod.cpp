@@ -11,7 +11,7 @@ namespace stdair {
 
   // ////////////////////////////////////////////////////////////////////
   SegmentPeriod::SegmentPeriod (const Key_T& iKey)
-    : _key (iKey), _boardingDateOffset (0), _offDateOffset (0) {
+    : _key (iKey), _parent (NULL),  _boardingDateOffset (0), _offDateOffset (0) {
   }
 
   // ////////////////////////////////////////////////////////////////////

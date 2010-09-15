@@ -3,26 +3,24 @@
 // //////////////////////////////////////////////////////////////////////
 // STL
 #include <cassert>
-// STDAIR
-#include <stdair/bom/FlightDate.hpp>
+// Local
+#include <test/archi_static_cast/BomRoot.hpp>
 
-namespace stdair {
+namespace myairline {
 
   // ////////////////////////////////////////////////////////////////////
-  FlightDate::FlightDate (const Key_T& iKey)
-    : _key (iKey), _parent (NULL) {
+  BomRoot::BomRoot (const Key_T& iKey) : _key (iKey) {
   }
 
   // ////////////////////////////////////////////////////////////////////
-  FlightDate::~FlightDate () {
+  BomRoot::~BomRoot () {
   }
-  
+
   // ////////////////////////////////////////////////////////////////////
-  std::string FlightDate::toString() const {
+  std::string BomRoot::toString() const {
     std::ostringstream oStr;
-    oStr << describeKey();
+    oStr << _key.toString();
     return oStr.str();
   }
 
 }
-

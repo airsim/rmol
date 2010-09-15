@@ -12,15 +12,15 @@ namespace stdair {
 
   // ////////////////////////////////////////////////////////////////////
   LegCabin::LegCabin (const Key_T& iKey)
-  : _key (iKey),
-    _offeredCapacity (DEFAULT_CABIN_CAPACITY),
-    _physicalCapacity (DEFAULT_CABIN_CAPACITY),
-    _soldSeat (DEFAULT_CLASS_NB_OF_BOOKINGS),
-    _commitedSpace (DEFAULT_COMMITED_SPACE),
-    _availabilityPool (DEFAULT_AVAILABILITY),
-    _availability (DEFAULT_AVAILABILITY),
-    _bidPriceVector (DEFAULT_BID_PRICE_VECTOR),
-    _currentBidPrice (DEFAULT_BID_PRICE) {
+    : _key (iKey), _parent (NULL),
+      _offeredCapacity (DEFAULT_CABIN_CAPACITY),
+      _physicalCapacity (DEFAULT_CABIN_CAPACITY),
+      _soldSeat (DEFAULT_CLASS_NB_OF_BOOKINGS),
+      _commitedSpace (DEFAULT_COMMITED_SPACE),
+      _availabilityPool (DEFAULT_AVAILABILITY),
+      _availability (DEFAULT_AVAILABILITY),
+      _bidPriceVector (DEFAULT_BID_PRICE_VECTOR),
+      _currentBidPrice (DEFAULT_BID_PRICE) {
   }
 
   // ////////////////////////////////////////////////////////////////////

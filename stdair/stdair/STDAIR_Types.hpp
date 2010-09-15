@@ -41,7 +41,7 @@ namespace stdair {
 
   class NonInitialisedContainerException : public RootException { };
 
-  class NonInitialisedRelationShip : public RootException { };
+  class NonInitialisedRelationShipException : public RootException { };
 
   class MemoryAllocationException : public RootException { };
 
@@ -478,7 +478,7 @@ namespace stdair {
   
 }
 
-#define CATCH \
+#define CATCH_ALL_EXCEPTIONS \
   catch (const stdair::FileNotFoundException& ex) {  \
    std::cerr << "FileNotFoundException" << std::endl; \
    return -1; \
@@ -499,8 +499,8 @@ namespace stdair {
    std::cerr << "NonInitialisedContainerException" << std::endl; \
    return -1; \
    \
-  } catch (const stdair::NonInitialisedRelationShip& ex) {  \
-   std::cerr << "NonInitialisedRelationShip" << std::endl; \
+  } catch (const stdair::NonInitialisedRelationShipException& ex) {  \
+   std::cerr << "NonInitialisedRelationShipException" << std::endl; \
    return -1; \
    \
   } catch (const stdair::MemoryAllocationException& ex) {  \

@@ -14,6 +14,7 @@ namespace stdair {
   /** Class representing the actual attributes for an airline leg-date. */
   class LegDate : public BomAbstract {
     template <typename BOM> friend class FacBom;
+    friend class FacBomManager;
 
   public:
     // Type definitions.
@@ -23,9 +24,10 @@ namespace stdair {
   public:
     // /////////// Getters /////////////
     /** Get the leg-date key. */
-    const Key_T& getKey() const {
-      return _key;
-    }
+    const Key_T& getKey() const { return _key; }
+
+    /** Get the parent object. */
+    BomAbstract* const getParent() const { return _parent; }
 
     /** Get the boarding point (part of the primary key). */
     const AirportCode_T& getBoardingPoint () const {
@@ -33,49 +35,31 @@ namespace stdair {
     }
 
     /** Get the off point. */
-    const AirportCode_T& getOffPoint () const {
-      return _offPoint;
-    }
+    const AirportCode_T& getOffPoint () const { return _offPoint; }
 
     /** Get the boarding date. */
-    const Date_T& getBoardingDate () const {
-      return _boardingDate;
-    }
+    const Date_T& getBoardingDate () const { return _boardingDate; }
 
     /** Get the boarding time. */
-    const Duration_T& getBoardingTime () const {
-      return _boardingTime;
-    }
+    const Duration_T& getBoardingTime () const { return _boardingTime; }
 
     /** Get the off date. */
-    const Date_T& getOffDate () const {
-      return _offDate;
-    }
+    const Date_T& getOffDate () const { return _offDate; }
 
     /** Get the off time. */
-    const Duration_T& getOffTime () const {
-      return _offTime;
-    }
+    const Duration_T& getOffTime () const { return _offTime; }
 
     /** Get the elapsed time. */
-    const Duration_T& getElapsedTime() const {
-      return _elapsedTime;
-    }
+    const Duration_T& getElapsedTime() const { return _elapsedTime; }
 
     /** Get the distance. */
-    const Distance_T& getDistance() const {
-      return _distance;
-    }
+    const Distance_T& getDistance() const { return _distance; }
 
     /** Get the leg capacity. */
-    const CabinCapacity_T& getCapacity () const {
-      return _capacity;
-    }
+    const CabinCapacity_T& getCapacity () const { return _capacity; }
 
     /** Get the date offset (off date - boarding date). */
-    const DateOffset_T getDateOffset () const {
-      return _offDate - _boardingDate;
-    }
+    const DateOffset_T getDateOffset () const { return _offDate - _boardingDate;}
 
     /** Get the time off set between boarding and off points.
         <br>It is defined as being:
@@ -83,12 +67,13 @@ namespace stdair {
         - ElapsedTime. */
     const Duration_T getTimeOffset() const;
 
+    /** Get the map of children holders. */
+    const HolderMap_T& getHolderMap() const { return _holderMap; }
+
   public:
     // ///////// Setters //////////
     /** Set the off point. */
-    void setOffPoint (const AirportCode_T& iOffPoint) {
-      _offPoint = iOffPoint;
-    }
+    void setOffPoint (const AirportCode_T& iOffPoint) { _offPoint = iOffPoint; }
 
     /** Set the boarding date. */
     void setBoardingDate (const Date_T& iBoardingDate) {
@@ -101,14 +86,10 @@ namespace stdair {
     }
 
     /** Set the off date. */
-    void setOffDate (const Date_T& iOffDate) {
-      _offDate = iOffDate;
-    }
+    void setOffDate (const Date_T& iOffDate) { _offDate = iOffDate; }
 
     /** Set the off time. */
-    void setOffTime (const Duration_T& iOffTime) {
-      _offTime = iOffTime;
-    }
+    void setOffTime (const Duration_T& iOffTime) { _offTime = iOffTime; }
 
     /** Set the elapsed time. */
     void setElapsedTime (const Duration_T&);
@@ -141,32 +122,17 @@ namespace stdair {
 
   protected:
     // Attributes
-    /** The key of both structure and  objects. */
     Key_T _key;
-    
-    /** Off Point. */
+    BomAbstract* _parent;
     AirportCode_T _offPoint;
-
-    /** Boarding Date. */
     Date_T _boardingDate;
-
-    /** Boarding Time. */
     Duration_T _boardingTime;
-
-    /** Off Date. */
     Date_T _offDate;
-
-    /** Off Time. */
     Duration_T _offTime;
-
-    /** Elapsed Time. */
     Duration_T _elapsedTime;
-
-    /** Distance. */
     Distance_T _distance;
-
-    /** Capacity of the leg. */
     CabinCapacity_T _capacity;
+    HolderMap_T _holderMap;
   };
 
 }

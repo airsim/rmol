@@ -78,7 +78,7 @@ namespace stdair {
       RelationShipHolder_T* oRSH_ptr = NULL;
       
       typename RelationShipHolderSet_T::iterator itRSH =
-        _relationShipHolderSet.find (iSecondBomKey, StrExpComp<RelationShipHolder_T>());
+        _relationShipHolderSet.find (iFirstBom.getKey(), StrExpComp<RelationShipHolder_T>());
       if (itRSH == _relationShipHolderSet.end()) {
         return oSecondBom_ptr;
       }

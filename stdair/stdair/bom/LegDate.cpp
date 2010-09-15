@@ -11,8 +11,7 @@ namespace stdair {
 
   // ////////////////////////////////////////////////////////////////////
   LegDate::LegDate (const Key_T& iKey) \
-    : _key (iKey),
-      _distance (DEFAULT_DISTANCE_VALUE),
+    : _key (iKey), _parent (NULL), _distance (DEFAULT_DISTANCE_VALUE),
       _capacity (DEFAULT_CABIN_CAPACITY) {
   }
 

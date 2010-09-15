@@ -13,14 +13,12 @@
 namespace stdair {
   // Forward declarations
   class FacAbstract;
-  class RelationShipAbstract;
 
   /** Singleton class to register and clean all Factories. */
   class FacSupervisor {
   public:
     /** Define the pool (list) of factories. */
     typedef std::list<FacAbstract*> FactoryPool_T;
-    typedef std::list<RelationShipAbstract*> RelationShipPool_T;
     
     /** Provide the unique (static) instance of the FacSupervisor object.
         <br>The singleton is instantiated when first used.
@@ -34,16 +32,10 @@ namespace stdair {
         @param FacBom* The concrete Factory to register. */
     void registerFacBom (FacAbstract*);
 
-    /** Register a newly instantiated concrete relation ship. */
-    void registerRelationShip (RelationShipAbstract*);
-
     /** Clean all registered object.
         <br>Call the clean method of all the instantiated factories
         for the BomStructure layer. */
     void cleanBomLayer();
-
-    /** Clean all registered relation ships. */
-    void cleanRelationShips();
 
     /** Delete the static instance of the Logger object. */
     static void cleanLoggerService();
@@ -74,8 +66,6 @@ namespace stdair {
     static FacSupervisor* _instance;
     /** List of instantiated factories for the BOM layer. */
     FactoryPool_T _facPool;
-    /** List of instantiated relation ships. */
-    RelationShipPool_T _relationShipPool;
   };
 }  
 #endif // __STDAIR_SVC_FACSUPERVISOR_HPP

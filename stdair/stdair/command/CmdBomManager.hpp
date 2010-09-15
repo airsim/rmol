@@ -6,7 +6,6 @@
 // //////////////////////////////////////////////////////////////////////
 // StdAir
 #include <stdair/STDAIR_Types.hpp>
-#include <stdair/bom/RelationShip.hpp>
 #include <stdair/factory/FacBom.hpp>
 #include <stdair/command/CmdAbstract.hpp>
 #include <stdair/service/Logger.hpp>
