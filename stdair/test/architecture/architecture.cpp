@@ -25,13 +25,13 @@ int main (int argc, char* argv[]) {
   const stdair::InventoryKey lBAKey (lAirlineCode);
   myairline::Inventory& lBAInv =
     stdair::FacBom<myairline::Inventory>::instance().create (lBAKey);
-  stdair::FacBomManager::addToList (lBomRoot, lBAInv);
+  stdair::FacBomManager::instance().addToList (lBomRoot, lBAInv);
 
   // Create an Inventory for AF
   const stdair::InventoryKey lAFKey ("AF");
   myairline::Inventory& lAFInv =
     stdair::FacBom<myairline::Inventory>::instance().create (lAFKey);
-  stdair::FacBomManager::addToList (lBomRoot, lAFInv);
+  stdair::FacBomManager::instance().addToList (lBomRoot, lAFInv);
 
   // Browse the inventories
   const myairline::InventoryList_T& lInventoryList =
