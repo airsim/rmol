@@ -1,16 +1,14 @@
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
-// C
-#include <assert.h>
 // STL
-#include <iostream>
-// GSL
-#include <gsl/gsl_sys.h>
-#include <gsl/gsl_math.h>
-#include <gsl/gsl_sf.h>
-#include <gsl/gsl_randist.h>
-#include <gsl/gsl_cdf.h>
+#include <cassert>
+// Boost Math
+#include <boost/math/special_functions/pow.hpp>
+#include <boost/math/special_functions/powm1.hpp>
+#include <boost/math/special_functions/round.hpp>
+#include <boost/math/distributions/binomial.hpp>
+#include <boost/math/distributions/normal.hpp>
 // RMOL
 #include <rmol/basic/BasConst_Overbooking.hpp>
 #include <rmol/bom/Overbooking.hpp>
@@ -335,9 +333,13 @@ namespace RMOL {
     const double lDemandStdDev =
       _demandDistributionParameters.getStandardDeviation();
     
+    boost::math::normal lNormalDistribution (lDemandMean,
+                                             lDemandStdDev);
+    
     // Algorithm
     double pNormal = 
-      gsl_cdf_gaussian_Q (_capacity - lDemandMean, lDemandStdDev);
+      boost::math::cdf (boost::math::complement (lNormalDistribution,
+                                                 _capacity));
 
     //  double pNormal = probabilityNormal (CAPACITY, DEMAND_AVERAGE, 
     //                                  DEMAND_DEVIATION);
@@ -348,20 +350,22 @@ namespace RMOL {
     }
     assert (PRICE_OVER_DENIED_COST < 1 - pNormal);
 
-    pNormal = gsl_cdf_gaussian_Q (_capacity - 1 - lDemandMean, 
-                                  lDemandStdDev);
+    pNormal =
+      boost::math::cdf (boost::math::complement (lNormalDistribution,
+                                                 _capacity - 1));
 
     //    pNormal = probabilityNormal (CAPACITY-1, DEMAND_AVERAGE, 
     //                           DEMAND_DEVIATION);
 
     const double lNoShowMean = _noShowDistributionParameters.getMean();
-    
-    double lProbability = (1 - pNormal)
-      * gsl_sf_pow_int (lNoShowMean, _capacity);
+
+    double lProbability =
+      (1 - pNormal) * (boost::math::powm1 (lNoShowMean, _capacity) + 1);
 
     int counter = 1;
-    while ((lProbability < PRICE_OVER_DENIED_COST) && (counter < 100)) {
-      counter++;
+    while (lProbability < PRICE_OVER_DENIED_COST && counter < 100) {
+      ++counter;
+      
       if (resultBookingLimit >= MAX_BOOKING_LIMIT) {
         return resultBookingLimit;
 
@@ -371,7 +375,9 @@ namespace RMOL {
 
       const unsigned int b = static_cast<unsigned int> (resultBookingLimit);
 
-      pNormal = gsl_cdf_gaussian_Q (b + 1 - lDemandMean, lDemandStdDev);
+      pNormal =
+        boost::math::cdf (boost::math::complement (lNormalDistribution,
+                                                   b + 1));
 
       //  pNormal = probabilityNormal (b+1, DEMAND_AVERAGE, DEMAND_DEVIATION);
 
@@ -380,50 +386,29 @@ namespace RMOL {
       // assert (b >= 0); (derived from the other two)
 
 
-      // The cumulated probability that the number of shows exceeds
-      // the leg/cabin physical capacity
-      lProbability += (1+pNormal)
-        * lNoShowMean * gsl_ran_binomial_pdf (_capacity-1, lNoShowMean, b);
-      
+      /**
+         The probability that the number of shows exceeds the leg/cabin
+         physical capacity follows a binomial distribution, with the following
+         parameters:<br>
+         <ul>
+          <li>"Probability of success (== no-show)": p == lNoShowMean</li>
+          <li>"Number of trials (== bookings)": n == b</li>
+          <li>"Number of successes (no-shows)": k == _capacity - 1</li>
+         </ul> */
+      boost::math::binomial lBinomialDistribution (lNoShowMean, b);
+      lProbability += (1 + pNormal) * lNoShowMean
+        * boost::math::pdf (lBinomialDistribution, _capacity-1);
     }
     return resultBookingLimit;
   }
 	
 
-  // Private useful functions, some of them are to be replaced by gsl
-  // library's functions
+  // Private useful functions
 
   // //////////////////////////////////////////////////////////////////////
-  //to be deleted, already available in gsl lib
-  //cumulated binomial probability
-  double Overbooking::probabilityNormal (const int b, const double average, 
-                                         const double sdeviation) const {
-    double resultCdf = 0.0;
-
-    for (int i=0; i < b+1 ; i++) {
-      resultCdf += 1 /( sqrt(2 * M_PI) )
-        * gsl_sf_exp (-1* (gsl_sf_pow_int(i-average, 2)) / (2*sdeviation));
-    }
-    return resultCdf;
-  }
-	
-  // //////////////////////////////////////////////////////////////////////
-
-  // to be deleted, already available in gsl lib, gsl_ran_binomial_pdf(unsigned int k, double SHOW_RATE, unsigned int b)
-  double Overbooking::binomialProbability_F_b_s (const double iShowRate, 
-                                                 const int b, 
-                                                 const int k) const {
-    double Factorials = gsl_sf_fact(b)/gsl_sf_fact(k)/gsl_sf_fact(b-k);
-    double f = Factorials*
-      gsl_sf_pow_int(iShowRate, k)*gsl_sf_pow_int(1-iShowRate, b-k) ;
-
-    return f;
-  } 
 
   // pSHOW_RATEbability to deny one or more services
   // //////////////////////////////////////////////////////////////////////
-
-
 
   ////////////// Private functions for Servive level policies/////////////
 
@@ -432,10 +417,21 @@ namespace RMOL {
 
   // //////////////////////////////////////////////////////////////////////
   double Overbooking::serviceLevel1 (const double iShowRate, 
-                                     const int b, const int C) const {
-    double resultProbability = 1.0;
-    for (int i = 1; i<=C; i++) {
-      resultProbability -= gsl_ran_binomial_pdf (i, iShowRate, b);}
+                                     const int b, const int iCapacity) const {
+
+    /**
+       The probability that the number of shows exceeds the leg/cabin
+       physical capacity follows a binomial distribution, with the following
+       parameters:<br>
+       <ul>
+        <li>"Probability of success (== no-show)": p == iShowRate</li>
+        <li>"Number of trials (== bookings)": n == b</li>
+        <li>"Number of successes (no-shows)": k == iCapacity</li>
+       </ul> */
+    boost::math::binomial lBinomialDistribution (iShowRate, b);
+    const double resultProbability =
+      boost::math::cdf (lBinomialDistribution, iCapacity);
+    
     return resultProbability;
   }
 

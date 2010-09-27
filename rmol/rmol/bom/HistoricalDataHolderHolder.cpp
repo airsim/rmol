@@ -1,18 +1,12 @@
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
-// GSL Random Number Generation 
-// (GSL Reference Manual, version 1.7, Chapter 19)
-// #include <gsl/gsl_cdf.h>
-// #include <gsl/gsl_randist.h>
-// C
-// #include <assert.h>
-// #include <math.h>
 // STL
+ #include <cassert>
 #include <iostream>
-#include <iomanip>
-// #include <cmath>
-// RMU
+//#include <iomanip>
+//#include <cmath>
+// RMOL
 #include <rmol/bom/HistoricalDataHolder.hpp>
 #include <rmol/bom/HistoricalDataHolderHolder.hpp>
 

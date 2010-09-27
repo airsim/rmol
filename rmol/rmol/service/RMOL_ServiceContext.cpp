@@ -120,11 +120,11 @@ namespace RMOL {
     lDemandVector.reserve (K);
     const FldDistributionParameters aDistributionParam =
       FldDistributionParameters (iMean, iDeviation);
-    const Gaussian gaussianDemandGenerator (aDistributionParam);
+    Gaussian gaussianDemandGenerator (aDistributionParam);
 
     // Generate K numbers
     for (int i = 0; i < K; ++i) {
-      const double lGeneratedDemand = gaussianDemandGenerator.generateVariate ();
+      const double lGeneratedDemand= gaussianDemandGenerator.generateVariate ();
       lDemandVector.push_back (lGeneratedDemand);
     }
 
@@ -137,17 +137,26 @@ namespace RMOL {
                   GeneratedDemandVector_T* ioSecondVector) {
     if (ioFirstVector == NULL || ioSecondVector == NULL) {
       return NULL;
+
     } else {
+      assert (ioFirstVector != NULL);
+      assert (ioSecondVector != NULL);
+    
       const unsigned int K = ioFirstVector->size();
       assert (K == ioSecondVector->size());
+      
       _generatedDemandVectorHolder.push_back (DEFAULT_GENERATED_DEMAND_VECTOR);
       GeneratedDemandVectorHolder_T::reverse_iterator itLastVector =
         _generatedDemandVectorHolder.rbegin();
+      
       GeneratedDemandVector_T& lDemandVector = *itLastVector;
       lDemandVector.reserve (K);
-      for (unsigned int i = 0; i < K; ++i) {
-        const double lGeneratedDemand =
-          ioFirstVector->at(i) + ioSecondVector->at(i);
+      GeneratedDemandVector_T::const_iterator itFirst = ioFirstVector->begin();
+      GeneratedDemandVector_T::const_iterator itSecond= ioSecondVector->begin();
+      for ( ; itFirst != ioFirstVector->end(); ++itFirst, ++itSecond) {
+        const double& lFirst = *itFirst;
+        const double& lSecond = *itSecond;
+        const double lGeneratedDemand = lFirst + lSecond;
         lDemandVector.push_back (lGeneratedDemand);
       }
       

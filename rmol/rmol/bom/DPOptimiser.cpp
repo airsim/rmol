@@ -1,14 +1,13 @@
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
-// GSL Random Number Generation (GSL Reference Manual, version 1.7, Chapter 19)
-#include <gsl/gsl_cdf.h>
-#include <gsl/gsl_randist.h>
 // STL
 #include <cassert>
 #include <sstream>
 #include <vector>
 #include <cmath>
+// Boost Math
+#include <boost/math/distributions/normal.hpp>
 // StdAir
 #include <stdair/service/Logger.hpp>
 // RMOL
@@ -55,7 +54,7 @@ namespace RMOL {
       const double meanDemand = currentBucket.getMean();
       const double SDDemand = currentBucket.getStandardDeviation();
       const double currentYield = currentBucket.getAverageYield();
-      const double errorFactor = 1;//gsl_cdf_gaussian_Q (-meanDemand, SDDemand);
+      const double errorFactor = 1.0;
 
       Bucket& nextBucket = ioBucketHolder.getNextBucket();
       const double nextYield = nextBucket.getAverageYield();
@@ -63,23 +62,27 @@ namespace RMOL {
       // For x <= currentProtection (y_(j-1)), V_j(x) = V_(j-1)(x).
       for (int x = 0; x <= currentProtection; ++x) {
         const double MERValue = MERVectorHolder.at(currentBucketIndex-1).at(x);
-        currentMERVector.push_back(MERValue);
+        currentMERVector.push_back (MERValue);
       }
+
+      //
+      boost::math::normal lNormalDistribution (meanDemand, SDDemand);
       
       // Vector of gaussian pdf values.
       std::vector<double> pdfVector;
       for (int s = 0; s <= maxValue - currentProtection; ++s) {
         const double pdfValue =
-          gsl_ran_gaussian_pdf (s/DEFAULT_PRECISION - meanDemand, SDDemand);
-        pdfVector.push_back(pdfValue);
+          boost::math::pdf (lNormalDistribution, s/DEFAULT_PRECISION);
+        pdfVector.push_back (pdfValue);
       }
 
       // Vector of gaussian cdf values.
       std::vector<double> cdfVector;
       for (int s = 0; s <= maxValue - currentProtection; ++s) {
         const double cdfValue =
-          cdfGaussianQ (s/DEFAULT_PRECISION - meanDemand, SDDemand);
-        cdfVector.push_back(cdfValue);
+          boost::math::cdf (boost::math::complement (lNormalDistribution,
+                                                     s/DEFAULT_PRECISION));
+        cdfVector.push_back (cdfValue);
       }
       
       // Compute V_j(x) for x > currentProtection (y_(j-1)).
@@ -88,31 +91,31 @@ namespace RMOL {
         
         // Compute the first integral in the V_j(x) formulation (see
         // the memo of Jerome Contant).
-        const double power1 = - 0.5 * meanDemand * meanDemand /
-          (SDDemand * SDDemand);
+        const double power1 =
+          - 0.5 * meanDemand * meanDemand / (SDDemand * SDDemand);
         const double e1 = std::exp (power1);
         const double power2 = 
-          - 0.5 * (lowerBound / DEFAULT_PRECISION - meanDemand) *
-          (lowerBound / DEFAULT_PRECISION - meanDemand) /
-          (SDDemand * SDDemand);
-        const double e2 = exp (power2);
-        /*
-        const double integralResult1 = currentYield * 
-          ((e1 - e2) * SDDemand / sqrt (2 * 3.14159265) +
-           meanDemand * gsl_cdf_gaussian_Q (-meanDemand, SDDemand) -
-           meanDemand * gsl_cdf_gaussian_Q (lowerBound / DEFAULT_PRECISION - meanDemand, SDDemand));
-        */
-        const double integralResult1 = currentYield * 
-          ((e1 - e2) * SDDemand / sqrt (2 * 3.14159265) +
-           meanDemand * cdfGaussianQ (-meanDemand, SDDemand) -
-           meanDemand * cdfGaussianQ (lowerBound / DEFAULT_PRECISION - meanDemand, SDDemand));
+          - 0.5 * (lowerBound / DEFAULT_PRECISION - meanDemand)
+          * (lowerBound / DEFAULT_PRECISION - meanDemand)
+          / (SDDemand * SDDemand);
+        const double e2 = std::exp (power2);
+
+        const double cdfValue0 =
+          boost::math::cdf (boost::math::complement (lNormalDistribution,
+                                                     0.0));
+        const double cdfValue1 =
+          boost::math::cdf(boost::math::complement(lNormalDistribution,
+                                                   lowerBound/DEFAULT_PRECISION));
+        const double integralResult1 = currentYield
+          * ((e1 - e2) * SDDemand / sqrt (2 * 3.14159265)
+             + meanDemand * (cdfValue0 - cdfValue1));
         
         double integralResult2 = 0.0;
         
         for (int s = 0; s < lowerBound; ++s) {
           const double partialResult =
-            2 * MERVectorHolder.at(currentBucketIndex-1).at(x-s) *
-            pdfVector.at(s);
+            2 * MERVectorHolder.at(currentBucketIndex-1).at(x-s)
+            * pdfVector.at(s);
           
           integralResult2 += partialResult;
         }
@@ -139,11 +142,13 @@ namespace RMOL {
         // Compute the second integral in the V_j(x) formulation (see
         // the memo of Jerome Contant).
         const double constCoefOfSecondElement =
-          currentYield * lowerBound / DEFAULT_PRECISION +
-          MERVectorHolder.at(currentBucketIndex-1).at(currentProtection);
-        const double secondElement = constCoefOfSecondElement * 
-    //gsl_cdf_gaussian_Q(lowerBound / DEFAULT_PRECISION - meanDemand, SDDemand);
-          cdfGaussianQ (lowerBound / DEFAULT_PRECISION - meanDemand, SDDemand);
+          currentYield * lowerBound / DEFAULT_PRECISION
+          + MERVectorHolder.at(currentBucketIndex-1).at(currentProtection);
+
+        const double secondElement = constCoefOfSecondElement
+          * boost::math::cdf(boost::math::complement(lNormalDistribution,
+                                                     lowerBound/DEFAULT_PRECISION));
+
         const double MERValue = (firstElement + secondElement) / errorFactor;
 
         
@@ -200,20 +205,4 @@ namespace RMOL {
     }
   }
 
-  // ////////////////////////////////////////////////////////////////////
-  double DPOptimiser::cdfGaussianQ (const double c, const double sd) {
-    const double power = - c * c * 0.625 / (sd * sd);
-    const double e = std::sqrt (1 - std::exp (power));
-    double result = 0.0;
-    
-    if (c >= 0) {
-      result = 0.5 * (1 - e);
-
-    } else {
-      result = 0.5 * (1 + e);
-    }
-    
-    return result;
-  }
-  
 }

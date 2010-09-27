@@ -4,9 +4,7 @@
 // STL
 #include <cassert>
 #include <string>
-#include <fstream>
 #include <sstream>
-#include <cmath>
 // StdAir
 #include <stdair/basic/BasChronometer.hpp>
 #include <stdair/service/Logger.hpp>
@@ -75,7 +73,7 @@ namespace RMOL {
       */
       const FldDistributionParameters& aDistribParams = 
         currentBucket.getDistributionParameters();
-      const Gaussian gaussianDemandGenerator (aDistribParams);
+      Gaussian gaussianDemandGenerator (aDistribParams);
 
       /** DEBUG
           STDAIR_LOG_DEBUG ("[" << j << "]: " << Kj << " values with N ( " 
@@ -208,7 +206,7 @@ namespace RMOL {
       // STEP 1.
       const FldDistributionParameters& aDistribParams = 
         currentBucket.getDistributionParameters();
-      const Gaussian gaussianDemandGenerator (aDistribParams);
+      Gaussian gaussianDemandGenerator (aDistribParams);
       
       VariateList_T aVariateList;
       
@@ -308,7 +306,7 @@ namespace RMOL {
       */
       const FldDistributionParameters& aDistribParams = 
         currentBucket.getDistributionParameters();
-      const Gaussian gaussianDemandGenerator (aDistribParams);
+      Gaussian gaussianDemandGenerator (aDistribParams);
 
       /** DEBUG
           STDAIR_LOG_DEBUG ("[" << j << "]: " << Kj << " values with N ( " 
@@ -452,7 +450,7 @@ namespace RMOL {
       // STEP 1.
       const FldDistributionParameters& aDistribParams = 
         currentBucket.getDistributionParameters();
-      const Gaussian gaussianDemandGenerator (aDistribParams);
+      Gaussian gaussianDemandGenerator (aDistribParams);
       
       VariateList_T aVariateList;
       

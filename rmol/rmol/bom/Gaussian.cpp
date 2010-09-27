@@ -2,76 +2,46 @@
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
-// GSL Random Number Distributions (GSL Reference Manual, version 1.7,
-// Chapter 19)
-#include <gsl/gsl_randist.h>
 // RMOL
 #include <rmol/bom/Gaussian.hpp>
 
 namespace RMOL {
 
   // //////////////////////////////////////////////////////////////////////
-  Gaussian::Gaussian () :
-    _rngTypePtr (gsl_rng_default), _rngPtr (NULL),
-    _params (FldDistributionParameters()) {
-    initRandomGenerator();
+  Gaussian::Gaussian (const FldDistributionParameters& iParams)
+    : _seed (42u), _generator (42u),
+      _normalDistribution (iParams.getMean(), iParams.getStandardDeviation()),
+      _normalDistributionGenerator (_generator, _normalDistribution) {
+    init();
   }
   
   // //////////////////////////////////////////////////////////////////////
-  Gaussian::Gaussian (const Gaussian& iGaussian) :
-    _rngTypePtr (gsl_rng_default), _rngPtr (NULL),
-    _params (iGaussian.getDistributionParameters()) {
-    initRandomGenerator();
+  void Gaussian::init() {
   }
 
   // //////////////////////////////////////////////////////////////////////
-  Gaussian::Gaussian (const FldDistributionParameters& iParams) :
-    _rngTypePtr (gsl_rng_default), _rngPtr (NULL),
-    _params (FldDistributionParameters (iParams.getMean(), 
-					iParams.getStandardDeviation())) {
-    initRandomGenerator();
-  }
-  
-  // //////////////////////////////////////////////////////////////////////
   Gaussian::~Gaussian() {
     // Release the memory for the random generator
-    gsl_rng_free (_rngPtr);
   }
   
   // //////////////////////////////////////////////////////////////////////
   double Gaussian::getMean() const {
-    return _params.getMean();
+    return _normalDistribution.mean();
   }
   
   // //////////////////////////////////////////////////////////////////////
   double Gaussian::getStandardDeviation() const {
-    return _params.getStandardDeviation();
+    return _normalDistribution.sigma();
   }
 
-  
   // //////////////////////////////////////////////////////////////////////
   double Gaussian::getVariance() const {
-    return _params.getVariance();
+    return (_normalDistribution.sigma() * _normalDistribution.sigma());
   }
 
   // //////////////////////////////////////////////////////////////////////
-  void Gaussian::initRandomGenerator () {
-    // Initialise the Random Generator
-    gsl_rng_env_setup ();
-
-    // Allocate the memory for the random generator
-    _rngPtr = gsl_rng_alloc (_rngTypePtr);
-  }
-
-  // //////////////////////////////////////////////////////////////////////
-  double Gaussian::generateVariate () const {
-
-    const double mean = getMean();
-    const double standardDeviation = getStandardDeviation();
-    
-    double result = gsl_ran_gaussian (_rngPtr, standardDeviation);
-    result += mean;
-    
+  double Gaussian::generateVariate() {
+    const double result = _normalDistributionGenerator();
     return result;
   }
 

@@ -1,11 +1,11 @@
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
-// GSL
-#include <gsl/gsl_cdf.h>
 // STL
 #include <cassert>
 #include <cmath>
+// Boost Math
+#include <boost/math/distributions/normal.hpp>
 // StdAir
 #include <stdair/service/Logger.hpp>
 // RMOL
@@ -125,18 +125,21 @@ namespace RMOL {
       */
       double e, d1, d2;
       const double lerror = kthCensoredData - iMean;
-      d1 = gsl_cdf_gaussian_Q (lerror, iSD);
-      e = - (lerror) * (lerror) * 0.5 / (iSD * iSD);
-      d2 = exp(e) * iSD / sqrt(2 * 3.14159265);
+
+      //
+      boost::math::normal lNormalDistribution (iMean, iSD);
+      d1 = boost::math::cdf (boost::math::complement (lNormalDistribution,
+                                                      kthCensoredData));
+      e = -lerror*lerror * 0.5 / (iSD*iSD);
+      d2 = exp(e) * iSD / sqrt (2 * 3.14159265);
       if (d1 < DEFAULT_EPSILON) {
-        ioUnconstrainedDataHolder.push_back(kthCensoredData);
-      }
-      else {
-        ioUnconstrainedDataHolder.push_back(iMean + d2/d1);
+        ioUnconstrainedDataHolder.push_back (kthCensoredData);
+
+      } else {
+        ioUnconstrainedDataHolder.push_back (iMean + d2/d1);
       }
     }
 
   }
 
-  // //////////////////////////////////////////////////////////////////////  
 }

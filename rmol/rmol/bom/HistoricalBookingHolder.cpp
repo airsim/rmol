@@ -1,18 +1,14 @@
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
-// GSL Random Number Generation 
-// (GSL Reference Manual, version 1.7, Chapter 19)
-#include <gsl/gsl_cdf.h>
-#include <gsl/gsl_randist.h>
-// C
-#include <assert.h>
-#include <math.h>
 // STL
+#include <cassert>
 #include <iostream>
 #include <iomanip>
 #include <cmath>
-// RMU
+// Boost Math
+#include <boost/math/distributions/normal.hpp>
+// RMOL
 #include <rmol/bom/HistoricalBooking.hpp>
 #include <rmol/bom/HistoricalBookingHolder.hpp>
 
@@ -211,13 +207,15 @@ namespace RMOL {
       d1 = 0.5 * (1 + s);
       }
     */
-      
-    d1 = gsl_cdf_gaussian_Q (lBooking - iMean, iSD);
+
+    //
+    boost::math::normal lNormalDistribution (iMean, iSD);
+    d1 = boost::math::cdf (boost::math::complement (lBooking, _capacity));
       
     e = - (lBooking - iMean) * (lBooking - iMean) * 0.5 / (iSD * iSD);
     e = exp (e);
 
-    d2 = e * iSD / sqrt(2 * 3.14159265);
+    d2 = e * iSD / sqrt (2 * 3.14159265);
       
     // std::cout << "d1, d2 = " << d1 << "     " << d2 << std::endl;
 

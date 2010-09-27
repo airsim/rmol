@@ -1,11 +1,11 @@
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
-// GSL Random Number Generation (GSL Reference Manual, version 1.7, Chapter 19)
-#include <gsl/gsl_cdf.h>
-// C
-#include <math.h>
-#include <assert.h>
+// STL
+#include <cassert>
+#include <cmath>
+// Boost Math
+#include <boost/math/distributions/normal.hpp>
 // RMOL
 #include <rmol/bom/EmsrUtils.hpp>
 #include <rmol/bom/Bucket.hpp>
@@ -53,17 +53,24 @@ namespace RMOL {
     const double lNextYield = ioNextBucket.getAverageYield();
     assert (lAggreatedYield != 0);
     
-    // Compute the protection for the aggregated class/bucket
-    const double lProtection = 
-      lMean + gsl_cdf_gaussian_Qinv (lNextYield/lAggreatedYield, lSD);
+    // Compute the yield ratio between the higher bucket and the current one
+    const double lYieldRatio = lNextYield / lAggreatedYield;
+         
+    /** Compute the protection for the aggregated class/bucket.
+        <br>Note: The inverse cdf is the quantile function (see also
+        http://en.wikipedia.org/wiki/Quantile_function). */
+    boost::math::normal lNormalDistribution (lMean, lSD);
+    const double lProtection =
+      boost::math::quantile (boost::math::complement (lNormalDistribution,
+                                                      lYieldRatio));
     
     return lProtection;
   }
 
   // ////////////////////////////////////////////////////////////////////
-  const double EmsrUtils::computeProtectionLevelwithSellup (Bucket& iHigherBucket,
-                                                            Bucket& iBucket,
-                                                            double iSellupFactor){
+  const double EmsrUtils::
+  computeProtectionLevelwithSellup (Bucket& iHigherBucket, Bucket& iBucket,
+                                    double iSellupFactor) {
     // Retrieve the mean and the standard deviation of the higher 
     // class(es)/bucket(s) depending EMSR-a or EMSR-b
     // and the average yield of each input classes/buckets
@@ -74,25 +81,34 @@ namespace RMOL {
     assert (lHigherBucketYield > DEFAULT_EPSILON);
     assert (1-iSellupFactor > DEFAULT_EPSILON);
 
-    // compute the protection level for the higher class/bucket
-    const double lProtectionLevel = 
-      lMean + 
-      gsl_cdf_gaussian_Pinv((lHigherBucketYield-lBucketYield)/
-                            (lHigherBucketYield*(1-iSellupFactor)),lSD);
-    
+    // Compute the yield ratio
+    const double lYieldRatio = (lHigherBucketYield - lBucketYield)
+      / (lHigherBucketYield * (1 - iSellupFactor));
+         
+    /** Compute the protection for the for the higher class/bucket.
+        <br>Note: The inverse cdf is the quantile function (see also
+        http://en.wikipedia.org/wiki/Quantile_function). */
+    boost::math::normal lNormalDistribution (lMean, lSD);
+    const double lProtectionLevel = boost::math::quantile (lNormalDistribution,
+                                                           lYieldRatio);
+
     return lProtectionLevel;
   }
 
   // ////////////////////////////////////////////////////////////////////
-  const double EmsrUtils::computeEmsrValue (double iCapacity, Bucket& ioBucket) {
-    // Retrive the average yield, mean and standard deviation of the
+  const double EmsrUtils::computeEmsrValue (double iCapacity,
+                                            Bucket& ioBucket) {
+    // Retrieve the average yield, mean and standard deviation of the
     // demand of the class/bucket.
     const double lMean = ioBucket.getMean();
     const double lSD = ioBucket.getStandardDeviation();
     const double lYield = ioBucket.getAverageYield();
 
     // Compute the EMSR value = lYield * Pr (demand >= iCapacity).
-    const double emsrValue = lYield * gsl_cdf_gaussian_Q(iCapacity-lMean, lSD);
+    boost::math::normal lNormalDistribution (lMean, lSD);
+    const double emsrValue =
+      lYield * boost::math::cdf (boost::math::complement (lNormalDistribution,
+                                                          iCapacity));
 
     return emsrValue;
   }

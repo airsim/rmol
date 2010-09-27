@@ -1,36 +1,61 @@
-#ifndef __RMOL_GAUSSIAN_HPP
-#define __RMOL_GAUSSIAN_HPP
+#ifndef __RMOL_BOM_GAUSSIAN_HPP
+#define __RMOL_BOM_GAUSSIAN_HPP
 
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
-// GSL Random Number Generation (GSL Reference Manual, version 1.7, Chapter 17)
-#include <gsl/gsl_rng.h>
+// Boost Random
+#include <boost/random/linear_congruential.hpp>
+#include <boost/random/normal_distribution.hpp>
+#include <boost/random/variate_generator.hpp>
 // RMOL
 #include <rmol/field/FldDistributionParameters.hpp>
 
 namespace RMOL {
 
-  /** Gaussian Distribution-based Utilities. */
+  // ////////// Type definitions //////////
+  /** Type definition for the random generator seed.
+      <br>That seed must be unsigned, otherwise the wrong overload may be
+      selected when using mt19937 as the base_generator_type. */
+  typedef unsigned int random_generator_seed_type;
+
+  
+  /** Wrapper around a random generator following a normal distribution. */
   class Gaussian {
+  private:
+    // ////////// Type definitions //////////
+    /** Type definition for a random number generator base (mt19937). */
+    typedef boost::minstd_rand base_generator_type;
+
+    /** Type definiton for the normal distribution (characteristics). */
+    typedef boost::normal_distribution<> normal_dist_type;
+    
+    /** Type definition for the normal distribution random generator. */
+    typedef boost::variate_generator<base_generator_type&, 
+                                     normal_dist_type> normal_gen_type;
+  
   public:
-    /** Constructors. */
-    Gaussian ();
-    Gaussian (const Gaussian&);
-    /** Constructor with mean and standard deviation of
-        the Gaussian Distribution. */
+    /** Constructor with mean and sigma (standard deviation) for
+        the normal Distribution.
+        <br>See also
+        http://www.boost.org/doc/libs/1_44_0/doc/html/boost/normal_distribution.html */
     Gaussian (const FldDistributionParameters&);
 
-    /** Destructors. */
-    virtual ~Gaussian();
+    /** Destructor. */
+    ~Gaussian();
 
-    // Getters
-    /** Getter for the parameters for the Gaussian distribution (i.e.,
-        mean and standard deviation). */
-    const FldDistributionParameters& getDistributionParameters() const {
-      return _params;
-    }
+  private:
+    /** Default constructors.
+     <br>They are kept private so that the class can be instantiated only
+     with the public constructor. */
+    Gaussian ();
+    Gaussian (const Gaussian&);
+
+    /** Initialise the random generator. */
+    void init();
     
+  public:
+    // /////////////////// Getters //////////////////
     /** Getter for the mean value. */
     double getMean() const;
 
@@ -43,20 +68,21 @@ namespace RMOL {
     
     /** Generate a Gaussian random variate (following the Gaussian
         distribution). */
-    double generateVariate () const;
+    double generateVariate();
     
   private:
-    // Wrapper on GSL Random Generators (type and generator)
-    const gsl_rng_type* _rngTypePtr;
-    gsl_rng* _rngPtr;
+    /** Seed of the random generator. */
+    const random_generator_seed_type _seed;
 
-    // Gaussian distribution characteristics
-    FldDistributionParameters _params;
+    /** Base for the random generator. */
+    base_generator_type _generator;
 
-  private:
-    // Initialise the Random Generator
-    void initRandomGenerator();
+    /** Normal distribution. */
+    normal_dist_type _normalDistribution;
+    
+    /** Random generator for the normal distribution. */
+    normal_gen_type _normalDistributionGenerator;
   };
 
 }
-#endif // __RMOL_GAUSSIAN_HPP
+#endif // __RMOL_BOM_GAUSSIAN_HPP
