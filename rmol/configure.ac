@@ -365,6 +365,7 @@ AC_CONFIG_FILES(
 	po/Makefile.in
 	test/Makefile
 	test/samples/Makefile
+	test/random/Makefile
 	test/valarrays/Makefile
 	test/rmol/Makefile
 	win32/Makefile)
