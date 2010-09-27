@@ -26,10 +26,10 @@ OptimiseTestSuite_LDFLAGS = $(BOOST_LIBS) $(CPPUNIT_LIBS) \
 	$(top_builddir)/rmol/core/librmol.la
 
 SimulateTestSuite_SOURCES = SimulateTestSuite.hpp SimulateTestSuite.cpp
-SimulateTestSuite_CXXFLAGS = $(BOOST_CFLAGS) $(GSL_CFLAGS) $(CPPUNIT_CFLAGS) \
+SimulateTestSuite_CXXFLAGS = $(BOOST_CFLAGS) $(CPPUNIT_CFLAGS) \
 	$(EXTRACC_CFLAGS) $(STDAIR_CFLAGS)
 SimulateTestSuite_LDADD =
-SimulateTestSuite_LDFLAGS = $(BOOST_LIBS) $(GSL_LIBS) $(CPPUNIT_LIBS) \
+SimulateTestSuite_LDFLAGS = $(BOOST_LIBS) $(CPPUNIT_LIBS) \
 	$(EXTRACC_LIBS) $(STDAIR_LIBS)
 
 ForecasterTestSuite_SOURCES = ForecasterTestSuite.hpp ForecasterTestSuite.cpp
