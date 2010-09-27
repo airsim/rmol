@@ -2,10 +2,8 @@
 # Configure path for the STDAIR library.
 # Denis Arnaud <denis_arnaud@users.sourceforge.net>, July 2008
 #
-# Note: as the STDAIR library depends upon GSL (and
-# potentially BOOST) to build. Your configure.ac must define
-# appropriately the GSL_CFLAGS (and potentially BOOST_CFLAGS)
-# variables.
+# Note: as the STDAIR library depends upon BOOST to build.
+# Your configure.ac must therefore define appropriately the BOOST variables.
 #
 
 
@@ -28,36 +26,21 @@ AC_ARG_WITH(stdair,
   AC_PATH_PROG(STDAIR_CONFIG, stdair-config, no)
 
   # Check whether Boost flags and libraries are defined
-  AC_MSG_CHECKING(for GSL_CFLAGS environment variable)
-  if test x"${GSL_CFLAGS}" = x; then
-	AC_MSG_RESULT([Warning: STDAIR needs the GSL, and the GSL_CFLAGS environment variable does not appear to be set. It may not be a problem, though, if your Unix distribution is standard, that is, if GSL is installed in /usr/local. Otherwise, the STDAIR will fail to compile.])
-	else
-	AC_MSG_RESULT([ok (set to ${GSL_CFLAGS})])
+  AC_MSG_CHECKING(for BOOST_CFLAGS environment variable)
+  if test x"${BOOST_CFLAGS}" = x; then
+	AC_MSG_RESULT([Warning: STDAIR needs Boost, and the BOOST_CFLAGS environment variable does not appear to be set. It may not be a problem, though, if your Unix distribution is standard, that is, if Boost is installed in /usr/local. Otherwise, the STDAIR will fail to compile.])
+  else
+	AC_MSG_RESULT([ok (set to ${BOOST_CFLAGS})])
   fi
 
-  AC_MSG_CHECKING(for GSL_LIBS environment variable)
-  if test x"${GSL_LIBS}" = x; then
-	AC_MSG_RESULT([Warning: STDAIR needs the GSL library, and the GSL_LIBS environment variable does not appears to be set. The STDAIR may fail to link.])
-	else
-	AC_MSG_RESULT([ok (set to ${GSL_LIBS})])
+  AC_MSG_CHECKING(for BOOST_DATE_TIME_LIB environment variable)
+  if test x"${BOOST_DATE_TIME_LIB}" = x; then
+	AC_MSG_RESULT([Warning: STDAIR needs Boost Date-Time library, and the BOOST_DATE_TIME_LIB environment variable does not appears to be set. The STDAIR may fail to link.])
+  else
+	AC_MSG_RESULT([ok (set to ${BOOST_DATE_TIME_LIB})])
   fi
 
-  # Check whether Boost flags and libraries are defined
-#  AC_MSG_CHECKING(for BOOST_CFLAGS environment variable)
-#  if test x"${BOOST_CFLAGS}" = x; then
-#	AC_MSG_RESULT([Warning: STDAIR needs Boost, and the BOOST_CFLAGS environment variable does not appear to be set. It may not be a problem, though, if your Unix distribution is standard, that is, if Boost is installed in /usr/local. Otherwise, the STDAIR will fail to compile.])
-#	else
-#	AC_MSG_RESULT([ok (set to ${BOOST_CFLAGS})])
-#  fi
-
-#  AC_MSG_CHECKING(for BOOST_DATE_TIME_LIB environment variable)
-#  if test x"${BOOST_DATE_TIME_LIB}" = x; then
-#	AC_MSG_RESULT([Warning: STDAIR needs Boost Date-Time library, and the BOOST_DATE_TIME_LIB environment variable does not appears to be set. The STDAIR may fail to link.])
-#	else
-#	AC_MSG_RESULT([ok (set to ${BOOST_DATE_TIME_LIB})])
-#  fi
-
-  min_stdair_version=ifelse([$1], ,0.11.0,$1)
+  min_stdair_version=ifelse([$1], ,0.5.0,$1)
   AC_MSG_CHECKING(for STDAIR - version >= $min_stdair_version)
   no_stdair=""
   if test "${STDAIR_CONFIG}" = "no" ; then
@@ -66,11 +49,9 @@ AC_ARG_WITH(stdair,
   else
 	STDAIR_VERSION=`${STDAIR_CONFIG} --version`
     STDAIR_CFLAGS=`${STDAIR_CONFIG} --cflags`
-    STDAIR_CFLAGS="${GSL_CFLAGS} ${STDAIR_CFLAGS}"
-#    STDAIR_CFLAGS="${BOOST_CFLAGS} ${STDAIR_CFLAGS}"
+    STDAIR_CFLAGS="${BOOST_CFLAGS} ${STDAIR_CFLAGS}"
     STDAIR_LIBS=`${STDAIR_CONFIG} --libs`
-    STDAIR_LIBS="${GSL_LIBS} ${STDAIR_LIBS}"
-#    STDAIR_LIBS="${BOOST_LIBS} ${BOOST_DATE_TIME_LIB} ${STDAIR_LIBS}"
+    STDAIR_LIBS="${BOOST_LIBS} ${BOOST_DATE_TIME_LIB} ${STDAIR_LIBS}"
 
 	AC_SUBST([STDAIR_VERSION])
 	AC_SUBST([STDAIR_CFLAGS])
@@ -96,8 +77,8 @@ AC_ARG_WITH(stdair,
 
 	SAVED_CPPFLAGS="${CPPFLAGS}"
 	SAVED_LDFLAGS="${LDFLAGS}"
-	CPPFLAGS="${CPPFLAGS} ${GSL_CFLAGS} ${BOOST_CFLAGS} ${STDAIR_CFLAGS}"
-	LDFLAGS="${LDFLAGS} ${GSL_LIBS} ${STDAIR_LIBS}"
+	CPPFLAGS="${CPPFLAGS} ${BOOST_CFLAGS} ${STDAIR_CFLAGS}"
+	LDFLAGS="${LDFLAGS} ${STDAIR_LIBS}"
 
 
    	AC_COMPILE_IFELSE(
