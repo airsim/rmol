@@ -164,6 +164,7 @@ AC_SUBST(BOOST_PYTHON_LIB)
 AC_SUBST(BOOST_ASIO_LIB)
 AC_SUBST(BOOST_MPI_LIB)
 AC_SUBST(BOOST_MPI_PYTHON_LIB)
+AC_SUBST(BOOST_UNIT_TEST_FRAMEWORK_LIB)
 
 # --------------------------------------------------------------------
 # Support for MySQL (C client API): http://www.mysql.org
@@ -437,6 +438,7 @@ External libraries:
     o BOOST_ASIO_LIB .. : ${BOOST_ASIO_LIB}
     o BOOST_MPI_LIB ... : ${BOOST_MPI_LIB}
     o BOOST_MPIPY_LIB . : ${BOOST_MPI_PYTHON_LIB}
+    o BOOST_UTEST_LIB . : ${BOOST_UNIT_TEST_FRAMEWORK_LIB}
 
   - MySQL ............. :
     o MYSQL_version ... : ${MYSQL_VERSION}

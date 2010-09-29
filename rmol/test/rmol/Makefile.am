@@ -29,8 +29,9 @@ SimulateTestSuite_SOURCES = SimulateTestSuite.hpp SimulateTestSuite.cpp
 SimulateTestSuite_CXXFLAGS = $(BOOST_CFLAGS) $(CPPUNIT_CFLAGS) \
 	$(EXTRACC_CFLAGS) $(STDAIR_CFLAGS)
 SimulateTestSuite_LDADD =
-SimulateTestSuite_LDFLAGS = $(BOOST_LIBS) $(CPPUNIT_LIBS) \
-	$(EXTRACC_LIBS) $(STDAIR_LIBS)
+SimulateTestSuite_LDFLAGS = $(CPPUNIT_LIBS) $(EXTRACC_LIBS) \
+	$(BOOST_LIBS) $(BOOST_UNIT_TEST_FRAMEWORK_LIB) \
+	$(STDAIR_LIBS)
 
 ForecasterTestSuite_SOURCES = ForecasterTestSuite.hpp ForecasterTestSuite.cpp
 ForecasterTestSuite_CXXFLAGS = $(BOOST_CFLAGS) $(CPPUNIT_CFLAGS) \
