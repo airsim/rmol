@@ -433,7 +433,7 @@ void buildSampleBom() {
                lLegDateList.begin();
              itLD != lLegDateList.end(); ++itLD) {
           const stdair::LegDate* lLD_ptr = *itLD;
-          assert (lFD_ptr != NULL);
+          assert (lLD_ptr != NULL);
           
           // STDAIR_LOG_DEBUG ("LegDate: " << lLD_ptr->toString());
           STDAIR_LOG_DEBUG ("    " << lLD_ptr->toString());
@@ -445,7 +445,7 @@ void buildSampleBom() {
                  lLegCabinList.begin();
                itLC != lLegCabinList.end(); ++itLC) {
             const stdair::LegCabin* lLC_ptr = *itLC;
-            assert (lFD_ptr != NULL);
+            assert (lLC_ptr != NULL);
             
             // STDAIR_LOG_DEBUG ("LegCabin: " << lLC_ptr->toString());
             STDAIR_LOG_DEBUG ("    " << lLC_ptr->toString());
@@ -459,7 +459,7 @@ void buildSampleBom() {
                lSegmentDateList.begin();
              itSD != lSegmentDateList.end(); ++itSD) {
           const stdair::SegmentDate* lSD_ptr = *itSD;
-          assert (lFD_ptr != NULL);
+          assert (lSD_ptr != NULL);
           
           // STDAIR_LOG_DEBUG ("SegmentDate: " << lSD_ptr->toString());
           STDAIR_LOG_DEBUG ("    " << lSD_ptr->toString());
@@ -471,7 +471,7 @@ void buildSampleBom() {
                  lSegmentCabinList.begin();
                itSC != lSegmentCabinList.end(); ++itSC) {
             const stdair::SegmentCabin* lSC_ptr = *itSC;
-            assert (lFD_ptr != NULL);
+            assert (lSC_ptr != NULL);
             
             // STDAIR_LOG_DEBUG ("SegmentCabin: " << lSC_ptr->toString());
             STDAIR_LOG_DEBUG ("    " << lSC_ptr->toString());
@@ -483,7 +483,7 @@ void buildSampleBom() {
                    lBookingClassList.begin();
                  itBC != lBookingClassList.end(); ++itBC) {
               const stdair::BookingClass* lBC_ptr = *itBC;
-              assert (lFD_ptr != NULL);
+              assert (lBC_ptr != NULL);
               
               // STDAIR_LOG_DEBUG ("BookingClass: " << lBC_ptr->toString());
               STDAIR_LOG_DEBUG ("    " << lBC_ptr->toString());
