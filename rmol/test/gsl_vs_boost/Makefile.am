@@ -1,4 +1,4 @@
-## test/random sub-directory
+## test/gsl_vs_boost sub-directory
 include $(top_srcdir)/Makefile.common
 
 MAINTAINERCLEANFILES = Makefile.in
