@@ -3,212 +3,170 @@
 // //////////////////////////////////////////////////////////////////////
 // STL
 #include <cassert>
-#include <iostream>
+#include <fstream>
 #include <string>
 // STDAIR
-#include <stdair/bom/BomStructureRoot.hpp>
-#include <stdair/bom/BomStructureDummy.hpp>
-#include <stdair/bom/BomContentDummy.hpp>
+#include <stdair/STDAIR_Types.hpp>
+#include <stdair/STDAIR_Service.hpp>
+#include <stdair/bom/BomManager.hpp>
+#include <stdair/bom/BomRoot.hpp>
 #include <stdair/bom/Inventory.hpp>
+#include <stdair/bom/InventoryTypes.hpp>
 #include <stdair/bom/FlightDate.hpp>
+#include <stdair/bom/FlightDateTypes.hpp>
 #include <stdair/bom/LegDate.hpp>
+#include <stdair/bom/LegDateTypes.hpp>
+#include <stdair/bom/LegCabin.hpp>
+#include <stdair/bom/LegCabinTypes.hpp>
 #include <stdair/bom/SegmentDate.hpp>
-#include <stdair/bom/BomContentRoot.hpp>
-#include <stdair/bom/BomIterator.hpp>
-#include <stdair/factory/FacBomContent.hpp>
+#include <stdair/bom/SegmentDateTypes.hpp>
+#include <stdair/bom/SegmentCabin.hpp>
+#include <stdair/bom/SegmentCabinTypes.hpp>
+#include <stdair/bom/BookingClass.hpp>
+#include <stdair/bom/BookingClassTypes.hpp>
+#include <stdair/factory/FacBomManager.hpp>
+#include <stdair/service/Logger.hpp>
 // RMOL
-#include <rmol/bom/Inventory.hpp>
-#include <rmol/bom/FlightDate.hpp>
-#include <rmol/bom/LegDate.hpp>
 #include <rmol/bom/SegmentDate.hpp>
-#include <rmol/service/Logger.hpp>
 
 // //////////////////////////////////////////////////////////////////////
-RMOL::Inventory& initialise () {
+stdair::Inventory& initialise () {
   // DEBUG
-  RMOL_LOG_DEBUG ("Welcome to Rmol");
+  STDAIR_LOG_DEBUG ("Welcome to Rmol");
 
   // Step 0.0: initialisation
   // Create the root of the Bom tree (i.e., a BomContentRoot object)
-  RMOL::BomContentRoot_T& lBomContentRoot =
-    stdair::FacBomContent::instance().createBomRoot<RMOL::Inventory>();
-  
+  stdair::BomRoot& lBomRoot =
+    stdair::FacBom<stdair::BomRoot>::instance().create();
     
   // Step 0.1: Inventory level
   // Create an Inventory (BA)
   const stdair::AirlineCode_T lAirlineCode ("BA");
-  const RMOL::InventoryKey_T lInventoryKey (lAirlineCode);
+  const stdair::InventoryKey lInventoryKey (lAirlineCode);
   
-  RMOL::Inventory& lInventory =
-    stdair::FacBomContent::instance().create<RMOL::Inventory> (lBomContentRoot,
-                                                               lInventoryKey);
+  stdair::Inventory& lInventory =
+    stdair::FacBom<stdair::Inventory>::instance().create (lInventoryKey);
+  stdair::FacBomManager::instance().addToList (lBomRoot, lInventory);
     
   // Display the inventory
-  RMOL_LOG_DEBUG ("Inventory: " << lInventory.toString());
+  STDAIR_LOG_DEBUG ("Inventory: " << lInventory.toString());
     
   // Step 0.2: Flight-date level
   // Create a FlightDate (BA15/10-JUN-2010)
   const stdair::FlightNumber_T lFlightNumber = 15;
   const stdair::Date_T lDate (2010, 6, 10);
-  const RMOL::FlightDateKey_T lFlightDateKey (lFlightNumber, lDate);
+  const stdair::FlightDateKey lFlightDateKey (lFlightNumber, lDate);
 
-  RMOL::FlightDate& lFlightDate =
-    stdair::FacBomContent::instance().create<RMOL::FlightDate> (lInventory,
-                                                                lFlightDateKey);
+  stdair::FlightDate& lFlightDate =
+    stdair::FacBom<stdair::FlightDate>::instance().create (lFlightDateKey);
+  stdair::FacBomManager::instance().addToList (lInventory, lFlightDate);
     
   // Display the flight-date
-  RMOL_LOG_DEBUG ("FlightDate: " << lFlightDate.toString());
+  STDAIR_LOG_DEBUG ("FlightDate: " << lFlightDate.toString());
     
   // Step 0.3: Segment-date level
   // Create a first SegmentDate (LHR-SYD)
   const stdair::AirportCode_T lLHR ("LHR");
   const stdair::AirportCode_T lSYD ("SYD");
-  RMOL::SegmentDateKey_T lSegmentDateKey (lLHR, lSYD);
+  stdair::SegmentDateKey lSegmentDateKey (lLHR, lSYD);
 
-  RMOL::SegmentDate& lLHRSYDSegment =
-    stdair::FacBomContent::instance().create<RMOL::SegmentDate>(lFlightDate,
-                                                                lSegmentDateKey);
+  stdair::SegmentDate& lLHRSYDSegment =
+    stdair::FacBom<stdair::SegmentDate>::instance().create (lSegmentDateKey);
+  stdair::FacBomManager::instance().addToList (lFlightDate, lLHRSYDSegment);
 
   // Display the segment-date
-  RMOL_LOG_DEBUG ("SegmentDate: " << lLHRSYDSegment.toString());
+  STDAIR_LOG_DEBUG ("SegmentDate: " << lLHRSYDSegment.toString());
 
 
   // Create a second SegmentDate (LHR-BKK)
   const stdair::AirportCode_T lBKK ("BKK");
-  lSegmentDateKey = RMOL::SegmentDateKey_T (lLHR, lBKK);
+  lSegmentDateKey = stdair::SegmentDateKey (lLHR, lBKK);
 
-  RMOL::SegmentDate& lLHRBKKSegment =
-    stdair::FacBomContent::instance().create<RMOL::SegmentDate>(lFlightDate,
-                                                                lSegmentDateKey);
+  stdair::SegmentDate& lLHRBKKSegment =
+    stdair::FacBom<stdair::SegmentDate>::instance().create (lSegmentDateKey);
+  stdair::FacBomManager::instance().addToList (lFlightDate, lLHRBKKSegment);
 
   // Display the segment-date
-  RMOL_LOG_DEBUG ("SegmentDate: " << lLHRBKKSegment.toString());
+  STDAIR_LOG_DEBUG ("SegmentDate: " << lLHRBKKSegment.toString());
 
 
   // Create a third SegmentDate (BKK-SYD)
-  lSegmentDateKey = RMOL::SegmentDateKey_T (lBKK, lSYD);
+  lSegmentDateKey = stdair::SegmentDateKey (lBKK, lSYD);
 
-  RMOL::SegmentDate& lBKKSYDSegment =
-    stdair::FacBomContent::instance().create<RMOL::SegmentDate>(lFlightDate,
-                                                                lSegmentDateKey);
+  stdair::SegmentDate& lBKKSYDSegment =
+    stdair::FacBom<stdair::SegmentDate>::instance().create (lSegmentDateKey);
+  stdair::FacBomManager::instance().addToList (lFlightDate, lBKKSYDSegment);
 
   // Display the segment-date
-  RMOL_LOG_DEBUG ("SegmentDate: " << lBKKSYDSegment.toString());
+  STDAIR_LOG_DEBUG ("SegmentDate: " << lBKKSYDSegment.toString());
 
     
   // Step 0.4: Leg-date level
   // Create a first LegDate (LHR)
-  RMOL::LegDateKey_T lLegDateKey (lLHR);
+  stdair::LegDateKey lLegDateKey (lLHR);
 
-  RMOL::LegDate& lLHRLeg =
-    stdair::FacBomContent::instance().create<RMOL::LegDate> (lFlightDate,
-                                                             lLegDateKey);
+  stdair::LegDate& lLHRLeg =
+    stdair::FacBom<stdair::LegDate>::instance().create (lLegDateKey);
+  stdair::FacBomManager::instance().addToList (lFlightDate, lLHRLeg);
 
   // Display the leg-date
-  RMOL_LOG_DEBUG ("LegDate: " << lLHRLeg.toString());
+  STDAIR_LOG_DEBUG ("LegDate: " << lLHRLeg.toString());
     
   // Create a second LegDate (BKK)
-  lLegDateKey = RMOL::LegDateKey_T (lBKK);
+  lLegDateKey = stdair::LegDateKey (lBKK);
 
-  RMOL::LegDate& lBKKLeg =
-    stdair::FacBomContent::instance().create<RMOL::LegDate> (lFlightDate,
-                                                             lLegDateKey);
+  stdair::LegDate& lBKKLeg =
+    stdair::FacBom<stdair::LegDate>::instance().create (lLegDateKey);
+  stdair::FacBomManager::instance().addToList (lFlightDate, lBKKLeg);
 
   // Display the leg-date
-  RMOL_LOG_DEBUG ("LegDate: " << lBKKLeg.toString());
+  STDAIR_LOG_DEBUG ("LegDate: " << lBKKLeg.toString());
     
   // Step 0.5: Initialisation results
   // Display the full structure and content
-  RMOL_LOG_DEBUG ("Full Inventory: " << lInventory.toString());
+  STDAIR_LOG_DEBUG ("Full Inventory: " << lInventory.toString());
 
   return lInventory;
 }
 
 // ////////////////////////////////////////////////////////////////
-void testIteratorInventory (const RMOL::Inventory& iInventory) {
-  RMOL_LOG_DEBUG ("Test iterator.");
-
-  // Browse the list with a for-loop
-  RMOL_LOG_DEBUG ("Browse the list");
-  for (RMOL::Inventory::list_const_iterator itInv =
-         iInventory.flightDateListConstIteratorBegin();
-       itInv != iInventory.flightDateListConstIteratorEnd(); ++itInv) {
-    RMOL_LOG_DEBUG ("Current flight-date: " << *itInv);
+void testIteratorInventory (const stdair::Inventory& iInventory) {
+  // Browse the list of flight-dates
+  STDAIR_LOG_DEBUG ("Browse the flight-date list");
+  const stdair::FlightDateList_T& lFlightDateList =
+    stdair::BomManager::getList<stdair::FlightDate> (iInventory);
+  for (stdair::FlightDateList_T::const_iterator itFD = lFlightDateList.begin();
+       itFD != lFlightDateList.end(); ++itFD) {
+    const stdair::FlightDate* lFD_ptr = *itFD;
+    assert (lFD_ptr != NULL);
+    STDAIR_LOG_DEBUG ("Current flight-date: " << *lFD_ptr);
   }
-    
-  // Browse the map with a for-loop
-  RMOL_LOG_DEBUG ("Browse the map with const_iterator");
-  for (RMOL::Inventory::map_const_iterator itInv =
-         iInventory.flightDateMapConstIteratorBegin();
-       itInv != iInventory.flightDateMapConstIteratorEnd(); ++itInv) {
-    const RMOL::FlightDate* lCurrentFlightDate_ptr = itInv->second;
-    RMOL_LOG_DEBUG ("Current flight-date: "
-               << lCurrentFlightDate_ptr->toString());
-  }
-
-  RMOL_LOG_DEBUG ("Browse the map with reverse_iterator");
-  for (RMOL::Inventory::map_reverse_iterator itInv =
-         iInventory.flightDateMapIteratorRBegin();
-       itInv != iInventory.flightDateMapIteratorREnd(); ++itInv) {
-    RMOL::FlightDate* lCurrentFlightDate_ptr = itInv->second;
-    RMOL_LOG_DEBUG ("Current flight-date: "
-               << lCurrentFlightDate_ptr->toString());
-  }
-
-  RMOL_LOG_DEBUG ("Test operators: ");
-
-  RMOL::Inventory::list_const_iterator itBegin =
-    iInventory.flightDateListConstIteratorBegin();
-  RMOL::Inventory::list_const_iterator itEnd =
-    iInventory.flightDateListConstIteratorEnd();
-  
-  RMOL_LOG_DEBUG ("itEnd - itBegin, should be 1: " << itEnd - itBegin);
-  RMOL_LOG_DEBUG ("itBegin - itEnd, should be -1: " << itBegin - itEnd);
-  RMOL_LOG_DEBUG ("itBegin < itEnd, should be 1: " << (itBegin < itEnd));
-  RMOL_LOG_DEBUG ("itEnd - (1 + itBegin), should be 0: "
-                      << (itEnd - (1 + itBegin)));
-  RMOL_LOG_DEBUG ( *(itEnd - 1));
-  RMOL_LOG_DEBUG ( *(itEnd -=1));
 }
 
 // ////////////////////////////////////////////////////////////////
-void testIteratorFlightDate (const RMOL::FlightDate& iFlightDate) {
-  RMOL_LOG_DEBUG ("Test iterator.");
-
-  // Browse the list with a for-loop
-  RMOL_LOG_DEBUG ("Browse the segment-date list");
-  for (RMOL::FlightDate::segment_date_list_const_iterator itSD =
-         iFlightDate.segmentDateListConstIteratorBegin();
-       itSD != iFlightDate.segmentDateListConstIteratorEnd(); ++itSD) {
-    RMOL_LOG_DEBUG ("Current segment-date: " << *itSD);
-  }
-    
-  // Browse the map with a for-loop
-  RMOL_LOG_DEBUG ("Browse the segment_date map with const_iterator");
-  for (RMOL::FlightDate::segment_date_map_const_iterator itSD =
-         iFlightDate.segmentDateMapConstIteratorBegin();
-       itSD != iFlightDate.segmentDateMapConstIteratorEnd(); ++itSD) {
-    const RMOL::SegmentDate* lCurrentSegmentDate_ptr = itSD->second;
-    RMOL_LOG_DEBUG ("Current segment-date: "
-                        << lCurrentSegmentDate_ptr->toString());
+void testIteratorFlightDate (const stdair::FlightDate& iFlightDate) {
+  // Browse the list of segment-dates
+  STDAIR_LOG_DEBUG ("Browse the segment-date list");
+  const stdair::SegmentDateList_T& lSegmentDateList =
+    stdair::BomManager::getList<stdair::SegmentDate> (iFlightDate);
+  for (stdair::SegmentDateList_T::const_iterator itSD =
+         lSegmentDateList.begin();
+       itSD != lSegmentDateList.end(); ++itSD) {
+    const stdair::SegmentDate* lSD_ptr = *itSD;
+    assert (lSD_ptr != NULL);
+    STDAIR_LOG_DEBUG ("Current segment-date: " << *lSD_ptr);
   }
 
-  // Browse the list with a for-loop
-  RMOL_LOG_DEBUG ("Browse the leg-date list");
-  for (RMOL::FlightDate::leg_date_list_const_iterator itLD =
-         iFlightDate.legDateListConstIteratorBegin();
-       itLD != iFlightDate.legDateListConstIteratorEnd(); ++itLD) {
-    RMOL_LOG_DEBUG ("Current leg-date: " << *itLD);
-  }
-    
-  // Browse the map with a for-loop
-  RMOL_LOG_DEBUG ("Browse the leg_date map with const_iterator");
-  for (RMOL::FlightDate::leg_date_map_const_iterator itLD =
-         iFlightDate.legDateMapConstIteratorBegin();
-       itLD != iFlightDate.legDateMapConstIteratorEnd(); ++itLD) {
-    const RMOL::LegDate* lCurrentLegDate_ptr = itLD->second;
-    RMOL_LOG_DEBUG ("Current leg-date: "
-               << lCurrentLegDate_ptr->toString());
+  // Browse the list of leg-dates
+  STDAIR_LOG_DEBUG ("Browse the leg-date list");
+  const stdair::LegDateList_T& lLegDateList =
+    stdair::BomManager::getList<stdair::LegDate> (iFlightDate);
+  for (stdair::LegDateList_T::const_iterator itLD =
+         lLegDateList.begin();
+       itLD != lLegDateList.end(); ++itLD) {
+    const stdair::LegDate* lLD_ptr = *itLD;
+    assert (lLD_ptr != NULL);
+    STDAIR_LOG_DEBUG ("Current leg-date: " << *lLD_ptr);
   }
 }
 
@@ -216,21 +174,34 @@ void testIteratorFlightDate (const RMOL::FlightDate& iFlightDate) {
 // ////////////// M A I N ///////////////
 int main (int argc, char* argv[]) {
 
+  // Output log File
+  std::string lLogFilename ("stdair.log");
+  
+  // Set the log parameters
+  std::ofstream logOutputFile;
+  // Open and clean the log outputfile
+  logOutputFile.open (lLogFilename.c_str());
+  logOutputFile.clear();
+  
+  const stdair::BasLogParams lLogParams (stdair::LOG::DEBUG, logOutputFile);
+  stdair::STDAIR_Service stdairService (lLogParams);
+    
   //
-  RMOL::Inventory& lInventory = initialise();
+  stdair::Inventory& lInventory = initialise();
 
   //
   testIteratorInventory (lInventory);
 
   // Browse the list with a for-loop
-  RMOL_LOG_DEBUG ("Browse the list");
-  for (RMOL::Inventory::list_const_iterator itInv =
-         lInventory.flightDateListConstIteratorBegin();
-       itInv != lInventory.flightDateListConstIteratorEnd(); ++itInv) {
-    const RMOL::FlightDate& lFlightDate = *itInv;
-    
-    RMOL_LOG_DEBUG ("Current flight-date: " << lFlightDate);
-    testIteratorFlightDate (lFlightDate);
+  STDAIR_LOG_DEBUG ("Browse the list of flight-dates");
+  const stdair::FlightDateList_T& lFlightDateList =
+    stdair::BomManager::getList<stdair::FlightDate> (lInventory);
+  for (stdair::FlightDateList_T::const_iterator itFD = lFlightDateList.begin();
+       itFD != lFlightDateList.end(); ++itFD) {
+    const stdair::FlightDate* lFD_ptr = *itFD;
+    assert (lFD_ptr != NULL);
+    STDAIR_LOG_DEBUG ("Current flight-date: " << *lFD_ptr);
+    testIteratorFlightDate (*lFD_ptr);
   }
 
   return 0;
