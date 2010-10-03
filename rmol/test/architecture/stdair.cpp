@@ -1,9 +1,8 @@
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
-// C
-#include <cassert>
 // STL
+#include <cassert>
 #include <iostream>
 #include <string>
 // STDAIR
@@ -27,7 +26,7 @@
 // //////////////////////////////////////////////////////////////////////
 RMOL::Inventory& initialise () {
   // DEBUG
-  RMOL_LOG_DEBUG ("Welcome to Air-Schedule");
+  RMOL_LOG_DEBUG ("Welcome to Rmol");
 
   // Step 0.0: initialisation
   // Create the root of the Bom tree (i.e., a BomContentRoot object)
