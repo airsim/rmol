@@ -11,8 +11,7 @@ EXTRA_DIST = testLib.sh
 
 EXTRA_TESTS = bomsforforecaster
 
-STD_CHECKS = OptimiseTestSuite SimulateTestSuite \
-	ForecasterTestSuite UnconstrainerTestSuite
+STD_CHECKS = OptimiseTestSuite ForecasterTestSuite UnconstrainerTestSuite
 check_PROGRAMS = $(STD_CHECKS) $(EXTRA_TESTS)
 TESTS = $(STD_CHECKS)
 XFAIL_TESTS = #OptimiseTestSuite
@@ -24,14 +23,6 @@ OptimiseTestSuite_LDADD =
 OptimiseTestSuite_LDFLAGS = $(BOOST_LIBS) $(CPPUNIT_LIBS) \
 	$(EXTRACC_LIBS) $(STDAIR_LIBS) \
 	$(top_builddir)/rmol/core/librmol.la
-
-SimulateTestSuite_SOURCES = SimulateTestSuite.hpp SimulateTestSuite.cpp
-SimulateTestSuite_CXXFLAGS = $(BOOST_CFLAGS) $(CPPUNIT_CFLAGS) \
-	$(EXTRACC_CFLAGS) $(STDAIR_CFLAGS)
-SimulateTestSuite_LDADD =
-SimulateTestSuite_LDFLAGS = $(CPPUNIT_LIBS) $(EXTRACC_LIBS) \
-	$(BOOST_LIBS) $(BOOST_UNIT_TEST_FRAMEWORK_LIB) \
-	$(STDAIR_LIBS)
 
 ForecasterTestSuite_SOURCES = ForecasterTestSuite.hpp ForecasterTestSuite.cpp
 ForecasterTestSuite_CXXFLAGS = $(BOOST_CFLAGS) $(CPPUNIT_CFLAGS) \
