@@ -12,17 +12,13 @@ namespace stdair {
 
   /** Event struct. */
   struct EventStruct {
-  
+    friend struct EventQueue;
+    
   public:
     // ///////////// Getters ///////////
     /** Get the event type */
     const EventType_T& getEventType () const {
       return _eventType;
-    }
-    
-    /** Get the event datetime */
-    const DateTime_T& getEventDateTime () const {
-      return _eventDateTime;
     }
     
     /** Get the Request event. */
@@ -35,34 +31,28 @@ namespace stdair {
     const DemandStreamKeyStr_T& getDemandStreamKey () const {
       return _demandStreamKey;
     }
-
-  public:
-    // ///////////////// Business Methods /////////////////
-    /** Move the event forward in time by one nanosecond. */
-    void moveForwardInTime ();
     
   public:
     // ////////// Constructors and destructors /////////
     /** Constructor. */
-    EventStruct (const EventType_T&, const DateTime_T&,
-                 const DemandStreamKeyStr_T&, BookingRequestPtr_T);
-    EventStruct (const DateTime_T&);
+    EventStruct (const EventType_T&, const DemandStreamKeyStr_T&, 
+                 BookingRequestPtr_T);
     /** Copy constructor. */
     EventStruct (const EventStruct&);
     /** Destructor. */
     ~EventStruct ();
-  
   private:
     /** Default constructors. */
     EventStruct ();
     
-
   private:
     // ////////// Attributes //////////
     /** Event type */
     EventType_T _eventType;
-    /** Event datetime */
-    DateTime_T _eventDateTime;
+    /** Reprentative timestamp of the event, which is the number of
+     milliseconds between the event date-time and the default
+     date-time (2010-01-01 00:00:00) */
+    LongDuration_T _eventTimestamp;
     /** The demand stream which generated this event. */
     DemandStreamKeyStr_T _demandStreamKey;
     /** Pointer to Request event */

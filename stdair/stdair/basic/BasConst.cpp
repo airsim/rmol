@@ -50,7 +50,7 @@ namespace stdair {
   
   //  // //////// General ///////
   /** Default date for the General. */
-  const Date_T DEFAULT_DATE (2007, boost::gregorian::Jan, 1);
+  const Date_T DEFAULT_DATE (2010, boost::gregorian::Jan, 1);
   
   /** Default date&time. */
   const DateTime_T DEFAULT_DATETIME (DEFAULT_DATE, NULL_BOOST_TIME_DURATION);

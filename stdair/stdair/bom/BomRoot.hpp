@@ -4,6 +4,9 @@
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
+// Boost Random
+#include <boost/random/uniform_real.hpp>
+#include <boost/random/variate_generator.hpp>
 // STDAIR
 #include <stdair/bom/BomAbstract.hpp>
 #include <stdair/bom/BomRootKey.hpp>
@@ -51,6 +54,14 @@ namespace stdair {
     // Attributes
     Key_T _key;
     HolderMap_T _holderMap;
+
+    // TEST
+    stdair::RandomSeed_T _seed;
+    stdair::BaseGenerator_T _generator;
+    boost::variate_generator<stdair::BaseGenerator_T&,
+                             boost::uniform_real<> > _uniformGenerator;
+  public:
+    RandomSeed_T generateSeed ();
   };
 
 }

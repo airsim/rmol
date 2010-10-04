@@ -16,10 +16,10 @@ namespace stdair {
   struct EventStruct;
   
   // Define a list of events.
-  typedef std::map<const DateTime_T, EventStruct> EventList_T;
+  typedef std::map<const LongDuration_T, EventStruct> EventList_T;
 
   // Define an element of a event list.
-  typedef std::pair<const DateTime_T, EventStruct> EventListElement_T;
+  typedef std::pair<const LongDuration_T, EventStruct> EventListElement_T;
   
 }
 #endif // __STDAIR_BOM_EVENTTYPES_HPP

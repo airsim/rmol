@@ -23,13 +23,13 @@ namespace stdair {
   
   // //////////////////////////////////////////////////////////////////////
   void EventQueue::addEvent (EventStruct& ioEventStruct) {
-    const DateTime_T& lEventDateTime = ioEventStruct.getEventDateTime ();
     const bool insertionSucceeded =
-      _eventList.insert (EventListElement_T (lEventDateTime, ioEventStruct)).second;
+      _eventList.insert (EventListElement_T (ioEventStruct._eventTimestamp,
+                                             ioEventStruct)).second;
 
     // If the insertion is not succeded.
     if (insertionSucceeded == false) {
-      ioEventStruct.moveForwardInTime();
+      ++ioEventStruct._eventTimestamp;
       addEvent (ioEventStruct);
     }
   }
