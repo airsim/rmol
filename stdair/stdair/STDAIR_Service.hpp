@@ -32,6 +32,11 @@ namespace stdair {
   public:
     // ////////// Constructors and destructors //////////
     /**
+     * @brief Default constructor.
+     */
+    STDAIR_Service ();
+
+    /**
      * @brief Constructor.
      * <br>The init() method is called; see the corresponding
      * documentation for more details.
@@ -72,11 +77,6 @@ namespace stdair {
     
   private:
     // /////// Construction and Destruction helper methods ///////
-    /**
-     * @brief Default constructor.
-     */
-    STDAIR_Service ();
-    
     /**
      * @brief Default copy constructor.
      * @param[in] const STDAIR_Service& Reference on the STDAIR_Service handler
