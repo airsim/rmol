@@ -11,6 +11,7 @@ stdair_bom_h_sources = \
 		$(top_srcdir)/stdair/bom/LegCabinKey.hpp \
 		$(top_srcdir)/stdair/bom/SegmentDateKey.hpp \
 		$(top_srcdir)/stdair/bom/SegmentCabinKey.hpp \
+		$(top_srcdir)/stdair/bom/FareFamilyKey.hpp \
 		$(top_srcdir)/stdair/bom/BookingClassKey.hpp \
 		$(top_srcdir)/stdair/bom/BucketKey.hpp \
 		$(top_srcdir)/stdair/bom/FlightPeriodKey.hpp \
@@ -21,6 +22,7 @@ stdair_bom_h_sources = \
 		$(top_srcdir)/stdair/bom/SegmentDateTypes.hpp \
 		$(top_srcdir)/stdair/bom/LegDateTypes.hpp \
 		$(top_srcdir)/stdair/bom/SegmentCabinTypes.hpp \
+		$(top_srcdir)/stdair/bom/FareFamilyTypes.hpp \
 		$(top_srcdir)/stdair/bom/LegCabinTypes.hpp \
 		$(top_srcdir)/stdair/bom/BookingClassTypes.hpp \
 		$(top_srcdir)/stdair/bom/BucketTypes.hpp \
@@ -38,6 +40,7 @@ stdair_bom_h_sources = \
 		$(top_srcdir)/stdair/bom/SegmentDate.hpp \
 		$(top_srcdir)/stdair/bom/LegDate.hpp \
 		$(top_srcdir)/stdair/bom/SegmentCabin.hpp \
+		$(top_srcdir)/stdair/bom/FareFamily.hpp \
 		$(top_srcdir)/stdair/bom/LegCabin.hpp \
 		$(top_srcdir)/stdair/bom/BookingClass.hpp \
 		$(top_srcdir)/stdair/bom/Bucket.hpp \
@@ -64,6 +67,7 @@ stdair_bom_cc_sources = \
 		$(top_srcdir)/stdair/bom/LegCabinKey.cpp \
 		$(top_srcdir)/stdair/bom/SegmentDateKey.cpp \
 		$(top_srcdir)/stdair/bom/SegmentCabinKey.cpp \
+		$(top_srcdir)/stdair/bom/FareFamilyKey.cpp \
 		$(top_srcdir)/stdair/bom/BookingClassKey.cpp \
 		$(top_srcdir)/stdair/bom/BucketKey.cpp \
 		$(top_srcdir)/stdair/bom/FlightPeriodKey.cpp \
@@ -75,6 +79,7 @@ stdair_bom_cc_sources = \
 		$(top_srcdir)/stdair/bom/SegmentDate.cpp \
 		$(top_srcdir)/stdair/bom/LegDate.cpp \
 		$(top_srcdir)/stdair/bom/SegmentCabin.cpp \
+		$(top_srcdir)/stdair/bom/FareFamily.cpp \
 		$(top_srcdir)/stdair/bom/LegCabin.cpp \
 		$(top_srcdir)/stdair/bom/BookingClass.cpp \
 		$(top_srcdir)/stdair/bom/Bucket.cpp \
