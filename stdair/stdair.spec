@@ -2,7 +2,7 @@
 %global mydocs __tmp_docdir
 #
 Name:           stdair
-Version:        0.6.0
+Version:        99.99.99
 Release:        1%{?dist}
 
 Summary:        C++ Standard Airline IT Object Library
