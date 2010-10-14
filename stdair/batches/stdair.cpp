@@ -27,6 +27,8 @@
 #include <stdair/bom/SegmentDateTypes.hpp>
 #include <stdair/bom/SegmentCabin.hpp>
 #include <stdair/bom/SegmentCabinTypes.hpp>
+#include <stdair/bom/FareFamily.hpp>
+#include <stdair/bom/FareFamilyTypes.hpp>
 #include <stdair/bom/BookingClass.hpp>
 #include <stdair/bom/BookingClassTypes.hpp>
 #include <stdair/factory/FacBomManager.hpp>
@@ -72,6 +74,7 @@ int readConfiguration (int argc, char* argv[], bool& ioIsBuiltin,
     
   // Declare a group of options that will be allowed both on command
   // line and in config file
+
   boost::program_options::options_description config ("Configuration");
   config.add_options()
     ("builtin,b",
@@ -298,39 +301,74 @@ void buildSampleBom() {
     // Display the leg-cabin
     // STDAIR_LOG_DEBUG ("LegCabin: " << lBKKLegYCabin.toString());
 
-    // Step 0.7: booking class level
-    // Create a BookingClass (Q) for the Segment LHR-BKK, cabin Y on BA's Inv
+    // Step 0.7: fare family level
+    // Create a FareFamily (1) for the Segment LHR-BKK, cabin Y on BA's Inv
+    const stdair::FamilyCode_T l1 ("1");
+    stdair::FareFamilyKey l1FareFamilyKey (l1);
+
+    stdair::FareFamily& lLHRBKKSegmentYCabin1Family =
+      stdair::FacBom<stdair::FareFamily>::instance().create(l1FareFamilyKey);
+    stdair::FacBomManager::instance().addToList (lLHRBKKSegmentYCabin,
+                                                 lLHRBKKSegmentYCabin1Family);
+
+    // Display the booking class
+    // STDAIR_LOG_DEBUG ("FareFamily: "
+    //                   << lLHRBKKSegmentYCabin1Family.toString());
+
+    // Create a FareFamily (1)  for the Segment BKK-SYD, cabin Y on BA's Inv
+    stdair::FareFamily& lBKKSYDSegmentYCabin1Family =
+      stdair::FacBom<stdair::FareFamily>::instance().create(l1FareFamilyKey);
+    stdair::FacBomManager::instance().addToList (lBKKSYDSegmentYCabin,
+                                                 lBKKSYDSegmentYCabin1Family);
+    
+    // Display the booking class
+    // STDAIR_LOG_DEBUG ("FareFamily: "
+    //                   << lLHRBKKSegmentYCabin1Family.toString());
+
+    // Create a FareFamily (1)  for the Segment LHR-SYD, cabin Y on BA's Inv
+    stdair::FareFamily& lLHRSYDSegmentYCabin1Family =
+      stdair::FacBom<stdair::FareFamily>::instance().create(l1FareFamilyKey);
+    stdair::FacBomManager::instance().addToList (lLHRSYDSegmentYCabin,
+                                                 lLHRSYDSegmentYCabin1Family);
+
+    // Display the booking class
+    // STDAIR_LOG_DEBUG ("FareFamily: "
+    //                   << lLHRBKKSegmentYCabin1Family.toString());
+
+
+    // Step 0.8: booking class level
+    // Create a BookingClass (Q) for the Segment LHR-BKK, cabin Y, fare family 1 on BA's Inv
     const stdair::ClassCode_T lQ ("Q");
     stdair::BookingClassKey lQBookingClassKey (lQ);
 
-    stdair::BookingClass& lLHRBKKSegmentYCabinQClass =
+    stdair::BookingClass& lLHRBKKSegmentYCabin1FamilyQClass =
       stdair::FacBom<stdair::BookingClass>::instance().create(lQBookingClassKey);
-    stdair::FacBomManager::instance().addToList (lLHRBKKSegmentYCabin,
-                                                 lLHRBKKSegmentYCabinQClass);
+    stdair::FacBomManager::instance().addToList (lLHRBKKSegmentYCabin1Family,
+                                                 lLHRBKKSegmentYCabin1FamilyQClass);
 
     // Display the booking class
     // STDAIR_LOG_DEBUG ("BookingClass: "
-    //                   << lLHRBKKSegmentYCabinQClass.toString());
+    //                   << lLHRBKKSegmentYCabin1FamilyQClass.toString());
 
-    // Create a BookingClass (Q) for the Segment BKK-LHR, cabin Y
-    stdair::BookingClass& lBKKSYDSegmentYCabinQClass =
+    // Create a BookingClass (Q) for the Segment BKK-SYD, cabin Y, fare family 1 on BA's Inv
+    stdair::BookingClass& lBKKSYDSegmentYCabin1FamilyQClass =
       stdair::FacBom<stdair::BookingClass>::instance().create(lQBookingClassKey);
-    stdair::FacBomManager::instance().addToList (lBKKSYDSegmentYCabin,
-                                                 lBKKSYDSegmentYCabinQClass);
+    stdair::FacBomManager::instance().addToList (lBKKSYDSegmentYCabin1Family,
+                                                 lBKKSYDSegmentYCabin1FamilyQClass);
     
     // Display the booking class
     // STDAIR_LOG_DEBUG ("BookingClass: "
-    //                   << lLHRBKKSegmentYCabinQClass.toString());
+    //                   << lLHRBKKSegmentYCabin1FamilyQClass.toString());
 
-    // Create a BookingClass (Q) for the Segment LHR-SYD, cabin Y
-    stdair::BookingClass& lLHRSYDSegmentYCabinQClass =
+    // Create a BookingClass (Q) for the Segment LHR-SYD, cabin Y, fare family 1 on BA's Inv
+    stdair::BookingClass& lLHRSYDSegmentYCabin1FamilyQClass =
       stdair::FacBom<stdair::BookingClass>::instance().create(lQBookingClassKey);
-    stdair::FacBomManager::instance().addToList (lLHRSYDSegmentYCabin,
-                                                 lLHRSYDSegmentYCabinQClass);
+    stdair::FacBomManager::instance().addToList (lLHRSYDSegmentYCabin1Family,
+                                                 lLHRSYDSegmentYCabin1FamilyQClass);
 
     // Display the booking class
     // STDAIR_LOG_DEBUG ("BookingClass: "
-    //                   << lLHRBKKSegmentYCabinQClass.toString());
+    //                   << lLHRBKKSegmentYCabin1FamilyQClass.toString());
 
     
     // ////// AF ///////    
@@ -391,16 +429,29 @@ void buildSampleBom() {
     // Display the leg-cabin
     // STDAIR_LOG_DEBUG ("LegCabin: " << lLHRLegYCabin.toString());
 
-    // Step 0.7: booking class level
-    // Create a BookingClass (Q) for the Segment CDG-SFO, cabin Y on AF's Inv
-    stdair::BookingClass& lCDGSFOSegmentYCabinQClass =
-      stdair::FacBom<stdair::BookingClass>::instance().create(lQBookingClassKey);
+
+    // Step 0.7: fare family level
+    // Create a fareFamily (1) for the Segment CDG-SFO, cabin Y on AF's Inv
+    stdair::FareFamily& lCDGSFOSegmentYCabin1Family =
+      stdair::FacBom<stdair::FareFamily>::instance().create(l1FareFamilyKey);
     stdair::FacBomManager::instance().addToList (lCDGSFOSegmentYCabin,
-                                                 lCDGSFOSegmentYCabinQClass);
+                                                 lCDGSFOSegmentYCabin1Family);
+
+    // Display the fare family
+    // STDAIR_LOG_DEBUG ("fareFamily: "
+    //
+    //                   << lCDGSFOSegmentYCabin1Family.toString());
+
+    // Step 0.8: booking class level
+    // Create a BookingClass (Q) for the Segment CDG-SFO, cabin Y, fare family 1 on AF's Inv
+    stdair::BookingClass& lCDGSFOSegmentYCabin1FamilyQClass =
+      stdair::FacBom<stdair::BookingClass>::instance().create(lQBookingClassKey);
+    stdair::FacBomManager::instance().addToList (lCDGSFOSegmentYCabin1Family,
+                                                 lCDGSFOSegmentYCabin1FamilyQClass);
 
     // Display the booking class
     // STDAIR_LOG_DEBUG ("BookingClass: "
-    //                   << lCDGSFOSegmentYCabinQClass.toString());
+    //                   << lCDGSFOSegmentYCabin1FamilyQClass.toString());
 
     
     // /////////// Step 1.0: Display the BOM tree //////////
@@ -435,7 +486,7 @@ void buildSampleBom() {
           const stdair::LegDate* lLD_ptr = *itLD;
           assert (lLD_ptr != NULL);
           
-          // STDAIR_LOG_DEBUG ("LegDate: " << lLD_ptr->toString());
+          // STDAIR_LOG_DEBUG ("LegDate: " <<f9 lLD_ptr->toString());
           STDAIR_LOG_DEBUG ("    " << lLD_ptr->toString());
 
           // 1.6. LegCabin level
@@ -476,17 +527,30 @@ void buildSampleBom() {
             // STDAIR_LOG_DEBUG ("SegmentCabin: " << lSC_ptr->toString());
             STDAIR_LOG_DEBUG ("    " << lSC_ptr->toString());
 
-            // 1.7. BookingClass level
-            const stdair::BookingClassList_T& lBookingClassList =
-              stdair::BomManager::getList<stdair::BookingClass> (*lSC_ptr);
-            for (stdair::BookingClassList_T::const_iterator itBC =
-                   lBookingClassList.begin();
-                 itBC != lBookingClassList.end(); ++itBC) {
-              const stdair::BookingClass* lBC_ptr = *itBC;
-              assert (lBC_ptr != NULL);
+            // 1.7. FareFamily level
+            const stdair::FareFamilyList_T& lFareFamilyList =
+              stdair::BomManager::getList<stdair::FareFamily> (*lSC_ptr);
+            for (stdair::FareFamilyList_T::const_iterator itFF =
+                   lFareFamilyList.begin();
+                 itFF != lFareFamilyList.end(); ++itFF) {
+              const stdair::FareFamily* lFF_ptr = *itFF;
+              assert (lFF_ptr != NULL);
               
-              // STDAIR_LOG_DEBUG ("BookingClass: " << lBC_ptr->toString());
-              STDAIR_LOG_DEBUG ("    " << lBC_ptr->toString());
+              // STDAIR_LOG_DEBUG ("FareFamily: " << lFF_ptr->toString());
+              STDAIR_LOG_DEBUG ("    " << lFF_ptr->toString());
+            
+              // 1.8. BookingClass level
+              const stdair::BookingClassList_T& lBookingClassList =
+                stdair::BomManager::getList<stdair::BookingClass> (*lFF_ptr);
+              for (stdair::BookingClassList_T::const_iterator itBC =
+                     lBookingClassList.begin();
+                   itBC != lBookingClassList.end(); ++itBC) {
+                const stdair::BookingClass* lBC_ptr = *itBC;
+                assert (lBC_ptr != NULL);
+              
+                // STDAIR_LOG_DEBUG ("BookingClass: " << lBC_ptr->toString());
+                STDAIR_LOG_DEBUG ("    " << lBC_ptr->toString());
+              }
             }
           }
         }
