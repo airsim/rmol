@@ -11,14 +11,14 @@
 namespace stdair {
 
   // ////////////////////////////////////////////////////////////////////
-  DoWStruct_T::DoWStruct_T () {
+  DoWStruct::DoWStruct () {
     for (unsigned short i = 0; i < 7; ++i) {
       _dowList.push_back (false);
     }
   }
   
   // ////////////////////////////////////////////////////////////////////
-  DoWStruct_T::DoWStruct_T (const std::string& iDowString) {
+  DoWStruct::DoWStruct (const std::string& iDowString) {
     const unsigned short lDowStringSize = iDowString.size();
     assert (lDowStringSize == 7);
       
@@ -31,13 +31,13 @@ namespace stdair {
   }
 
   // ////////////////////////////////////////////////////////////////////
-  DoWStruct_T::DoWStruct_T (const DoWStruct_T& iDowStruct) :
+  DoWStruct::DoWStruct (const DoWStruct& iDowStruct) :
     _dowList (iDowStruct._dowList) {
       
   }
     
   // ////////////////////////////////////////////////////////////////////
-  const std::string DoWStruct_T::describeShort() const {
+  const std::string DoWStruct::describeShort() const {
     std::ostringstream ostr;
     short i = 0;
     for (BooleanList_T::const_iterator itDoW = _dowList.begin();
@@ -49,7 +49,7 @@ namespace stdair {
   }
 
   // ////////////////////////////////////////////////////////////////////
-  const std::string DoWStruct_T::describe() const {
+  const std::string DoWStruct::describe() const {
     std::ostringstream ostr;
     short i = 0;
     for (BooleanList_T::const_iterator itDoW = _dowList.begin();
@@ -63,12 +63,12 @@ namespace stdair {
   }
 
   // ////////////////////////////////////////////////////////////////////
-  bool DoWStruct_T::getDayOfWeek (const unsigned short i) const {
+  bool DoWStruct::getDayOfWeek (const unsigned short i) const {
     return _dowList.at (i);
   }
       
   // ////////////////////////////////////////////////////////////////////
-  bool DoWStruct_T::getStandardDayOfWeek (const unsigned short i) const {
+  bool DoWStruct::getStandardDayOfWeek (const unsigned short i) const {
     unsigned short iStd = i;
     if (iStd == 0) {
       iStd = 6;
@@ -79,14 +79,14 @@ namespace stdair {
   }
 
   // ////////////////////////////////////////////////////////////////////
-  void DoWStruct_T::setDayOfWeek (const unsigned short i, const bool iBool) {
+  void DoWStruct::setDayOfWeek (const unsigned short i, const bool iBool) {
     assert (i < 7);
     _dowList.at (i) = iBool;
   }
 
   // ////////////////////////////////////////////////////////////////////
-  DoWStruct_T DoWStruct_T::shift (const long& iNbOfDays) const {
-    DoWStruct_T oDoW (DEFAULT_DOW_STRING);
+  DoWStruct DoWStruct::shift (const long& iNbOfDays) const {
+    DoWStruct oDoW (DEFAULT_DOW_STRING);
 
     for (short i = 0; i < 7; ++i) {
       const bool lDoWBool = _dowList.at (i);
@@ -101,8 +101,8 @@ namespace stdair {
   }
 
   // ////////////////////////////////////////////////////////////////////
-  DoWStruct_T DoWStruct_T::intersection (const DoWStruct_T& iDoW) const {
-    DoWStruct_T oDoW (DEFAULT_DOW_STRING);
+  DoWStruct DoWStruct::intersection (const DoWStruct& iDoW) const {
+    DoWStruct oDoW (DEFAULT_DOW_STRING);
     for (unsigned short i = 0; i < 7; ++i) {
       if (getDayOfWeek(i) && iDoW.getDayOfWeek(i)) {
         oDoW.setDayOfWeek (i, true);
@@ -114,7 +114,7 @@ namespace stdair {
   }
 
   // ////////////////////////////////////////////////////////////////////
-  const bool DoWStruct_T::isValid () const {
+  const bool DoWStruct::isValid () const {
     for (unsigned short i = 0; i < 7; ++i) {
       if (getDayOfWeek(i)) {
         return true;

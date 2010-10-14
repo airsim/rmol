@@ -53,5 +53,27 @@ namespace stdair {
 
   /** Default random seed. */
   extern const RandomSeed_T DEFAULT_RANDOM_SEED;
+    
+  /** Null time duration (in boost::time_duration unit).*/
+  extern const Duration_T NULL_BOOST_TIME_DURATION;
+    
+  /** Default value of Availability. */
+  extern const Fare_T DEFAULT_CLASS_FARE_VALUE;
+
+  /** Default number of airlines. */
+  extern const NbOfAirlines_T DEFAULT_NBOFAIRLINES;
+
+  /** Default airlineCode value ('XX'). */
+  extern const AirlineCode_T DEFAULT_AIRLINE_CODE;
+
+  /** Default airlineCode value (''). */
+  extern const AirlineCode_T DEFAULT_NULL_AIRLINE_CODE;
+  
+  /** Default classCode value ('X'). */
+  extern const ClassCode_T DEFAULT_CLASS_CODE;
+  
+  /** Default null classCode value (''). */
+  extern const ClassCode_T DEFAULT_NULL_CLASS_CODE;
+  
 }
 #endif // __STDAIR_BAS_BASCONST_GENERAL_HPP

@@ -94,6 +94,9 @@ namespace stdair {
   /** Define the Airline Code type (2-letter-code, e.g., BA). */
   typedef std::string AirlineCode_T;
 
+    /** Define a list of airline code. */
+  typedef std::vector<AirlineCode_T> AirlineCodeList_T;
+
   /** Location code (3-letter-code, e.g., LON). */
   typedef std::string LocationCode_T;
   
@@ -235,6 +238,9 @@ namespace stdair {
   /** Define the booking class code (product segment class, e.g., H,
       B, K, etc.). */
   typedef std::string ClassCode_T;
+
+    /** Define a list of class code. */
+  typedef std::vector<ClassCode_T> ClassCodeList_T;
 
   /** Define the sub-class code (e.g., 0, 1, 2, etc.). The subclass is
       a sub-structure for the booking class, allowing to have specific

@@ -29,8 +29,7 @@ namespace stdair {
   const Duration_T NULL_BOOST_TIME_DURATION =
     boost::posix_time::hours(0)+ boost::posix_time::minutes (0)
     + boost::posix_time::seconds (0);
-
-  
+      
   // //////// (Flight-)Period-related BOM ///////
   /** Default number of duration days. */
   const DayDuration_T DEFAULT_DAY_DURATION (0);

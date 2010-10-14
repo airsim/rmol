@@ -32,7 +32,7 @@ namespace stdair {
     // //////////// Setters //////////
     /** Intialization method. */
     void init (const ForecasterMode_T&, const HistoricalDataLimit_T&,
-               const OptimizerStruct_T&, const ControlMode_T&);
+               const OptimizerStruct&, const ControlMode_T&);
     
   public:
     // /////////// Display support methods /////////
@@ -70,7 +70,7 @@ namespace stdair {
     HistoricalDataLimit_T _historicalDataLimit;
 
     /** The type of optimizer. */
-    OptimizerStruct_T _optimizerStruct;
+    OptimizerStruct _optimizerStruct;
 
     /** The type of inventory control. */
     ControlMode_T _controlMode;

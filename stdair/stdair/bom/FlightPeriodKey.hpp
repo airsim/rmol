@@ -18,7 +18,7 @@ namespace stdair {
   public:
     // /////////// Construction ///////////
     /** Constructors. */
-    FlightPeriodKey (const FlightNumber_T&, const PeriodStruct_T&);
+    FlightPeriodKey (const FlightNumber_T&, const PeriodStruct&);
     FlightPeriodKey (const FlightPeriodKey&);
     /** Destructor. */
     ~FlightPeriodKey ();
@@ -30,7 +30,7 @@ namespace stdair {
     }
 
     /** Get the active days-of-week. */
-    const PeriodStruct_T& getPeriod () const {
+    const PeriodStruct& getPeriod () const {
       return _period;
     }
     
@@ -56,7 +56,7 @@ namespace stdair {
     FlightNumber_T _flightNumber;
 
     /** Period during the departure period. */
-    PeriodStruct_T _period;
+    PeriodStruct _period;
     
   };
 

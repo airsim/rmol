@@ -10,7 +10,7 @@
 namespace stdair {
 
   /** Utility structure for parsing optimizer setting. */
-  struct OptimizerStruct_T {
+  struct OptimizerStruct {
   public:      
     // /////////// Getters ////////////////
     /** Get the optimizer mode. */
@@ -43,16 +43,16 @@ namespace stdair {
 
   public:
     /** Default constructor. */
-    OptimizerStruct_T ();
+    OptimizerStruct ();
     /** Constructor. */
-    OptimizerStruct_T (const OptimizerMode_T&,
+    OptimizerStruct (const OptimizerMode_T&,
                        const SellupFlagForOptimizer_T&,
                        const SellupProbabilityVector_T&);
     /** Default copy constructor. */
-    OptimizerStruct_T (const OptimizerStruct_T&);
+    OptimizerStruct (const OptimizerStruct&);
 
     /** Defaut destructor. */
-    ~OptimizerStruct_T ();
+    ~OptimizerStruct ();
       
   private:
     // /////////////// Attributes //////////

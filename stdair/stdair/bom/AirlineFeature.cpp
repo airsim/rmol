@@ -21,7 +21,7 @@ namespace stdair {
   // ////////////////////////////////////////////////////////////////////
   void AirlineFeature::init (const ForecasterMode_T& iForecastMode,
                              const HistoricalDataLimit_T& iHistoricalDataLimit,
-                             const OptimizerStruct_T& iOptimizerStruct,
+                             const OptimizerStruct& iOptimizerStruct,
                              const ControlMode_T& iControlMode) {
     _forecasterMode = iForecastMode;
     _historicalDataLimit = iHistoricalDataLimit;

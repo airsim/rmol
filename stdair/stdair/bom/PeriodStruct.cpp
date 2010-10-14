@@ -10,38 +10,38 @@
 
 namespace stdair {
   // ////////////////////////////////////////////////////////////////////
-  PeriodStruct_T::PeriodStruct_T ()
+  PeriodStruct::PeriodStruct ()
     : _dateRange (BOOST_DEFAULT_DATE_PERIOD), _dow () {
   }
   
   // ////////////////////////////////////////////////////////////////////
-  PeriodStruct_T::PeriodStruct_T (const DatePeriod_T& iDateRange,
-                                  const DoWStruct_T& iDoW)
+  PeriodStruct::PeriodStruct (const DatePeriod_T& iDateRange,
+                                  const DoWStruct& iDoW)
     : _dateRange (iDateRange), _dow (iDoW) {
   }
 
   // ////////////////////////////////////////////////////////////////////
-  PeriodStruct_T::PeriodStruct_T (const PeriodStruct_T& iPeriodStruct)
+  PeriodStruct::PeriodStruct (const PeriodStruct& iPeriodStruct)
     : _dateRange (iPeriodStruct._dateRange), _dow (iPeriodStruct._dow) {
       
   }
     
   // ////////////////////////////////////////////////////////////////////
-  const std::string PeriodStruct_T::describeShort() const {
+  const std::string PeriodStruct::describeShort() const {
     std::ostringstream ostr;
     ostr << _dateRange << ", " << _dow.describeShort ();
     return ostr.str();
   }
 
   // ////////////////////////////////////////////////////////////////////
-  const std::string PeriodStruct_T::describe() const {
+  const std::string PeriodStruct::describe() const {
     std::ostringstream ostr;
     ostr << _dateRange << ", " << _dow.describe ();
     return ostr.str();
   }
 
   // ////////////////////////////////////////////////////////////////////
-  PeriodStruct_T PeriodStruct_T::
+  PeriodStruct PeriodStruct::
   addDateOffset (const DateOffset_T& iDateOffset) const {
     // Create a new date range by shifting the date range of this object with
     // iDateOffset.
@@ -51,24 +51,24 @@ namespace stdair {
     // Create a new DoWStruct by shifting the DoWStruct of this object with
     // iDateOffset.
     const long lNbOfDaysOffset = iDateOffset.days();
-    const DoWStruct_T& lDoW = getDoW();
-    const DoWStruct_T lNewDoW = lDoW.shift (lNbOfDaysOffset);
+    const DoWStruct& lDoW = getDoW();
+    const DoWStruct lNewDoW = lDoW.shift (lNbOfDaysOffset);
 
-    return PeriodStruct_T (lNewDateRange, lNewDoW);
+    return PeriodStruct (lNewDateRange, lNewDoW);
   }
 
   // ////////////////////////////////////////////////////////////////////
-  PeriodStruct_T PeriodStruct_T::
-  intersection (const PeriodStruct_T& iPeriodStruct) const {
+  PeriodStruct PeriodStruct::
+  intersection (const PeriodStruct& iPeriodStruct) const {
     const DatePeriod_T lNewDateRange =
       _dateRange.intersection (iPeriodStruct._dateRange);
-    const DoWStruct_T lNewDoW = _dow.intersection (iPeriodStruct._dow);
+    const DoWStruct lNewDoW = _dow.intersection (iPeriodStruct._dow);
     
-    return PeriodStruct_T (lNewDateRange, lNewDoW);
+    return PeriodStruct (lNewDateRange, lNewDoW);
   }
 
   // ////////////////////////////////////////////////////////////////////
-  const bool PeriodStruct_T::isValid () const {
+  const bool PeriodStruct::isValid () const {
     if (_dateRange.is_null() == false && _dow.isValid()) {
       return true;
     }

@@ -15,7 +15,7 @@ namespace stdair {
   /** Define a Day Of the Week (DoW) sequence.
       <br>For instance, 1..11.1 means that the period is active on
       Mon., Thu., Fri. and Sun. */
-  struct DoWStruct_T : public StructAbstract {
+  struct DoWStruct : public StructAbstract {
   public:
     /** Define the bit set representing the DoW. */
     typedef std::vector<bool> BooleanList_T;
@@ -44,10 +44,10 @@ namespace stdair {
   public:
     // ///////////////// Business Methods ////////////////
     /** Build a new DoW struct by shifting the current DoW by a given number. */
-    DoWStruct_T shift (const long&) const;
+    DoWStruct shift (const long&) const;
 
     /** Build a new DoW struct by intersecting two DoW structs. */
-    DoWStruct_T intersection (const DoWStruct_T&) const;
+    DoWStruct intersection (const DoWStruct&) const;
 
     /** Return if the DoW struct is valid (i.e., has at least one "true"). */
     const bool isValid () const;
@@ -55,12 +55,12 @@ namespace stdair {
   public:
     /** Constructor from a given bit set (e.g., "0000011" for the
         week-ends). */
-    DoWStruct_T (const std::string& iDowString);
+    DoWStruct (const std::string& iDowString);
     /** Default constructors. */
-    DoWStruct_T ();
-    DoWStruct_T (const DoWStruct_T&);
+    DoWStruct ();
+    DoWStruct (const DoWStruct&);
     /** Default destructor. */
-    ~DoWStruct_T () { }
+    ~DoWStruct () { }
     
   private:
     /** Attributes. */

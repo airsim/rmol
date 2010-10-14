@@ -8,7 +8,7 @@ namespace stdair {
 
   // ////////////////////////////////////////////////////////////////////
   FlightPeriodKey::FlightPeriodKey (const FlightNumber_T& iFlightNumber,
-                                        const PeriodStruct_T& iPeriod)
+                                        const PeriodStruct& iPeriod)
     : _flightNumber (iFlightNumber), _period (iPeriod) {
   }
 

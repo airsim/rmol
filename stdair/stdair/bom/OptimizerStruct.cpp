@@ -11,11 +11,11 @@
 namespace stdair {
 
   // ///////////////////////////////////////////////////////////////////    
-  OptimizerStruct_T::OptimizerStruct_T () {
+  OptimizerStruct::OptimizerStruct () {
   }
   
   // ///////////////////////////////////////////////////////////////////    
-  OptimizerStruct_T::OptimizerStruct_T 
+  OptimizerStruct::OptimizerStruct 
   (const OptimizerMode_T& iOptimizerMode,
    const SellupFlagForOptimizer_T& iSellupFlagForOptimizer,
    const SellupProbabilityVector_T& iSellupProbabilityVectorForOptimizer) 
@@ -25,19 +25,19 @@ namespace stdair {
   }
 
   // ///////////////////////////////////////////////////////////////////    
-  OptimizerStruct_T::OptimizerStruct_T 
-  (const OptimizerStruct_T& iOptimizerStruct) 
+  OptimizerStruct::OptimizerStruct 
+  (const OptimizerStruct& iOptimizerStruct) 
     : _optimizerMode(iOptimizerStruct._optimizerMode),
       _sellupFlagForOptimizer(iOptimizerStruct._sellupFlagForOptimizer),
       _sellupProbabilityVectorForOptimizer(iOptimizerStruct._sellupProbabilityVectorForOptimizer) {
   }
   
   // ////////////////////////////////////////////////////////////////////
-  OptimizerStruct_T::~OptimizerStruct_T () {
+  OptimizerStruct::~OptimizerStruct () {
   }
 
   // ////////////////////////////////////////////////////////////////////
-  void OptimizerStruct_T::
+  void OptimizerStruct::
   init (const OptimizerMode_T& iOptimizerMode,
         const SellupFlagForOptimizer_T& iSellupFlagForOptimizer,
         const SellupProbabilityVector_T& iSellupProbabilityVectorForOptimizer) {
@@ -47,7 +47,7 @@ namespace stdair {
   }
         
   // ////////////////////////////////////////////////////////////////////
-  const std::string OptimizerStruct_T::describe() const {
+  const std::string OptimizerStruct::describe() const {
     std::ostringstream ostr;
     ostr << _optimizerMode 
          << "," << _sellupFlagForOptimizer 
@@ -56,7 +56,7 @@ namespace stdair {
   }
 
   // //////////////////////////////////////////////////////////////////////
-  const std::string OptimizerStruct_T::describeSellupProbabilityVector() const {
+  const std::string OptimizerStruct::describeSellupProbabilityVector() const {
     std::ostringstream ostr;
     for (SellupProbabilityVector_T::const_iterator itValue = 
            _sellupProbabilityVectorForOptimizer.begin(); 

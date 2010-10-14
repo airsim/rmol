@@ -35,7 +35,7 @@ namespace stdair {
     }
 
     /** Get the departure period (part of the key). */
-    const PeriodStruct_T& getPeriod () const { return _key.getPeriod(); }
+    const PeriodStruct& getPeriod () const { return _key.getPeriod(); }
 
     /** Get the map of children holders. */
     const HolderMap_T& getHolderMap() const { return _holderMap; }
