@@ -27,13 +27,10 @@
 
 \section introduction Introduction
 
-The \c itbase library is the core of \c IT++ and it contains classes and
-functions for mathematics with scalars, vectors, and matrices. This document
-does not cover all the aspects of the \c itbase library. It does however
-explain the most important things you need to know in order to start using
-IT++. Once you are more familiar with the \c itbase library you will find
-the online reference manual more useful.
-
+The \c StdAir library contains classes for airline business management.
+This document does not cover all the aspects of the \c StdAir library. It 
+does however explain the most important things you need to know in order
+ to start using \c StdAir. 
 
 \section predefined_types Predefined Data Types
 

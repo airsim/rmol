@@ -1,0 +1,27 @@
+ -- ROOT -- 
+ BA
+   15, 2010-Jun-10
+      LHR
+        Y
+      BKK
+        Y
+      LHR-SYD
+        Y
+          1
+            Q
+      LHR-BKK
+        Y
+          1
+            Q
+      BKK-SYD
+        Y
+          1
+            Q
+ AF
+   102, 2010-Mar-20
+      CDG
+        Y
+      CDG-SFO
+        Y
+          1
+            Q
