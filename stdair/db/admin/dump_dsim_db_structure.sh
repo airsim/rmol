@@ -38,13 +38,13 @@ DB_USER="$1"
 DB_PASSWD="$2"
 
 # Database Name
-DB_NAME="geo_geonames"
+DB_NAME="sim_dsim"
 
 # Export Tool
 EXPORTER=mysqldump
 
 # Dump file
-DUMP_FILE="geo_geonames.sql"
+DUMP_FILE="sim_dsim.sql"
 
 #
 ${EXPORTER} -u ${DB_USER} --password=${DB_PASSWD} -P ${DB_PORT} -h ${DB_HOST} \

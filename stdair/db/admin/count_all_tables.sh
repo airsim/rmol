@@ -34,7 +34,7 @@ DB_USER="dsim"
 DB_PASSWD="${DB_USER}"
 
 # Database Name
-DB_NAME="dsim"
+DB_NAME="sim_dsim"
 
 # Count the number of elements of a given database table
 function countElements() {

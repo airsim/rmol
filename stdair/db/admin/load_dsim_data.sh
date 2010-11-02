@@ -34,7 +34,7 @@ DB_USER="dsim"
 DB_PASSWD="dsim"
 
 # Database Name
-DB_NAME="dsim"
+DB_NAME="sim_dsim"
 
 # Create the tables
 SQL_FILE="create_dsim_tables.sql"

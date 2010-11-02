@@ -1,6 +1,6 @@
 -- MySQL dump 10.11
 --
--- Host: localhost    Database: dsim
+-- Host: localhost    Database: sim_dsim
 -- ------------------------------------------------------
 -- Server version	5.0.67
 

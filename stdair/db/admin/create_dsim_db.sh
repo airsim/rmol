@@ -7,7 +7,7 @@
 #
 
 # Database Name
-DB_NAME="dsim"
+DB_NAME="sim_dsim"
 
 # Database server (host)
 DB_HOST="localhost"
