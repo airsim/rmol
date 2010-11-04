@@ -54,14 +54,6 @@ namespace stdair {
     // Attributes
     Key_T _key;
     HolderMap_T _holderMap;
-
-    // TEST
-    stdair::RandomSeed_T _seed;
-    stdair::BaseGenerator_T _generator;
-    boost::variate_generator<stdair::BaseGenerator_T&,
-                             boost::uniform_real<> > _uniformGenerator;
-  public:
-    RandomSeed_T generateSeed ();
   };
 
 }

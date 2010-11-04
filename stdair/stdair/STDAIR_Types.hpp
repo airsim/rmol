@@ -11,6 +11,8 @@
 #include <map>
 // Boost Random
 #include <boost/random/linear_congruential.hpp>
+#include <boost/random/uniform_real.hpp>
+#include <boost/random/variate_generator.hpp>
 // Boost (Extended STL)
 #include <boost/date_time/gregorian/gregorian.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
@@ -425,6 +427,10 @@ namespace stdair {
   
   /** Random number generator. */
   typedef boost::minstd_rand BaseGenerator_T;
+
+  /** Uniform random generator. */
+  typedef boost::variate_generator<stdair::BaseGenerator_T&,
+                                   boost::uniform_real<> > UniformGenerator_T;
 
   // //////////////////////////////////////////////////////////////////////
   // Probability
