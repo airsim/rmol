@@ -1,3 +1,7 @@
+/*!
+ * \page tut_invobject_cpp Tutorial for the BOM Inventory Object Creation
+ * \code
+ */
 // StdAir
 #include <stdair/bom/BomRoot.hpp>
 #include <stdair/bom/Inventory.hpp>
@@ -19,3 +23,7 @@ int main() {
   // Exit program
   return 0;
 }
+
+/*!
+ * \endcode
+ */

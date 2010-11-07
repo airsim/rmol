@@ -1,8 +1,8 @@
 /*! 
 \page users_guide Users Guide
 
-\section toc Table of Contents
-- \ref introduction
+\section ug_toc Table of Contents
+- \ref ug_introduction
 - \ref predefined_types
   - \ref scalar_types
   - \ref vector_types
@@ -25,7 +25,7 @@
 - \ref itfile_class
 
 
-\section introduction Introduction
+\section ug_introduction Introduction
 
 The \c StdAir library contains classes for airline business management.
 This document does not cover all the aspects of the \c StdAir library. It 

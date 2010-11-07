@@ -1,34 +1,26 @@
 /*! 
 \page tutorials Tutorials
-\addindex Tutorial
 
+\section tut_toc Table of Contents
+- \ref tut_introduction
+ - \ref tut_intro_configuration
+ - \ref tut_intro_building
+- \ref tut_short_examples
+ - \ref tut01_rootobject
+ - \ref tut02_invobject
+ - \ref tut03_rootinvobject
+- \ref tut_full_examples
+ - \ref tut04_completeex
+
+\section tut_introduction Introduction
 This page contains some tutorial examples that will help you getting
 started using StdAir. Most examples show how to construct some simple
 business objects, i.e., instances of the so-named Business Object
 Model (BOM).
 
-The source code for these examples can be found in the
-<tt>doc/tutorial/src</tt> directory. In that directory, there is also
-a Make-file, named <tt>makefile.tutorial</tt>, allowing compiling all
-the examples. Hence (\ref N), just go to the tutorial source
-directory, and issue the following command:
+\subsection tut_intro_configuration Preparing the StdAir Project for Development
 
-\verbatim
-make -f makefile.tutorial
-\endverbatim
-
-Examples of basic functionality:
-- \ref tutorial01_rootobject
-- \ref tutorial02_invobject
-- \ref tutorial03_rootinvobject
-
-More complete examples:
-- \ref tutorial04_completeex
-
-\note
-\anchor N
-
-(N) - The configuration script must have already been launched (at
+The configuration script must have already been launched (at
 least) once. To run the configuration script the first time, go to the
 top directory (where the StdAir package has been un-packed), and issue
 either of the following two commands, depending on whether the StdAir
@@ -36,5 +28,110 @@ project has been checked out from the Subversion repository or
 downloaded as a tar-ball package from the Sourceforge Web site:
  - <tt>./autogen.sh</tt>
  - <tt>./configure</tt>
+
+\subsection tut_intro_building Building the Tutorials
+
+The source code for these examples can be found in the
+<tt>doc/tutorial/src</tt> directory. In that directory, there is also
+a Make-file, named <tt>makefile.tutorial</tt>, allowing compiling all
+the examples. Hence, just go to the tutorial source
+directory, and issue the following command:
+
+\verbatim
+make -f makefile.tutorial
+\endverbatim
+
+\section tut_short_examples Short Examples
+Examples of basic functionality:
+- \ref tut01_rootobject
+- \ref tut02_invobject
+- \ref tut03_rootinvobject
+
+\subsection tut01_rootobject Creating a BOM root object
+
+In this example we are constructing a BOM root object (i.e., a root for
+all the classes in the project).
+
+\dontinclude rootobject.cpp
+First, we create an object \c lBomRoot of the class <tt>stdair::BomRoot</tt>.
+\skipline lBomRoot
+\line FacBom
+Then, the content of that object is displayed on the standard output
+(<tt>std::cout</tt>).
+\skipline cout
+
+When this program is run, the output should look like:
+
+\include rootobject.ref
+
+See the corresponding full program (\ref tut_rootobject_cpp) for more details.
+
+\subsection tut02_invobject Creating an Inventory object
+
+In this example we are constructing an airline inventory object whose
+code is "BA":
+
+\dontinclude invobject.cpp
+First, we create an object \c lBAKey of the class <tt>stdair::InventoryKey</tt>.
+\skipline lBAKey
+Thanks to that key, an object \c lBAInv of the class
+<tt>stdair::InventoryKey</tt> can be created.
+\skipline lBAInv
+\line FacBom
+Then, the content of that object is displayed on the standard output
+(<tt>std::cout</tt>).
+\skipline cout
+
+When this program is run, the output should look like:
+
+\include invobject.ref
+
+See the corresponding full program (\ref tut_invobject_cpp) for more details.
+
+\subsection tut03_rootinvobject Linking an inventory object with the BOM root object
+
+In this example we are linking an airline inventory object with the
+root of the BOM tree.
+
+\dontinclude rootinvobject.cpp
+
+Now that we are able to build both a stdair::BomRoot and
+stdair::Inventory objects, we shall see how to link them.
+That operation is as simple as using the 
+<tt>stdair::FacBomManager::addToList()</tt> method:
+\skipline addToList
+
+From the BomRoot object instance, the list of inventories can then be
+retrieved...
+\skipline lInventoryList
+\line getList
+
+... and browsed:
+\skipline const_iterator
+\until }
+
+When this program is run, the output should look like:
+
+\include rootinvobject.ref
+
+See the corresponding full program (\ref tut_rootinvobject_cpp) for more 
+details.
+
+\section tut_full_examples Full Examples
+
+More complete examples:
+- \ref tut04_completeex
+
+\subsection tut04_completeex Constructing a complete BOM tree
+
+In this example we are constructing a complete BOM tree.
+
+\dontinclude completeex.cpp
+
+When this program is run, the output should look like:
+
+\include completeex.ref
+
+See the corresponding full program (\ref tut_completeex_cpp) for more details.
 
 */

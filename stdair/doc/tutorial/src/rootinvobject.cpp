@@ -1,3 +1,7 @@
+/*!
+ * \page tut_rootinvobject_cpp Tutorial for the BOM Root and Inventory Objects Creation
+ * \code
+ */
 // STL
 #include <cassert>
 // StdAir
@@ -7,6 +11,7 @@
 
 // /////////////////////// M A I N ///////////////////////////
 int main() {
+
   // Create the root of the Bom tree (i.e., a BomRoot object)
   stdair::BomRoot& lBomRoot =
     stdair::FacBom<stdair::BomRoot>::instance().create();
@@ -39,3 +44,7 @@ int main() {
   // Exit program
   return 0;
 }
+
+/*!
+ * \endcode
+ */

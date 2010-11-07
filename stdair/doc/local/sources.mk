@@ -9,9 +9,9 @@ doc_local_sources = \
 	$(top_srcdir)/doc/local/howto_release.doc \
 	$(top_srcdir)/doc/local/installation.doc \
 	$(top_srcdir)/doc/local/linking.doc \
+	$(top_srcdir)/doc/local/verification.doc \
 	$(top_srcdir)/doc/local/test.doc \
-	$(top_srcdir)/doc/local/users_guide.doc \
-	$(top_srcdir)/doc/local/verification.doc
+	$(top_srcdir)/doc/local/users_guide.doc
 
 html_local_sources = \
 	$(top_srcdir)/doc/local/stdair_footer.html \

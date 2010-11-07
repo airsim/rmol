@@ -1,3 +1,7 @@
+/*!
+ * \page tut_completeex_cpp Tutorial Full Basic Example
+ * \code
+ */
 // STL
 #include <cassert>
 // StdAir
@@ -337,3 +341,7 @@ int main() {
   // Exit program:
   return 0;
 }
+
+/*!
+ * \endcode
+ */

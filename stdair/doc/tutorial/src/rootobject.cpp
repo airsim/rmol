@@ -1,3 +1,7 @@
+/*!
+ * \page tut_rootobject_cpp Tutorial for the BOM Root Object Creation
+ * \code
+ */
 // StdAir
 #include <stdair/bom/BomRoot.hpp>
 #include <stdair/factory/FacBomManager.hpp>
@@ -15,3 +19,7 @@ int main() {
   // Exit program:
   return 0;
 }
+
+/*!
+ * \endcode
+ */
