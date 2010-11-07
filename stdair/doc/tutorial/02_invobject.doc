@@ -1,5 +1,5 @@
 /*! 
-\page invobject Creating an Inventory object
+\page tutorial02_invobject Creating an Inventory object
 
 In this example we are constructing an airline inventory whose code is "BA":
 

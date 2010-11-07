@@ -1,5 +1,6 @@
+// STL
+#include <cassert>
 // StdAir
-#include <stdair/bom/BomManager.hpp>
 #include <stdair/bom/BomRoot.hpp>
 #include <stdair/bom/Inventory.hpp>
 #include <stdair/bom/InventoryTypes.hpp>
@@ -17,14 +18,12 @@
 #include <stdair/bom/FareFamilyTypes.hpp>
 #include <stdair/bom/BookingClass.hpp>
 #include <stdair/bom/BookingClassTypes.hpp>
+#include <stdair/bom/BomManager.hpp> // Utility class to display BOM objects
 #include <stdair/factory/FacBomManager.hpp>
 
-//These lines are needed for use of cout and endl
-using std::cout;
-using std::endl;
+// /////////////////////// M A I N ///////////////////////////
+int main() {
 
-int main()
-{
   // ///////////// Step 0.0: Initialisation ////////////
   // Create the root of the Bom tree (i.e., a BomRoot object)
   stdair::BomRoot& lBomRoot =
@@ -63,7 +62,7 @@ int main()
   stdair::SegmentDate& lLHRSYDSegment =
     stdair::FacBom<stdair::SegmentDate>::instance().create (lSegmentDateKey);
   stdair::FacBomManager::instance().addToList (lBA15_20100610_FD,
-                                                 lLHRSYDSegment);
+                                               lLHRSYDSegment);
     
   // Create a second SegmentDate (LHR-BKK) for BA's Inventory
   const stdair::AirportCode_T lBKK ("BKK");
@@ -72,7 +71,7 @@ int main()
   stdair::SegmentDate& lLHRBKKSegment =
     stdair::FacBom<stdair::SegmentDate>::instance().create (lSegmentDateKey);
   stdair::FacBomManager::instance().addToList (lBA15_20100610_FD,
-                                                 lLHRBKKSegment);
+                                               lLHRBKKSegment);
 
   // Create a third SegmentDate (BKK-SYD) for BA's Inventory
   lSegmentDateKey = stdair::SegmentDateKey (lBKK, lSYD);
@@ -80,7 +79,7 @@ int main()
   stdair::SegmentDate& lBKKSYDSegment =
     stdair::FacBom<stdair::SegmentDate>::instance().create (lSegmentDateKey);
   stdair::FacBomManager::instance().addToList (lBA15_20100610_FD,
-                                                 lBKKSYDSegment);
+                                               lBKKSYDSegment);
 
   // Step 0.4: Leg-date level
   // Create a first LegDate (LHR) for BA's Inventory
@@ -105,19 +104,19 @@ int main()
   stdair::SegmentCabin& lLHRBKKSegmentYCabin =
     stdair::FacBom<stdair::SegmentCabin>::instance().create(lYSegmentCabinKey);
   stdair::FacBomManager::instance().addToList (lLHRBKKSegment,
-                                                 lLHRBKKSegmentYCabin);
+                                               lLHRBKKSegmentYCabin);
 
   // Create a SegmentCabin (Y) of the Segment BKK-SYD;
   stdair::SegmentCabin& lBKKSYDSegmentYCabin =
     stdair::FacBom<stdair::SegmentCabin>::instance().create(lYSegmentCabinKey);
   stdair::FacBomManager::instance().addToList (lBKKSYDSegment,
-                                                 lBKKSYDSegmentYCabin);
+                                               lBKKSYDSegmentYCabin);
 
   // Create a SegmentCabin (Y) of the Segment LHR-SYD;
   stdair::SegmentCabin& lLHRSYDSegmentYCabin =
     stdair::FacBom<stdair::SegmentCabin>::instance().create(lYSegmentCabinKey);
   stdair::FacBomManager::instance().addToList (lLHRSYDSegment,
-                                                 lLHRSYDSegmentYCabin);
+                                               lLHRSYDSegmentYCabin);
 
   // Step 0.6: leg-cabin level
   // Create a LegCabin (Y) for the Leg LHR-BKK on BA's Inventory
@@ -140,41 +139,44 @@ int main()
   stdair::FareFamily& lLHRBKKSegmentYCabin1Family =
     stdair::FacBom<stdair::FareFamily>::instance().create(l1FareFamilyKey);
   stdair::FacBomManager::instance().addToList (lLHRBKKSegmentYCabin,
-                                                 lLHRBKKSegmentYCabin1Family);
+                                               lLHRBKKSegmentYCabin1Family);
 
   // Create a FareFamily (1)  for the Segment BKK-SYD, cabin Y on BA's Inv
   stdair::FareFamily& lBKKSYDSegmentYCabin1Family =
     stdair::FacBom<stdair::FareFamily>::instance().create(l1FareFamilyKey);
   stdair::FacBomManager::instance().addToList (lBKKSYDSegmentYCabin,
-                                                 lBKKSYDSegmentYCabin1Family);
+                                               lBKKSYDSegmentYCabin1Family);
 
   // Create a FareFamily (1)  for the Segment LHR-SYD, cabin Y on BA's Inv
   stdair::FareFamily& lLHRSYDSegmentYCabin1Family =
     stdair::FacBom<stdair::FareFamily>::instance().create(l1FareFamilyKey);
   stdair::FacBomManager::instance().addToList (lLHRSYDSegmentYCabin,
-                                                 lLHRSYDSegmentYCabin1Family);
+                                               lLHRSYDSegmentYCabin1Family);
 
   // Step 0.8: booking class level
-  // Create a BookingClass (Q) for the Segment LHR-BKK, cabin Y, fare family 1 on BA's Inv
+  // Create a BookingClass (Q) for the Segment LHR-BKK, cabin Y, fare
+  // family 1 on BA's Inv
   const stdair::ClassCode_T lQ ("Q");
   stdair::BookingClassKey lQBookingClassKey (lQ);
 
   stdair::BookingClass& lLHRBKKSegmentYCabin1FamilyQClass =
     stdair::FacBom<stdair::BookingClass>::instance().create(lQBookingClassKey);
   stdair::FacBomManager::instance().addToList (lLHRBKKSegmentYCabin1Family,
-                                                 lLHRBKKSegmentYCabin1FamilyQClass);
+                                               lLHRBKKSegmentYCabin1FamilyQClass);
 
-  // Create a BookingClass (Q) for the Segment BKK-SYD, cabin Y, fare family 1 on BA's Inv
+  // Create a BookingClass (Q) for the Segment BKK-SYD, cabin Y, fare
+  // family 1 on BA's Inv
   stdair::BookingClass& lBKKSYDSegmentYCabin1FamilyQClass =
     stdair::FacBom<stdair::BookingClass>::instance().create(lQBookingClassKey);
   stdair::FacBomManager::instance().addToList (lBKKSYDSegmentYCabin1Family,
-                                                 lBKKSYDSegmentYCabin1FamilyQClass);
+                                               lBKKSYDSegmentYCabin1FamilyQClass);
     
-  // Create a BookingClass (Q) for the Segment LHR-SYD, cabin Y, fare family 1 on BA's Inv
+  // Create a BookingClass (Q) for the Segment LHR-SYD, cabin Y, fare
+  // family 1 on BA's Inv
   stdair::BookingClass& lLHRSYDSegmentYCabin1FamilyQClass =
     stdair::FacBom<stdair::BookingClass>::instance().create(lQBookingClassKey);
   stdair::FacBomManager::instance().addToList (lLHRSYDSegmentYCabin1Family,
-                                                 lLHRSYDSegmentYCabin1FamilyQClass);
+                                               lLHRSYDSegmentYCabin1FamilyQClass);
     
   // ////// AF ///////    
   // Step 0.2: Flight-date level
@@ -196,7 +198,7 @@ int main()
   stdair::SegmentDate& lCDGSFOSegment =
     stdair::FacBom<stdair::SegmentDate>::instance().create (lSegmentDateKey);
   stdair::FacBomManager::instance().addToList (lAF102_20100320_FD,
-                                                 lCDGSFOSegment);
+                                               lCDGSFOSegment);
 
   // Step 0.4: Leg-date level
   // Create a LegDate (CDG) for AF's Inventory
@@ -211,7 +213,7 @@ int main()
   stdair::SegmentCabin& lCDGSFOSegmentYCabin =
     stdair::FacBom<stdair::SegmentCabin>::instance().create(lYSegmentCabinKey);
   stdair::FacBomManager::instance().addToList (lCDGSFOSegment,
-                                                 lCDGSFOSegmentYCabin);
+                                               lCDGSFOSegmentYCabin);
 
   // Step 0.6: leg-cabin level
   // Create a LegCabin (Y) for the Leg CDG-SFO on AF's Inventory
@@ -224,19 +226,20 @@ int main()
   stdair::FareFamily& lCDGSFOSegmentYCabin1Family =
     stdair::FacBom<stdair::FareFamily>::instance().create(l1FareFamilyKey);
   stdair::FacBomManager::instance().addToList (lCDGSFOSegmentYCabin,
-                                                 lCDGSFOSegmentYCabin1Family);
+                                               lCDGSFOSegmentYCabin1Family);
 
   // Step 0.8: booking class level
-  // Create a BookingClass (Q) for the Segment CDG-SFO, cabin Y, fare family 1 on AF's Inv
+  // Create a BookingClass (Q) for the Segment CDG-SFO, cabin Y, fare
+  // family 1 on AF's Inv
   stdair::BookingClass& lCDGSFOSegmentYCabin1FamilyQClass =
     stdair::FacBom<stdair::BookingClass>::instance().create(lQBookingClassKey);
   stdair::FacBomManager::instance().addToList (lCDGSFOSegmentYCabin1Family,
-                                                 lCDGSFOSegmentYCabin1FamilyQClass);
+                                               lCDGSFOSegmentYCabin1FamilyQClass);
 
 
   // /////////// Step 1.0: Display the BOM tree //////////   
   // 1.0. Bom root level
-  cout << lBomRoot.describeKey() << endl;
+  std::cout << lBomRoot << std::endl;
     
   // 1.1. Inventory level
   const stdair::InventoryList_T& lInventoryList =
@@ -244,8 +247,9 @@ int main()
   for (stdair::InventoryList_T::const_iterator itInv = lInventoryList.begin();
        itInv != lInventoryList.end(); ++itInv) {
     const stdair::Inventory* lInv_ptr = *itInv;
+    assert (lInv_ptr != NULL);
 
-    cout << " " <<lInv_ptr->describeKey() << endl;
+    std::cout << " " << *lInv_ptr << std::endl;
       
     // 1.2. FlightDate level
     const stdair::FlightDateList_T& lFlightDateList =
@@ -253,8 +257,9 @@ int main()
     for (stdair::FlightDateList_T::const_iterator itFD=lFlightDateList.begin();
          itFD != lFlightDateList.end(); ++itFD) {
       const stdair::FlightDate* lFD_ptr = *itFD;
+      assert (lFD_ptr != NULL);
 
-      cout << "   " << lFD_ptr->toString() << endl;
+      std::cout << "   " << *lFD_ptr << std::endl;
 
       // 1.4. LegDate level
       const stdair::LegDateList_T& lLegDateList =
@@ -263,18 +268,20 @@ int main()
              lLegDateList.begin();
            itLD != lLegDateList.end(); ++itLD) {
         const stdair::LegDate* lLD_ptr = *itLD;
+        assert (lLD_ptr != NULL);
          
-        cout << "      " << lLD_ptr->toString() << endl;
+        std::cout << "      " << *lLD_ptr << std::endl;
 
         // 1.6. LegCabin level
         const stdair::LegCabinList_T& lLegCabinList =
-            stdair::BomManager::getList<stdair::LegCabin> (*lLD_ptr);
+          stdair::BomManager::getList<stdair::LegCabin> (*lLD_ptr);
         for (stdair::LegCabinList_T::const_iterator itLC =
                lLegCabinList.begin();
              itLC != lLegCabinList.end(); ++itLC) {
           const stdair::LegCabin* lLC_ptr = *itLC;
-            
-          cout << "        " << lLC_ptr->toString() << endl;
+          assert (lLC_ptr != NULL);
+          
+          std::cout << "        " << *lLC_ptr << std::endl;
         }
       }
 
@@ -285,8 +292,9 @@ int main()
              lSegmentDateList.begin();
            itSD != lSegmentDateList.end(); ++itSD) {
         const stdair::SegmentDate* lSD_ptr = *itSD;
+        assert (lSD_ptr != NULL);
           
-        cout << "      " << lSD_ptr->toString() << endl;
+        std::cout << "      " << *lSD_ptr << std::endl;
         
         // 1.5. SegmentCabin level
         const stdair::SegmentCabinList_T& lSegmentCabinList =
@@ -295,8 +303,9 @@ int main()
                lSegmentCabinList.begin();
              itSC != lSegmentCabinList.end(); ++itSC) {
           const stdair::SegmentCabin* lSC_ptr = *itSC;
+          assert (lSC_ptr != NULL);
             
-          cout << "        " << lSC_ptr->toString() << endl;
+          std::cout << "        " << *lSC_ptr << std::endl;
 
           // 1.7. FareFamily level
           const stdair::FareFamilyList_T& lFareFamilyList =
@@ -305,8 +314,9 @@ int main()
                  lFareFamilyList.begin();
                itFF != lFareFamilyList.end(); ++itFF) {
             const stdair::FareFamily* lFF_ptr = *itFF;
+            assert (lFF_ptr != NULL);
               
-            cout << "          " << lFF_ptr->toString() << endl;
+            std::cout << "          " << *lFF_ptr << std::endl;
             
             // 1.8. BookingClass level
             const stdair::BookingClassList_T& lBookingClassList =
@@ -315,8 +325,9 @@ int main()
                    lBookingClassList.begin();
                  itBC != lBookingClassList.end(); ++itBC) {
               const stdair::BookingClass* lBC_ptr = *itBC;
+              assert (lBC_ptr != NULL);
               
-              cout << "            " << lBC_ptr->toString() << endl;
+              std::cout << "            " << *lBC_ptr << std::endl;
             }
           }
         }
