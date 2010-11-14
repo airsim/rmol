@@ -1,12 +1,12 @@
 archi_static_cast_h_sources = \
-	$(srcdir)/Types.hpp \
-	$(srcdir)/BomHolder.hpp \
-	$(srcdir)/Inventory.hpp \
-	$(srcdir)/BomRoot.hpp \
-	$(srcdir)/BomManager.hpp \
-	$(srcdir)/FacBom.hpp \
-	$(srcdir)/FacBomManager.hpp
+	$(srcdir)/MP2Types.hpp \
+	$(srcdir)/MP2BomHolder.hpp \
+	$(srcdir)/MP2Inventory.hpp \
+	$(srcdir)/MP2BomRoot.hpp \
+	$(srcdir)/MP2BomManager.hpp \
+	$(srcdir)/MP2FacBom.hpp \
+	$(srcdir)/MP2FacBomManager.hpp
 archi_static_cast_cc_sources = \
-	$(srcdir)/Inventory.cpp \
-	$(srcdir)/BomRoot.cpp \
+	$(srcdir)/MP2Inventory.cpp \
+	$(srcdir)/MP2BomRoot.cpp \
 	$(srcdir)/archi_static_cast.cpp

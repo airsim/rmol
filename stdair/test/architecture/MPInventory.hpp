@@ -1,5 +1,9 @@
-#ifndef __MYAIRLINE_INVENTORY_HPP
-#define __MYAIRLINE_INVENTORY_HPP
+#ifndef __MYPROVIDER_INVENTORY_HPP
+#define __MYPROVIDER_INVENTORY_HPP
+/*!
+ * \page test_archi_inv_hpp Specific Implementation of an Airline Inventory
+ * \code
+ */
 
 // //////////////////////////////////////////////////////////////////////
 // Import section
@@ -9,7 +13,7 @@
 // StdAir
 #include <stdair/bom/Inventory.hpp>
 
-namespace myairline {
+namespace myprovider {
   
   class Inventory : public stdair::Inventory {
   public:
@@ -38,4 +42,7 @@ namespace myairline {
   typedef std::list<Inventory*> InventoryList_T;
   
 }
-#endif // __MYAIRLINE_INVENTORY_HPP
+/*!
+ * \endcode
+ */
+#endif // __MYPROVIDER_INVENTORY_HPP

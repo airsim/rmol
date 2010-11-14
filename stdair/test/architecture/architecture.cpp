@@ -1,3 +1,7 @@
+/*!
+ * \page test_architecture_cpp Command-Line Utility to Demonstrate How To Extend StdAir BOM
+ * \code
+ */
 // STL
 #include <cassert>
 #include <iostream>
@@ -8,8 +12,8 @@
 #include <stdair/factory/FacBom.hpp>
 #include <stdair/factory/FacBomManager.hpp>
 // Local
-//#include <test/architecture/BomRoot.hpp>
-#include <test/architecture/Inventory.hpp>
+//#include <test/architecture/MPBomRoot.hpp>
+#include <test/architecture/MPInventory.hpp>
 
 // ////////// M A I N //////////////
 int main (int argc, char* argv[]) {
@@ -23,22 +27,22 @@ int main (int argc, char* argv[]) {
   // Create an Inventory (BA)
   const stdair::AirlineCode_T lAirlineCode ("BA");
   const stdair::InventoryKey lBAKey (lAirlineCode);
-  myairline::Inventory& lBAInv =
-    stdair::FacBom<myairline::Inventory>::instance().create (lBAKey);
+  myprovider::Inventory& lBAInv =
+    stdair::FacBom<myprovider::Inventory>::instance().create (lBAKey);
   stdair::FacBomManager::instance().addToList (lBomRoot, lBAInv);
 
   // Create an Inventory for AF
   const stdair::InventoryKey lAFKey ("AF");
-  myairline::Inventory& lAFInv =
-    stdair::FacBom<myairline::Inventory>::instance().create (lAFKey);
+  myprovider::Inventory& lAFInv =
+    stdair::FacBom<myprovider::Inventory>::instance().create (lAFKey);
   stdair::FacBomManager::instance().addToList (lBomRoot, lAFInv);
 
   // Browse the inventories
-  const myairline::InventoryList_T& lInventoryList =
-      stdair::BomManager::getList<myairline::Inventory> (lBomRoot);
-  for (myairline::InventoryList_T::const_iterator itInv =
+  const myprovider::InventoryList_T& lInventoryList =
+      stdair::BomManager::getList<myprovider::Inventory> (lBomRoot);
+  for (myprovider::InventoryList_T::const_iterator itInv =
          lInventoryList.begin(); itInv != lInventoryList.end(); ++itInv) {
-    const myairline::Inventory* lInv_ptr = *itInv;
+    const myprovider::Inventory* lInv_ptr = *itInv;
     assert (lInv_ptr != NULL);
     
     std::cout << "Inventory: " << lInv_ptr->toString() << std::endl;
@@ -46,3 +50,7 @@ int main (int argc, char* argv[]) {
   
   return 0;
 }
+
+/*!
+ * \endcode
+ */

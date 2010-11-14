@@ -4,28 +4,23 @@
 // STL
 #include <cassert>
 // Local
-#include <test/architecture/Inventory.hpp>
+#include <test/archi_static_cast/MP2BomRoot.hpp>
 
-namespace myairline {
-  
+namespace myprovider {
+
   // ////////////////////////////////////////////////////////////////////
-  Inventory::Inventory (const Key_T& iKey) : stdair::Inventory (iKey) {
+  BomRoot::BomRoot (const Key_T& iKey) : _key (iKey) {
   }
 
   // ////////////////////////////////////////////////////////////////////
-  Inventory::~Inventory () {
+  BomRoot::~BomRoot () {
   }
 
   // ////////////////////////////////////////////////////////////////////
-  std::string Inventory::toString() const {
+  std::string BomRoot::toString() const {
     std::ostringstream oStr;
     oStr << _key.toString();
     return oStr.str();
   }
-  
-  // ////////////////////////////////////////////////////////////////////
-  const std::string Inventory::describeKey() const {
-    return _key.toString();
-  }
-  
+
 }

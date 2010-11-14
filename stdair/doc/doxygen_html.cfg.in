@@ -584,7 +584,9 @@ WARN_LOGFILE           = doxygen_html.log
 INPUT                  = @top_srcdir@/@PACKAGE@ \
                          @top_srcdir@/doc/local \
                          @top_srcdir@/doc/tutorial \
-                         @top_srcdir@/test
+                         @top_srcdir@/batches \
+                         @top_srcdir@/test/stdair \
+                         @top_srcdir@/test/architecture
 
 # This tag can be used to specify the character encoding of the source files
 # that doxygen parses. Internally doxygen uses the UTF-8 encoding, which is
@@ -645,7 +647,9 @@ EXCLUDE_SYMBOLS        =
 # the \include command).
 
 EXAMPLE_PATH           = @top_srcdir@/doc/tutorial/src \
-                         @top_srcdir@/test
+                         @top_srcdir@/batches \
+                         @top_srcdir@/test/stdair \
+                         @top_srcdir@/test/architecture
 
 # If the value of the EXAMPLE_PATH tag contains directories, you can use the
 # EXAMPLE_PATTERNS tag to specify one or more wildcard pattern (like *.cpp

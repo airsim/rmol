@@ -1,5 +1,5 @@
-#ifndef __MYAIRLINE_BOMHOLDER_HPP
-#define __MYAIRLINE_BOMHOLDER_HPP
+#ifndef __MYPROVIDER_BOMHOLDER_HPP
+#define __MYPROVIDER_BOMHOLDER_HPP
 
 // //////////////////////////////////////////////////////////////////////
 // Import section
@@ -11,7 +11,7 @@
 #include <stdair/bom/BomAbstract.hpp>
 #include <stdair/bom/BomRootKey.hpp>
 
-namespace myairline {
+namespace myprovider {
   /** Class representing the holders of BOM. */
   template <typename BOM>
   class BomHolder : public stdair::BomAbstract {
@@ -54,4 +54,4 @@ namespace myairline {
   };
   
 }  
-#endif // __MYAIRLINE_BOMHOLDER_HPP
+#endif // __MYPROVIDER_BOMHOLDER_HPP

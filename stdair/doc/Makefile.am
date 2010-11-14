@@ -9,13 +9,16 @@ include $(top_srcdir)/stdair/dbadaptor/sources.mk
 include $(top_srcdir)/stdair/command/sources.mk
 include $(top_srcdir)/stdair/service/sources.mk
 include $(top_srcdir)/stdair/sources.mk
+include $(top_srcdir)/batches/sources.mk
+include $(top_srcdir)/test/stdair/sources.mk
+include $(top_srcdir)/test/architecture/sources.mk
 
 SUBDIRS = images tutorial local
 
 docdir = @docdir@
 
-html_tarname = @PACKAGE_TARNAME@-doc-@PACKAGE_VERSION@
-pdf_tarname = @PACKAGE_TARNAME@-pdf-@PACKAGE_VERSION@
+html_tarname = @PACKAGE_TARNAME@-doc-html-@PACKAGE_VERSION@
+pdf_tarname = @PACKAGE_TARNAME@-doc-pdf-@PACKAGE_VERSION@
 
 noinst_DATA =
 EXTRA_DIST = $(noinst_DATA)
@@ -28,14 +31,17 @@ html-local: html/index.html
 html/index.html: doxygen_html.cfg \
 	$(doc_local_sources) $(html_local_sources) \
 	$(doc_tutorial_sources) $(cpp_tutorial_sources) \
-	$(stdair_test_lib_h_sources) $(stdair_test_lib_cc_sources) \
 	$(stdair_service_h_sources) $(stdair_service_cc_sources) \
 	$(stdair_bas_h_sources) $(stdair_bas_cc_sources) \
 	$(stdair_bom_h_sources) $(stdair_bom_cc_sources) \
 	$(stdair_fac_h_sources) $(stdair_fac_cc_sources) \
 	$(stdair_dba_h_sources) $(stdair_dba_cc_sources) \
 	$(stdair_cmd_h_sources) $(stdair_cmd_cc_sources) \
-	$(stdair_svc_h_sources) $(stdair_svc_cc_sources)
+	$(stdair_svc_h_sources) $(stdair_svc_cc_sources) \
+	$(stdair_batches_h_sources) $(stdair_batches_cc_sources) \
+	$(stdair_test_lib_h_sources) $(stdair_test_lib_cc_sources) \
+	$(stdair_test_bin_h_sources) $(stdair_test_bin_cc_sources) \
+	$(stdair_archi_h_sources) $(stdair_archi_cc_sources)
 	doxygen $<; \
 	if test -d html; then \
 		cp $(srcdir)/images/stdair_logo.png html; \

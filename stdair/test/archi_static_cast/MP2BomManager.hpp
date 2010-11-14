@@ -1,5 +1,5 @@
-#ifndef __MYAIRLINE_BOMMANAGER_HPP
-#define __MYAIRLINE_BOMMANAGER_HPP
+#ifndef __MYPROVIDER_BOMMANAGER_HPP
+#define __MYPROVIDER_BOMMANAGER_HPP
 
 // //////////////////////////////////////////////////////////////////////
 // Import section
@@ -8,9 +8,9 @@
 #include <iosfwd>
 #include <typeinfo>
 // Archi TEST
-#include <test/archi_static_cast/Types.hpp>
+#include <test/archi_static_cast/MP2Types.hpp>
 
-namespace myairline {
+namespace myprovider {
   
   /** Utility class for StdAir objects. */
   class BomManager {
@@ -36,4 +36,4 @@ namespace myairline {
   }
 }
 
-#endif // __MYAIRLINE_BOMMANAGER_HPP
+#endif // __MYPROVIDER_BOMMANAGER_HPP

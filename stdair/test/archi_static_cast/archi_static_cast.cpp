@@ -4,15 +4,15 @@
 #include <string>
 #include <list>
 // Local
-#include <test/archi_static_cast/BomRoot.hpp>
-#include <test/archi_static_cast/Inventory.hpp>
-#include <test/archi_static_cast/BomHolder.hpp>
-#include <test/archi_static_cast/BomManager.hpp>
-#include <test/archi_static_cast/FacBomManager.hpp>
-#include <test/archi_static_cast/FacBom.hpp>
+#include <test/archi_static_cast/MP2BomRoot.hpp>
+#include <test/archi_static_cast/MP2Inventory.hpp>
+#include <test/archi_static_cast/MP2BomHolder.hpp>
+#include <test/archi_static_cast/MP2BomManager.hpp>
+#include <test/archi_static_cast/MP2FacBomManager.hpp>
+#include <test/archi_static_cast/MP2FacBom.hpp>
 
 // ////////// M A I N //////////////
-using namespace myairline;
+using namespace myprovider;
 
 int main (int argc, char* argv[]) {
   BomRoot& lBomRoot = FacBom<BomRoot>::instance().create();

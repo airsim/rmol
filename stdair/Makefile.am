@@ -60,10 +60,10 @@ snapshot-src:
 	$(MAKE) dist distdir=@PACKAGE_TARNAME@-`date +"%Y%m%d"`
 
 snapshot-html:
-	$(MAKE) -C doc dist-html html_tarname=@PACKAGE_TARNAME@-doc-`date +"%Y%m%d"`
+	$(MAKE) -C doc dist-html html_tarname=@PACKAGE_TARNAME@-doc-html-`date +"%Y%m%d"`
 
 snapshot-pdf:
-	$(MAKE) -C doc dist-pdf pdf_tarname=@PACKAGE_TARNAME@-pdf-`date +"%Y%m%d"`
+	$(MAKE) -C doc dist-pdf pdf_tarname=@PACKAGE_TARNAME@-doc-pdf-`date +"%Y%m%d"`
 
 upload: upload-src upload-html upload-pdf
 
@@ -72,10 +72,10 @@ upload-src: dist
 	@PACKAGE_TARNAME@-@VERSION@.tar.bz2
 
 upload-html: dist-html
-	@UPLOAD_COMMAND@ @PACKAGE_TARNAME@-doc-@VERSION@.tar.gz \
-	@PACKAGE_TARNAME@-doc-@VERSION@.tar.bz2
+	@UPLOAD_COMMAND@ @PACKAGE_TARNAME@-doc-html-@VERSION@.tar.gz \
+	@PACKAGE_TARNAME@-doc-html-@VERSION@.tar.bz2
 
 upload-pdf: dist-pdf
-	@UPLOAD_COMMAND@ @PACKAGE_TARNAME@-pdf-@VERSION@.tar.gz \
-	@PACKAGE_TARNAME@-pdf-@VERSION@.tar.bz2
+	@UPLOAD_COMMAND@ @PACKAGE_TARNAME@-doc-pdf-@VERSION@.tar.gz \
+	@PACKAGE_TARNAME@-doc-pdf-@VERSION@.tar.bz2
 

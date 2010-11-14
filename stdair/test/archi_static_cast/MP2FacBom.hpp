@@ -1,5 +1,5 @@
-#ifndef __MYAIRLINE_FACBOM_HPP
-#define __MYAIRLINE_FACBOM_HPP
+#ifndef __MYPROVIDER_FACBOM_HPP
+#define __MYPROVIDER_FACBOM_HPP
 
 // //////////////////////////////////////////////////////////////////////
 // Import section
@@ -8,7 +8,8 @@
 #include <cassert>
 #include <string>
 
-namespace myairline {  
+namespace myprovider {  
+
   /** Base class for Factory layer. */
   template <typename BOM>
   class FacBom {
@@ -90,4 +91,4 @@ namespace myairline {
   }
   
 }
-#endif // __MYAIRLINE_FACBOM_HPP
+#endif // __MYPROVIDER_FACBOM_HPP

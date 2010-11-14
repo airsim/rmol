@@ -1,25 +1,36 @@
-#ifndef __MYAIRLINE_INVENTORY_HPP
-#define __MYAIRLINE_INVENTORY_HPP
+#ifndef __MYPROVIDER_BOMROOT_HPP
+#define __MYPROVIDER_BOMROOT_HPP
 
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
-// StdAir
+// STL
+#include <string>
+#include <map>
+// StdAir 
 #include <stdair/bom/BomAbstract.hpp>
-#include <stdair/bom/InventoryKey.hpp>
+#include <stdair/bom/BomRootKey.hpp>
 // Aichi TEST
-#include <test/archi_static_cast/Types.hpp>
+#include <test/archi_static_cast/MP2Types.hpp>
 
-namespace myairline {
-
-  class Inventory : public stdair::BomAbstract {
+namespace myprovider {
+  
+  /** Class representing the actual attributes for the Bom root. */
+  class BomRoot : public stdair::BomAbstract {
     template <typename BOM> friend class FacBom;
+    class FacBomManager;
     class BomManager;
-
-  public :
-    // Type definitions
+    
+  public:
     /** Definition allowing to retrieve the associated BOM key type. */
-    typedef stdair::InventoryKey Key_T;
+    typedef stdair::BomRootKey Key_T;
+
+  public:
+    // /////////// Getters //////////////
+    /** Get the BomRoot key. */
+    const Key_T& getKey() const {
+      return _key;
+    }
 
   public:
     // /////////// Display support methods /////////
@@ -36,25 +47,14 @@ namespace myairline {
     
     /** Get a string describing the  key. */
     const std::string describeKey() const { return _key.toString(); }
-
-  public:
-    // ////////// Getters ////////////
-    /** Get the inventory key. */
-    const Key_T& getKey() const {
-      return _key;
-    }
     
-    /** Get the airline code. */
-    const stdair::AirlineCode_T& getAirlineCode () const {
-      return _key.getAirlineCode();
-    }
-
   protected:
     /** Default constructors. */
-    Inventory (const Key_T&);
-    Inventory (const Inventory&);
+    BomRoot ();
+    BomRoot (const BomRoot&);
+    BomRoot (const Key_T& iKey);
     /** Destructor. */
-    ~Inventory();
+    ~BomRoot();
 
   public:
     // Attributes
@@ -65,5 +65,5 @@ namespace myairline {
     HolderMap_T _holderMap;
   };
   
-}
-#endif // __MYAIRLINE_INVENTORY_HPP
+}  
+#endif // __MYPROVIDER_BOMROOT_HPP

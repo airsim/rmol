@@ -4,9 +4,9 @@
 // STL
 #include <cassert>
 // Local
-#include <test/archi_static_cast/Inventory.hpp>
+#include <test/archi_static_cast/MP2Inventory.hpp>
 
-namespace myairline {
+namespace myprovider {
 
   // ////////////////////////////////////////////////////////////////////
   Inventory::Inventory (const Key_T& iKey) : _key (iKey) {

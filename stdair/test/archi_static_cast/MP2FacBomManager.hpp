@@ -1,5 +1,5 @@
-#ifndef __MYAIRLINE_FACBOMMANAGER_HPP
-#define __MYAIRLINE_FACBOMMANAGER_HPP
+#ifndef __MYPROVIDER_FACBOMMANAGER_HPP
+#define __MYPROVIDER_FACBOMMANAGER_HPP
 
 // //////////////////////////////////////////////////////////////////////
 // Import section
@@ -7,11 +7,11 @@
 // STL
 #include <iosfwd>
 #include <typeinfo>
-// STDAIR
-#include <test/archi_static_cast/Types.hpp>
-#include <test/archi_static_cast/FacBom.hpp>
+// Local
+#include <test/archi_static_cast/MP2Types.hpp>
+#include <test/archi_static_cast/MP2FacBom.hpp>
 
-namespace myairline {
+namespace myprovider {
   
   /** Utility class for STDAIR objects. */
   class FacBomManager {
@@ -43,4 +43,4 @@ namespace myairline {
 
 }
 
-#endif // __MYAIRLINE_FACBOMMANAGER_HPP
+#endif // __MYPROVIDER_FACBOMMANAGER_HPP

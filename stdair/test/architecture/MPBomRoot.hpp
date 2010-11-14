@@ -1,5 +1,9 @@
-#ifndef __MYAIRLINE_BOMROOT_HPP
-#define __MYAIRLINE_BOMROOT_HPP
+#ifndef __MYPROVIDER_BOMROOT_HPP
+#define __MYPROVIDER_BOMROOT_HPP
+/*!
+ * \page test_archi_root_hpp Specific Implementation of a BOM Root
+ * \code
+ */
 
 // //////////////////////////////////////////////////////////////////////
 // Import section
@@ -9,7 +13,7 @@
 // StdAir 
 #include <stdair/bom/BomRoot.hpp>
 
-namespace myairline {
+namespace myprovider {
   
   /** Class representing the actual functional/business content
       for the Bom root. */
@@ -36,4 +40,7 @@ namespace myairline {
   };
   
 }  
-#endif // __MYAIRLINE_BOMROOT_HPP
+/*!
+ * \endcode
+ */
+#endif // __MYPROVIDER_BOMROOT_HPP

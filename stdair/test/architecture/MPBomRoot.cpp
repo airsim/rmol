@@ -1,26 +1,26 @@
+/*!
+ * \page test_archi_root_cpp Specific Implementation of a BOM Root
+ * \code
+ */
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // STL
 #include <cassert>
 // Local
-#include <test/archi_static_cast/BomRoot.hpp>
+#include <test/architecture/MPBomRoot.hpp>
 
-namespace myairline {
-
+namespace myprovider {
+  
   // ////////////////////////////////////////////////////////////////////
-  BomRoot::BomRoot (const Key_T& iKey) : _key (iKey) {
+  BomRoot::BomRoot (const Key_T& iKey) : stdair::BomRoot (iKey) {
   }
-
+  
   // ////////////////////////////////////////////////////////////////////
   BomRoot::~BomRoot () {
   }
 
-  // ////////////////////////////////////////////////////////////////////
-  std::string BomRoot::toString() const {
-    std::ostringstream oStr;
-    oStr << _key.toString();
-    return oStr.str();
-  }
-
 }
+/*!
+ * \endcode
+ */
