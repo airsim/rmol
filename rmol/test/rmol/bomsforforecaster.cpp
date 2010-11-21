@@ -64,7 +64,7 @@ namespace RMOL {
     // Constructor
     BookingClassDataSet ()
       : _numberOfClass(0), _minimumFare(0),
-        _censorshipFlag(false), _bookingClassDataList(NULL) {
+        _censorshipFlag(false) {
     }
 
     // Add BookingClassData
