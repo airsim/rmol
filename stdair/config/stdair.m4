@@ -40,7 +40,7 @@ AC_ARG_WITH(stdair,
 	AC_MSG_RESULT([ok (set to ${BOOST_DATE_TIME_LIB})])
   fi
 
-  min_stdair_version=ifelse([$1], ,0.5.0,$1)
+  min_stdair_version=ifelse([$1], ,0.9.0,$1)
   AC_MSG_CHECKING(for STDAIR - version >= $min_stdair_version)
   no_stdair=""
   if test "${STDAIR_CONFIG}" = "no" ; then
@@ -83,7 +83,7 @@ AC_ARG_WITH(stdair,
 
    	AC_COMPILE_IFELSE(
 		AC_LANG_PROGRAM([[
-				#include <stdair/STDAIR_Service.hpp> 
+				#include <stdair/stdair.hpp> 
 				]],
 				[[int i=0;]]
 		)
