@@ -8,7 +8,7 @@
 // STL
 #include <map>
 // STDAIR
-#include <stdair/STDAIR_Types.hpp>
+#include <stdair/bom/key_types.hpp>
 
 namespace stdair {
 

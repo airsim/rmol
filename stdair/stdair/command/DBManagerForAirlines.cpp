@@ -12,11 +12,11 @@
 #include <mysql/soci-mysql.h>
 #endif // SOCI_HEADERS_BURIED
 // StdAir
+#include <stdair/stdair_types.hpp>
 #include <stdair/bom/AirlineStruct.hpp>
 #include <stdair/dbadaptor/DbaAirline.hpp>
-#include <stdair/service/Logger.hpp>
-// Stdair
 #include <stdair/command/DBManagerForAirlines.hpp>
+#include <stdair/service/Logger.hpp>
 
 namespace stdair {
 

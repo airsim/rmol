@@ -6,6 +6,7 @@
 #include <sstream>
 #include <vector>
 // STDAIR
+#include <stdair/stdair_types.hpp>
 #include <stdair/bom/OptimizerStruct.hpp>
 
 namespace stdair {

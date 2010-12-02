@@ -2,6 +2,7 @@
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // STDAIR
+#include <stdair/stdair_types.hpp>
 #include <stdair/bom/LegCabinKey.hpp>
 
 namespace stdair {

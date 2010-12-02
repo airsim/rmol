@@ -8,15 +8,15 @@
 // STL
 #include <map>
 #include <list>
-// STDAIR
-#include <stdair/STDAIR_Types.hpp>
+// StdAir
+#include <stdair/bom/key_types.hpp>
 
 namespace stdair {
 
   // Forward declarations.
   class LegDate;
   
- /** Define the leg-date list. */
+  /** Define the leg-date list. */
   typedef std::list<LegDate*> LegDateList_T;
 
   /** Define the leg-date map. */

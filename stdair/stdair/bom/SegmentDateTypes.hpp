@@ -8,15 +8,15 @@
 // STL
 #include <map>
 #include <list>
-// STDAIR
-#include <stdair/STDAIR_Types.hpp>
+// StdAir
+#include <stdair/bom/key_types.hpp>
 
 namespace stdair {
 
   // Forward declarations.
   class SegmentDate;
   
- /** Define the segment-date list. */
+  /** Define the segment-date list. */
   typedef std::list<SegmentDate*> SegmentDateList_T;
 
   /** Define the segment-date map. */

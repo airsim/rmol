@@ -14,6 +14,7 @@
 #include <mysql/soci-mysql.h>
 #endif // SOCI_HEADERS_BURIED
 // StdAir
+#include <stdair/stdair_exceptions.hpp>
 #include <stdair/basic/BasDBParams.hpp>
 #include <stdair/service/DBSessionManager.hpp>
 #include <stdair/service/Logger.hpp>

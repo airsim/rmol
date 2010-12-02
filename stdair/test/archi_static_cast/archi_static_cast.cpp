@@ -3,6 +3,8 @@
 #include <iostream>
 #include <string>
 #include <list>
+// StdAir
+#include <stdair/stdair_types.hpp>
 // Local
 #include <test/archi_static_cast/MP2BomRoot.hpp>
 #include <test/archi_static_cast/MP2Inventory.hpp>

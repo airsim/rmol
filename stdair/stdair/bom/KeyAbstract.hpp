@@ -13,8 +13,6 @@
 // STL
 #include <iosfwd>
 #include <string>
-// STDAIR
-#include <stdair/STDAIR_Types.hpp>
 
 namespace stdair {
 

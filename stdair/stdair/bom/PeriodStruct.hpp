@@ -7,7 +7,8 @@
 // STL
 #include <string>
 #include <vector>
-// STDAIR
+// StdAir
+#include <stdair/stdair_types.hpp>
 #include <stdair/basic/StructAbstract.hpp>
 #include <stdair/bom/DoWStruct.hpp>
 

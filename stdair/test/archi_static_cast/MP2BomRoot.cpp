@@ -3,6 +3,7 @@
 // //////////////////////////////////////////////////////////////////////
 // STL
 #include <cassert>
+#include <sstream>
 // Local
 #include <test/archi_static_cast/MP2BomRoot.hpp>
 

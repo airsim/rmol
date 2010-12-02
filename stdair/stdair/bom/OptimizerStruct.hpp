@@ -4,8 +4,8 @@
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
-// STDAIR
-#include <stdair/STDAIR_Types.hpp>
+// STL
+#include <string>
 
 namespace stdair {
 
@@ -45,9 +45,8 @@ namespace stdair {
     /** Default constructor. */
     OptimizerStruct ();
     /** Constructor. */
-    OptimizerStruct (const OptimizerMode_T&,
-                       const SellupFlagForOptimizer_T&,
-                       const SellupProbabilityVector_T&);
+    OptimizerStruct (const OptimizerMode_T&, const SellupFlagForOptimizer_T&,
+                     const SellupProbabilityVector_T&);
     /** Default copy constructor. */
     OptimizerStruct (const OptimizerStruct&);
 

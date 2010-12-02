@@ -1,5 +1,6 @@
 stdair_bom_h_sources = \
 		$(top_srcdir)/stdair/bom/BomAbstract.hpp \
+		$(top_srcdir)/stdair/bom/key_types.hpp \
 		$(top_srcdir)/stdair/bom/KeyAbstract.hpp \
 		$(top_srcdir)/stdair/bom/BomManager.hpp \
 		$(top_srcdir)/stdair/bom/BomHolderKey.hpp \

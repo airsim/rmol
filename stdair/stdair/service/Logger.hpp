@@ -10,7 +10,7 @@
 #include <sstream>
 #include <string>
 // StdAir
-#include <stdair/STDAIR_Types.hpp>
+#include <stdair/stdair_log.hpp>
 #include <stdair/basic/BasLogParams.hpp>
 
 // /////////////// LOG MACROS /////////////////

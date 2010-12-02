@@ -5,6 +5,7 @@
 #include <exception>
 #include <string>
 // Stdair
+#include <stdair/stdair_types.hpp>
 #include <stdair/bom/AirlineStruct.hpp>
 #include <stdair/dbadaptor/DbaAirline.hpp>
 #include <stdair/service/Logger.hpp>

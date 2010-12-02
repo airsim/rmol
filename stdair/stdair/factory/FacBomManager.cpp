@@ -5,7 +5,6 @@
 #include <cassert>
 #include <ostream>
 // StdAir
-#include <stdair/STDAIR_Types.hpp>
 #include <stdair/basic/BasConst_BomManager.hpp>
 #include <stdair/factory/FacBomManager.hpp>
 #include <stdair/service/FacSupervisor.hpp>

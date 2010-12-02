@@ -8,11 +8,12 @@
 // STL
 #include <map>
 #include <list>
-// STDAIR
-#include <stdair/STDAIR_Types.hpp>
+// StdAir
+#include <stdair/bom/key_types.hpp>
 
 namespace stdair {
-  // Forward declarations.
+  
+  // Forward declarations
   class Bucket;
 
   /** Define the Inventory list. */

@@ -8,8 +8,8 @@
 // STL
 #include <map>
 #include <list>
-// STDAIR
-#include <stdair/STDAIR_Types.hpp>
+// Stdair
+#include <stdair/bom/key_types.hpp>
 
 namespace stdair {
 
@@ -24,4 +24,3 @@ namespace stdair {
   
 }
 #endif // __STDAIR_BOM_INVENTORYTYPES_HPP
-

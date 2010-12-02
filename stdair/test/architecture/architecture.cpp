@@ -11,6 +11,7 @@
 #include <stdair/bom/BomManager.hpp>
 #include <stdair/factory/FacBom.hpp>
 #include <stdair/factory/FacBomManager.hpp>
+#include <stdair/stdair_types.hpp>
 // Local
 //#include <test/architecture/MPBomRoot.hpp>
 #include <test/architecture/MPInventory.hpp>

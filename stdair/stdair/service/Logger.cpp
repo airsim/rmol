@@ -2,6 +2,7 @@
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // StdAir Logger
+#include <stdair/stdair_exceptions.hpp>
 #include <stdair/service/Logger.hpp>
 
 namespace stdair {

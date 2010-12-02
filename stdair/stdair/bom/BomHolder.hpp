@@ -9,10 +9,12 @@
 #include <list>
 #include <map>
 // StdAir 
+#include <stdair/bom/key_types.hpp>
 #include <stdair/bom/BomAbstract.hpp>
 #include <stdair/bom/BomHolderKey.hpp>
 
 namespace stdair {
+  
   /** Class representing the holders of BOM. */
   template <typename BOM>
   class BomHolder : public stdair::BomAbstract {

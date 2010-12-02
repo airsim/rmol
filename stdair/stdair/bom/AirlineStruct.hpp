@@ -9,7 +9,6 @@
 #include <string>
 #include <vector>
 // StdAir
-#include <stdair/STDAIR_Types.hpp>
 #include <stdair/basic/StructAbstract.hpp>
 
 namespace stdair {

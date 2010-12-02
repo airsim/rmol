@@ -8,7 +8,7 @@
 #include <iosfwd>
 #include <string>
 // Stdair
-#include <stdair/STDAIR_Types.hpp>
+#include <stdair/stdair_log.hpp>
 
 namespace stdair {
 

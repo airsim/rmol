@@ -9,7 +9,6 @@
 #include <string>
 #include <vector>
 // StdAir
-#include <stdair/STDAIR_Types.hpp>
 #include <stdair/basic/StructAbstract.hpp>
 #include <stdair/bom/BookingClassTypes.hpp>
 
@@ -30,8 +29,12 @@ namespace stdair {
   public:
     // /////////// Setters ///////////////
     /** Setter for some attributes. */
-    void setFare (const Fare_T& iFare) { _fare = iFare; }
-    void setAvailability (const Availability_T& iAvail) { _availability=iAvail; }
+    void setFare (const Fare_T& iFare) {
+      _fare = iFare;
+    }
+    void setAvailability (const Availability_T& iAvail) {
+      _availability=iAvail;
+    }
     void addSegmentDateKey (const std::string& iKey) {
       _segmentDateKeyList.push_back (iKey);
     }

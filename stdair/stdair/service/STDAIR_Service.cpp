@@ -4,6 +4,7 @@
 // STL
 #include <cassert>
 // StdAir
+#include <stdair/stdair_types.hpp>
 #include <stdair/basic/BasChronometer.hpp>
 #include <stdair/bom/BomManager.hpp> // for display()
 #include <stdair/bom/BomRoot.hpp>
@@ -14,7 +15,7 @@
 #include <stdair/service/FacSupervisor.hpp>
 #include <stdair/service/Logger.hpp>
 #include <stdair/service/DBSessionManager.hpp>
-#include <stdair/STDAIR_Service.hpp>
+#include <stdair/stdair.hpp>
 
 namespace stdair {
 

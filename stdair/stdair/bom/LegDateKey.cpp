@@ -2,6 +2,7 @@
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // STDAIR
+#include <stdair/stdair_types.hpp>
 #include <stdair/bom/LegDateKey.hpp>
 
 namespace stdair {

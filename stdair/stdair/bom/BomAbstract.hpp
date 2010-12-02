@@ -14,8 +14,6 @@
 #include <string>
 #include <map>
 #include <typeinfo>
-// StdAir
-#include <stdair/STDAIR_Types.hpp>
 
 namespace stdair {
 

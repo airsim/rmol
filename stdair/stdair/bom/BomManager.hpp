@@ -6,8 +6,8 @@
 // //////////////////////////////////////////////////////////////////////
 // STL
 #include <iosfwd>
-// STDAIR
-#include <stdair/STDAIR_Types.hpp>
+// StdAir
+#include <stdair/stdair_exceptions.hpp>
 #include <stdair/bom/BomAbstract.hpp>
 #include <stdair/bom/BomHolder.hpp>
 #include <stdair/service/Logger.hpp>

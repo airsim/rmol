@@ -7,8 +7,6 @@
 // STL
 #include <iosfwd>
 #include <list>
-// StdAir
-#include <stdair/STDAIR_Types.hpp>
 
 namespace stdair {
   // Forward declarations

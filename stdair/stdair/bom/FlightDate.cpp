@@ -4,6 +4,7 @@
 // STL
 #include <cassert>
 // STDAIR
+#include <stdair/stdair_types.hpp>
 #include <stdair/bom/FlightDate.hpp>
 
 namespace stdair {

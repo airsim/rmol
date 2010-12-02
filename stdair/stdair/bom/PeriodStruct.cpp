@@ -4,11 +4,12 @@
 // STL
 #include <sstream>
 #include <cassert>
-// STDAIR
+// StdAir
 #include <stdair/basic/BasConst_Period_BOM.hpp>
 #include <stdair/bom/PeriodStruct.hpp>
 
 namespace stdair {
+  
   // ////////////////////////////////////////////////////////////////////
   PeriodStruct::PeriodStruct ()
     : _dateRange (BOOST_DEFAULT_DATE_PERIOD), _dow () {
@@ -16,7 +17,7 @@ namespace stdair {
   
   // ////////////////////////////////////////////////////////////////////
   PeriodStruct::PeriodStruct (const DatePeriod_T& iDateRange,
-                                  const DoWStruct& iDoW)
+                              const DoWStruct& iDoW)
     : _dateRange (iDateRange), _dow (iDoW) {
   }
 

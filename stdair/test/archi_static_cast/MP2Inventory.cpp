@@ -3,6 +3,8 @@
 // //////////////////////////////////////////////////////////////////////
 // STL
 #include <cassert>
+// StdAir
+#include <stdair/stdair_types.hpp>
 // Local
 #include <test/archi_static_cast/MP2Inventory.hpp>
 

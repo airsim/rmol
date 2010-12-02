@@ -4,14 +4,13 @@
 // STL
 #include <cassert>
 // STDAIR
+#include <stdair/stdair_types.hpp>
 #include <stdair/bom/AirlineFeature.hpp>
 
 namespace stdair {
 
   // ////////////////////////////////////////////////////////////////////
-  AirlineFeature::
-  AirlineFeature (const Key_T& iKey)
-    : _key (iKey) {
+  AirlineFeature::AirlineFeature (const Key_T& iKey) : _key (iKey) {
   }
 
   // ////////////////////////////////////////////////////////////////////

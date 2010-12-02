@@ -8,7 +8,6 @@
 #include <cassert>
 #include <string>
 // StdAir 
-#include <stdair/STDAIR_Types.hpp>
 #include <stdair/factory/FacAbstract.hpp>
 #include <stdair/service/FacSupervisor.hpp>
 #include <stdair/service/Logger.hpp>

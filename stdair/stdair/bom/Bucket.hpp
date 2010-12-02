@@ -65,7 +65,6 @@ namespace stdair {
     stdair::CabinCapacity_T _availability;
     stdair::NbOfSeats_T _nbOfSeats;
     stdair::SeatIndex_T _seatIndex;
-
   };
 
 }

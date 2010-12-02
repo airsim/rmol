@@ -5,9 +5,7 @@
 #include <cassert>
 #include <sstream>
 // StdAir
-#include <stdair/service/Logger.hpp>
-// Stdair
-#include <stdair/STDAIR_Types.hpp>
+#include <stdair/stdair_exceptions.hpp>
 #include <stdair/basic/PassengerType.hpp>
 
 namespace stdair {
@@ -53,7 +51,8 @@ namespace stdair {
   }
 
   // //////////////////////////////////////////////////////////////////////
-  std::string PassengerType::getTypeLabelAsString(const EN_PassengerType& iType){
+  std::string PassengerType::
+  getTypeLabelAsString (const EN_PassengerType& iType) {
     std::ostringstream oStr;
     oStr << _typeLabels[iType];
     return oStr.str();

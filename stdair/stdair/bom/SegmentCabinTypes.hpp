@@ -7,16 +7,16 @@
 // //////////////////////////////////////////////////////////////////////
 // STL
 #include <map>
-#include <vector>
-// STDAIR
-#include <stdair/STDAIR_Types.hpp>
+#include <list>
+// StdAir
+#include <stdair/bom/key_types.hpp>
 
 namespace stdair {
 
   // Forward declarations.
   class SegmentCabin;
   
- /** Define the segment-cabin list. */
+  /** Define the segment-cabin list. */
   typedef std::list<SegmentCabin*> SegmentCabinList_T;
 
   /** Define the segment-cabin map. */
