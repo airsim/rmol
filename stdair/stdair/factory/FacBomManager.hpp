@@ -112,7 +112,7 @@ namespace stdair {
         assert (lCurrentObject_ptr != NULL);
         STDAIR_LOG_DEBUG (lCurrentObject_ptr->describeKey() << "; ");
       }
-      throw ObjectLinkingException ();
+      throw ObjectLinkingException ("");
     }    
   }
 
@@ -142,7 +142,7 @@ namespace stdair {
         assert (lCurrentObject_ptr != NULL);
         STDAIR_LOG_DEBUG (lCurrentObject_ptr->describeKey() << "; ");
       }
-      throw ObjectLinkingException ();
+      throw ObjectLinkingException ("");
     }
     lBomHolder._bomList.push_back (&ioObject2);    
   }

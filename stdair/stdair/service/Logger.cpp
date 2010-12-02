@@ -43,7 +43,7 @@ namespace stdair {
   // //////////////////////////////////////////////////////////////////////
   Logger& Logger::instance() {
     if (_instance == NULL) {
-      throw NonInitialisedLogServiceException();
+      throw NonInitialisedLogServiceException("");
     }
     assert (_instance != NULL);
     return *_instance;

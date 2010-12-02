@@ -42,8 +42,7 @@ namespace stdair {
       ioSelectStatement.execute();
 
     } catch (std::exception const& lException) {
-      STDAIR_LOG_ERROR ("Error: " << lException.what());
-      throw SQLDatabaseException();
+      throw SQLDatabaseException (lException.what());
     }
   }
 
@@ -73,8 +72,7 @@ namespace stdair {
       ioSelectStatement.execute();
 
     } catch (std::exception const& lException) {
-      STDAIR_LOG_ERROR ("Error: " << lException.what());
-      throw SQLDatabaseException();
+      throw SQLDatabaseException (lException.what());
     }
   }
 
@@ -90,8 +88,7 @@ namespace stdair {
       hasStillData = ioStatement.fetch();
       
     } catch (std::exception const& lException) {
-      STDAIR_LOG_ERROR ("Error: " << lException.what());
-      throw SQLDatabaseException();
+      throw SQLDatabaseException (lException.what());
     }
 
     return hasStillData;
@@ -100,9 +97,7 @@ namespace stdair {
   // //////////////////////////////////////////////////////////////////////
   void DBManagerForAirlines::updateAirlineInDB (DBSession_T& ioSociSession,
                                                 const AirlineStruct& iAirline) {
-  
     try {
-    
       // Begin a transaction on the database
       ioSociSession.begin();
 
@@ -130,8 +125,7 @@ namespace stdair {
       // STDAIR_LOG_DEBUG ("[" << lAirlineCode << "] " << iAirline);
       
     } catch (std::exception const& lException) {
-      STDAIR_LOG_ERROR ("Error: " << lException.what());
-      throw SQLDatabaseException();
+      throw SQLDatabaseException (lException.what());
     }
   }
 
@@ -142,7 +136,6 @@ namespace stdair {
     bool oHasRetrievedAirline = false;
       
     try {
-
       // Prepare the SQL request corresponding to the select statement
       DBRequestStatement_T lSelectStatement (ioSociSession);
       prepareSelectOnAirlineCodeStatement (ioSociSession, lSelectStatement,
@@ -162,8 +155,7 @@ namespace stdair {
       // STDAIR_LOG_DEBUG ("[" << iDocID << "] " << ioAirline);
       
     } catch (std::exception const& lException) {
-      STDAIR_LOG_ERROR ("Error: " << lException.what());
-      throw SQLDatabaseException();
+      throw SQLDatabaseException (lException.what());
     }
 
     return oHasRetrievedAirline;

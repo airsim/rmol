@@ -35,9 +35,10 @@ namespace stdair {
 
     if (_type == LAST_VALUE) {
       const std::string& lLabels = describeLabels();
-      STDAIR_LOG_ERROR ("The passenger type '" << iType
-                        << "' is not known. Known passenger types: " << lLabels);
-      throw CodeConversionException();
+      std::ostringstream oMessage;
+      oMessage << "The passenger type '" << iType
+               << "' is not known. Known passenger types: " << lLabels;
+      throw CodeConversionException (oMessage.str());
     }
   }
   

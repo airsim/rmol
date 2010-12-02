@@ -59,19 +59,19 @@ namespace stdair {
     _dbSession = new DBSession_T;
     
     try {
-
       // Open the connection to the database
       _dbSession->open (soci::mysql, lDBSessionConnectionString);
       
     } catch (std::exception const& lException) {
-      STDAIR_LOG_ERROR ("Error while opening a connection to database: "
-                        << lException.what());
-      STDAIR_LOG_ERROR ("Database parameters used:"
-                        << " db=" << iDBParams.getDBName()
-                        << " user=" << iDBParams.getUser()
-                        << " port=" << iDBParams.getPort()
-                        << " host=" << iDBParams.getHost());
-      throw SQLDatabaseConnectionImpossibleException();
+      std::ostringstream oMessage;
+      oMessage <<"Error while opening a connection to database: "
+               << lException.what() << std::endl
+               << "Database parameters used:"
+               << " db=" << iDBParams.getDBName()
+               << " user=" << iDBParams.getUser()
+               << " port=" << iDBParams.getPort()
+               << " host=" << iDBParams.getHost();
+      throw SQLDatabaseConnectionImpossibleException (oMessage.str());
     }
   }
     
@@ -95,7 +95,7 @@ namespace stdair {
   // //////////////////////////////////////////////////////////////////////
   DBSessionManager& DBSessionManager::instance() {
     if (_instance == NULL) {
-      throw NonInitialisedDBSessionManagerException();
+      throw NonInitialisedDBSessionManagerException("");
     }
     assert (_instance != NULL);
     return *_instance;
@@ -113,7 +113,7 @@ namespace stdair {
   // //////////////////////////////////////////////////////////////////////
   DBSession_T& DBSessionManager::getDBSession() const {
     if (_dbSession == NULL) {
-      throw NonInitialisedDBSessionManagerException();
+      throw NonInitialisedDBSessionManagerException ("");
     }
     assert (_dbSession != NULL);
     return *_dbSession;
