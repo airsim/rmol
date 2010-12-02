@@ -15,8 +15,8 @@
 #include <boost/tokenizer.hpp>
 #include <boost/lexical_cast.hpp>
 // StdAir
-#include <stdair/STDAIR_Types.hpp>
-#include <stdair/STDAIR_Service.hpp>
+#include <stdair/stdair_types.hpp>
+#include <stdair/stdair.hpp>
 #include <stdair/bom/BomManager.hpp>
 #include <stdair/bom/BomRoot.hpp>
 #include <stdair/bom/Inventory.hpp>
