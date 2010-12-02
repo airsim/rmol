@@ -5,9 +5,11 @@
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // StdAir
+#include <stdair/stdair_inventory_types.hpp>
 #include <stdair/bom/KeyAbstract.hpp>
 
 namespace stdair {
+
   /** Key of flight-date. */
   struct FlightDateKey : public KeyAbstract {
     

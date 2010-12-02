@@ -3,8 +3,8 @@
 // //////////////////////////////////////////////////////////////////////
 // STL
 #include <cassert>
-// STDAIR
-#include <stdair/stdair_types.hpp>
+#include <sstream>
+// StdAir
 #include <stdair/bom/YieldStore.hpp>
 
 namespace stdair {

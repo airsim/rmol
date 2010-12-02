@@ -5,6 +5,7 @@
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // StdAir
+#include <stdair/stdair_inventory_types.hpp>
 #include <stdair/bom/BomAbstract.hpp>
 #include <stdair/bom/InventoryKey.hpp>
 #include <stdair/bom/InventoryTypes.hpp>

@@ -3,8 +3,7 @@
 // //////////////////////////////////////////////////////////////////////
 // STL
 #include <cassert>
-// STDAIR
-#include <stdair/stdair_types.hpp>
+// StdAir
 #include <stdair/bom/Inventory.hpp>
 
 namespace stdair {

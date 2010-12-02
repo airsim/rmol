@@ -8,6 +8,8 @@
 #include <iosfwd>
 #include <string>
 // StdAir
+#include <stdair/stdair_inventory_types.hpp>
+#include <stdair/stdair_demand_types.hpp>
 #include <stdair/basic/StructAbstract.hpp>
 #include <stdair/bom/BookingRequestTypes.hpp>
 

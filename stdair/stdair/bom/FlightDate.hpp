@@ -4,7 +4,8 @@
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
-// STDAIR 
+// StdAir 
+#include <stdair/stdair_inventory_types.hpp>
 #include <stdair/bom/BomAbstract.hpp>
 #include <stdair/bom/FlightDateKey.hpp>
 #include <stdair/bom/FlightDateTypes.hpp>

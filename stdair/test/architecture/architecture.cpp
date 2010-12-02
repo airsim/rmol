@@ -7,11 +7,11 @@
 #include <iostream>
 #include <string>
 // StdAir
+#include <stdair/stdair_inventory_types.hpp>
 #include <stdair/bom/BomRoot.hpp>
 #include <stdair/bom/BomManager.hpp>
 #include <stdair/factory/FacBom.hpp>
 #include <stdair/factory/FacBomManager.hpp>
-#include <stdair/stdair_types.hpp>
 // Local
 //#include <test/architecture/MPBomRoot.hpp>
 #include <test/architecture/MPInventory.hpp>

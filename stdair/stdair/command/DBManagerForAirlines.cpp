@@ -12,7 +12,7 @@
 #include <mysql/soci-mysql.h>
 #endif // SOCI_HEADERS_BURIED
 // StdAir
-#include <stdair/stdair_types.hpp>
+#include <stdair/stdair_inventory_types.hpp>
 #include <stdair/bom/AirlineStruct.hpp>
 #include <stdair/dbadaptor/DbaAirline.hpp>
 #include <stdair/command/DBManagerForAirlines.hpp>

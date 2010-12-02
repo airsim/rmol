@@ -5,6 +5,7 @@
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // STDAIR 
+#include <stdair/stdair_types.hpp>
 #include <stdair/bom/BomAbstract.hpp>
 #include <stdair/bom/BucketKey.hpp>
 #include <stdair/bom/BucketTypes.hpp>

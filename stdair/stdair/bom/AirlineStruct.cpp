@@ -7,7 +7,6 @@
 #include <ostream>
 #include <sstream>
 // StdAir
-#include <stdair/stdair_types.hpp>
 #include <stdair/bom/AirlineStruct.hpp>
 
 namespace stdair {

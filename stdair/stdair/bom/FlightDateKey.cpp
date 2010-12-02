@@ -2,14 +2,13 @@
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // StdAir
-#include <stdair/stdair_types.hpp>
 #include <stdair/bom/FlightDateKey.hpp>
 
 namespace stdair {
 
   // ////////////////////////////////////////////////////////////////////
   FlightDateKey::FlightDateKey (const FlightNumber_T& iFlightNumber,
-                                    const Date_T& iFlightDate)
+                                const Date_T& iFlightDate)
     : _flightNumber (iFlightNumber), _flightDate (iFlightDate) {
   }
 

@@ -4,7 +4,10 @@
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
-// STDAIR
+// STL
+#include <string>
+// StdAir
+#include <stdair/stdair_inventory_types.hpp>
 #include <stdair/bom/BomAbstract.hpp>
 #include <stdair/bom/YieldStoreKey.hpp>
 #include <stdair/bom/YieldStoreTypes.hpp>

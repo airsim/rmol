@@ -2,7 +2,6 @@
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // StdAir
-#include <stdair/stdair_types.hpp>
 #include <stdair/bom/YieldStoreKey.hpp>
 
 namespace stdair {

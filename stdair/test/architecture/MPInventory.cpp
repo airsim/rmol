@@ -8,7 +8,7 @@
 // STL
 #include <cassert>
 // StdAir
-#include <stdair/stdair_types.hpp>
+#include <stdair/stdair_inventory_types.hpp>
 // Local
 #include <test/architecture/MPInventory.hpp>
 

@@ -3,6 +3,7 @@
 // //////////////////////////////////////////////////////////////////////
 // STL
 #include <cassert>
+#include <sstream>
 // STDAIR
 #include <stdair/basic/BasConst_BookingClass.hpp>
 #include <stdair/bom/SegmentDate.hpp>

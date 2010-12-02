@@ -3,7 +3,7 @@
 // //////////////////////////////////////////////////////////////////////
 // STL
 #include <cassert>
-// STDAIR
+// StdAir
 #include <stdair/stdair_types.hpp>
 #include <stdair/bom/AirlineFeature.hpp>
 

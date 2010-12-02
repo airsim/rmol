@@ -4,7 +4,10 @@
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
-// STDAIR
+// StdAir
+#include <stdair/stdair_basic_types.hpp>
+#include <stdair/stdair_date_time_types.hpp>
+#include <stdair/stdair_demand_types.hpp>
 #include <stdair/bom/BookingRequestTypes.hpp>
 
 namespace stdair {
