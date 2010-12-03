@@ -15,6 +15,6 @@
 #include <stdair/stdair_inventory_types.hpp>
 #include <stdair/stdair_rm_types.hpp>
 #include <stdair/stdair_date_time_types.hpp>
-#include <stdair/stdair_service.hpp>
+#include <stdair/stdair_service_types.hpp>
 
 #endif // __STDAIR_STDAIR_TYPES_HPP

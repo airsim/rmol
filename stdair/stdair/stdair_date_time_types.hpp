@@ -6,22 +6,9 @@
 // //////////////////////////////////////////////////////////////////////
 // STL
 #include <string>
-#include <vector>
-#include <map>
-// Boost Random
-#include <boost/random/linear_congruential.hpp>
-#include <boost/random/uniform_real.hpp>
-#include <boost/random/variate_generator.hpp>
 // Boost (Extended STL)
 #include <boost/date_time/gregorian/gregorian.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
-#include <boost/tuple/tuple.hpp>
-// StdAir
-#include <stdair/stdair_exceptions.hpp>
-#include <stdair/stdair_log.hpp>
-#include <stdair/stdair_db.hpp>
-#include <stdair/stdair_inventory_types.hpp>
-#include <stdair/stdair_service.hpp>
 
 namespace stdair {
 

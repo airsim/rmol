@@ -5,6 +5,7 @@
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // StdAir
+#include <stdair/stdair_db.hpp>
 #include <stdair/command/CmdAbstract.hpp>
 
 namespace stdair {
