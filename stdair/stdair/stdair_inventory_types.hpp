@@ -32,15 +32,6 @@ namespace stdair {
   /** Define the flight path code (code made by a suite of flight numbers). */
   typedef std::string FlightPathCode_T;
 
-  /** Define the list of class codes as a string. */
-  typedef std::string ClassList_String_T;
-
-  /** Define a number of segment-dates (in a path). */
-  typedef unsigned short NbOfSegments_T;
-
-  /** Define a number of airlines (in a path). */
-  typedef unsigned short NbOfAirlines_T;
-
   /** Map between the cabin codes and the booking class codes within
       each cabin. */
   typedef std::map<CabinCode_T, ClassList_String_T> CabinBookingClassMap_T;
@@ -70,10 +61,7 @@ namespace stdair {
   /** Define the number of seat which could not be used for the booking. */
   typedef double BlockSpace_T;
 
-  /** Define an availability. */
-  typedef double Availability_T;
-
-  /** Define an availability. */
+  /** Define an availability status (AVS). */
   typedef bool AvailabilityStatus_T;
 
   /** Define a list of availabilities. */

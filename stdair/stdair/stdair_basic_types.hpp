@@ -96,6 +96,21 @@ namespace stdair {
       (in a travel solution block). */
   typedef unsigned short NbOfTravelSolutions_T;
 
+  /** Define the list of class codes as a string. */
+  typedef std::string ClassList_String_T;
+
+  /** Define a number of segment-dates (in a path). */
+  typedef unsigned short NbOfSegments_T;
+
+  /** Define a number of airlines (in a path). */
+  typedef unsigned short NbOfAirlines_T;
+
+  /** Define an availability. */
+  typedef double Availability_T;
+
+  /** Define the price of a travel solution. */
+  typedef double Fare_T;
+
   // ///////////// Technical ////////////////
   /** File or directory name.
       <br>It may contain paths, relative or absolute (e.g., /foo/bar

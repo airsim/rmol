@@ -11,8 +11,5 @@ namespace stdair {
   /** Define a number of fare rules. */
   typedef double NbOfFareRules_T;
 
-  /** Define the fare of a travel solution. */
-  typedef double Fare_T;
-
 }
 #endif // __STDAIR_STDAIR_FARE_TYPES_HPP
