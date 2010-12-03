@@ -3,11 +3,8 @@
 // //////////////////////////////////////////////////////////////////////
 // STL
 #include <cassert>
-#include <istream>
-#include <ostream>
 #include <sstream>
 // StdAir
-#include <stdair/stdair_types.hpp>
 #include <stdair/basic/BasConst_BookingClass.hpp>
 #include <stdair/bom/TravelSolutionStruct.hpp>
 

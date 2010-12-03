@@ -6,6 +6,8 @@
 // //////////////////////////////////////////////////////////////////////
 // STL
 #include <string>
+// StdAir
+#include <stdair/stdair_rm_types.hpp>
 
 namespace stdair {
 

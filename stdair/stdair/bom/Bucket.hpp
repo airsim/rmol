@@ -4,8 +4,11 @@
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
-// STDAIR 
-#include <stdair/stdair_types.hpp>
+// STL
+#include <string>
+#include <iosfwd>
+// StdAir 
+#include <stdair/stdair_inventory_types.hpp>
 #include <stdair/bom/BomAbstract.hpp>
 #include <stdair/bom/BucketKey.hpp>
 #include <stdair/bom/BucketTypes.hpp>

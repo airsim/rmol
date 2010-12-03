@@ -7,6 +7,8 @@
 // STL
 #include <string>
 #include <vector>
+// StdAir
+#include <stdair/stdair_basic_types.hpp>
 
 namespace stdair {
 

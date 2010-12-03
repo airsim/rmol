@@ -9,10 +9,12 @@
 #include <string>
 #include <vector>
 // StdAir
+#include <stdair/stdair_basic_types.hpp>
 #include <stdair/basic/StructAbstract.hpp>
 #include <stdair/bom/BookingClassTypes.hpp>
 
 namespace stdair {
+
   /** Structure holding the elements of a travel solution. */
   struct TravelSolutionStruct : public StructAbstract {
   public:
