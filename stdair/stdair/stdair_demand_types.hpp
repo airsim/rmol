@@ -69,24 +69,11 @@ namespace stdair {
   /** Define the name of a WTP-component of characteristics pattern. */
   typedef boost::tuples::tuple<double, WTP_T> CharacteristicsWTP_tuple_T;
 
-  /** Number of passengers (in a group) for a booking. */
-  typedef unsigned short PartySize_T;
-
-  /** Define a number of requests. */
-  typedef double NbOfRequests_T;
-
-  /** Define a number of bookings. */
-  typedef NbOfRequests_T NbOfBookings_T;
-
   /** Define a number of cancellations (travellers). */
   typedef NbOfRequests_T NbOfCancellations_T;
 
   /** Define a number of no-shows. */
   typedef NbOfRequests_T NbOfNoShows_T;
-
-  /** Define a number of travel solutions
-      (in a travel solution block). */
-  typedef unsigned short NbOfTravelSolutions_T;
 
   /** Define a indicator of demand to class matching. */
   typedef double MatchingIndicator_T;

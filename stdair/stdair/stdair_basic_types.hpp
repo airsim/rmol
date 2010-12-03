@@ -14,9 +14,6 @@ namespace stdair {
   /** Event type */
   typedef std::string EventType_T;
   
-  /** Count */
-  typedef int Count_T;
-  
   /** Location code (3-letter-code, e.g., LON). */
   typedef std::string LocationCode_T;
   
@@ -29,6 +26,23 @@ namespace stdair {
   /** City code */
   typedef LocationCode_T CityCode_T;
   
+  /** Define the Airline Code type (2-letter-code, e.g., BA). */
+  typedef std::string AirlineCode_T;
+
+  /** Define the type for flight numbers. */
+  typedef unsigned short FlightNumber_T;
+
+  /** Define the cabin code (class of service, e.g., first, business,
+      economy). */
+  typedef std::string CabinCode_T;
+
+  /** Define the code of the fare family (e.g., 1, 2, 3, etc.). */
+  typedef std::string FamilyCode_T;
+
+  /** Define the booking class code (product segment class, e.g., H,
+      B, K, etc.). */
+  typedef std::string ClassCode_T;
+
   /** Define a identity number. */
   typedef unsigned long Identity_T;
 
@@ -65,6 +79,22 @@ namespace stdair {
 
   /** Define the number of seats required by a demand. */
   // typedef unsigned short NbOfSeats_T;
+
+  /** Count */
+  typedef int Count_T;
+  
+  /** Number of passengers (in a group) for a booking. */
+  typedef unsigned short PartySize_T;
+
+  /** Define a number of requests. */
+  typedef double NbOfRequests_T;
+
+  /** Define a number of bookings. */
+  typedef NbOfRequests_T NbOfBookings_T;
+
+  /** Define a number of travel solutions
+      (in a travel solution block). */
+  typedef unsigned short NbOfTravelSolutions_T;
 
   // ///////////// Technical ////////////////
   /** File or directory name.

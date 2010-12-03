@@ -4,7 +4,8 @@
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
-// STDAIR 
+// StdAir
+#include <stdair/stdair_inventory_types.hpp>
 #include <stdair/bom/BomAbstract.hpp>
 #include <stdair/bom/SegmentCabinKey.hpp>
 #include <stdair/bom/SegmentCabinTypes.hpp>

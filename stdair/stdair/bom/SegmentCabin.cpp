@@ -3,7 +3,8 @@
 // //////////////////////////////////////////////////////////////////////
 // STL
 #include <cassert>
-// STDAIR
+#include <sstream>
+// StdAir
 #include <stdair/basic/BasConst_BookingClass.hpp>
 #include <stdair/basic/BasConst_Inventory.hpp>
 #include <stdair/bom/SegmentCabin.hpp>

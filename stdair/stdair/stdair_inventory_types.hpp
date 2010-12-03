@@ -18,27 +18,10 @@ namespace stdair {
   /** Define the type for network ID. */
   typedef std::string NetworkID_T;
 
-  /** Define the Airline Code type (2-letter-code, e.g., BA). */
-  typedef std::string AirlineCode_T;
-
-    /** Define a list of airline code. */
+  /** Define a list of airline code. */
   typedef std::vector<AirlineCode_T> AirlineCodeList_T;
 
-  /** Define the type for flight numbers. */
-  typedef unsigned short FlightNumber_T;
-
-  /** Define the cabin code (class of service, e.g., first, business,
-      economy). */
-  typedef std::string CabinCode_T;
-
-  /** Define the code of the fare family (e.g., 1, 2, 3, etc.). */
-  typedef std::string FamilyCode_T;
-
-  /** Define the booking class code (product segment class, e.g., H,
-      B, K, etc.). */
-  typedef std::string ClassCode_T;
-
-    /** Define a list of class code. */
+  /** Define a list of class code. */
   typedef std::vector<ClassCode_T> ClassCodeList_T;
 
   /** Define the sub-class code (e.g., 0, 1, 2, etc.). The subclass is
