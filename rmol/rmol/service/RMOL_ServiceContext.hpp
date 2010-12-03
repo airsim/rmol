@@ -9,7 +9,8 @@
 // Boost
 #include <boost/shared_ptr.hpp>
 // StdAir
-#include <stdair/STDAIR_Types.hpp>
+#include <stdair/stdair_basic_types.hpp>
+#include <stdair/stdair_maths_types.hpp>
 // RMOL
 #include <rmol/RMOL_Types.hpp>
 #include <rmol/service/ServiceAbstract.hpp>
@@ -55,7 +56,7 @@ namespace RMOL {
   public:
     /** Set up the StudyStatManager. */
     void setUpStudyStatManager ();
-    
+
     
   private:
     // /////// Construction / initialisation ////////
@@ -63,7 +64,8 @@ namespace RMOL {
     RMOL_ServiceContext ();
     RMOL_ServiceContext (const RMOL_ServiceContext&);
     RMOL_ServiceContext (const stdair::AirlineCode_T&);
-    RMOL_ServiceContext (const stdair::AirlineCode_T&, const ResourceCapacity_T);
+    RMOL_ServiceContext (const stdair::AirlineCode_T&,
+                         const ResourceCapacity_T);
     void init (const ResourceCapacity_T);
     
     /** Initialise the StudyStatManager. */
@@ -97,8 +99,8 @@ namespace RMOL {
 
     /** Generate demand for a given (Gaussian) distribution. */
     GeneratedDemandVector_T* generateDemand (const int K,
-                                             const double& iMean,
-                                             const double& iDeviation);
+                                             const stdair::MeanValue_T&,
+                                             const stdair::StdDevValue_T&);
 
     /** Sum the two generated demand vectors . */
     GeneratedDemandVector_T* generateDemand (GeneratedDemandVector_T*,

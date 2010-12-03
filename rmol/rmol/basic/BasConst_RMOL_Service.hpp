@@ -7,7 +7,7 @@
 // STL
 #include <vector>
 // StdAir
-#include <stdair/STDAIR_Types.hpp>
+#include <stdair/stdair_basic_types.hpp>
 // RMOL
 #include <rmol/RMOL_Types.hpp>
 

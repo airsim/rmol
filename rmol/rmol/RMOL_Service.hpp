@@ -7,7 +7,7 @@
 // STL
 #include <string>
 // StdAir
-#include <stdair/STDAIR_Types.hpp>
+#include <stdair/stdair_basic_types.hpp>
 #include <stdair/basic/BasLogParams.hpp>
 // RMOL
 #include <rmol/RMOL_Types.hpp>

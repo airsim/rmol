@@ -109,7 +109,8 @@ namespace RMOL {
   
   // //////////////////////////////////////////////////////////////////////
   GeneratedDemandVector_T* RMOL_ServiceContext::
-  generateDemand (const int K, const double& iMean, const double& iDeviation) {
+  generateDemand (const int K, const stdair::MeanValue_T& iMean,
+                  const stdair::StdDevValue_T& iDeviation) {
     // Build a vector of K generated numbers from the given distribution
     // N(iMean, iDeviation) and add this vector to the
     // GeneratedDemandVector holder.

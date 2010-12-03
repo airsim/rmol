@@ -4,6 +4,7 @@
 // STL
 #include <cassert>
 #include <fstream>
+#include <limits>
 // StdAir
 #include <stdair/service/Logger.hpp>
 // RMOL
@@ -12,43 +13,43 @@
 namespace RMOL {
 
   /**--------------  BOM: Booking class/bucket data ----------------------- */ 
-    struct BookingClassData {
+  struct BookingClassData {
 
-      // Attributes
-      double _bookingCount;
-      double _fare;
-      double _sellupFactor;
-      bool _censorshipFlag;
+    // Attributes
+    double _bookingCount;
+    double _fare;
+    double _sellupFactor;
+    bool _censorshipFlag;
       
-      // Constructer
-      BookingClassData (const double iBookingCount, const double iFare, 
-                        const double iSellupFactor, const bool iCensorshipFlag)
-        : _bookingCount(iBookingCount), _fare(iFare), 
+    // Constructer
+    BookingClassData (const double iBookingCount, const double iFare, 
+                      const double iSellupFactor, const bool iCensorshipFlag)
+      : _bookingCount(iBookingCount), _fare(iFare), 
         _sellupFactor(iSellupFactor), _censorshipFlag(iCensorshipFlag) {
-      }
+    }
       
-      // Getters
-      double getFare () const {
-        return _fare;
-      }
+    // Getters
+    double getFare () const {
+      return _fare;
+    }
       
-      bool getCensorshipFlag () const {
-        return _censorshipFlag;
-      }
+    bool getCensorshipFlag () const {
+      return _censorshipFlag;
+    }
 
-      // Display
-      std::string toString() const {
-        std::ostringstream oStr;
-        oStr <<  std::endl 
-             << "[Booking class data information]" << std::endl
-             << "Booking counter: " << _bookingCount << std::endl
-             << "Fare: " << _fare << std::endl
-             << "Sell-up Factor: " << _sellupFactor << std::endl
-             << "censorshipFlag: " << _censorshipFlag << std::endl;
-        return oStr.str();
-      }
+    // Display
+    std::string toString() const {
+      std::ostringstream oStr;
+      oStr <<  std::endl 
+           << "[Booking class data information]" << std::endl
+           << "Booking counter: " << _bookingCount << std::endl
+           << "Fare: " << _fare << std::endl
+           << "Sell-up Factor: " << _sellupFactor << std::endl
+           << "censorshipFlag: " << _censorshipFlag << std::endl;
+      return oStr.str();
+    }
 
-    };
+  };
  
   /**--------------  BOM: Set of BookingClassData ----------------------- */ 
   struct BookingClassDataSet {
