@@ -66,10 +66,15 @@ namespace stdair {
   /** Define the number of seats required by a demand. */
   // typedef unsigned short NbOfSeats_T;
 
-  // //////////////////////////////////////////////////////////////////////
-  // Probability
-  /** Probability */
-  typedef float Probability_T;
+  // ///////////// Technical ////////////////
+  /** File or directory name.
+      <br>It may contain paths, relative or absolute (e.g., /foo/bar
+      or C:\foo\bar). */
+  typedef std::string Filename_T;
+  
+  /** Define the file address type (e.g. "a_directory/a_filename").
+      <br>NOTE: That type should be deprecated. */
+  typedef std::string FileAddress_T;
 
 }
 #endif // __STDAIR_STDAIR_BASIC_TYPES_HPP

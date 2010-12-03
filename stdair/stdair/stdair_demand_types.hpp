@@ -66,6 +66,9 @@ namespace stdair {
   /** Define a Willingness-To-Pay (WTP) (e.g., 1000.0 Euros). */
   typedef double WTP_T;
 
+  /** Define the name of a WTP-component of characteristics pattern. */
+  typedef boost::tuples::tuple<double, WTP_T> CharacteristicsWTP_tuple_T;
+
   /** Number of passengers (in a group) for a booking. */
   typedef unsigned short PartySize_T;
 
@@ -85,13 +88,15 @@ namespace stdair {
       (in a travel solution block). */
   typedef unsigned short NbOfTravelSolutions_T;
 
+  /** Define a indicator of demand to class matching. */
+  typedef double MatchingIndicator_T;
+
   /** Define the name of an event. */
   typedef std::string EventName_T;
 
   /** Define a number of events. */
   typedef double NbOfEvents_T;
 
-  // //////////////////////////////////////////////////////////////////////
   /** Type definition for the hashed key of the DemandStreamKey object. */
   typedef std::string DemandStreamKeyStr_T;
 
@@ -104,6 +109,13 @@ namespace stdair {
 
   /** Type of frequent flyer (P=Platinum, G=Gold, S=Silver, M=Member, N=None).*/
   typedef std::string FrequentFlyer_T;
+
+  /** Define the Request status for booking (1-letter-code, e.g.,
+      B: booked, C: cancelled, R: Rejected). */
+  typedef std::string RequestStatus_T;
+
+  /** Define a map between a BookingID and a TravelSolutionID. */
+  typedef std::map<Identity_T, Identity_T> BookingTSIDMap_T;
 
 }
 #endif // __STDAIR_STDAIR_DEMAND_TYPES_HPP

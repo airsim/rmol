@@ -15,6 +15,9 @@
 namespace stdair {
 
   // //////// Type definitions /////////
+  /** Define the type for network ID. */
+  typedef std::string NetworkID_T;
+
   /** Define the Airline Code type (2-letter-code, e.g., BA). */
   typedef std::string AirlineCode_T;
 
@@ -122,5 +125,8 @@ namespace stdair {
   /** Define the current index of a Bid-Price Vector (for a given LegCabin). */
   typedef unsigned int SeatIndex_T;
   
+  /** Mode of inventory control. */
+  typedef std::string ControlMode_T;
+
 }
 #endif // __STDAIR_STDAIR_INVENTORY_TYPES_HPP
