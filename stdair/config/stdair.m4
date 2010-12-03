@@ -83,7 +83,7 @@ AC_ARG_WITH(stdair,
 
    	AC_COMPILE_IFELSE(
 		AC_LANG_PROGRAM([[
-				#include <stdair/stdair.hpp> 
+				#include <stdair/STDAIR_Service.hpp> 
 				]],
 				[[int i=0;]]
 		)
