@@ -15,7 +15,7 @@
 #include <stdair/service/FacSupervisor.hpp>
 #include <stdair/service/Logger.hpp>
 #include <stdair/service/DBSessionManager.hpp>
-#include <stdair/stdair.hpp>
+#include <stdair/STDAIR_Service.hpp>
 
 namespace stdair {
 
