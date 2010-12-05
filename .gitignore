@@ -16,4 +16,5 @@ config/lt~obsolete.m4
 config/missing
 configure
 stdair/config.h.in
+test/stdair/StandardAirlineITTestSuite_results.xml
 
