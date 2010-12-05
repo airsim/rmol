@@ -32,9 +32,9 @@ fi
 rm -f config.cache acconfig.h
 
 echo "- autoreconf."     	&& \
-autoreconf -fvi          	&& \
-echo "- configure."		&& \
-./configure "$@"		&& exit 0
+autoreconf -fvi          	&& exit 0
+
+#echo "- configure."     && ./configure "$@" && exit 0
 
 exit 1
 
