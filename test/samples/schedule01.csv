@@ -1,7 +1,0 @@
-// Flights:   AirlineCode; FlightNumber; Date-Range; ; DOW; Legs; Segments;
-// Legs:      BoardPoint; OffPoint; BoardTime; ArrivalDateOffSet; ArrivalTime;
-//            ElapsedTime; LegCabins;
-// LegCabins: CabinCode; Capacity;
-// Segments: Specific; 
-SQ; 11; 2010-01-15; 2010-02-28; 1111111; SIN; BKK; 08:20; 11:00; 07:40; Y; 300; 0; Y; YM; 1; Y; 2; M;
-SQ; 12; 2010-01-15; 2010-02-28; 1111111; SIN; HND; 09:20; 12:00; 07:40; Y; 200; 0; Y; YM; 1; Y; 2; M;
