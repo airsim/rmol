@@ -8,6 +8,7 @@ configure
 doc/
 man/
 samples/
-airinv
-test
+stdair/
+airinv/
+test/
 
