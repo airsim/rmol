@@ -1,0 +1,14 @@
+tmp
+INSTALL
+Makefile.in
+aclocal.m4
+autom4te.cache/
+config/
+configure
+doc/
+man/
+samples/
+stdair/
+airinv/
+test/
+

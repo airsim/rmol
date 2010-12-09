@@ -1,25 +1,13 @@
-## samples sub-directory
-include $(srcdir)/sources.mk
+## test/samples sub-directory
+include $(top_srcdir)/Makefile.common
 
-datadir = @datadir@
-pkgdatadir = $(datadir)/@PACKAGE@
-sampledir = $(pkgdatadir)/samples
+MAINTAINERCLEANFILES = Makefile.in
 
-MAINTAINERCLEANFILES = Makefile.in Makefile
+##
+SUBDIRS =
 
-noinst_DATA = $(sample_csv_sources) 
+EXTRA_DIST = demand01.csv \
+	rm01.csv rm02.csv rm03.csv rm04.csv \
+	schedule01.csv schedule02.csv
+##
 
-EXTRA_DIST = $(noinst_DATA)
-
-# Targets
-install-data-local:
-	$(mkinstalldirs) $(DESTDIR)$(sampledir); \
-	for f in $(sample_csv_sources); do \
-		$(INSTALL_DATA) $$f $(DESTDIR)$(sampledir); \
-	done
-
-uninstall-local:
-	rm -rf $(DESTDIR)$(sampledir)
-
-clean-local:
-	rm -rf *.log *.tag

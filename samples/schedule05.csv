@@ -1,0 +1,7 @@
+// Flights:   AirlineCode; FlightNumber; Date-Range; ; DOW; Legs; Segments;
+// Legs:      BoardPoint; OffPoint; BoardTime; ArrivalDateOffSet; ArrivalTime;
+//            ElapsedTime; LegCabins;
+// LegCabins: CabinCode; Capacity;
+// Segments: Specific; 
+XX; 0701; 2010-02-18; 2010-02-18; 1111111; XDT; XGB; 07:00; 07:05; 00:05; Y; 100; XGB; XSH; 07:10; 08:03; 00:53; Y; 100; 0; Y; Y;
+XX; 0901; 2010-02-18; 2010-02-18; 1111111; XDT; XGB; 09:00; 09:05; 00:05; Y; 100; XGB; XSH; 09:10; 10:03; 00:53; Y; 100; 0; Y; Y;
