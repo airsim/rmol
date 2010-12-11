@@ -354,7 +354,6 @@ AC_CONFIG_FILES(
 	rmol/core/Makefile
 	rmol/config/Makefile
 	rmol/batches/Makefile
-	samples/Makefile
 	man/Makefile
 	info/Makefile
 	doc/Makefile
