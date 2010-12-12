@@ -6,6 +6,8 @@
 #include <cassert>
 #include <string>
 #include <numeric>
+#include <algorithm>
+#include <cmath>
 // StdAir
 #include <stdair/service/Logger.hpp>
 // RMOL
@@ -18,8 +20,8 @@ namespace RMOL {
                                         std::vector<double>& iVector) {
 
     assert(!iVector.empty());
-    std::vector<double>::iterator pos = min_element (iVector.begin(), 
-                                                     iVector.end());
+    std::vector<double>::iterator pos = std::min_element (iVector.begin(), 
+                                                          iVector.end());
     oMinValue = *pos;
 
   }
@@ -81,7 +83,7 @@ namespace RMOL {
       lSD += (lElement - iMean) * (lElement - iMean);
     }
     lSD /= (lSize - 1);
-    oSD = sqrt(lSD);
+    oSD = std::sqrt (lSD);
   }
 
   // /////////////////////////////////////////////////////////////////////
@@ -145,8 +147,8 @@ namespace RMOL {
   }
 
   // /////////////////////////////////////////////////////////////////////
-  static void appendAVectorToAnother (std::vector<double>& ioVector,
-                                      std::vector<double>& iVector) {
+  void appendAVectorToAnother (std::vector<double>& ioVector,
+                               std::vector<double>& iVector) {
     ioVector.insert(ioVector.end(), iVector.begin(), iVector.end());
   }
 
