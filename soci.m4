@@ -176,10 +176,14 @@ AC_DEFUN([AX_SOCI],
 		SOCI_LIBS="-L${SOCI_libdir}"
 	fi
 	
+	# Checking whether or not the headers are buried
+	AC_MSG_CHECKING(for Soci whether headers are buried)
 	if test "$SOCI_areHeadersBuried" = true
 	then
-		AC_MSG_RESULT(Soci headers are buried.)
+		AC_MSG_RESULT(they are => -DSOCI_HEADERS_BURIED -DSOCI_MYSQL_HEADERS_BURIED added to SOCI_CFLAGS.)
 		SOCI_CFLAGS="-DSOCI_HEADERS_BURIED -DSOCI_MYSQL_HEADERS_BURIED ${SOCI_CFLAGS}"
+	else
+		AC_MSG_RESULT(they are not.)
 	fi
 
         SOCI_CFLAGS="${MYSQL_CFLAGS} ${SOCI_CFLAGS}"
