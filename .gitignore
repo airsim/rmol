@@ -9,6 +9,7 @@ doc/
 man/
 samples/
 stdair/
-airinv/
 test/
+airinv/
+simlfs/
 
