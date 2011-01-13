@@ -48,6 +48,9 @@ config/wchar_t.m4
 config/wint_t.m4
 config/xsize.m4
 configure
+info/rmol-ref.info
+info/stamp-vti
+info/version-ref.texi
 po/Makevars.template
 rmol/config.h.in*
 test/rmol/*_results.xml
