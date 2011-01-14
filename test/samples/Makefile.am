@@ -1,13 +1,31 @@
-## test/samples sub-directory
+## samples sub-directory of the StdAir project
 include $(top_srcdir)/Makefile.common
-
-MAINTAINERCLEANFILES = Makefile.in
+include $(srcdir)/sources.mk
 
 ##
 SUBDIRS =
 
-EXTRA_DIST = demand01.csv \
-	rm01.csv rm02.csv rm03.csv rm04.csv \
-	schedule01.csv schedule02.csv
-##
+MAINTAINERCLEANFILES = Makefile.in Makefile
 
+##
+datadir = @datadir@
+pkgdatadir = @pkgdatadir@
+sampledir = @sampledir@
+
+#
+noinst_DATA = $(sample_csv_sources) 
+
+EXTRA_DIST = $(noinst_DATA)
+
+# Targets
+install-data-local:
+	$(mkinstalldirs) $(DESTDIR)$(sampledir); \
+	for f in $(sample_csv_sources); do \
+		$(INSTALL_DATA) $$f $(DESTDIR)$(sampledir); \
+	done
+
+uninstall-local:
+	rm -rf $(DESTDIR)$(sampledir)
+
+clean-local:
+	rm -rf *.log *.tag
