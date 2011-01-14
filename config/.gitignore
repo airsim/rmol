@@ -8,7 +8,17 @@ configure
 doc/
 man/
 samples/
-stdair/
-airinv/
 test/
+airinv/
+airrac/
+airsched
+avlcal/
+dsim/
+rmol/
+stdair/
+simcrs/
+simfqt/
+simlfs/
+trademgen/
+travelccm/
 
