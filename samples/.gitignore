@@ -7,6 +7,8 @@ config/
 configure
 doc/
 man/
+info/
+po/
 samples/
 test/
 airinv/
