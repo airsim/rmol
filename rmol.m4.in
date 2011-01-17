@@ -1,23 +1,28 @@
 #
-# Configure path for the @PACKAGE_NAME@ library.
-# Denis Arnaud <denis_arnaud@users.sourceforge.net>, July 2008
+# Configure paths and flags for the @PACKAGE_PRETTY_NAME@ library.
+# Denis Arnaud <denis_arnaud at users dot sourceforge dot net>, July 2008
 #
-# Note: as the @PACKAGE_NAME@ library depends upon GSL (and
-# potentially BOOST) to build. Your configure.ac must define
-# appropriately the GSL_CFLAGS (and potentially BOOST_CFLAGS)
-# variables.
+# Note: the @PACKAGE_NAME@ library depends upon BOOST to build.
+# Your configure.ac must therefore define appropriately the BOOST
+# variables (i.e., BOOST_CFLAGS, BOOST_LIBS, BOOST_DATE_TIME_LIB).
 #
-
+# Variables set by this macro:
+#  * @PACKAGE_NAME@_VERSION
+#  * @PACKAGE_NAME@_CFLAGS
+#  * @PACKAGE_NAME@_LIBS
+#  * @PACKAGE_NAME@_SAMPLE_DIR
+#
 
 AC_DEFUN([AM_PATH_@PACKAGE_NAME@],
 [
 AC_LANG_SAVE
 AC_LANG([C++])
 
+##
 AC_ARG_WITH(@PACKAGE@,
-	[ --with-@PACKAGE@=PFX   Prefix where @PACKAGE_NAME@ is installed (optional)],
-    @PACKAGE@_dir="$withval",
-	@PACKAGE@_dir="")
+	[ --with-@PACKAGE@=PFX Prefix where @PACKAGE_PRETTY_NAME@ is installed (optional) ],
+	    @PACKAGE@_dir="$withval",
+	    @PACKAGE@_dir="")
 
   if test "x${@PACKAGE_NAME@_CONFIG+set}" != xset ; then
      if test "x$@PACKAGE@_dir" != x ; then
@@ -27,54 +32,58 @@ AC_ARG_WITH(@PACKAGE@,
 
   AC_PATH_PROG(@PACKAGE_NAME@_CONFIG, @PACKAGE@-config, no)
 
-  # Check whether Boost flags and libraries are defined
-  AC_MSG_CHECKING(for GSL_CFLAGS environment variable)
-  if test x"${GSL_CFLAGS}" = x; then
-	AC_MSG_RESULT([Warning: @PACKAGE_NAME@ needs the GSL, and the GSL_CFLAGS environment variable does not appear to be set. It may not be a problem, though, if your Unix distribution is standard, that is, if GSL is installed in /usr/local. Otherwise, the @PACKAGE_NAME@ will fail to compile.])
-	else
-	AC_MSG_RESULT([ok (set to ${GSL_CFLAGS})])
+  ## Check whether Boost flags and libraries are defined
+  # General Boost compilation flags
+  AC_MSG_CHECKING(for BOOST_CFLAGS environment variable)
+  if test x"${BOOST_CFLAGS}" = x; then
+	AC_MSG_RESULT([Warning: @PACKAGE_PRETTY_NAME@ needs Boost, and the BOOST_CFLAGS environment variable does not appear to be set. It may not be a problem, though, if your Unix distribution is standard, that is, if Boost is installed in /usr. Otherwise, the @PACKAGE_PRETTY_NAME@ will fail to compile.])
+  else
+	AC_MSG_RESULT([ok (set to ${BOOST_CFLAGS})])
   fi
 
-  AC_MSG_CHECKING(for GSL_LIBS environment variable)
-  if test x"${GSL_LIBS}" = x; then
-	AC_MSG_RESULT([Warning: @PACKAGE_NAME@ needs the GSL library, and the GSL_LIBS environment variable does not appears to be set. The @PACKAGE_NAME@ may fail to link.])
-	else
-	AC_MSG_RESULT([ok (set to ${GSL_LIBS})])
+  # Boost Date-Time library
+  AC_MSG_CHECKING(for BOOST_DATE_TIME_LIB environment variable)
+  if test x"${BOOST_DATE_TIME_LIB}" = x; then
+	AC_MSG_RESULT([Warning: @PACKAGE_PRETTY_NAME@ needs the Boost Date-Time library, and the BOOST_DATE_TIME_LIB environment variable does not appears to be set. The @PACKAGE_PRETTY_NAME@ may fail to link.])
+  else
+	AC_MSG_RESULT([ok (set to ${BOOST_DATE_TIME_LIB})])
   fi
 
-  # Check whether Boost flags and libraries are defined
-#  AC_MSG_CHECKING(for BOOST_CFLAGS environment variable)
-#  if test x"${BOOST_CFLAGS}" = x; then
-#	AC_MSG_RESULT([Warning: @PACKAGE_NAME@ needs Boost, and the BOOST_CFLAGS environment variable does not appear to be set. It may not be a problem, though, if your Unix distribution is standard, that is, if Boost is installed in /usr/local. Otherwise, the @PACKAGE_NAME@ will fail to compile.])
-#	else
-#	AC_MSG_RESULT([ok (set to ${BOOST_CFLAGS})])
-#  fi
+  # Boost Program Options library
+  AC_MSG_CHECKING(for BOOST_PROGRAM_OPTIONS_LIB environment variable)
+  if test x"${BOOST_PROGRAM_OPTIONS_LIB}" = x; then
+	AC_MSG_RESULT([Warning: @PACKAGE_PRETTY_NAME@ needs the Boost Program Options library, and the BOOST_PROGRAM_OPTIONS_LIB environment variable does not appears to be set. The @PACKAGE_PRETTY_NAME@ may fail to link.])
+  else
+	AC_MSG_RESULT([ok (set to ${BOOST_PROGRAM_OPTIONS_LIB})])
+  fi
 
-#  AC_MSG_CHECKING(for BOOST_DATE_TIME_LIB environment variable)
-#  if test x"${BOOST_DATE_TIME_LIB}" = x; then
-#	AC_MSG_RESULT([Warning: @PACKAGE_NAME@ needs Boost Date-Time library, and the BOOST_DATE_TIME_LIB environment variable does not appears to be set. The @PACKAGE_NAME@ may fail to link.])
-#	else
-#	AC_MSG_RESULT([ok (set to ${BOOST_DATE_TIME_LIB})])
-#  fi
+  # Boost File System library
+  AC_MSG_CHECKING(for BOOST_FILESYSTEM_LIB environment variable)
+  if test x"${BOOST_FILESYSTEM_LIB}" = x; then
+	AC_MSG_RESULT([Warning: @PACKAGE_PRETTY_NAME@ needs the Boost Date-Time library, and the BOOST_FILESYSTEM_LIB environment variable does not appears to be set. The @PACKAGE_PRETTY_NAME@ may fail to link.])
+  else
+	AC_MSG_RESULT([ok (set to ${BOOST_FILESYSTEM_LIB})])
+  fi
 
-  min_@PACKAGE@_version=ifelse([$1], ,0.11.0,$1)
-  AC_MSG_CHECKING(for @PACKAGE_NAME@ - version >= $min_@PACKAGE@_version)
+  ## @PACKAGE_PRETTY_NAME@ version
+  min_@PACKAGE@_version=ifelse([$1], ,0.1.0,$1)
+  AC_MSG_CHECKING(for @PACKAGE_PRETTY_NAME@ - version >= $min_@PACKAGE@_version)
   no_@PACKAGE@=""
   if test "${@PACKAGE_NAME@_CONFIG}" = "no" ; then
-    no_@PACKAGE@=yes
-	AC_MSG_RESULT([no])
+     no_@PACKAGE@=yes
+     AC_MSG_RESULT([no])
   else
-	@PACKAGE_NAME@_VERSION=`${@PACKAGE_NAME@_CONFIG} --version`
-    @PACKAGE_NAME@_CFLAGS=`${@PACKAGE_NAME@_CONFIG} --cflags`
-    @PACKAGE_NAME@_CFLAGS="${GSL_CFLAGS} ${@PACKAGE_NAME@_CFLAGS}"
-#    @PACKAGE_NAME@_CFLAGS="${BOOST_CFLAGS} ${@PACKAGE_NAME@_CFLAGS}"
-    @PACKAGE_NAME@_LIBS=`${@PACKAGE_NAME@_CONFIG} --libs`
-    @PACKAGE_NAME@_LIBS="${GSL_LIBS} ${@PACKAGE_NAME@_LIBS}"
-#    @PACKAGE_NAME@_LIBS="${BOOST_LIBS} ${BOOST_DATE_TIME_LIB} ${@PACKAGE_NAME@_LIBS}"
+     @PACKAGE_NAME@_VERSION=`${@PACKAGE_NAME@_CONFIG} --version`
+     @PACKAGE_NAME@_CFLAGS=`${@PACKAGE_NAME@_CONFIG} --cflags`
+     @PACKAGE_NAME@_CFLAGS="${BOOST_CFLAGS} ${@PACKAGE_NAME@_CFLAGS}"
+     @PACKAGE_NAME@_LIBS=`${@PACKAGE_NAME@_CONFIG} --libs`
+     @PACKAGE_NAME@_LIBS="${BOOST_LIBS} ${BOOST_DATE_TIME_LIB} ${@PACKAGE_NAME@_LIBS}"
+     @PACKAGE_NAME@_SAMPLE_DIR=`${@PACKAGE_NAME@_CONFIG} --sampledir`
 
-	AC_SUBST([@PACKAGE_NAME@_VERSION])
-	AC_SUBST([@PACKAGE_NAME@_CFLAGS])
-	AC_SUBST([@PACKAGE_NAME@_LIBS])
+     AC_SUBST([@PACKAGE_NAME@_VERSION])
+     AC_SUBST([@PACKAGE_NAME@_CFLAGS])
+     AC_SUBST([@PACKAGE_NAME@_LIBS])
+     AC_SUBST([@PACKAGE_NAME@_SAMPLE_DIR])
 
     @PACKAGE@_major_version=`echo ${@PACKAGE_NAME@_VERSION} | sed 's/^\([[0-9]]*\).*/\1/'`
     if test "x${@PACKAGE@_major_version}" = "x" ; then
@@ -93,16 +102,15 @@ AC_ARG_WITH(@PACKAGE@,
        @PACKAGE@_micro_version=0
     fi
 
+    ## Simple test of compilation and link
+    SAVED_CPPFLAGS="${CPPFLAGS}"
+    SAVED_LDFLAGS="${LDFLAGS}"
+    CPPFLAGS="${CPPFLAGS} ${BOOST_CFLAGS} ${@PACKAGE_NAME@_CFLAGS}"
+    LDFLAGS="${LDFLAGS} ${@PACKAGE_NAME@_LIBS}"
 
-	SAVED_CPPFLAGS="${CPPFLAGS}"
-	SAVED_LDFLAGS="${LDFLAGS}"
-	CPPFLAGS="${CPPFLAGS} ${GSL_CFLAGS} ${BOOST_CFLAGS} ${@PACKAGE_NAME@_CFLAGS}"
-	LDFLAGS="${LDFLAGS} ${GSL_LIBS} ${@PACKAGE_NAME@_LIBS}"
 
-
-   	AC_COMPILE_IFELSE(
-		AC_LANG_PROGRAM([[
-				#include <@PACKAGE@/@PACKAGE_NAME@_Service.hpp> 
+    AC_COMPILE_IFELSE(
+		AC_LANG_PROGRAM([[#include <@PACKAGE@/@PACKAGE_NAME@_Service.hpp>
 				]],
 				[[int i=0;]]
 		)
@@ -110,13 +118,11 @@ AC_ARG_WITH(@PACKAGE@,
 
     	[AC_MSG_RESULT([yes (${@PACKAGE_NAME@_VERSION})])],
 
-		[
-		AC_MSG_ERROR([We could not compile a simple @PACKAGE_NAME@ example. See config.log.])
-		]
-	)
+	[AC_MSG_ERROR([We could not compile a simple @PACKAGE_PRETTY_NAME@ example. See config.log.])]
+    )
 
-	CPPFLAGS="${SAVED_CPPFLAGS}"
-	LDFLAGS="${SAVED_LDFLAGS}"
+    CPPFLAGS="${SAVED_CPPFLAGS}"
+    LDFLAGS="${SAVED_LDFLAGS}"
 
   fi
 

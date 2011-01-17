@@ -1,14 +1,19 @@
 # Process this file with autoconf to produce a configure script
 #-------------------------------------------------------------------
 AC_PREREQ(2.59)
-AC_COPYRIGHT([Copyright (C) 2007-2010  Denis Arnaud <denis_arnaud@users.sourceforge.net>])
+AC_COPYRIGHT([Copyright (C) 2007-2011 Denis Arnaud <denis_arnaud@users.sourceforge.net>])
 AC_INIT([RMOL],[99.99.99],[denis_arnaud@users.sourceforge.net],[rmol])
 AC_CONFIG_HEADER([rmol/config.h])
 AC_CONFIG_SRCDIR([rmol/basic/BasConst.cpp])
 AC_CONFIG_AUX_DIR([config])
+AC_CONFIG_MACRO_DIR([config])
 AM_INIT_AUTOMAKE
 AM_PATH_CPPUNIT(1.10)
 AM_CONDITIONAL([HAVE_CPPUNIT], [test "x$CPPUNIT_LIBS" != x])
+
+# Package name
+PACKAGE_PRETTY_NAME="RMOL"
+AC_SUBST(PACKAGE_PRETTY_NAME)
 
 # Shared library versioning
 GENERIC_LIBRARY_VERSION="99:99:99"
@@ -68,6 +73,13 @@ AC_ARG_ENABLE(exceptions,
                          [Define if you want exceptions handling])])
 test "x$enable_exceptions" != xno && enable_exceptions=yes
 
+# Set the data directory for RMOL
+pkgdatadir="${datadir}/rmol"
+AC_SUBST(pkgdatadir)
+# Set the directory for data samples exported by RMOL
+sampledir="${pkgdatadir}/samples"
+AC_SUBST(sampledir)
+
 # Check for info pages
 AC_ARG_ENABLE(info-doc, 
               [AS_HELP_STRING([--disable-info-doc],
@@ -117,9 +129,9 @@ AC_SUBST(EXTRACC_LIBS)
 # ---------------------------------------------------------
 # GSL (GNU Scientific Library: http://gnu.org/projects/gsl)
 # ---------------------------------------------------------
-# Provide --with-gsl
+# Note: GSL is now used only to be compared with Boost.Maths
 AM_PATH_GSL([1.8])
-GSL_VERSION=`${GSL_CONFIG} --version`
+AC_SUBST(GSL_VERSION)
 AC_SUBST(GSL_CFLAGS)
 AC_SUBST(GSL_LIBS)
 
@@ -133,21 +145,20 @@ AC_SUBST(PYTHON_CFLAGS)
 AC_SUBST(PYTHON_ADD_LIBS)
 
 # -----------------------------------------------------------
-# MPICH2: http://www.mcs.anl.gov/research/projects/mpich2
-# Note: Boost.MPI depends on MPICH2, rather than on OpenMPI
-# -----------------------------------------------------------
-#AX_MPICH2
-#AC_SUBST(MPICH2_VERSION)
-#AC_SUBST(MPICH2_CFLAGS)
-#AC_SUBST(MPICH2_LIBS)
-
-# -----------------------------------------------------------
 # OpenMPI: http://www.open-mpi.org
 # -----------------------------------------------------------
 #AX_OPENMPI
-#AC_SUBST(OPENMPI_VERSION)
-#AC_SUBST(OPENMPI_CFLAGS)
-#AC_SUBST(OPENMPI_LIBS)
+#AC_SUBST(MPIGEN_VERSION)
+#AC_SUBST(MPIGEN_CFLAGS)
+#AC_SUBST(MPIGEN_LIBS)
+
+# -----------------------------------------------------------
+# MPICH2: http://www.mcs.anl.gov/research/projects/mpich2
+# -----------------------------------------------------------
+#AX_MPICH2
+#AC_SUBST(MPIGEN_VERSION)
+#AC_SUBST(MPIGEN_CFLAGS)
+#AC_SUBST(MPIGEN_LIBS)
 
 # --------------------------------------------------------
 # Boost (STL Extensions: http://www.boost.org)
@@ -161,10 +172,11 @@ AC_SUBST(BOOST_PROGRAM_OPTIONS_LIB)
 AC_SUBST(BOOST_FILESYSTEM_LIB)
 AC_SUBST(BOOST_THREAD_LIB)
 AC_SUBST(BOOST_PYTHON_LIB)
+AC_SUBST(BOOST_SIGNALS_LIB)
+AC_SUBST(BOOST_IOSTREAMS_LIB)
 AC_SUBST(BOOST_ASIO_LIB)
 AC_SUBST(BOOST_MPI_LIB)
 AC_SUBST(BOOST_MPI_PYTHON_LIB)
-AC_SUBST(BOOST_UNIT_TEST_FRAMEWORK_LIB)
 
 # --------------------------------------------------------------------
 # Support for MySQL (C client API): http://www.mysql.org
@@ -185,10 +197,11 @@ AC_SUBST(SOCI_LIBS)
 # -----------------------------------------------------------------------------
 # Support for StdAir (): http://sf.net/projects/stdair
 # -----------------------------------------------------------------------------
-AM_PATH_STDAIR
+AM_PATH_STDAIR([0.10.0])
 AC_SUBST(STDAIR_VERSION)
 AC_SUBST(STDAIR_CFLAGS)
 AC_SUBST(STDAIR_LIBS)
+AC_SUBST(STDAIR_SAMPLE_DIR)
 
 # -------------------------------------------------------------------
 # Support for documentation
@@ -363,8 +376,8 @@ AC_CONFIG_FILES(
 	doc/local/Makefile
 	doc/doxygen_html.cfg
 	po/Makefile.in
+	samples/Makefile
 	test/Makefile
-	test/samples/Makefile
 	test/architecture/Makefile
 	test/gsl_vs_boost/Makefile
 	test/valarrays/Makefile
@@ -372,98 +385,126 @@ AC_CONFIG_FILES(
 	win32/Makefile)
 AC_OUTPUT
 
+# OpenMPI
+if test "x$HAVE_OPENMPI" = "x1"; then
+   OPENMPI_OUTPUT="  - OPENMPI ................ :
+    o OPENMPI_VERSION ...... : ${MPIGEN_VERSION}
+    o OPENMPI_CFLAGS ....... : ${MPIGEN_CFLAGS}
+    o OPENMPI_LIBS ......... : ${MPIGEN_LIBS}"
+else
+   OPENMPI_OUTPUT="  - OPENMPI ................ : No"
+fi
+
+# MPICH2
+if test "x$HAVE_MPICH2" = "x1"; then
+   MPICH2_OUTPUT="  - MPICH2 ................. :
+    o MPICH2_VERSION ....... : ${MPIGEN_VERSION}
+    o MPICH2_CFLAGS ........ : ${MPIGEN_CFLAGS}
+    o MPICH2_LIBS .......... : ${MPIGEN_LIBS}"
+else
+   MPICH2_OUTPUT="  - MPICH2 ................. : No"
+fi
+
 echo "
 ------------------------------------------------------------------------------
 $PACKAGE-$VERSION library configuration:
 ------------------------------------------------------------------------------
 
 Directories:
-  - prefix ............ : ${prefix}
-  - exec_prefix ....... : ${exec_prefix}
-  - includedir ........ : ${includedir}
-  - libdir ............ : ${libdir}
-  - docdir ............ : ${docdir}
-  - mandir ............ : ${mandir}
-  - infodir ........... : ${infodir}
+  - prefix ................. : ${prefix}
+  - exec_prefix ............ : ${exec_prefix}
+  - includedir ............. : ${includedir}
+  - libdir ................. : ${libdir}
+  - datarootdir ............ : ${datarootdir}
+  - datadir ................ : ${datadir}
+  - pkgdatadir ............. : ${pkgdatadir}
+  - sampledir .............. : ${sampledir}
+  - docdir ................. : ${docdir}
+  - mandir ................. : ${mandir}
+  - infodir ................ : ${infodir}
 
 Switches:
-  - exceptions ........ : ${enable_exceptions}
-  - use-nls ........... : ${USE_NLS}
-  - info-doc .......... : ${enable_info_doc}
-  - html-doc .......... : ${enable_html_doc}
-  - shared ............ : ${enable_shared}
-  - static ............ : ${enable_static}
+  - exceptions ............. : ${enable_exceptions}
+  - use-nls ................ : ${USE_NLS}
+  - info-doc ............... : ${enable_info_doc}
+  - html-doc ............... : ${enable_html_doc}
+  - shared ................. : ${enable_shared}
+  - static ................. : ${enable_static}
 
 Documentation tools:
-  - texinfo ........... : ${texinfo_ok}
-  - doxygen ........... : ${doxygen_ok}
-  - latex ............. : ${latex_ok}
-  - dvips ............. : ${dvips_ok}
-  - ghostscript ....... : ${gs_ok}
+  - texinfo ................ : ${texinfo_ok}
+  - doxygen ................ : ${doxygen_ok}
+  - latex .................. : ${latex_ok}
+  - dvips .................. : ${dvips_ok}
+  - ghostscript ............ : ${gs_ok}
 
 Testing tools:
-  - diff .............. : ${diff_ok}
-  - sed ............... : ${sed_ok}
+  - diff ................... : ${diff_ok}
+  - sed .................... : ${sed_ok}
 
 Compiler/linker flags/libs/defs:
-  - CXX ............... : ${CXX}
-  - CFLAGS ............ : ${CFLAGS}
-  - CXXFLAGS .......... : ${CXXFLAGS}
-  - CPPFLAGS .......... : ${CPPFLAGS}
-  - FFLAGS ............ : ${FFLAGS}
-  - LDFLAGS ........... : ${LDFLAGS}
-  - LIBS .............. : ${LIBS}
+  - CXX .................... : ${CXX}
+  - CXXFLAGS ............... : ${CXXFLAGS}
+  - CPPFLAGS ............... : ${CPPFLAGS}
+  - LDFLAGS ................ : ${LDFLAGS}
+  - LIBS ................... : ${LIBS}
 
 External libraries:
-  - GSL ............... : ${GSL_CONFIG}
-    o GSL_VERSION ..... : ${GSL_VERSION}
-    o GSL_CFLAGS ...... : ${GSL_CFLAGS}
-    o GSL_LIBS ........ : ${GSL_LIBS}
+  - GSL .................... : ${GSL_CONFIG}
+    o GSL_VERSION .......... : ${GSL_VERSION}
+    o GSL_CFLAGS ........... : ${GSL_CFLAGS}
+    o GSL_LIBS ............. : ${GSL_LIBS}
 
-  - Python ............. :
-    o PYTHON_version ... : ${PYTHON_VERSION}
-    o PYTHON_CFLAGS .... : ${PYTHON_CFLAGS}
-    o PYTHON_LIBS ...... : ${PYTHON_LIBS} 
-    o PYTHON_ADD_LIBS .. : ${PYTHON_ADD_LIBS} 
+${OPENMPI_OUTPUT}
 
-  - Boost ............. :
-    o BOOST_VERSION ... : ${BOOST_VERSION}
-    o BOOST_CFLAGS .... : ${BOOST_CFLAGS}
-    o BOOST_LIBS ...... : ${BOOST_LIBS}
-    o BOOST_DT_LIB .... : ${BOOST_DATE_TIME_LIB}
-    o BOOST_PO_LIB .... : ${BOOST_PROGRAM_OPTIONS_LIB}
-    o BOOST_FS_LIB .... : ${BOOST_FILESYSTEM_LIB}
-    o BOOST_THRD_LIB .. : ${BOOST_THREAD_LIB}
-    o BOOST_PY_LIB .... : ${BOOST_PYTHON_LIB}
-    o BOOST_ASIO_LIB .. : ${BOOST_ASIO_LIB}
-    o BOOST_MPI_LIB ... : ${BOOST_MPI_LIB}
-    o BOOST_MPIPY_LIB . : ${BOOST_MPI_PYTHON_LIB}
-    o BOOST_UTEST_LIB . : ${BOOST_UNIT_TEST_FRAMEWORK_LIB}
+${MPICH2_OUTPUT}
 
-  - MySQL ............. :
-    o MYSQL_version ... : ${MYSQL_VERSION}
-    o MYSQL_CFLAGS .... : ${MYSQL_CFLAGS}
-    o MYSQL_LIBS ...... : ${MYSQL_LIBS} 
+  - Python .................. :
+    o PYTHON_VERSION ........ : ${PYTHON_VERSION}
+    o PYTHON_CFLAGS ......... : ${PYTHON_CFLAGS}
+    o PYTHON_LIBS ........... : ${PYTHON_LIBS} 
+    o PYTHON_ADD_LIBS ....... : ${PYTHON_ADD_LIBS} 
 
-  - Soci .............. :
-    o SOCI_VERSION .... : ${SOCI_VERSION}
-    o SOCI_CFLAGS ..... : ${SOCI_CFLAGS}
-    o SOCI_LIBS ....... : ${SOCI_LIBS}
+  - Boost .................. :
+    o BOOST_VERSION ........ : ${BOOST_VERSION}
+    o BOOST_CFLAGS ......... : ${BOOST_CFLAGS}
+    o BOOST_LIBS ........... : ${BOOST_LIBS}
+    o BOOST_DATE_TIME_LIB .. : ${BOOST_DATE_TIME_LIB}
+    o BOOST_PO_LIB ......... : ${BOOST_PROGRAM_OPTIONS_LIB}
+    o BOOST_FILESYSTEM_LIB . : ${BOOST_FILESYSTEM_LIB}
+    o BOOST_THREAD_LIB ..... : ${BOOST_THREAD_LIB}
+    o BOOST_PYTHON_LIB ..... : ${BOOST_PYTHON_LIB}
+    o BOOST_ASIO_LIB ....... : ${BOOST_ASIO_LIB}
+    o BOOST_MPI_LIB ........ : ${BOOST_MPI_LIB}
+    o BOOST_MPI_PYTHON_LIB . : ${BOOST_MPI_PYTHON_LIB}
+    o BOOST_IOSTREAMS_LIB .. : ${BOOST_IOSTREAMS_LIB}
+    o BOOST_SIGNALS_LIB .... : ${BOOST_SIGNALS_LIB}
 
-  - StdAir ............ :
-    o STDAIR_VERSION .. : ${STDAIR_VERSION}
-    o STDAIR_CFLAGS ... : ${STDAIR_CFLAGS}
-    o STDAIR_LIBS ..... : ${STDAIR_LIBS}
+  - MySQL .................. :
+    o MYSQL_VERSION ........ : ${MYSQL_VERSION}
+    o MYSQL_CFLAGS ......... : ${MYSQL_CFLAGS}
+    o MYSQL_LIBS ........... : ${MYSQL_LIBS} 
 
-  - ExtraCC ........... :
-    o EXTRACC_VERSION . : ${EXTRACC_VERSION}
-    o EXTRACC_CFLAGS .. : ${EXTRACC_CFLAGS}
-    o EXTRACC_LIBS .... : ${EXTRACC_LIBS}
+  - Soci ................... :
+    o SOCI_VERSION ......... : ${SOCI_VERSION}
+    o SOCI_CFLAGS .......... : ${SOCI_CFLAGS}
+    o SOCI_LIBS ............ : ${SOCI_LIBS}
 
-  - CPPUNIT ........... :
-    o CPPUNIT_VERSION . : ${CPPUNIT_VERSION}
-    o CPPUNIT_CFLAGS .. : ${CPPUNIT_CFLAGS}
-    o CPPUNIT_LIBS .... : ${CPPUNIT_LIBS}
+  - StdAir ................. :
+    o STDAIR_VERSION ....... : ${STDAIR_VERSION}
+    o STDAIR_CFLAGS ........ : ${STDAIR_CFLAGS}
+    o STDAIR_LIBS .......... : ${STDAIR_LIBS}
+    o STDAIR_SAMPLE_DIR .... : ${STDAIR_SAMPLE_DIR}
+
+  - ExtraCC ................ :
+    o EXTRACC_VERSION ...... : ${EXTRACC_VERSION}
+    o EXTRACC_CFLAGS ....... : ${EXTRACC_CFLAGS}
+    o EXTRACC_LIBS ......... : ${EXTRACC_LIBS}
+
+  - CppUnit ................ :
+    o CPPUNIT_VERSION ...... : ${CPPUNIT_VERSION}
+    o CPPUNIT_CFLAGS ....... : ${CPPUNIT_CFLAGS}
+    o CPPUNIT_LIBS ......... : ${CPPUNIT_LIBS}
 
 ------------------------------------------------------------------------------
 Now type 'make && make install' to build and install $PACKAGE-$VERSION library

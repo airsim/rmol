@@ -14,7 +14,6 @@
 #include <rmol/RMOL_Service.hpp>
 #include <rmol/config/rmol-paths.hpp>
 
-
 // //////// Constants //////
 /** Default name and location for the log file. */
 const std::string K_RMOL_DEFAULT_LOG_FILENAME ("rmol.log");
@@ -24,7 +23,7 @@ const std::string K_RMOL_DEFAULT_LOG_FILENAME ("rmol.log");
 const bool K_RMOL_DEFAULT_BUILT_IN_INPUT = false;
 
 /** Default name and location for the (CSV) input file. */
-const std::string K_RMOL_DEFAULT_INPUT_FILENAME ("../../test/samples/rm01.csv");
+const std::string K_RMOL_DEFAULT_INPUT_FILENAME (STDAIR_SAMPLE_DIR "/rm01.csv");
 
 /** Default number of random draws to be generated (best if over 100). */
 const int K_RMOL_DEFAULT_RANDOM_DRAWS = 100000;
