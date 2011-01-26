@@ -53,5 +53,5 @@ info/stamp-vti
 info/version-ref.texi
 po/Makevars.template
 rmol/config.h.in*
-test/rmol/*_results.xml
+*_results.xml
 
