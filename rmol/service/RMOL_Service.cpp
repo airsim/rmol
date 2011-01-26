@@ -238,7 +238,7 @@ namespace RMOL {
     
     for (unsigned int i = 0; i < size; ++i) {
       const double bidPrice = lBidPriceVector.at(i);
-      logStream << std::fixed << std::setprecision (2) << bidPrice << " ";
+      logStream << std::fixed << std::setprecision (2) << bidPrice << ", ";
     }
     STDAIR_LOG_DEBUG (logStream.str());
 
@@ -321,11 +321,11 @@ namespace RMOL {
     STDAIR_LOG_DEBUG (oBucketHolder_ptr->display());
     std::ostringstream logStream;
     logStream << "Bid-Price Vector (BPV): ";
-    unsigned int size = lBidPriceVector.size();
+    const unsigned int size = lBidPriceVector.size();
     
     for (unsigned int i = 0; i < size; ++i) {
       const double bidPrice = lBidPriceVector.at(i);
-      logStream << std::fixed << std::setprecision (2) << bidPrice << " ";
+      logStream << std::fixed << std::setprecision (2) << bidPrice << ", ";
     }
     STDAIR_LOG_DEBUG (logStream.str());
 
@@ -468,7 +468,7 @@ namespace RMOL {
     
     for (unsigned int i = 0; i < size; ++i) {
       const double bidPrice = lBidPriceVector.at(i);
-      logStream << std::fixed << std::setprecision (2) << bidPrice << " ";
+      logStream << std::fixed << std::setprecision (2) << bidPrice << ", ";
     }
 
     // DEBUG
