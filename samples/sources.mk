@@ -17,6 +17,7 @@ sample_csv_sources = \
 	$(top_srcdir)/samples/rm05.csv \
 	$(top_srcdir)/samples/rm06.csv \
 	$(top_srcdir)/samples/rm07.csv \
+	$(top_srcdir)/samples/rm08.csv \
 	$(top_srcdir)/samples/schedule01.csv \
 	$(top_srcdir)/samples/schedule02.csv \
 	$(top_srcdir)/samples/schedule03.csv \
