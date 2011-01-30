@@ -189,11 +189,13 @@ AC_DEFUN([AX_SOCI],
         SOCI_CFLAGS="${MYSQL_CFLAGS} ${SOCI_CFLAGS}"
 
 	SOCI_LIBS="${MYSQL_LIBS} ${SOCI_LIBS} -l${SOCI_CORE_LIB} -l${SOCI_MYSQL_LIB} -ldl"
+
+	AC_SUBST(SOCI_VERSION)
 	AC_SUBST(SOCI_CFLAGS)
 	AC_SUBST(SOCI_LIBS)
 
-# Test linking with soci (note that it needs MySQL client to have been defined
-# before)
+	# Test linking with soci (note that it needs MySQL client to have
+	# been defined before)
 	save_LIBS="$LIBS"
 	if test -z "$MYSQL_LIBS"
 	then
