@@ -1,14 +1,50 @@
+/*!
+ * \page OptimiseTestSuite_cpp Command-Line Test to Demonstrate How To Test the RMOL Project
+ * \code
+ */
+// //////////////////////////////////////////////////////////////////////
+// Import section
+// //////////////////////////////////////////////////////////////////////
 // STL
+#include <sstream>
 #include <fstream>
 #include <string>
-// CPPUNIT
-#include <extracppunit/CppUnitCore.hpp>
+// Boost Unit Test Framework (UTF)
+#define BOOST_TEST_DYN_LINK
+#define BOOST_TEST_MAIN
+#define BOOST_TEST_MODULE OptimiseTestSuite
+#include <boost/test/unit_test.hpp>
+// StdAir
+#include <stdair/basic/BasLogParams.hpp>
+#include <stdair/basic/BasDBParams.hpp>
+#include <stdair/basic/BasFileMgr.hpp>
+#include <stdair/service/Logger.hpp>
 // RMOL
 #include <rmol/RMOL_Service.hpp>
-#include <rmol/RMOL_Types.hpp>
-// RMOL Test Suite
-#include <test/rmol/OptimiseTestSuite.hpp>
 #include <rmol/config/rmol-paths.hpp>
+
+namespace boost_utf = boost::unit_test;
+
+// (Boost) Unit Test XML Report
+std::ofstream utfReportStream ("OptimiseTestSuite_utfresults.xml");
+
+/**
+ * Configuration for the Boost Unit Test Framework (UTF)
+ */
+struct UnitTestConfig {
+  /** Constructor. */
+  UnitTestConfig() {
+    boost_utf::unit_test_log.set_stream (utfReportStream);
+    boost_utf::unit_test_log.set_format (boost_utf::XML);
+    boost_utf::unit_test_log.set_threshold_level (boost_utf::log_test_units);
+    //boost_utf::unit_test_log.set_threshold_level (boost_utf::log_successful_tests);
+  }
+
+  /** Destructor. */
+  ~UnitTestConfig() {
+  }
+};
+
 
 // //////////////////////////////////////////////////////////////////////
 int testOptimiseHelper (const unsigned short optimisationMethodFlag) {
@@ -16,142 +52,167 @@ int testOptimiseHelper (const unsigned short optimisationMethodFlag) {
   // Return value
   int oExpectedBookingLimit = 0;
 
-  try {
+  // Output log File
+  const stdair::Filename_T lLogFilename ("OptimiseTestSuite.log");
+    
+  // Number of random draws to be generated (best if greater than 100)
+  const int K = 100000;
+    
+  // Methods of optimisation (0 = Monte-Carlo, 1 = Dynamic Programming, 
+  // 2 = EMSR, 3 = EMSR-a, 4 = EMSR-b, 5 = EMSR-a with sellup prob.)
+  const unsigned short METHOD_FLAG = optimisationMethodFlag;
+    
+  // Cabin Capacity (it must be greater then 100 here)
+  const double cabinCapacity = 100.0;
+    
+  // Input file name
+  const stdair::Filename_T lRMInputFileName (STDAIR_SAMPLE_DIR "/rm02.csv");
+  const bool hasInputFile = true;
+    
+  // Check that the file path given as input corresponds to an actual file
+  bool doesExistAndIsReadable =
+    stdair::BasFileMgr::doesExistAndIsReadable (lRMInputFileName);
+  BOOST_CHECK_MESSAGE (doesExistAndIsReadable == true,
+                       "The '" << lRMInputFileName
+                       << "' input file can not be open and read");
 
-    // Output log File
-    std::string lLogFilename ("OptimiseTestSuite.log");
+  // Set the log parameters
+  std::ofstream logOutputFile;
+  // Open and clean the log outputfile
+  logOutputFile.open (lLogFilename.c_str());
+  logOutputFile.clear();
     
-    // Number of random draws to be generated (best if greater than 100)
-    const int K = 100000;
+  // Initialise the RMOL service
+  const stdair::BasLogParams lLogParams (stdair::LOG::DEBUG, logOutputFile);
+  const stdair::AirlineCode_T lAirlineCode ("BA");
+  RMOL::RMOL_Service rmolService (lLogParams, lAirlineCode, cabinCapacity);
+  rmolService.setUpStudyStatManager();
     
-    // Methods of optimisation (0 = Monte-Carlo, 1 = Dynamic Programming, 
-    // 2 = EMSR, 3 = EMSR-a, 4 = EMSR-b, 5 = EMSR-a with sellup prob.)
-    const unsigned short METHOD_FLAG = optimisationMethodFlag;
-    
-    // Cabin Capacity (it must be greater then 100 here)
-    const double cabinCapacity = 100.0;
-    
-    // Input file name
-    const std::string inputFileName (STDAIR_SAMPLE_DIR "/rm02.csv");
-    const bool hasInputFile = true;
-    
-    // Set the log parameters
-    std::ofstream logOutputFile;
-    // Open and clean the log outputfile
-    logOutputFile.open (lLogFilename.c_str());
-    logOutputFile.clear();
-    
-    // Initialise the RMOL service
-    const stdair::BasLogParams lLogParams (stdair::LOG::DEBUG, logOutputFile);
-    const stdair::AirlineCode_T lAirlineCode ("BA");
-    RMOL::RMOL_Service rmolService (lLogParams, lAirlineCode, cabinCapacity);
-    rmolService.setUpStudyStatManager();
-    
-    // Define bid price and booking Limit vectors
-    RMOL::BidPriceVector_T lBidPriceVector;
-    RMOL::ProtectionLevelVector_T lProtectionLevelVector;
-    RMOL::BookingLimitVector_T lBookingLimitVector;
+  // Define bid price and booking Limit vectors
+  RMOL::BidPriceVector_T lBidPriceVector;
+  RMOL::ProtectionLevelVector_T lProtectionLevelVector;
+  RMOL::BookingLimitVector_T lBookingLimitVector;
 
-    if (hasInputFile) {
-      // Read the input file
-      rmolService.readFromInputFile (inputFileName);
+  if (hasInputFile) {
+    // Read the input file
+    rmolService.readFromInputFile (lRMInputFileName);
       
-    } else {
-      // No input file has been provided. So, process a sample.
+  } else {
+    // No input file has been provided. So, process a sample.
       
-      // STEP 0.
-      // List of demand distribution parameters (mean and standard deviation)
+    // STEP 0.
+    // List of demand distribution parameters (mean and standard deviation)
       
-      // Class/bucket 1: N (20, 9), p1 = 100
-      rmolService.addBucket (100.0, 20, 9);
+    // Class/bucket 1: N (20, 9), p1 = 100
+    rmolService.addBucket (100.0, 20, 9);
       
-      // Class/bucket 2: N (45, 12), p2 = 70
-      rmolService.addBucket (70.0, 45, 12);
+    // Class/bucket 2: N (45, 12), p2 = 70
+    rmolService.addBucket (70.0, 45, 12);
       
-      // Class/bucket 3: no need to define a demand distribution, p3 = 42
-      rmolService.addBucket (42.0, 0, 0);
-    }
+    // Class/bucket 3: no need to define a demand distribution, p3 = 42
+    rmolService.addBucket (42.0, 0, 0);
+  }
     
-    switch (METHOD_FLAG) {
-    case 0 : {
-      // Calculate the optimal protections by the Monte Carlo
-      // Integration approach        
-      rmolService.optimalOptimisationByMCIntegration (K);
-      break;
-    }
-      
-    case 1 : {
-      // Calculate the optimal protections by DP.
-      rmolService.optimalOptimisationByDP ();
-      break;
-    }
-      
-    case 2 : {
-      // Calculate the Bid-Price Vector by EMSR
-      rmolService.heuristicOptimisationByEmsr ();
-      break;
-    }
-      
-    case 3 : {
-      // Calculate the protections by EMSR-a
-      // Test the EMSR-a algorithm implementation
-      rmolService.heuristicOptimisationByEmsrA (lBidPriceVector, 
-                                                lProtectionLevelVector,
-                                                lBookingLimitVector);
-
-      // Return a cumulated booking limit value to test
-      oExpectedBookingLimit = static_cast<int> (lBookingLimitVector.at(2));
-      break;
-    }
-      
-    case 4 : {
-      // Calculate the protections by EMSR-b
-      rmolService.heuristicOptimisationByEmsrB ();
-      break;
-    }
-      
-    case 5 : {
-      // Calculate the protection by EMSR-a with sellup
-      // Create an empty sell-up probability vector
-      std::vector<double> sellupProbabilityVector; 
-      
-      // Define the sell-up probability to be 20%
-      const double sampleProbability = 0.2;
-      
-      // NOTE: size of sellup vector should be equal to no of buckets - 1
-      // TODO: check that with an assertion
-      const short nbOfSampleBucket = 4;
-      for (short i = 1; i <= nbOfSampleBucket - 1; i++) {
-        sellupProbabilityVector.push_back (sampleProbability);
-      }
-      
-      // Test the algorithm with the sample sell-up vector
-      rmolService.heuristicOptimisationByEmsrAwithSellup 
-        (sellupProbabilityVector, lProtectionLevelVector, 
-         lBidPriceVector, lBookingLimitVector);
-      
-      // Return a cumulated booking limit value to test
-      oExpectedBookingLimit = static_cast<int> (lBookingLimitVector.at(2));
-      
-      break;
-    }
-
-    default: rmolService.optimalOptimisationByMCIntegration (K);
-    }
-        
-  } catch (const std::exception& stde) {
-    std::cerr << "Standard exception: " << stde.what() << std::endl;
+  switch (METHOD_FLAG) {
+  case 0: {
+    // DEBUG
+    STDAIR_LOG_DEBUG ("Optimisation by Monte-Carlo (MC)");
     
-  } catch (...) {
-    std::cerr << "Unknown exception" << std::endl;
+    // Calculate the optimal protections by the Monte Carlo
+    // Integration approach        
+    rmolService.optimalOptimisationByMCIntegration (K);
+    break;
+  }
+      
+  case 1: {
+    // DEBUG
+    STDAIR_LOG_DEBUG ("Optimisation by Dynamic Programming (DP)");
+    
+    // Calculate the optimal protections by DP.
+    rmolService.optimalOptimisationByDP ();
+    break;
+  }
+      
+  case 2: {
+    // DEBUG
+    STDAIR_LOG_DEBUG ("Calculate the Bid-Price Vectors (BPV) by EMSR");
+    
+    // Calculate the Bid-Price Vector by EMSR
+    rmolService.heuristicOptimisationByEmsr ();
+    break;
+  }
+      
+  case 3: {
+    // DEBUG
+    STDAIR_LOG_DEBUG ("Calculate the Authorisation Levels (AUs) by EMSRa");
+    
+    // Calculate the protections by EMSR-a
+    // Test the EMSR-a algorithm implementation
+    rmolService.heuristicOptimisationByEmsrA (lBidPriceVector, 
+                                              lProtectionLevelVector,
+                                              lBookingLimitVector);
+
+    // Return a cumulated booking limit value to test
+    oExpectedBookingLimit = static_cast<int> (lBookingLimitVector.at(2));
+    break;
+  }
+      
+  case 4: {
+    // DEBUG
+    STDAIR_LOG_DEBUG ("Calculate the Authorisation Levels (AUs) by EMSRb");
+    
+    // Calculate the protections by EMSR-b
+    rmolService.heuristicOptimisationByEmsrB ();
+    break;
+  }
+      
+  case 5: {
+    // DEBUG
+    STDAIR_LOG_DEBUG ("Calculate the Authorisation Levels (AUs) by EMSRa "
+                      << "with sell-up");
+    
+    // Calculate the protection by EMSR-a with sellup
+    // Create an empty sell-up probability vector
+    std::vector<double> sellupProbabilityVector; 
+      
+    // Define the sell-up probability to be 20%
+    const double sampleProbability = 0.2;
+      
+    // NOTE: size of sellup vector should be equal to no of buckets - 1
+    // TODO: check that with an assertion
+    const short nbOfSampleBucket = 4;
+    for (short i = 1; i <= nbOfSampleBucket - 1; i++) {
+      sellupProbabilityVector.push_back (sampleProbability);
+    }
+      
+    // Test the algorithm with the sample sell-up vector
+    rmolService.heuristicOptimisationByEmsrAwithSellup 
+      (sellupProbabilityVector, lProtectionLevelVector, 
+       lBidPriceVector, lBookingLimitVector);
+      
+    // Return a cumulated booking limit value to test
+    oExpectedBookingLimit = static_cast<int> (lBookingLimitVector.at(2));
+      
+    break;
   }
 
+  default: rmolService.optimalOptimisationByMCIntegration (K);
+  }
+        
+  // Close the log file
+  logOutputFile.close();
+  
   return oExpectedBookingLimit;
 }
 
 
+// /////////////// Main: Unit Test Suite //////////////
+
+// Set the UTF configuration (re-direct the output to a specific file)
+BOOST_GLOBAL_FIXTURE (UnitTestConfig);
+
 // //////////////////////////////////////////////////////////////////////
-// Test is based on the following inputs values
+// Tests are based on the following input values
 // price; mean; standard deviation;
 // 1050; 17.3; 5.8;
 // 567; 45.1; 15.0;
@@ -159,53 +220,73 @@ int testOptimiseHelper (const unsigned short optimisationMethodFlag) {
 // 520; 34.0; 11.3;
 // //////////////////////////////////////////////////////////////////////
 
-// Monte-Carlo (MC)
-void OptimiseTestSuite::testOptimiseMC() {
-  CPPUNIT_ASSERT_NO_THROW (testOptimiseHelper(0););
+/**
+ * Test different a suite of different revenue management optimisation
+ * pieces of algorithm.
+ */
+BOOST_AUTO_TEST_SUITE (master_test_suite)
+
+/**
+ * Test the Monte-Carlo (MC) algorithm
+ */
+BOOST_AUTO_TEST_CASE (rmol_optimisation_monte_carlo) {
+  BOOST_CHECK_NO_THROW (testOptimiseHelper(0););
 }
 
-// //////////////////////////////////////////////////////////////////////
-// Dynamic Programming (DP)
-void OptimiseTestSuite::testOptimiseDP() {
-  CPPUNIT_ASSERT_NO_THROW (testOptimiseHelper(1););
+/**
+ * Test the Dynamic Programming (DP) algorithm
+ */
+BOOST_AUTO_TEST_CASE (rmol_optimisation_dynamic_programming) {
+  BOOST_CHECK_NO_THROW (testOptimiseHelper(1););
 }
 
-// //////////////////////////////////////////////////////////////////////
-// EMSR
-void OptimiseTestSuite::testOptimiseEMSR() {
-  CPPUNIT_ASSERT_NO_THROW (testOptimiseHelper(2););
+/**
+ * Test the calculation of Bid-Price Vectors (BPV) thanks to the
+ * Expected Marginal Seat Revenue (EMSR) algorithm
+ */
+BOOST_AUTO_TEST_CASE (rmol_optimisation_emsr_bpv) {
+  BOOST_CHECK_NO_THROW (testOptimiseHelper(2););
 }
 
-// //////////////////////////////////////////////////////////////////////
-// EMSR-a
-void OptimiseTestSuite::testOptimiseEMSRa() {
-  const int lExpectedBookingLimit = testOptimiseHelper(3);
-  CPPUNIT_ASSERT (lExpectedBookingLimit == 61);
+/**
+ * Test the calculation of Authorisation levels (AU) thanks to the
+ * Expected Marginal Seat Revenue (EMSRa) algorithm
+ */
+BOOST_AUTO_TEST_CASE (rmol_optimisation_emsr_a) {
+  const int lBookingLimit = testOptimiseHelper(3);
+  const int lExpectedBookingLimit = 61;
+  BOOST_CHECK_EQUAL (lBookingLimit, lExpectedBookingLimit);
+  BOOST_CHECK_MESSAGE (lBookingLimit == lExpectedBookingLimit,
+                       "The booking limit is " << lBookingLimit
+                       << ", but it is expected to be "
+                       << lExpectedBookingLimit);
 }
 
-// //////////////////////////////////////////////////////////////////////
-// EMSR-b
-void OptimiseTestSuite::testOptimiseEMSRb() {
-  CPPUNIT_ASSERT_NO_THROW (testOptimiseHelper(4););
+/**
+ * Test the calculation of Authorisation levels (AU) thanks to the
+ * Expected Marginal Seat Revenue (EMSRb) algorithm
+ */
+BOOST_AUTO_TEST_CASE (rmol_optimisation_emsr_b) {
+  BOOST_CHECK_NO_THROW (testOptimiseHelper(4););
 }
 
-// //////////////////////////////////////////////////////////////////////
-// EMSR-a with sell-up
-void OptimiseTestSuite::testOptimiseEMSRaWithSU() {
-  const int lExpectedBookingLimit = testOptimiseHelper(5);
-  CPPUNIT_ASSERT(lExpectedBookingLimit == 59);
+/**
+ * Test the calculation of Authorisation levels (AU) thanks to the
+ * Expected Marginal Seat Revenue (EMSRa) with Sell-Up algorithm
+ */
+BOOST_AUTO_TEST_CASE (rmol_optimisation_emsr_a_with_sell_up) {
+  const int lBookingLimit = testOptimiseHelper (5);
+  const int lExpectedBookingLimit = 59;
+  BOOST_CHECK_EQUAL (lBookingLimit, lExpectedBookingLimit);
+  BOOST_CHECK_MESSAGE (lBookingLimit == lExpectedBookingLimit,
+                       "The booking limit is " << lBookingLimit
+                       << ", but it is expected to be "
+                       << lExpectedBookingLimit);
 }
 
-// //////////////////////////////////////////////////////////////////////
-// void OptimiseTestSuite::errorCase () {
-//  CPPUNIT_ASSERT (false);
-// }
+// End the test suite
+BOOST_AUTO_TEST_SUITE_END()
 
-// //////////////////////////////////////////////////////////////////////
-OptimiseTestSuite::OptimiseTestSuite () {
-  _describeKey << "Running test on RMOL Optimisation function";  
-}
-
-// /////////////// M A I N /////////////////
-CPPUNIT_MAIN()
-
+/*!
+ * \endcode
+ */
