@@ -7,11 +7,13 @@
 // RMOL
 #include <rmol/RMOL_Types.hpp>
 
-namespace RMOL {
+// Forward declarations
+namespace stdair {
+  class LegCabin;
+}
 
+namespace RMOL {
   /** Forward declarations. */
-  //class Resource;
-  class BucketHolder;
   class StudyStatManager;
 
   /** Class wrapping the optimisation algorithms. */
@@ -28,77 +30,42 @@ namespace RMOL {
 	is used. Hence, K is the number of random draws to perform.
 	100 is a minimum for K, as statistics must be drawn from those
 	random generations.
-	<br>The cabin capacity is used to a double to allow for some
-	overbooking.
      */
     static void optimalOptimisationByMCIntegration (const int K, 
-                                                    const ResourceCapacity_T,
-                                                    BucketHolder&,
-                                                    BidPriceVector_T&);
+                                                    stdair::LegCabin&);
 
     /**
        Monte Carlo Integartion algorithm with StudyStatManager.
     */
     static void optimalOptimisationByMCIntegration (const int K, 
-                                                    const ResourceCapacity_T,
-                                                    BucketHolder&,
-                                                    BidPriceVector_T&,
+                                                    stdair::LegCabin&,
                                                     StudyStatManager&);
     
     /**
        Dynamic Programming.
-       <br>The cabin capacity is used to a double to allow for some
-	overbooking.
      */
-    static void optimalOptimisationByDP (const ResourceCapacity_T,
-                                         BucketHolder&);
+    static void optimalOptimisationByDP (stdair::LegCabin&);
     
     /**
        EMRS algorithm.
-       <br>The cabin capacity is used to a double to allow for some
-	overbooking.
      */
-    static void heuristicOptimisationByEmsr (const ResourceCapacity_T,
-                                             BucketHolder&,
-                                             BidPriceVector_T&);
+    static void heuristicOptimisationByEmsr (stdair::LegCabin&);
 
     /**
        EMRS algorithm with StudyStatManager.
      */
-    static void heuristicOptimisationByEmsr (const ResourceCapacity_T,
-                                             BucketHolder&, BidPriceVector_T&,
+    static void heuristicOptimisationByEmsr (stdair::LegCabin&,
                                              StudyStatManager&);
 
     /**
        EMRS-a algorithm.
-       <br>The cabin capacity is used to a double to allow for some
-	overbooking.
      */
-    static void heuristicOptimisationByEmsrA (const ResourceCapacity_T,
-                                              BucketHolder&);
+    static void heuristicOptimisationByEmsrA (stdair::LegCabin&);
 
-    /** EMSR-a with sellup probability algorithm. 
-        It is an implementation of the algorithm given by 
-        Belobaba & Weatherford in the article 
-        "Comparing decision rules that incorporate customer diversion in 
-        perishable asset revenue management situations", Decision Sciences,
-        1996.
-     */
-    static void heuristicOptimisationByEmsrAwithSellup (const ResourceCapacity_T,
-                                                        BucketHolder&,
-                                                        SellupProbabilityVector_T&);
     /**
        EMRS-b algorithm.
-       <br>The cabin capacity is used to a double to allow for some
-	overbooking.
      */
-    static void heuristicOptimisationByEmsrB (const ResourceCapacity_T,
-                                              BucketHolder&);
-
-    /** Leg optimisation using Monte-Carlo Integration as a step in
-        network optimisation. */
-    static void legOptimisationByMC (const ResourceCapacity_T,
-                                     BucketHolder&, BidPriceVector_T&);
+    static void heuristicOptimisationByEmsrB (stdair::LegCabin&);
 
   };
 }

@@ -4,7 +4,6 @@ include $(top_srcdir)/doc/tutorial/sources.mk
 include $(top_srcdir)/doc/tutorial/src/sources.mk
 # RMOL
 include $(top_srcdir)/rmol/basic/sources.mk
-include $(top_srcdir)/rmol/field/sources.mk
 include $(top_srcdir)/rmol/bom/sources.mk
 include $(top_srcdir)/rmol/factory/sources.mk
 include $(top_srcdir)/rmol/command/sources.mk
@@ -33,7 +32,6 @@ html/index.html: doxygen_html.cfg \
 	$(rmol_service_h_sources) $(rmol_service_cc_sources) \
 	$(rmol_batches_h_sources) $(rmol_batches_cc_sources) \
 	$(rmol_bas_h_sources) $(rmol_bas_cc_sources) \
-	$(rmol_fld_h_sources) $(rmol_fld_cc_sources) \
 	$(rmol_bom_h_sources) $(rmol_bom_cc_sources) \
 	$(rmol_fac_h_sources) $(rmol_fac_cc_sources) \
 	$(rmol_cmd_h_sources) $(rmol_cmd_cc_sources) \

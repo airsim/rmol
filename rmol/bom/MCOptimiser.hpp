@@ -7,12 +7,14 @@
 // RMOL
 #include <rmol/RMOL_Types.hpp>
 
+// Forward declarations.
+namespace stdair {
+  class LegCabin;
+}
+
 namespace RMOL {
 
   /** Forward declarations. */
-  //class Resource;
-  class BucketHolder;
-  class PartialSumHolderHolder;
   class StudyStatManager;
   
   /** Utility methods for the Monte-Carlo algorithms. */
@@ -28,29 +30,15 @@ namespace RMOL {
 	is used. Hence, K is the number of random draws to perform.
 	100 is a minimum for K, as statistics must be drawn from those
 	random generations.
-	<br>The cabin capacity is used to a double to allow for some
-	overbooking.
      */
-    static void optimalOptimisationByMCIntegration (const int K, 
-                                                    const ResourceCapacity_T,
-                                                    BucketHolder&,
-                                                    PartialSumHolderHolder&,
-                                                    BidPriceVector_T&);
+    static void optimalOptimisationByMCIntegration (const int K,
+                                                    stdair::LegCabin&);
     /**
        Monte Carlo algorithm with StudyStatManager.
      */
-    static void optimalOptimisationByMCIntegration (const int K, 
-                                                    const ResourceCapacity_T,
-                                                    BucketHolder&,
-                                                    PartialSumHolderHolder&,
-                                                    BidPriceVector_T&,
+    static void optimalOptimisationByMCIntegration (const int K,
+                                                    stdair::LegCabin&,
                                                     StudyStatManager&);
-    /** 
-        Leg optimisation using Monte-Carlo Integration as a step in
-        network optimisation. 
-    */
-    static void legOptimisationByMC (const ResourceCapacity_T,
-                                     BucketHolder&, BidPriceVector_T&);
     
   };
 }

@@ -23,6 +23,5 @@ namespace RMOL {
 
   /** Default negative value used to initialze a double variable. */
   extern const double DEFAULT_INITIALIZER_DOUBLE_NEGATIVE;
-
 }
 #endif // __RMOL_BAS_BASCONST_GENERAL_HPP

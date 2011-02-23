@@ -30,27 +30,10 @@ namespace RMOL {
   }
 
   // //////////////////////////////////////////////////////////////////////
-  RMOL_ServiceContext& FacRmolServiceContext::
-  create (const stdair::AirlineCode_T& iAirlineCode) {
+  RMOL_ServiceContext& FacRmolServiceContext::create () {
     RMOL_ServiceContext* aServiceContext_ptr = NULL;
 
-    aServiceContext_ptr = new RMOL_ServiceContext (iAirlineCode);
-    assert (aServiceContext_ptr != NULL);
-
-    // The new object is added to the Bom pool
-    _pool.push_back (aServiceContext_ptr);
-
-    return *aServiceContext_ptr;
-  }
-
-  // //////////////////////////////////////////////////////////////////////
-  RMOL_ServiceContext& FacRmolServiceContext::
-  create (const stdair::AirlineCode_T& iAirlineCode,
-          const ResourceCapacity_T iResourceCapacity) {
-    RMOL_ServiceContext* aServiceContext_ptr = NULL;
-
-    aServiceContext_ptr = new RMOL_ServiceContext (iAirlineCode,
-                                                   iResourceCapacity);
+    aServiceContext_ptr = new RMOL_ServiceContext ();
     assert (aServiceContext_ptr != NULL);
 
     // The new object is added to the Bom pool

@@ -8,40 +8,126 @@
 #include <cmath>
 #include <list>
 #include <algorithm>
+// StdAir
+#include <stdair/stdair_rm_types.hpp>
+#include <stdair/bom/LegCabin.hpp>
+#include <stdair/bom/VirtualClassStruct.hpp>
 // RMOL
-#include <rmol/bom/VariateList.hpp>
-#include <rmol/bom/Gaussian.hpp>
 #include <rmol/bom/Emsr.hpp>
-#include <rmol/bom/BucketHolder.hpp>
 #include <rmol/bom/EmsrUtils.hpp>
-#include <rmol/bom/Bucket.hpp>
 
 namespace RMOL {
+  // //////////////////////////////////////////////////////////////////
+  void Emsr::heuristicOptimisationByEmsrA (stdair::LegCabin& ioLegCabin) {
+    stdair::VirtualClassList_T& lVirtualClassList =
+      ioLegCabin.getVirtualClassList ();
+    const stdair::CabinCapacity_T& lCabinCapacity =
+      ioLegCabin.getOfferedCapacity();
+
+    /** 
+        Iterate on the classes/buckets, from 1 to n-1.
+        Note that n-1 corresponds to the size of the parameter list,
+        i.e., n corresponds to the number of classes/buckets.
+    */
+    stdair::VirtualClassList_T::iterator itVC =lVirtualClassList.begin();
+    assert (itVC != lVirtualClassList.end());
+    
+    stdair::VirtualClassStruct& lFirstVC = *itVC;
+    lFirstVC.setCumulatedBookingLimit (lCabinCapacity);
+    ++itVC;
+    for (; itVC != lVirtualClassList.end(); ++itVC) {
+      stdair::VirtualClassStruct& lNextVC = *itVC;
+
+      // Initialise the protection for class/bucket j.
+      stdair::ProtectionLevel_T lProtectionLevel = 0.0;
+
+      for(stdair::VirtualClassList_T::iterator itHigherVC =
+            lVirtualClassList.begin(); itHigherVC != itVC; ++itHigherVC) {
+        stdair::VirtualClassStruct& lHigherVC = *itHigherVC;
+        const double lPartialProtectionLevel =
+          EmsrUtils::computeProtectionLevel (lHigherVC, lNextVC);
+        lProtectionLevel += lPartialProtectionLevel;
+      }
+      stdair::VirtualClassList_T::iterator itCurrentVC = itVC; --itCurrentVC;
+      stdair::VirtualClassStruct& lCurrentVC = *itCurrentVC;
+      lCurrentVC.setCumulatedProtection (lProtectionLevel);
+
+      // Compute the booking limit for the class/bucket j+1 (can be negative).
+      const double lBookingLimit = lCabinCapacity - lProtectionLevel;
+      
+      // Set the booking limit for class/bucket j+1.
+      lNextVC.setCumulatedBookingLimit (lBookingLimit);   
+    }
+  }
 
   // //////////////////////////////////////////////////////////////////
-  void Emsr::
-  heuristicOptimisationByEmsr (const ResourceCapacity_T iCabinCapacity,
-                               BucketHolder& ioBucketHolder,
-                               BidPriceVector_T& ioBidPriceVector) {
-    // Number of classes/buckets: n
-    const short nbOfClasses = ioBucketHolder.getSize();
+  void Emsr::heuristicOptimisationByEmsrB (stdair::LegCabin& ioLegCabin) {
+    stdair::VirtualClassList_T& lVirtualClassList =
+      ioLegCabin.getVirtualClassList ();
+    const stdair::CabinCapacity_T& lCabinCapacity =
+      ioLegCabin.getOfferedCapacity();
+    
+    /** 
+        Iterate on the classes/buckets, from 1 to n-1.
+        Note that n-1 corresponds to the size of the parameter list,
+        i.e., n corresponds to the number of classes/buckets.
+    */
+    stdair::VirtualClassList_T::iterator itVC =lVirtualClassList.begin();
+    assert (itVC != lVirtualClassList.end());
+    
+    stdair::VirtualClassStruct& lFirstVC = *itVC;
+    lFirstVC.setCumulatedBookingLimit (lCabinCapacity);
+    ++itVC;
+    stdair::VirtualClassStruct lAggregatedVC = lFirstVC;
+    for (; itVC != lVirtualClassList.end(); ++itVC) {
+      stdair::VirtualClassStruct& lNextVC = *itVC;
 
+      // Compute the protection level for the aggregated class/bucket
+      // using the Little-Wood formular.
+      const stdair::ProtectionLevel_T lProtectionLevel =
+        EmsrUtils::computeProtectionLevel (lAggregatedVC, lNextVC);
+
+      // Set the protection level for class/bucket j.
+      stdair::VirtualClassList_T::iterator itCurrentVC = itVC; --itCurrentVC;
+      stdair::VirtualClassStruct& lCurrentVC = *itCurrentVC;
+      lCurrentVC.setCumulatedProtection (lProtectionLevel);
+
+      // Compute the booking limit for class/bucket j+1 (can be negative).
+      const double lBookingLimit = lCabinCapacity - lProtectionLevel;
+      
+      // Set the booking limit for class/bucket j+1.
+      lNextVC.setCumulatedBookingLimit (lBookingLimit);
+
+      // Compute the aggregated class/bucket of classes/buckets 1,..,j.
+      EmsrUtils::computeAggregatedVirtualClass (lAggregatedVC, lNextVC);
+
+    } 
+  }
+
+  // //////////////////////////////////////////////////////////////////
+  void Emsr::heuristicOptimisationByEmsr (stdair::LegCabin& ioLegCabin) {
+    stdair::VirtualClassList_T& lVirtualClassList =
+      ioLegCabin.getVirtualClassList ();
+    const stdair::CabinCapacity_T& lCapacity = ioLegCabin.getOfferedCapacity();
+    stdair::BidPriceVector_T& lBidPriceVector =
+      ioLegCabin.getEmptyBidPriceVector();
+    
     // Cabin capacity in integer.
-    const int lCabinCapacity = static_cast<const int>(iCabinCapacity);
+    const int lCabinCapacity = static_cast<const int> (lCapacity);
 
     // List of all EMSR values.
-    EmsrValueList_T lEmsrValueList;
+    stdair::EmsrValueList_T lEmsrValueList;
 
     /** 
         Iterate on the classes/buckets, from 1 to n.
         Note that n-1 corresponds to the size of the parameter list,
         i.e., n corresponds to the number of classes/buckets.
     */
-    ioBucketHolder.begin();
-    for (short j = 1; j <= nbOfClasses; j++, ioBucketHolder.iterate()) {
-      Bucket& currentBucket = ioBucketHolder.getCurrentBucket();
+    for (stdair::VirtualClassList_T::iterator itVC = lVirtualClassList.begin();
+         itVC != lVirtualClassList.end(); ++itVC) {
+      stdair::VirtualClassStruct& lCurrentVC = *itVC;
       for (int k = 1; k <= lCabinCapacity; ++k) {
-        const double emsrValue = EmsrUtils::computeEmsrValue (k, currentBucket);
+        const double emsrValue = EmsrUtils::computeEmsrValue (k, lCurrentVC);
         lEmsrValueList.push_back(emsrValue);
       }
     }
@@ -54,170 +140,33 @@ namespace RMOL {
     assert (lEmsrValueListSize >= lCabinCapacity);
 
     // Copy the EMSR sorted values to the BPV.
-    EmsrValueList_T::const_iterator currentValue = lEmsrValueList.begin();
-    for (int j = 0; j < lCabinCapacity; ++j, ++currentValue) {
-      const double bidPrice = *currentValue;
-      ioBidPriceVector.push_back(bidPrice);
+    stdair::EmsrValueList_T::const_iterator itCurrentValue =
+      lEmsrValueList.begin();
+    for (int j = 0; j < lCabinCapacity; ++j, ++itCurrentValue) {
+      const double lBidPrice = *itCurrentValue;
+      lBidPriceVector.push_back (lBidPrice);
     }
     lEmsrValueList.clear();
     
     // Build the protection levels and booking limits.
-    if (nbOfClasses > 1) {
-      int capacityIndex = 0;
-      ioBucketHolder.begin();
-      for (short j = 1; j <= nbOfClasses - 1; j++, ioBucketHolder.iterate()) {
-        Bucket& currentBucket = ioBucketHolder.getCurrentBucket();
-        Bucket& nextBucket = ioBucketHolder.getNextBucket();
-        const double lNextYield = nextBucket.getAverageYield();
-        while ((capacityIndex < lCabinCapacity)
-               && (ioBidPriceVector.at(capacityIndex) > lNextYield)) {
-            ++capacityIndex;
+    if (lVirtualClassList.size() > 1) {
+      int lCapacityIndex = 0;
+      for (stdair::VirtualClassList_T::iterator itVC =lVirtualClassList.begin();
+           itVC != lVirtualClassList.end();) {
+        stdair::VirtualClassStruct& lCurrentVC = *itVC;
+        if (itVC != lVirtualClassList.end()) {
+          ++itVC;
         }
-        currentBucket.setCumulatedProtection (capacityIndex);
-        nextBucket.setCumulatedBookingLimit (iCabinCapacity - capacityIndex);
+        stdair::VirtualClassStruct& lNextVC = *itVC;
+        const stdair::Yield_T lNextYield = lNextVC.getYield();
+        while ((lCapacityIndex < lCabinCapacity)
+               && (lBidPriceVector.at(lCapacityIndex) > lNextYield)) {
+            ++lCapacityIndex;
+        }
+        lCurrentVC.setCumulatedProtection (lCapacityIndex);
+        lNextVC.setCumulatedBookingLimit (lCapacity - lCapacityIndex);
       }
     }
   }
 
-  // //////////////////////////////////////////////////////////////////
-  void Emsr::
-  heuristicOptimisationByEmsrA (const ResourceCapacity_T iCabinCapacity,
-                                BucketHolder& ioBucketHolder) {
-    // Number of classes/buckets: n
-    const short nbOfClasses = ioBucketHolder.getSize();
-
-    /** 
-        Iterate on the classes/buckets, from 1 to n-1.
-        Note that n-1 corresponds to the size of the parameter list,
-        i.e., n corresponds to the number of classes/buckets.
-    */
-    ioBucketHolder.begin();
-    Bucket& firstBucket = ioBucketHolder.getCurrentBucket();
-    firstBucket.setCumulatedBookingLimit (iCabinCapacity);
-    for (short j = 1; j <= nbOfClasses - 1; j++, ioBucketHolder.iterate()) {
-      Bucket& nextBucket = ioBucketHolder.getNextBucket();
-
-      // Initialise the protection for class/bucket j.
-      double lProtectionLevel = 0.0;
-      
-      ioBucketHolder.begin();
-      for(short k = 1; k <= j; k++) {
-        Bucket& currentBucket = ioBucketHolder.getCurrentBucket();
-        const double lPartialProtectionLevel =
-          EmsrUtils::computeProtectionLevel (currentBucket, nextBucket);
-        lProtectionLevel += lPartialProtectionLevel;
-        if (k < j) {
-          ioBucketHolder.iterate();
-        }
-      }
-      Bucket& currentBucket = ioBucketHolder.getCurrentBucket();
-      currentBucket.setCumulatedProtection (lProtectionLevel);
-
-      // Compute the booking limit for the class/bucket j+1 (can be negative).
-      const double lBookingLimit = iCabinCapacity - lProtectionLevel;
-      
-      // Set the booking limit for class/bucket j+1.
-      nextBucket.setCumulatedBookingLimit (lBookingLimit);   
-    }
-  }
-
-  // //////////////////////////////////////////////////////////////////
-  void Emsr::heuristicOptimisationByEmsrAwithSellup 
-  (const ResourceCapacity_T iCabinCapacity,
-   BucketHolder& ioBucketHolder,
-   SellupProbabilityVector_T& iSellupProbabilityVector){
-   
-    // Number of classes/Buckets: n
-    const short nbOfBuckets = ioBucketHolder.getSize();
-
-    // Set the booking limit of the highest class to the cabin capacity
-    ioBucketHolder.begin();
-    Bucket& highestBucket = ioBucketHolder.getCurrentBucket();
-    highestBucket.setCumulatedBookingLimit (iCabinCapacity);
-    
-    // Set the booking limit for the rest n-1 classes
-    // by iterating on the classes/Buckets from 1 to n-1
-    for (short j=1; j <= nbOfBuckets-1; j++, ioBucketHolder.iterate()) {
-      // Get the next class/bucket  (the next high fare class)
-      Bucket& nextBucket = ioBucketHolder.getNextBucket();
-      
-      // Get the probability of sell-up from nextBucket to the next higher
-      double sellupProbability = iSellupProbabilityVector[j-1];
-
-      // Initialize protection level for the current class j
-      double lProtectionLevel = 0.0;
-      
-      // Sum the protection levels for each higher fare class
-      ioBucketHolder.begin();
-      for (short k=1; k<=j; k++) {
-        Bucket& higherBucket = ioBucketHolder.getCurrentBucket();
-
-        double lPRotectionLevelAgainstAHigherBucket = 0.0;
-
-        if (k == j) {
-          lPRotectionLevelAgainstAHigherBucket =
-            EmsrUtils::computeProtectionLevelwithSellup 
-            (higherBucket, nextBucket, sellupProbability);
-        } else {
-          lPRotectionLevelAgainstAHigherBucket =
-            EmsrUtils::computeProtectionLevelwithSellup 
-            (higherBucket, nextBucket, 0);
-          ioBucketHolder.iterate();
-        }
-      
-        lProtectionLevel += lPRotectionLevelAgainstAHigherBucket;
-      }
-
-      // Set cumulated protection level for class j
-      Bucket& currentBucket = ioBucketHolder.getCurrentBucket();
-      currentBucket.setCumulatedProtection (lProtectionLevel);
-
-      // Compute the booking limit for the class j+1 (can be negative) 
-      const double lBookingLimit = iCabinCapacity - lProtectionLevel;
-
-      // Set the booking limit for class j+1
-      nextBucket.setCumulatedBookingLimit (lBookingLimit);
-    }  
-  }
-
-  // //////////////////////////////////////////////////////////////////
-  void Emsr::
-  heuristicOptimisationByEmsrB (const ResourceCapacity_T iCabinCapacity,
-                                BucketHolder& ioBucketHolder,
-                                Bucket& ioAggregatedBucket) {
-    // Number of classes/buckets: n
-    const short nbOfClasses = ioBucketHolder.getSize();
-
-    /** 
-        Iterate on the classes/buckets, from 1 to n-1.
-        Note that n-1 corresponds to the size of the parameter list,
-        i.e., n corresponds to the number of classes/buckets.
-    */
-    ioBucketHolder.begin();
-    Bucket& firstBucket = ioBucketHolder.getCurrentBucket();
-    firstBucket.setCumulatedBookingLimit (iCabinCapacity);
-    for (short j = 1; j <= nbOfClasses - 1; j++, ioBucketHolder.iterate()) {
-      Bucket& currentBucket = ioBucketHolder.getCurrentBucket();
-      Bucket& nextBucket = ioBucketHolder.getNextBucket();
-
-      // Compute the aggregated class/bucket of classes/buckets 1,..,j.
-      EmsrUtils::computeAggregatedBucket (ioAggregatedBucket,
-                                          currentBucket);
-
-      // Compute the protection level for the aggregated class/bucket
-      // using the Little-Wood formular.
-      const double lProtectionLevel =
-        EmsrUtils::computeProtectionLevel (ioAggregatedBucket, nextBucket);
-
-      // Set the protection level for class/bucket j.
-      currentBucket.setCumulatedProtection (lProtectionLevel);
-
-      // Compute the booking limit for class/bucket j+1 (can be negative).
-      const double lBookingLimit = iCabinCapacity - lProtectionLevel;
-      
-      // Set the booking limit for class/bucket j+1.
-      nextBucket.setCumulatedBookingLimit (lBookingLimit);
-    }
-  
-  }
 }

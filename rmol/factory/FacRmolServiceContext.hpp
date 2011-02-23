@@ -32,14 +32,7 @@ namespace RMOL {
     /** Create a new ServiceContext object.
         <br>This new object is added to the list of instantiated objects.
         @return ServiceContext& The newly created object. */
-    RMOL_ServiceContext& create (const stdair::AirlineCode_T&);
-
-    /** Create a new ServiceContext object.
-        <br>This new object is added to the list of instantiated objects.
-        @return ServiceContext& The newly created object. */
-    RMOL_ServiceContext& create (const stdair::AirlineCode_T&,
-                                 const ResourceCapacity_T);
-
+    RMOL_ServiceContext& create ();
     
   protected:
     /** Default Constructor.

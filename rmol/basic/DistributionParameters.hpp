@@ -1,37 +1,33 @@
-#ifndef __RMOL_FLDDISTRIBUTIONPARAMETERS_HPP
-#define __RMOL_FLDDISTRIBUTIONPARAMETERS_HPP
+#ifndef __RMOL_BAS_DISTRIBUTIONPARAMETERS_HPP
+#define __RMOL_BAS_DISTRIBUTIONPARAMETERS_HPP
 
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
-// RMOL
-#include <rmol/field/FldAbstract.hpp>
+// STDAIR
+#include <stdair/basic/StructAbstract.hpp>
 
 namespace RMOL {
 
   /** Class wrapping the parameters of a distribution:
       mean and standard deviation. */
-  class FldDistributionParameters : public FldAbstract {
+  struct DistributionParameters : public stdair::StructAbstract {
   public:
     /** Constructors. */
-    FldDistributionParameters ();
-    FldDistributionParameters (const FldDistributionParameters&);
-    FldDistributionParameters (const double iMean,
-                               const double iStandardDeviation);
+    DistributionParameters ();
+    DistributionParameters (const DistributionParameters&);
+    DistributionParameters (const double iMean,
+                            const double iStandardDeviation);
 
     /** Destructors. */
-    virtual ~FldDistributionParameters();
+    virtual ~DistributionParameters();
     
 
     // /////////// Getters ////////////
     /** Getter for the mean value. */
-    double getMean() const {
-      return _mean;
-    }
+    double getMean() const { return _mean; }
     /** Getter for the standard deviation value. */
-    double getStandardDeviation() const {
-      return _standardDeviation;
-    }
+    double getStandardDeviation() const { return _standardDeviation; }
     /** Getter for the variance value. */
     double getVariance() const;
     
@@ -56,6 +52,8 @@ namespace RMOL {
         @param istream& the input stream. */
     void fromStream (std::istream&);
 
+    /** Display demand distribution */
+    const std::string describe() const;
     
   private:
     // ////////// Attributes /////////
@@ -69,4 +67,4 @@ namespace RMOL {
 
   };
 }
-#endif
+#endif //__RMOL_BAS_DISTRIBUTIONPARAMETERS_HPP

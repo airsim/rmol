@@ -4,16 +4,17 @@
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
+// STDAIR
+#include <stdair/basic/StructAbstract.hpp>
 // RMOL
 #include <rmol/RMOL_Types.hpp>
-#include <rmol/field/FldYieldRange.hpp>
-#include <rmol/field/FldDistributionParameters.hpp>
-#include <rmol/bom/BomAbstract.hpp>
+#include <rmol/basic/YieldRange.hpp>
+#include <rmol/basic/DistributionParameters.hpp>
 
 namespace RMOL {
 
   /** Forward declarations. */
-  class Demand;
+  struct Demand;
 
   /** Class counting the number of seats sold for a given yield range,
       and the characteristics of the corresponding demand.
@@ -45,38 +46,27 @@ namespace RMOL {
       <br>b(j) = C - y(j-1),
       <br>Hence: b(n) <= b(n-1) <= ... <= b(1), where b(1)=C
   */
-  class Bucket : public BomAbstract {
-    /** Friend Classes
-        <br>Those classes need to access the internal attributes of this object
-        in order to construct and initialise it.*/
-    friend class FacBucket;
-    friend class FacBucketHolder;
+  struct Bucket : public stdair::StructAbstract {
     
   public:
     // ///////// Getters ////////
     /** Getter for the yield range. */
-    const FldYieldRange& getYieldRange() const {
-      return _yieldRange;
-    }
+    const YieldRange& getYieldRange() const { return _yieldRange; }
+    
     /** Getter for the protection. */
-    double getProtection() const {
-      return _protection;
-    }
+    double getProtection() const { return _protection; }
+    
     /** Getter for the cumulated protection. */
-    double getCumulatedProtection() const {
-      return _cumulatedProtection;
-    }
+    double getCumulatedProtection() const { return _cumulatedProtection; }
+    
     /** Getter for the booking limit. */
-    double getCumulatedBookingLimit() const {
-      return _cumulatedBookingLimit;
-    }
+    double getCumulatedBookingLimit() const { return _cumulatedBookingLimit; }
+    
     /** Getter for the booking limit. */
-    double getBookingLimit() const {
-      return _bookingLimit;
-    }
+    double getBookingLimit() const { return _bookingLimit; }
 
     /** Getter for the distribution parameters of the demand. */
-    const FldDistributionParameters& getDistributionParameters() const;
+    const DistributionParameters& getDistributionParameters() const;
     
     /** Getter for the demand mean. */
     const double getMean() const;
@@ -97,7 +87,6 @@ namespace RMOL {
     const GeneratedDemandVector_T& getGeneratedDemandVector () const {
       return *_generatedDemandVector;
     }
-
 
     // ///////// Setters ////////
     /** Setter for the protection. */
@@ -142,30 +131,16 @@ namespace RMOL {
         @param istream& the input stream. */
     void fromStream (std::istream&);
 
-    /** Get the serialised version of the Place object. */
-    std::string toString() const;
-
     /** Get a string describing the whole key (differentiating two objects
         at any level). */
-    const std::string describeKey() const;
-
-    /** Get a string describing the short key (differentiating two objects
-        at the same level). */
-    const std::string describeShortKey() const;
+    const std::string describe() const;
     
-    /** Display the full Place context. */
-    const std::string display() const;
-
-    /** Display a short Place context. */
-    const std::string shortDisplay() const;
-
-    
-  private:
+  public:
     /** Constructors.
 	<br>Protected to force the use of the Factory. */
     Bucket ();
     Bucket (const Bucket&);
-    Bucket (const FldYieldRange&);
+    Bucket (const YieldRange&);
     /** Destructors. */
     virtual ~Bucket();
 
@@ -177,7 +152,7 @@ namespace RMOL {
     Demand* _demand;
 
     /** Yield range, defined by upper and average yield. */
-    FldYieldRange _yieldRange;
+    YieldRange _yieldRange;
     
     /** Protection. */
     double _protection;

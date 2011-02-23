@@ -325,7 +325,6 @@ AC_CONFIG_FILES(
 	rmol.m4
 	rmol/Makefile
 	rmol/basic/Makefile
-	rmol/field/Makefile
 	rmol/bom/Makefile
 	rmol/factory/Makefile
 	rmol/command/Makefile

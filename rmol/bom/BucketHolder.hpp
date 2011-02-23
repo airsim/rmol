@@ -6,39 +6,31 @@
 // //////////////////////////////////////////////////////////////////////
 // STL
 #include <iostream>
+// STDAIR
+#include <stdair/basic/StructAbstract.hpp>
 // RMOL
 #include <rmol/RMOL_Types.hpp>
-#include <rmol/bom/BomAbstract.hpp>
 #include <rmol/bom/BucketList.hpp>
 
 namespace RMOL {
 
   /** Holder of a BucketList object (for memory allocation and
       recollection purposes). */
-  class BucketHolder : public BomAbstract {
-    /** Friend Classes
-        <br>Those classes need to access the internal attributes of this object
-        in order to construct and initialise it.*/
-    friend class FacBucketHolder;
-    
+  struct BucketHolder : public stdair::StructAbstract {
+       
   public:
     // ////// Getters //////
     /** Get the cabin capacity. */
-    const double getCabinCapacity () const {
-      return _cabinCapacity;
-    }
+    const double getCabinCapacity () const { return _cabinCapacity; }
+    
     /** Get the total mean demand. */
-    const double getTotalMeanDemand () const {
-      return _totalMeanDemand;
-    }
+    const double getTotalMeanDemand () const { return _totalMeanDemand; }
+    
     /** Get the demand factor. */
-    const double getDemandFactor () const {
-      return _demandFactor;
-    }
+    const double getDemandFactor () const { return _demandFactor; }
+    
     /** Get the optimal revenue. */
-    const double getOptimalRevenue () const {
-      return _optimalRevenue;
-    }
+    const double getOptimalRevenue () const { return _optimalRevenue; }
 
     /** Get the size of list of buckets/classes. */
     const short getSize () const;
@@ -94,34 +86,14 @@ namespace RMOL {
         @param istream& the input stream. */
     void fromStream (std::istream&);
 
-    /** Get the serialised version of the Place object. */
-    std::string toString() const;
-
     /** Get a string describing the whole key (differentiating two objects
         at any level). */
-    const std::string describeKey() const;
+    const std::string describe () const;
 
-    /** Get a string describing the short key (differentiating two objects
-        at the same level). */
-    const std::string describeShortKey() const;
-    
-    /** Display the full Place context. */
-    const std::string display() const;
-
-    /** Display a short Place context. */
-    const std::string shortDisplay() const;
-
-
-  private:
-    /** Constructor.
-	<br>Protected to force the use of the Factory. */
+  public:
+    /** Constructors. */
     BucketHolder ();
-
-    /** Constructor.
-	<br>Set the cabin capacity.
-	<br>Protected to force the use of the Factory. */
     BucketHolder (const double iCabinCapacity);
-
     /** Destructor. */
     virtual ~BucketHolder();
 

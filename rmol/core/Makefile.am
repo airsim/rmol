@@ -15,7 +15,6 @@ lib_LTLIBRARIES = librmol.la
 librmol_la_SOURCES = $(rmol_service_h_sources) $(rmol_service_cc_sources)
 librmol_la_LIBADD = \
 	$(top_builddir)/rmol/basic/librmolbas.la \
-	$(top_builddir)/rmol/field/librmolfld.la \
 	$(top_builddir)/rmol/bom/librmolbom.la \
 	$(top_builddir)/rmol/factory/librmolfac.la \
 	$(top_builddir)/rmol/command/librmolcmd.la \

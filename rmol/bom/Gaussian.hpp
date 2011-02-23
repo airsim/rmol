@@ -9,7 +9,7 @@
 #include <boost/random/normal_distribution.hpp>
 #include <boost/random/variate_generator.hpp>
 // RMOL
-#include <rmol/field/FldDistributionParameters.hpp>
+#include <rmol/basic/DistributionParameters.hpp>
 
 namespace RMOL {
 
@@ -21,7 +21,7 @@ namespace RMOL {
 
   
   /** Wrapper around a random generator following a normal distribution. */
-  class Gaussian {
+  struct Gaussian {
   private:
     // ////////// Type definitions //////////
     /** Type definition for a random number generator base (mt19937). */
@@ -39,18 +39,16 @@ namespace RMOL {
         the normal Distribution.
         <br>See also
         http://www.boost.org/doc/libs/1_44_0/doc/html/boost/normal_distribution.html */
-    Gaussian (const FldDistributionParameters&);
-
+    Gaussian (const DistributionParameters&);
+    
     /** Destructor. */
     ~Gaussian();
 
-  private:
     /** Default constructors.
      <br>They are kept private so that the class can be instantiated only
      with the public constructor. */
     Gaussian ();
     Gaussian (const Gaussian&);
-
     /** Initialise the random generator. */
     void init();
     

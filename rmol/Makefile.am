@@ -3,7 +3,7 @@ include $(top_srcdir)/Makefile.common
 include $(srcdir)/core/sources.mk
 
 #
-SUBDIRS = basic field bom factory command service core config batches
+SUBDIRS = basic bom factory command service core config batches
 
 #
 MAINTAINERCLEANFILES = Makefile.in

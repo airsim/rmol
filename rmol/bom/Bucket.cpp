@@ -1,9 +1,8 @@
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
-// C
-#include <assert.h>
 // STL
+#include <cassert>
 #include <iostream>
 #include <iomanip>
 // RMOL
@@ -21,22 +20,22 @@ namespace RMOL {
   }
   
   // //////////////////////////////////////////////////////////////////////
-  Bucket::Bucket (const Bucket& iBucket) :
-    _demand (&iBucket.getDemand()), 
-    _yieldRange (iBucket.getYieldRange()), 
-    _protection (iBucket.getProtection()),
-    _cumulatedProtection (iBucket.getCumulatedProtection()),
-    _bookingLimit (iBucket.getBookingLimit()),
-    _cumulatedBookingLimit (iBucket.getCumulatedBookingLimit()),
-    _generatedDemandVector (NULL) {
+  Bucket::Bucket (const Bucket& iBucket)
+    : _demand (&iBucket.getDemand()), 
+      _yieldRange (iBucket.getYieldRange()), 
+      _protection (iBucket.getProtection()),
+      _cumulatedProtection (iBucket.getCumulatedProtection()),
+      _bookingLimit (iBucket.getBookingLimit()),
+      _cumulatedBookingLimit (iBucket.getCumulatedBookingLimit()),
+      _generatedDemandVector (NULL) {
   }
 
   // //////////////////////////////////////////////////////////////////////
-  Bucket::Bucket (const FldYieldRange& iYieldRange) :
-    _demand (NULL),
-    _yieldRange (iYieldRange), _protection (0.0), _cumulatedProtection (0.0),
-    _bookingLimit (0.0), _cumulatedBookingLimit (0.0),
-    _generatedDemandVector (NULL) {
+  Bucket::Bucket (const YieldRange& iYieldRange)
+    : _demand (NULL),
+      _yieldRange (iYieldRange), _protection (0.0), _cumulatedProtection (0.0),
+      _bookingLimit (0.0), _cumulatedBookingLimit (0.0),
+      _generatedDemandVector (NULL) {
   }
   
   // //////////////////////////////////////////////////////////////////////
@@ -44,19 +43,15 @@ namespace RMOL {
   }
 
   // //////////////////////////////////////////////////////////////////////
-  const std::string Bucket::describeShortKey() const {
-    std::ostringstream oStr;
-    oStr << _yieldRange;
-    return oStr.str();
+  void Bucket::toStream (std::ostream& ioOut) const {
   }
   
   // //////////////////////////////////////////////////////////////////////
-  const std::string Bucket::describeKey() const {
-    return describeShortKey();
+  void Bucket::fromStream (std::istream& ioIn) {
   }
-
+  
   // //////////////////////////////////////////////////////////////////////
-  std::string Bucket::toString() const {
+  const std::string Bucket::describe () const {
     std::ostringstream oStr;
     oStr << describeShortKey() << ", ";
     const double pj = getUpperYield();
@@ -70,48 +65,10 @@ namespace RMOL {
          << "; " << bj << std::endl;
     
     return oStr.str();
-  }   
-
-  // //////////////////////////////////////////////////////////////////////
-  void Bucket::toStream (std::ostream& ioOut) const {
-    ioOut << toString();
-  }
-  
-  // //////////////////////////////////////////////////////////////////////
-  void Bucket::fromStream (std::istream& ioIn) {
-  }
-  
-  // //////////////////////////////////////////////////////////////////////
-  const std::string Bucket::shortDisplay() const {
-    std::ostringstream oStr;
-    oStr << describeKey();
-    const double pj = getUpperYield();
-    const double mj = getMean();
-    const double sj = getStandardDeviation();
-    const double proj = getProtection();
-    const double yj = getCumulatedProtection();
-    const double blj = getBookingLimit();
-    const double bj = getCumulatedBookingLimit();
-    oStr << std::fixed << std::setprecision (2)
-         << ", upper yield = " << pj << "; "
-         << ", mean = " << mj << "; " << ", std_dev = " << sj << "; "
-         << ", protection = " << proj << "; "
-         << ", cumulative protection = " << yj << "; "
-         << ", booking limit = " << blj
-         << ", cumulative booking limit = " << bj << std::endl;
-
-    return oStr.str();
-  }
-  
-  // //////////////////////////////////////////////////////////////////////
-  const std::string Bucket::display() const {
-    std::ostringstream oStr;
-    oStr << shortDisplay();
-    return oStr.str();
   }
 
   // //////////////////////////////////////////////////////////////////////
-  const FldDistributionParameters& Bucket::getDistributionParameters() const {
+  const DistributionParameters& Bucket::getDistributionParameters() const {
     assert (_demand != NULL);
     return _demand->getDistributionParameters();
   }

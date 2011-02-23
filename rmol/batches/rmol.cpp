@@ -31,10 +31,6 @@ const int K_RMOL_DEFAULT_RANDOM_DRAWS = 100000;
 /** Default value for the capacity of the resource (e.g., a flight cabin). */
 const double K_RMOL_DEFAULT_CAPACITY = 500.0;
 
-/** Default probability that a demand group buys the next higher fare products 
-when the products which they came for are not available. */
-// const std::vector<double> K_RMOL_DEFAULT_SELLUP_PROBABILITY;
-
 /** Default name and location for the Revenue Management method to be used.
     <br>
     <ul>
@@ -43,18 +39,8 @@ when the products which they came for are not available. */
       <li>2 = EMSR</li>
       <li>3 = EMSR-a</li>
       <li>4 = EMSR-b</li>
-      <li>5 = EMSR-a with sell up</li>
     </ul> */
 const short K_RMOL_DEFAULT_METHOD = 0;
-
-/** Fill a vector of default sell-up probability values. */
-void initDefaultValuesForSellupProbabilityVector (RMOL::SellupProbabilityVector_T& ioSellUpProbabilityVector) {
-  // Add default values only when the given vector is empty
-  if (ioSellUpProbabilityVector.empty() == true) {
-    ioSellUpProbabilityVector.push_back (0.2);
-  }
-}
-
 
 // ///////// Parsing of Options & Configuration /////////
 // A helper function to simplify the main part.
@@ -70,15 +56,11 @@ const int K_RMOL_EARLY_RETURN_STATUS = 99;
 /** Read and parse the command line options. */
 int readConfiguration(int argc, char* argv[], 
                       int& ioRandomDraws, double& ioCapacity, 
-                      RMOL::SellupProbabilityVector_T& ioSellupProbabilityVector,
                       short& ioMethod, bool& ioIsBuiltin,
                       std::string& ioInputFilename, std::string& ioLogFilename){
 
   // Default for the built-in input
   ioIsBuiltin = K_RMOL_DEFAULT_BUILT_IN_INPUT;
-  
-  // Initialise the sell-up probability vector with default values
-  initDefaultValuesForSellupProbabilityVector (ioSellupProbabilityVector);
     
   // Declare a group of options that will be allowed only on command line
   boost::program_options::options_description generic ("Generic options");
@@ -97,12 +79,9 @@ int readConfiguration(int argc, char* argv[],
     ("capacity,c",
      boost::program_options::value<double>(&ioCapacity)->default_value(K_RMOL_DEFAULT_CAPACITY), 
      "Resource capacity (e.g., for a flight leg)")
-    ("sellup,s",
-     boost::program_options::value< std::vector<double> >(&ioSellupProbabilityVector)->multitoken(),
-     "Sell-up proability vector (e.g. j-th element implies the sell up probability of class j+1 to class j where class 1 yields the highest value")
     ("method,m",
      boost::program_options::value<short>(&ioMethod)->default_value(K_RMOL_DEFAULT_METHOD), 
-     "Revenue Management method to be used (0 = Monte-Carlo, 1 = Dynamic Programming, 2 = EMSR, 3 = EMSR-a, 4 = EMSR-b, 5 = EMSR-a with sell up probability)")
+     "Revenue Management method to be used (0 = Monte-Carlo, 1 = Dynamic Programming, 2 = EMSR, 3 = EMSR-a, 4 = EMSR-b)")
     ("builtin,b",
      "The cabin set up can be either built-in or parsed from an input file. That latter must then be given with the -i/--input option")
     ("input,i",
@@ -178,14 +157,7 @@ int readConfiguration(int argc, char* argv[],
 
   std::cout << "The number of random draws is: " << ioRandomDraws << std::endl;
   std::cout << "The resource capacity is: " << ioCapacity << std::endl;
-  std::cout << "The Revenue Management method is: " << ioMethod << std::endl;
-  std::cout << "The sell-up probability vector is: " << std::endl;
-  unsigned short idx = 0;
-  for (RMOL::SellupProbabilityVector_T::const_iterator itValue =
-         ioSellupProbabilityVector.begin();
-       itValue != ioSellupProbabilityVector.end(); ++itValue, ++idx) {
-    std::cout << "[" << idx << "] " << *itValue << "; ";
-  }
+  std::cout << "The optimisation method is: " << ioMethod << std::endl;
   std::cout << std::endl;
   
   return 0;
@@ -202,14 +174,8 @@ int main (int argc, char* argv[]) {
     // Cabin Capacity (it must be greater then 100 here)
     double lCapacity = 0.0;
 
-    /** Default probability that a demand group buys the next higher
-        fare products when the products which they came for are not
-        available. */
-    RMOL::SellupProbabilityVector_T lSellupProbabilityVector;
-    // lSellupProbabilityVector.push_back (0.2);
-
     // Methods of optimisation (0 = Monte-Carlo, 1 = Dynamic Programming, 
-    // 2 = EMSR, 3 = EMSR-a, 4 = EMSR-b, 5 = EMSR-a with sell up probability)
+    // 2 = EMSR, 3 = EMSR-a, 4 = EMSR-b)
     short lMethod = 0;   
     
     // Built-in
@@ -223,8 +189,7 @@ int main (int argc, char* argv[]) {
 
     // Call the command-line option parser
     const int lOptionParserStatus = 
-      readConfiguration (argc, argv, lRandomDraws, lCapacity,
-                         lSellupProbabilityVector, lMethod,
+      readConfiguration (argc, argv, lRandomDraws, lCapacity, lMethod,
                          isBuiltin, lInputFilename, lLogFilename);
 
     if (lOptionParserStatus == K_RMOL_EARLY_RETURN_STATUS) {
@@ -239,28 +204,14 @@ int main (int argc, char* argv[]) {
     
     // Initialise the list of classes/buckets
     const stdair::BasLogParams lLogParams (stdair::LOG::DEBUG, logOutputFile);
-    const stdair::AirlineCode_T lAirlineCode ("BA");
-    RMOL::RMOL_Service rmolService (lLogParams, lAirlineCode, lCapacity);
+    RMOL::RMOL_Service rmolService (lLogParams, lCapacity);
     rmolService.setUpStudyStatManager();
     
     if (isBuiltin == true) {
       // No input file has been provided. So, process a sample.
 
       // DEBUG
-      STDAIR_LOG_DEBUG ("rmol will build the BOM tree from built-in specifications.");
-      
-      // STEP 0.
-      // List of demand distribution parameters (mean and standard deviation)
-      
-      // Class/bucket 1: p1 = 110, N (15, 9)
-      rmolService.addBucket (110.0, 15, 9);
-      
-      // Class/bucket 2: p2 = 75, N (40, 12)
-      rmolService.addBucket (75.0, 40, 12);
-      
-      // Class/bucket 3: p3 = 48, no need to define a demand distribution
-      //                 (it can be considered very big)
-      rmolService.addBucket (48.0, 0, 0);
+      STDAIR_LOG_DEBUG ("Please specify an input file!");
       
     } else {
       // DEBUG
@@ -296,19 +247,6 @@ int main (int argc, char* argv[]) {
     case 4: {
       // Calculate the protections by EMSR-b
       rmolService.heuristicOptimisationByEmsrB ();
-      break;
-    }
-    case 5: {
-      // Calculate the protections by EMSR-a with sell up probability
-      rmolService.heuristicOptimisationByEmsrAwithSellup 
-        (lSellupProbabilityVector);
-      break;
-    }
-    case 6: {
-      // Calculate the optimal protections by the Monte Carlo
-      // Integration approach
-      rmolService.buildContextForMC (lRandomDraws);
-      rmolService.legOptimisationByMC ();
       break;
     }
     default: {

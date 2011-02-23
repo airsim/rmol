@@ -4,27 +4,30 @@
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
+// StdAir
+#include <stdair/stdair_inventory_types.hpp>
+
+// Forward declarations.
+namespace stdair {
+  struct VirtualClassStruct;
+}
 
 namespace RMOL {
   
   /** Forward declarations. */
-  // Class Resource;
-  class Bucket;
   
   class EmsrUtils {
   public:
     /** Compute the aggregated class/bucket of classes/buckets 1,..,j
         for EMSR-b algorithm. */
-    static void computeAggregatedBucket (Bucket&, Bucket&);
+    static void computeAggregatedVirtualClass (stdair::VirtualClassStruct&,
+                                               stdair::VirtualClassStruct&);
 
     /** Compute the protection level using the Little-Wood formular. */
-    static const double computeProtectionLevel (Bucket&, Bucket&);
-
-    /** Compute the protection level with sell up factor */
-    static const double computeProtectionLevelwithSellup (Bucket&, Bucket&, double);
+    static const stdair::ProtectionLevel_T computeProtectionLevel (stdair::VirtualClassStruct&, stdair::VirtualClassStruct&);
 
     /** Compute the EMSR value of a class/bucket. */
-    static const double computeEmsrValue (double, Bucket&);
+    static const double computeEmsrValue (double, stdair::VirtualClassStruct&);
   };
 }
 #endif // __RMOL_EMSRUTILS_HPP

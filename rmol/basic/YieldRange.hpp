@@ -1,11 +1,13 @@
-#ifndef __RMOL_FLDYIELDRANGE_HPP
-#define __RMOL_FLDYIELDRANGE_HPP
+#ifndef __RMOL_BAS_YIELDRANGE_HPP
+#define __RMOL_BAS_YIELDRANGE_HPP
 
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
-// RMOL
-#include <rmol/field/FldAbstract.hpp>
+// STL
+#include <string>
+// STDAIR
+#include <stdair/basic/StructAbstract.hpp>
 
 namespace RMOL {
 
@@ -19,33 +21,26 @@ namespace RMOL {
       <br>Note that the lower yield is generally not defined, as it
       corresponds to the upper yield of the lower yield range.
   */
-  class FldYieldRange : public FldAbstract {
+  struct YieldRange : public stdair::StructAbstract {
   public:
     /** Constructors. */
-    FldYieldRange ();
-    FldYieldRange (const FldYieldRange&);
-    FldYieldRange (const double iUpperYield);
-    FldYieldRange (const double iUpperYield, const double iAverageYield);
-    FldYieldRange (const double iUpperYield, const double iAverageYield,
-		   const double iLowerYield);
+    YieldRange ();
+    YieldRange (const YieldRange&);
+    YieldRange (const double iUpperYield);
+    YieldRange (const double iUpperYield, const double iAverageYield);
+    YieldRange (const double iUpperYield, const double iAverageYield,
+                const double iLowerYield);
     
     /** Constructors. */
-    virtual ~FldYieldRange();
+    virtual ~YieldRange();
     
-
     // /////////// Getters ////////////
     /** Getter for the upper yield of the range. */
-    double getUpperYield() const {
-      return _upperYield;
-    }
+    double getUpperYield() const { return _upperYield; }
     /** Getter for the average yield of the range. */
-    double getAverageYield() const {
-      return _averageYield;
-    }
+    double getAverageYield() const { return _averageYield; }
     /** Getter for the lower yield of the range. */
-    double getLowerYield() const {
-      return _lowerYield;
-    }
+    double getLowerYield() const { return _lowerYield; }
     
     // //////// Setters /////////
     /** Setter for the upper yield of the range. */
@@ -61,7 +56,6 @@ namespace RMOL {
       _lowerYield = iLowerYield;
     }
     
-
     // ///////// Display methods ////////
     /** Dump a Business Object into an output stream.
         @param ostream& the output stream. */
@@ -71,7 +65,9 @@ namespace RMOL {
         @param istream& the input stream. */
     void fromStream (std::istream&);
 
-
+    /** Display demand distribution */
+    const std::string describe() const;
+    
   private:
     // ////////// Attributes /////////
     /** Upper yield. */
@@ -84,4 +80,4 @@ namespace RMOL {
     double _lowerYield;
   };
 }
-#endif // __RMOL_FLDYIELDRANGE_HPP
+#endif // __RMOL_BAS_YIELDRANGE_HPP

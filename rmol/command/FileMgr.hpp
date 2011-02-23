@@ -6,17 +6,19 @@
 // //////////////////////////////////////////////////////////////////////
 #include <string>
 
-namespace RMOL {
+// Forward declarations.
+namespace stdair {
+  class BomRoot;
+}
 
-  class BucketHolder;
-  
-  /** Class filling the BucketHolder structure (representing
+namespace RMOL {  
+  /** Class filling the virtual class list (representing
       a list of classes/buckets) from a given input file. */
   class FileMgr {
   public:
     /** Read the input values from a CSV file. */
     static void readAndProcessInputFile (const std::string& iInputFileName,
-                                         BucketHolder&);
+                                         stdair::BomRoot& ioBomRoot);
     
   };
 }

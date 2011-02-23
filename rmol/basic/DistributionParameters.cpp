@@ -1,44 +1,54 @@
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
-#include <rmol/field/FldDistributionParameters.hpp>
+// STL
+#include <sstream>
+// RMOL
+#include <rmol/basic/DistributionParameters.hpp>
 
 namespace RMOL {
 
   // //////////////////////////////////////////////////////////////////////
-  FldDistributionParameters::FldDistributionParameters () :
+  DistributionParameters::DistributionParameters () :
     _mean (0.0), _standardDeviation (1.0) {
   }
 
   // //////////////////////////////////////////////////////////////////////
-  FldDistributionParameters::
-  FldDistributionParameters (const FldDistributionParameters& iParams) :
+  DistributionParameters::
+  DistributionParameters (const DistributionParameters& iParams) :
     _mean (iParams.getMean()),
     _standardDeviation (iParams.getStandardDeviation()) {
   }
 
   // //////////////////////////////////////////////////////////////////////
-  FldDistributionParameters::
-  FldDistributionParameters (const double iMean,
+  DistributionParameters::
+  DistributionParameters (const double iMean,
                              const double iStandardDeviation) :
     _mean (iMean), _standardDeviation (iStandardDeviation) {
   }
 
   // //////////////////////////////////////////////////////////////////////
-  FldDistributionParameters::~FldDistributionParameters() {
+  DistributionParameters::~DistributionParameters() {
   }
   
   // //////////////////////////////////////////////////////////////////////
-  void FldDistributionParameters::toStream (std::ostream& ioOut) const {
+  void DistributionParameters::toStream (std::ostream& ioOut) const {
     ioOut << "N (" << _mean << ", " << _standardDeviation << ")";
   }
-  
+    
   // //////////////////////////////////////////////////////////////////////
-  void FldDistributionParameters::fromStream (std::istream& ioIn) {
+  const std::string DistributionParameters::describe() const {
+    std::ostringstream oStr;
+    
+    return oStr.str();
   }
   
   // //////////////////////////////////////////////////////////////////////
-  double FldDistributionParameters::getVariance() const {
+  void DistributionParameters::fromStream (std::istream& ioIn) {
+  }
+  
+  // //////////////////////////////////////////////////////////////////////
+  double DistributionParameters::getVariance() const {
     return _standardDeviation * _standardDeviation;
   }
   

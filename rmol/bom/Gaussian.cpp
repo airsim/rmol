@@ -8,7 +8,7 @@
 namespace RMOL {
 
   // //////////////////////////////////////////////////////////////////////
-  Gaussian::Gaussian (const FldDistributionParameters& iParams)
+  Gaussian::Gaussian (const DistributionParameters& iParams)
     : _seed (42u), _generator (42u),
       _normalDistribution (iParams.getMean(), iParams.getStandardDeviation()),
       _normalDistributionGenerator (_generator, _normalDistribution) {

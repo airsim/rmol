@@ -14,14 +14,6 @@ namespace RMOL {
       some accessory algorithms. */
   class Unconstrainer {
   public:
-    
-    /** A sensored-demand unconstraining method based on 
-        Expectation Maximization algorithm.<br>
-        Reference: K.T. Talluri and G.Van Ryzin, 
-        The Theory and Practice of Revenue Management. */
-    static void dataUnconstrainByExpectationMaximization 
-    (ConstrainedDataHolder_T&, UnconstrainedDataHolder_T&, 
-     StoppingCriterion_T&);
 
   };
 }

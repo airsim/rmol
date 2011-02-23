@@ -7,8 +7,8 @@ namespace RMOL {
 
   // //////////////////////////////////////////////////////////////////////
   Demand::Demand () :
-    _yieldRange (FldYieldRange()),
-    _distributionParameters (FldDistributionParameters()) {
+    _yieldRange (YieldRange()),
+    _distributionParameters (DistributionParameters()) {
   }
 
   // //////////////////////////////////////////////////////////////////////
@@ -18,8 +18,8 @@ namespace RMOL {
   }
 
   // //////////////////////////////////////////////////////////////////////
-  Demand::Demand (const FldDistributionParameters& iDistributionParameters,
-		  const FldYieldRange& iYieldRange) :
+  Demand::Demand (const DistributionParameters& iDistributionParameters,
+		  const YieldRange& iYieldRange) :
     _yieldRange (iYieldRange),
     _distributionParameters (iDistributionParameters) {
   }
@@ -27,27 +27,7 @@ namespace RMOL {
   // //////////////////////////////////////////////////////////////////////
   Demand::~Demand() {
   }
-
-  // //////////////////////////////////////////////////////////////////////
-  const std::string Demand::describeShortKey() const {
-    std::ostringstream oStr;
-    oStr << _yieldRange;
-    return oStr.str();
-  }
   
-  // //////////////////////////////////////////////////////////////////////
-  const std::string Demand::describeKey() const {
-    return describeShortKey();
-  }
-
-  // //////////////////////////////////////////////////////////////////////
-  std::string Demand::toString() const {
-    std::ostringstream oStr;
-    oStr << describeShortKey() << ", ";
-    oStr << _distributionParameters;
-    return oStr.str();
-  }   
-
   // //////////////////////////////////////////////////////////////////////
   void Demand::toStream (std::ostream& ioOut) const {
     ioOut << toString();
@@ -56,22 +36,14 @@ namespace RMOL {
   // //////////////////////////////////////////////////////////////////////
   void Demand::fromStream (std::istream& ioIn) {
   }
-  
+
   // //////////////////////////////////////////////////////////////////////
-  const std::string Demand::shortDisplay() const {
+  const std::string Demand::describe () const {
     std::ostringstream oStr;
-    oStr << describeKey();
-    oStr << ", distribution parameters = " << _distributionParameters
-         << std::endl;
+    oStr << describeShortKey() << ", ";
+    oStr << _distributionParameters;
     return oStr.str();
-  }
-  
-  // //////////////////////////////////////////////////////////////////////
-  const std::string Demand::display() const {
-    std::ostringstream oStr;
-    oStr << shortDisplay();
-    return oStr.str();
-  }
+  }  
 
   // //////////////////////////////////////////////////////////////////////
   double Demand::getUpperYield() const {
