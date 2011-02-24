@@ -17,7 +17,6 @@ namespace RMOL {
   /** Class Implementing the EMSR algorithm for Bid-Price Vector computing. */
   class Emsr {
   public:
-
     /**
     Compute the Bid-Price Vector using the EMSR algorithm. Then
     compute the protection levels and booking limits by using the BPV.

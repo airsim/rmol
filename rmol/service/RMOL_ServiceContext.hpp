@@ -25,9 +25,6 @@ namespace stdair {
 
 namespace RMOL {
 
-  /** Forward declaration. */
-  class StudyStatManager;
-
   /** Pointer on the STDAIR Service handler. */
   typedef boost::shared_ptr<stdair::STDAIR_Service> STDAIR_ServicePtr_T;
   
@@ -39,20 +36,12 @@ namespace RMOL {
     friend class RMOL_Service;
     friend class FacRmolServiceContext;
     
-  public:
-    /** Set up the StudyStatManager. */
-    void setUpStudyStatManager ();
-
-    
   private:
     // /////// Construction / initialisation ////////
     /** Constructors. */
     RMOL_ServiceContext ();
     RMOL_ServiceContext (const RMOL_ServiceContext&);
-    
-    /** Initialise the StudyStatManager. */
-    void initStudyStatManager ();
-    
+        
     /** Destructor. */
     ~RMOL_ServiceContext();
 
@@ -68,11 +57,6 @@ namespace RMOL {
     /** Clear the context (cabin capacity, bucket holder). */
     void reset ();
     
-    /** Get the StudyStatManager. */
-    StudyStatManager* getStudyStatManager () const {
-      return _studyStatManager;
-    }
-
     /** Get the pointer on the STDAIR service handler. */
     stdair::STDAIR_ServicePtr_T getSTDAIR_ServicePtr () const {
       return _stdairService;
@@ -91,11 +75,6 @@ namespace RMOL {
     // ///////////// Children ////////////
     /** Standard Airline (StdAir) Service Handler. */
     STDAIR_ServicePtr_T _stdairService;
-
-  private:
-    // //////////// Attributes //////////////////
-    /** Statistic Manager. */
-    StudyStatManager* _studyStatManager;
   };
 
 }

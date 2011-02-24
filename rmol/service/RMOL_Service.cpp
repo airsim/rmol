@@ -5,8 +5,8 @@
 #include <cassert>
 // StdAir
 #include <stdair/stdair_inventory_types.hpp>
-#include <stdair/basic/BasChronometer.hpp>
 #include <stdair/basic/BasFileMgr.hpp>
+#include <stdair/basic/BasChronometer.hpp>
 #include <stdair/bom/BomManager.hpp>
 #include <stdair/bom/LegCabin.hpp>
 #include <stdair/command/CmdBomManager.hpp>
@@ -14,7 +14,6 @@
 #include <stdair/STDAIR_Service.hpp>
 // RMOL
 #include <rmol/basic/BasConst_RMOL_Service.hpp>
-#include <rmol/bom/StudyStatManager.hpp>
 #include <rmol/factory/FacSupervisor.hpp>
 #include <rmol/factory/FacRmolServiceContext.hpp>
 #include <rmol/command/Optimiser.hpp>
@@ -124,15 +123,6 @@ namespace RMOL {
     RMOL_ServiceContext& lRMOL_ServiceContext = *_rmolServiceContext;
     lRMOL_ServiceContext.readFromInputFile (iInputFileName);
   }
-  
-  // ////////////////////////////////////////////////////////////////////
-  void RMOL_Service::setUpStudyStatManager () {
-    // Retrieve the RMOL service context
-    assert (_rmolServiceContext != NULL);
-    RMOL_ServiceContext& lRMOL_ServiceContext = *_rmolServiceContext;
-
-    lRMOL_ServiceContext.setUpStudyStatManager ();
-  }
 
   // ////////////////////////////////////////////////////////////////////
   void RMOL_Service::reset () {
@@ -150,18 +140,11 @@ namespace RMOL {
     RMOL_ServiceContext& lRMOL_ServiceContext = *_rmolServiceContext;
 
     stdair::LegCabin& lLegCabin = lRMOL_ServiceContext.getLegCabinSample();
-    StudyStatManager* lStudyStatManager_ptr =
-      lRMOL_ServiceContext.getStudyStatManager();
 
     stdair::BasChronometer lOptimisationChronometer;
     lOptimisationChronometer.start();
-    
-    if (lStudyStatManager_ptr == NULL) {
-      Optimiser::optimalOptimisationByMCIntegration (K, lLegCabin);
-    } else {
-      Optimiser::optimalOptimisationByMCIntegration (K, lLegCabin,
-                                                     *lStudyStatManager_ptr);
-    }
+
+    Optimiser::optimalOptimisationByMCIntegration (K, lLegCabin);
 
     const double lOptimisationMeasure = lOptimisationChronometer.elapsed();
     
@@ -180,11 +163,6 @@ namespace RMOL {
       logStream << std::fixed << std::setprecision (2) << bidPrice << ", ";
     }
     STDAIR_LOG_DEBUG (logStream.str());
-
-    if (lStudyStatManager_ptr != NULL) {
-      STDAIR_LOG_DEBUG (lStudyStatManager_ptr->describe());
-    }
-    
   }
 
   // ////////////////////////////////////////////////////////////////////
@@ -199,18 +177,12 @@ namespace RMOL {
     RMOL_ServiceContext& lRMOL_ServiceContext = *_rmolServiceContext;
 
     stdair::LegCabin& lLegCabin = lRMOL_ServiceContext.getLegCabinSample();
-    StudyStatManager* lStudyStatManager_ptr =
-      lRMOL_ServiceContext.getStudyStatManager();
 
     stdair::BasChronometer lOptimisationChronometer;
     lOptimisationChronometer.start();
     
-    if (lStudyStatManager_ptr == NULL) {
-      Optimiser::heuristicOptimisationByEmsr (lLegCabin);
-    } else {      
-      Optimiser::heuristicOptimisationByEmsr (lLegCabin,*lStudyStatManager_ptr);
-    }
-
+    Optimiser::heuristicOptimisationByEmsr (lLegCabin);
+    
     const double lOptimisationMeasure = lOptimisationChronometer.elapsed();
     // DEBUG
     STDAIR_LOG_DEBUG ("Optimisation EMSR performed in "
@@ -227,11 +199,6 @@ namespace RMOL {
       logStream << std::fixed << std::setprecision (2) << bidPrice << ", ";
     }
     STDAIR_LOG_DEBUG (logStream.str());
-
-    if (lStudyStatManager_ptr != NULL) {
-      STDAIR_LOG_DEBUG (lStudyStatManager_ptr->describe());
-    }
-    
   }
 
   // ////////////////////////////////////////////////////////////////////

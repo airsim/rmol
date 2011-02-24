@@ -13,31 +13,23 @@
 #include <stdair/STDAIR_Service.hpp>
 // RMOL
 #include <rmol/basic/BasConst_RMOL_Service.hpp>
-#include <rmol/bom/StudyStatManager.hpp>
 #include <rmol/factory/FacSupervisor.hpp>
-#include <rmol/factory/FacStudyStatManager.hpp>
 #include <rmol/command/FileMgr.hpp>
 #include <rmol/service/RMOL_ServiceContext.hpp>
 
 namespace RMOL {
 
   // ////////////////////////////////////////////////////////////////////
-  RMOL_ServiceContext::RMOL_ServiceContext () : _studyStatManager (NULL) {
+  RMOL_ServiceContext::RMOL_ServiceContext () {
   }
   
   // ////////////////////////////////////////////////////////////////////
-  RMOL_ServiceContext::RMOL_ServiceContext (const RMOL_ServiceContext&) :
-    _studyStatManager (NULL) {
+  RMOL_ServiceContext::RMOL_ServiceContext (const RMOL_ServiceContext&) {
     assert (false);
   }
   
   // ////////////////////////////////////////////////////////////////////
   RMOL_ServiceContext::~RMOL_ServiceContext() {
-  }
-
-  // ////////////////////////////////////////////////////////////////////
-  void RMOL_ServiceContext::setUpStudyStatManager () {
-    _studyStatManager = &FacStudyStatManager::instance().create();
   }
 
   // ////////////////////////////////////////////////////////////////////

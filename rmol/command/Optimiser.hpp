@@ -13,9 +13,6 @@ namespace stdair {
 }
 
 namespace RMOL {
-  /** Forward declarations. */
-  class StudyStatManager;
-
   /** Class wrapping the optimisation algorithms. */
   class Optimiser {
   public:
@@ -33,13 +30,6 @@ namespace RMOL {
      */
     static void optimalOptimisationByMCIntegration (const int K, 
                                                     stdair::LegCabin&);
-
-    /**
-       Monte Carlo Integartion algorithm with StudyStatManager.
-    */
-    static void optimalOptimisationByMCIntegration (const int K, 
-                                                    stdair::LegCabin&,
-                                                    StudyStatManager&);
     
     /**
        Dynamic Programming.
@@ -50,12 +40,6 @@ namespace RMOL {
        EMRS algorithm.
      */
     static void heuristicOptimisationByEmsr (stdair::LegCabin&);
-
-    /**
-       EMRS algorithm with StudyStatManager.
-     */
-    static void heuristicOptimisationByEmsr (stdair::LegCabin&,
-                                             StudyStatManager&);
 
     /**
        EMRS-a algorithm.

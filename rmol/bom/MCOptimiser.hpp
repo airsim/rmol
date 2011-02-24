@@ -13,10 +13,6 @@ namespace stdair {
 }
 
 namespace RMOL {
-
-  /** Forward declarations. */
-  class StudyStatManager;
-  
   /** Utility methods for the Monte-Carlo algorithms. */
   class MCOptimiser {
   public:
@@ -33,12 +29,6 @@ namespace RMOL {
      */
     static void optimalOptimisationByMCIntegration (const int K,
                                                     stdair::LegCabin&);
-    /**
-       Monte Carlo algorithm with StudyStatManager.
-     */
-    static void optimalOptimisationByMCIntegration (const int K,
-                                                    stdair::LegCabin&,
-                                                    StudyStatManager&);
     
   };
 }
