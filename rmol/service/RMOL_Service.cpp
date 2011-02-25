@@ -203,7 +203,7 @@ namespace RMOL {
     std::ostringstream logStream;
     stdair::BidPriceVector_T lBidPriceVector = lLegCabin.getBidPriceVector();
     logStream << "Bid-Price Vector (BPV): ";
-    unsigned int size = lBidPriceVector.size();
+    const unsigned int size = lBidPriceVector.size();
     
     for (unsigned int i = 0; i < size; ++i) {
       const double bidPrice = lBidPriceVector.at(i);
