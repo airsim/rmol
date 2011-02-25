@@ -58,6 +58,15 @@ namespace RMOL {
     /** Constructor.
         <br>The init() method is called; see the corresponding documentation
         for more details.
+        <br>Moreover, a reference on an output stream is given, so
+        that log outputs can be directed onto that stream.       
+        @param const stdair::BasLogParams& Parameters for the output log
+               stream. */
+    RMOL_Service (const stdair::BasLogParams&);
+
+    /** Constructor.
+        <br>The init() method is called; see the corresponding documentation
+        for more details.
         <br>Moreover, as no reference on any output stream is given,
         it is assumed that the StdAir log service has already been
         initialised with the proper log output stream by some other

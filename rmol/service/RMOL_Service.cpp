@@ -52,6 +52,17 @@ namespace RMOL {
   }
 
   // ////////////////////////////////////////////////////////////////////
+  RMOL_Service::RMOL_Service (const stdair::BasLogParams& iLogParams) :
+    _rmolServiceContext (NULL) {
+
+    // Initialise the service context
+    initServiceContext ();
+
+    // Initialise the STDAIR service handler
+    initStdAirService (iLogParams);    
+  }
+
+  // ////////////////////////////////////////////////////////////////////
   RMOL_Service:: RMOL_Service (stdair::STDAIR_ServicePtr_T ioSTDAIRServicePtr)
     : _rmolServiceContext (NULL) {
     

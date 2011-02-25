@@ -33,10 +33,6 @@ public:
       Optimisation functionality. */
   void testOptimiseEMSRb();
 
-  /** Test the Expected Marginal Seat Revenue, variant a (EMSR-a) with
-      sell-up (fare/yield adjustment), Optimisation functionality. */
-  void testOptimiseEMSRaWithSU();
-
   /** Test some error detection functionalities. */
   //  void errorCase ();
 

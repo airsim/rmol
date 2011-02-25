@@ -192,7 +192,7 @@ int main (int argc, char* argv[]) {
   // Initialise the RMOL service
   const stdair::BasLogParams lLogParams (stdair::LOG::DEBUG, logOutputFile);
   const stdair::AirlineCode_T lAirlineCode ("BA");
-  RMOL::RMOL_Service lRmolService (lLogParams, lAirlineCode);
+  RMOL::RMOL_Service lRmolService (lLogParams);
 
   // Register BCDataSet
   RMOL::BookingClassDataSet lBookingClassDataSet;
