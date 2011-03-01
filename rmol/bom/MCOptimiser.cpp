@@ -5,7 +5,14 @@
 #include <cassert>
 #include <string>
 #include <sstream>
+#include <algorithm>
 // StdAir
+#include <stdair/service/Logger.hpp>
+#include <stdair/bom/BomManager.hpp>
+#include <stdair/bom/LegCabin.hpp>
+#include <stdair/bom/SegmentCabin.hpp>
+#include <stdair/bom/BookingClass.hpp>
+#include <stdair/bom/VirtualClassStruct.hpp>
 #include <stdair/service/Logger.hpp>
 // RMOL
 #include <rmol/bom/MCOptimiser.hpp>
@@ -14,223 +21,120 @@ namespace RMOL {
 
   // // //////////////////////////////////////////////////////////////////////
   void MCOptimiser::
-  optimalOptimisationByMCIntegration (const int K,
-                                      stdair::LegCabin& ioLegCabin) {
-  //   // Retrieve the BucketHolder
-  //   // BucketHolder& ioBucketHolder = ioResource.getBucketHolder();
-
-  //   // Number of classes/buckets: n
-  //   const short nbOfClasses = ioBucketHolder.getSize();
-
-  //   /** 
-  //       Initialise the partial sum vector representing the last step within
-  //       the algorithm below.
-  //       <br>At the beginning of the algorithm, the partial sums need to be
-  //       null. Then, the generated demand (variates) will be added 
-  //       incrementally.
-  //   */
-  //   ioPSHolderHolder.begin();
-  //   PartialSumHolder& firstPartialSumHolder = 
-  //     ioPSHolderHolder.getCurrentPartialSumHolder();
-  //   firstPartialSumHolder.initSize (K);
-
-  //   for (int k=1 ; k <= K; k++) {
-  //     firstPartialSumHolder.addPartialSum (0.0);
-  //   }
-
-  //   /** 
-  //       Iterate on the classes/buckets, from 1 to n-1.
-  //       Note that n-1 corresponds to the size of the parameter list,
-  //       i.e., n corresponds to the number of classes/buckets.
-  //   */
-  //   ioBucketHolder.begin();
-  //   ioPSHolderHolder.iterate();
-  //   int Kj = K;
-  //   int lj = 0;
-  //   const int cabinCapacityInt = static_cast<int> (iCabinCapacity);
-  //   for (short j = 1 ; j <= nbOfClasses - 1; 
-  //        ++j, ioBucketHolder.iterate(), ioPSHolderHolder.iterate()) {
-  //     /** Retrieve Bucket(j) (current) and Bucket(j+1) (next). */
-  //     Bucket& currentBucket = ioBucketHolder.getCurrentBucket();
-  //     Bucket& nextBucket = ioBucketHolder.getNextBucket();
-
-  //     // STEP 1.
-  //     /** 
-  //         Initialise the random generator with the distribution parameters of
-  //         the demand for the current class/bucket, j.
-  //     */
-  //     const DistributionParameters& aDistribParams = 
-  //       currentBucket.getDistributionParameters();
-  //     Gaussian gaussianDemandGenerator (aDistribParams);
-
-  //     /** DEBUG
-  //         STDAIR_LOG_DEBUG ("[" << j << "]: " << Kj << " values with N ( " 
-  //         << aDistribParams.getMean() << ", "
-  //         << aDistribParams.getStandardDeviation() << ").");
-  //     */
-
-  //     /**
-  //        Iterate on the random draws: generate random variates, d(j,k)
-  //        for the current class/bucket demand, j, and for k=1 to Kj.
-  //     */
-  //     VariateList_T aVariateList;
-
-  //     PartialSumHolder& previousPartialSumList = 
-  //       ioPSHolderHolder.getPreviousPartialSumHolder();
-  //     PartialSumHolder& currentPartialSumList = 
-  //       ioPSHolderHolder.getCurrentPartialSumHolder();
-  //     currentPartialSumList.initSize (Kj);
-  //     for (int k=1; k <= Kj; k++) {
-  //       const double djk = gaussianDemandGenerator.generateVariate();
-  //       aVariateList.push_back (djk);
-
-  //       /** 
-  //           Calculate the partial sums:
-  //           <br>
-  //           S(j,k)= d(1,k) + d(2,k) + ... + d(j,k),for a given k and j=1 to n-1
-  //           Note that n-1 corresponds to the size of the parameter list,
-  //           i.e., n corresponds to the number of classes/buckets.
-  //           <br>
-  //           Hence: S(j,k) = S'(j-1, l+k) + d(j,k). 
-  //       */
-  //       const double spjm1lpk = 
-  //         previousPartialSumList.getPartialSum (lj + k - 1);
-  //       const double sjk = spjm1lpk + djk;
-  //       currentPartialSumList.addPartialSum (sjk);
-
-  //       /* DEBUG
-  //          STDAIR_LOG_DEBUG ("d(" << j << ", " << k << "); " << djk 
-  //          << "; S'(" << j-1 << ", " << lj+k << "); " << spjm1lpk
-  //          << "; S(" << j << ", " << k << "); " << sjk);
-  //       */
-  //     }
-
-  //     // STEP 2.
-  //     /**
-  //        Sort the partial sum vectors S(j,k) on k, for the current j.
-  //     */
-  //     currentPartialSumList.sort ();
-
-  //     /** Retrieve the prices for Bucket(j) and Bucket(j+1). */
-  //     const double pj = currentBucket.getAverageYield();
-  //     const double pj1 = nextBucket.getAverageYield();
-
-  //     /** Consistency check: the yield/price of a higher class/bucket 
-  //         (with the j index lower) must be higher. */
-  //     assert (pj > pj1);
-
-  //     /** 
-  //         The optimal index is defined as:
-  //         lj = floor {[p(j)-p(j+1)]/p(j) . K}
-  //     */
-  //     const double ljdouble = std::floor (Kj * (pj - pj1) / pj);
-  //     lj = static_cast<int> (ljdouble);
-
-  //     /** DEBUG 
-  //     STDAIR_LOG_DEBUG ("p(j+1)/p(j) = " << pj1 / pj << ", lj = " << lj 
-  //                     << ", Kj = " << Kj << " => " << Kj - lj
-  //                     << " points above y(j)");
-  //     */
-
-  //     /** Consistency check. */
-  //     assert (lj >= 1 && lj < Kj);
-
-  //     /** 
-  //         The optimal protection is defined as:
-  //         y(j) = 1/2 [S(j,lj) + S(j, lj+1)]
-  //     */
-  //     const double sjl = currentPartialSumList.getPartialSum (lj - 1);
-  //     const double sjlp1 = currentPartialSumList.getPartialSum (lj + 1 - 1);
-  //     const double yj = (sjl + sjlp1) / 2;
-
-  //     /** DEBUG
-  //         STDAIR_LOG_DEBUG ("S(j,l) = " << sjl << ", S(j,l+1) = " << sjlp1 
-  //         << ", y(j) = " << yj);
-  //     */
-
-  //     // Set the cumulated protection for Bucket(j) (j ranging from 1 to n-1)
-  //     currentBucket.setCumulatedProtection (yj);
-
-  //     /** Compute the Bid-Price (Opportunity Cost) at index x
-  //         (capacity) for x between y(j-1) et y(j). This OC can be
-  //         proven to be equal to p(j)*Proba(D1+...+Dk>=x | D1 > y1,
-  //         D1+D2 > y2, ..., D1+...+D(k-1) > y(k-1)). 
-  //     */
-      
-  //     // Get the previous cumulated protection y(j-1).
-  //     const double yjm1 = ioBucketHolder.getPreviousCumulatedProtection ();
-  //     const int yjm1int = static_cast<int> (yjm1);
-  //     const int yjint = static_cast<int> (yj);
-  //     int currentIndex = 0;
-
-  //     for (int x = yjm1int + 1; 
-  //          x <= yjint && x <= cabinCapacityInt; ++x) {
-  //       currentIndex = currentPartialSumList.getLowerBound (x);
-  //       const double bidPriceAtX = pj * (Kj - currentIndex) / Kj;
-  //       ioBidPriceVector.push_back (bidPriceAtX);
-  //     }   
-
-  //     /** Update Kj for the next loop. */
-  //     Kj = Kj - lj;
-
-  //     /** S'(j,k) = S(j,k). 
-  //         <br>The previousPartialSumList (S') now becomes equal to the 
-  //         currentPartialSumList (S) (by iteration on ioPSHolderHolder). */
-  //   }
-
-  //   // Set the protection of Bucket(n) to be equal to the capacity
-  //   Bucket& currentBucket = ioBucketHolder.getCurrentBucket();
-  //   currentBucket.setCumulatedProtection (iCabinCapacity);
-
-  //   /** Compute the Bid-Price (Opportunity Cost) at index x
-  //         (capacity) for x between y(n-1) et cabin capacity. This OC can be
-  //         proven to be equal to p(n)*Proba(D1+...+Dn>=x | D1 > y1,
-  //         D1+D2 > y2, ..., D1+...+D(n-1) > y(n-1)). */
-         
-  //   // Get the previous cumulated protection y(n-1).
-  //   const double ynm1 = ioBucketHolder.getPreviousCumulatedProtection ();
-
-  //   if (ynm1 < iCabinCapacity) {
-  //     // STEP 1.
-  //     const DistributionParameters& aDistribParams = 
-  //       currentBucket.getDistributionParameters();
-  //     Gaussian gaussianDemandGenerator (aDistribParams);
-      
-  //     VariateList_T aVariateList;
-      
-  //     PartialSumHolder& previousPartialSumList = 
-  //       ioPSHolderHolder.getPreviousPartialSumHolder();
-  //     PartialSumHolder& currentPartialSumList = 
-  //       ioPSHolderHolder.getCurrentPartialSumHolder();
-  //     currentPartialSumList.initSize (Kj);
-      
-  //     for (int k = 1; k <= Kj; ++k) {
-  //       const double djk = gaussianDemandGenerator.generateVariate();
-  //       aVariateList.push_back (djk);
-        
-  //       const double spjm1lpk = 
-  //         previousPartialSumList.getPartialSum (lj + k - 1);
-  //       const double sjk = spjm1lpk + djk;
-  //       currentPartialSumList.addPartialSum (sjk);
-  //     }
-      
-  //     // STEP 2.
-  //     currentPartialSumList.sort ();
-      
-  //     const int ynm1int = static_cast<int> (ynm1);
-  //     const double pn = currentBucket.getAverageYield();
-  //     int currentIndex = 0;
-  //     for (int x = ynm1int + 1; x <= cabinCapacityInt; ++x) {
-  //       currentIndex = currentPartialSumList.getLowerBound (x);
-  //       const double bidPriceAtX = pn * (Kj - currentIndex) / Kj;
-  //       ioBidPriceVector.push_back (bidPriceAtX);
-  //     } 
-  //   }
+  optimalOptimisationByMCIntegration (stdair::LegCabin& ioLegCabin) { 
+    // Retrieve the segment-cabin
+    const stdair::SegmentCabinList_T lSegmentCabinList =
+      stdair::BomManager::getList<stdair::SegmentCabin> (ioLegCabin);
+    stdair::SegmentCabinList_T::const_iterator itSC = lSegmentCabinList.begin();
+    assert (itSC != lSegmentCabinList.end());
+    const stdair::SegmentCabin* lSegmentCabin_ptr = *itSC;
+    assert (lSegmentCabin_ptr != NULL);
     
-  //   /**
-  //      Re-calculate the values (protections, bkg limits and cumulated
-  //      booking limits, the optimal revenue.
-  //   */
-  //   ioBucketHolder.recalculate ();
+    // Retrieve the class list.
+    const stdair::BookingClassList_T lBookingClassList =
+      stdair::BomManager::getList<stdair::BookingClass> (*lSegmentCabin_ptr);
+
+    // Retrieve the remaining cabin capacity.
+    const stdair::Availability_T& lCap = ioLegCabin.getAvailabilityPool();
+    const int lCapacity = static_cast<const int> (lCap);
+    
+    // Retrieve the virtual class list.
+    stdair::VirtualClassList_T& lVCList = ioLegCabin.getVirtualClassList();
+
+    // Parse the virtual class list and compute the protection levels.
+    stdair::VirtualClassList_T::iterator itCurrentVC = lVCList.begin();
+    assert (itCurrentVC != lVCList.end());
+    stdair::VirtualClassList_T::iterator itNextVC = itCurrentVC; ++itNextVC;
+
+    // Initialise  the partial sum holder with the demand sample of the first
+    // virtual class.
+    stdair::VirtualClassStruct& lFirstVC = *itCurrentVC;
+    stdair::GeneratedDemandVector_T lPartialSumHolder =
+      lFirstVC.getGeneratedDemandVector();      
+
+    // Initialise the booking limit for the first class, which is equal to
+    // the remaining capacity.
+    lFirstVC.setCumulatedBookingLimit (lCap);
+
+    // Initialise bid price vector with the first element (index 0) equal to
+    // the highest yield.
+    stdair::BidPriceVector_T& lBPV = ioLegCabin.getEmptyBidPriceVector();
+    const stdair::Yield_T& y1 = lFirstVC.getYield ();
+    lBPV.push_back (y1);
+    int idx = 1;    
+    
+    for (; itNextVC != lVCList.end(); ++itCurrentVC, ++itNextVC) {
+      // Get the yields of the two classes.
+      stdair::VirtualClassStruct& lCurrentVC = *itCurrentVC;
+      stdair::VirtualClassStruct& lNextVC = *itNextVC;
+      const stdair::Yield_T& yj = lCurrentVC.getYield ();
+      const stdair::Yield_T& yj1 = lNextVC.getYield ();
+
+      // Consistency check: the yield/price of a higher class/bucket 
+      // (with the j index lower) must be higher.
+      assert (yj > yj1);
+
+      // Sort the partial sum holder.
+      std::sort (lPartialSumHolder.begin(), lPartialSumHolder.end());
+      const int K = lPartialSumHolder.size ();
+
+      // Compute the optimal index lj = floor {[y(j)-y(j+1)]/y(j) . K}
+      const double ljdouble = std::floor (K * (yj - yj1) / yj);
+      int lj = static_cast<int> (ljdouble);
+      
+      // Consistency check. 
+      assert (lj >= 1 && lj < K);
+
+      //  The optimal protection: p(j) = 1/2 [S(j,lj) + S(j, lj+1)]
+      const double sjl = lPartialSumHolder.at (lj - 1);
+      const double sjlp1 = lPartialSumHolder.at (lj + 1 - 1);
+      const double pj = (sjl + sjlp1) / 2;
+
+      // Set the cumulated protection level for the current class.
+      lCurrentVC.setCumulatedProtection (pj);
+      // Set the cumulated booking limit for the next class.
+      lNextVC.setCumulatedBookingLimit (lCap - pj);
+
+      /** Compute the Bid-Price (Opportunity Cost) at index x
+          (capacity) for x between p(j-1) et p(j). This OC can be
+          proven to be equal to y(j) * Proba (D1 +...+ Dj >= x | D1 > p1,
+          D1 + D2 > p2, ..., D1 +... + D(j-1) > p(j-1)). */
+      const int pjint = static_cast<const int> (pj);
+      stdair::GeneratedDemandVector_T::iterator itLowerBound =
+        lPartialSumHolder.begin();
+      for (; idx <= pjint && idx <= lCapacity; ++idx) {
+        itLowerBound =
+          std::lower_bound (itLowerBound, lPartialSumHolder.end(), idx);
+        const int pos = itLowerBound - lPartialSumHolder.begin();
+
+        const stdair::BidPrice_T lBP = yj * (K - pos) / K;
+        lBPV.push_back (lBP);
+      }
+
+      // Update the partial sum holder.
+      const stdair::GeneratedDemandVector_T& lNextPSH =
+        lNextVC.getGeneratedDemandVector();
+      assert (K <= lNextPSH.size());
+      for (int i = 0; i < K - lj; ++i) {
+        lPartialSumHolder.at(i) = lPartialSumHolder.at(i + lj) + lNextPSH.at(i);
+      }
+      lPartialSumHolder.resize (K - lj);
+    }
+    /** Compute the Bid-Price (Opportunity Cost) at index x
+          (capacity) for x between p(j-1) et cabin capacity. This OC can be
+          proven to be equal to y(n) * Proba (D1 +...+ Dn >= x | D1 > p1,
+          D1 + D2 > p2, ..., D1 +... + D(n-1) > p(n-1)). */
+    stdair::VirtualClassStruct& lLastVC = *itCurrentVC;
+    const stdair::Yield_T& yn = lLastVC.getYield();
+    stdair::GeneratedDemandVector_T::iterator itLowerBound =
+      lPartialSumHolder.begin();
+    for (; idx <= lCapacity; ++idx) {
+      itLowerBound =
+        std::lower_bound (itLowerBound, lPartialSumHolder.end(), idx);
+      const int pos = itLowerBound - lPartialSumHolder.begin();
+      const int K = lPartialSumHolder.size();
+      const stdair::BidPrice_T lBP = yn * (K - pos) / K;
+      lBPV.push_back (lBP);
+    }
   }
 }

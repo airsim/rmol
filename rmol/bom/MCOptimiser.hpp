@@ -23,12 +23,9 @@ namespace RMOL {
 	<br>The Monte Carlo Integration algorithm (see The Theory and 
 	Practice of Revenue Management, by Kalyan T. Talluri and 
 	Garret J. van Ryzin, Kluwer Academic Publishers, for the details) 
-	is used. Hence, K is the number of random draws to perform.
-	100 is a minimum for K, as statistics must be drawn from those
-	random generations.
+	is used.
      */
-    static void optimalOptimisationByMCIntegration (const int K,
-                                                    stdair::LegCabin&);
+    static void optimalOptimisationByMCIntegration (stdair::LegCabin&);
     
   };
 }

@@ -162,17 +162,19 @@ namespace RMOL {
     // DEBUG
     STDAIR_LOG_DEBUG ("Optimisation by Monte-Carlo performed in "
                       << lOptimisationMeasure);
-    //STDAIR_LOG_DEBUG ("Resulting buckets: " << oBucketHolder_ptr->display());
+    STDAIR_LOG_DEBUG ("Result: " << lLegCabin.displayVirtualClassList());
 
     std::ostringstream logStream;
     stdair::BidPriceVector_T lBidPriceVector = lLegCabin.getBidPriceVector();
     logStream << "Bid-Price Vector (BPV): ";
     unsigned int size = lBidPriceVector.size();
     
-    for (unsigned int i = 0; i < size; ++i) {
+    for (unsigned int i = 0; i < size - 1; ++i) {
       const double bidPrice = lBidPriceVector.at(i);
       logStream << std::fixed << std::setprecision (2) << bidPrice << ", ";
     }
+    const double bidPrice = lBidPriceVector.at(size -1);
+    logStream << std::fixed << std::setprecision (2) << bidPrice;
     STDAIR_LOG_DEBUG (logStream.str());
   }
 
@@ -205,10 +207,12 @@ namespace RMOL {
     logStream << "Bid-Price Vector (BPV): ";
     const unsigned int size = lBidPriceVector.size();
     
-    for (unsigned int i = 0; i < size; ++i) {
+    for (unsigned int i = 0; i < size - 1; ++i) {
       const double bidPrice = lBidPriceVector.at(i);
       logStream << std::fixed << std::setprecision (2) << bidPrice << ", ";
     }
+    const double bidPrice = lBidPriceVector.at(size -1);
+    logStream << std::fixed << std::setprecision (2) << bidPrice;
     STDAIR_LOG_DEBUG (logStream.str());
   }
 
