@@ -114,7 +114,8 @@ namespace RMOL {
       // Update the partial sum holder.
       const stdair::GeneratedDemandVector_T& lNextPSH =
         lNextVC.getGeneratedDemandVector();
-      assert (K <= lNextPSH.size());
+      const int lNextPSHSize = lNextPSH.size();
+      assert (K <= lNextPSHSize);
       for (int i = 0; i < K - lj; ++i) {
         lPartialSumHolder.at(i) = lPartialSumHolder.at(i + lj) + lNextPSH.at(i);
       }
