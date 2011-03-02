@@ -6,8 +6,9 @@
 #include <string>
 #include <sstream>
 #include <algorithm>
+#include <cmath>
 // StdAir
-#include <stdair/service/Logger.hpp>
+#include <stdair/stdair_basic_types.hpp>
 #include <stdair/bom/BomManager.hpp>
 #include <stdair/bom/LegCabin.hpp>
 #include <stdair/bom/SegmentCabin.hpp>
@@ -37,6 +38,8 @@ namespace RMOL {
     // Retrieve the remaining cabin capacity.
     const stdair::Availability_T& lCap = ioLegCabin.getAvailabilityPool();
     const int lCapacity = static_cast<const int> (lCap);
+    const stdair::UnsignedIndex_T lCapacityIndex =
+      static_cast<const stdair::UnsignedIndex_T> ((lCapacity+abs(lCapacity))/2);
     
     // Retrieve the virtual class list.
     stdair::VirtualClassList_T& lVCList = ioLegCabin.getVirtualClassList();
@@ -61,7 +64,7 @@ namespace RMOL {
     stdair::BidPriceVector_T& lBPV = ioLegCabin.getEmptyBidPriceVector();
     const stdair::Yield_T& y1 = lFirstVC.getYield ();
     lBPV.push_back (y1);
-    int idx = 1;    
+    stdair::UnsignedIndex_T idx = 1;    
     
     for (; itNextVC != lVCList.end(); ++itCurrentVC, ++itNextVC) {
       // Get the yields of the two classes.
@@ -76,11 +79,12 @@ namespace RMOL {
 
       // Sort the partial sum holder.
       std::sort (lPartialSumHolder.begin(), lPartialSumHolder.end());
-      const int K = lPartialSumHolder.size ();
+      const stdair::UnsignedIndex_T K = lPartialSumHolder.size ();
 
       // Compute the optimal index lj = floor {[y(j)-y(j+1)]/y(j) . K}
       const double ljdouble = std::floor (K * (yj - yj1) / yj);
-      int lj = static_cast<int> (ljdouble);
+      stdair::UnsignedIndex_T lj =
+        static_cast<stdair::UnsignedIndex_T> (ljdouble);
       
       // Consistency check. 
       assert (lj >= 1 && lj < K);
@@ -99,13 +103,14 @@ namespace RMOL {
           (capacity) for x between p(j-1) et p(j). This OC can be
           proven to be equal to y(j) * Proba (D1 +...+ Dj >= x | D1 > p1,
           D1 + D2 > p2, ..., D1 +... + D(j-1) > p(j-1)). */
-      const int pjint = static_cast<const int> (pj);
+      const stdair::UnsignedIndex_T pjint = static_cast<const int> (pj);
       stdair::GeneratedDemandVector_T::iterator itLowerBound =
         lPartialSumHolder.begin();
-      for (; idx <= pjint && idx <= lCapacity; ++idx) {
+      for (; idx <= pjint && idx <= lCapacityIndex; ++idx) {
         itLowerBound =
           std::lower_bound (itLowerBound, lPartialSumHolder.end(), idx);
-        const int pos = itLowerBound - lPartialSumHolder.begin();
+        const stdair::UnsignedIndex_T pos =
+          itLowerBound - lPartialSumHolder.begin();
 
         const stdair::BidPrice_T lBP = yj * (K - pos) / K;
         lBPV.push_back (lBP);
@@ -114,9 +119,8 @@ namespace RMOL {
       // Update the partial sum holder.
       const stdair::GeneratedDemandVector_T& lNextPSH =
         lNextVC.getGeneratedDemandVector();
-      const int lNextPSHSize = lNextPSH.size();
-      assert (K <= lNextPSHSize);
-      for (int i = 0; i < K - lj; ++i) {
+      assert (K <= lNextPSH.size());
+      for (stdair::UnsignedIndex_T i = 0; i < K - lj; ++i) {
         lPartialSumHolder.at(i) = lPartialSumHolder.at(i + lj) + lNextPSH.at(i);
       }
       lPartialSumHolder.resize (K - lj);
@@ -129,11 +133,12 @@ namespace RMOL {
     const stdair::Yield_T& yn = lLastVC.getYield();
     stdair::GeneratedDemandVector_T::iterator itLowerBound =
       lPartialSumHolder.begin();
-    for (; idx <= lCapacity; ++idx) {
+    for (; idx <= lCapacityIndex; ++idx) {
       itLowerBound =
         std::lower_bound (itLowerBound, lPartialSumHolder.end(), idx);
-      const int pos = itLowerBound - lPartialSumHolder.begin();
-      const int K = lPartialSumHolder.size();
+      const stdair::UnsignedIndex_T pos =
+        itLowerBound - lPartialSumHolder.begin();
+      const stdair::UnsignedIndex_T K = lPartialSumHolder.size();
       const stdair::BidPrice_T lBP = yn * (K - pos) / K;
       lBPV.push_back (lBP);
     }
