@@ -7,8 +7,13 @@
 // STL
 #include <vector>
 #include <list>
+// Boost
+#include <boost/shared_ptr.hpp>
 
 namespace RMOL {
+
+  // Forward declarations
+  class RMOL_Service;
 
    // ///////// Exceptions ///////////
   class RootException : public std::exception {
@@ -45,6 +50,8 @@ namespace RMOL {
   }
 
   // //////// Type definitions /////////
+  /** Pointer on the RMOL Service handler. */
+  typedef boost::shared_ptr<RMOL::RMOL_Service> RMOL_ServicePtr_T;
 
 
 }
