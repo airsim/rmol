@@ -51,8 +51,7 @@ namespace RMOL {
 
   // //////// Type definitions /////////
   /** Pointer on the RMOL Service handler. */
-  typedef boost::shared_ptr<RMOL::RMOL_Service> RMOL_ServicePtr_T;
-
+  typedef boost::shared_ptr<RMOL_Service> RMOL_ServicePtr_T;
 
 }
 #endif // __RMOL_RMOL_TYPES_HPP
