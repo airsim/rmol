@@ -14,7 +14,6 @@
 #include <stdair/STDAIR_Service.hpp>
 // RMOL
 #include <rmol/basic/BasConst_RMOL_Service.hpp>
-#include <rmol/factory/FacSupervisor.hpp>
 #include <rmol/factory/FacRmolServiceContext.hpp>
 #include <rmol/command/Optimiser.hpp>
 #include <rmol/command/Unconstrainer.hpp>
@@ -41,7 +40,7 @@ namespace RMOL {
     _rmolServiceContext (NULL) {
 
     // Initialise the service context
-    initServiceContext ();
+    initServiceContext();
 
     // Initialise the STDAIR service handler
     initStdAirService (iLogParams);
@@ -56,7 +55,7 @@ namespace RMOL {
     _rmolServiceContext (NULL) {
 
     // Initialise the service context
-    initServiceContext ();
+    initServiceContext();
 
     // Initialise the STDAIR service handler
     initStdAirService (iLogParams);    
@@ -67,7 +66,7 @@ namespace RMOL {
     : _rmolServiceContext (NULL) {
     
     // Initialise the context
-    initServiceContext ();
+    initServiceContext();
     
     // Add the StdAir service context to the RMOL service context
     addStdAirService (ioSTDAIRServicePtr);
@@ -75,8 +74,6 @@ namespace RMOL {
 
   // ////////////////////////////////////////////////////////////////////
   RMOL_Service::~RMOL_Service () {
-    // Clean all the RMOL-scoped objects
-    FacSupervisor::cleanFactory();
   }
 
   // ////////////////////////////////////////////////////////////////////
@@ -108,8 +105,7 @@ namespace RMOL {
 
     // Retrieve the RMOL service context
     assert (_rmolServiceContext != NULL);
-    RMOL_ServiceContext& lRMOL_ServiceContext =
-      *_rmolServiceContext;
+    RMOL_ServiceContext& lRMOL_ServiceContext = *_rmolServiceContext;
 
     // Store the STDAIR service object within the (AIRINV) service context
     lRMOL_ServiceContext.setSTDAIR_Service (ioSTDAIR_Service_ptr);
@@ -121,6 +117,8 @@ namespace RMOL {
     // Retrieve the BomRoot.
     assert (_rmolServiceContext != NULL);
     RMOL_ServiceContext& lRMOL_ServiceContext = *_rmolServiceContext;
+
+    // Retrieve the StdAir service
     stdair::STDAIR_Service& lSTDAIR_Service =
       lRMOL_ServiceContext.getSTDAIR_Service ();
     stdair::BomRoot& lBomRoot = lSTDAIR_Service.getBomRoot ();
@@ -136,7 +134,7 @@ namespace RMOL {
   }
 
   // ////////////////////////////////////////////////////////////////////
-  void RMOL_Service::reset () {
+  void RMOL_Service::reset() {
     // Retrieve the RMOL service context
     assert (_rmolServiceContext != NULL);
     RMOL_ServiceContext& lRMOL_ServiceContext = *_rmolServiceContext;
@@ -145,8 +143,7 @@ namespace RMOL {
   }
   
   // ////////////////////////////////////////////////////////////////////
-  void RMOL_Service::
-  optimalOptimisationByMCIntegration (const int K) {
+  void RMOL_Service::optimalOptimisationByMCIntegration (const int K) {
     assert (_rmolServiceContext != NULL);
     RMOL_ServiceContext& lRMOL_ServiceContext = *_rmolServiceContext;
 
@@ -179,13 +176,11 @@ namespace RMOL {
   }
 
   // ////////////////////////////////////////////////////////////////////
-  void RMOL_Service::
-  optimalOptimisationByDP () {
-    
+  void RMOL_Service::optimalOptimisationByDP() {
   }
   
   // ////////////////////////////////////////////////////////////////////
-  void RMOL_Service::heuristicOptimisationByEmsr () {
+  void RMOL_Service::heuristicOptimisationByEmsr() {
     assert (_rmolServiceContext != NULL);
     RMOL_ServiceContext& lRMOL_ServiceContext = *_rmolServiceContext;
 
@@ -217,7 +212,7 @@ namespace RMOL {
   }
 
   // ////////////////////////////////////////////////////////////////////
-  void RMOL_Service::heuristicOptimisationByEmsrA () {
+  void RMOL_Service::heuristicOptimisationByEmsrA() {
     assert (_rmolServiceContext != NULL);
     RMOL_ServiceContext& lRMOL_ServiceContext = *_rmolServiceContext;
 
@@ -231,7 +226,7 @@ namespace RMOL {
   }
 
   // ////////////////////////////////////////////////////////////////////
-  void RMOL_Service::heuristicOptimisationByEmsrB () {
+  void RMOL_Service::heuristicOptimisationByEmsrB() {
     assert (_rmolServiceContext != NULL);
     RMOL_ServiceContext& lRMOL_ServiceContext = *_rmolServiceContext;
 

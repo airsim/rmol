@@ -13,7 +13,6 @@
 #include <stdair/STDAIR_Service.hpp>
 // RMOL
 #include <rmol/basic/BasConst_RMOL_Service.hpp>
-#include <rmol/factory/FacSupervisor.hpp>
 #include <rmol/command/FileMgr.hpp>
 #include <rmol/service/RMOL_ServiceContext.hpp>
 
@@ -35,8 +34,8 @@ namespace RMOL {
   // ////////////////////////////////////////////////////////////////////
   void RMOL_ServiceContext::
   readFromInputFile (const std::string& iInputFileName) {
-    stdair::STDAIR_Service& lSTDAIR_Service = getSTDAIR_Service ();
-    stdair::BomRoot& lBomRoot = lSTDAIR_Service.getBomRoot ();
+    stdair::STDAIR_Service& lSTDAIR_Service = getSTDAIR_Service();
+    stdair::BomRoot& lBomRoot = lSTDAIR_Service.getBomRoot();
     FileMgr::readAndProcessInputFile (iInputFileName, lBomRoot);
   }
 

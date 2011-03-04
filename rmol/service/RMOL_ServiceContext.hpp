@@ -13,9 +13,9 @@
 #include <stdair/stdair_inventory_types.hpp>
 #include <stdair/stdair_maths_types.hpp>
 #include <stdair/stdair_service_types.hpp>
+#include <stdair/service/ServiceAbstract.hpp>
 // RMOL
 #include <rmol/RMOL_Types.hpp>
-#include <rmol/service/ServiceAbstract.hpp>
 
 // Forward declarations
 namespace stdair {
@@ -29,7 +29,7 @@ namespace RMOL {
   typedef boost::shared_ptr<stdair::STDAIR_Service> STDAIR_ServicePtr_T;
   
   /** Inner class holding the context for the RMOL Service object. */
-  class RMOL_ServiceContext : public ServiceAbstract {
+  class RMOL_ServiceContext : public stdair::ServiceAbstract {
     /** The RMOL_Service class should be the sole class to get access to
         ServiceContext content: general users do not want to bother
         with a context interface. */

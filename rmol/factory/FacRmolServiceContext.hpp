@@ -6,9 +6,9 @@
 // //////////////////////////////////////////////////////////////////////
 // StdAir
 #include <stdair/stdair_basic_types.hpp>
+#include <stdair/service/FacServiceAbstract.hpp>
 // RMOL
 #include <rmol/RMOL_Types.hpp>
-#include <rmol/factory/FacServiceAbstract.hpp>
 
 namespace RMOL {
 
@@ -16,7 +16,7 @@ namespace RMOL {
   class RMOL_ServiceContext;
 
   /** Factory for Bucket. */
-  class FacRmolServiceContext : public FacServiceAbstract {
+  class FacRmolServiceContext : public stdair::FacServiceAbstract {
   public:
 
     /** Provide the unique instance.
@@ -32,13 +32,13 @@ namespace RMOL {
     /** Create a new ServiceContext object.
         <br>This new object is added to the list of instantiated objects.
         @return ServiceContext& The newly created object. */
-    RMOL_ServiceContext& create ();
+    RMOL_ServiceContext& create();
     
   protected:
     /** Default Constructor.
         <br>This constructor is protected in order to ensure the singleton
         pattern.*/
-    FacRmolServiceContext () {}
+    FacRmolServiceContext() {}
 
   private:
     /** The unique instance.*/

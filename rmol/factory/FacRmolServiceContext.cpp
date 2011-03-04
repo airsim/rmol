@@ -3,9 +3,10 @@
 // //////////////////////////////////////////////////////////////////////
 // STL
 #include <cassert>
+// StdAir
+#include <stdair/service/FacSupervisor.hpp>
 // RMOL
 #include <rmol/service/RMOL_ServiceContext.hpp>
-#include <rmol/factory/FacSupervisor.hpp>
 #include <rmol/factory/FacRmolServiceContext.hpp>
 
 namespace RMOL {
@@ -24,7 +25,7 @@ namespace RMOL {
       _instance = new FacRmolServiceContext();
       assert (_instance != NULL);
       
-      FacSupervisor::instance().registerServiceFactory (_instance);
+      stdair::FacSupervisor::instance().registerServiceFactory (_instance);
     }
     return *_instance;
   }
