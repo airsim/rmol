@@ -53,7 +53,9 @@ int testOptimiseHelper (const unsigned short optimisationMethodFlag) {
   int oExpectedBookingLimit = 0;
 
   // Output log File
-  const stdair::Filename_T lLogFilename ("OptimiseTestSuite.log");
+  std::ostringstream oStr;
+  oStr << "OptimiseTestSuite_" << optimisationMethodFlag << ".log";
+  const stdair::Filename_T lLogFilename (oStr.str());
     
   // Number of random draws to be generated (best if greater than 100)
   const int K = 100000;

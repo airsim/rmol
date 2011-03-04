@@ -34,11 +34,11 @@ const double K_RMOL_DEFAULT_CAPACITY = 500.0;
 /** Default name and location for the Revenue Management method to be used.
     <br>
     <ul>
-      <li>0 = Monte-Carlo</li>
-      <li>1 = Dynamic Programming</li> 
-      <li>2 = EMSR</li>
-      <li>3 = EMSR-a</li>
-      <li>4 = EMSR-b</li>
+    <li>0 = Monte-Carlo</li>
+    <li>1 = Dynamic Programming</li> 
+    <li>2 = EMSR</li>
+    <li>3 = EMSR-a</li>
+    <li>4 = EMSR-b</li>
     </ul> */
 const short K_RMOL_DEFAULT_METHOD = 0;
 
@@ -115,7 +115,7 @@ int readConfiguration(int argc, char* argv[],
   boost::program_options::variables_map vm;
   boost::program_options::
     store (boost::program_options::command_line_parser (argc, argv).
-	   options (cmdline_options).positional(p).run(), vm);
+           options (cmdline_options).positional(p).run(), vm);
 
   std::ifstream ifs ("rmol.cfg");
   boost::program_options::store (parse_config_file (ifs, config_file_options),
@@ -166,100 +166,91 @@ int readConfiguration(int argc, char* argv[],
 
 // ///////// M A I N ////////////
 int main (int argc, char* argv[]) {
-  try {
-    
-    // Number of random draws to be generated (best if greater than 100)
-    int lRandomDraws = 0;
-    
-    // Cabin Capacity (it must be greater then 100 here)
-    double lCapacity = 0.0;
 
-    // Methods of optimisation (0 = Monte-Carlo, 1 = Dynamic Programming, 
-    // 2 = EMSR, 3 = EMSR-a, 4 = EMSR-b)
-    short lMethod = 0;   
+  // Number of random draws to be generated (best if greater than 100)
+  int lRandomDraws = 0;
     
-    // Built-in
-    bool isBuiltin;
-    
-    // Input file name
-    std::string lInputFilename;
+  // Cabin Capacity (it must be greater then 100 here)
+  double lCapacity = 0.0;
 
-    // Output log File
-    std::string lLogFilename;
+  // Methods of optimisation (0 = Monte-Carlo, 1 = Dynamic Programming, 
+  // 2 = EMSR, 3 = EMSR-a, 4 = EMSR-b)
+  short lMethod = 0;   
+    
+  // Built-in
+  bool isBuiltin;
+    
+  // Input file name
+  std::string lInputFilename;
 
-    // Call the command-line option parser
-    const int lOptionParserStatus = 
-      readConfiguration (argc, argv, lRandomDraws, lCapacity, lMethod,
-                         isBuiltin, lInputFilename, lLogFilename);
+  // Output log File
+  std::string lLogFilename;
 
-    if (lOptionParserStatus == K_RMOL_EARLY_RETURN_STATUS) {
-      return 0;
-    }
+  // Call the command-line option parser
+  const int lOptionParserStatus = 
+    readConfiguration (argc, argv, lRandomDraws, lCapacity, lMethod,
+                       isBuiltin, lInputFilename, lLogFilename);
 
-    // Set the log parameters
-    std::ofstream logOutputFile;
-    // Open and clean the log outputfile
-    logOutputFile.open (lLogFilename.c_str());
-    logOutputFile.clear();
-    
-    // Initialise the list of classes/buckets
-    const stdair::BasLogParams lLogParams (stdair::LOG::DEBUG, logOutputFile);
-    RMOL::RMOL_Service rmolService (lLogParams, lCapacity);
-    
-    if (isBuiltin == true) {
-      // No input file has been provided. So, process a sample.
-
-      // DEBUG
-      STDAIR_LOG_DEBUG ("Please specify an input file!");
-      
-    } else {
-      // DEBUG
-      STDAIR_LOG_DEBUG ("rmol will parse " << lInputFilename
-                        << " and build the corresponding BOM tree.");
-      
-      // Parse the input file
-      rmolService.readFromInputFile (lInputFilename);
-    }
-    
-    switch (lMethod) {
-    case 0: {
-      // Calculate the optimal protections by the Monte Carlo
-      // Integration approach
-      rmolService.optimalOptimisationByMCIntegration (lRandomDraws);
-      break;
-    }
-    case 1: {
-      // Calculate the optimal protections by DP.
-      rmolService.optimalOptimisationByDP ();
-      break;
-    }
-    case 2: {
-      // Calculate the Bid-Price Vector by EMSR
-      rmolService.heuristicOptimisationByEmsr ();
-      break;
-    }
-    case 3: {
-      // Calculate the protections by EMSR-a
-      rmolService.heuristicOptimisationByEmsrA ();
-      break;
-    }
-    case 4: {
-      // Calculate the protections by EMSR-b
-      rmolService.heuristicOptimisationByEmsrB ();
-      break;
-    }
-    default: {
-      rmolService.optimalOptimisationByMCIntegration (lRandomDraws);
-    }
-    }
-    
-  } catch (const std::exception& stde) {
-    std::cerr << "Standard exception: " << stde.what() << std::endl;
-    return -1;
-    
-  } catch (...) {
-    return -1;
+  if (lOptionParserStatus == K_RMOL_EARLY_RETURN_STATUS) {
+    return 0;
   }
-  
+
+  // Set the log parameters
+  std::ofstream logOutputFile;
+  // Open and clean the log outputfile
+  logOutputFile.open (lLogFilename.c_str());
+  logOutputFile.clear();
+
+  // Initialise the list of classes/buckets
+  const stdair::BasLogParams lLogParams (stdair::LOG::DEBUG, logOutputFile);
+  RMOL::RMOL_Service rmolService (lLogParams, lCapacity);
+
+  if (isBuiltin == true) {
+    // No input file has been provided. So, process a sample.
+
+    // DEBUG
+    STDAIR_LOG_DEBUG ("Please specify an input file!");
+
+  } else {
+    // DEBUG
+    STDAIR_LOG_DEBUG ("rmol will parse " << lInputFilename
+                      << " and build the corresponding BOM tree.");
+
+    // Parse the input file
+    rmolService.readFromInputFile (lInputFilename);
+  }
+
+  switch (lMethod) {
+  case 0: {
+    // Calculate the optimal protections by the Monte Carlo
+    // Integration approach
+    rmolService.optimalOptimisationByMCIntegration (lRandomDraws);
+    break;
+  }
+  case 1: {
+    // Calculate the optimal protections by DP.
+    rmolService.optimalOptimisationByDP ();
+    break;
+  }
+  case 2: {
+    // Calculate the Bid-Price Vector by EMSR
+    rmolService.heuristicOptimisationByEmsr ();
+    break;
+  }
+  case 3: {
+    // Calculate the protections by EMSR-a
+    rmolService.heuristicOptimisationByEmsrA ();
+    break;
+  }
+  case 4: {
+    // Calculate the protections by EMSR-b
+    rmolService.heuristicOptimisationByEmsrB ();
+    break;
+  }
+  default: {
+    rmolService.optimalOptimisationByMCIntegration (lRandomDraws);
+  }
+  }
+
   return 0;	
 }

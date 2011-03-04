@@ -39,7 +39,7 @@ namespace RMOL {
   private:
     // /////// Construction / initialisation ////////
     /** Constructors. */
-    RMOL_ServiceContext ();
+    RMOL_ServiceContext();
     RMOL_ServiceContext (const RMOL_ServiceContext&);
         
     /** Destructor. */
@@ -55,21 +55,21 @@ namespace RMOL {
     void readFromInputFile (const std::string& iInputFileName);
 
     /** Clear the context (cabin capacity, bucket holder). */
-    void reset ();
+    void reset();
     
     /** Get the pointer on the STDAIR service handler. */
-    stdair::STDAIR_ServicePtr_T getSTDAIR_ServicePtr () const {
+    stdair::STDAIR_ServicePtr_T getSTDAIR_ServicePtr() const {
       return _stdairService;
     }
 
     /** Get the STDAIR service handler. */
-    stdair::STDAIR_Service& getSTDAIR_Service () const {
+    stdair::STDAIR_Service& getSTDAIR_Service() const {
       assert (_stdairService != NULL);
       return *_stdairService;
     }
 
     /** Get the leg-cabin sample for optimisation. */
-    stdair::LegCabin& getLegCabinSample () const;
+    stdair::LegCabin& getLegCabinSample() const;
     
   private:
     // ///////////// Children ////////////

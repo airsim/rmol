@@ -24,7 +24,7 @@
 namespace RMOL {
 
   // ////////////////////////////////////////////////////////////////////
-  RMOL_Service::RMOL_Service () : _rmolServiceContext (NULL) {
+  RMOL_Service::RMOL_Service() : _rmolServiceContext (NULL) {
     assert (false);
   }
 
@@ -62,7 +62,7 @@ namespace RMOL {
   }
 
   // ////////////////////////////////////////////////////////////////////
-  RMOL_Service:: RMOL_Service (stdair::STDAIR_ServicePtr_T ioSTDAIRServicePtr)
+  RMOL_Service::RMOL_Service (stdair::STDAIR_ServicePtr_T ioSTDAIRServicePtr)
     : _rmolServiceContext (NULL) {
     
     // Initialise the context
@@ -73,14 +73,23 @@ namespace RMOL {
   }
 
   // ////////////////////////////////////////////////////////////////////
-  RMOL_Service::~RMOL_Service () {
+  RMOL_Service::~RMOL_Service() {
+    // Delete/Clean all the objects from memory
+    finalise();
   }
 
   // ////////////////////////////////////////////////////////////////////
-  void RMOL_Service::initServiceContext () {
+  void RMOL_Service::finalise() {
+    assert (_rmolServiceContext != NULL);
+    // Reset the (Boost.)Smart pointer pointing on the STDAIR_Service object.
+    _rmolServiceContext->reset();
+  }
+
+  // ////////////////////////////////////////////////////////////////////
+  void RMOL_Service::initServiceContext() {
     // Initialise the service context
     RMOL_ServiceContext& lRMOL_ServiceContext = 
-      FacRmolServiceContext::instance().create ();
+      FacRmolServiceContext::instance().create();
     _rmolServiceContext = &lRMOL_ServiceContext;
   }
 
