@@ -68,8 +68,10 @@ namespace RMOL {
     // Initialise the context
     initServiceContext();
     
-    // Add the StdAir service context to the RMOL service context
-    addStdAirService (ioSTDAIRServicePtr);
+    // Add the StdAir service context to the RMOL service context.
+    // \note RMOL does not own the STDAIR service resources here.
+    const bool doesNotOwnStdairService = false;
+    addStdAirService (ioSTDAIRServicePtr, doesNotOwnStdairService);
   }
 
   // ////////////////////////////////////////////////////////////////////
@@ -101,23 +103,26 @@ namespace RMOL {
     // Initialise the STDAIR service handler
     // Note that the track on the object memory is kept thanks to the Boost
     // Smart Pointers component.
-    STDAIR_ServicePtr_T lSTDAIR_Service = 
-      STDAIR_ServicePtr_T (new stdair::STDAIR_Service (iLogParams));
+    stdair::STDAIR_ServicePtr_T lSTDAIR_Service = 
+      stdair::STDAIR_ServicePtr_T (new stdair::STDAIR_Service (iLogParams));
 
     // Store the STDAIR service object within the (RMOL) service context
-    addStdAirService (lSTDAIR_Service);
+    const bool ownStdairService = true;
+    addStdAirService (lSTDAIR_Service, ownStdairService);
   }
 
   // ////////////////////////////////////////////////////////////////////
   void RMOL_Service::
-  addStdAirService (stdair::STDAIR_ServicePtr_T ioSTDAIR_Service_ptr) {
+  addStdAirService (stdair::STDAIR_ServicePtr_T ioSTDAIR_Service_ptr,
+                    const bool iOwnStdairService) {
 
     // Retrieve the RMOL service context
     assert (_rmolServiceContext != NULL);
     RMOL_ServiceContext& lRMOL_ServiceContext = *_rmolServiceContext;
 
     // Store the STDAIR service object within the (AIRINV) service context
-    lRMOL_ServiceContext.setSTDAIR_Service (ioSTDAIR_Service_ptr);
+    lRMOL_ServiceContext.setSTDAIR_Service (ioSTDAIR_Service_ptr,
+                                            iOwnStdairService);
   }
 
   // ////////////////////////////////////////////////////////////////////
