@@ -342,6 +342,7 @@ AC_CONFIG_FILES(
 	doc/doxygen_html.cfg
 	po/Makefile.in
 	samples/Makefile
+	samples/RDS01/Makefile
 	test/Makefile
 	test/architecture/Makefile
 	test/gsl_vs_boost/Makefile
