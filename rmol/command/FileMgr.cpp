@@ -11,7 +11,7 @@
 #include <stdair/stdair_inventory_types.hpp>
 #include <stdair/stdair_maths_types.hpp>
 #include <stdair/stdair_exceptions.hpp>
-#include <stdair/basic/BasConst_General.hpp>
+#include <stdair/basic/BasConst_Inventory.hpp>
 #include <stdair/bom/BomManager.hpp>
 #include <stdair/bom/BomRoot.hpp>
 #include <stdair/bom/Inventory.hpp>
