@@ -104,12 +104,32 @@ namespace AIRRAC {
                        boost::spirit::qi::unused_type) const;
     };
 
+    /** Store the parsed customer point_of_sale. */
+    struct storePOS : public ParserSemanticAction {
+      /** Actor Constructor. */
+      storePOS (YieldRuleStruct&);
+      /** Actor Function (functor). */
+      void operator() (std::vector<char>,
+                       boost::spirit::qi::unused_type,
+                       boost::spirit::qi::unused_type) const;
+    };
+
     /** Store the cabin code. */
     struct storeCabinCode : public ParserSemanticAction {
       /** Actor Constructor. */
       storeCabinCode  (YieldRuleStruct&);
       /** Actor Function (functor). */
       void operator() (char,
+                       boost::spirit::qi::unused_type,
+                       boost::spirit::qi::unused_type) const;
+    };
+
+    /** Store the channel distribution. */
+    struct storeChannel : public ParserSemanticAction {
+      /** Actor Constructor. */
+      storeChannel (YieldRuleStruct&);
+      /** Actor Function (functor). */
+      void operator() (std::vector<char>,
                        boost::spirit::qi::unused_type,
                        boost::spirit::qi::unused_type) const;
     };
@@ -191,8 +211,8 @@ namespace AIRRAC {
       boost::spirit::qi::rule<stdair::iterator_t,
                               boost::spirit::ascii::space_type>
       start, comments, yield_rule, yield_id, origin, destination, dateRangeStart,
-        dateRangeEnd, date, timeRangeStart, timeRangeEnd, time, yield, cabinCode,
-        segment, yield_rule_end;
+        dateRangeEnd, date, timeRangeStart, timeRangeEnd, time, point_of_sale,
+        cabinCode, channel, yield, segment, yield_rule_end;
       
       // Parser Context
       stdair::BomRoot& _bomRoot;

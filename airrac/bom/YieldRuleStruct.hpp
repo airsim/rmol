@@ -85,6 +85,12 @@ namespace AIRRAC {
     /** Cabin code. */
     stdair::CabinCode_T _cabinCode;
 
+    /** Point-of-sale. */
+    stdair::CityCode_T _pos;
+    
+    /** Channel distribution. */
+    stdair::ChannelLabel_T _channel;
+
     /** Airline code */
     stdair::AirlineCode_T _airlineCode;
 

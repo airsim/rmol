@@ -9,6 +9,7 @@
 #include <stdair/factory/FacBomManager.hpp>
 #include <stdair/service/Logger.hpp>
 #include <stdair/bom/AirportPair.hpp>
+#include <stdair/bom/PosChannel.hpp>
 #include <stdair/bom/DatePeriod.hpp>
 #include <stdair/bom/TimePeriod.hpp>
 #include <stdair/bom/AirlineClassList.hpp>
@@ -46,6 +47,29 @@ namespace AIRRAC {
     }
     assert (lAirportPair_ptr != NULL);
 
+    // Set the point-of-sale-channel primary key.
+    const stdair::CityCode_T& lPosition = 
+      iYieldRuleStruct._pos;
+    const stdair::ChannelLabel_T& lChannel = 
+      iYieldRuleStruct._channel;
+    const stdair::PosChannelKey lYieldPosChannelKey (lPosition, lChannel);  
+
+    // If the YieldPositionKey object corresponding to the yield rule set
+    // having the same city code does not exist, create it and link it
+    // to the AirportPair object.     
+    stdair::PosChannel* lYieldPosChannel_ptr = stdair::BomManager::
+      getObjectPtr<stdair::PosChannel> (*lAirportPair_ptr, 
+                                        lYieldPosChannelKey.toString());
+    if (lYieldPosChannel_ptr == NULL) {
+      lYieldPosChannel_ptr =
+        &stdair::FacBom<stdair::PosChannel>::instance().create (lYieldPosChannelKey);
+      stdair::FacBomManager::
+	instance().addToListAndMap (*lAirportPair_ptr, *lYieldPosChannel_ptr);
+      stdair::FacBomManager::
+	instance().linkWithParent (*lAirportPair_ptr, *lYieldPosChannel_ptr);
+    }
+    assert (lYieldPosChannel_ptr != NULL);   
+
     // Set the yield date-period primary key.
     const stdair::Date_T& lDateRangeStart = 
       iYieldRuleStruct._dateRangeStart;
@@ -63,9 +87,9 @@ namespace AIRRAC {
       lYieldDatePeriod_ptr =
         &stdair::FacBom<stdair::DatePeriod>::instance().create (lYieldDatePeriodKey);
       stdair::FacBomManager::
-        instance().addToListAndMap (*lAirportPair_ptr, *lYieldDatePeriod_ptr);
+        instance().addToListAndMap (*lYieldPosChannel_ptr, *lYieldDatePeriod_ptr);
       stdair::FacBomManager::
-      instance().linkWithParent (*lAirportPair_ptr, *lYieldDatePeriod_ptr);
+      instance().linkWithParent (*lYieldPosChannel_ptr, *lYieldDatePeriod_ptr);
     }
     assert (lYieldDatePeriod_ptr != NULL);
    

@@ -145,6 +145,29 @@ namespace AIRRAC {
     }
 
     // //////////////////////////////////////////////////////////////////
+    storePOS ::
+    storePOS (YieldRuleStruct& ioYieldRule)
+      : ParserSemanticAction (ioYieldRule) {
+    }
+    
+    // //////////////////////////////////////////////////////////////////
+    void storePOS::operator() (std::vector<char> iChar,
+                               boost::spirit::qi::unused_type,
+                               boost::spirit::qi::unused_type) const {
+      stdair::CityCode_T lPOS (iChar.begin(), iChar.end());
+      if (lPOS == _yieldRule._origin || lPOS == _yieldRule._destination) {
+        _yieldRule._pos = lPOS;
+      } else if (lPOS == "ROW") {
+        _yieldRule._pos = "ROW";
+      } else {
+        // ERROR
+        STDAIR_LOG_ERROR ("Invalid point of sale " << lPOS);
+      }
+      // DEBUG
+      //STDAIR_LOG_DEBUG ("POS: " << _yieldRule._pos);
+    }
+
+    // //////////////////////////////////////////////////////////////////
     storeCabinCode ::
     storeCabinCode (YieldRuleStruct& ioYieldRule)
       : ParserSemanticAction (ioYieldRule) {
@@ -163,6 +186,27 @@ namespace AIRRAC {
       // DEBUG
       //STDAIR_LOG_DEBUG ("Cabin Code: " << lCabinCode);                 
     
+    }
+
+    // //////////////////////////////////////////////////////////////////
+    storeChannel ::
+    storeChannel (YieldRuleStruct& ioYieldRule)
+      : ParserSemanticAction (ioYieldRule) {
+    }
+    
+    // //////////////////////////////////////////////////////////////////
+    void storeChannel::operator() (std::vector<char> iChar,
+                                   boost::spirit::qi::unused_type,
+                                   boost::spirit::qi::unused_type) const {
+      stdair::ChannelLabel_T lChannel (iChar.begin(), iChar.end());
+      if (lChannel != "IN" && lChannel != "IF"
+          && lChannel != "DN" && lChannel != "DF") {
+        // ERROR
+        STDAIR_LOG_ERROR ("Invalid channel " << lChannel);
+      }
+      _yieldRule._channel = lChannel;
+      // DEBUG
+      //STDAIR_LOG_DEBUG ("Channel: " << _yieldRule._channel);
     }
 
     // //////////////////////////////////////////////////////////////////
@@ -296,7 +340,8 @@ namespace AIRRAC {
         >> ';' >> origin >> ';' >> destination
         >> ';' >> dateRangeStart >> ';' >> dateRangeEnd
         >> ';' >> timeRangeStart >> ';' >> timeRangeEnd
-        >> ';' >> cabinCode >> ';' >> yield
+        >> ';' >> point_of_sale >>  ';' >> cabinCode
+        >> ';' >> channel >> ';' >> yield
         >> +( ';' >> segment )
         >> yield_rule_end[doEndYield(_bomRoot, _yieldRule)];
         ;
@@ -329,7 +374,11 @@ namespace AIRRAC {
         >> minute_p[boost::phoenix::ref(_yieldRule._itMinutes) = bsq::labels::_1]      
         >> - (':' >> second_p[boost::phoenix::ref(_yieldRule._itSeconds) = bsq::labels::_1]) ];
 
+      point_of_sale = bsq::repeat(3)[bsa::char_("A-Z")][storePOS(_yieldRule)];
+
       cabinCode = bsa::char_("A-Z")[storeCabinCode(_yieldRule)];
+
+      channel = bsq::repeat(2)[bsa::char_("A-Z")][storeChannel(_yieldRule)];
 
       yield = bsq::double_[storeYield(_yieldRule)];
 
@@ -352,7 +401,9 @@ namespace AIRRAC {
       BOOST_SPIRIT_DEBUG_NODE (timeRangeStart);
       BOOST_SPIRIT_DEBUG_NODE (timeRangeEnd);
       BOOST_SPIRIT_DEBUG_NODE (time);
+      BOOST_SPIRIT_DEBUG_NODE (point_of_sale);
       BOOST_SPIRIT_DEBUG_NODE (cabinCode);
+      BOOST_SPIRIT_DEBUG_NODE (channel);
       BOOST_SPIRIT_DEBUG_NODE (yield);
       BOOST_SPIRIT_DEBUG_NODE (segment);
       BOOST_SPIRIT_DEBUG_NODE (yield_rule_end);
