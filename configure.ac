@@ -323,6 +323,15 @@ AC_CONFIG_FILES(
 	rmol-config
 	rmol.pc
 	rmol.m4
+	airrac/Makefile
+	airrac/basic/Makefile
+	airrac/bom/Makefile
+	airrac/factory/Makefile
+	airrac/command/Makefile
+	airrac/service/Makefile
+	airrac/config/Makefile
+	airrac/core/Makefile
+	airrac/batches/Makefile
 	rmol/Makefile
 	rmol/basic/Makefile
 	rmol/bom/Makefile
@@ -347,6 +356,7 @@ AC_CONFIG_FILES(
 	test/architecture/Makefile
 	test/gsl_vs_boost/Makefile
 	test/valarrays/Makefile
+	test/airrac/Makefile
 	test/rmol/Makefile
 	win32/Makefile)
 AC_OUTPUT
