@@ -86,7 +86,7 @@ int testOptimiseHelper (const unsigned short optimisationMethodFlag) {
     
   // Initialise the RMOL service
   const stdair::BasLogParams lLogParams (stdair::LOG::DEBUG, logOutputFile);
-  RMOL::RMOL_Service rmolService (lLogParams, lRMInputFileName);
+  RMOL::RMOL_Service rmolService (lLogParams, cabinCapacity, lRMInputFileName);
 
   switch (METHOD_FLAG) {
   case 0: {

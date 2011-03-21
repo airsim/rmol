@@ -46,9 +46,12 @@ namespace RMOL {
      *
      * @param const stdair::BasLogParams& Parameters for the output log stream.
      * @param const stdair::BasDBParams& Parameters for the database access.
+     * @param const stdair::CabinCapacity& Capacity of the cabin of the
+     *        sample BOM tree.
      * @param const stdair::Filename_T& Filename of the input demand file.
      */
     RMOL_Service (const stdair::BasLogParams&, const stdair::BasDBParams&,
+                  const stdair::CabinCapacity_T&,
                   const stdair::Filename_T& iInputFileName);
 
     /**
@@ -62,41 +65,12 @@ namespace RMOL {
      *
      * @param const stdair::BasLogParams& Parameters for the output log
      *        stream.
+     * @param const stdair::CabinCapacity& Capacity of the cabin of the
+     *        sample BOM tree.
      * @param const stdair::Filename_T& Filename of the input demand file.
      */
-    RMOL_Service (const stdair::BasLogParams&,
+    RMOL_Service (const stdair::BasLogParams&, const stdair::CabinCapacity_T&,
                   const stdair::Filename_T& iInputFileName);
-
-    /**
-     * Constructor.
-     *
-     * The initRmolService() method is called; see the corresponding
-     * documentation for more details.
-     *
-     * A reference on an output stream is given, so that log outputs
-     * can be directed onto that stream.
-     *
-     * Moreover, database connection parameters are given, so that a
-     * session can be created on the corresponding database.
-     *
-     * @param const stdair::BasLogParams& Parameters for the output log stream.
-     * @param const stdair::BasDBParams& Parameters for the database access.
-     */
-    RMOL_Service (const stdair::BasLogParams&, const stdair::BasDBParams&);
-
-    /**
-     * Constructor.
-     *
-     * The initRmolService() method is called; see the corresponding
-     * documentation for more details.
-     *
-     * Moreover, a reference on an output stream is given, so
-     * that log outputs can be directed onto that stream.
-     *
-     * @param const stdair::BasLogParams& Parameters for the output log
-     *        stream.
-     */
-    RMOL_Service (const stdair::BasLogParams&);
 
     /**
      * Constructor.
@@ -133,8 +107,8 @@ namespace RMOL {
     /**
      * Constructor.
      *
-     * The init() method is called; see the corresponding documentation
-     * for more details.
+     * The initRmolService() method is called; see the corresponding
+     * documentation for more details.
      *
      * Moreover, as no reference on any output stream is given,
      * it is assumed that the StdAir log service has already been
@@ -144,16 +118,18 @@ namespace RMOL {
      * AIRINV_Service).
      *
      * @param STDAIR_ServicePtr_T the shared pointer of stdair service.
+     * @param const stdair::CabinCapacity& Capacity of the cabin of the
+     *        sample BOM tree.
      * @param const stdair::Filename_T& Filename of the input demand file.
      */
-    RMOL_Service (stdair::STDAIR_ServicePtr_T,
+    RMOL_Service (stdair::STDAIR_ServicePtr_T, const stdair::CabinCapacity_T&,
                   const stdair::Filename_T& iInputFileName);
         
     /**
      * Constructor.
      *
-     * The init() method is called; see the corresponding documentation
-     * for more details.
+     * The initRmolService() method is called; see the corresponding
+     * documentation for more details.
      *
      * Moreover, as no reference on any output stream is given,
      * it is assumed that the StdAir log service has already been
@@ -163,26 +139,10 @@ namespace RMOL {
      * AIRINV_Service).
      *
      * @param STDAIR_ServicePtr_T the shared pointer of stdair service.
-     * @param stdair::CabinCapacity& Capacity of the cabin.
+     * @param const stdair::CabinCapacity& Capacity of the cabin of the
+     *        sample BOM tree.
      */
     RMOL_Service (stdair::STDAIR_ServicePtr_T, const stdair::CabinCapacity_T&);
-        
-    /**
-     * Constructor.
-     *
-     * The init() method is called; see the corresponding documentation
-     * for more details.
-     *
-     * Moreover, as no reference on any output stream is given,
-     * it is assumed that the StdAir log service has already been
-     * initialised with the proper log output stream by some other
-     * methods in the calling chain (for instance, when the RMOL_Service
-     * is itself being initialised by another library service such as
-     * AIRINV_Service).
-     *
-     * @param STDAIR_ServicePtr_T the shared pointer of stdair service.
-     */
-    RMOL_Service (stdair::STDAIR_ServicePtr_T);
         
     /**
      * Destructor.
@@ -310,30 +270,49 @@ namespace RMOL {
     /**
      * Initialise.
      *
-     * No input file is given. A sample BOM tree may be built by
-     * calling the buildSampleBom() method.
+     * Nothing is being done at that stage. The buildSampleBom() method may
+     * be called later.
      */
     void initRmolService();
 
     /**
      * Initialise.
      *
-     * The buildSampleBom() method is called, in order to build a
-     * sample BOM. No input file needs to be parsed here.
+     * The buildSampleBom() method is called, for RMOL and with the
+     * given cabin capacity, in order to build a sample BOM tree. No
+     * input file needs to be parsed here.
      *
-     * @param const CabinCapacity_T Capacity of the cabin for RMOL optimisation.
+     * @param const stdair::CabinCapacity& Capacity of the cabin of the
+     *        sample BOM tree.
      */
-    void initRmolService (const stdair::CabinCapacity_T& iCabinCapacity);
+    void initRmolService (const stdair::CabinCapacity_T&);
 
     /**
      * Initialise.
      *
-     * The CSV file, describing the leg-cabin content to be optimised,
-     * is parsed and instantiated in memory accordingly.
+     * <ol>
+     *  <li>Firstly, the buildSampleBom() method is called, for RMOL and with
+     *      the given cabin capacity, in order to build a sample BOM
+     *      tree.
+     *  </li>
+     *  <li>Secondly, the filename of a CSV file is given as parameter.
+     *      That file describes the problem to be optimised, i.e.:
+     *      <ul>
+     *        <li>the demand specifications for all the booking classes
+     *            (mean and standard deviations for the demand distribution);
+     *        </li>the yields corresponding to those booking classes.
+     *      </ul>
+     *      That CSV file is parsed and instantiated in memory accordingly.
+     *      The capacity is that given above.
+     *  </li>
+     * </ol>
      *
+     * @param const stdair::CabinCapacity& Capacity of the cabin of the
+     *        sample BOM tree.
      * @param const stdair::Filename_T& Filename of the input demand file.
      */
-    void initRmolService (const stdair::Filename_T& iInputFilename);
+    void initRmolService (const stdair::CabinCapacity_T&,
+                          const stdair::Filename_T& iInputFilename);
 
     /**
      * Finalise.

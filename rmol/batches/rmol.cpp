@@ -251,7 +251,7 @@ int main (int argc, char* argv[]) {
     optimise (rmolService, lMethod, lRandomDraws);
 
   } else {
-    RMOL::RMOL_Service rmolService (lLogParams, lInputFilename);
+    RMOL::RMOL_Service rmolService (lLogParams, lCapacity, lInputFilename);
 
     // DEBUG
     STDAIR_LOG_DEBUG ("rmol will parse " << lInputFilename

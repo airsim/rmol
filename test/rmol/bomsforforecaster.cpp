@@ -189,10 +189,13 @@ int main (int argc, char* argv[]) {
   logOutputFile.open (lLogFilename.c_str());
   logOutputFile.clear();
 
+  // Cabin capacity (it must be greater then 100 here)
+  const double cabinCapacity = 100.0;
+
   // Initialise the RMOL service
   const stdair::BasLogParams lLogParams (stdair::LOG::DEBUG, logOutputFile);
   const stdair::AirlineCode_T lAirlineCode ("BA");
-  RMOL::RMOL_Service lRmolService (lLogParams);
+  RMOL::RMOL_Service lRmolService (lLogParams, cabinCapacity);
 
   // Register BCDataSet
   RMOL::BookingClassDataSet lBookingClassDataSet;
