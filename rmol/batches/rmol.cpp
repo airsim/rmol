@@ -163,6 +163,42 @@ int readConfiguration(int argc, char* argv[],
   return 0;
 }
 
+// /////////////////////////////////////////////////////
+void optimise (RMOL::RMOL_Service& rmolService,
+               const short& iMethod, const int& iRandomDraws) {
+
+  switch (iMethod) {
+  case 0: {
+    // Calculate the optimal protections by the Monte Carlo
+    // Integration approach
+    rmolService.optimalOptimisationByMCIntegration (iRandomDraws);
+    break;
+  }
+  case 1: {
+    // Calculate the optimal protections by DP.
+    rmolService.optimalOptimisationByDP ();
+    break;
+  }
+  case 2: {
+    // Calculate the Bid-Price Vector by EMSR
+    rmolService.heuristicOptimisationByEmsr ();
+    break;
+  }
+  case 3: {
+    // Calculate the protections by EMSR-a
+    rmolService.heuristicOptimisationByEmsrA ();
+    break;
+  }
+  case 4: {
+    // Calculate the protections by EMSR-b
+    rmolService.heuristicOptimisationByEmsrB ();
+    break;
+  }
+  default: {
+    rmolService.optimalOptimisationByMCIntegration (iRandomDraws);
+  }
+  }
+}
 
 // ///////// M A I N ////////////
 int main (int argc, char* argv[]) {
@@ -203,54 +239,30 @@ int main (int argc, char* argv[]) {
 
   // Initialise the list of classes/buckets
   const stdair::BasLogParams lLogParams (stdair::LOG::DEBUG, logOutputFile);
-  RMOL::RMOL_Service rmolService (lLogParams, lCapacity);
 
   if (isBuiltin == true) {
     // No input file has been provided. So, process a sample.
+    RMOL::RMOL_Service rmolService (lLogParams, lCapacity);
 
     // DEBUG
     STDAIR_LOG_DEBUG ("Please specify an input file!");
 
+    //
+    optimise (rmolService, lMethod, lRandomDraws);
+
   } else {
+    RMOL::RMOL_Service rmolService (lLogParams, lInputFilename);
+
     // DEBUG
     STDAIR_LOG_DEBUG ("rmol will parse " << lInputFilename
                       << " and build the corresponding BOM tree.");
 
-    // Parse the input file
-    rmolService.readFromInputFile (lInputFilename);
+    //
+    optimise (rmolService, lMethod, lRandomDraws);
   }
 
-  switch (lMethod) {
-  case 0: {
-    // Calculate the optimal protections by the Monte Carlo
-    // Integration approach
-    rmolService.optimalOptimisationByMCIntegration (lRandomDraws);
-    break;
-  }
-  case 1: {
-    // Calculate the optimal protections by DP.
-    rmolService.optimalOptimisationByDP ();
-    break;
-  }
-  case 2: {
-    // Calculate the Bid-Price Vector by EMSR
-    rmolService.heuristicOptimisationByEmsr ();
-    break;
-  }
-  case 3: {
-    // Calculate the protections by EMSR-a
-    rmolService.heuristicOptimisationByEmsrA ();
-    break;
-  }
-  case 4: {
-    // Calculate the protections by EMSR-b
-    rmolService.heuristicOptimisationByEmsrB ();
-    break;
-  }
-  default: {
-    rmolService.optimalOptimisationByMCIntegration (lRandomDraws);
-  }
-  }
+  //
+  logOutputFile.close();
 
   return 0;	
 }

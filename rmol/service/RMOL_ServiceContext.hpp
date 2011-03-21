@@ -56,11 +56,6 @@ namespace RMOL {
       return _ownStdairService;
     }
 
-    /**
-     * Get the leg-cabin sample for optimisation.
-     */
-    stdair::LegCabin& getLegCabinSample() const;
-    
 
   private:    
     // ///////// Setters //////////
@@ -72,11 +67,6 @@ namespace RMOL {
       _stdairService = ioSTDAIR_ServicePtr;
       _ownStdairService = iOwnStdairService;
     }
-
-    /**
-     * Read the input data from a file.
-     */
-    void readFromInputFile (const std::string& iInputFileName);
 
     /**
      * Clear the context (cabin capacity, bucket holder).
@@ -104,11 +94,18 @@ namespace RMOL {
 
   private:
     // /////// Construction / initialisation ////////
-    /** Constructors. */
+    /**
+     * Constructor.
+     */
     RMOL_ServiceContext();
+    /**
+     * Copy constructor.
+     */
     RMOL_ServiceContext (const RMOL_ServiceContext&);
         
-    /** Destructor. */
+    /**
+     * Destructor.
+     */
     ~RMOL_ServiceContext();
 
 

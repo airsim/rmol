@@ -2,8 +2,6 @@
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // STL
-#include <ostream>
-#include <istream>
 #include <sstream>
 #include <fstream>
 #include <cassert>
@@ -12,6 +10,7 @@
 #include <stdair/stdair_maths_types.hpp>
 #include <stdair/stdair_exceptions.hpp>
 #include <stdair/basic/BasConst_Inventory.hpp>
+#include <stdair/basic/BasFileMgr.hpp>
 #include <stdair/bom/BomManager.hpp>
 #include <stdair/bom/BomRoot.hpp>
 #include <stdair/bom/Inventory.hpp>
@@ -26,15 +25,55 @@
 #include <stdair/factory/FacBomManager.hpp>
 #include <stdair/service/Logger.hpp>
 // RMOL
-#include <rmol/command/FileMgr.hpp>
+#include <rmol/command/InventoryParser.hpp>
 
 namespace RMOL {
 
   // ////////////////////////////////////////////////////////////////////
-  void FileMgr::readAndProcessInputFile (const std::string& iInputFileName,
-                                         stdair::BomRoot& ioBomRoot) {
+  stdair::LegCabin& InventoryParser::
+  getSampleLegCabin (stdair::BomRoot& ioBomRoot) {
+    stdair::LegCabin* oLegCabin_ptr = NULL;
 
-    // Retrieve the leg-cabin and the segment-cabin.
+    // Retrieve the leg-cabin
+    const stdair::InventoryList_T& lInventoryList =
+      stdair::BomManager::getList<stdair::Inventory> (ioBomRoot);
+    stdair::InventoryList_T::const_iterator itInv = lInventoryList.begin();
+    assert (itInv != lInventoryList.end());
+    const stdair::Inventory* lInventory_ptr = *itInv;
+    assert (lInventory_ptr != NULL);
+
+    const stdair::FlightDateList_T& lFlightDateList =
+      stdair::BomManager::getList<stdair::FlightDate> (*lInventory_ptr);
+    stdair::FlightDateList_T::const_iterator itFD = lFlightDateList.begin();
+    assert (itFD != lFlightDateList.end());
+    const stdair::FlightDate* lFD_ptr = *itFD;
+    assert (lFD_ptr != NULL);
+
+    const stdair::LegDateList_T& lLegDateList =
+      stdair::BomManager::getList<stdair::LegDate> (*lFD_ptr);
+    stdair::LegDateList_T::const_iterator itLD = lLegDateList.begin();
+    assert (itLD != lLegDateList.end());
+    const stdair::LegDate* lLD_ptr = *itLD;
+    assert (lLD_ptr != NULL);
+
+    const stdair::LegCabinList_T& lLegCabinList =
+      stdair::BomManager::getList<stdair::LegCabin> (*lLD_ptr);
+    stdair::LegCabinList_T::const_iterator itLegCabin = lLegCabinList.begin();
+    assert (itLegCabin != lLegCabinList.end());
+
+    oLegCabin_ptr = *itLegCabin;
+
+    assert (oLegCabin_ptr != NULL);
+    
+    return *oLegCabin_ptr;
+  }
+
+  // ////////////////////////////////////////////////////////////////////
+  stdair::SegmentCabin& InventoryParser::
+  getSampleSegmentCabin (stdair::BomRoot& ioBomRoot) {
+    stdair::SegmentCabin* oSegmentCabin_ptr = NULL;
+
+    // Retrieve the segment-cabin.
     const stdair::InventoryList_T& lInventoryList =
       stdair::BomManager::getList<stdair::Inventory> (ioBomRoot);
     stdair::InventoryList_T::const_iterator itInv = lInventoryList.begin();
@@ -61,31 +100,41 @@ namespace RMOL {
     stdair::SegmentCabinList_T::const_iterator itSegmentCabin =
       lSegmentCabinList.begin();
     assert (itSegmentCabin != lSegmentCabinList.end());
-    stdair::SegmentCabin* lSegmentCabin_ptr = *itSegmentCabin;
-    assert (lSegmentCabin_ptr != NULL);
-    stdair::SegmentCabin& lSegmentCabin = *lSegmentCabin_ptr;
+    oSegmentCabin_ptr = *itSegmentCabin;
 
-    const stdair::LegDateList_T& lLegDateList =
-      stdair::BomManager::getList<stdair::LegDate> (*lFD_ptr);
-    stdair::LegDateList_T::const_iterator itLD = lLegDateList.begin();
-    assert (itLD != lLegDateList.end());
-    const stdair::LegDate* lLD_ptr = *itLD;
-    assert (lLD_ptr != NULL);
+    assert (oSegmentCabin_ptr != NULL);
+    
+    return *oSegmentCabin_ptr;
+  }
 
-    const stdair::LegCabinList_T& lLegCabinList =
-      stdair::BomManager::getList<stdair::LegCabin> (*lLD_ptr);
-    stdair::LegCabinList_T::const_iterator itLegCabin = lLegCabinList.begin();
-    assert (itLegCabin != lLegCabinList.end());
-    stdair::LegCabin* lLegCabin_ptr = *itLegCabin;
-    assert (lLegCabin_ptr != NULL);
-    stdair::LegCabin& lLegCabin = *lLegCabin_ptr;
-    
-    
+  // ////////////////////////////////////////////////////////////////////
+  bool InventoryParser::
+  parseInputFileAndBuildBom (const std::string& iInputFileName,
+                             stdair::BomRoot& ioBomRoot) {
+    bool hasReadBeenSuccessful = false;
+
+    // Check that the file path given as input corresponds to an actual file
+    const bool doesExistAndIsReadable =
+      stdair::BasFileMgr::doesExistAndIsReadable (iInputFileName);
+    if (doesExistAndIsReadable == false) {
+      std::ostringstream oMessage;
+      oMessage << "The input file, '" << iInputFileName
+               << "', can not be retrieved on the file-system";
+      throw stdair::FileNotFoundException (oMessage.str());
+    }
+
+    // Retrieve the (sample) leg-cabin
+    stdair::LegCabin& lLegCabin = getSampleLegCabin (ioBomRoot);
+
+    // Retrieve the (sample) leg-cabin
+    stdair::SegmentCabin& lSegmentCabin = getSampleSegmentCabin (ioBomRoot);
+
     // Open the input file
     std::ifstream inputFile (iInputFileName.c_str());
     if (! inputFile) {
-      STDAIR_LOG_ERROR ("Can not open input file \"" << iInputFileName << "\"");
-      throw new stdair::FileNotFoundException("");
+      STDAIR_LOG_ERROR ("Can not open input file '" << iInputFileName << "'");
+      throw new stdair::FileNotFoundException ("Can not open input file '"
+                                               + iInputFileName + "'");
     }
     
     char buffer[80];
@@ -141,10 +190,16 @@ namespace RMOL {
       }
     }
     
+    //
     if (!inputFile.eof()) {
-      std::cerr << "Problem when reading input file \"" << iInputFileName
-                << "\"" << std::endl;
+      STDAIR_LOG_ERROR ("Problem when reading input file '" << iInputFileName
+                        << "'");
+      return hasReadBeenSuccessful;
     }
+
+    //
+    hasReadBeenSuccessful = true;
+    return hasReadBeenSuccessful;
   }
   
 }
