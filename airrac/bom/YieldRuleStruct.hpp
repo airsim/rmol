@@ -13,27 +13,29 @@
 #include <stdair/stdair_inventory_types.hpp>
 #include <stdair/basic/StructAbstract.hpp>
 #include <stdair/basic/BasParserTypes.hpp>
-// Airrac
+// AirRAC
 #include <airrac/AIRRAC_Types.hpp>
-
 
 namespace AIRRAC {
 
-  /** Utility Structure for the parsing of Flight-Date structures. */
+  /**
+   * @brief Utility Structure for the parsing of Flight-Date structures.
+   */
   struct YieldRuleStruct : public stdair::StructAbstract {
+  public:
+    // /////////////////// Initialisation / Destruction /////////////////////
+    /**
+     * Constructor.
+     */
+    YieldRuleStruct();
 
-    /** Constructor. */
-    YieldRuleStruct ();
+    /**
+     * Destructor.
+     */
+    ~YieldRuleStruct();
     
-    /** Set the date from the staging details. */
-    stdair::Date_T getDate() const;
-
-    /** Set the time from the staging details. */
-    stdair::Duration_T getTime() const;
-  
-    /** Give a description of the structure (for display purposes). */
-    const std::string describe() const;
-
+  public:
+    // ////////////////////// Getters /////////////////////////
     /** Get the size of the airline code list. */
     const unsigned int getAirlineListSize () const {
       return _airlineCodeList.size();
@@ -44,8 +46,19 @@ namespace AIRRAC {
       return _classCodeList.size();
     }
     
-  public:
+    // ////////////////////// Setters /////////////////////////
+    /** Set the date from the staging details. */
+    stdair::Date_T getDate() const;
 
+    /** Set the time from the staging details. */
+    stdair::Duration_T getTime() const;
+  
+    // ////////////////////// Display support methods /////////////////////////
+    /** Give a description of the structure (for display purposes). */
+    const std::string describe() const;
+
+
+  public:
     // ////////////////// Attributes /////////////////
     /** Staging Date. */
     stdair::year_t _itYear;
@@ -102,7 +115,6 @@ namespace AIRRAC {
 
     /** Class Code List*/
     stdair::ClassList_StringList_T _classCodeList;
-
   };
 
 }

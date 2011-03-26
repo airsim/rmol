@@ -14,20 +14,24 @@
 namespace AIRRAC {
 
   // //////////////////////////////////////////////////////////////////////
-  YieldRuleStruct::YieldRuleStruct ()
+  YieldRuleStruct::YieldRuleStruct()
     : _yieldId(0), 
       _origin(""), 
       _destination(""),
-      _dateRangeStart(stdair::DEFAULT_DATE),
-      _dateRangeEnd(stdair::DEFAULT_DATE),
-      _timeRangeStart(stdair::DEFAULT_EPSILON_DURATION),
-      _timeRangeEnd(stdair::DEFAULT_EPSILON_DURATION),
-      _pos(""), 
-      _cabinCode(""),
-      _channel(""),
+      _dateRangeStart (stdair::DEFAULT_DATE),
+      _dateRangeEnd (stdair::DEFAULT_DATE),
+      _timeRangeStart (stdair::DEFAULT_EPSILON_DURATION),
+      _timeRangeEnd (stdair::DEFAULT_EPSILON_DURATION),
       _yield(0),
+      _cabinCode(""),
+      _pos(""), 
+      _channel(""),
       _airlineCode(""), 
       _classCode("") { 
+  }
+
+  // //////////////////////////////////////////////////////////////////////
+  YieldRuleStruct::~YieldRuleStruct() {
   }
 
   // //////////////////////////////////////////////////////////////////////
@@ -46,32 +50,35 @@ namespace AIRRAC {
   
   // //////////////////////////////////////////////////////////////////////
   const std::string YieldRuleStruct::describe() const {
-    std::ostringstream ostr; 
-    ostr << "YieldRule: " << _yieldId << ", "
-	 << _origin << "-" << _destination
-         << ", POS(" << _pos << "), ["
-	 << _dateRangeStart << "/" << _dateRangeEnd << "] - ["
-	 << boost::posix_time::to_simple_string(_timeRangeStart) << "/"
-	 << boost::posix_time::to_simple_string(_timeRangeEnd) << "]\n    "
-         << "-Cabin code- " << _cabinCode << "\n    "
-         << "-Channel-    " << _channel << "\n    "
-         << "-Yield-      " << _yield << "\n           ";
+    std::ostringstream oStr;
+    oStr << "YieldRule: " << _yieldId << ", ";
+
+    oStr << _origin << "-" << _destination << " ("
+         << _pos << "), " << _channel << ", [";
+    oStr << _dateRangeStart << "/" << _dateRangeEnd << "] - ["
+         << boost::posix_time::to_simple_string (_timeRangeStart) << "/"
+         << boost::posix_time::to_simple_string (_timeRangeEnd) << "], ";
+
+    oStr << _cabinCode << ", " << _yield << " EUR, ";
+
+    // Sanity check
     assert (_airlineCodeList.size() == _classCodeList.size());
-    stdair::ClassList_StringList_T::const_iterator lItCurrentClassCode =
+
+    // Browse the class-pathes
+    unsigned short idx = 0;
+    stdair::ClassList_StringList_T::const_iterator itClass =
       _classCodeList.begin();
-    stdair::AirlineCode_T lAirlineCode; 
-    std::string lClassCode;
-    for (stdair::AirlineCodeList_T::const_iterator lItCurrentAirlineCode =
+    for (stdair::AirlineCodeList_T::const_iterator itAirline =
            _airlineCodeList.begin();
-         lItCurrentAirlineCode != _airlineCodeList.end();
-         lItCurrentAirlineCode++) {
-      lAirlineCode = *lItCurrentAirlineCode;
-      lClassCode = *lItCurrentClassCode;
-      ostr << lAirlineCode << ", " << lClassCode;
-      ostr << "        ";
-      lItCurrentClassCode++;
+         itAirline != _airlineCodeList.end(); ++itAirline, ++itClass, ++idx) {
+      if (idx != 0) {
+        oStr << " - ";
+      }
+      const stdair::AirlineCode_T lAirlineCode = *itAirline;
+      const stdair::ClassCode_T lClassCode = *itClass;
+      oStr << lAirlineCode << " / " << lClassCode;
     }
-    ostr << std::endl;
-    return ostr.str();
+
+    return oStr.str();
   }
 }
