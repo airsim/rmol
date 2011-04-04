@@ -40,10 +40,8 @@ namespace AIRRAC {
     if (lAirportPair_ptr == NULL) {
       lAirportPair_ptr =
         &stdair::FacBom<stdair::AirportPair>::instance().create (lAirportPairKey);
-      stdair::FacBomManager::
-        instance().addToListAndMap (ioBomRoot, *lAirportPair_ptr);
-      stdair::FacBomManager::
-      instance().linkWithParent (ioBomRoot, *lAirportPair_ptr);
+      stdair::FacBomManager::addToListAndMap (ioBomRoot, *lAirportPair_ptr);
+      stdair::FacBomManager::linkWithParent (ioBomRoot, *lAirportPair_ptr);
     }
     assert (lAirportPair_ptr != NULL);
 
@@ -64,9 +62,9 @@ namespace AIRRAC {
       lYieldPosChannel_ptr =
         &stdair::FacBom<stdair::PosChannel>::instance().create (lYieldPosChannelKey);
       stdair::FacBomManager::
-	instance().addToListAndMap (*lAirportPair_ptr, *lYieldPosChannel_ptr);
+        addToListAndMap (*lAirportPair_ptr, *lYieldPosChannel_ptr);
       stdair::FacBomManager::
-	instance().linkWithParent (*lAirportPair_ptr, *lYieldPosChannel_ptr);
+        linkWithParent (*lAirportPair_ptr, *lYieldPosChannel_ptr);
     }
     assert (lYieldPosChannel_ptr != NULL);   
 
@@ -87,9 +85,9 @@ namespace AIRRAC {
       lYieldDatePeriod_ptr =
         &stdair::FacBom<stdair::DatePeriod>::instance().create (lYieldDatePeriodKey);
       stdair::FacBomManager::
-        instance().addToListAndMap (*lYieldPosChannel_ptr, *lYieldDatePeriod_ptr);
+        addToListAndMap (*lYieldPosChannel_ptr, *lYieldDatePeriod_ptr);
       stdair::FacBomManager::
-      instance().linkWithParent (*lYieldPosChannel_ptr, *lYieldDatePeriod_ptr);
+        linkWithParent (*lYieldPosChannel_ptr, *lYieldDatePeriod_ptr);
     }
     assert (lYieldDatePeriod_ptr != NULL);
    
@@ -110,9 +108,9 @@ namespace AIRRAC {
       lYieldTimePeriod_ptr =
         &stdair::FacBom<stdair::TimePeriod>::instance().create (lYieldTimePeriodKey);
       stdair::FacBomManager::
-        instance().addToListAndMap (*lYieldDatePeriod_ptr, *lYieldTimePeriod_ptr);
+        addToListAndMap (*lYieldDatePeriod_ptr, *lYieldTimePeriod_ptr);
       stdair::FacBomManager::
-      instance().linkWithParent (*lYieldDatePeriod_ptr, *lYieldTimePeriod_ptr);
+        linkWithParent (*lYieldDatePeriod_ptr, *lYieldTimePeriod_ptr);
     }
     assert (lYieldTimePeriod_ptr != NULL);
 
@@ -133,9 +131,9 @@ namespace AIRRAC {
       lYieldRuleFeatures_ptr =
         &stdair::FacBom<YieldRuleFeatures>::instance().create (lYieldRuleFeaturesKey);
       stdair::FacBomManager::
-        instance().addToListAndMap (*lYieldTimePeriod_ptr, *lYieldRuleFeatures_ptr);
+        addToListAndMap (*lYieldTimePeriod_ptr, *lYieldRuleFeatures_ptr);
       stdair::FacBomManager::
-      instance().linkWithParent (*lYieldTimePeriod_ptr, *lYieldRuleFeatures_ptr);
+        linkWithParent (*lYieldTimePeriod_ptr, *lYieldRuleFeatures_ptr);
     }
     assert (lYieldRuleFeatures_ptr != NULL);
 
@@ -151,9 +149,9 @@ namespace AIRRAC {
     stdair::AirlineClassList* lAirlineClassList_ptr =
       &stdair::FacBom<stdair::AirlineClassList>::instance().create (lAirlineClassListKey);
     stdair::FacBomManager::
-      instance().addToListAndMap (*lYieldRuleFeatures_ptr, *lAirlineClassList_ptr); 
+      addToListAndMap (*lYieldRuleFeatures_ptr, *lAirlineClassList_ptr); 
     stdair::FacBomManager::
-    instance().linkWithParent(*lYieldRuleFeatures_ptr, *lAirlineClassList_ptr); 
+      linkWithParent(*lYieldRuleFeatures_ptr, *lAirlineClassList_ptr); 
 
   }
         
