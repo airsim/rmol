@@ -4,10 +4,13 @@
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
-// Boost
-#include <boost/shared_ptr.hpp>
 // StdAir
 #include <stdair/stdair_exceptions.hpp>
+// STL
+#include <vector>
+#include <list>
+// Boost
+#include <boost/shared_ptr.hpp>
 
 namespace RMOL {
 

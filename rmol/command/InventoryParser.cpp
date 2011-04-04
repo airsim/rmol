@@ -176,8 +176,7 @@ namespace RMOL {
       if (hasAllPArams && i == 1) {
         stdair::BookingClass& lBookingClass =
           stdair::FacBom<stdair::BookingClass>::instance().create (lBCKey);
-        stdair::FacBomManager::instance().addToList (lSegmentCabin,
-                                                     lBookingClass);
+        stdair::FacBomManager::addToList (lSegmentCabin, lBookingClass);
         lBookingClass.setYield (lYield);
         lBookingClass.setMean (lMean);
         lBookingClass.setStdDev (lStdDev);
