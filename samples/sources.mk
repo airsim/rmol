@@ -7,6 +7,12 @@ sample_csv_sources = \
 	$(top_srcdir)/samples/demand06.csv \
 	$(top_srcdir)/samples/demand07.csv \
 	$(top_srcdir)/samples/fare01.csv \
+	$(top_srcdir)/samples/fareError01.csv \
+	$(top_srcdir)/samples/fareError02.csv \
+	$(top_srcdir)/samples/fareError03.csv \
+	$(top_srcdir)/samples/fareError04.csv \
+	$(top_srcdir)/samples/fareError05.csv \
+	$(top_srcdir)/samples/fareError06.csv \
 	$(top_srcdir)/samples/invdump01.csv \
 	$(top_srcdir)/samples/invdump02.csv \
 	$(top_srcdir)/samples/ond01.csv \
