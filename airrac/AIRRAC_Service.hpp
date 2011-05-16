@@ -127,6 +127,17 @@ namespace AIRRAC {
                     const stdair::Filename_T& iYieldInputFilename);
 
     /**
+     * Parse the yield input file, and load them into memory.
+     *
+     * The CSV files, describing the airline schedule and the O&Ds for
+     * the simulator, are parsed and instantiated in memory accordingly.
+     *
+     * @param const stdair::Filename_T& Filename of the input yield file.
+     */
+    void parseAndLoad (const stdair::Filename_T& iYieldInputFilename);
+
+
+    /**
      * Destructor.
      */
     ~AIRRAC_Service();

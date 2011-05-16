@@ -245,6 +245,15 @@ namespace AIRRAC {
 
     // Initialise the yield parser
     YieldParser::generateYieldStore  (iYieldInputFilename, lBomRoot);
+
+    // Update the default yields to the booking classes.
+    YieldManager::updateYields (lBomRoot);
+  }
+
+  // ////////////////////////////////////////////////////////////////////
+  void AIRRAC_Service::
+  parseAndLoad (const stdair::Filename_T& iYieldInputFilename) {
+    initAirracService (iYieldInputFilename);
   }
 
   // ////////////////////////////////////////////////////////////////////
@@ -255,8 +264,8 @@ namespace AIRRAC {
 
     // Retrieve the AirRAC service context
     if (_airracServiceContext == NULL) {
-      throw stdair::NonInitialisedServiceException ("The AirRAC service has not "
-                                                    "been initialised");
+      throw stdair::NonInitialisedServiceException ("The AirRAC service has not"
+                                                    " been initialised");
     }
     assert (_airracServiceContext != NULL);
 
@@ -268,7 +277,7 @@ namespace AIRRAC {
       lAIRRAC_ServiceContext.getSTDAIR_Service();
 
     // Delegate the BOM building to the dedicated service
-    //lSTDAIR_Service.buildYieldSampleBom();
+    lSTDAIR_Service.buildSampleBomForAirRAC();
   }
 
   // //////////////////////////////////////////////////////////////////////
@@ -297,8 +306,8 @@ namespace AIRRAC {
 
     // Retrieve the AirRAC service context
     if (_airracServiceContext == NULL) {
-      throw stdair::NonInitialisedServiceException ("The AirRAC service has not "
-                                                    "been initialised");
+      throw stdair::NonInitialisedServiceException ("The AirRAC service has not"
+                                                    " been initialised");
     }
     assert (_airracServiceContext != NULL);
 
@@ -319,8 +328,8 @@ namespace AIRRAC {
 
     // Retrieve the AirRAC service context
     if (_airracServiceContext == NULL) {
-      throw stdair::NonInitialisedServiceException ("The AirRAC service has not "
-                                                    "been initialised");
+      throw stdair::NonInitialisedServiceException ("The AirRAC service has not"
+                                                    " been initialised");
     }
     assert (_airracServiceContext != NULL);
 
@@ -341,8 +350,8 @@ namespace AIRRAC {
     
     // Retrieve the Airrac service context
     if (_airracServiceContext == NULL) {
-      throw stdair::NonInitialisedServiceException ("The AirRAC service has not "
-                                                    "been initialised");
+      throw stdair::NonInitialisedServiceException ("The AirRAC service has not"
+                                                    " been initialised");
     }
     assert (_airracServiceContext != NULL);
     AIRRAC_ServiceContext& lAIRRAC_ServiceContext = *_airracServiceContext;

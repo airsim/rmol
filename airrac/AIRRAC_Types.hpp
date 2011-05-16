@@ -12,6 +12,9 @@
 
 namespace AIRRAC {
 
+  // Forward declarations
+  class AIRRAC_Service;
+
   // ///////// Exceptions ///////////
   class AirportPairNotFoundException : public stdair::ObjectNotFoundException {
   public:
@@ -66,6 +69,12 @@ namespace AIRRAC {
   };
 
   // //////// Type definitions specific to AirRAC /////////
+  /**
+   * Pointer on the AIRRAC Service handler.
+   */
+  typedef boost::shared_ptr<AIRRAC_Service> AIRRAC_ServicePtr_T;
+
+
   /** ID for the Fare Quote system. */
   typedef unsigned int YieldID_T;
 }

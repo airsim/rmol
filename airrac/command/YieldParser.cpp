@@ -34,5 +34,4 @@ namespace AIRRAC {
     // corresponding Yield-related objects.
     lYieldParser.generateYieldStore();
   }
-
 }

@@ -11,6 +11,8 @@
 /// Forward declarations
 namespace stdair {
   class BomRoot;
+  class SegmentDate;
+  class TimePeriod;
 }
 
 namespace AIRRAC {
@@ -36,6 +38,14 @@ namespace AIRRAC {
      */
     static void calculateYield (stdair::TravelSolutionStruct&,
                                 const stdair::BomRoot&);
+
+    /**
+     * Update the yield for all the classes.
+     */
+    static void updateYields (const stdair::BomRoot&);
+    static void updateYields (const stdair::SegmentDate&,
+                              const stdair::TimePeriod&,
+                              const stdair::AirlineCode_T&);
 
   private:
     /**

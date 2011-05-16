@@ -178,7 +178,6 @@ int main (int argc, char* argv[]) {
   // Initialise the AirRAC service object
   const stdair::BasLogParams lLogParams (stdair::LOG::DEBUG, logOutputFile);
   
-
   // Check wether or not a (CSV) input file should be read
   if (isBuiltin == true) {
 

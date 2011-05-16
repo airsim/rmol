@@ -7,6 +7,7 @@
 #include <vector>
 // StdAir
 #include <stdair/basic/BasFileMgr.hpp>
+#include <stdair/basic/BasConst_Request.hpp>
 #include <stdair/bom/BomRoot.hpp>
 #include <stdair/service/Logger.hpp>
 // Airrac
@@ -159,6 +160,8 @@ namespace AIRRAC {
         _yieldRule._pos = lPOS;
       } else if (lPOS == "ROW") {
         _yieldRule._pos = "ROW";
+      } else if (lPOS == stdair::DEFAULT_POS) {
+        _yieldRule._pos = stdair::DEFAULT_POS;
       } else {
         // ERROR
         STDAIR_LOG_ERROR ("Invalid point of sale " << lPOS);
@@ -199,8 +202,8 @@ namespace AIRRAC {
                                    boost::spirit::qi::unused_type,
                                    boost::spirit::qi::unused_type) const {
       stdair::ChannelLabel_T lChannel (iChar.begin(), iChar.end());
-      if (lChannel != "IN" && lChannel != "IF"
-          && lChannel != "DN" && lChannel != "DF") {
+      if (lChannel != "IN" && lChannel != "IF" && lChannel != "DN"
+          && lChannel != "DF" && lChannel != stdair::DEFAULT_CHANNEL) {
         // ERROR
         STDAIR_LOG_ERROR ("Invalid channel " << lChannel);
       }
