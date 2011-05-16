@@ -8,6 +8,9 @@
 #include <stdair/basic/BasConst_General.hpp>
 #include <stdair/basic/RandomGeneration.hpp>
 #include <stdair/bom/BomManager.hpp>
+#include <stdair/bom/FlightDate.hpp>
+#include <stdair/bom/LegDate.hpp>
+#include <stdair/bom/SegmentDate.hpp>
 #include <stdair/bom/LegCabin.hpp>
 #include <stdair/bom/SegmentCabin.hpp>
 #include <stdair/bom/BookingClass.hpp>
@@ -69,6 +72,12 @@ namespace RMOL {
   // ////////////////////////////////////////////////////////////////////
   void Optimiser::heuristicOptimisationByEmsrB (stdair::LegCabin& ioLegCabin) {
     Emsr::heuristicOptimisationByEmsrB (ioLegCabin);
+  }
+
+  // ////////////////////////////////////////////////////////////////////
+  void Optimiser::optimise (stdair::FlightDate& ioFlightDate,
+                             const stdair::DateTime_T& iEventTime) {
+    
   }
   
 }

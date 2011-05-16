@@ -139,10 +139,8 @@ namespace RMOL {
      * AIRINV_Service).
      *
      * @param STDAIR_ServicePtr_T the shared pointer of stdair service.
-     * @param const stdair::CabinCapacity& Capacity of the cabin of the
-     *        sample BOM tree.
      */
-    RMOL_Service (stdair::STDAIR_ServicePtr_T, const stdair::CabinCapacity_T&);
+    RMOL_Service (stdair::STDAIR_ServicePtr_T);
         
     /**
      * Destructor.
@@ -176,6 +174,13 @@ namespace RMOL {
      * Single resource optimization using EMSR-b heuristic.
      */
     void heuristicOptimisationByEmsrB();
+
+    /**
+     * Optimise (revenue management) an flight-date/network-date
+     */
+    void optimise (const stdair::AirlineCode_T&,
+                   const stdair::KeyDescription_T&, const stdair::DateTime_T&);
+
 
     /**
      * Build a sample BOM tree, and attach it to the BomRoot instance.
