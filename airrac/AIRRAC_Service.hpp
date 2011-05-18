@@ -151,6 +151,11 @@ namespace AIRRAC {
     void calculateYields (stdair::TravelSolutionList_T&);
 
     /**
+     * Update the yields for booking classes and O&D.
+     */
+    void updateYields();
+
+    /**
      * Build a sample BOM tree.
      *
      * For now, no object is created: the BOM tree remains empty. In
