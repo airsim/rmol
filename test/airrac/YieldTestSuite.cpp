@@ -59,16 +59,14 @@ BOOST_AUTO_TEST_SUITE (master_test_suite)
  * Test a simple inventory sell
  */
 BOOST_AUTO_TEST_CASE (airrac_simple_yield) {
-
-  // Airline code
-  const stdair::AirlineCode_T lAirlineCode ("SV");
     
   // Travel solution
   stdair::TravelSolutionStruct lTravelSolution;
+  stdair::TravelSolutionList_T lTravelSolutionList;
     
   // Input file name
   const stdair::Filename_T lYieldInputFilename (STDAIR_SAMPLE_DIR
-                                                "/invdump01.csv");
+                                                "/yieldstore01.csv");
 
   // Check that the file path given as input corresponds to an actual file
   bool doesExistAndIsReadable =
@@ -88,11 +86,11 @@ BOOST_AUTO_TEST_CASE (airrac_simple_yield) {
   
   // Initialise the list of classes/buckets
   const stdair::BasLogParams lLogParams (stdair::LOG::DEBUG, logOutputFile);
-  AIRRAC::AIRRAC_Service airracService (lLogParams, lAirlineCode,
-                                        lYieldInputFilename);
+  AIRRAC::AIRRAC_Service airracService (lLogParams, lYieldInputFilename);
   
   // Calculate the yields for the given travel solution
-  airracService.calculateYield (lTravelSolution);
+  lTravelSolutionList.push_back(lTravelSolution);
+  airracService.calculateYields (lTravelSolutionList);
 
   // Close the log file
   logOutputFile.close();

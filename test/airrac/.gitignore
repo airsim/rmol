@@ -6,9 +6,9 @@ autom4te.cache/
 config/
 configure
 doc/
-po/
 info/
 man/
+po/
 samples/
 test/
 airinv/
