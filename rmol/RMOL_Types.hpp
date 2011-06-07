@@ -18,6 +18,7 @@ namespace stdair {
   class BookingClass;
 }
 
+
 namespace RMOL {
 
   // Forward declarations

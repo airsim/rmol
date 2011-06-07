@@ -20,12 +20,6 @@ namespace stdair {
   struct BasDBParams;
 }
 
-/// Forward declarations
-namespace stdair {
-  struct BasLogParams;
-  struct BasDBParams;
-}
-
 namespace RMOL {
 
   /// Forward declarations

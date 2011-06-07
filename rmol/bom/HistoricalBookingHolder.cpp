@@ -191,9 +191,9 @@ namespace RMOL {
     e = exp (e);
 
     // Prevent e to be too close to 0: that can cause d1 = 0.
-    //if (e < 0.01) {
-    //  return iDemand;
-    //}
+    if (e < 0.01) {
+      return iDemand;
+    }
 
     double s = sqrt (1 - e);
       
@@ -204,6 +204,9 @@ namespace RMOL {
       d1 = 0.5 * (1 + s);
     }
     
+    e = - (lBooking - iMean) * (lBooking - iMean) * 0.5 / (iSD * iSD);
+      e = exp (e);
+    d2 = e * iSD / sqrt(2 * 3.14159265);    
       
     // std::cout << "d1, d2 = " << d1 << "     " << d2 << std::endl;
 
