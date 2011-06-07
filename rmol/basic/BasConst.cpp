@@ -2,6 +2,7 @@
 // Import section
 // //////////////////////////////////////////////////////////////////////
 #include <rmol/basic/BasConst_General.hpp>
+#include <rmol/basic/BasConst_Curves.hpp>
 #include <rmol/basic/BasConst_RMOL_Service.hpp>
 
 namespace RMOL {
@@ -29,4 +30,20 @@ namespace RMOL {
   
   /** Default negative value used to initialze a double variable. */
   const double DEFAULT_INITIALIZER_DOUBLE_NEGATIVE = -10.0;
+
+  /** Default cumulative[for the remaining period] FRAT5 curve for
+      forecasting and optimisation. */
+  const FRAT5Curve_T DEFAULT_CUMULATIVE_FRAT5_CURVE =
+    DefaultMap::createCumulativeFRAT5Curve();
+  FRAT5Curve_T DefaultMap::createCumulativeFRAT5Curve() {
+    FRAT5Curve_T oCurve;
+    oCurve[63] = 1.4;  oCurve[56] = 1.45; oCurve[49] = 1.5;
+    oCurve[42] = 1.55; oCurve[35] = 1.6;  oCurve[31] = 1.7;
+    oCurve[28] = 1.8;  oCurve[24] = 2.0;  oCurve[21] = 2.3;
+    oCurve[17] = 2.6;  oCurve[14] = 3.0;  oCurve[10] = 3.3;
+    oCurve[7]  = 3.4;  oCurve[5]  = 3.44; oCurve[3] = 3.47;
+    oCurve[1]  = 3.5;
+    return oCurve;
+  };
+
 }

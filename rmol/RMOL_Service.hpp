@@ -11,9 +11,14 @@
 #include <stdair/stdair_inventory_types.hpp>
 #include <stdair/stdair_service_types.hpp>
 // RMOL
-#include <rmol/RMOL_FORECASTER_Types.hpp>
-#include <rmol/RMOL_UNCONSTRAINER_Types.hpp>
-#include <rmol/RMOL_UTILITY_Types.hpp>
+#include <rmol/RMOL_Types.hpp>
+
+/// Forward declarations
+namespace stdair {
+  class FlightDate;
+  struct BasLogParams;
+  struct BasDBParams;
+}
 
 /// Forward declarations
 namespace stdair {
@@ -178,8 +183,7 @@ namespace RMOL {
     /**
      * Optimise (revenue management) an flight-date/network-date
      */
-    void optimise (const stdair::AirlineCode_T&,
-                   const stdair::KeyDescription_T&, const stdair::DateTime_T&);
+    bool optimise (stdair::FlightDate&, const stdair::DateTime_T&);
 
 
     /**

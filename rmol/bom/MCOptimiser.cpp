@@ -125,6 +125,7 @@ namespace RMOL {
       }
       lPartialSumHolder.resize (K - lj);
     }
+    
     /** Compute the Bid-Price (Opportunity Cost) at index x
           (capacity) for x between p(j-1) et cabin capacity. This OC can be
           proven to be equal to y(n) * Proba (D1 +...+ Dn >= x | D1 > p1,

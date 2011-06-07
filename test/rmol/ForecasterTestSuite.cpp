@@ -23,7 +23,6 @@
 #include <stdair/service/Logger.hpp>
 // RMOL
 #include <rmol/RMOL_Service.hpp>
-#include <rmol/RMOL_FORECASTER_Types.hpp>
 
 namespace boost_utf = boost::unit_test;
 

@@ -21,8 +21,6 @@
 #include <stdair/service/Logger.hpp>
 // RMOL
 #include <rmol/RMOL_Service.hpp>
-#include <rmol/RMOL_UNCONSTRAINER_Types.hpp>
-#include <rmol/RMOL_UTILITY_Types.hpp>
 
 namespace boost_utf = boost::unit_test;
 

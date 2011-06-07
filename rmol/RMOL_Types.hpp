@@ -4,10 +4,19 @@
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
+// STL
+#include <map>
+#include <vector>
 // Boost
 #include <boost/shared_ptr.hpp>
 // StdAir
+#include <stdair/stdair_inventory_types.hpp>
 #include <stdair/stdair_exceptions.hpp>
+
+// Forward declarations.
+namespace stdair {
+  class BookingClass;
+}
 
 namespace RMOL {
 
@@ -61,6 +70,16 @@ namespace RMOL {
    * Pointer on the RMOL Service handler.
    */
   typedef boost::shared_ptr<RMOL_Service> RMOL_ServicePtr_T;
+  
+    /** Define the vector of historical unconstrained demand. */
+  typedef std::vector<stdair::NbOfRequests_T> UnconstrainedDemandVector_T;
+
+  /** Define the map betweent the booking class and it's corresponding
+      unconstrained demand vector. */
+  typedef std::map<stdair::BookingClass*, UnconstrainedDemandVector_T>BookingClassUnconstrainedDemandMap_T;
+
+  /** Define the FRAT5 curve. */
+  typedef std::map<const stdair::DTD_T, double> FRAT5Curve_T;
 
 }
 #endif // __RMOL_RMOL_TYPES_HPP

@@ -21,7 +21,6 @@
 #include <rmol/factory/FacRmolServiceContext.hpp>
 #include <rmol/command/InventoryParser.hpp>
 #include <rmol/command/Optimiser.hpp>
-#include <rmol/command/Unconstrainer.hpp>
 #include <rmol/command/Forecaster.hpp>
 #include <rmol/service/RMOL_ServiceContext.hpp>
 #include <rmol/RMOL_Service.hpp>
@@ -408,26 +407,19 @@ namespace RMOL {
   }
 
   // ////////////////////////////////////////////////////////////////////
-  void RMOL_Service::optimise (const stdair::AirlineCode_T& iAirlineCode,
-                               const stdair::KeyDescription_T& iFDDescription,
-                               const stdair::DateTime_T& iRMEventTime) {
-    if (_rmolServiceContext == NULL) {
-      throw stdair::NonInitialisedServiceException ("The Rmol service "
-                                                    "has not been initialised");
+  bool RMOL_Service::optimise (stdair::FlightDate& ioFlightDate,
+                               const stdair::DateTime_T& iRMEventTime) {    
+    // Call the functions in the forecaster and the optimiser.
+    // DEBUG
+    STDAIR_LOG_DEBUG ("Forecast");
+    bool isForecasted = Forecaster::forecast (ioFlightDate, iRMEventTime);
+    STDAIR_LOG_DEBUG ("Forecast successful: " << isForecasted);
+    if (isForecasted == true) {
+      STDAIR_LOG_DEBUG ("Optimise");
+      Optimiser::optimise (ioFlightDate);
+      return true;
+    } else {
+      return false;
     }
-    assert (_rmolServiceContext != NULL);
-    RMOL_ServiceContext& lRMOL_ServiceContext = *_rmolServiceContext;
-
-    // Retrieve the corresponding inventory & flight-date
-    stdair::STDAIR_Service& lSTDAIR_Service =
-      lRMOL_ServiceContext.getSTDAIR_Service();
-    stdair::BomRoot& lBomRoot = lSTDAIR_Service.getBomRoot();
-    stdair::Inventory& lInventory =
-      stdair::BomManager::getObject<stdair::Inventory> (lBomRoot, iAirlineCode);
-    stdair::FlightDate& lFlightDate =
-      stdair::BomManager::getObject<stdair::FlightDate> (lInventory,
-                                                         iFDDescription);
-
-    Optimiser::optimise (lFlightDate, iRMEventTime);
   }
 }
