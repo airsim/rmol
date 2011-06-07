@@ -9,7 +9,11 @@
 #include <stdair/basic/StructAbstract.hpp>
 
 namespace RMOL {    
-  /** HistoricalBooking for a given class and the flag of censorship.*/
+
+  /**
+   * @brief Structure keeping track, for a given class, of the number
+   *        of historical bookings and of the censorship flag.
+   */
   struct HistoricalBooking : public stdair::StructAbstract {
       
   public:
@@ -40,36 +44,58 @@ namespace RMOL {
 
   public:
     // ///////// Display Methods //////////
-    /** Dump a Business Object into an output stream.
-        @param ostream& the output stream
-        @return ostream& the output stream. */
+    /**
+     * Dump a Business Object into an output stream.
+     * @param ostream& the output stream
+     * @return ostream& the output stream.
+     */
     void toStream (std::ostream& ioOut) const;
     
-    /** Give a description of the structure (for display purposes). */
+    /**
+     * Give a description of the structure (for display purposes).
+     */
     const std::string describe() const;
       
-    /** Display on standard output. */
+    /**
+     * Display on standard output.
+     */
     void display () const;
       
   public:
     // /////////// Constructors and destructor. ////////////
-    /** Constructors. */
-    HistoricalBooking ();
+    /**
+     * Main constructor.
+     */
     HistoricalBooking (const stdair::NbOfBookings_T, const stdair::Flag_T);
+    /**
+     * Default constructor.
+     */
+    HistoricalBooking();
+    /**
+     * Copy constructor.
+     */
     HistoricalBooking (const HistoricalBooking&);
       
-    /** Destructors. */
+    /**
+     * Destructor.
+     */
     virtual ~HistoricalBooking();
       
   private:
     // //////////// Attributes ////////////
-    /** Number of historical bookings. */
+    /**
+     * Number of historical bookings.
+     */
     stdair::NbOfBookings_T _numberOfBookings;
 
-    /** Unconstrained historical bookings. */
+    /**
+     * Unconstrained historical bookings.
+     */
     stdair::NbOfBookings_T _unconstrainedDemand;
 
-    /** Flag of censorship. */
+    /**
+     * Flag of censorship.
+     */
     stdair::Flag_T _flag;
   };
 }
