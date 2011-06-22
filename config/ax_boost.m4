@@ -263,10 +263,10 @@ BOOST_version_header="boost/version.hpp"
 						   ax_cv_boost_filesystem,
 						[AC_LANG_SAVE
 			 AC_LANG_CPLUSPLUS
-			 AC_COMPILE_IFELSE(AC_LANG_PROGRAM([[@%:@include <boost/filesystem/path.hpp>]],
+			 AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[@%:@include <boost/filesystem/path.hpp>]],
                                    [[using namespace boost::filesystem;
                                    path my_path( "foo/bar/data.txt" );
-                                   return 0;]]),
+                                   return 0;]])],
             				       ax_cv_boost_filesystem=yes, ax_cv_boost_filesystem=no)
 		 		        			AC_LANG_RESTORE
 			])
@@ -293,10 +293,10 @@ BOOST_version_header="boost/version.hpp"
                            ax_cv_boost_system,
                            [AC_LANG_SAVE
             AC_LANG_CPLUSPLUS
-            AC_COMPILE_IFELSE(AC_LANG_PROGRAM([[@%:@include <boost/system/error_code.hpp>]],
+            AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[@%:@include <boost/system/error_code.hpp>]],
                                    [[using namespace boost::system;
                                    error_code myErrorCode();
-                                   return 0;]]),
+                                   return 0;]])],
                                    ax_cv_boost_system=yes, ax_cv_boost_system=no)
                                     AC_LANG_RESTORE
             ])
@@ -322,9 +322,9 @@ BOOST_version_header="boost/version.hpp"
 						   ax_cv_boost_program_options,
 						   [AC_LANG_SAVE
                            AC_LANG_CPLUSPLUS
-			               AC_COMPILE_IFELSE(AC_LANG_PROGRAM([[@%:@include <boost/program_options.hpp>]],
+	               AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[@%:@include <boost/program_options.hpp>]],
                                    [[boost::program_options::options_description generic("Generic options");
-                                   return 0;]]),
+                                   return 0;]])],
                            ax_cv_boost_program_options=yes, ax_cv_boost_program_options=no)
 			               AC_LANG_RESTORE
 			])
@@ -361,9 +361,9 @@ BOOST_version_header="boost/version.hpp"
 			 else
 				CXXFLAGS="-pthread $CXXFLAGS"
 			 fi
-			 AC_COMPILE_IFELSE(AC_LANG_PROGRAM([[@%:@include <boost/thread/thread.hpp>]],
+			 AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[@%:@include <boost/thread/thread.hpp>]],
                                    [[boost::thread_group thrds;
-                                   return 0;]]),
+                                   return 0;]])],
                    ax_cv_boost_thread=yes, ax_cv_boost_thread=no)
 			 CXXFLAGS=$CXXFLAGS_SAVE
 			 AC_LANG_RESTORE
@@ -401,14 +401,15 @@ BOOST_version_header="boost/version.hpp"
 						   ax_cv_boost_iostreams,
 						[AC_LANG_SAVE
 			 AC_LANG_CPLUSPLUS
-			 AC_COMPILE_IFELSE(AC_LANG_PROGRAM([[@%:@include <boost/iostreams/filtering_stream.hpp>
-												 @%:@include <boost/range/iterator_range.hpp>
-												]],
-                                   [[std::string  input = "Hello World!";
-									 namespace io = boost::iostreams;
-									 io::filtering_istream  in(boost::make_iterator_range(input));
-									 return 0;
-                                   ]]),
+			 AC_COMPILE_IFELSE(
+			   [AC_LANG_PROGRAM(
+	   [[@%:@include <boost/iostreams/filtering_stream.hpp>
+	   @%:@include <boost/range/iterator_range.hpp>]],
+	   [[std::string  input = "Hello World!";
+	   namespace io = boost::iostreams;
+	   io::filtering_istream in (boost::make_iterator_range(input));
+	   return 0;
+           ]])],
                    ax_cv_boost_iostreams=yes, ax_cv_boost_iostreams=no)
 			 AC_LANG_RESTORE
 			])
@@ -435,14 +436,15 @@ BOOST_version_header="boost/version.hpp"
 						   ax_cv_boost_serialization,
 						[AC_LANG_SAVE
 			 AC_LANG_CPLUSPLUS
-			 AC_COMPILE_IFELSE(AC_LANG_PROGRAM([[@%:@include <fstream>
-												 @%:@include <boost/archive/text_oarchive.hpp>
-                                                 @%:@include <boost/archive/text_iarchive.hpp>
-												]],
-                                   [[std::ofstream ofs("filename");
-									boost::archive::text_oarchive oa(ofs);
-									 return 0;
-                                   ]]),
+			 AC_COMPILE_IFELSE([AC_LANG_PROGRAM(
+	[[@%:@include <fstream>
+	@%:@include <boost/archive/text_oarchive.hpp>
+        @%:@include <boost/archive/text_iarchive.hpp>
+	]],
+        [[std::ofstream ofs("filename");
+	boost::archive::text_oarchive oa(ofs);
+	return 0;
+        ]])],
                    ax_cv_boost_serialization=yes, ax_cv_boost_serialization=no)
 			 AC_LANG_RESTORE
 			])
@@ -480,11 +482,11 @@ BOOST_version_header="boost/version.hpp"
 						   ax_cv_boost_signals,
 						[AC_LANG_SAVE
 			 AC_LANG_CPLUSPLUS
-			 AC_COMPILE_IFELSE(AC_LANG_PROGRAM([[@%:@include <boost/signal.hpp>
+			 AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[@%:@include <boost/signal.hpp>
 												]],
                                    [[boost::signal<void ()> sig;
                                      return 0;
-                                   ]]),
+                                   ]])],
                    ax_cv_boost_signals=yes, ax_cv_boost_signals=no)
 			 AC_LANG_RESTORE
 			])
@@ -511,11 +513,11 @@ BOOST_version_header="boost/version.hpp"
 						   ax_cv_boost_date_time,
 						[AC_LANG_SAVE
 			 AC_LANG_CPLUSPLUS
-			 AC_COMPILE_IFELSE(AC_LANG_PROGRAM([[@%:@include <boost/date_time/gregorian/gregorian_types.hpp>
+			 AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[@%:@include <boost/date_time/gregorian/gregorian_types.hpp>
 												]],
                                    [[using namespace boost::gregorian; date d(2002,Jan,10);
                                      return 0;
-                                   ]]),
+                                   ]])],
                    ax_cv_boost_date_time=yes, ax_cv_boost_date_time=no)
 			 AC_LANG_RESTORE
 			])
@@ -542,9 +544,9 @@ BOOST_version_header="boost/version.hpp"
 						   ax_cv_boost_regex,
 						[AC_LANG_SAVE
 			 AC_LANG_CPLUSPLUS
-			 AC_COMPILE_IFELSE(AC_LANG_PROGRAM([[@%:@include <boost/regex.hpp>
+			 AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[@%:@include <boost/regex.hpp>
 												]],
-                                   [[boost::regex r(); return 0;]]),
+                                   [[boost::regex r(); return 0;]])],
                    ax_cv_boost_regex=yes, ax_cv_boost_regex=no)
 			 AC_LANG_RESTORE
 			])
@@ -572,14 +574,14 @@ BOOST_version_header="boost/version.hpp"
 						   ax_cv_boost_asio,
 						[AC_LANG_SAVE
 			 AC_LANG_CPLUSPLUS
-			 AC_COMPILE_IFELSE(AC_LANG_PROGRAM([[@%:@include <boost/asio.hpp>]],
+			 AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[@%:@include <boost/asio.hpp>]],
                                    [[boost::asio::io_service io;
 	                                 boost::system::error_code timer_result;
 	                                 boost::asio::deadline_timer t(io);
 	                                 t.cancel();
 	                                 io.run_one();
 	                                 return 0;
-                                   ]]),
+                                   ]])],
                    ax_cv_boost_asio=yes, ax_cv_boost_asio=no)
 			 AC_LANG_RESTORE
 			])
@@ -615,10 +617,10 @@ BOOST_version_header="boost/version.hpp"
 			[AC_LANG_SAVE
 			AC_LANG_CPLUSPLUS
 
-		    AC_COMPILE_IFELSE(AC_LANG_PROGRAM([[@%:@include <boost/python.hpp>
+		    AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[@%:@include <boost/python.hpp>
 			char const* greet() { return "hello"; } 
 			BOOST_PYTHON_MODULE(hello_ext) { boost::python::def("greet", greet);}
-										   ]]),
+										   ]])],
                    ax_cv_boost_python=yes, ax_cv_boost_python=no)
 			 AC_LANG_RESTORE
 			])
@@ -633,10 +635,10 @@ BOOST_version_header="boost/version.hpp"
 						   ax_cv_boost_mpi,
 						[AC_LANG_SAVE
 			 AC_LANG_CPLUSPLUS
-			 AC_COMPILE_IFELSE(AC_LANG_PROGRAM([[@%:@include <boost/mpi.hpp>]],
+			 AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[@%:@include <boost/mpi.hpp>]],
                                    [[
 	                                 return 0;
-                                   ]]),
+                                   ]])],
                    ax_cv_boost_mpi=yes, ax_cv_boost_mpi=no)
 			 AC_LANG_RESTORE
 			])
@@ -665,11 +667,11 @@ BOOST_version_header="boost/version.hpp"
 						   ax_cv_boost_mpi_python,
 						[AC_LANG_SAVE
 			 AC_LANG_CPLUSPLUS
-			 AC_COMPILE_IFELSE(AC_LANG_PROGRAM([[@%:@include <boost/mpi/python/serialize.hpp>
+			 AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[@%:@include <boost/mpi/python/serialize.hpp>
 			 								   ]],
                                    [[
 	                                 return 0;
-                                   ]]),
+                                   ]])],
                    ax_cv_boost_mpi_python=yes, ax_cv_boost_mpi_python=no)
 			 AC_LANG_RESTORE
 			])
@@ -707,9 +709,9 @@ BOOST_version_header="boost/version.hpp"
 						   ax_cv_boost_unit_test_framework,
 						[AC_LANG_SAVE
 			 AC_LANG_CPLUSPLUS
-			 AC_COMPILE_IFELSE(AC_LANG_PROGRAM([[@%:@include <boost/test/unit_test.hpp>]],
+			 AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[@%:@include <boost/test/unit_test.hpp>]],
                                     [[using boost::unit_test::test_suite;
-					                 test_suite* test= BOOST_TEST_SUITE( "Unit test example 1" ); return 0;]]),
+					                 test_suite* test= BOOST_TEST_SUITE( "Unit test example 1" ); return 0;]])],
                    ax_cv_boost_unit_test_framework=yes, ax_cv_boost_unit_test_framework=no)
 			 AC_LANG_RESTORE
 			])
