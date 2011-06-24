@@ -110,10 +110,10 @@ AC_ARG_WITH(stdair,
 
 
     AC_COMPILE_IFELSE(
-		AC_LANG_PROGRAM([[#include <stdair/STDAIR_Service.hpp>
+		[AC_LANG_PROGRAM([[#include <stdair/STDAIR_Service.hpp>
 				]],
 				[[int i=0;]]
-		)
+		)]
 		,
 
     	[AC_MSG_RESULT([yes (${STDAIR_VERSION})])],
