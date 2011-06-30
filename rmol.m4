@@ -58,11 +58,11 @@ AC_ARG_WITH(rmol,
 
 
    	AC_COMPILE_IFELSE(
-		AC_LANG_PROGRAM([[
+		[AC_LANG_PROGRAM([[
 				#include <rmol/RMOL_Service.hpp> 
 				]],
 				[[int i=0;]]
-		)
+		)]
 		,
 
     	[AC_MSG_RESULT([yes ($RMOL_VERSION)])],
