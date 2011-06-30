@@ -101,11 +101,11 @@ AC_ARG_WITH(travelccm,
 
 
    	AC_COMPILE_IFELSE(
-		AC_LANG_PROGRAM([[
+		[AC_LANG_PROGRAM([[
 				#include <travelccm/TRAVELCCM_Service.hpp> 
 				]],
 				[[int i=0;]]
-		)
+		)]
 		,
 
     	[AC_MSG_RESULT([yes (${TRAVELCCM_VERSION})])],

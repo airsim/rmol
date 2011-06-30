@@ -110,10 +110,10 @@ AC_ARG_WITH(@PACKAGE@,
 
 
     AC_COMPILE_IFELSE(
-		AC_LANG_PROGRAM([[#include <@PACKAGE@/@PACKAGE_NAME@_Service.hpp>
+		[AC_LANG_PROGRAM([[#include <@PACKAGE@/@PACKAGE_NAME@_Service.hpp>
 				]],
 				[[int i=0;]]
-		)
+		)]
 		,
 
     	[AC_MSG_RESULT([yes (${@PACKAGE_NAME@_VERSION})])],

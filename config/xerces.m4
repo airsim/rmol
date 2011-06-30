@@ -124,13 +124,13 @@ AC_DEFUN([AX_XERCES_C],
 
     	AC_MSG_CHECKING([that Xerces C++ programs can be built])
     	AC_COMPILE_IFELSE(
-			AC_LANG_PROGRAM(
+			[AC_LANG_PROGRAM(
 				[[#include <xercesc/sax2/SAX2XMLReader.hpp>
               	#include <xercesc/sax2/XMLReaderFactory.hpp>
 				]],
           		[[xercesc::SAX2XMLReader* aXMLReader_ptr = xercesc::XMLReaderFactory::createXMLReader();
 				]]
-        	)
+        	)]
         	,
     		[AC_MSG_RESULT([yes])],
 			[
