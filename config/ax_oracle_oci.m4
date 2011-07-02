@@ -163,8 +163,8 @@ Please, locate Oracle directories using --with-oracle or \
         AC_MSG_CHECKING([for Oracle OCI headers in $oracle_include_dir])
 
         AC_LANG_PUSH(C++)
-        AC_COMPILE_IFELSE([
-            AC_LANG_PROGRAM([[@%:@include <oci.h>]],
+        AC_COMPILE_IFELSE(
+				[AC_LANG_PROGRAM([[@%:@include <oci.h>]],
                 [[
 #if defined(OCI_MAJOR_VERSION)
 #if OCI_MAJOR_VERSION == 10 && OCI_MINOR_VERSION == 2
@@ -203,8 +203,8 @@ Please, locate Oracle directories using --with-oracle or \
             AC_MSG_CHECKING([for Oracle OCI libraries in $oracle_lib_dir])
 
             AC_LANG_PUSH(C++)
-            AC_LINK_IFELSE([
-                AC_LANG_PROGRAM([[@%:@include <oci.h>]],
+            AC_LINK_IFELSE(
+				[AC_LANG_PROGRAM([[@%:@include <oci.h>]],
                     [[
 OCIEnv* envh = 0;
 OCIEnvCreate(&envh, OCI_DEFAULT, 0, 0, 0, 0, 0, 0);

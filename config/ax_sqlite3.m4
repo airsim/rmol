@@ -95,8 +95,7 @@ AC_DEFUN([AX_LIB_SQLITE3],
 
         AC_LANG_PUSH(C++)
         AC_COMPILE_IFELSE(
-            [
-            AC_LANG_PROGRAM([[@%:@include <sqlite3.h>]],
+            [AC_LANG_PROGRAM([[@%:@include <sqlite3.h>]],
                 [[
 #if (SQLITE_VERSION_NUMBER >= $sqlite3_version_req_number)
 // Everything is okay
@@ -104,8 +103,7 @@ AC_DEFUN([AX_LIB_SQLITE3],
 #  error SQLite version is too old
 #endif
                 ]]
-            )
-            ],
+            )],
             [
             AC_MSG_RESULT([yes])
             success="yes"
