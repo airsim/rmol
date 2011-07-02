@@ -21,9 +21,9 @@ AC_CACHE_CHECK(whether the Boost::DateTime library is available,
 ax_cv_boost_date_time,
 [AC_LANG_SAVE
  AC_LANG_CPLUSPLUS
- AC_COMPILE_IFELSE(AC_LANG_PROGRAM([[#include <boost/date_time/gregorian/gregorian_types.hpp>]],
+ AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[#include <boost/date_time/gregorian/gregorian_types.hpp>]],
 			           [[using namespace boost::gregorian; date d(2002,Jan,10); return 0;]]),
-  	           ax_cv_boost_date_time=yes, ax_cv_boost_date_time=no)
+  	           ax_cv_boost_date_time=yes, ax_cv_boost_date_time=no)]
  AC_LANG_RESTORE
 ])
 if test "$ax_cv_boost_date_time" = yes; then

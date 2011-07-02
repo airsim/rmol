@@ -82,8 +82,7 @@ AC_DEFUN([AX_LIB_ODBC],
 
         AC_LANG_PUSH(C++)
         AC_COMPILE_IFELSE(
-            [
-            AC_LANG_PROGRAM([[@%:@include <sql.h>]],
+            [AC_LANG_PROGRAM([[@%:@include <sql.h>]],
                 [[
 #if (ODBCVER >= $odbc_version_req)
 // Everything is okay
@@ -91,8 +90,7 @@ AC_DEFUN([AX_LIB_ODBC],
 #  error ODBC version is too old
 #endif
                 ]]
-            )
-            ],
+            )],
             [
             AC_MSG_RESULT([yes])
             success="yes"

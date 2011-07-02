@@ -110,8 +110,7 @@ AC_DEFUN([AX_LIB_FIREBIRD],
 
             AC_LANG_PUSH(C++)
             AC_COMPILE_IFELSE(
-                [
-                AC_LANG_PROGRAM([[@%:@include <ibase.h>]],
+                [AC_LANG_PROGRAM([[@%:@include <ibase.h>]],
                     [[
 #if (FB_API_VER >= $firebird_version_req_number)
 // Everything is okay
@@ -119,8 +118,12 @@ AC_DEFUN([AX_LIB_FIREBIRD],
 #  error Firebird version is too old
 #endif
                     ]]
+<<<<<<< HEAD
                 )
                 ],
+=======
+                )],
+>>>>>>> trunk
                 [
                 AC_MSG_RESULT([yes])
                 success="yes"

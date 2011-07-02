@@ -58,11 +58,11 @@ AC_ARG_WITH(gsl,
 
 
    	AC_COMPILE_IFELSE(
-		AC_LANG_PROGRAM([[
+		[AC_LANG_PROGRAM([[
 				#include <gsl/gsl_types.h> 
 				]],
 				[[int i=0;]]
-		)
+		)]
 		,
 
     	[AC_MSG_RESULT([yes ($GSL_VERSION)])],
