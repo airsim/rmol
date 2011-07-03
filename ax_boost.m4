@@ -273,10 +273,12 @@ BOOST_version_header="boost/version.hpp"
 			if test "$ax_cv_boost_filesystem" = "yes"; then
 				AC_DEFINE(HAVE_BOOST_FILESYSTEM,,[define if the Boost::FILESYSTEM library is available])
 				BN=boost_filesystem
-				for ax_lib in $BN $BN-$CC $BN-$CC-mt $BN-$CC-mt-s $BN-$CC-s \
-                              lib$BN lib$BN-$CC lib$BN-$CC-mt lib$BN-$CC-mt-s \
-                              lib$BN-$CC-s $BN-mgw $BN-mgw-mt $BN-mgw-mt-s \
-                              $BN-mgw-s $BN-$CC-mt-$BOOSTLIB_MDW_VERSION ; do
+				for ax_lib in \
+					$BN-mt $BN $BN-$CC-mt $BN-$CC \
+					$BN-$CC-mt-s $BN-$CC-s lib$BN-mt lib$BN \
+					lib$BN-$CC-mt lib$BN-$CC lib$BN-$CC-mt-s lib$BN-$CC-s \
+					$BN-mgw-mt $BN-mgw $BN-mgw-mt-s $BN-mgw-s \
+					$BN-$CC-mt-$BOOSTLIB_MDW_VERSION ; do
 				    AC_CHECK_LIB($ax_lib, main,
                                  [BOOST_FILESYSTEM_LIB="-l$ax_lib" AC_SUBST(BOOST_FILESYSTEM_LIB) link_filesystem="yes" break],
                                  [link_filesystem="no"])
@@ -303,9 +305,12 @@ BOOST_version_header="boost/version.hpp"
             if test "$ax_cv_boost_system" = "yes"; then
                  AC_DEFINE(HAVE_BOOST_SYSTEM,,[define if the Boost::SYSTEM library is available])
                  BN=boost_system
-                 for ax_lib in $BN $BN-$CC $BN-$CC-mt $BN-$CC-mt-s $BN-$CC-s \
-                              lib$BN lib$BN-$CC lib$BN-$CC-mt lib$BN-$CC-mt-s lib$BN-$CC-s \
-                              $BN-mgw $BN-mgw $BN-mgw-mt $BN-mgw-mt-s $BN-mgw-s ; do
+                 for ax_lib in \
+					$BN-mt $BN $BN-$CC-mt $BN-$CC \
+					$BN-$CC-mt-s $BN-$CC-s lib$BN-mt lib$BN \
+					lib$BN-$CC-mt lib$BN-$CC lib$BN-$CC-mt-s lib$BN-$CC-s \
+					$BN-mgw-mt $BN-mgw $BN-mgw-mt-s $BN-mgw-s \
+					$BN-$CC-mt-$BOOSTLIB_MDW_VERSION ; do
                      AC_CHECK_LIB($ax_lib, main,
                                  [BOOST_SYSTEM_LIB="-l$ax_lib" AC_SUBST(BOOST_SYSTEM_LIB) link_system="yes" break],
                                  [link_system="no"])
@@ -331,11 +336,12 @@ BOOST_version_header="boost/version.hpp"
 			if test "$ax_cv_boost_program_options" = yes; then
 				AC_DEFINE(HAVE_BOOST_PROGRAM_OPTIONS,,[define if the Boost::PROGRAM_OPTIONS library is available])
 				BN=boost_program_options
-				for ax_lib in $BN $BN-$CC $BN-$CC-mt $BN-$CC-mt-s $BN-$CC-s \
-                              lib$BN lib$BN-$CC lib$BN-$CC-mt lib$BN-$CC-mt-s \
-                              lib$BN-$CC-s $BN-mgw $BN-mgw-mt \
-                              $BN-mgw-mt-s $BN-mgw-s \
-                              $BN-$CC-mt-$BOOSTLIB_MDW_VERSION; do
+				for ax_lib in \
+					$BN-mt $BN $BN-$CC-mt $BN-$CC \
+					$BN-$CC-mt-s $BN-$CC-s lib$BN-mt lib$BN \
+					lib$BN-$CC-mt lib$BN-$CC lib$BN-$CC-mt-s lib$BN-$CC-s \
+					$BN-mgw-mt $BN-mgw $BN-mgw-mt-s $BN-mgw-s \
+					$BN-$CC-mt-$BOOSTLIB_MDW_VERSION ; do
 				    AC_CHECK_LIB($ax_lib, main,
                                  [BOOST_PROGRAM_OPTIONS_LIB="-l$ax_lib" AC_SUBST(BOOST_PROGRAM_OPTIONS_LIB) link_program_options="yes" break],
                                  [link_program_options="no"])
@@ -380,12 +386,12 @@ BOOST_version_header="boost/version.hpp"
 				AC_SUBST(BOOST_CFLAGS)
 				AC_DEFINE(HAVE_BOOST_THREAD,,[define if the Boost::THREAD library is available])
 				BN=boost_thread
-				for ax_lib in $BN $BN-mt $BN-$CC $BN-$CC-mt \
-						   	  $BN-$CC-mt-s $BN-$CC-s \
-                              lib$BN lib$BN-$CC lib$BN-$CC-mt lib$BN-$CC-mt-s \
-                              lib$BN-$CC-s $BN-mgw $BN-mgw-mt \
-                              $BN-mgw-mt-s $BN-mgw-s  \
-                              $BN-$CC-mt-$BOOSTLIB_MDW_VERSION ; do
+				for ax_lib in \
+					$BN-mt $BN $BN-$CC-mt $BN-$CC \
+					$BN-$CC-mt-s $BN-$CC-s lib$BN-mt lib$BN \
+					lib$BN-$CC-mt lib$BN-$CC lib$BN-$CC-mt-s lib$BN-$CC-s \
+					$BN-mgw-mt $BN-mgw $BN-mgw-mt-s $BN-mgw-s \
+					$BN-$CC-mt-$BOOSTLIB_MDW_VERSION ; do
 				    AC_CHECK_LIB($ax_lib, main, [BOOST_THREAD_LIB="-l$ax_lib" AC_SUBST(BOOST_THREAD_LIB) link_thread="yes" break],
                                  [link_thread="no"])
   				done
@@ -416,11 +422,12 @@ BOOST_version_header="boost/version.hpp"
 			if test "x$ax_cv_boost_iostreams" = "xyes"; then
 				AC_DEFINE(HAVE_BOOST_IOSTREAMS,,[define if the Boost::IOStreams library is available])
 				BN=boost_iostreams
-				for ax_lib in $BN $BN-$CC $BN-$CC-mt $BN-$CC-mt-s $BN-$CC-s \
-                              lib$BN lib$BN-$CC lib$BN-$CC-mt lib$BN-$CC-mt-s \
-                              lib$BN-$CC-s $BN-mgw $BN-mgw-mt \
-                              $BN-mgw-mt-s $BN-mgw-s  \
-                              $BN-$CC-mt-$BOOSTLIB_MDW_VERSION ; do
+				for ax_lib in \
+					$BN-mt $BN $BN-$CC-mt $BN-$CC \
+					$BN-$CC-mt-s $BN-$CC-s lib$BN-mt lib$BN \
+					lib$BN-$CC-mt lib$BN-$CC lib$BN-$CC-mt-s lib$BN-$CC-s \
+					$BN-mgw-mt $BN-mgw $BN-mgw-mt-s $BN-mgw-s \
+					$BN-$CC-mt-$BOOSTLIB_MDW_VERSION ; do
 				    AC_CHECK_LIB($ax_lib, main, [BOOST_IOSTREAMS_LIB="-l$ax_lib" AC_SUBST(BOOST_IOSTREAMS_LIB) link_thread="yes" break],
                                  [link_thread="no"])
   				done
@@ -451,21 +458,23 @@ BOOST_version_header="boost/version.hpp"
 			if test "x$ax_cv_boost_serialization" = "xyes"; then
 				AC_DEFINE(HAVE_BOOST_SERIALIZATION,,[define if the Boost::Serialization library is available])
 				BN=boost_serialization
-				for ax_lib in $BN $BN-$CC $BN-$CC-mt $BN-$CC-mt-s $BN-$CC-s \
-                              lib$BN lib$BN-$CC lib$BN-$CC-mt lib$BN-$CC-mt-s \
-                              lib$BN-$CC-s $BN-mgw $BN-mgw-mt \
-                              $BN-mgw-mt-s $BN-mgw-s  \
-                              $BN-$CC-mt-$BOOSTLIB_MDW_VERSION ; do
+				for ax_lib in \
+					$BN-mt $BN $BN-$CC-mt $BN-$CC \
+					$BN-$CC-mt-s $BN-$CC-s lib$BN-mt lib$BN \
+					lib$BN-$CC-mt lib$BN-$CC lib$BN-$CC-mt-s lib$BN-$CC-s \
+					$BN-mgw-mt $BN-mgw $BN-mgw-mt-s $BN-mgw-s \
+					$BN-$CC-mt-$BOOSTLIB_MDW_VERSION ; do
 				    AC_CHECK_LIB($ax_lib, main,
                                  [BOOST_SERIALIZATION_LIB="-l$ax_lib" AC_SUBST(BOOST_SERIALIZATION_LIB) link_thread="yes" break],
                                  [link_thread="no"])
   				done
 				BN=boost_wserialization
-				for ax_lib in $BN $BN-$CC $BN-$CC-mt $BN-$CC-mt-s $BN-$CC-s \
-                              lib$BN lib$BN-$CC lib$BN-$CC-mt lib$BN-$CC-mt-s \
-                              lib$BN-$CC-s $BN-mgw $BN-mgw-mt \
-                              $BN-mgw-mt-s $BN-mgw-s  \
-                              $BN-$CC-mt-$BOOSTLIB_MDW_VERSION ; do
+				for ax_lib in \
+					$BN-mt $BN $BN-$CC-mt $BN-$CC \
+					$BN-$CC-mt-s $BN-$CC-s lib$BN-mt lib$BN \
+					lib$BN-$CC-mt lib$BN-$CC lib$BN-$CC-mt-s lib$BN-$CC-s \
+					$BN-mgw-mt $BN-mgw $BN-mgw-mt-s $BN-mgw-s \
+					$BN-$CC-mt-$BOOSTLIB_MDW_VERSION ; do
 				    AC_CHECK_LIB($ax_lib, main,
                                  [BOOST_WSERIALIZATION_LIB="-l$ax_lib" AC_SUBST(BOOST_WSERIALIZATION_LIB) link_thread="yes" break],
                                  [link_thread="no"])
@@ -493,11 +502,12 @@ BOOST_version_header="boost/version.hpp"
 			if test "x$ax_cv_boost_signals" = "xyes"; then
 				AC_DEFINE(HAVE_BOOST_SIGNALS,,[define if the Boost::Signals library is available])
 				BN=boost_signals
-				for ax_lib in $BN $BN-$CC $BN-$CC-mt $BN-$CC-mt-s $BN-$CC-s \
-                              lib$BN lib$BN-$CC lib$BN-$CC-mt lib$BN-$CC-mt-s \
-                              lib$BN-$CC-s $BN-mgw $BN-mgw-mt \
-                              $BN-mgw-mt-s $BN-mgw-s  \
-                              $BN-$CC-mt-$BOOSTLIB_MDW_VERSION ; do
+				for ax_lib in \
+					$BN-mt $BN $BN-$CC-mt $BN-$CC \
+					$BN-$CC-mt-s $BN-$CC-s lib$BN-mt lib$BN \
+					lib$BN-$CC-mt lib$BN-$CC lib$BN-$CC-mt-s lib$BN-$CC-s \
+					$BN-mgw-mt $BN-mgw $BN-mgw-mt-s $BN-mgw-s \
+					$BN-$CC-mt-$BOOSTLIB_MDW_VERSION ; do
 				    AC_CHECK_LIB($ax_lib, main, [BOOST_SIGNALS_LIB="-l$ax_lib" AC_SUBST(BOOST_SIGNALS_LIB) link_signals="yes" break],
                                  [link_signals="no"])
   				done
@@ -524,11 +534,12 @@ BOOST_version_header="boost/version.hpp"
 			if test "x$ax_cv_boost_date_time" = "xyes"; then
 				AC_DEFINE(HAVE_BOOST_DATE_TIME,,[define if the Boost::Date_Time library is available])
 				BN=boost_date_time
-				for ax_lib in $BN $BN-$CC $BN-$CC-mt $BN-$CC-mt-s $BN-$CC-s \
-                              lib$BN lib$BN-$CC lib$BN-$CC-mt lib$BN-$CC-mt-s \
-                              lib$BN-$CC-s $BN-mgw $BN-mgw-mt \
-                              $BN-mgw-mt-s $BN-mgw-s  \
-                              $BN-$CC-mt-$BOOSTLIB_MDW_VERSION ; do
+				for ax_lib in \
+					$BN-mt $BN $BN-$CC-mt $BN-$CC \
+					$BN-$CC-mt-s $BN-$CC-s lib$BN-mt lib$BN \
+					lib$BN-$CC-mt lib$BN-$CC lib$BN-$CC-mt-s lib$BN-$CC-s \
+					$BN-mgw-mt $BN-mgw $BN-mgw-mt-s $BN-mgw-s \
+					$BN-$CC-mt-$BOOSTLIB_MDW_VERSION ; do
 				    AC_CHECK_LIB($ax_lib, main, [BOOST_DATE_TIME_LIB="-l$ax_lib" AC_SUBST(BOOST_DATE_TIME_LIB) link_date_time="yes" break],
                                  [link_date_time="no"])
   				done
@@ -553,11 +564,12 @@ BOOST_version_header="boost/version.hpp"
 			if test "x$ax_cv_boost_regex" = "xyes"; then
 				AC_DEFINE(HAVE_BOOST_REGEX,,[define if the Boost::Regex library is available])
 				BN=boost_regex
-				for ax_lib in $BN $BN-$CC $BN-$CC-mt $BN-$CC-mt-s $BN-$CC-s \
-                              lib$BN lib$BN-$CC lib$BN-$CC-mt lib$BN-$CC-mt-s \
-                              lib$BN-$CC-s $BN-mgw $BN-mgw-mt \
-                              $BN-mgw-mt-s $BN-mgw-s  \
-                              $BN-$CC-mt-$BOOSTLIB_MDW_VERSION ; do
+				for ax_lib in \
+					$BN-mt $BN $BN-$CC-mt $BN-$CC \
+					$BN-$CC-mt-s $BN-$CC-s lib$BN-mt lib$BN \
+					lib$BN-$CC-mt lib$BN-$CC lib$BN-$CC-mt-s lib$BN-$CC-s \
+					$BN-mgw-mt $BN-mgw $BN-mgw-mt-s $BN-mgw-s \
+					$BN-$CC-mt-$BOOSTLIB_MDW_VERSION ; do
 				    AC_CHECK_LIB($ax_lib, main, [BOOST_REGEX_LIB="-l$ax_lib" AC_SUBST(BOOST_REGEX_LIB) link_thread="yes" break],
                                  [link_thread="no"])
   				done
@@ -645,11 +657,12 @@ BOOST_version_header="boost/version.hpp"
 			if test "x$ax_cv_boost_mpi" = "xyes"; then
 				AC_DEFINE(HAVE_BOOST_MPI,,[define if the Boost::Mpi library is available])
 				BN=boost_mpi
-				for ax_lib in $BN $BN-$CC $BN-$CC-mt $BN-$CC-mt-s $BN-$CC-s \
-                              lib$BN lib$BN-$CC lib$BN-$CC-mt lib$BN-$CC-mt-s \
-                              lib$BN-$CC-s $BN-mgw $BN-mgw-mt $BN-mgw-mt-s \
-                              $BN-mgw-s $BN-$CC-mt-$BOOSTLIB_MDW_VERSION ; do
-
+				for ax_lib in \
+					$BN-mt $BN $BN-$CC-mt $BN-$CC \
+					$BN-$CC-mt-s $BN-$CC-s lib$BN-mt lib$BN \
+					lib$BN-$CC-mt lib$BN-$CC lib$BN-$CC-mt-s lib$BN-$CC-s \
+					$BN-mgw-mt $BN-mgw $BN-mgw-mt-s $BN-mgw-s \
+					$BN-$CC-mt-$BOOSTLIB_MDW_VERSION ; do
 				    AC_CHECK_LIB($ax_lib, main, [BOOST_MPI_LIB="-l$ax_lib" AC_SUBST(BOOST_MPI_LIB) link_mpi="yes" break],
                                  [link_mpi="no"])
   				done
@@ -679,10 +692,12 @@ BOOST_version_header="boost/version.hpp"
 				AC_DEFINE(HAVE_BOOST_MPI_PYTHON,,[define if the Boost::Mpi_Python library is available])
 				BN=boost_mpi_python
 #				BN=boost_mpi_python-py25
-				for ax_lib in $BN $BN-$CC $BN-$CC-mt $BN-$CC-mt-s $BN-$CC-s \
-                              lib$BN lib$BN-$CC lib$BN-$CC-mt lib$BN-$CC-mt-s \
-                              lib$BN-$CC-s $BN-mgw $BN-mgw-mt $BN-mgw-mt-s \
-                              $BN-mgw-s $BN-$CC-mt-$BOOSTLIB_MDW_VERSION ; do
+				for ax_lib in \
+					$BN-mt $BN $BN-$CC-mt $BN-$CC \
+					$BN-$CC-mt-s $BN-$CC-s lib$BN-mt lib$BN \
+					lib$BN-$CC-mt lib$BN-$CC lib$BN-$CC-mt-s lib$BN-$CC-s \
+					$BN-mgw-mt $BN-mgw $BN-mgw-mt-s $BN-mgw-s \
+					$BN-$CC-mt-$BOOSTLIB_MDW_VERSION ; do
 				    AC_CHECK_LIB($ax_lib, main, [BOOST_MPI_PYTHON_LIB="-l$ax_lib" AC_SUBST(BOOST_MPI_PYTHON_LIB) link_mpi_python="yes" break],
                                  [link_mpi_python="no"])
   				done
@@ -719,10 +734,12 @@ BOOST_version_header="boost/version.hpp"
     		AC_DEFINE(HAVE_BOOST_UNIT_TEST_FRAMEWORK,,[define if the Boost::Unit_test_framework library is available])
 			BN=boost_unit_test_framework
     		saved_ldflags="${LDFLAGS}"
-			for ax_lib in $BN $BN-$CC $BN-$CC-mt $BN-$CC-mt-s $BN-$CC-s \
-                          lib$BN lib$BN-$CC lib$BN-$CC-mt lib$BN-$CC-mt-s \
-                          lib$BN-$CC-s $BN-mgw $BN-mgw-mt $BN-mgw-mt-s \
-                          $BN-mgw-s $BN-$CC-mt-$BOOSTLIB_MDW_VERSION ; do
+			for ax_lib in \
+					$BN-mt $BN $BN-$CC-mt $BN-$CC \
+					$BN-$CC-mt-s $BN-$CC-s lib$BN-mt lib$BN \
+					lib$BN-$CC-mt lib$BN-$CC lib$BN-$CC-mt-s lib$BN-$CC-s \
+					$BN-mgw-mt $BN-mgw $BN-mgw-mt-s $BN-mgw-s \
+					$BN-$CC-mt-$BOOSTLIB_MDW_VERSION ; do
                 LDFLAGS="${LDFLAGS} -l$ax_lib"
     			AC_CACHE_CHECK(the name of the Boost::UnitTestFramework library,
 	      					   ax_cv_boost_unit_test_framework,
