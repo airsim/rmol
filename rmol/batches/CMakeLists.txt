@@ -1,0 +1,17 @@
+#
+include_directories (BEFORE ${CMAKE_SOURCE_DIR} ${CMAKE_BINARY_DIR}) 
+
+# Required libraries
+set (CMAKE_REQUIRED_LIBRARIES ${BOOST_LIBS_FOR_BIN} ${MYSQL_LIBRARIES}
+  ${SOCI_LIBRARIES} ${SOCIMYSQL_LIBRARIES})
+
+# Assembling
+add_executable (${PROJECT_NAME} ${PROJECT_NAME}.cpp)
+target_link_libraries (${PROJECT_NAME} 
+  ${RMOL_LIB_TARGET} ${RMOL_UICL_LIB_TARGET} 
+  ${Boost_PROGRAM_OPTIONS_LIBRARY} ${CMAKE_REQUIRED_LIBRARIES})
+
+# Install binaries
+install (TARGETS ${PROJECT_NAME} 
+  EXPORT RmolLibraryDepends
+  RUNTIME DESTINATION "${INSTALL_BIN_DIR}" COMPONENT bin)
