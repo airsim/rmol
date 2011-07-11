@@ -140,14 +140,14 @@ namespace RMOL {
 	const stdair::DCP_T& lNextDCP = *itNextDCP;
 
         // DEBUG
-        // STDAIR_LOG_DEBUG ("Unconstrain demand for "
-        //                   << ioSegmentCabin.describeKey()
-        //                   << " and the DCP's " << lCurrentDCP << ", "
-        //                   << lNextDCP);
+        STDAIR_LOG_DEBUG ("Unconstrain demand for "
+                          << ioSegmentCabin.describeKey()
+                          << " and the DCP's " << lCurrentDCP << ", "
+                          << lNextDCP);
 	Detruncator::unconstrain (ioSegmentCabin, lBkgClassUncDemMap,
                                   lQEquivalentDemandVector,
                                   lCurrentDCP, lNextDCP+1, iEventDate);
-        // STDAIR_LOG_DEBUG ("Detrucation successful");
+        STDAIR_LOG_DEBUG ("Detrucation successful");
       }
       
       // Retrieve the FRAT5 coefficient and compute the sell-up coef.
