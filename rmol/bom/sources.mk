@@ -18,5 +18,3 @@ rmol_bom_cc_sources = \
 	$(top_srcdir)/rmol/bom/HistoricalBookingHolder.cpp \
 	$(top_srcdir)/rmol/bom/GuillotineBlockHelper.cpp \
 	$(top_srcdir)/rmol/bom/Utilities.cpp 
-
-

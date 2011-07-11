@@ -11,7 +11,7 @@ if (Boost_FOUND)
   # * Unconstrainer Test Suite
   set (UNCONSTRAINER_TEST_TARGET UnconstrainerTest)
   set (unconstrainer_test_SOURCES UnconstrainerTestSuite.cpp)
-  add_test_suite (${FORECASTER_TEST_TARGET} "${unconstrainer_test_SOURCES}"
+  add_test_suite (${UNCONSTRAINER_TEST_TARGET} "${unconstrainer_test_SOURCES}"
     ${RMOL_LIB_TARGET} ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY})
 
   # Don't forget to add the test suite to the DEPENDS argument list of

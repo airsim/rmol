@@ -69,7 +69,7 @@ int testOptimiseHelper (const unsigned short optimisationMethodFlag) {
     
   // Input file name
   const stdair::Filename_T lRMInputFileName (STDAIR_SAMPLE_DIR "/rm02.csv");
-  const bool hasInputFile = true;
+  //const bool hasInputFile = true;
     
   // Check that the file path given as input corresponds to an actual file
   bool doesExistAndIsReadable =
