@@ -14,32 +14,17 @@ if (Boost_FOUND)
   add_test_suite (${UNCONSTRAINER_TEST_TARGET} "${unconstrainer_test_SOURCES}"
     ${RMOL_LIB_TARGET} ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY})
 
-  # Don't forget to add the test suite to the DEPENDS argument list of
-  # the 'check' target within the test/CMakeLists.txt file
-  add_custom_target (check${UNCONSTRAINER_TEST_TARGET} 
-    COMMAND ${CMAKE_CTEST_COMMAND} DEPENDS ${UNCONSTRAINER_TEST_TARGET})
-
   # * Forecaster Test Suite
   set (FORECASTER_TEST_TARGET ForecasterTest)
   set (forecaster_test_SOURCES ForecasterTestSuite.cpp)
   add_test_suite (${FORECASTER_TEST_TARGET} "${forecaster_test_SOURCES}"
     ${RMOL_LIB_TARGET} ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY})
 
-  # Don't forget to add the test suite to the DEPENDS argument list of
-  # the 'check' target within the test/CMakeLists.txt file
-  add_custom_target (check${FORECASTER_TEST_TARGET} 
-    COMMAND ${CMAKE_CTEST_COMMAND} DEPENDS ${FORECASTER_TEST_TARGET})
-
   # * Optimise Test Suite
   set (OPTIMISE_TEST_TARGET OptimiseTest)
   set (optimise_test_SOURCES OptimiseTestSuite.cpp)
   add_test_suite (${OPTIMISE_TEST_TARGET} "${optimise_test_SOURCES}"
     ${RMOL_LIB_TARGET} ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY})
-
-  # Don't forget to add the test suite to the DEPENDS argument list of
-  # the 'check' target within the test/CMakeLists.txt file
-  add_custom_target (check${OPTIMISE_TEST_TARGET} COMMAND ${CMAKE_CTEST_COMMAND}
-    DEPENDS ${OPTIMISE_TEST_TARGET})
 
   # * BOMs for Forecaster Test Suite
   set (BOMSFORFORECASTER_TEST_TARGET BOMsForForecasterTest)
@@ -48,12 +33,15 @@ if (Boost_FOUND)
     "${bomsforforecaster_test_SOURCES}"
     ${RMOL_LIB_TARGET} ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY})
 
-  # Don't forget to add the test suite to the DEPENDS argument list of
-  # the 'check' target within the test/CMakeLists.txt file
-  add_custom_target (check${BOMSFORFORECASTER_TEST_TARGET} 
-    COMMAND ${CMAKE_CTEST_COMMAND} DEPENDS ${BOMSFORFORECASTER_TEST_TARGET})
-
   # * Next test suite
   # ...
+
+  # Don't forget to add the full test suite to the DEPENDS argument list of
+  # the 'check' target within the ../test/CMakeLists.txt file.
+  add_custom_target (check${PACKAGE_NAME}
+    COMMAND ${CMAKE_CTEST_COMMAND} 
+    DEPENDS ${UNCONSTRAINER_TEST_TARGET} ${FORECASTER_TEST_TARGET}
+    ${OPTIMISE_TEST_TARGET} ${BOMSFORFORECASTER_TEST_TARGET})
+
 
 endif()

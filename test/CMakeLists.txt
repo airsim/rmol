@@ -7,8 +7,7 @@ add_subdirectory (${PROJECT_NAME})
 
 if (Boost_FOUND)
 
-  add_custom_target (check
-    DEPENDS checkUnconstrainerTest checkForecasterTest
-    checkOptimiseTest checkBOMsForForecasterTest)
+  # Each individual test suite is specified within the dedicated sub-directory
+  add_custom_target (check DEPENDS check${PACKAGE_NAME})
 
 endif()
