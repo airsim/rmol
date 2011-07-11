@@ -7,6 +7,8 @@
 #include <iomanip>
 #include <cmath>
 #include <cassert>
+// StdAir
+#include <stdair/service/Logger.hpp>
 // RMOL
 #include <rmol/bom/HistoricalBooking.hpp>
 #include <rmol/bom/HistoricalBookingHolder.hpp>
@@ -188,28 +190,29 @@ namespace RMOL {
     double e, d1, d2;
     
     e = - (lBooking - iMean) * (lBooking - iMean) * 0.625 / (iSD * iSD);
+    //STDAIR_LOG_DEBUG ("e: " << e);
     e = exp (e);
-
-    // Prevent e to be too close to 0: that can cause d1 = 0.
-    if (e < 0.01) {
-      return iDemand;
-    }
+    //STDAIR_LOG_DEBUG ("e: " << e);
 
     double s = sqrt (1 - e);
-      
+    //STDAIR_LOG_DEBUG ("s: " << s);
+    
     if (lBooking >= iMean) {
+      if (e < 0.01) {
+        return iDemand;
+      }
       d1 = 0.5 * (1 - s);
     }
     else {
       d1 = 0.5 * (1 + s);
     }
+    //STDAIR_LOG_DEBUG ("d1: " << d1);
     
     e = - (lBooking - iMean) * (lBooking - iMean) * 0.5 / (iSD * iSD);
-      e = exp (e);
-    d2 = e * iSD / sqrt(2 * 3.14159265);    
-      
-    // std::cout << "d1, d2 = " << d1 << "     " << d2 << std::endl;
-
+    e = exp (e);
+    d2 = e * iSD / sqrt(2 * 3.14159265);
+    //STDAIR_LOG_DEBUG ("d2: " << d2);
+    
     if (d1 == 0) {
       return iDemand;
     }

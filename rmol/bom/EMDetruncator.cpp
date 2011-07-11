@@ -8,6 +8,7 @@
 #include <cassert>
 // StdAir
 #include <stdair/stdair_basic_types.hpp>
+#include <stdair/service/Logger.hpp>
 // RMOL
 #include <rmol/bom/HistoricalBookingHolder.hpp>
 #include <rmol/bom/EMDetruncator.hpp>
@@ -43,8 +44,9 @@ namespace RMOL {
 
       double lDemandMean = lMeanOfUncensoredBookings;
       double lStdDev = lStdDevOfUncensoredBookings;
-      // std::cout << "mean = " << lDemandMean << std::endl
-      //           << "SD = " << lStdDev << std::endl;
+
+      // DEBUG
+      STDAIR_LOG_DEBUG ("mean: " << lDemandMean << ", std: " << lStdDev);
         
       if (lStdDev != 0) {
         bool stopUnconstraining = false;
@@ -56,13 +58,13 @@ namespace RMOL {
               // Get the unconstrained demand of the (i+1)-th flight.
               const stdair::NbOfBookings_T demand =
                 ioHistoricalBookingHolder.getUnconstrainedDemand (i);
-              //std::cout << "demand = " << demand << std::endl;
+              //STDAIR_LOG_DEBUG ("demand: " << demand);
                 
               // Execute the Expectation step.
               const stdair::NbOfBookings_T expectedDemand =
-                ioHistoricalBookingHolder.calculateExpectedDemand
-                (lDemandMean, lStdDev, i, demand);
-              //std::cout << "expected = " << expectedDemand << std::endl;
+                ioHistoricalBookingHolder.
+                calculateExpectedDemand (lDemandMean, lStdDev, i, demand);
+              //STDAIR_LOG_DEBUG ("expected: " << expectedDemand);
               assert (expectedDemand >= 0 || expectedDemand < 0);
                 
               double absDiff =
@@ -78,8 +80,8 @@ namespace RMOL {
                 stopUnconstraining = false;
               }
                 
-              ioHistoricalBookingHolder.setUnconstrainedDemand
-                (expectedDemand, i);
+              ioHistoricalBookingHolder.setUnconstrainedDemand (expectedDemand,
+                                                                i);
             }
           }
             

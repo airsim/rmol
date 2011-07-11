@@ -24,6 +24,7 @@ namespace RMOL {
                UnconstrainedDemandVector_T& ioQEquivalentDemandVector,
 	       const stdair::DCP_T& iDCPBegin, const stdair::DCP_T& iDCPEnd,
                const stdair::Date_T& iCurrentDate) {
+
     // Retrieve the guillotine block.
     const stdair::GuillotineBlock& lGuillotineBlock =
       iSegmentCabin.getGuillotineBlock();
@@ -44,6 +45,8 @@ namespace RMOL {
       const stdair::BlockIndex_T& lBlockIdx =
         lGuillotineBlock.getBlockIndex (lBCKey);
       UnconstrainedDemandVector_T& lUncDemVector = itBCUDV->second;
+
+      STDAIR_LOG_DEBUG ("Unconstrain product-oriented bookings for " << lBCKey);
       unconstrain (lGuillotineBlock, lUncDemVector, iDCPBegin, iDCPEnd,
                    lNbOfUsableSegments, lBlockIdx);
     }
@@ -55,6 +58,8 @@ namespace RMOL {
               << iSegmentCabin.describeKey();    
     const stdair::BlockIndex_T& lCabinIdx =
       lGuillotineBlock.getBlockIndex (lSCMapKey.str());
+
+    STDAIR_LOG_DEBUG ("Unconstrain price-oriented bookings");
     unconstrain (lGuillotineBlock, ioQEquivalentDemandVector, iDCPBegin,
                  iDCPEnd, lNbOfUsableSegments, lCabinIdx);
   }
@@ -68,9 +73,9 @@ namespace RMOL {
                const stdair::BlockIndex_T& iBlockIdx) {
     // Retrieve the gross daily booking and availability snapshots.
     stdair::ConstSegmentCabinDTDRangeSnapshotView_T lBookingView =
-      iGuillotineBlock.getConstSegmentCabinDTDRangeProductAndPriceOrientedBookingSnapshotView (0, iNbOfUsableSegments -1, iDCPBegin, iDCPEnd);
+      iGuillotineBlock.getConstSegmentCabinDTDRangeProductAndPriceOrientedBookingSnapshotView (0, iNbOfUsableSegments -1, iDCPEnd, iDCPBegin);
     stdair::ConstSegmentCabinDTDRangeSnapshotView_T lAvlView =
-      iGuillotineBlock.getConstSegmentCabinDTDRangeAvailabilitySnapshotView (0, iNbOfUsableSegments -1, iDCPBegin, iDCPEnd);
+      iGuillotineBlock.getConstSegmentCabinDTDRangeAvailabilitySnapshotView (0, iNbOfUsableSegments -1, iDCPEnd, iDCPBegin);
     
     // Browse the list of segments and build the historical booking holder.
     const stdair::ValueTypeIndexMap_T& lVTIdxMap =
@@ -80,11 +85,13 @@ namespace RMOL {
     for (short i = 0; i < iNbOfUsableSegments; ++i) {
       stdair::Flag_T lCensorshipFlag = false;
       stdair::NbOfBookings_T lNbOfHistoricalBkgs = 0.0;
-      const short lNbOfDTDs = iDCPEnd - iDCPBegin + 1;
-
+      const short lNbOfDTDs = iDCPBegin - iDCPEnd + 1;
+      
       // Parse the DTDs during the period
       for (short j = 0; j < lNbOfDTDs; ++j) {
         // Check if the data has been censored during this day.
+        // STDAIR_LOG_DEBUG ("i: " << i << ", NbOfValues: " << lNbOfValueTypes
+        //                   << ", BlockIdx: " << iBlockIdx << ", j: " << j);
         if (lCensorshipFlag == false) {
           if (lAvlView[i*lNbOfValueTypes + iBlockIdx][j] < 1.0) {
             lCensorshipFlag = true;
@@ -92,6 +99,7 @@ namespace RMOL {
         }
         
         // Get the bookings of the day.
+        //STDAIR_LOG_DEBUG ("Bookings of the day: " << lBookingView[i*lNbOfValueTypes + iBlockIdx][j]);
         lNbOfHistoricalBkgs += lBookingView[i*lNbOfValueTypes + iBlockIdx][j];
       }
       
@@ -104,7 +112,7 @@ namespace RMOL {
     }
 
     // DEBUG
-    // STDAIR_LOG_DEBUG ("Unconstrain by EM");
+    STDAIR_LOG_DEBUG ("Unconstrain by EM");
     
     // Unconstrain the booking figures
     EMDetruncator::unconstrainUsingEMMethod (lHBHolder);

@@ -51,8 +51,8 @@ namespace RMOL {
       lBookingClass_ptr->generateDemandSamples (K, lRandomSeed);
 
       // DEBUG
-      STDAIR_LOG_DEBUG ("Generating " << K << " demand samples for the class "
-                        << lBookingClass_ptr->describeKey());
+      //STDAIR_LOG_DEBUG ("Generating " << K << " demand samples for the class "
+      //                   << lBookingClass_ptr->describeKey());
     }   
     
     // Call the class performing the actual algorithm
