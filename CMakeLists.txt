@@ -206,6 +206,8 @@ include_directories (BEFORE ${CMAKE_SOURCE_DIR} ${CMAKE_BINARY_DIR})
 # Subdirs
 add_subdirectory (${PROJECT_NAME})
 add_subdirectory (${PROJECT_NAME}/batches)
+add_subdirectory (airrac)
+add_subdirectory (airrac/batches)
 add_subdirectory (test)
 
 # Add all targets to the build-tree export set
