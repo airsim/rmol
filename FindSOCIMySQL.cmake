@@ -84,6 +84,5 @@ else ()
 endif ()
 
 #
-add_definitions (-DSOCI_HEADERS_BURIED -DSOCI_MYSQL_HEADERS_BURIED)
 set (SOCIMYSQL_FOUND true)
 mark_as_advanced (SOCIMYSQL_FOUND)
