@@ -637,7 +637,7 @@ BOOST_version_header="boost/version.hpp"
 			 AC_LANG_RESTORE
 			])
 
-			BOOST_PYTHON_LIB="-lboost_python ${PYTHON_LIBS} ${PYTHON_ADD_LIBS}"
+			BOOST_PYTHON_LIB="-lboost_python-mt ${PYTHON_LIBS} ${PYTHON_ADD_LIBS}"
 			AC_SUBST(BOOST_PYTHON_LIB)
 
 #

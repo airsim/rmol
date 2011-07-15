@@ -44,6 +44,16 @@ else ()
   message(FATAL_ERROR "Could not find SOCI headers")
 endif ()
 
+# Determine whether the headers are buried
+IF (EXISTS "${SOCI_INCLUDE_DIR}/core")
+  # The SOCI headers are buried
+  MESSAGE (STATUS "SOCI headers are buried")
+  ADD_DEFINITIONS (-DSOCI_HEADERS_BURIED -DSOCI_MYSQL_HEADERS_BURIED)
+ELSE ()
+  # The SOCI headers are not buried
+  MESSAGE (STATUS "SOCI headers are not buried")
+ENDIF ()
+
 # Check for SOCI library.
 set(CHECK_LIBRARIES soci_core soci_core-gcc-3_0)
 if (SOCI_LIBRARY_DIR)
@@ -62,6 +72,5 @@ else ()
 endif ()
 
 #
-add_definitions (-DSOCI_HEADERS_BURIED -DSOCI_MYSQL_HEADERS_BURIED)
 set (SOCI_FOUND true)
 mark_as_advanced (SOCI_FOUND)
