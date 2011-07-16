@@ -1,17 +1,17 @@
 #
-# Config file for the AirRAC package. It defines the following variables:
-#  AIRRAC_INCLUDE_DIRS - include directories for AirRAC
-#  AIRRAC_LIBRARY_DIRS - library directories for AirRAC (normally not used!)
-#  AIRRAC_LIBRARIES    - libraries to link against
-#  AIRRAC_EXECUTABLE   - the airrac executable
+# Config file for the RMOL package. It defines the following variables:
+#  RMOL_INCLUDE_DIRS - include directories for RMOL
+#  RMOL_LIBRARY_DIRS - library directories for RMOL (normally not used!)
+#  RMOL_LIBRARIES    - libraries to link against
+#  RMOL_EXECUTABLE   - the rmol executable
 
 # Tell the user project where to find our headers and libraries
-set (AIRRAC_INCLUDE_DIRS "@AIRRAC_INCLUDE_DIRS@")
-set (AIRRAC_LIBRARY_DIRS "@AIRRAC_LIB_DIR@")
+set (RMOL_INCLUDE_DIRS "@RMOL_INCLUDE_DIRS@")
+set (RMOL_LIBRARY_DIRS "@RMOL_LIB_DIR@")
 
 # Our library dependencies (contains definitions for IMPORTED targets)
-include ("@AIRRAC_CMAKE_DIR@/AirracLibraryDepends.cmake")
+include ("@RMOL_CMAKE_DIR@/RmolLibraryDepends.cmake")
 
-# These are IMPORTED targets created by AirracLibraryDepends.cmake
-set (AIRRAC_LIBRARIES airraclib airracuicllib)
-set (AIRRAC_EXECUTABLE airrac)
+# These are IMPORTED targets created by RmolLibraryDepends.cmake
+set (RMOL_LIBRARIES airraclib rmollib rmoluicllib)
+set (RMOL_EXECUTABLE rmol)
