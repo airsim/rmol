@@ -1,0 +1,20 @@
+#
+# Config file for the RMOL package. It defines the following variables:
+#  RMOL_INCLUDE_DIRS - include directories for RMOL
+#  RMOL_LIBRARY_DIRS - library directories for RMOL (normally not used!)
+#  RMOL_BINARY_DIRS  - binary directories for RMOL (normally not used!)
+#  RMOL_LIBRARIES    - libraries to link against
+#  RMOL_EXECUTABLES  - the RMOL binaries/executables
+
+# Tell the user project where to find RMOL headers and libraries
+set (RMOL_INCLUDE_DIRS "@RMOL_INCLUDE_DIRS@")
+set (RMOL_LIBRARY_DIRS "@RMOL_LIB_DIR@")
+set (RMOL_BINARY_DIRS "@RMOL_BIN_DIR@")
+
+# Library dependencies for RMOL (contains definitions for the RMOL IMPORTED
+# targets)
+include ("@RMOL_CMAKE_DIR@/rmol-library-depends.cmake")
+
+# These are the RMOL IMPORTED targets, created by rmol-library-depends.cmake
+set (RMOL_LIBRARIES airraclib rmollib)
+set (RMOL_EXECUTABLES rmol)

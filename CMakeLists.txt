@@ -16,15 +16,15 @@ set (PACKAGE_NAME "${PACKAGE_NAME_TMP}" CACHE INTERNAL "Description")
 
 ##
 # Version
-set (rmol_VERSION_MAJOR 99)
-set (rmol_VERSION_MINOR 99)
-set (rmol_VERSION_PATCH 99)
-set (rmol_VERSION "${rmol_VERSION_MAJOR}.${rmol_VERSION_MINOR}.${rmol_VERSION_PATCH}")
-set (PACKAGE_VERSION "${rmol_VERSION}")
+set (${PROJECT_NAME}_VERSION_MAJOR 99)
+set (${PROJECT_NAME}_VERSION_MINOR 99)
+set (${PROJECT_NAME}_VERSION_PATCH 99)
+set (${PROJECT_NAME}_VERSION "${${PROJECT_NAME}_VERSION_MAJOR}.${${PROJECT_NAME}_VERSION_MINOR}.${${PROJECT_NAME}_VERSION_PATCH}")
+set (PACKAGE_VERSION "${${PROJECT_NAME}_VERSION}")
 # Note that the soname could be different from the version. The soname
 # should change only the ABI compatibility is no longer guaranteed.
-set (GENERIC_LIB_VERSION "${rmol_VERSION}")
-set (GENERIC_LIB_SOVERSION "${rmol_VERSION_MAJOR}.${rmol_VERSION_MINOR}")
+set (GENERIC_LIB_VERSION "${${PROJECT_NAME}_VERSION}")
+set (GENERIC_LIB_SOVERSION "${${PROJECT_NAME}_VERSION_MAJOR}.${${PROJECT_NAME}_VERSION_MINOR}")
 set (LIBDIR "lib${LIB_SUFFIX}")
 
 ##
@@ -73,8 +73,11 @@ set (OTHERDOC_FILES AUTHORS NEWS README INSTALL)
 set (OTHERDOC_PATH "share/doc/${PACKAGE}-${PACKAGE_VERSION}")
 install (FILES ${OTHERDOC_FILES} DESTINATION ${OTHERDOC_PATH})
 
-##
-# Packaging
+
+#####################################
+##            Packaging            ##
+#####################################
+#
 include (InstallRequiredSystemLibraries)
 set (CPACK_PACKAGE_NAME "${PROJECT_NAME}")
 set (CPACK_PACKAGE_DESCRIPTION "C++ Standard Airline IT Library")
@@ -82,11 +85,11 @@ set (CPACK_PACKAGE_DESCRIPTION_SUMMARY "${PROJECT_NAME} aims at providing a clea
 
 set (CPACK_PACKAGE_CONTACT "Denis Arnaud <denis_arnaud@users.sourceforge.net>")
 set (CPACK_PACKAGE_VENDOR "Denis Arnaud")
-set (CPACK_PACKAGE_VERSION_MAJOR ${rmol_VERSION_MAJOR})
-set (CPACK_PACKAGE_VERSION_MINOR ${rmol_VERSION_MINOR})
-#set (CPACK_PACKAGE_VERSION_PATCH ${rmol_VERSION_PATCH})
+set (CPACK_PACKAGE_VERSION_MAJOR ${${PROJECT_NAME}_VERSION_MAJOR})
+set (CPACK_PACKAGE_VERSION_MINOR ${${PROJECT_NAME}_VERSION_MINOR})
+#set (CPACK_PACKAGE_VERSION_PATCH ${${PROJECT_NAME}_VERSION_PATCH})
 set (CPACK_PACKAGE_VERSION_PATCH ${GIT_REVISION})
-set (CPACK_PACKAGE_VERSION ${rmol_VERSION})
+set (CPACK_PACKAGE_VERSION ${${PROJECT_NAME}_VERSION})
 set (CPACK_PACKAGE_DESCRIPTION_FILE ${CMAKE_CURRENT_SOURCE_DIR}/README)
 set (CPACK_RESOURCE_FILE_LICENSE ${CMAKE_CURRENT_SOURCE_DIR}/COPYING)
 set (CPACK_GENERATOR "TBZ2")
@@ -107,8 +110,14 @@ set (CPACK_SOURCE_IGNORE_FILES
   CACHE STRING "CPACK will ignore these files")
 #set (CPACK_SOURCE_IGNORE_DIRECTORY ${CPACK_SOURCE_IGNORE_FILES} .git)
 
-##
-# Dependencies
+include (CPack)
+# Add a 'dist' target, similar to what is given by GNU Autotools
+add_custom_target (dist COMMAND ${CMAKE_MAKE_PROGRAM} package_source)
+
+
+########################################
+##            Dependencies            ##
+########################################
 #
 # CMake scripts, to find some dependencies (e.g., Boost, MySQL, SOCI)
 set (CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/config/)
@@ -124,19 +133,7 @@ if (Boost_FOUND)
   include_directories (${Boost_INCLUDE_DIRS})
   set (BOOST_LIBS_FOR_LIB 
 	${Boost_IOSTREAMS_LIBRARY} ${Boost_SERIALIZATION_LIBRARY}
-	${Boost_FILESYSTEM_LIBRARY})
-##
-# See https://bugzilla.redhat.com/show_bug.cgi?id=718504
-# For now, SOCI is linked with the single-threaded version of boost-date-time
-# (and of boost-program-options). So, we do not add the multi-threaded versions
-# of those libraries to the dependencies, otherwise we would end up with
-# some strange behaviour of the generated binaries and libraries.
-# For instance, when a program exits and the static variables are garbaged
-# collected, two versions of the same library means two garbage collections
-# for the same objects...
-# When SOCI will be delivered with the multi-threaded Boost as dependency,
-# just uncomment the following line:
-# set (BOOST_LIBS_FOR_LIB ${BOOST_LIBS_FOR_LIB} ${Boost_DATE_TIME_LIBRARY})
+	${Boost_FILESYSTEM_LIBRARY} ${Boost_DATE_TIME_LIBRARY})
   set (BOOST_LIBS_FOR_BIN ${Boost_PROGRAM_OPTIONS_LIBRARY})
   set (BOOST_LIBS_FOR_TEST ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY})
 endif (Boost_FOUND)
@@ -178,6 +175,10 @@ else (StdAir_FOUND)
   message (FATAL_ERROR "${ERROR_MSG}")
 endif (StdAir_FOUND)
 
+
+##############################################
+##           Build, Install, Export         ##
+##############################################
 ##
 # Set all the directory pathes for the project (e.g., prefix, libdir, bindir)
 include (config/project_config_non_stdair.cmake)
@@ -186,6 +187,7 @@ include (config/project_config_non_stdair.cmake)
 # For the other developers to use that project
 include (config/devhelpers.cmake)
 
+##
 # Compilation
 # Note: the debug flag (-g) is set (or not) by giving the
 # corresponding option when calling cmake:
@@ -195,77 +197,74 @@ set (CMAKE_CXX_FLAGS "-Wall -Werror")
 include_directories (BEFORE ${CMAKE_SOURCE_DIR} ${CMAKE_BINARY_DIR})
 
 ##
-# Export the package for use from the build-tree (this registers the build-tree
-# with a global CMake-registry).
-export (PACKAGE ${PROJECT_NAME})
-
-# Specify the file name basis for the (CMake) export. It will generate a file
-# named ${LIB_DEPENDENCY_EXPORT}.cmake, allowing CMake to link with all the
-# needed dependencies. That variable is needed by each library target
-# (specified by each sub-module/directory).
-set (LIB_DEPENDENCY_EXPORT RmolLibraryDepends)
-
-##
-# Sub-directories
-# Gather all the libraries built so far into a special target, namely
-# EXTRA_LIBS, which the test binaries, below, need.
-# Note that each LOCAL_LIB_TARGET library, for a given module, depends on all
-# the predessors of that module. For instance, the rmollib depends upon the
-# airraclib library.
+# Sub-modules
+# For each sub-module:
+#  * The libraries and binaries are built (with the regular
+#    'make' command) and installed (with the 'make install' command).
+#    The header files are installed as well.
 set (EMBEDDED_COMPONENTS airrac ${PROJECT_NAME})
+#  * The corresponding targets (libraries and binaries) are exported within
+#    a CMake import helper file, namely '${PROJECT_NAME}-library-depends.cmake'.
+#    That CMake import helper file is installed in the installation directory,
+#    within the <install_dir>/share/${PROJECT_NAME}/CMake sub-directory.
+#    That CMake import helper file is used by the ${PROJECT_NAME}-config.cmake
+#    file, to be installed in the same sub-directory. The
+#    ${PROJECT_NAME}-config.cmake file is specified a little bit below.
+set (LIB_DEPENDENCY_EXPORT ${PROJECT_NAME}-library-depends)
+#
 foreach (EMBEDDED_COMPONENT ${EMBEDDED_COMPONENTS})
-  set (LOCAL_LIB_TARGET ${EMBEDDED_COMPONENT}lib)
   add_subdirectory (${EMBEDDED_COMPONENT})
-  set (EXTRA_LIBS ${EXTRA_LIBS} ${LOCAL_LIB_TARGET})
 endforeach (EMBEDDED_COMPONENT)
 
 ##
-# Tests
-# The "PROJECT_LIB_TARGET" variable is needed by the test binary target.
-set (PROJECT_LIB_TARGET ${PROJECT_NAME}lib)
+# Create a ${PROJECT_NAME}-config.cmake file for the use from the install tree
+# and install it
+set (${PACKAGE_NAME}_INCLUDE_DIRS "${INSTALL_INCLUDE_DIR}")
+set (${PACKAGE_NAME}_BIN_DIR "${INSTALL_BIN_DIR}")
+set (${PACKAGE_NAME}_LIB_DIR "${INSTALL_LIB_DIR}")
+set (${PACKAGE_NAME}_CMAKE_DIR "${INSTALL_DATA_DIR}/${PACKAGE}/CMake")
+configure_file (${PROJECT_NAME}-config.cmake.in
+  "${PROJECT_BINARY_DIR}/${PROJECT_NAME}-config.cmake" @ONLY)
+configure_file (${PROJECT_NAME}-config-version.cmake.in
+  "${PROJECT_BINARY_DIR}/${PROJECT_NAME}-config-version.cmake" @ONLY)
+install (FILES
+  "${PROJECT_BINARY_DIR}/${PROJECT_NAME}-config.cmake"
+  "${PROJECT_BINARY_DIR}/${PROJECT_NAME}-config-version.cmake"
+  DESTINATION "${${PACKAGE_NAME}_CMAKE_DIR}" COMPONENT devel)
+
+
+#####################################
+##              Tests              ##
+#####################################
 add_subdirectory (test)
 
-# Create a RmolConfig.cmake file for the use from the install tree
-# and install it
-set (RMOL_INCLUDE_DIRS "${INSTALL_INCLUDE_DIR}")
-set (RMOL_BIN_DIR "${INSTALL_BIN_DIR}")
-set (RMOL_LIB_DIR "${INSTALL_LIB_DIR}")
-set (RMOL_CMAKE_DIR "${INSTALL_DATA_DIR}/${PACKAGE}/CMake")
-configure_file (RmolConfig.cmake.in
-  "${PROJECT_BINARY_DIR}/InstallFiles/RmolConfig.cmake" @ONLY)
-configure_file (RmolConfigVersion.cmake.in
-  "${PROJECT_BINARY_DIR}/InstallFiles/RmolConfigVersion.cmake" @ONLY)
-install (FILES
-  "${PROJECT_BINARY_DIR}/InstallFiles/RmolConfig.cmake"
-  "${PROJECT_BINARY_DIR}/InstallFiles/RmolConfigVersion.cmake"
-  DESTINATION "${RMOL_CMAKE_DIR}" COMPONENT dev)
 
-
-##
-# Packaging
-include (CPack)
-# Add a 'dist' target, similar to what is given by GNU Autotools
-add_custom_target (dist COMMAND ${CMAKE_MAKE_PROGRAM} package_source)
-
-
-# Display status message for important variables
+#######################################
+##          Overall Status           ##
+#######################################
 message (STATUS)
 message (STATUS "=============================================================")
-message (STATUS "BUILD_SHARED_LIBS = ${BUILD_SHARED_LIBS}")
+message (STATUS "---------------------------")
+message (STATUS "--- Build Configuration ---")
+message (STATUS "---------------------------")
 message (STATUS "Embedded components = ${EMBEDDED_COMPONENTS}")
-message (STATUS "EXTRA_LIBS = ${EXTRA_LIBS}")
-message (STATUS "CMAKE_INSTALL_PREFIX = ${CMAKE_INSTALL_PREFIX}")
+message (STATUS "BUILD_SHARED_LIBS = ${BUILD_SHARED_LIBS}")
 message (STATUS "CMAKE_BUILD_TYPE = ${CMAKE_BUILD_TYPE}")
 message (STATUS "CMAKE_MODULE_PATH = ${CMAKE_MODULE_PATH}")
+message (STATUS "CMAKE_INSTALL_PREFIX = ${CMAKE_INSTALL_PREFIX}")
 message (STATUS)
-message (STATUS "---")
+message (STATUS "----------------------------------")
+message (STATUS "--- Installation Configuration ---")
+message (STATUS "----------------------------------")
 message (STATUS "INSTALL_LIB_DIR = ${INSTALL_LIB_DIR}")
 message (STATUS "INSTALL_BIN_DIR = ${INSTALL_BIN_DIR}")
 message (STATUS "INSTALL_INCLUDE_DIR = ${INSTALL_INCLUDE_DIR}")
 message (STATUS "INSTALL_DATA_DIR = ${INSTALL_DATA_DIR}")
 message (STATUS "INSTALL_DOC = ${INSTALL_DOC}" )
 message (STATUS)
-message (STATUS "---")
+message (STATUS "-------------------------------")
+message (STATUS "--- Packaging Configuration ---")
+message (STATUS "-------------------------------")
 message (STATUS "CPACK_PACKAGE_CONTACT = ${CPACK_PACKAGE_CONTACT}")
 message (STATUS "CPACK_PACKAGE_VENDOR = ${CPACK_PACKAGE_VENDOR}")
 message (STATUS "CPACK_PACKAGE_VERSION = ${CPACK_PACKAGE_VERSION}")
@@ -276,8 +275,9 @@ message (STATUS "CPACK_DEBIAN_PACKAGE_DEPENDS = ${CPACK_DEBIAN_PACKAGE_DEPENDS}"
 message (STATUS "CPACK_SOURCE_GENERATOR = ${CPACK_SOURCE_GENERATOR}")
 message (STATUS "CPACK_SOURCE_PACKAGE_FILE_NAME = ${CPACK_SOURCE_PACKAGE_FILE_NAME}")
 message (STATUS)
-message (STATUS "External libraries:")
-message (STATUS "-------------------")
+message (STATUS "--------------------------")
+message (STATUS "--- External libraries ---")
+message (STATUS "--------------------------")
 message (STATUS "* Boost:")
 message (STATUS "  - Boost_INCLUDE_DIRS ........ : ${Boost_INCLUDE_DIRS}")
 message (STATUS "  - BOOST_LIBS_FOR_LIB ........ : ${BOOST_LIBS_FOR_LIB}")
