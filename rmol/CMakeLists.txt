@@ -38,58 +38,48 @@ file (GLOB rmollib_SOURCES
 set (rmollib_SOURCES ${rmollib_HEADERS} ${rmollib_SOURCES})
 
 ##
-# Library target. It is specified here because both the rmol/config (for
-# the library target) and rmol/batches (for the binary target)
-# sub-directories need it.
-set (RMOL_LIB_TARGET ${LOCAL_PROJECT_NAME}lib)
-# Library names
-set (RMOL_LIB_NAME ${LOCAL_PROJECT_NAME})
-
-##
 # Assembling
-# Source files for the library
-add_library (${RMOL_LIB_TARGET} SHARED ${rmollib_SOURCES})
+# Source files for the library.
+# The library target is specified within the parent directory.
+add_library (${LOCAL_LIB_TARGET} SHARED ${rmollib_SOURCES})
 # Dependencies on other libraries (Boost, MySQL, SOCI, StdAir)
-target_link_libraries (${RMOL_LIB_TARGET} 
+target_link_libraries (${LOCAL_LIB_TARGET} 
   ${BOOST_LIBS_FOR_LIB} ${MYSQL_LIBRARIES}
   ${SOCI_LIBRARIES} ${SOCIMYSQL_LIBRARIES}
-  ${STDAIR_LIBRARIES})
+  ${STDAIR_LIBRARIES} ${EXTRA_LIBS})
 #
-add_dependencies (${RMOL_LIB_TARGET} hdr_cfg_${LOCAL_PACKAGE})
-# Filename and SONAME
+add_dependencies (${LOCAL_LIB_TARGET} hdr_cfg_${LOCAL_PACKAGE})
+
+##
+# Library name (and soname)
+set (RMOL_LIB_NAME ${LOCAL_PROJECT_NAME})
 if (WIN32)
-  set_target_properties (${RMOL_LIB_TARGET} PROPERTIES 
+  set_target_properties (${LOCAL_LIB_TARGET} PROPERTIES 
 	OUTPUT_NAME ${RMOL_LIB_NAME} 
 	VERSION ${GENERIC_LIB_VERSION}
 	PUBLIC_HEADER "${rmollib_root_HEADERS}")
 else (WIN32)
-  set_target_properties (${RMOL_LIB_TARGET} PROPERTIES 
+  set_target_properties (${LOCAL_LIB_TARGET} PROPERTIES 
 	OUTPUT_NAME ${RMOL_LIB_NAME}
 	VERSION ${GENERIC_LIB_VERSION} SOVERSION ${GENERIC_LIB_SOVERSION}
 	PUBLIC_HEADER "${rmollib_root_HEADERS}")
 endif (WIN32)
 
 ##
-# Add the (local) library to the list of all the libraries built
-# by the overall project.
-# Note the LOCAL_LIB_TARGET variable is defined by the caller CMake script only,
-# i.e. by the root-directory CMake file.
-if (NOT LOCAL_LIB_TARGET)
-  set (LOCAL_LIB_TARGET ${RMOL_LIB_TARGET} PARENT_SCOPE)
-else (NOT LOCAL_LIB_TARGET)
-  set (LOCAL_LIB_TARGET ${LOCAL_LIB_TARGET} ${RMOL_LIB_TARGET} PARENT_SCOPE)
-endif (NOT LOCAL_LIB_TARGET)
-
-## Installation
+# Installation
 # Library
-install (TARGETS ${RMOL_LIB_TARGET}
-  EXPORT RmolLibraryDepends
+install (TARGETS ${LOCAL_LIB_TARGET}
+  EXPORT ${LIB_DEPENDENCY_EXPORT}
   RUNTIME DESTINATION "${INSTALL_BIN_DIR}" COMPONENT bin
   LIBRARY DESTINATION "${INSTALL_LIB_DIR}" COMPONENT shlib
   PUBLIC_HEADER DESTINATION "${INSTALL_INCLUDE_DIR}/${LOCAL_PACKAGE}"
   COMPONENT dev)
 
 ##
+# Install the export set for use with the install-tree
+install (EXPORT ${LIB_DEPENDENCY_EXPORT} DESTINATION
+  "${INSTALL_DATA_DIR}/${PACKAGE}/CMake" COMPONENT dev)
+
+##
 # Binary
 add_subdirectory (batches)
-

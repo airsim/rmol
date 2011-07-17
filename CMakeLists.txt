@@ -195,46 +195,35 @@ set (CMAKE_CXX_FLAGS "-Wall -Werror")
 include_directories (BEFORE ${CMAKE_SOURCE_DIR} ${CMAKE_BINARY_DIR})
 
 ##
-# Initialise the list of all the local libraries which will be built in the
-# following sub-directories
-set (ALL_LIB_TARGETS "")
-# TODO: There is surely a better way to aggregate multiple shared libraries.
-#       So, do not hesitate to tell me if you know how to do that :)
-FILE (WRITE ${CMAKE_BINARY_DIR}/wrapper_library.cpp "")
-add_library (wrapper_library SHARED ${CMAKE_BINARY_DIR}/wrapper_library.cpp)
+# Export the package for use from the build-tree (this registers the build-tree
+# with a global CMake-registry).
+export (PACKAGE ${PROJECT_NAME})
+
+# Specify the file name basis for the (CMake) export. It will generate a file
+# named ${LIB_DEPENDENCY_EXPORT}.cmake, allowing CMake to link with all the
+# needed dependencies. That variable is needed by each library target
+# (specified by each sub-module/directory).
+set (LIB_DEPENDENCY_EXPORT RmolLibraryDepends)
 
 ##
-# Subdirs
+# Sub-directories
+# Gather all the libraries built so far into a special target, namely
+# EXTRA_LIBS, which the test binaries, below, need.
+# Note that each LOCAL_LIB_TARGET library, for a given module, depends on all
+# the predessors of that module. For instance, the rmollib depends upon the
+# airraclib library.
 set (EMBEDDED_COMPONENTS airrac ${PROJECT_NAME})
 foreach (EMBEDDED_COMPONENT ${EMBEDDED_COMPONENTS})
-  set (LOCAL_LIB_TARGET "")
+  set (LOCAL_LIB_TARGET ${EMBEDDED_COMPONENT}lib)
   add_subdirectory (${EMBEDDED_COMPONENT})
-  target_link_libraries (wrapper_library ${LOCAL_LIB_TARGET})
+  set (EXTRA_LIBS ${EXTRA_LIBS} ${LOCAL_LIB_TARGET})
 endforeach (EMBEDDED_COMPONENT)
 
 ##
-# Gather all the libraries built so far into a single library target
-#foreach (LIB_TARGET ${ALL_LIB_TARGETS})
-#endforeach (LIB_TARGET)
-
-##
 # Tests
+# The "PROJECT_LIB_TARGET" variable is needed by the test binary target.
+set (PROJECT_LIB_TARGET ${PROJECT_NAME}lib)
 add_subdirectory (test)
-
-# Add all targets to the build-tree export set
-export (TARGETS ${PROJECT_NAME}
-  ${RMOL_LIB_TARGET} ${RMOL_UICL_LIB_TARGET}
-  FILE "${PROJECT_BINARY_DIR}/RmolLibraryDepends.cmake")
-
-##
-# Export the package for use from the build-tree
-# (this registers the build-tree with a global CMake-registry)
-export (PACKAGE ${PROJECT_NAME})
-
-##
-# Install the export set for use with the install-tree
-install (EXPORT RmolLibraryDepends DESTINATION
-  "${INSTALL_DATA_DIR}/${PACKAGE}/CMake" COMPONENT dev)
 
 # Create a RmolConfig.cmake file for the use from the install tree
 # and install it
@@ -264,7 +253,7 @@ message (STATUS)
 message (STATUS "=============================================================")
 message (STATUS "BUILD_SHARED_LIBS = ${BUILD_SHARED_LIBS}")
 message (STATUS "Embedded components = ${EMBEDDED_COMPONENTS}")
-message (STATUS "Shared libraries to build = ${ALL_LIB_TARGETS}")
+message (STATUS "EXTRA_LIBS = ${EXTRA_LIBS}")
 message (STATUS "CMAKE_INSTALL_PREFIX = ${CMAKE_INSTALL_PREFIX}")
 message (STATUS "CMAKE_BUILD_TYPE = ${CMAKE_BUILD_TYPE}")
 message (STATUS "CMAKE_MODULE_PATH = ${CMAKE_MODULE_PATH}")

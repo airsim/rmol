@@ -13,5 +13,5 @@ set (RMOL_LIBRARY_DIRS "@RMOL_LIB_DIR@")
 include ("@RMOL_CMAKE_DIR@/RmolLibraryDepends.cmake")
 
 # These are IMPORTED targets created by RmolLibraryDepends.cmake
-set (RMOL_LIBRARIES airraclib rmollib rmoluicllib)
+set (RMOL_LIBRARIES airraclib rmollib)
 set (RMOL_EXECUTABLE rmol)

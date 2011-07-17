@@ -12,26 +12,26 @@ if (Boost_FOUND)
   set (UNCONSTRAINER_TEST_TARGET UnconstrainerTest)
   set (unconstrainer_test_SOURCES UnconstrainerTestSuite.cpp)
   add_test_suite (${UNCONSTRAINER_TEST_TARGET} "${unconstrainer_test_SOURCES}"
-    wrapper_library ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY})
+    ${PROJECT_LIB_TARGET} ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY})
 
   # * Forecaster Test Suite
   set (FORECASTER_TEST_TARGET ForecasterTest)
   set (forecaster_test_SOURCES ForecasterTestSuite.cpp)
   add_test_suite (${FORECASTER_TEST_TARGET} "${forecaster_test_SOURCES}"
-    wrapper_library ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY})
+    ${PROJECT_LIB_TARGET} ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY})
 
   # * Optimise Test Suite
   set (OPTIMISE_TEST_TARGET OptimiseTest)
   set (optimise_test_SOURCES OptimiseTestSuite.cpp)
   add_test_suite (${OPTIMISE_TEST_TARGET} "${optimise_test_SOURCES}"
-    wrapper_library ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY})
+    ${PROJECT_LIB_TARGET} ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY})
 
   # * BOMs for Forecaster Test Suite
   set (BOMSFORFORECASTER_TEST_TARGET BOMsForForecasterTest)
   set (bomsforforecaster_test_SOURCES OptimiseTestSuite.cpp)
   add_test_suite (${BOMSFORFORECASTER_TEST_TARGET}
     "${bomsforforecaster_test_SOURCES}"
-    wrapper_library ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY})
+    ${PROJECT_LIB_TARGET} ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY})
 
   # * Next test suite
   # ...
