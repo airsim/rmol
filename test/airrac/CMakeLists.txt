@@ -1,7 +1,7 @@
 #
 # AirRAC Tests
 #
-set (LOCAL_PACKAGE_NAME airrac)
+set (LOCAL_PROJECT_NAME airrac)
 
 if (Boost_FOUND)
 
@@ -21,7 +21,7 @@ if (Boost_FOUND)
 
   # Don't forget to add the full test suite to the DEPENDS argument list of
   # the 'check' target within the ../test/CMakeLists.txt file.
-  add_custom_target (check_${LOCAL_PACKAGE_NAME}
+  add_custom_target (check_${LOCAL_PROJECT_NAME}
     COMMAND ${CMAKE_CTEST_COMMAND} 
     DEPENDS ${YIELD_TEST_TARGET})
 
