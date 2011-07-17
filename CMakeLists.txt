@@ -4,28 +4,15 @@ cmake_minimum_required (VERSION 2.6)
 # See also:
 # http://snikt.net/index.php/2010/04/01/howto-use-cmake-with-cc-projects
 
+##
+# CMake macros for the project
+include (config/project_config_embeddable.cmake)
+
 ###
 ##
 # Project info
-project (rmol)
-set (PACKAGE_PRETTY_NAME "RMOL" CACHE INTERNAL "Description")
-string (TOLOWER "${PROJECT_NAME}" PACKAGE_TMP)
-set (PACKAGE "${PACKAGE_TMP}" CACHE INTERNAL "Description")
-string (TOUPPER "${PROJECT_NAME}" PACKAGE_NAME_TMP)
-set (PACKAGE_NAME "${PACKAGE_NAME_TMP}" CACHE INTERNAL "Description")
-
-##
-# Version
-set (${PROJECT_NAME}_VERSION_MAJOR 99)
-set (${PROJECT_NAME}_VERSION_MINOR 99)
-set (${PROJECT_NAME}_VERSION_PATCH 99)
-set (${PROJECT_NAME}_VERSION "${${PROJECT_NAME}_VERSION_MAJOR}.${${PROJECT_NAME}_VERSION_MINOR}.${${PROJECT_NAME}_VERSION_PATCH}")
-set (PACKAGE_VERSION "${${PROJECT_NAME}_VERSION}")
-# Note that the soname could be different from the version. The soname
-# should change only the ABI compatibility is no longer guaranteed.
-set (GENERIC_LIB_VERSION "${${PROJECT_NAME}_VERSION}")
-set (GENERIC_LIB_SOVERSION "${${PROJECT_NAME}_VERSION_MAJOR}.${${PROJECT_NAME}_VERSION_MINOR}")
-set (LIBDIR "lib${LIB_SUFFIX}")
+set_names (rmol)
+set_versions (99 99 99)
 
 ##
 # Project options
@@ -127,9 +114,14 @@ set (CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/config/)
 # Note: ${Boost_DATE_TIME_LIBRARY} and ${Boost_PROGRAM_OPTIONS_LIBRARY}
 # are already set by ${SOCIMYSQL_LIBRARIES} and/or ${SOCI_LIBRARIES}.
 #
-find_package (Boost 1.44 REQUIRED COMPONENTS program_options date_time 
+set (Boost_USE_STATIC_LIBS OFF)
+set (Boost_USE_MULTITHREADED ON)
+set (Boost_USE_STATIC_RUNTIME OFF)
+find_package (Boost 1.41 REQUIRED COMPONENTS program_options date_time 
   iostreams serialization filesystem unit_test_framework)
 if (Boost_FOUND)
+  set (Boost_HUMAN_VERSION
+	${Boost_MAJOR_VERSION}.${Boost_MINOR_VERSION}.${Boost_SUBMINOR_VERSION})
   include_directories (${Boost_INCLUDE_DIRS})
   set (BOOST_LIBS_FOR_LIB 
 	${Boost_IOSTREAMS_LIBRARY} ${Boost_SERIALIZATION_LIBRARY}
@@ -180,8 +172,9 @@ endif (StdAir_FOUND)
 ##           Build, Install, Export         ##
 ##############################################
 ##
-# Set all the directory pathes for the project (e.g., prefix, libdir, bindir)
-include (config/project_config_non_stdair.cmake)
+# Set all the directory installation pathes for the project (e.g., prefix,
+# libdir, bindir)
+include (config/project_install_dirs.cmake)
 
 ##
 # For the other developers to use that project
@@ -211,6 +204,7 @@ set (EMBEDDED_COMPONENTS airrac ${PROJECT_NAME})
 #    file, to be installed in the same sub-directory. The
 #    ${PROJECT_NAME}-config.cmake file is specified a little bit below.
 set (LIB_DEPENDENCY_EXPORT ${PROJECT_NAME}-library-depends)
+set (LIB_DEPENDENCY_EXPORT_PATH "${INSTALL_DATA_DIR}/${PROJECT_NAME}/CMake")
 #
 foreach (EMBEDDED_COMPONENT ${EMBEDDED_COMPONENTS})
   add_subdirectory (${EMBEDDED_COMPONENT})
@@ -219,10 +213,12 @@ endforeach (EMBEDDED_COMPONENT)
 ##
 # Create a ${PROJECT_NAME}-config.cmake file for the use from the install tree
 # and install it
+install (EXPORT ${LIB_DEPENDENCY_EXPORT}
+  DESTINATION ${LIB_DEPENDENCY_EXPORT_PATH})
 set (${PACKAGE_NAME}_INCLUDE_DIRS "${INSTALL_INCLUDE_DIR}")
 set (${PACKAGE_NAME}_BIN_DIR "${INSTALL_BIN_DIR}")
 set (${PACKAGE_NAME}_LIB_DIR "${INSTALL_LIB_DIR}")
-set (${PACKAGE_NAME}_CMAKE_DIR "${INSTALL_DATA_DIR}/${PACKAGE}/CMake")
+set (${PACKAGE_NAME}_CMAKE_DIR "${LIB_DEPENDENCY_EXPORT_PATH}")
 configure_file (${PROJECT_NAME}-config.cmake.in
   "${PROJECT_BINARY_DIR}/${PROJECT_NAME}-config.cmake" @ONLY)
 configure_file (${PROJECT_NAME}-config-version.cmake.in
@@ -244,6 +240,17 @@ add_subdirectory (test)
 #######################################
 message (STATUS)
 message (STATUS "=============================================================")
+message (STATUS "---------------------------")
+message (STATUS "--- Project Information ---")
+message (STATUS "---------------------------")
+message (STATUS "PROJECT_NAME = ${PROJECT_NAME}")
+message (STATUS "PACKAGE_PRETTY_NAME = ${PACKAGE_PRETTY_NAME}")
+message (STATUS "PACKAGE = ${PACKAGE}")
+message (STATUS "PACKAGE_NAME = ${PACKAGE_NAME}")
+message (STATUS "PACKAGE_VERSION = ${PACKAGE_VERSION}")
+message (STATUS "GENERIC_LIB_VERSION = ${GENERIC_LIB_VERSION}")
+message (STATUS "GENERIC_LIB_SOVERSION = ${GENERIC_LIB_SOVERSION}")
+message (STATUS)
 message (STATUS "---------------------------")
 message (STATUS "--- Build Configuration ---")
 message (STATUS "---------------------------")
@@ -279,24 +286,30 @@ message (STATUS "--------------------------")
 message (STATUS "--- External libraries ---")
 message (STATUS "--------------------------")
 message (STATUS "* Boost:")
+message (STATUS "  - Boost_VERSION ............. : ${Boost_VERSION}")
+message (STATUS "  - Boost_LIB_VERSION ......... : ${Boost_LIB_VERSION}")
+message (STATUS "  - Boost_HUMAN_VERSION ....... : ${Boost_HUMAN_VERSION}")
 message (STATUS "  - Boost_INCLUDE_DIRS ........ : ${Boost_INCLUDE_DIRS}")
 message (STATUS "  - BOOST_LIBS_FOR_LIB ........ : ${BOOST_LIBS_FOR_LIB}")
 message (STATUS "  - BOOST_LIBS_FOR_BIN ........ : ${BOOST_LIBS_FOR_BIN}")
 message (STATUS "  - BOOST_LIBS_FOR_TEST ....... : ${BOOST_LIBS_FOR_TEST}")
 message (STATUS)
 message (STATUS "* MySQL:")
+message (STATUS "  - MYSQL_VERSION ............. : ${MYSQL_VERSION}")
 message (STATUS "  - MYSQL_INCLUDE_DIR ......... : ${MYSQL_INCLUDE_DIR}")
 message (STATUS "  - MYSQL_LIBRARIES ........... : ${MYSQL_LIBRARIES}")
 message (STATUS)
 message (STATUS "* SOCI:")
+message (STATUS "  - SOCI_VERSION .............. : ${SOCI_VERSION}")
 message (STATUS "  - SOCI_INCLUDE_DIR .......... : ${SOCI_INCLUDE_DIR}")
 message (STATUS "  - SOCIMYSQL_INCLUDE_DIR ..... : ${SOCIMYSQL_INCLUDE_DIR}")
 message (STATUS "  - SOCI_LIBRARIES ............ : ${SOCI_LIBRARIES}")
 message (STATUS "  - SOCIMYSQL_LIBRARIES ....... : ${SOCIMYSQL_LIBRARIES}")
 message (STATUS)
 message (STATUS "* StdAir:")
+message (STATUS "  - STDAIR_VERSION ............ : ${STDAIR_VERSION}")
 message (STATUS "  - STDAIR_BINARY_DIRS ........ : ${STDAIR_BINARY_DIRS}")
-message (STATUS "  - STDAIR_EXECUTABLE ......... : ${STDAIR_EXECUTABLE}")
+message (STATUS "  - STDAIR_EXECUTABLES ........ : ${STDAIR_EXECUTABLES}")
 message (STATUS "  - STDAIR_LIBRARY_DIRS ....... : ${STDAIR_LIBRARY_DIRS}")
 message (STATUS "  - STDAIR_LIBRARIES .......... : ${STDAIR_LIBRARIES}")
 message (STATUS "  - STDAIR_INCLUDE_DIRS ....... : ${STDAIR_INCLUDE_DIRS}")
