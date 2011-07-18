@@ -167,7 +167,10 @@ AX_SOCI([3.0])
 # -----------------------------------------------------------------------------
 # Support for StdAir (): http://sf.net/projects/stdair
 # -----------------------------------------------------------------------------
-AM_PATH_STDAIR([0.10.0])
+AM_PATH_STDAIR([0.34.0])
+# Set the directory for data samples exported by StdAir
+sampledir="${STDAIR_SAMPLE_DIR}"
+AC_SUBST(sampledir)
 
 # -------------------------------------------------------------------
 # Support for documentation
