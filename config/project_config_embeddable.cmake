@@ -427,6 +427,13 @@ macro (init_build)
   # for the building process (see below), because that latter needs those paths
   # to be correctly set.
   include (config/project_install_dirs.cmake)
+
+  ##
+  # Initialise the list of targets to build: libraries, binaries and tests
+  set (PROJ_ALL_LIB_TARGETS "")
+  set (PROJ_ALL_BIN_TARGETS "")
+  set (PROJ_ALL_TST_TARGETS "")
+
 endmacro (init_build)
 
 ####
@@ -542,6 +549,10 @@ macro (module_library_add_standard)
   # by the module_generate_config_helpers() macro
   add_dependencies (${MODULE_LIB_TARGET} hdr_cfg_${MODULE_NAME})
 
+  # Register the library target in the project (for reporting purpose)
+  set (PROJ_ALL_LIB_TARGETS
+	${PROJ_ALL_LIB_TARGETS} ${MODULE_LIB_TARGET} PARENT_SCOPE)
+
   ##
   # Library name (and soname)
   set (_module_lib_name ${MODULE_NAME})
@@ -585,6 +596,99 @@ macro (module_export_install)
   install (EXPORT ${LIB_DEPENDENCY_EXPORT} DESTINATION
     "${INSTALL_DATA_DIR}/${PACKAGE}/CMake" COMPONENT devel)
 endmacro (module_export_install)
+
+##
+# Assembling: specify the standard binary target for the current module.
+macro (module_binary_add_standard)
+  # Register the binary
+  add_executable (${MODULE_NAME} batches/${MODULE_NAME}.cpp)
+
+  # Register the dependencies on which the binary depends upon
+  target_link_libraries (${MODULE_NAME}
+	${PROJ_DEP_LIBS_FOR_BIN} ${MODULE_LIB_TARGET} ${_intermodule_dependencies})
+
+  # Register the binary target in the project (for reporting purpose)
+  set (PROJ_ALL_BIN_TARGETS ${PROJ_ALL_BIN_TARGETS} ${MODULE_NAME} PARENT_SCOPE)
+endmacro (module_binary_add_standard)
+
+##
+# Binary installation
+# The parameter corresponds to additional binaries to be installed.
+# When no parameter is given, only the standard binary is installed.
+macro (module_binary_install_all)
+  install (TARGETS ${MODULE_NAME} 
+	EXPORT ${LIB_DEPENDENCY_EXPORT}
+	RUNTIME DESTINATION "${INSTALL_BIN_DIR}" COMPONENT runtime)
+endmacro (module_binary_install_all)
+
+
+###################################################################
+##                            Tests                              ##
+###################################################################
+#
+macro (add_test_suites _test_suite_dir_list)
+  if (Boost_FOUND)
+	# Tell CMake/CTest that tests will be performed
+	enable_testing() 
+
+	#
+	foreach (_module_name ${_test_suite_dir_list})
+	  set (${_module_name}_ALL_TST_TARGETS "")
+	  # Each individual test suite is specified within the dedicated
+	  # sub-directory
+	  add_subdirectory (test/${_module_name})
+	  add_custom_target (check DEPENDS check_${_module_name}tst)
+	endforeach (_module_name)
+  endif (Boost_FOUND)
+
+endmacro (add_test_suites)
+
+#
+macro (module_test_add_suite _test_name _test_sources)
+  if (Boost_FOUND)
+	# Register the test binary target
+	add_executable (${_test_name} ${_test_sources})
+
+	# Build the list of library targets on which that test depends upon
+	set (_library_lists "")
+	foreach (_arg_lib ${ARGV})
+	  if (NOT ${_arg_lib} STREQUAL ${_test_name}
+		  AND NOT ${_arg_lib} STREQUAL ${_test_sources})
+		set (_library_lists ${_library_lists} ${_arg_lib})
+	  endif ()
+	endforeach (_arg_lib)
+
+	# Tell the test binary that it depends on all those libraries
+	target_link_libraries (${_test_name} ${_library_lists} 
+	  ${MODULE_LIB_TARGET} ${PROJ_DEP_LIBS_FOR_TST})
+
+	# Register the binary target in the module
+	set (${MODULE_NAME}_ALL_TST_TARGETS
+	  ${${MODULE_NAME}_ALL_TST_TARGETS} ${_test_name})
+
+	# Register the test
+	if (WIN32)
+	  add_test (${_test_name} ${_test_name}.exe)
+	else (WIN32)
+	  add_test (${_test_name} ${_test_name})
+	endif (WIN32)
+  endif (Boost_FOUND)
+
+  # Register the binary target in the project (for reporting purpose)
+  set (PROJ_ALL_TST_TARGETS
+	${PROJ_ALL_TST_TARGETS} ${${MODULE_NAME}_ALL_TST_TARGETS} PARENT_SCOPE)
+
+endmacro (module_test_add_suite)
+
+#
+macro (module_test_build_all)
+  if (Boost_FOUND)
+	# Tell how to test, i.e., how to run the test binaries 
+	# and collect the results
+	add_custom_target (check_${MODULE_NAME}tst
+	  COMMAND ${CMAKE_CTEST_COMMAND} DEPENDS ${PROJ_ALL_TST_TARGETS})
+  endif (Boost_FOUND)
+endmacro (module_test_build_all)
 
 
 ###################################################################
@@ -708,7 +812,9 @@ macro (display_status)
   message (STATUS "---------------------------")
   message (STATUS "--- Build Configuration ---")
   message (STATUS "---------------------------")
-  message (STATUS "Embedded components = ${EMBEDDED_COMPONENTS}")
+  message (STATUS "Libraries to build ... : ${PROJ_ALL_LIB_TARGETS}")
+  message (STATUS "Binaries to build .... : ${PROJ_ALL_BIN_TARGETS}")
+  message (STATUS "Tests to build ....... : ${PROJ_ALL_TST_TARGETS}")
   message (STATUS "BUILD_SHARED_LIBS = ${BUILD_SHARED_LIBS}")
   message (STATUS "CMAKE_BUILD_TYPE = ${CMAKE_BUILD_TYPE}")
   message (STATUS "CMAKE_MODULE_PATH = ${CMAKE_MODULE_PATH}")

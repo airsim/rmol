@@ -1,5 +1,5 @@
 ##
-#
+# RMOL module
 module_set_name (rmol)
 
 ##
@@ -30,8 +30,14 @@ module_library_add_standard (airrac)
 module_library_install_all ()
 
 ##
-# Binary
-add_subdirectory (batches)
+# Assembling: specify the standard binary target for the current module.
+module_binary_add_standard ()
+
+##
+# Binary installation
+# The parameter corresponds to additional binaries to be installed.
+# When no parameter is given, only the standard binary is installed.
+module_binary_install_all ()
 
 ##
 # Install the CMake import helper, so that third party projects can refer to it

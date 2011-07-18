@@ -74,7 +74,9 @@ endif (${INSTALL_DOC} STREQUAL "ON")
 #####################################
 ##              Tests              ##
 #####################################
-add_subdirectory (test)
+##
+# Test suites
+add_test_suites (${PROJECT_NAME})
 
 
 #######################################
