@@ -1,14 +1,10 @@
 #
 cmake_minimum_required (VERSION 2.6)
 
-# See also:
-# http://snikt.net/index.php/2010/04/01/howto-use-cmake-with-cc-projects
-
 ##
 # CMake macros for the project
 include (config/project_config_embeddable.cmake)
 
-###
 ##
 # Project info
 set_project_names (rmol)
@@ -25,25 +21,23 @@ set_project_options (off)
 ##            Packaging            ##
 #####################################
 #
-include (InstallRequiredSystemLibraries)
-set (CPACK_PACKAGE_NAME "${PROJECT_NAME}")
-set (CPACK_PACKAGE_DESCRIPTION "C++ Standard Airline IT Library")
-set (CPACK_PACKAGE_DESCRIPTION_SUMMARY "${PROJECT_NAME} aims at providing a clean API, and the corresponding C++ implementation, for the basis of Airline IT Business Object Model (BOM), that is, to be used by several other open source projects, such as RMOL, Air-Sched, Travel-CCM, OpenTREP, etc.")
-
-set (CPACK_PACKAGE_CONTACT "Denis Arnaud <denis_arnaud@users.sourceforge.net>")
-set (CPACK_PACKAGE_VENDOR "Denis Arnaud")
+packaging_init (${PROJECT_NAME})
+packaging_set_description ("C++ library of Revenue Management and Optimisation classes and functions")
+packaging_set_summary ("${PROJECT_NAME} is a C++ library of Revenue Management and Optimisation classes and functions. Typically, that library may be used by service providers (e.g., airlines offering flight seats, hotels offering rooms, rental car companies offering rental days, broadcasting company offering advertisement slots, theaters offering seats, etc.) to help in optimising their revenues from seat capacities.
+Most of the algorithms implemented are public and documented in the following
+book:
+The Theory and practice of Revenue Management, by Kalyan T. Talluri and
+Garrett J. van Ryzin, Kluwer Academic Publishers, 2004, ISBN 1-4020-7701-7")
+packaging_set_contact ("Denis Arnaud <denis_arnaud - at - users dot sourceforge dot net>")
+packaging_set_vendor ("Denis Arnaud")
 
 #
-define_package_options ()
+packaging_set_other_options ()
 
 
 ########################################
 ##            Dependencies            ##
 ########################################
-#
-# CMake scripts, to find some dependencies (e.g., Boost, MySQL, SOCI)
-set (CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/config/)
-
 #
 get_external_libs (git "boost 1.41" mysql "soci 3.0" "stdair 0.35" doxygen)
 
@@ -60,12 +54,13 @@ init_build ()
 add_modules (airrac ${PROJECT_NAME})
 
 ##
-#
+# For other projects to use RMOL, install a few helpers for standard
+# build/packaging systems: CMake, GNU Autotools (M4), pkgconfig/pc, rmol-config
 install_dev_helper_files ()
 
 ##
-# Documentation
-install (FILES ${OTHERDOC_FILES} DESTINATION ${OTHERDOC_PATH})
+# Basic documentation (i.e., AUTHORS, NEWS, README, INSTALL)
+install_basic_documentation ()
 
 
 ##########################################
@@ -89,6 +84,6 @@ display_status ()
 
 
 #######################################
-##           Cache Storage           ##
+##         CMake Cache Storage       ##
 #######################################
 store_in_cache ()

@@ -99,11 +99,17 @@ macro (set_project_options _build_doc)
   endforeach()
 
   ##
-  # "Other" Documentation
-  set (OTHERDOC_FILES AUTHORS NEWS README INSTALL)
-  set (OTHERDOC_PATH "share/doc/${PACKAGE}-${PACKAGE_VERSION}")
+  # Basic documentation (i.e., AUTHORS, NEWS, README, INSTALL)
+  set (BASICDOC_FILES AUTHORS NEWS README INSTALL)
+  set (BASICDOC_PATH "share/doc/${PACKAGE}-${PACKAGE_VERSION}")
 
 endmacro (set_project_options)
+
+#
+macro (install_basic_documentation)
+  install (FILES ${BASICDOC_FILES} DESTINATION ${BASICDOC_PATH})
+endmacro (install_basic_documentation)
+
 
 #
 macro (store_in_cache)
@@ -126,7 +132,33 @@ endmacro (store_in_cache)
 ##            Packaging            ##
 #####################################
 #
-macro (define_package_options)
+macro (packaging_init _project_name)
+  include (InstallRequiredSystemLibraries)
+  set (CPACK_PACKAGE_NAME "${_project_name}")
+endmacro (packaging_init)
+
+#
+macro (packaging_set_description _project_description)
+  set (CPACK_PACKAGE_DESCRIPTION "${_project_description}")
+endmacro (packaging_set_description)
+
+#
+macro (packaging_set_summary _project_summary)
+  set (CPACK_PACKAGE_DESCRIPTION_SUMMARY "${_project_summary}")
+endmacro (packaging_set_summary)
+
+#
+macro (packaging_set_contact _project_contact)
+  set (CPACK_PACKAGE_CONTACT "${_project_contact}")
+endmacro (packaging_set_contact)
+
+#
+macro (packaging_set_vendor _project_vendor)
+  set (CPACK_PACKAGE_VENDOR "${_project_vendor}")
+endmacro (packaging_set_vendor)
+
+#
+macro (packaging_set_other_options)
   set (CPACK_PACKAGE_VERSION_MAJOR ${${PROJECT_NAME}_VERSION_MAJOR})
   set (CPACK_PACKAGE_VERSION_MINOR ${${PROJECT_NAME}_VERSION_MINOR})
   #set (CPACK_PACKAGE_VERSION_PATCH ${${PROJECT_NAME}_VERSION_PATCH})
@@ -152,181 +184,27 @@ macro (define_package_options)
 	CACHE STRING "CPACK will ignore these files")
   #set (CPACK_SOURCE_IGNORE_DIRECTORY ${CPACK_SOURCE_IGNORE_FILES} .git)
 
+  #
   include (CPack)
+
   # Add a 'dist' target, similar to what is given by GNU Autotools
   add_custom_target (dist COMMAND ${CMAKE_MAKE_PROGRAM} package_source)
-endmacro (define_package_options)
 
-
-##############################################
-##           Build, Install, Export         ##
-##############################################
-macro (init_build)
-  ##
-  # Compilation
-  # Note: the debug flag (-g) is set (or not) by giving the
-  # corresponding option when calling cmake:
-  # cmake -DCMAKE_BUILD_TYPE:STRING={Debug,Release,MinSizeRel,RelWithDebInfo}
-  #set (CMAKE_CXX_FLAGS "-Wall -Wextra -pedantic -Werror")
-  set (CMAKE_CXX_FLAGS "-Wall -Werror")
-  include_directories (BEFORE ${CMAKE_SOURCE_DIR} ${CMAKE_BINARY_DIR})
-  
-  ##
-  # Set all the directory installation paths for the project (e.g., prefix,
-  # libdir, bindir).
-  # Note that those paths need to be set before the sub-directories are browsed
-  # for the building process (see below), because that latter needs those paths
-  # to be correctly set.
-  include (config/project_install_dirs.cmake)
-endmacro (init_build)
-
-##
-# For each sub-module:
-#  * The libraries and binaries are built (with the regular
-#    'make' command) and installed (with the 'make install' command).
-#    The header files are installed as well.
-#  * The corresponding targets (libraries and binaries) are exported within
-#    a CMake import helper file, namely '${PROJECT_NAME}-library-depends.cmake'.
-#    That CMake import helper file is installed in the installation directory,
-#    within the <install_dir>/share/${PROJECT_NAME}/CMake sub-directory.
-#    That CMake import helper file is used by the ${PROJECT_NAME}-config.cmake
-#    file, to be installed in the same sub-directory. The
-#    ${PROJECT_NAME}-config.cmake file is specified a little bit below.
-macro (add_modules)
-  set (_embedded_components ${ARGV})
-  set (LIB_DEPENDENCY_EXPORT ${PROJECT_NAME}-library-depends)
-  set (LIB_DEPENDENCY_EXPORT_PATH "${INSTALL_DATA_DIR}/${PROJECT_NAME}/CMake")
-  #
-  foreach (_embedded_comp ${_embedded_components})
-	add_subdirectory (${_embedded_comp})
-  endforeach (_embedded_comp)
-endmacro (add_modules)
+endmacro (packaging_set_other_options)
 
 
 ###################################################################
 ##                         Dependencies                          ##
 ###################################################################
-# ~~~~~~~~~~ Git ~~~~~~~~~~
-macro (get_git)
-  message (STATUS "Requires Git without specifying any version")
-
-  find_package (Git)
-  if (Git_FOUND)
-	Git_WC_INFO (${CMAKE_CURRENT_SOURCE_DIR} ER)
-	set (GIT_REVISION ${ER_WC_REVISION})
-	message (STATUS "Found Git version: ${GIT_REVISION}")
-  endif (Git_FOUND)
-endmacro (get_git)
-
-# ~~~~~~~~~~ BOOST ~~~~~~~~~~
-macro (get_boost)
-  set (_required_version 0)
-  if (${ARGC} GREATER 0)
-	set (_required_version ${ARGV0})
-	message (STATUS "Requires Boost-${_required_version}")
-  else (${ARGC} GREATER 0)
-	message (STATUS "Requires Boost without specifying any version")
-  endif (${ARGC} GREATER 0)
-
-  #
-  # Note: ${Boost_DATE_TIME_LIBRARY} and ${Boost_PROGRAM_OPTIONS_LIBRARY}
-  # are already set by ${SOCIMYSQL_LIBRARIES} and/or ${SOCI_LIBRARIES}.
-  #
-  set (Boost_USE_STATIC_LIBS OFF)
-  set (Boost_USE_MULTITHREADED ON)
-  set (Boost_USE_STATIC_RUNTIME OFF)
-  find_package (Boost ${_required_version} REQUIRED
-	COMPONENTS program_options date_time iostreams serialization filesystem
-	unit_test_framework)
-
-  if (Boost_FOUND)
-	set (Boost_HUMAN_VERSION
-	  ${Boost_MAJOR_VERSION}.${Boost_MINOR_VERSION}.${Boost_SUBMINOR_VERSION})
-	include_directories (${Boost_INCLUDE_DIRS})
-	set (BOOST_LIBS_FOR_LIB 
-	  ${Boost_IOSTREAMS_LIBRARY} ${Boost_SERIALIZATION_LIBRARY}
-	  ${Boost_FILESYSTEM_LIBRARY} ${Boost_DATE_TIME_LIBRARY})
-	set (BOOST_LIBS_FOR_BIN ${Boost_PROGRAM_OPTIONS_LIBRARY})
-	set (BOOST_LIBS_FOR_TEST ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY})
-	message (STATUS "Found Boost version: ${Boost_HUMAN_VERSION}")
-  endif (Boost_FOUND)
-endmacro (get_boost)
-
-# ~~~~~~~~~~ MySQL ~~~~~~~~~
-macro (get_mysql)
-  set (_required_version 0)
-  if (${ARGC} GREATER 0)
-	set (_required_version ${ARGV0})
-	message (STATUS "Requires MySQL-${_required_version}")
-  else (${ARGC} GREATER 0)
-	message (STATUS "Requires MySQL without specifying any version")
-  endif (${ARGC} GREATER 0)
-
-  find_package (MySQL)
-  if (MYSQL_FOUND)
-	include_directories (${MYSQL_INCLUDE_DIR})
-  endif (MYSQL_FOUND)
-endmacro (get_mysql)
-
-# ~~~~~~~~~~ SOCI ~~~~~~~~~~
-macro (get_soci)
-  set (_required_version 0)
-  if (${ARGC} GREATER 0)
-	set (_required_version ${ARGV0})
-	message (STATUS "Requires SOCI-${_required_version}")
-  else (${ARGC} GREATER 0)
-	message (STATUS "Requires SOCI without specifying any version")
-  endif (${ARGC} GREATER 0)
-
-  find_package (SOCI)
-  if (SOCI_FOUND)
-	include_directories (${SOCI_INCLUDE_DIR})
-	message (STATUS "Found SOCI version: ${SOCI_VERSION}")
-  endif (SOCI_FOUND)
-  find_package (SOCIMySQL)
-  if (SOCIMYSQL_FOUND)
-	include_directories (${SOCIMYSQL_INCLUDE_DIR})
-  endif (SOCIMYSQL_FOUND)
-endmacro (get_soci)
-
-# ~~~~~~~~~~ Doxygen ~~~~~~~~~
-macro (get_doxygen)
-  set (_required_version 0)
-  if (${ARGC} GREATER 0)
-	set (_required_version ${ARGV0})
-	message (STATUS "Requires Doxygen-${_required_version}")
-  else (${ARGC} GREATER 0)
-	message (STATUS "Requires Doxygen without specifying any version")
-  endif (${ARGC} GREATER 0)
-
-  find_package (Doxygen REQUIRED)
-endmacro (get_doxygen)
-
-# ~~~~~~~~~~ StdAir ~~~~~~~~~
-macro (get_stdair)
-  set (_required_version 0)
-  if (${ARGC} GREATER 0)
-	set (_required_version ${ARGV0})
-	message (STATUS "Requires StdAir-${_required_version}")
-  else (${ARGC} GREATER 0)
-	message (STATUS "Requires StdAir without specifying any version")
-  endif (${ARGC} GREATER 0)
-
-  find_package (StdAir REQUIRED HINTS ${WITH_STDAIR_PREFIX})
-  if (StdAir_FOUND)
-	include_directories (${STDAIR_INCLUDE_DIRS})
-	message (STATUS "Found StdAir version: ${STDAIR_VERSION}")
-  else (StdAir_FOUND)
-	set (ERROR_MSG "The StdAir library cannot be found. If it is installed in")
-	set (ERROR_MSG "${ERROR_MSG} a in a non standard directory, just invoke")
-	set (ERROR_MSG "${ERROR_MSG} 'cmake' specifying the -DWITH_STDAIR_PREFIX=")
-	set (ERROR_MSG "${ERROR_MSG}<StdAir install path> variable.")
-	message (FATAL_ERROR "${ERROR_MSG}")
-  endif (StdAir_FOUND)
-endmacro (get_stdair)
-
 # ~~~~~~~~ Wrapper ~~~~~~~~
 macro (get_external_libs)
+  # CMake scripts, to find some dependencies (e.g., Boost, MySQL, SOCI)
+  set (CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/config/)
+
+  #
+  set (PROJ_DEP_LIBS_FOR_LIB "")
+  set (PROJ_DEP_LIBS_FOR_BIN "")
+  set (PROJ_DEP_LIBS_FOR_TST "")
   foreach (_arg ${ARGV})
 	string (TOLOWER ${_arg} _arg_lower_full)
 
@@ -363,10 +241,358 @@ macro (get_external_libs)
   endforeach (_arg)
 endmacro (get_external_libs)
 
+# ~~~~~~~~~~ Git ~~~~~~~~~~
+macro (get_git)
+  message (STATUS "Requires Git without specifying any version")
+
+  find_package (Git)
+  if (Git_FOUND)
+	Git_WC_INFO (${CMAKE_CURRENT_SOURCE_DIR} PROJ)
+	set (GIT_REVISION ${PROJ_WC_REVISION_HASH})
+	message (STATUS "Current Git revision name: ${PROJ_WC_REVISION_NAME}")
+  endif (Git_FOUND)
+endmacro (get_git)
+
+# ~~~~~~~~~~ BOOST ~~~~~~~~~~
+macro (get_boost)
+  set (_required_version 0)
+  if (${ARGC} GREATER 0)
+    set (_required_version ${ARGV0})
+    message (STATUS "Requires Boost-${_required_version}")
+  else (${ARGC} GREATER 0)
+    message (STATUS "Requires Boost without specifying any version")
+  endif (${ARGC} GREATER 0)
+
+  #
+  # Note: ${Boost_DATE_TIME_LIBRARY} and ${Boost_PROGRAM_OPTIONS_LIBRARY}
+  # are already set by ${SOCIMYSQL_LIBRARIES} and/or ${SOCI_LIBRARIES}.
+  #
+  set (Boost_USE_STATIC_LIBS OFF)
+  set (Boost_USE_MULTITHREADED ON)
+  set (Boost_USE_STATIC_RUNTIME OFF)
+  set (BOOST_REQUIRED_COMPONENTS
+    program_options date_time iostreams serialization filesystem 
+    unit_test_framework)
+  find_package (Boost ${_required_version} REQUIRED
+    COMPONENTS ${BOOST_REQUIRED_COMPONENTS})
+
+  if (Boost_FOUND)
+    # 
+    set (Boost_HUMAN_VERSION
+      ${Boost_MAJOR_VERSION}.${Boost_MINOR_VERSION}.${Boost_SUBMINOR_VERSION})
+    message (STATUS "Found Boost version: ${Boost_HUMAN_VERSION}")
+
+    # Update the list of include directories for the project
+    include_directories (${Boost_INCLUDE_DIRS})
+
+    # Update the list of dependencies for the project
+    set (PROJ_DEP_LIBS_FOR_LIB ${PROJ_DEP_LIBS_FOR_LIB}
+      ${Boost_IOSTREAMS_LIBRARY} ${Boost_SERIALIZATION_LIBRARY}
+      ${Boost_FILESYSTEM_LIBRARY} ${Boost_DATE_TIME_LIBRARY})
+    set (PROJ_DEP_LIBS_FOR_BIN ${PROJ_DEP_LIBS_FOR_BIN}
+      ${Boost_PROGRAM_OPTIONS_LIBRARY})
+    set (PROJ_DEP_LIBS_FOR_TST ${PROJ_DEP_LIBS_FOR_TST}
+      ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY})
+
+    # For display purposes
+    set (BOOST_REQUIRED_LIBS
+      ${Boost_IOSTREAMS_LIBRARY} ${Boost_SERIALIZATION_LIBRARY}
+      ${Boost_FILESYSTEM_LIBRARY} ${Boost_DATE_TIME_LIBRARY}
+      ${Boost_PROGRAM_OPTIONS_LIBRARY} ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY})
+
+  endif (Boost_FOUND)
+
+endmacro (get_boost)
+
+# ~~~~~~~~~~ MySQL ~~~~~~~~~
+macro (get_mysql)
+  set (_required_version 0)
+  if (${ARGC} GREATER 0)
+	set (_required_version ${ARGV0})
+	message (STATUS "Requires MySQL-${_required_version}")
+  else (${ARGC} GREATER 0)
+	message (STATUS "Requires MySQL without specifying any version")
+  endif (${ARGC} GREATER 0)
+
+  find_package (MySQL)
+  if (MYSQL_FOUND)
+
+    # Update the list of include directories for the project
+    include_directories (${MYSQL_INCLUDE_DIR})
+
+    # Update the list of dependencies for the project
+    set (PROJ_DEP_LIBS_FOR_LIB ${PROJ_DEP_LIBS_FOR_LIB} ${MYSQL_LIBRARIES})
+  endif (MYSQL_FOUND)
+
+endmacro (get_mysql)
+
+# ~~~~~~~~~~ SOCI ~~~~~~~~~~
+macro (get_soci)
+  set (_required_version 0)
+  if (${ARGC} GREATER 0)
+	set (_required_version ${ARGV0})
+	message (STATUS "Requires SOCI-${_required_version}")
+  else (${ARGC} GREATER 0)
+	message (STATUS "Requires SOCI without specifying any version")
+  endif (${ARGC} GREATER 0)
+
+  find_package (SOCI)
+  if (SOCI_FOUND)
+    #
+    message (STATUS "Found SOCI version: ${SOCI_VERSION}")
+
+    # Update the list of include directories for the project
+    include_directories (${SOCI_INCLUDE_DIR})
+
+    # Update the list of dependencies for the project
+    set (PROJ_DEP_LIBS_FOR_LIB ${PROJ_DEP_LIBS_FOR_LIB} ${SOCI_LIBRARIES})
+  endif (SOCI_FOUND)
+
+  find_package (SOCIMySQL)
+  if (SOCIMYSQL_FOUND)
+    #
+    message (STATUS "Found MySQL back-end support for SOCI")
+
+    # Update the list of include directories for the project
+    include_directories (${SOCIMYSQL_INCLUDE_DIR})
+
+    # Update the list of dependencies for the project
+    set (PROJ_DEP_LIBS_FOR_LIB ${PROJ_DEP_LIBS_FOR_LIB} ${SOCIMYSQL_LIBRARIES})
+  endif (SOCIMYSQL_FOUND)
+
+endmacro (get_soci)
+
+# ~~~~~~~~~~ Doxygen ~~~~~~~~~
+macro (get_doxygen)
+  set (_required_version 0)
+  if (${ARGC} GREATER 0)
+	set (_required_version ${ARGV0})
+	message (STATUS "Requires Doxygen-${_required_version}")
+  else (${ARGC} GREATER 0)
+	message (STATUS "Requires Doxygen without specifying any version")
+  endif (${ARGC} GREATER 0)
+
+  find_package (Doxygen REQUIRED)
+endmacro (get_doxygen)
+
+# ~~~~~~~~~~ StdAir ~~~~~~~~~
+macro (get_stdair)
+  set (_required_version 0)
+  if (${ARGC} GREATER 0)
+	set (_required_version ${ARGV0})
+	message (STATUS "Requires StdAir-${_required_version}")
+  else (${ARGC} GREATER 0)
+	message (STATUS "Requires StdAir without specifying any version")
+  endif (${ARGC} GREATER 0)
+
+  find_package (StdAir REQUIRED HINTS ${WITH_STDAIR_PREFIX})
+  if (StdAir_FOUND)
+    #
+    message (STATUS "Found StdAir version: ${STDAIR_VERSION}")
+
+    # Update the list of include directories for the project
+    include_directories (${STDAIR_INCLUDE_DIRS})
+
+    # Update the list of dependencies for the project
+    set (PROJ_DEP_LIBS_FOR_LIB ${PROJ_DEP_LIBS_FOR_LIB} ${STDAIR_LIBRARIES})
+
+  else (StdAir_FOUND)
+    set (ERROR_MSG "The StdAir library cannot be found. If it is installed in")
+    set (ERROR_MSG "${ERROR_MSG} a in a non standard directory, just invoke")
+    set (ERROR_MSG "${ERROR_MSG} 'cmake' specifying the -DWITH_STDAIR_PREFIX=")
+    set (ERROR_MSG "${ERROR_MSG}<StdAir install path> variable.")
+    message (FATAL_ERROR "${ERROR_MSG}")
+  endif (StdAir_FOUND)
+
+endmacro (get_stdair)
+
+
+##############################################
+##           Build, Install, Export         ##
+##############################################
+macro (init_build)
+  ##
+  # Compilation
+  # Note: the debug flag (-g) is set (or not) by giving the
+  # corresponding option when calling cmake:
+  # cmake -DCMAKE_BUILD_TYPE:STRING={Debug,Release,MinSizeRel,RelWithDebInfo}
+  #set (CMAKE_CXX_FLAGS "-Wall -Wextra -pedantic -Werror")
+  set (CMAKE_CXX_FLAGS "-Wall -Werror")
+  include_directories (BEFORE ${CMAKE_SOURCE_DIR} ${CMAKE_BINARY_DIR})
+  
+  ##
+  # Set all the directory installation paths for the project (e.g., prefix,
+  # libdir, bindir).
+  # Note that those paths need to be set before the sub-directories are browsed
+  # for the building process (see below), because that latter needs those paths
+  # to be correctly set.
+  include (config/project_install_dirs.cmake)
+endmacro (init_build)
+
+####
+## Module support
+####
+
+##
+# For each sub-module:
+#  * The libraries and binaries are built (with the regular
+#    'make' command) and installed (with the 'make install' command).
+#    The header files are installed as well.
+#  * The corresponding targets (libraries and binaries) are exported within
+#    a CMake import helper file, namely '${PROJECT_NAME}-library-depends.cmake'.
+#    That CMake import helper file is installed in the installation directory,
+#    within the <install_dir>/share/${PROJECT_NAME}/CMake sub-directory.
+#    That CMake import helper file is used by the ${PROJECT_NAME}-config.cmake
+#    file, to be installed in the same sub-directory. The
+#    ${PROJECT_NAME}-config.cmake file is specified a little bit below.
+macro (add_modules)
+  set (_embedded_components ${ARGV})
+  set (LIB_DEPENDENCY_EXPORT ${PROJECT_NAME}-library-depends)
+  set (LIB_DEPENDENCY_EXPORT_PATH "${INSTALL_DATA_DIR}/${PROJECT_NAME}/CMake")
+  #
+  foreach (_embedded_comp ${_embedded_components})
+	add_subdirectory (${_embedded_comp})
+  endforeach (_embedded_comp)
+endmacro (add_modules)
+
+# Set the name of the module
+macro (module_set_name _module_name)
+  set (MODULE_NAME ${_module_name})
+  set (MODULE_LIB_TARGET ${MODULE_NAME}lib)
+endmacro (module_set_name)
+
+##
+# Convert the configuration headers (basically, just replace the @<variable>@
+# variables).
+macro (module_generate_config_helpers)
+
+  # Generic module configuration header
+  if (EXISTS config.h.in)
+    configure_file (config.h.in config.h @ONLY)
+  endif (EXISTS config.h.in)
+
+  # Specific module configuration header
+  set (PROJ_PATH_CFG_SRC 
+    ${CMAKE_CURRENT_SOURCE_DIR}/config/${MODULE_NAME}-paths.hpp.in)
+  if (EXISTS ${PROJ_PATH_CFG_SRC})
+    set (PROJ_PATH_CFG
+      ${CMAKE_CURRENT_BINARY_DIR}/config/${MODULE_NAME}-paths.hpp)
+    configure_file (${PROJ_PATH_CFG_SRC} ${PROJ_PATH_CFG} @ONLY)
+  
+    # Add the 'hdr_cfg_${MODULE_NAME}' target, depending on the converted header
+    add_custom_target (hdr_cfg_${MODULE_NAME} ALL DEPENDS ${PROJ_PATH_CFG})
+
+  else (EXISTS ${PROJ_PATH_CFG_SRC})
+    message (FATAL_ERROR "The ${PROJ_PATH_CFG_SRC} file is missing.")
+  endif (EXISTS ${PROJ_PATH_CFG_SRC})
+
+endmacro (module_generate_config_helpers)
+
+##
+# Library sources.
+macro (module_define_sources)
+  # Collect the header and source files at the root level of the module
+  file (GLOB ${MODULE_LIB_TARGET}_root_HEADERS *.hpp)
+  set (${MODULE_LIB_TARGET}_HEADERS 
+    ${PROJ_PATH_CFG} ${${MODULE_LIB_TARGET}_root_HEADERS})
+  
+  file (GLOB ${MODULE_LIB_TARGET}_root_SOURCES *.cpp)
+  set (${MODULE_LIB_TARGET}_SOURCES ${${MODULE_LIB_TARGET}_root_SOURCES})
+
+  # Collect the header and source files for all the other layers, as
+  # specified as input paramters of this macro
+  foreach (_layer ${ARGV})
+    file (GLOB ${MODULE_LIB_TARGET}_${_layer}_HEADERS ${_layer}/*.hpp)
+    set (${MODULE_LIB_TARGET}_HEADERS
+      ${${MODULE_LIB_TARGET}_HEADERS} ${${MODULE_LIB_TARGET}_${_layer}_HEADERS})
+
+    file (GLOB ${MODULE_LIB_TARGET}_${_layer}_SOURCES ${_layer}/*.cpp)
+    set (${MODULE_LIB_TARGET}_SOURCES 
+      ${${MODULE_LIB_TARGET}_SOURCES} ${${MODULE_LIB_TARGET}_${_layer}_SOURCES})
+  endforeach (_layer ${ARGV})
+
+  # Gather both the header and source files into a single list
+  set (${MODULE_LIB_TARGET}_SOURCES
+    ${${MODULE_LIB_TARGET}_HEADERS} ${${MODULE_LIB_TARGET}_SOURCES})
+endmacro (module_define_sources)
+
+##
+# Assembling: specify the standard library target for the current module.
+# The parameter corresponds to the modules this current module depends upon.
+macro (module_library_add_standard)
+  # Add the (CMake) target for the library
+  add_library (${MODULE_LIB_TARGET} SHARED ${${MODULE_LIB_TARGET}_SOURCES})
+
+  # For each module, given as parameter of that macro, add the corresponding
+  # library target to a dedicated list
+  set (_intermodule_dependencies "")
+  foreach (_arg_module ${ARGV})
+    set (_intermodule_dependencies
+      ${_intermodule_dependencies} ${_arg_module}lib)
+  endforeach (_arg_module)
+
+  # Add the dependencies:
+  #  * on external libraries (Boost, MySQL, SOCI, StdAir), as calculated by 
+  #    the get_external_libs() macro above;
+  #  * on the other module libraries, as provided as paramaters to this macro
+  target_link_libraries (${MODULE_LIB_TARGET} 
+    ${PROJ_DEP_LIBS_FOR_LIB} ${_intermodule_dependencies})
+
+  # Add the dependency on the generated configuration headers, as generated
+  # by the module_generate_config_helpers() macro
+  add_dependencies (${MODULE_LIB_TARGET} hdr_cfg_${MODULE_NAME})
+
+  ##
+  # Library name (and soname)
+  set (_module_lib_name ${MODULE_NAME})
+  if (WIN32)
+    set_target_properties (${MODULE_LIB_TARGET} PROPERTIES 
+      OUTPUT_NAME ${_module_lib_name} 
+      VERSION ${GENERIC_LIB_VERSION}
+      PUBLIC_HEADER "${${MODULE_LIB_TARGET}_root_HEADERS}")
+  else (WIN32)
+    set_target_properties (${MODULE_LIB_TARGET} PROPERTIES 
+      OUTPUT_NAME ${_module_lib_name}
+      VERSION ${GENERIC_LIB_VERSION} SOVERSION ${GENERIC_LIB_SOVERSION}
+      PUBLIC_HEADER "${${MODULE_LIB_TARGET}_root_HEADERS}")
+  endif (WIN32)
+
+endmacro (module_library_add_standard)
+
+##
+# Library installation
+# The parameter corresponds to additional libraries to be installed.
+# When no parameter is given, only the standard library is installed.
+macro (module_library_install_all)
+  set (_all_targets ${MODULE_LIB_TARGET})
+  foreach (_arg_target ${ARGV})
+    set (_all_targets ${_all_targets} ${_arg_target})
+  endforeach (_arg_target)
+
+  install (TARGETS ${_all_targets}
+    EXPORT ${LIB_DEPENDENCY_EXPORT}
+    RUNTIME DESTINATION "${INSTALL_BIN_DIR}" COMPONENT runtime
+    LIBRARY DESTINATION "${INSTALL_LIB_DIR}" COMPONENT runtime
+    PUBLIC_HEADER DESTINATION "${INSTALL_INCLUDE_DIR}/${MODULE_NAME}"
+    COMPONENT devel)
+
+endmacro (module_library_install_all)
+
+##
+# Install the CMake import helper, so that third party projects can refer to it
+# (for libraries, header files and binaries)
+macro (module_export_install)
+  install (EXPORT ${LIB_DEPENDENCY_EXPORT} DESTINATION
+    "${INSTALL_DATA_DIR}/${PACKAGE}/CMake" COMPONENT devel)
+endmacro (module_export_install)
+
 
 ###################################################################
 ##                    Development Helpers                        ##
 ###################################################################
+# For other projects to use this component (let us name it myproj),
+# install a few helpers for standard build/packaging systems: CMake,
+# GNU Autotools (M4), pkgconfig/pc, myproj-config
 macro (install_dev_helper_files)
   ##
   ## First, build and install CMake development helper files
@@ -420,9 +646,8 @@ macro (display_boost)
 	message (STATUS "  - Boost_LIB_VERSION ......... : ${Boost_LIB_VERSION}")
 	message (STATUS "  - Boost_HUMAN_VERSION ....... : ${Boost_HUMAN_VERSION}")
 	message (STATUS "  - Boost_INCLUDE_DIRS ........ : ${Boost_INCLUDE_DIRS}")
-	message (STATUS "  - BOOST_LIBS_FOR_LIB ........ : ${BOOST_LIBS_FOR_LIB}")
-	message (STATUS "  - BOOST_LIBS_FOR_BIN ........ : ${BOOST_LIBS_FOR_BIN}")
-	message (STATUS "  - BOOST_LIBS_FOR_TEST ....... : ${BOOST_LIBS_FOR_TEST}")
+	message (STATUS "  - Boost required components . : ${BOOST_REQUIRED_COMPONENTS}")
+	message (STATUS "  - Boost required libraries .. : ${BOOST_REQUIRED_LIBS}")
   endif (Boost_FOUND)
 endmacro (display_boost)
 
