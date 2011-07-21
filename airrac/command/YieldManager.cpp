@@ -145,7 +145,7 @@ namespace AIRRAC {
               
               // Retrieve the corresponding time period.
               const stdair::TimePeriodList_T& lTimePeriodList = stdair::
-                BomManager::getList<stdair::TimePeriod> (*lDatePeriod_ptr);
+                BomManager::getList<stdair::TimePeriod> (*lPosChannel_ptr);
               for (stdair::TimePeriodList_T::const_iterator itTimePeriod =
                      lTimePeriodList.begin();
                    itTimePeriod != lTimePeriodList.end(); ++itTimePeriod) {
@@ -180,11 +180,16 @@ namespace AIRRAC {
       assert (lSegmentCabin_ptr != NULL);
 
       const stdair::CabinCode_T& lCabinCode = lSegmentCabin_ptr->getCabinCode();
+      const stdair::TripType_T& lTripType = "RT";
+      const stdair::YieldFeaturesKey lYieldFeaturesKey (lTripType,
+                                                        lCabinCode);
       const stdair::YieldFeatures* lYieldFeatures_ptr = stdair::BomManager::
-        getObjectPtr<stdair::YieldFeatures> (iTimePeriod, lCabinCode);
+        getObjectPtr<stdair::YieldFeatures> (iTimePeriod,
+                                             lYieldFeaturesKey.toString());
       if (lYieldFeatures_ptr == NULL) {
         STDAIR_LOG_ERROR ("Cannot find the yield features corresponding to "
-                          << iTimePeriod.describeKey() << ", " << lCabinCode);
+                          << iTimePeriod.describeKey() << ", "
+                          << lCabinCode << " and " << lTripType);
         assert (false);
       }
 
