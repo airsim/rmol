@@ -177,48 +177,37 @@ int main (int argc, char* argv[]) {
     
   // Initialise the AirRAC service object
   const stdair::BasLogParams lLogParams (stdair::LOG::DEBUG, logOutputFile);
+
+  AIRRAC::AIRRAC_Service airracService (lLogParams);
+
+  // DEBUG
+  STDAIR_LOG_DEBUG ("Welcome to AirRAC");
+
+  // Build a sample list of travel solutions
+  stdair::TravelSolutionList_T lTravelSolutionList;
+  airracService.buildSampleTravelSolutions (lTravelSolutionList);
   
   // Check wether or not a (CSV) input file should be read
   if (isBuiltin == true) {
 
-    // Build the BOM tree from parsing an inventory dump file
-    AIRRAC::AIRRAC_Service airracService (lLogParams);
-    
-    // DEBUG
-    STDAIR_LOG_DEBUG ("Welcome to AirRAC");
-
     // Build the sample BOM tree (filled with yields) for AirRAC
     airracService.buildSampleBom();
 
-    // Build a sample list of travel solutions
-    stdair::TravelSolutionList_T lTravelSolutionList;
-    airracService.buildSampleTravelSolutions (lTravelSolutionList);
-
-    // DEBUG: Display the whole BOM tree
-    const std::string& lBOMCSVDump = airracService.csvDisplay();
-    STDAIR_LOG_DEBUG ("BOM tree: " << lBOMCSVDump);
-
-    // DEBUG: Display the travel solutions
-    const std::string& lTSCSVDump =
-      airracService.csvDisplay (lTravelSolutionList);
-    STDAIR_LOG_DEBUG (lTSCSVDump);
-
   } else {
-    
-    // Build the BOM tree from parsing a schedule file (and O&D list)
-    AIRRAC::AIRRAC_Service airracService (lLogParams, lYieldInputFilename);
 
-    // DEBUG
-    STDAIR_LOG_DEBUG ("Welcome to AirRAC");
-
-    // Build a sample list of travel solutions
-    stdair::TravelSolutionList_T lTravelSolutionList;
-    airracService.buildSampleTravelSolutions (lTravelSolutionList);
-
-    // DEBUG: Display the whole BOM tree
-    const std::string& lBOMCSVDump = airracService.csvDisplay();
-    STDAIR_LOG_DEBUG ("BOM tree: " << lBOMCSVDump);
+    // Build the BOM tree from parsing a yield file
+    airracService.parseAndLoad (lYieldInputFilename);
+   
   }
+
+  // DEBUG: Display the whole BOM tree
+  const std::string& lBOMCSVDump = airracService.csvDisplay();
+  STDAIR_LOG_DEBUG ("BOM tree: " << lBOMCSVDump);
+
+  // DEBUG: Display the travel solutions
+  const std::string& lTSCSVDump =
+    airracService.csvDisplay (lTravelSolutionList);
+  STDAIR_LOG_DEBUG (lTSCSVDump);
 
   // Close the Log outputFile
   logOutputFile.close();

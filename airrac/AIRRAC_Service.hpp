@@ -13,6 +13,7 @@
 
 // Forward declarations.
 namespace stdair {
+  class STDAIR_Service;
   struct BasLogParams;
   struct BasDBParams;
 }
@@ -72,59 +73,6 @@ namespace AIRRAC {
      * @param stdair::STDAIR_ServicePtr_T Reference on the STDAIR service.
      */
     AIRRAC_Service (stdair::STDAIR_ServicePtr_T ioSTDAIR_ServicePtr);
-
-    /**
-     * Constructor.
-     *
-     * The initAirracService() method is called; see the corresponding
-     * documentation for more details.
-     *
-     * Moreover, a reference on an output stream is given, so that log
-     * outputs can be directed onto that stream.
-     *
-     * @param const stdair::BasLogParams& Parameters for the output log stream.
-     * @param const stdair::Filename_T& Filename of the input yield file.
-     */
-    AIRRAC_Service (const stdair::BasLogParams&,
-                    const stdair::Filename_T& iYieldInputFilename);
-
-    /**
-     * Constructor.
-     *
-     * The initAirracService() method is called; see the corresponding
-     * documentation for more details.
-     *
-     * A reference on an output stream is given, so that log outputs
-     * can be directed onto that stream.
-     *
-     * Moreover, database connection parameters are given, so that a
-     * session can be created on the corresponding database.
-     *
-     * @param const stdair::BasLogParams& Parameters for the output log stream.
-     * @param const stdair::BasDBParams& Parameters for the database access.
-     * @param const stdair::Filename_T& Filename of the input yield file.
-     */
-    AIRRAC_Service (const stdair::BasLogParams&, const stdair::BasDBParams&,
-                    const stdair::Filename_T& iYieldInputFilename);
-
-    /**
-     * Constructor.
-     *
-     * The initAirracService() method is called; see the corresponding
-     * documentation for more details.
-     *
-     * Moreover, as no reference on any output stream is given,
-     * it is assumed that the StdAir log service has already been
-     * initialised with the proper log output stream by some other
-     * methods in the calling chain (for instance, when the AIRRAC_Service
-     * is itself being initialised by another library service such as
-     * SIMCRS_Service).
-     *
-     * @param stdair::STDAIR_ServicePtr_T Reference on the STDAIR service.
-     * @param const stdair::Filename_T& Filename of the input yield file.
-     */
-    AIRRAC_Service (stdair::STDAIR_ServicePtr_T ioSTDAIR_ServicePtr,
-                    const stdair::Filename_T& iYieldInputFilename);
 
     /**
      * Parse the yield input file, and load them into memory.
