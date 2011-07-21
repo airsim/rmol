@@ -250,7 +250,7 @@ namespace AIRRAC {
                      const stdair::Filename_T& iYieldInputFilename);
 
     /** Parse the yield store input file. */
-    bool generateYieldStore ();
+    void generateYieldStore ();
       
   private:
     /** Initialise. */

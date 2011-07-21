@@ -481,7 +481,8 @@ tripType =
   }
     
   // //////////////////////////////////////////////////////////////////////
-  bool YieldFileParser::generateYieldStore () {    
+  void YieldFileParser::generateYieldStore () {
+    
     STDAIR_LOG_DEBUG ("Parsing yield input file: " << _filename);
 
     // File to be parsed
@@ -491,10 +492,12 @@ tripType =
 
     // Check the filename exists and can be open
     if (fileToBeParsed == false) {
-      STDAIR_LOG_ERROR ("The yield store file " << _filename << " can not be open."
-                          << std::endl);
+      STDAIR_LOG_ERROR ("The yield store file " << _filename
+                        << " can not be open."
+                        << std::endl);
 
-      throw YieldInputFileNotFoundException ("The file " + _filename + " does not exist or can not be read");
+      throw YieldInputFileNotFoundException ("The file " + _filename
+                                             + " does not exist or can not be read");
     }
     
     // Create an input iterator
@@ -532,7 +535,7 @@ tripType =
       STDAIR_LOG_DEBUG ("Parsing of yield input file: " << _filename
       << " succeeded");
     }
-    return hasParsingBeenSuccesful;
+    
   }
     
 }

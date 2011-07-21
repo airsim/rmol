@@ -62,6 +62,13 @@ namespace AIRRAC {
       : stdair::FileNotFoundException (iWhat) {}
   };
 
+  class YieldFileParsingFailedException : public stdair::ParsingFileFailedException {
+  public:
+    /** Constructor. */
+    YieldFileParsingFailedException (const std::string& iWhat)
+      : stdair::ParsingFileFailedException (iWhat) {}
+  };
+
   class QuotingException : public stdair::RootException {
   };
 
@@ -74,7 +81,7 @@ namespace AIRRAC {
 
 
   /**
-   * ID for the Fare Quote system.
+   * ID for the Yield Quote system.
    */
   typedef unsigned int YieldID_T;
 }
