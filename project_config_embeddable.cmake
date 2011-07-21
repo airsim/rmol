@@ -456,7 +456,7 @@ macro (init_build)
   # Note that those paths need to be set before the sub-directories are browsed
   # for the building process (see below), because that latter needs those paths
   # to be correctly set.
-  include (config/project_install_dirs.cmake)
+  set_install_directories ()
 
   ##
   # Initialise the list of modules to build and those to test
@@ -470,6 +470,34 @@ macro (init_build)
   set (PROJ_ALL_TST_TARGETS "")
 
 endmacro (init_build)
+
+# Define the substitutes for the variables present in the development
+# support files.
+# Note that STDAIR_SAMPLE_DIR is either defined because the current project
+# is StdAir, or because the current project has a dependency on StdAir, 
+# in which case STDAIR_SAMPLE_DIR is an imported variable.
+macro (set_install_directories)
+  set (prefix        ${CMAKE_INSTALL_PREFIX})
+  set (exec_prefix   ${prefix})
+  set (bindir        ${exec_prefix}/bin)
+  set (libdir        ${exec_prefix}/${LIBDIR})
+  set (libexecdir    ${exec_prefix}/libexec)
+  set (sbindir       ${exec_prefix}/sbin)
+  set (sysconfdir    ${prefix}/etc)
+  set (includedir    ${prefix}/include)
+  set (datarootdir   ${prefix}/share)
+  set (datadir       ${datarootdir})
+  set (pkgdatadir    ${datarootdir}/${PACKAGE})
+  set (sampledir     ${STDAIR_SAMPLE_DIR})
+  set (docdir        ${datarootdir}/doc/${PACKAGE}-${PACKAGE_VERSION})
+  set (htmldir       ${docdir})
+  set (mandir        ${datarootdir}/man)
+  set (infodir       ${datarootdir}/info)
+  set (pkgincludedir ${includedir}/stdair)
+  set (pkglibdir     ${libdir}/stdair)
+  set (pkglibexecdir ${libexecdir}/stdair)
+endmacro (set_install_directories)
+
 
 ####
 ## Module support
@@ -537,55 +565,107 @@ macro (module_generate_config_helpers)
 endmacro (module_generate_config_helpers)
 
 ##
-# Source directories for the standard library.
-# All the sources within each of the directories/layers will be used and
+# Building and installation of the "standard library".
+# All the sources within each of the layers/sub-directories are used and
 # assembled, in order to form a single library, named here the
 # "standard library".
-macro (module_define_sources)
-  # Collect the header and source files at the root level of the module
-  file (GLOB ${MODULE_LIB_TARGET}_root_HEADERS 
-    RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} *.hpp)
-  set (${MODULE_LIB_TARGET}_HEADERS 
-    ${PROJ_PATH_CFG} ${${MODULE_LIB_TARGET}_root_HEADERS})
-  
-  file (GLOB ${MODULE_LIB_TARGET}_root_SOURCES
-    RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} *.cpp)
-  set (${MODULE_LIB_TARGET}_SOURCES ${${MODULE_LIB_TARGET}_root_SOURCES})
+# The three parameters (among which only the first one is mandatory) are:
+#  * A semi-colon separated list of all the layers in which header and source
+#    files are to be found.
+#  * Whether or not all the header files should be published. By default, only
+#    the header files of the root directory are to be published.
+#  * A list of additional dependency on inter-module library targets.
+macro (module_library_add_standard _layer_list)
+  # First, generate the configuration helper header files
+  module_generate_config_helpers ()
 
-  # Collect the header and source files for all the other layers, as
-  # specified as input paramters of this macro
-  set (_all_layers ${ARGV})
+  # ${ARGV} contains a single semi-colon (';') separated list, which
+  # is the aggregation of all the elements of all the list parameters.
+  # The list of intermodule dependencies must therefore be calculated.
+  set (_intermodule_dependencies ${ARGV})
+
+  # Extract the information whether or not all the header files need
+  # to be published. Not that that parameter is optional. Its existence
+  # has therefore to be checked.
+  set (_publish_all_headers_flag False)
+  if (${ARGC} GREATER 1)
+    string (TOLOWER ${ARGV1} _flag_lower)
+    if ("${_flag_lower}" STREQUAL "all")
+      set (_publish_all_headers_flag True)
+      list (REMOVE_ITEM _intermodule_dependencies ${ARGV1})
+    endif ("${_flag_lower}" STREQUAL "all")
+  endif (${ARGC} GREATER 1)
+
+  # Initialise the list of header files with the configuration helper header.
+  set (${MODULE_LIB_TARGET}_HEADERS ${PROJ_PATH_CFG})
+
+  # Collect the header and source files for all the layers, as specified 
+  # as input paramters of this macro
+  set (_all_layers ${_layer_list})
   foreach (_layer ${_all_layers})
-    file (GLOB ${MODULE_LIB_TARGET}_${_layer}_HEADERS 
-      RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} ${_layer}/*.hpp)
-    list (APPEND ${MODULE_LIB_TARGET}_HEADERS
-      ${${MODULE_LIB_TARGET}_${_layer}_HEADERS})
+    # Remove the layer from the list of intermodule dependencies, so that that
+    # latter contains only intermodule dependencies at the end. Note that that
+    # latter list may be empty at the end (which then means that there is no
+    # dependency among modules).
+    list (REMOVE_ITEM _intermodule_dependencies ${_layer})
 
-    file (GLOB ${MODULE_LIB_TARGET}_${_layer}_SOURCES 
-      RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} ${_layer}/*.cpp)
+    # Derive the name of the layer. By default, the layer name corresponds
+    # to the layer sub-directory. For the root layer (current source directory),
+    # though, the layer name is 'root', rather than '.'
+    set (_layer_name ${_layer})
+    if ("${_layer_name}" STREQUAL ".")
+      set (_layer_name root)
+    endif ("${_layer_name}" STREQUAL ".")
+
+    # Derive the name of the layer directory. By default, the layer directory
+    # name corresponds to the layer sub-directory. For the root layer (current
+    # source directory), though, the layer directory name is empty (""),
+    # rather than './'
+    set (_layer_dir_name "${_layer}/")
+    if ("${_layer_dir_name}" STREQUAL "./")
+      set (_layer_dir_name "")
+    endif ("${_layer_dir_name}" STREQUAL "./")
+
+    file (GLOB ${MODULE_LIB_TARGET}_${_layer_name}_HEADERS 
+      RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} ${_layer_dir_name}*.hpp)
+    list (APPEND ${MODULE_LIB_TARGET}_HEADERS
+      ${${MODULE_LIB_TARGET}_${_layer_name}_HEADERS})
+
+    file (GLOB ${MODULE_LIB_TARGET}_${_layer_name}_SOURCES 
+      RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} ${_layer_dir_name}*.cpp)
     list (APPEND ${MODULE_LIB_TARGET}_SOURCES 
-      ${${MODULE_LIB_TARGET}_${_layer}_SOURCES})
-  endforeach (_layer ${ARGV})
+      ${${MODULE_LIB_TARGET}_${_layer_name}_SOURCES})
+  endforeach (_layer)
 
   # Register, for book-keeping purpose, the list of layers at the module level
+  set (${MODULE_NAME}_ALL_LAYERS ${_all_layers} PARENT_SCOPE)
   set (${MODULE_NAME}_ALL_LAYERS ${_all_layers})
 
   # Gather both the header and source files into a single list
   set (${MODULE_LIB_TARGET}_SOURCES
     ${${MODULE_LIB_TARGET}_HEADERS} ${${MODULE_LIB_TARGET}_SOURCES})
-endmacro (module_define_sources)
 
-##
-# Register the "standard library" for build and install
-macro (module_library_add_standard)
-  module_library_add_specific (${MODULE_NAME} 
+  ##
+  # Building of the library.
+  # Delegate the (CMake) target registration to a dedicated macro (below)
+  module_library_add_specific (${MODULE_NAME} "."
     "${${MODULE_LIB_TARGET}_root_HEADERS}" "${${MODULE_LIB_TARGET}_SOURCES}" 
-    ${ARGV})
+    ${_intermodule_dependencies})
+
+  # Installation of all the remaining header files for the module, i.e.,
+  # the header files located in all the layers except the root.
+  module_header_install_everything_else ()
+
+  # Convenient message to the user/developer
+  if (NOT "${INSTALL_LIB_DIR}" MATCHES "^/usr/${LIBDIR}$")
+    install (CODE "message (\"On Unix-based platforms, run export LD_LIBRARY_PATH=\$LD_LIBRARY_PATH:${INSTALL_LIB_DIR} once per session\")")
+  endif ()
+
 endmacro (module_library_add_standard)
 
 ##
-# Assembling
-# The first three parameters are mandatory and correspond to:
+# Building and installation of a specific library.
+# The first four parameters are mandatory and correspond to:
 #  * The short name of the library to be built.
 #    Note that the library (CMake) target is derived directly from the library
 #    short name: a 'lib' suffix is just appended to the short name.
@@ -634,6 +714,11 @@ macro (module_library_add_specific _lib_short_name _lib_headers _lib_sources)
   list (APPEND PROJ_ALL_LIB_TARGETS ${_lib_target})
   set (PROJ_ALL_LIB_TARGETS ${PROJ_ALL_LIB_TARGETS} PARENT_SCOPE)
 
+  # Register the intermodule dependency targets in the project (for
+  # reporting purpose).
+  set (${MODULE_NAME}_INTER_TARGETS ${_intermodule_dependencies})
+  set (${MODULE_NAME}_INTER_TARGETS ${_intermodule_dependencies} PARENT_SCOPE)
+
   # For the "standard library", an extra dependency must be added:
   #  * generated configuration header
   if (${_lib_short_name} STREQUAL ${MODULE_NAME})
@@ -643,8 +728,8 @@ macro (module_library_add_specific _lib_short_name _lib_headers _lib_sources)
     add_dependencies (${_lib_target} hdr_cfg_${MODULE_NAME})
   endif (${_lib_short_name} STREQUAL ${MODULE_NAME})
 
-  #
-  message ("[${_lib_target}] _lib_headers = ${_lib_headers}")
+  # DEBUG
+  #message ("DEBUG -- [${_lib_target}] _lib_headers = ${_lib_headers}")
 
   # Register the library target in the project (for reporting purpose)
   set (PROJ_ALL_LIB_TARGETS
@@ -672,102 +757,119 @@ macro (module_library_add_specific _lib_short_name _lib_headers _lib_sources)
     message(STATUS "Had to set the linker language for '${_lib_target}' to CXX")
   endif ("${_linker_lang}" STREQUAL "_linker_lang-NOTFOUND")
 
-endmacro (module_library_add_specific)
-
-##
-# Library installation
-# The parameter corresponds to additional libraries to be installed.
-# When no parameter is given, only the "standard library" is installed.
-macro (module_library_install_all)
-  #
-  set (_all_targets ${MODULE_LIB_TARGET})
-  foreach (_arg_lib_name ${ARGV})
-    set (_all_targets ${_all_targets} ${_arg_lib_name}lib)
+  ##
+  # Installation
+  set (_all_targets ${_lib_target})
+  foreach (_arg_lib_name ${${MODULE_NAME}_INTER_TARGETS})
+    list (APPEND _all_targets ${_arg_lib_name}lib)
   endforeach (_arg_lib_name)
 
-  # The header files are installed separately, by the
-  # module_header_install_xxx() macros
+  # Installation of the library binaries
   install (TARGETS ${_all_targets}
     EXPORT ${LIB_DEPENDENCY_EXPORT}
     LIBRARY DESTINATION "${INSTALL_LIB_DIR}" COMPONENT runtime)
 
-  # Convenient message to the user/developer
-  if (NOT "${INSTALL_LIB_DIR}" MATCHES "^/usr/${LIBDIR}$")
-    install (CODE "message (\"On Unix-based platforms, run export LD_LIBRARY_PATH=\$LD_LIBRARY_PATH:${INSTALL_LIB_DIR} once per session\")")
-  endif ()
+  # Register, for reporting purpose, the list of libraries to be built
+  # and installed for that module
+  list (APPEND ${MODULE_NAME}_ALL_LIBS ${_all_targets})
+  set (${MODULE_NAME}_ALL_LIBS ${${MODULE_NAME}_ALL_LIBS} PARENT_SCOPE)
 
-endmacro (module_library_install_all)
+  # Install the header files for the library
+  module_header_install_specific (${_lib_dir} "${_lib_headers}")
+
+endmacro (module_library_add_specific)
 
 ##
-#
-macro (module_header_install_specific)
+# Installation of specific header files
+macro (module_header_install_specific _lib_dir _lib_headers)
+  #
+  set (_relative_destination_lib_dir "/${_lib_dir}")
+  if ("${_relative_destination_lib_dir}" STREQUAL "/.")
+    set (_relative_destination_lib_dir "")
+  endif ("${_relative_destination_lib_dir}" STREQUAL "/.")
+
+  # Install header files
+  install (FILES ${_lib_headers}
+    DESTINATION 
+    "${INSTALL_INCLUDE_DIR}/${MODULE_NAME}${_relative_destination_lib_dir}"
+    COMPONENT devel)
+
+  # DEBUG
+  #message ("DEBUG -- [${_lib_dir}] _lib_headers = ${_lib_headers}")
 
 endmacro (module_header_install_specific)
 
 ##
-# Install additional header files
-macro (module_header_install_standard)
+# Installation of all the remaining header files for the module, i.e.,
+# the header files located in all the layers except the root.
+macro (module_header_install_everything_else)
   # Add the layer for the generated headers to the list of source layers
   set (_all_layers ${${MODULE_NAME}_ALL_LAYERS} ${PROJ_PATH_CFG_DIR})
 
-  # First, install the header files of the root layer
-  install (DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-    EXPORT ${LIB_DEPENDENCY_EXPORT}
-    PUBLIC_HEADER DESTINATION "${INSTALL_INCLUDE_DIR}/${MODULE_NAME}"
-    COMPONENT devel
-    FILES_MATCHING PATTERN "*.hpp")
+  # The header files of the root layer have already been addressed by the
+  # module_library_add_standard() macro (which calls, in turn,
+  # module_library_add_specific(), which calls, in turn, 
+  # module_header_install_specific() on the root header files)
 
-  # Then, install the header files for all the other layers
+  # It remains to install the header files for all the other layers
   foreach (_layer ${_all_layers})
     # Install header files
-    install (DIRECTORY ${_layer}
-      EXPORT ${LIB_DEPENDENCY_EXPORT}
-      PUBLIC_HEADER DESTINATION "${INSTALL_INCLUDE_DIR}/${MODULE_NAME}"
-      COMPONENT devel
-      FILES_MATCHING PATTERN "*.hpp")
+    install (FILES ${${MODULE_LIB_TARGET}_${_layer}_HEADERS}
+      DESTINATION "${INSTALL_INCLUDE_DIR}/${MODULE_NAME}/${_layer}"
+      COMPONENT devel)
   endforeach (_layer ${${MODULE_NAME}_ALL_LAYERS})
 
-endmacro (module_header_install_standard)
+endmacro (module_header_install_everything_else)
 
 ##
-# Install the CMake import helper, so that third party projects can refer to it
-# (for libraries, header files and binaries)
+# Building and installation of the executables/binaries.
+# The two parameters (among which only the first one is mandatory) are:
+#  * The path/directory where the header and source files can be found
+#    in order to build the executable.
+#  * If specified, the name to be given to the executable. If no such name
+#    is given as parameter, the executable is given the name of the current
+#    module.
+macro (module_binary_add _exec_source_dir)
+  # First, derive the name to be given to the executable, defaulting
+  # to the name of the module
+  set (_exec_name ${MODULE_NAME})
+  if (${ARGC} GREATER 1})
+    set (_exec_name ${ARGV1})
+  endif (${ARGC} GREATER 1})
+
+  # Register the (CMake) target for the executable, and specify the name
+  # of that latter
+  add_executable (${_exec_name}bin ${_exec_source_dir}/${MODULE_NAME}.cpp)
+  set_target_properties (${_exec_name}bin PROPERTIES OUTPUT_NAME ${_exec_name})
+
+  # Register the dependencies on which the binary depends upon
+  target_link_libraries (${_exec_name}bin
+    ${PROJ_DEP_LIBS_FOR_BIN} ${MODULE_LIB_TARGET} 
+    ${${MODULE_NAME}_INTER_TARGETS})
+
+  # Binary installation
+  install (TARGETS ${_exec_name}bin
+    EXPORT ${LIB_DEPENDENCY_EXPORT}
+    RUNTIME DESTINATION "${INSTALL_BIN_DIR}" COMPONENT runtime)
+
+  # Register the binary target in the project (for reporting purpose)
+  list (APPEND PROJ_ALL_BIN_TARGETS ${_exec_name})
+  set (PROJ_ALL_BIN_TARGETS ${PROJ_ALL_BIN_TARGETS} PARENT_SCOPE)
+
+  # Register, for reporting purpose, the list of executables to be built
+  # and installed for that module
+  list (APPEND ${MODULE_NAME}_ALL_EXECS ${PROJ_ALL_BIN_TARGETS})
+  set (${MODULE_NAME}_ALL_EXECS ${${MODULE_NAME}_ALL_EXECS} PARENT_SCOPE)
+
+endmacro (module_binary_add)
+
+##
+# Installation of the CMake import helper, so that third party projects
+# can refer to it (for libraries, header files and binaries)
 macro (module_export_install)
   install (EXPORT ${LIB_DEPENDENCY_EXPORT} DESTINATION
     "${INSTALL_DATA_DIR}/${PACKAGE}/CMake" COMPONENT devel)
 endmacro (module_export_install)
-
-##
-# Assembling: specify the standard binary target for the current module.
-# If given, the parameter specifies an alternate file-path for the binary.
-macro (module_binary_add_standard)
-  # Initialise the file-path with the standard location
-  set (_binary_path batches)
-  # If a parameter is given, take that as the file-path
-  if (${ARGC} GREATER 0)
-    set (_binary_path ${ARGV0})
-  endif (${ARGC} GREATER 0)
-
-  # Register the binary
-  add_executable (${MODULE_NAME} ${_binary_path}/${MODULE_NAME}.cpp)
-
-  # Register the dependencies on which the binary depends upon
-  target_link_libraries (${MODULE_NAME}
-    ${PROJ_DEP_LIBS_FOR_BIN} ${MODULE_LIB_TARGET} ${_intermodule_dependencies})
-
-  # Register the binary target in the project (for reporting purpose)
-  set (PROJ_ALL_BIN_TARGETS ${PROJ_ALL_BIN_TARGETS} ${MODULE_NAME} PARENT_SCOPE)
-endmacro (module_binary_add_standard)
-
-##
-# Binary installation
-# The parameter corresponds to additional binaries to be installed.
-# When no parameter is given, only the standard binary is installed.
-macro (module_binary_install_all)
-  install (TARGETS ${MODULE_NAME}
-    EXPORT ${LIB_DEPENDENCY_EXPORT}
-    RUNTIME DESTINATION "${INSTALL_BIN_DIR}" COMPONENT runtime)
-endmacro (module_binary_install_all)
 
 
 ###################################################################
@@ -807,7 +909,10 @@ endmacro (add_test_suites)
 macro (module_test_add_suite _test_name _test_sources)
   if (Boost_FOUND)
     # Register the test binary target
-    add_executable (${_test_name} ${_test_sources})
+    add_executable (${_test_name}tst ${_test_sources})
+    set_target_properties (${_test_name}tst PROPERTIES
+      OUTPUT_NAME ${_test_name})
+
     message (STATUS "Test '${_test_name}' to be built with '${_test_sources}'")
 
     # Build the list of library targets on which that test depends upon
@@ -819,23 +924,28 @@ macro (module_test_add_suite _test_name _test_sources)
     endforeach (_arg_lib)
 
     # Tell the test binary that it depends on all those libraries
-    target_link_libraries (${_test_name} ${_library_list} 
+    target_link_libraries (${_test_name}tst ${_library_list} 
       ${MODULE_LIB_TARGET} ${PROJ_DEP_LIBS_FOR_TST})
 
     # Register the binary target in the module
-    list (APPEND ${MODULE_NAME}_ALL_TST_TARGETS ${_test_name})
+    list (APPEND ${MODULE_NAME}_ALL_TST_TARGETS ${_test_name}tst)
 
     # Register the test with CMake/CTest
     if (WIN32)
-      add_test (${_test_name} ${_test_name}.exe)
+      add_test (${_test_name}tst ${_test_name}.exe)
     else (WIN32)
-      add_test (${_test_name} ${_test_name})
+      add_test (${_test_name}tst ${_test_name})
     endif (WIN32)
   endif (Boost_FOUND)
 
   # Register the binary target in the project (for reporting purpose)
   list (APPEND PROJ_ALL_TST_TARGETS ${${MODULE_NAME}_ALL_TST_TARGETS})
   set (PROJ_ALL_TST_TARGETS ${PROJ_ALL_TST_TARGETS} PARENT_SCOPE)
+
+  # Register, for reporting purpose, the list of tests to be checked
+  # for that module
+  list (APPEND ${MODULE_NAME}_ALL_TESTS ${${MODULE_NAME}_ALL_TST_TARGETS})
+  set (${MODULE_NAME}_ALL_TESTS ${${MODULE_NAME}_ALL_TESTS} PARENT_SCOPE)
 
 endmacro (module_test_add_suite)
 
@@ -908,12 +1018,12 @@ endmacro (install_dev_helper_files)
 macro (display_boost)
   if (Boost_FOUND)
     message (STATUS "* Boost:")
-    message (STATUS "  - Boost_VERSION ............. : ${Boost_VERSION}")
-    message (STATUS "  - Boost_LIB_VERSION ......... : ${Boost_LIB_VERSION}")
-    message (STATUS "  - Boost_HUMAN_VERSION ....... : ${Boost_HUMAN_VERSION}")
-    message (STATUS "  - Boost_INCLUDE_DIRS ........ : ${Boost_INCLUDE_DIRS}")
-    message (STATUS "  - Boost required components . : ${BOOST_REQUIRED_COMPONENTS}")
-    message (STATUS "  - Boost required libraries .. : ${BOOST_REQUIRED_LIBS}")
+    message (STATUS "  - Boost_VERSION .............. : ${Boost_VERSION}")
+    message (STATUS "  - Boost_LIB_VERSION .......... : ${Boost_LIB_VERSION}")
+    message (STATUS "  - Boost_HUMAN_VERSION ........ : ${Boost_HUMAN_VERSION}")
+    message (STATUS "  - Boost_INCLUDE_DIRS ......... : ${Boost_INCLUDE_DIRS}")
+    message (STATUS "  - Boost required components .. : ${BOOST_REQUIRED_COMPONENTS}")
+    message (STATUS "  - Boost required libraries ... : ${BOOST_REQUIRED_LIBS}")
   endif (Boost_FOUND)
 endmacro (display_boost)
 
@@ -922,9 +1032,9 @@ macro (display_mysql)
   if (MYSQL_FOUND)
     message (STATUS)
     message (STATUS "* MySQL:")
-    message (STATUS "  - MYSQL_VERSION ............. : ${MYSQL_VERSION}")
-    message (STATUS "  - MYSQL_INCLUDE_DIR ......... : ${MYSQL_INCLUDE_DIR}")
-    message (STATUS "  - MYSQL_LIBRARIES ........... : ${MYSQL_LIBRARIES}")
+    message (STATUS "  - MYSQL_VERSION .............. : ${MYSQL_VERSION}")
+    message (STATUS "  - MYSQL_INCLUDE_DIR .......... : ${MYSQL_INCLUDE_DIR}")
+    message (STATUS "  - MYSQL_LIBRARIES ............ : ${MYSQL_LIBRARIES}")
   endif (MYSQL_FOUND)
 endmacro (display_mysql)
 
@@ -933,11 +1043,11 @@ macro (display_soci)
   if (SOCI_FOUND)
     message (STATUS)
     message (STATUS "* SOCI:")
-    message (STATUS "  - SOCI_VERSION .............. : ${SOCI_VERSION}")
-    message (STATUS "  - SOCI_INCLUDE_DIR .......... : ${SOCI_INCLUDE_DIR}")
-    message (STATUS "  - SOCIMYSQL_INCLUDE_DIR ..... : ${SOCIMYSQL_INCLUDE_DIR}")
-    message (STATUS "  - SOCI_LIBRARIES ............ : ${SOCI_LIBRARIES}")
-    message (STATUS "  - SOCIMYSQL_LIBRARIES ....... : ${SOCIMYSQL_LIBRARIES}")
+    message (STATUS "  - SOCI_VERSION ............... : ${SOCI_VERSION}")
+    message (STATUS "  - SOCI_INCLUDE_DIR ........... : ${SOCI_INCLUDE_DIR}")
+    message (STATUS "  - SOCIMYSQL_INCLUDE_DIR ...... : ${SOCIMYSQL_INCLUDE_DIR}")
+    message (STATUS "  - SOCI_LIBRARIES ............. : ${SOCI_LIBRARIES}")
+    message (STATUS "  - SOCIMYSQL_LIBRARIES ........ : ${SOCIMYSQL_LIBRARIES}")
   endif (SOCI_FOUND)
 endmacro (display_soci)
 
@@ -946,71 +1056,84 @@ macro (display_stdair)
   if (StdAir_FOUND)
     message (STATUS)
     message (STATUS "* StdAir:")
-    message (STATUS "  - STDAIR_VERSION ............ : ${STDAIR_VERSION}")
-    message (STATUS "  - STDAIR_BINARY_DIRS ........ : ${STDAIR_BINARY_DIRS}")
-    message (STATUS "  - STDAIR_EXECUTABLES ........ : ${STDAIR_EXECUTABLES}")
-    message (STATUS "  - STDAIR_LIBRARY_DIRS ....... : ${STDAIR_LIBRARY_DIRS}")
-    message (STATUS "  - STDAIR_LIBRARIES .......... : ${STDAIR_LIBRARIES}")
-    message (STATUS "  - STDAIR_INCLUDE_DIRS ....... : ${STDAIR_INCLUDE_DIRS}")
-    message (STATUS "  - STDAIR_SAMPLE_DIR ......... : ${STDAIR_SAMPLE_DIR}")
+    message (STATUS "  - STDAIR_VERSION ............. : ${STDAIR_VERSION}")
+    message (STATUS "  - STDAIR_BINARY_DIRS ......... : ${STDAIR_BINARY_DIRS}")
+    message (STATUS "  - STDAIR_EXECUTABLES ......... : ${STDAIR_EXECUTABLES}")
+    message (STATUS "  - STDAIR_LIBRARY_DIRS ........ : ${STDAIR_LIBRARY_DIRS}")
+    message (STATUS "  - STDAIR_LIBRARIES ........... : ${STDAIR_LIBRARIES}")
+    message (STATUS "  - STDAIR_INCLUDE_DIRS ........ : ${STDAIR_INCLUDE_DIRS}")
+    message (STATUS "  - STDAIR_SAMPLE_DIR .......... : ${STDAIR_SAMPLE_DIR}")
   endif (StdAir_FOUND)
 endmacro (display_stdair)
+
+##
+macro (display_status_all_modules)
+  foreach (_module_name ${PROJ_ALL_MOD_FOR_BLD})
+    message (STATUS "* Module ....................... : ${_module_name}")
+    message (STATUS "  + Layers to be built ......... : ${${_module_name}_ALL_LAYERS}")
+    message (STATUS "  + Dependencies on other layers : ${${_module_name}_INTER_TARGETS}")
+    message (STATUS "  + Libraries to be built ...... : ${${_module_name}_ALL_LIBS}")
+    message (STATUS "  + Executables to be built .... : ${${_module_name}_ALL_EXECS}")
+    message (STATUS "  + Test to be checked ......... : ${${_module_name}_ALL_TESTS}")
+  endforeach (_module_name)
+endmacro (display_status_all_modules)
 
 ##
 macro (display_status)
   message (STATUS)
   message (STATUS "=============================================================")
-  message (STATUS "---------------------------")
-  message (STATUS "--- Project Information ---")
-  message (STATUS "---------------------------")
-  message (STATUS "PROJECT_NAME = ${PROJECT_NAME}")
-  message (STATUS "PACKAGE_PRETTY_NAME = ${PACKAGE_PRETTY_NAME}")
-  message (STATUS "PACKAGE = ${PACKAGE}")
-  message (STATUS "PACKAGE_NAME = ${PACKAGE_NAME}")
-  message (STATUS "PACKAGE_VERSION = ${PACKAGE_VERSION}")
-  message (STATUS "GENERIC_LIB_VERSION = ${GENERIC_LIB_VERSION}")
-  message (STATUS "GENERIC_LIB_SOVERSION = ${GENERIC_LIB_SOVERSION}")
+  message (STATUS "----------------------------------")
+  message (STATUS "---     Project Information    ---")
+  message (STATUS "----------------------------------")
+  message (STATUS "PROJECT_NAME ................... : ${PROJECT_NAME}")
+  message (STATUS "PACKAGE_PRETTY_NAME ............ : ${PACKAGE_PRETTY_NAME}")
+  message (STATUS "PACKAGE ........................ : ${PACKAGE}")
+  message (STATUS "PACKAGE_NAME ................... : ${PACKAGE_NAME}")
+  message (STATUS "PACKAGE_VERSION ................ : ${PACKAGE_VERSION}")
+  message (STATUS "GENERIC_LIB_VERSION ............ : ${GENERIC_LIB_VERSION}")
+  message (STATUS "GENERIC_LIB_SOVERSION .......... : ${GENERIC_LIB_SOVERSION}")
   message (STATUS)
-  message (STATUS "---------------------------")
-  message (STATUS "--- Build Configuration ---")
-  message (STATUS "---------------------------")
-  message (STATUS "Modules to build ..... : ${PROJ_ALL_MOD_FOR_BLD}")
-  message (STATUS "Libraries to build ... : ${PROJ_ALL_LIB_TARGETS}")
-  message (STATUS "Binaries to build .... : ${PROJ_ALL_BIN_TARGETS}")
-  message (STATUS "Modules to test ...... : ${PROJ_ALL_MOD_FOR_TST}")
-  message (STATUS "Binaries to test ..... : ${PROJ_ALL_TST_TARGETS}")
-  message (STATUS "BUILD_SHARED_LIBS = ${BUILD_SHARED_LIBS}")
-  message (STATUS "CMAKE_BUILD_TYPE = ${CMAKE_BUILD_TYPE}")
-  message (STATUS "CMAKE_MODULE_PATH = ${CMAKE_MODULE_PATH}")
-  message (STATUS "CMAKE_INSTALL_PREFIX = ${CMAKE_INSTALL_PREFIX}")
+  message (STATUS "----------------------------------")
+  message (STATUS "---     Build Configuration    ---")
+  message (STATUS "----------------------------------")
+  message (STATUS "Modules to build ............... : ${PROJ_ALL_MOD_FOR_BLD}")
+  message (STATUS "Libraries to build ............. : ${PROJ_ALL_LIB_TARGETS}")
+  message (STATUS "Binaries to build .............. : ${PROJ_ALL_BIN_TARGETS}")
+  message (STATUS "Modules to test ................ : ${PROJ_ALL_MOD_FOR_TST}")
+  message (STATUS "Binaries to test ............... : ${PROJ_ALL_TST_TARGETS}")
+  display_status_all_modules ()
+  message (STATUS "BUILD_SHARED_LIBS .............. : ${BUILD_SHARED_LIBS}")
+  message (STATUS "CMAKE_BUILD_TYPE ............... : ${CMAKE_BUILD_TYPE}")
+  message (STATUS "CMAKE_MODULE_PATH .............. : ${CMAKE_MODULE_PATH}")
+  message (STATUS "CMAKE_INSTALL_PREFIX ........... : ${CMAKE_INSTALL_PREFIX}")
   message (STATUS)
   message (STATUS "----------------------------------")
   message (STATUS "--- Installation Configuration ---")
   message (STATUS "----------------------------------")
-  message (STATUS "INSTALL_LIB_DIR = ${INSTALL_LIB_DIR}")
-  message (STATUS "INSTALL_BIN_DIR = ${INSTALL_BIN_DIR}")
-  message (STATUS "INSTALL_INCLUDE_DIR = ${INSTALL_INCLUDE_DIR}")
-  message (STATUS "INSTALL_DATA_DIR = ${INSTALL_DATA_DIR}")
-  message (STATUS "INSTALL_SAMPLE_DIR = ${INSTALL_SAMPLE_DIR}")
-  message (STATUS "INSTALL_DOC = ${INSTALL_DOC}" )
+  message (STATUS "INSTALL_LIB_DIR ................ : ${INSTALL_LIB_DIR}")
+  message (STATUS "INSTALL_BIN_DIR ................ : ${INSTALL_BIN_DIR}")
+  message (STATUS "INSTALL_INCLUDE_DIR ............ : ${INSTALL_INCLUDE_DIR}")
+  message (STATUS "INSTALL_DATA_DIR ............... : ${INSTALL_DATA_DIR}")
+  message (STATUS "INSTALL_SAMPLE_DIR ............. : ${INSTALL_SAMPLE_DIR}")
+  message (STATUS "INSTALL_DOC .................... : ${INSTALL_DOC}" )
   message (STATUS)
-  message (STATUS "-------------------------------")
-  message (STATUS "--- Packaging Configuration ---")
-  message (STATUS "-------------------------------")
-  message (STATUS "CPACK_PACKAGE_CONTACT = ${CPACK_PACKAGE_CONTACT}")
-  message (STATUS "CPACK_PACKAGE_VENDOR = ${CPACK_PACKAGE_VENDOR}")
-  message (STATUS "CPACK_PACKAGE_VERSION = ${CPACK_PACKAGE_VERSION}")
-  message (STATUS "CPACK_PACKAGE_DESCRIPTION_FILE = ${CPACK_PACKAGE_DESCRIPTION_FILE}")
-  message (STATUS "CPACK_RESOURCE_FILE_LICENSE = ${CPACK_RESOURCE_FILE_LICENSE}")
-  message (STATUS "CPACK_GENERATOR = ${CPACK_GENERATOR}")
-  message (STATUS "CPACK_DEBIAN_PACKAGE_DEPENDS = ${CPACK_DEBIAN_PACKAGE_DEPENDS}")
-  message (STATUS "CPACK_SOURCE_GENERATOR = ${CPACK_SOURCE_GENERATOR}")
-  message (STATUS "CPACK_SOURCE_PACKAGE_FILE_NAME = ${CPACK_SOURCE_PACKAGE_FILE_NAME}")
+  message (STATUS "----------------------------------")
+  message (STATUS "---   Packaging Configuration  ---")
+  message (STATUS "----------------------------------")
+  message (STATUS "CPACK_PACKAGE_CONTACT .......... : ${CPACK_PACKAGE_CONTACT}")
+  message (STATUS "CPACK_PACKAGE_VENDOR ........... : ${CPACK_PACKAGE_VENDOR}")
+  message (STATUS "CPACK_PACKAGE_VERSION .......... : ${CPACK_PACKAGE_VERSION}")
+  message (STATUS "CPACK_PACKAGE_DESCRIPTION_FILE . : ${CPACK_PACKAGE_DESCRIPTION_FILE}")
+  message (STATUS "CPACK_RESOURCE_FILE_LICENSE .... : ${CPACK_RESOURCE_FILE_LICENSE}")
+  message (STATUS "CPACK_GENERATOR ................ : ${CPACK_GENERATOR}")
+  message (STATUS "CPACK_DEBIAN_PACKAGE_DEPENDS ... : ${CPACK_DEBIAN_PACKAGE_DEPENDS}")
+  message (STATUS "CPACK_SOURCE_GENERATOR ......... : ${CPACK_SOURCE_GENERATOR}")
+  message (STATUS "CPACK_SOURCE_PACKAGE_FILE_NAME . : ${CPACK_SOURCE_PACKAGE_FILE_NAME}")
   #
   message (STATUS)
-  message (STATUS "--------------------------")
-  message (STATUS "--- External libraries ---")
-  message (STATUS "--------------------------")
+  message (STATUS "---------------------------------")
+  message (STATUS "---     External libraries    ---")
+  message (STATUS "---------------------------------")
   #
   display_boost ()
   display_mysql ()
