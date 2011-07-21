@@ -37,16 +37,19 @@ namespace AIRRAC {
     void storeYieldId::operator() (unsigned int iYieldId,
                                    boost::spirit::qi::unused_type,
                                    boost::spirit::qi::unused_type) const {
-      _yieldRule._yieldId = iYieldId;
+      _yieldRule.setYieldID (iYieldId);
       
       // DEBUG
-      //STDAIR_LOG_DEBUG ( "Yield Id: " << _yieldRule._yieldId);
+      //STDAIR_LOG_DEBUG ( "Yield Id: " << _yieldRule.getYieldID ());
 
-      _yieldRule._airlineCode = "";
-      _yieldRule._classCode = "";
-      _yieldRule._airlineCodeList.clear();
-      _yieldRule._classCodeList.clear();
+      stdair::AirlineCode_T lEmptyAirlineCode ("");
+      _yieldRule.setAirlineCode(lEmptyAirlineCode);
+      _yieldRule.clearAirlineCodeList();
+      stdair::ClassCode_T lEmptyClassCode ("");
+      _yieldRule.setClassCode(lEmptyClassCode);
+      _yieldRule.clearClassCodeList();
       _yieldRule._itSeconds = 0; 
+
     }
     
     // //////////////////////////////////////////////////////////////////
@@ -60,9 +63,9 @@ namespace AIRRAC {
                                   boost::spirit::qi::unused_type,
                                   boost::spirit::qi::unused_type) const {
        stdair::AirportCode_T lOrigin (iChar.begin(), iChar.end());
+       _yieldRule.setOrigin (lOrigin);
        // DEBUG
-       //STDAIR_LOG_DEBUG ( "Origin: " << lOrigin);
-       _yieldRule._origin = lOrigin;
+       //STDAIR_LOG_DEBUG ( "Origin: " << _yieldRule.getOrigin ());
     }
 
     // //////////////////////////////////////////////////////////////////
@@ -76,10 +79,32 @@ namespace AIRRAC {
                                        boost::spirit::qi::unused_type,
                                        boost::spirit::qi::unused_type) const {
        stdair::AirportCode_T lDestination (iChar.begin(), iChar.end());
+       _yieldRule.setDestination (lDestination);
        // DEBUG
-       //STDAIR_LOG_DEBUG ( "Destination: " << lDestination);
-       _yieldRule._destination = lDestination;
+       //STDAIR_LOG_DEBUG ( "Destination: " << _yieldRule.getDestination ());
     }
+
+    // //////////////////////////////////////////////////////////////////
+    storeTripType ::
+    storeTripType (YieldRuleStruct& ioYieldRule)
+      : ParserSemanticAction (ioYieldRule) {
+    }
+    
+    // //////////////////////////////////////////////////////////////////
+    void storeTripType::operator() (std::vector<char> iChar,
+                                    boost::spirit::qi::unused_type,
+                                    boost::spirit::qi::unused_type) const {
+      stdair::TripType_T lTripType (iChar.begin(), iChar.end());
+      if (lTripType == "OW" || lTripType == "RT") {
+         _yieldRule.setTripType (lTripType);
+      } else {
+        // ERROR
+        STDAIR_LOG_ERROR ("Invalid trip type  " << lTripType);
+      }                       
+      // DEBUG
+      //STDAIR_LOG_DEBUG ("TripType: " << _yieldRule.getTripType ());
+    }
+
     
     // //////////////////////////////////////////////////////////////////
     storeDateRangeStart::
@@ -91,9 +116,10 @@ namespace AIRRAC {
     void storeDateRangeStart::operator() (boost::spirit::qi::unused_type,
                                           boost::spirit::qi::unused_type,
                                           boost::spirit::qi::unused_type) const {
-      _yieldRule._dateRangeStart = _yieldRule.getDate();
+      stdair::Date_T lDateStart = _yieldRule.getDate ();
+      _yieldRule.setDateRangeStart (lDateStart);
       // DEBUG
-      //STDAIR_LOG_DEBUG ("Date Range Start: "<< _yieldRule._dateRangeStart);
+      //STDAIR_LOG_DEBUG ("Date Range Start: "<< _yieldRule.getDateRangeStart ());
     }
 
     // //////////////////////////////////////////////////////////////////
@@ -106,9 +132,10 @@ namespace AIRRAC {
     void storeDateRangeEnd::operator() (boost::spirit::qi::unused_type,
                                         boost::spirit::qi::unused_type,
                                         boost::spirit::qi::unused_type) const {
-       _yieldRule._dateRangeEnd = _yieldRule.getDate();
+      stdair::Date_T lDateEnd = _yieldRule.getDate ();
+      _yieldRule.setDateRangeEnd (lDateEnd);
        // DEBUG
-       //STDAIR_LOG_DEBUG ("Date Range End: " << _yieldRule._dateRangeEnd);
+       //STDAIR_LOG_DEBUG ("Date Range End: " << _yieldRule.getDateRangeEnd ());
     }
 
     // //////////////////////////////////////////////////////////////////
@@ -121,9 +148,10 @@ namespace AIRRAC {
     void storeStartRangeTime::operator() (boost::spirit::qi::unused_type,
                                           boost::spirit::qi::unused_type,
                                           boost::spirit::qi::unused_type) const {
-      _yieldRule._timeRangeStart = _yieldRule.getTime();
+      stdair::Duration_T lTimeStart = _yieldRule.getTime ();
+      _yieldRule.setTimeRangeStart (lTimeStart);
       // DEBUG
-      //STDAIR_LOG_DEBUG ("Time Range Start: " << _yieldRule._timeRangeStart);
+      //STDAIR_LOG_DEBUG ("Time Range Start: " << _yieldRule.getTimeRangeStart ());
       // Reset the number of seconds
       _yieldRule._itSeconds = 0;
     }
@@ -138,9 +166,10 @@ namespace AIRRAC {
     void storeEndRangeTime::operator() (boost::spirit::qi::unused_type,
                                         boost::spirit::qi::unused_type,
                                         boost::spirit::qi::unused_type) const {
-      _yieldRule._timeRangeEnd = _yieldRule.getTime();
+      stdair::Duration_T lTimeEnd = _yieldRule.getTime ();
+      _yieldRule.setTimeRangeEnd (lTimeEnd);
       // DEBUG
-      //STDAIR_LOG_DEBUG ("Time Range End: " << _yieldRule._timeRangeEnd);
+      //STDAIR_LOG_DEBUG ("Time Range End: " << _yieldRule.getTimeRangeEnd ());
       // Reset the number of seconds
       _yieldRule._itSeconds = 0;
     }
@@ -156,18 +185,18 @@ namespace AIRRAC {
                                boost::spirit::qi::unused_type,
                                boost::spirit::qi::unused_type) const {
       stdair::CityCode_T lPOS (iChar.begin(), iChar.end());
-      if (lPOS == _yieldRule._origin || lPOS == _yieldRule._destination) {
-        _yieldRule._pos = lPOS;
+      if (lPOS == _yieldRule.getOrigin() || lPOS == _yieldRule.getDestination() ) {
+        _yieldRule.setPOS (lPOS);
       } else if (lPOS == "ROW") {
-        _yieldRule._pos = "ROW";
+        _yieldRule.setPOS ("ROW");
       } else if (lPOS == stdair::DEFAULT_POS) {
-        _yieldRule._pos = stdair::DEFAULT_POS;
+        _yieldRule.setPOS (stdair::DEFAULT_POS);
       } else {
         // ERROR
         STDAIR_LOG_ERROR ("Invalid point of sale " << lPOS);
       }
       // DEBUG
-      //STDAIR_LOG_DEBUG ("POS: " << _yieldRule._pos);
+      //STDAIR_LOG_DEBUG ("POS: " << _yieldRule.getPOS ());
     }
 
     // //////////////////////////////////////////////////////////////////
@@ -184,10 +213,10 @@ namespace AIRRAC {
       ostr << iChar;
       std::string cabinCodeStr = ostr.str();
       const stdair::CabinCode_T lCabinCode (cabinCodeStr);
-      _yieldRule._cabinCode = lCabinCode;
+      _yieldRule.setCabinCode (lCabinCode);
      
       // DEBUG
-      //STDAIR_LOG_DEBUG ("Cabin Code: " << lCabinCode);                 
+      //STDAIR_LOG_DEBUG ("Cabin Code: " << _yieldRule.getCabinCode ());                 
     
     }
 
@@ -207,9 +236,9 @@ namespace AIRRAC {
         // ERROR
         STDAIR_LOG_ERROR ("Invalid channel " << lChannel);
       }
-      _yieldRule._channel = lChannel;
+      _yieldRule.setChannel (lChannel);
       // DEBUG
-      //STDAIR_LOG_DEBUG ("Channel: " << _yieldRule._channel);
+      //STDAIR_LOG_DEBUG ("Channel: " << _yieldRule.getChannel ());
     }
 
     // //////////////////////////////////////////////////////////////////
@@ -222,9 +251,9 @@ namespace AIRRAC {
     void storeYield::operator() (double iYield,
                                 boost::spirit::qi::unused_type,
                                 boost::spirit::qi::unused_type) const {
-      _yieldRule._yield = iYield;
+      _yieldRule.setYield (iYield);
       // DEBUG
-      //STDAIR_LOG_DEBUG ("Yield: " << _yieldRule._yield);
+      //STDAIR_LOG_DEBUG ("Yield: " << _yieldRule.getYield ());
     }
 
     // //////////////////////////////////////////////////////////////////
@@ -240,9 +269,9 @@ namespace AIRRAC {
 
       stdair::AirlineCode_T lAirlineCode (iChar.begin(), iChar.end());
       // Update the airline code
-      _yieldRule._airlineCode = lAirlineCode;
+      _yieldRule.setAirlineCode (lAirlineCode);
       // Insertion of this airline Code list in the whole AirlineCode name
-      _yieldRule._airlineCodeList.push_back (lAirlineCode);
+      _yieldRule.addAirlineCode (lAirlineCode); 
       // DEBUG
       //STDAIR_LOG_DEBUG ( "Airline code: " << lAirlineCode);
     }
@@ -264,8 +293,9 @@ namespace AIRRAC {
         ostr << *lItVector;
       }
       std::string classCodeStr = ostr.str();
+      stdair::ClassCode_T lClassCode (classCodeStr);
       // Insertion of this class Code list in the whole classCode name
-      _yieldRule._classCodeList.push_back(classCodeStr);
+      _yieldRule.addClassCode (lClassCode);
       // DEBUG
       //STDAIR_LOG_DEBUG ("Class Code: " << classCodeStr);
     }
@@ -285,7 +315,7 @@ namespace AIRRAC {
       // DEBUG
       // STDAIR_LOG_DEBUG ("Do End");
       // Generation of the yield rule object.
-      YieldRuleGenerator::createYieldRule (_bomRoot, _yieldRule);
+      YieldRuleGenerator::createAirportPair (_bomRoot, _yieldRule);
       STDAIR_LOG_DEBUG(_yieldRule.describe());
     }  
     
@@ -341,6 +371,7 @@ namespace AIRRAC {
       
       yield_rule =  yield_id
         >> ';' >> origin >> ';' >> destination
+        >> ';' >> tripType
         >> ';' >> dateRangeStart >> ';' >> dateRangeEnd
         >> ';' >> timeRangeStart >> ';' >> timeRangeEnd
         >> ';' >> point_of_sale >>  ';' >> cabinCode
@@ -355,6 +386,10 @@ namespace AIRRAC {
       
       destination =  
         bsq::repeat(3)[bsa::char_("A-Z")][storeDestination(_yieldRule)];
+
+      
+tripType =
+        bsq::repeat(2)[bsa::char_("A-Z")][storeTripType(_yieldRule)];
       
       dateRangeStart = date[storeDateRangeStart(_yieldRule)];
 
@@ -398,6 +433,7 @@ namespace AIRRAC {
       BOOST_SPIRIT_DEBUG_NODE (yield_id);
       BOOST_SPIRIT_DEBUG_NODE (origin);
       BOOST_SPIRIT_DEBUG_NODE (destination);
+      BOOST_SPIRIT_DEBUG_NODE (tripType);
       BOOST_SPIRIT_DEBUG_NODE (dateRangeStart);
       BOOST_SPIRIT_DEBUG_NODE (dateRangeEnd);
       BOOST_SPIRIT_DEBUG_NODE (date);
@@ -446,7 +482,7 @@ namespace AIRRAC {
     
   // //////////////////////////////////////////////////////////////////////
   bool YieldFileParser::generateYieldStore () {    
-    STDAIR_LOG_DEBUG ("Parsing yield store input file: " << _filename);
+    STDAIR_LOG_DEBUG ("Parsing yield input file: " << _filename);
 
     // File to be parsed
     const std::string* lFileName = &_filename;
@@ -480,16 +516,20 @@ namespace AIRRAC {
       
     if (hasParsingBeenSuccesful == false) {
       // TODO: decide whether to throw an exceqption
-      STDAIR_LOG_ERROR ("Parsing of yield store input file: " << _filename
+      STDAIR_LOG_ERROR ("Parsing of yield input file: " << _filename
                         << " failed");
+      throw YieldFileParsingFailedException ("Parsing of yield input file: "
+                                            + _filename + " failed");
     }
     if  (start != end) {
       // TODO: decide whether to throw an exception
-      STDAIR_LOG_ERROR ("Parsing of yield store input file: " << _filename
+      STDAIR_LOG_ERROR ("Parsing of yield input file: " << _filename
                         << " failed");
+      throw YieldFileParsingFailedException ("Parsing of yield input file: "
+                                            + _filename + " failed");
     }
     if (hasParsingBeenSuccesful == true && start == end) {
-      STDAIR_LOG_DEBUG ("Parsing of yield store input file: " << _filename
+      STDAIR_LOG_DEBUG ("Parsing of yield input file: " << _filename
       << " succeeded");
     }
     return hasParsingBeenSuccesful;

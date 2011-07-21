@@ -22,19 +22,17 @@ namespace AIRRAC {
 
   // //////////////////////////////////////////////////////////////////////
   void YieldRuleGenerator::
-  createYieldRule (stdair::BomRoot& ioBomRoot,
-                  YieldRuleStruct& iYieldRuleStruct) {
+  createAirportPair (stdair::BomRoot& ioBomRoot,
+                     const YieldRuleStruct& iYieldRuleStruct) {
 
     // Set the airport-pair primary key.
-    const stdair::AirportCode_T& lBoardPoint =
-      iYieldRuleStruct._origin;
-    const stdair::AirportCode_T& lOffPoint = 
-      iYieldRuleStruct._destination;
+    const stdair::AirportCode_T& lBoardPoint = iYieldRuleStruct.getOrigin ();
+    const stdair::AirportCode_T& lOffPoint = iYieldRuleStruct.getDestination ();
     const stdair::AirportPairKey lAirportPairKey (lBoardPoint, lOffPoint);
-  
-    // If the AirportPair object corresponding to the yield rule set
-    // having the same origin and destination airport does not exist, create
-    // it and link it to the ioBomRoot object.
+
+    // Check that the airport-pair object is not already existing. If an
+    // airport-pair object with the same key has not already been created,
+    // create it and link it to the ioBomRoot object.
     stdair::AirportPair* lAirportPair_ptr = stdair::BomManager::
       getObjectPtr<stdair::AirportPair> (ioBomRoot, lAirportPairKey.toString());
     if (lAirportPair_ptr == NULL) {
@@ -43,125 +41,185 @@ namespace AIRRAC {
       stdair::FacBomManager::addToListAndMap (ioBomRoot, *lAirportPair_ptr);
       stdair::FacBomManager::linkWithParent (ioBomRoot, *lAirportPair_ptr);
     }
+    // Sanity check.
     assert (lAirportPair_ptr != NULL);
 
-    // Set the point-of-sale-channel primary key.
-    const stdair::CityCode_T& lPoS = 
-      iYieldRuleStruct._pos;
-    const stdair::ChannelLabel_T& lChannel = 
-      iYieldRuleStruct._channel;
-    const stdair::PosChannelKey lYieldPosChannelKey (lPoS, lChannel);  
+    stdair::AirportPair& lAirportPair = *lAirportPair_ptr;
+    // Generate the date-period object corresponding to the given
+    // yieldRule.  
+    createDateRange (lAirportPair, iYieldRuleStruct);
+    
+  }
 
-    // If the YieldPosChannel object corresponding to the yield rule set
-    // having the same city code and the same channel does not exist,
-    // create it and link it to the AirportPair object.     
-    stdair::PosChannel* lYieldPosChannel_ptr = stdair::BomManager::
-      getObjectPtr<stdair::PosChannel> (*lAirportPair_ptr, 
-                                        lYieldPosChannelKey.toString());
-    if (lYieldPosChannel_ptr == NULL) {
-      lYieldPosChannel_ptr = &stdair::FacBom<stdair::PosChannel>::
-        instance().create (lYieldPosChannelKey);
-      stdair::FacBomManager::
-        addToListAndMap (*lAirportPair_ptr, *lYieldPosChannel_ptr);
-      stdair::FacBomManager::
-        linkWithParent (*lAirportPair_ptr, *lYieldPosChannel_ptr);
-    }
-    assert (lYieldPosChannel_ptr != NULL);   
 
-    // Set the yield date-period primary key.
+  // //////////////////////////////////////////////////////////////////////
+  void YieldRuleGenerator::
+  createDateRange (stdair::AirportPair& iAirportPair,
+                   const YieldRuleStruct& iYieldRuleStruct) {
+
+    // Create the yield date-period primary key.
     const stdair::Date_T& lDateRangeStart = 
-      iYieldRuleStruct._dateRangeStart;
+      iYieldRuleStruct.getDateRangeStart ();
     const stdair::Date_T& lDateRangeEnd = 
-      iYieldRuleStruct._dateRangeEnd;
+      iYieldRuleStruct.getDateRangeEnd ();
     const stdair::DatePeriod_T lDatePeriod (lDateRangeStart, lDateRangeEnd); 
     const stdair::DatePeriodKey lYieldDatePeriodKey (lDatePeriod);
 
-    // If the YieldDatePeriod object corresponding to the yield rule set
-    // having the same date-period does not exist, create it and link it
-    // to the YieldPosChannel object.     
+    // Check that the date-period object is not already existing.
+    // If a date-period object with the same key has not already been
+    // created, create it and link it to the airport-pair object.
     stdair::DatePeriod* lYieldDatePeriod_ptr = stdair::BomManager::
-      getObjectPtr<stdair::DatePeriod> (*lYieldPosChannel_ptr, 
+      getObjectPtr<stdair::DatePeriod> (iAirportPair, 
                                         lYieldDatePeriodKey.toString());
     if (lYieldDatePeriod_ptr == NULL) {
       lYieldDatePeriod_ptr = &stdair::FacBom<stdair::DatePeriod>::
         instance().create (lYieldDatePeriodKey);
       stdair::FacBomManager::
-        addToListAndMap (*lYieldPosChannel_ptr, *lYieldDatePeriod_ptr);
+        addToListAndMap (iAirportPair, *lYieldDatePeriod_ptr);
       stdair::FacBomManager::
-        linkWithParent (*lYieldPosChannel_ptr, *lYieldDatePeriod_ptr);
+        linkWithParent (iAirportPair, *lYieldDatePeriod_ptr);
     }
+    // Sanity check.
     assert (lYieldDatePeriod_ptr != NULL);
+
+    stdair::DatePeriod& lDateRange = *lYieldDatePeriod_ptr;
+    // Generate the point_of_sale-channel object corresponding to
+    // the given yieldRule.
+    createPOSChannel (lDateRange, iYieldRuleStruct);
+    
+  }
+
+  // //////////////////////////////////////////////////////////////////////
+  void YieldRuleGenerator::
+  createPOSChannel (stdair::DatePeriod& iDatePeriod,
+                    const YieldRuleStruct& iYieldRuleStruct) {
+
+    // Create the point-of-sale-channel primary key.
+    const stdair::CityCode_T& lPoS = iYieldRuleStruct.getPOS ();
+    const stdair::ChannelLabel_T& lChannel = iYieldRuleStruct.getChannel ();
+    const stdair::PosChannelKey lYieldPosChannelKey (lPoS, lChannel);
+
+    // Check that the point_of_sale-channel object is not already existing.
+    // If a point_of_sale-channel object with the same key has not already
+    // been created, create it and link it to the date-period object.     
+    stdair::PosChannel* lYieldPosChannel_ptr = stdair::BomManager::
+      getObjectPtr<stdair::PosChannel> (iDatePeriod,
+                                        lYieldPosChannelKey.toString());
+    if (lYieldPosChannel_ptr == NULL) {
+      lYieldPosChannel_ptr = &stdair::FacBom<stdair::PosChannel>::
+        instance().create (lYieldPosChannelKey);
+      stdair::FacBomManager::
+        addToListAndMap (iDatePeriod, *lYieldPosChannel_ptr);
+      stdair::FacBomManager::
+        linkWithParent (iDatePeriod, *lYieldPosChannel_ptr);
+    }
+    // Sanity check.
+    assert (lYieldPosChannel_ptr != NULL);
+
+    stdair::PosChannel& lPosChannel = *lYieldPosChannel_ptr;
+    // Generate the time-period object corresponding to the given
+    // yieldRule.
+    createTimeRange (lPosChannel, iYieldRuleStruct);
+
+  }
+
+  // //////////////////////////////////////////////////////////////////////
+  void YieldRuleGenerator::
+  createTimeRange (stdair::PosChannel& iPosChannel,
+                   const YieldRuleStruct& iYieldRuleStruct) {
    
-    // Set the yield time-period primary key.
+    // Create the yield time-period primary key.
     const stdair::Time_T& lTimeRangeStart
-      = iYieldRuleStruct._timeRangeStart;
+      = iYieldRuleStruct.getTimeRangeStart ();
     const stdair::Time_T& lTimeRangeEnd
-      = iYieldRuleStruct._timeRangeEnd;
+      = iYieldRuleStruct.getTimeRangeEnd ();
     const stdair::TimePeriodKey lYieldTimePeriodKey (lTimeRangeStart,
                                                     lTimeRangeEnd);
 
-    // If the YieldTimePeriod object corresponding to the yield rule set
-    // having the same time-period does not exist, create it and link it
-    // to the YieldDatePeriod object.     
+    // Check that the time-period object is not already existing.
+    // If a time-period object with the same key has not already been
+    // created, create it and link it to the point_of_sale-channel object.      
     stdair::TimePeriod* lYieldTimePeriod_ptr = stdair::BomManager::
-      getObjectPtr<stdair::TimePeriod> (*lYieldDatePeriod_ptr, 
+      getObjectPtr<stdair::TimePeriod> (iPosChannel, 
                                         lYieldTimePeriodKey.toString());
     if (lYieldTimePeriod_ptr == NULL) {
       lYieldTimePeriod_ptr = &stdair::FacBom<stdair::TimePeriod>::
         instance().create (lYieldTimePeriodKey);
       stdair::FacBomManager::
-        addToListAndMap (*lYieldDatePeriod_ptr, *lYieldTimePeriod_ptr);
+        addToListAndMap (iPosChannel, *lYieldTimePeriod_ptr);
       stdair::FacBomManager::
-        linkWithParent (*lYieldDatePeriod_ptr, *lYieldTimePeriod_ptr);
+        linkWithParent (iPosChannel, *lYieldTimePeriod_ptr);
     }
+    // Sanity check.
     assert (lYieldTimePeriod_ptr != NULL);
 
-    // Set the yield features primary key.
-    stdair::CabinCode_T lCabinCode = iYieldRuleStruct._cabinCode;
-    const stdair::YieldFeaturesKey lYieldFeaturesKey (lCabinCode);
+    stdair::TimePeriod& lTimeRange = *lYieldTimePeriod_ptr;
+    // Generate the yield-features object corresponding to the given
+    // yieldRule.
+    createYieldFeatures (lTimeRange, iYieldRuleStruct);
 
-    // If the YieldFeatures object corresponding to the yield rule set
-    // having the same cabin-code and yield does not exist, create it
-    // and link it to the YieldTimePeriod object.     
+  }
+
+  // //////////////////////////////////////////////////////////////////////
+  void YieldRuleGenerator::
+  createYieldFeatures (stdair::TimePeriod& iTimePeriod,
+                      const YieldRuleStruct& iYieldRuleStruct) {
+  
+    // Create the yield-features primary key.
+    const stdair::TripType_T& lTripType = iYieldRuleStruct.getTripType ();
+    stdair::CabinCode_T lCabinCode = iYieldRuleStruct.getCabinCode ();
+    const stdair::YieldFeaturesKey lYieldFeaturesKey (lTripType, lCabinCode);
+
+    // Check that the yield features object is not already existing.
+    // If a yield features object with the same key has not already been
+    // created, create it and link it to the time-period object.     
     stdair::YieldFeatures* lYieldFeatures_ptr = stdair::BomManager::
-      getObjectPtr<stdair::YieldFeatures > (*lYieldTimePeriod_ptr, 
+      getObjectPtr<stdair::YieldFeatures > (iTimePeriod,
                                             lYieldFeaturesKey.toString());
     if (lYieldFeatures_ptr == NULL) {
       lYieldFeatures_ptr = &stdair::FacBom<stdair::YieldFeatures>::
         instance().create (lYieldFeaturesKey);
       stdair::FacBomManager::
-        addToListAndMap (*lYieldTimePeriod_ptr, *lYieldFeatures_ptr);
+        addToListAndMap (iTimePeriod, *lYieldFeatures_ptr);
       stdair::FacBomManager::
-        linkWithParent (*lYieldTimePeriod_ptr, *lYieldFeatures_ptr);
+        linkWithParent (iTimePeriod, *lYieldFeatures_ptr);
     }
+    // Sanity check.
     assert (lYieldFeatures_ptr != NULL);
 
-    // Generate AirlineClassList and link them to their YieldRule
+    stdair::YieldFeatures& lYieldFeatures = *lYieldFeatures_ptr;
+    // Generate the airline-class list object corresponding to the
+    // given yieldRule
+    createAirlineClassList (lYieldFeatures, iYieldRuleStruct);
+
+  }
+
+  // //////////////////////////////////////////////////////////////////////
+  void YieldRuleGenerator::
+  createAirlineClassList (stdair::YieldFeatures& iYieldFeatures,
+                          const YieldRuleStruct& iYieldRuleStruct) {
+
+    // Create the AirlineClassList primary key.
     const unsigned int lAirlineListSize =
       iYieldRuleStruct.getAirlineListSize();
     const unsigned int lClassCodeListSize =
       iYieldRuleStruct.getClassCodeListSize();
     assert (lAirlineListSize == lClassCodeListSize);
-    const stdair::AirlineClassListKey lAirlineClassListKey (iYieldRuleStruct._airlineCodeList, iYieldRuleStruct._classCodeList);
+    const stdair::AirlineClassListKey
+      lAirlineClassListKey (iYieldRuleStruct.getAirlineList() ,
+                            iYieldRuleStruct.getClassCodeList());
+    const stdair::Yield_T& lYield = iYieldRuleStruct.getYield ();
 
-    // Create the AirlineClassList object and link it to the
-    // YieldFeatures object.
-    stdair::AirlineClassList* lAirlineClassList_ptr = stdair::BomManager::
-      getObjectPtr<stdair::AirlineClassList> (*lYieldFeatures_ptr,
-                                              lAirlineClassListKey.toString());
-    if (lAirlineClassList_ptr != NULL) {
-      STDAIR_LOG_ERROR ("Dublicated airline class list / yield: "
-                        << lAirlineClassListKey.toString());
-      assert (false);
-    }
-
-    lAirlineClassList_ptr = &stdair::
-      FacBom<stdair::AirlineClassList>::instance().create(lAirlineClassListKey);
-    stdair::FacBomManager::
-      addToListAndMap (*lYieldFeatures_ptr, *lAirlineClassList_ptr); 
-    stdair::FacBomManager::
-      linkWithParent(*lYieldFeatures_ptr, *lAirlineClassList_ptr); 
-    lAirlineClassList_ptr->setYield (iYieldRuleStruct._yield);
+    // Create the airline class list object and link it to the yieldures
+    // object.    
+    stdair::AirlineClassList* lAirlineClassList_ptr =
+      &stdair::FacBom<stdair::AirlineClassList>::instance().
+      create(lAirlineClassListKey);
+    lAirlineClassList_ptr->setYield (lYield);
+    stdair::FacBomManager::addToListAndMap (iYieldFeatures,
+                                            *lAirlineClassList_ptr); 
+    stdair::FacBomManager::linkWithParent (iYieldFeatures,
+                                           *lAirlineClassList_ptr);
   }
         
 }

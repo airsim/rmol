@@ -62,6 +62,16 @@ namespace AIRRAC {
       void operator() (std::vector<char>,
                        boost::spirit::qi::unused_type,
                        boost::spirit::qi::unused_type) const;
+    };   
+
+    /** Store the parsed customer trip type. */
+    struct storeTripType : public ParserSemanticAction {
+      /** Actor Constructor. */
+      storeTripType (YieldRuleStruct&);
+      /** Actor Function (functor). */
+      void operator() (std::vector<char>,
+                       boost::spirit::qi::unused_type,
+                       boost::spirit::qi::unused_type) const;
     };
 
      /** Store the parsed start of the date range. */
@@ -210,9 +220,10 @@ namespace AIRRAC {
       // Instantiation of rules
       boost::spirit::qi::rule<stdair::iterator_t,
                               boost::spirit::ascii::space_type>
-      start, comments, yield_rule, yield_id, origin, destination, dateRangeStart,
-        dateRangeEnd, date, timeRangeStart, timeRangeEnd, time, point_of_sale,
-        cabinCode, channel, yield, segment, yield_rule_end;
+      start, comments, yield_rule, yield_id, origin, destination, tripType,
+        dateRangeStart, dateRangeEnd, date, timeRangeStart, timeRangeEnd,
+        time, point_of_sale, cabinCode, channel, yield, segment,
+        yield_rule_end;
       
       // Parser Context
       stdair::BomRoot& _bomRoot;
