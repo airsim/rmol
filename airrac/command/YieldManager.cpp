@@ -113,25 +113,13 @@ namespace AIRRAC {
             assert (false);
           }
 
-          // Retrieve the PoS-Channel.
-          const stdair::PosChannelKey lPosChannelKey (stdair::DEFAULT_POS,
-                                                      stdair::DEFAULT_CHANNEL);
-          stdair::PosChannel* lPosChannel_ptr = stdair::BomManager::
-            getObjectPtr<stdair::PosChannel> (*lAirportPair_ptr,
-                                              lPosChannelKey.toString());
-          if (lPosChannel_ptr == NULL) {
-            STDAIR_LOG_ERROR ("Cannot find yield corresponding to the PoS-"
-                              << "Channel: " << lPosChannelKey.toString());
-            assert (false);
-          }
-
           // Retrieve the boarding date and time
           const stdair::Date_T& lDate = lSD_ptr->getBoardingDate();
           const stdair::Duration_T& lTime = lSD_ptr->getBoardingTime();
 
           // Retrieve the corresponding date period.
           const stdair::DatePeriodList_T& lDatePeriodList =
-            stdair::BomManager::getList<stdair::DatePeriod> (*lPosChannel_ptr);
+            stdair::BomManager::getList<stdair::DatePeriod> (*lAirportPair_ptr);
           for (stdair::DatePeriodList_T::const_iterator itDatePeriod =
                  lDatePeriodList.begin();
                itDatePeriod != lDatePeriodList.end(); ++itDatePeriod) {
@@ -142,6 +130,19 @@ namespace AIRRAC {
               lDatePeriod_ptr->isDepartureDateValid (lDate);
 
             if (isDepartureDateValid == true) {
+
+              // Retrieve the PoS-Channel.
+              const stdair::PosChannelKey lPosChannelKey (stdair::DEFAULT_POS,
+                                                          stdair::DEFAULT_CHANNEL);
+              stdair::PosChannel* lPosChannel_ptr = stdair::BomManager::
+                getObjectPtr<stdair::PosChannel> (*lDatePeriod_ptr,
+                                                  lPosChannelKey.toString());
+              if (lPosChannel_ptr == NULL) {
+                STDAIR_LOG_ERROR ("Cannot find yield corresponding to the PoS-"
+                                  << "Channel: " << lPosChannelKey.toString());
+                assert (false);
+              }
+              
               // Retrieve the corresponding time period.
               const stdair::TimePeriodList_T& lTimePeriodList = stdair::
                 BomManager::getList<stdair::TimePeriod> (*lDatePeriod_ptr);
