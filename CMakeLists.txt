@@ -80,7 +80,7 @@ add_subdirectory (man)
 #####################################
 ##
 # Test suites
-add_test_suites (airrac ${PROJECT_NAME})
+add_test_suites (${PROJECT_NAME})
 
 
 #######################################
