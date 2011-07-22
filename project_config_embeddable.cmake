@@ -669,19 +669,21 @@ endmacro (module_library_add_standard)
 #  * The short name of the library to be built.
 #    Note that the library (CMake) target is derived directly from the library
 #    short name: a 'lib' suffix is just appended to the short name.
+#  * The directory where to find the header files.
 #  * The header files to be published/installed along with the library.
 #  * The source files to build the library.
 #    Note that the source files contain at least the header files. Hence,
 #    even when there are no .cpp source files, the .hpp files will appear.
 #
-# Note that the source files should be given as a single parameter,
+# Note that the header and source files should be given as single parameters,
 # i.e., enclosed by double quotes (").
 #
 # The additional parameters, if given, correspond to the names of the
 # modules this current module depends upon. Dependencies on the
 # external libraries (e.g., Boost, SOCI, StdAir) are automatically
 # appended, thanks to the get_external_libs() macro.
-macro (module_library_add_specific _lib_short_name _lib_headers _lib_sources)
+macro (module_library_add_specific
+	_lib_short_name _lib_dir _lib_headers _lib_sources)
   # Derive the library (CMake) target from its name
   set (_lib_target ${_lib_short_name}lib)
 
@@ -693,7 +695,7 @@ macro (module_library_add_specific _lib_short_name _lib_headers _lib_sources)
   set (_intermodule_dependencies "")
   foreach (_arg_module ${ARGV})
 
-    if (NOT "${_lib_short_name};${_lib_headers};${_lib_sources}" 
+    if (NOT "${_lib_dir};${_lib_short_name};${_lib_headers};${_lib_sources}" 
 	MATCHES "${_arg_module}")
       list (APPEND _intermodule_dependencies ${_arg_module}lib)
     endif ()
@@ -731,22 +733,16 @@ macro (module_library_add_specific _lib_short_name _lib_headers _lib_sources)
   # DEBUG
   #message ("DEBUG -- [${_lib_target}] _lib_headers = ${_lib_headers}")
 
-  # Register the library target in the project (for reporting purpose)
-  set (PROJ_ALL_LIB_TARGETS
-	${PROJ_ALL_LIB_TARGETS} ${MODULE_LIB_TARGET} PARENT_SCOPE)
-
   ##
   # Library name (and soname)
   if (WIN32)
     set_target_properties (${_lib_target} PROPERTIES 
       OUTPUT_NAME ${_lib_short_name} 
-      VERSION ${GENERIC_LIB_VERSION}
-      PUBLIC_HEADER "${_lib_headers}")
+      VERSION ${GENERIC_LIB_VERSION})
   else (WIN32)
     set_target_properties (${_lib_target} PROPERTIES 
       OUTPUT_NAME ${_lib_short_name}
-      VERSION ${GENERIC_LIB_VERSION} SOVERSION ${GENERIC_LIB_SOVERSION}
-      PUBLIC_HEADER "${_lib_headers}")
+      VERSION ${GENERIC_LIB_VERSION} SOVERSION ${GENERIC_LIB_SOVERSION})
   endif (WIN32)
 
   # If everything else is not enough for CMake to derive the language to
