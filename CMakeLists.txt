@@ -14,7 +14,7 @@ set_project_versions (99 99 99)
 # Project options
 # The parameters are:
 #  * whether or not the documentation must be built and installed
-set_project_options (off)
+set_project_options (on)
 
 
 #####################################
@@ -32,7 +32,7 @@ packaging_set_contact ("Denis Arnaud <denis_arnaud - at - users dot sourceforge 
 packaging_set_vendor ("Denis Arnaud")
 
 #
-packaging_set_other_options ()
+packaging_set_other_options (TBZ2 "TBZ2;TGZ")
 
 
 ########################################
@@ -70,13 +70,17 @@ if (${INSTALL_DOC} STREQUAL "ON")
   add_subdirectory (doc)
 endif (${INSTALL_DOC} STREQUAL "ON")
 
+##
+# Subdirs
+add_subdirectory (man)
+
 
 #####################################
 ##              Tests              ##
 #####################################
 ##
 # Test suites
-add_test_suites (${PROJECT_NAME})
+add_test_suites (airrac ${PROJECT_NAME})
 
 
 #######################################

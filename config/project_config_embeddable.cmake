@@ -754,20 +754,14 @@ macro (module_library_add_specific
   endif ("${_linker_lang}" STREQUAL "_linker_lang-NOTFOUND")
 
   ##
-  # Installation
-  set (_all_targets ${_lib_target})
-  foreach (_arg_lib_name ${${MODULE_NAME}_INTER_TARGETS})
-    list (APPEND _all_targets ${_arg_lib_name}lib)
-  endforeach (_arg_lib_name)
-
-  # Installation of the library binaries
-  install (TARGETS ${_all_targets}
+  # Installation of the library
+  install (TARGETS ${_lib_target}
     EXPORT ${LIB_DEPENDENCY_EXPORT}
     LIBRARY DESTINATION "${INSTALL_LIB_DIR}" COMPONENT runtime)
 
   # Register, for reporting purpose, the list of libraries to be built
   # and installed for that module
-  list (APPEND ${MODULE_NAME}_ALL_LIBS ${_all_targets})
+  list (APPEND ${MODULE_NAME}_ALL_LIBS ${_lib_target})
   set (${MODULE_NAME}_ALL_LIBS ${${MODULE_NAME}_ALL_LIBS} PARENT_SCOPE)
 
   # Install the header files for the library
@@ -872,22 +866,32 @@ endmacro (module_export_install)
 ##                            Tests                              ##
 ###################################################################
 #
-macro (add_test_suites _test_suite_dir_list)
+macro (add_test_suites)
+  #
+  set (_test_suite_dir_list ${ARGV})
+
   if (Boost_FOUND)
     # Tell CMake/CTest that tests will be performed
     enable_testing() 
 
-    #
+    # Browse all the modules, and register test suites for each of them
+    set (_check_target_list "")
     foreach (_module_name ${_test_suite_dir_list})
       set (${_module_name}_ALL_TST_TARGETS "")
       # Each individual test suite is specified within the dedicated
       # sub-directory. The CMake file within each of those test sub-directories
       # specifies a target named check_${_module_name}tst.
       add_subdirectory (test/${_module_name})
-      add_custom_target (check DEPENDS check_${_module_name}tst)
+
+      # Register, for book-keeping purpose (a few lines below), 
+      # the (CMake/CTest) test target of the current module 
+      list (APPEND _check_target_list check_${_module_name}tst)
     endforeach (_module_name)
 
-    # Register, for book-keeping purpose, the list of modules to be tested
+    # Register all the module (CMake/CTest) test targets at once
+    add_custom_target (check DEPENDS ${_check_target_list})
+
+    # Register, for reporting purpose, the list of modules to be tested
     set (PROJ_ALL_MOD_FOR_TST ${_test_suite_dir_list})
 
   endif (Boost_FOUND)

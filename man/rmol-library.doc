@@ -1,0 +1,43 @@
+/*!
+\page rmol-library
+	  C++ Revenue Management Optimisation Library
+
+\section sec_synopsis SYNOPSIS
+
+\code
+#include <rmol/...>
+\endcode
+
+\section sec_description DESCRIPTION
+
+The Revenue Management Optimisation Library (RMOL) is a collection of
+routines for revenue management calculations.  The routines are
+written from scratch by the RMOL team in C++, and present a modern
+Applications Programming Interface (API) for C/C++ programmers,
+allowing wrappers to be written for very high level languages.
+
+The library covers the following areas:
+- Forecast
+- Single Resource Optimisation
+- Multiple Resource (Network / O&D) Optimisation
+- Overbooking
+
+
+\section sec_see_also SEE ALSO
+ \b rmol(1), \b rmol-config(1)
+
+
+\section sec_support SUPPORT
+
+Please report any bugs to https://sourceforge.net/apps/trac/rmol/report
+
+
+\section sec_copyright COPYRIGHT
+
+Copyright © 2009-2011 Denis Arnaud
+
+See the COPYING file for more information on the (LGPLv2+) license, or
+directly on Internet:<br>
+http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
+
+*/

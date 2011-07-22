@@ -347,6 +347,8 @@ AC_CONFIG_FILES(
 	rmol/config/rmol-paths.hpp
 	rmol/batches/Makefile
 	man/Makefile
+	man/doxygen_man1.cfg
+	man/doxygen_man3.cfg
 	info/Makefile
 	doc/Makefile
 	doc/images/Makefile
