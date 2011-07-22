@@ -252,6 +252,10 @@ macro (get_external_libs)
       get_boost (${_arg_version})
     endif (${_arg_lower} STREQUAL "boost")
 
+    if (${_arg_lower} STREQUAL "readline")
+      get_readline (${_arg_version})
+    endif (${_arg_lower} STREQUAL "readline")
+
     if (${_arg_lower} STREQUAL "mysql")
       get_mysql (${_arg_version})
     endif (${_arg_lower} STREQUAL "mysql")
@@ -333,6 +337,33 @@ macro (get_boost)
   endif (Boost_FOUND)
 
 endmacro (get_boost)
+
+# ~~~~~~~~~~ Readline ~~~~~~~~~
+macro (get_readline)
+  set (_required_version 0)
+  if (${ARGC} GREATER 0)
+    set (_required_version ${ARGV0})
+    message (STATUS "Requires Readline-${_required_version}")
+  else (${ARGC} GREATER 0)
+    message (STATUS "Requires Readline without specifying any version")
+  endif (${ARGC} GREATER 0)
+
+  set (READLINE_FOUND False)
+
+  find_package (Readline)
+  if (READLINE_LIBRARY)
+    set (READLINE_FOUND True)
+  endif (READLINE_LIBRARY)
+
+  if (READLINE_FOUND)
+    # Update the list of include directories for the project
+    include_directories (${READLINE_INCLUDE_DIR})
+
+    # Update the list of dependencies for the project
+    set (PROJ_DEP_LIBS_FOR_LIB ${PROJ_DEP_LIBS_FOR_LIB} ${READLINE_LIBRARY})
+  endif (READLINE_FOUND)
+
+endmacro (get_readline)
 
 # ~~~~~~~~~~ MySQL ~~~~~~~~~
 macro (get_mysql)
@@ -829,7 +860,7 @@ macro (module_binary_add _exec_source_dir)
 
   # Register the (CMake) target for the executable, and specify the name
   # of that latter
-  add_executable (${_exec_name}bin ${_exec_source_dir}/${MODULE_NAME}.cpp)
+  add_executable (${_exec_name}bin ${_exec_source_dir}/${_exec_name}.cpp)
   set_target_properties (${_exec_name}bin PROPERTIES OUTPUT_NAME ${_exec_name})
 
   # Register the dependencies on which the binary depends upon
@@ -848,7 +879,7 @@ macro (module_binary_add _exec_source_dir)
 
   # Register, for reporting purpose, the list of executables to be built
   # and installed for that module
-  list (APPEND ${MODULE_NAME}_ALL_EXECS ${PROJ_ALL_BIN_TARGETS})
+  list (APPEND ${MODULE_NAME}_ALL_EXECS ${_exec_name})
   set (${MODULE_NAME}_ALL_EXECS ${${MODULE_NAME}_ALL_EXECS} PARENT_SCOPE)
 
 endmacro (module_binary_add)
@@ -1027,6 +1058,17 @@ macro (display_boost)
   endif (Boost_FOUND)
 endmacro (display_boost)
 
+# Readline
+macro (display_readline)
+  if (READLINE_FOUND)
+    message (STATUS)
+    message (STATUS "* Readline:")
+    message (STATUS "  - READLINE_VERSION ........... : ${READLINE_VERSION}")
+    message (STATUS "  - READLINE_INCLUDE_DIR ....... : ${READLINE_INCLUDE_DIR}")
+    message (STATUS "  - READLINE_LIBRARY ........... : ${READLINE_LIBRARY}")
+  endif (READLINE_FOUND)
+endmacro (display_readline)
+
 # MySQL
 macro (display_mysql)
   if (MYSQL_FOUND)
@@ -1136,6 +1178,7 @@ macro (display_status)
   message (STATUS "---------------------------------")
   #
   display_boost ()
+  display_readline ()
   display_mysql ()
   display_soci ()
   display_stdair ()
