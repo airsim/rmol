@@ -12,7 +12,7 @@ set (PKGCFG_SCRIPT_PATH ${LIBDIR}/pkgconfig)
 
 # GNU Autotools helper (M4 macro file)
 set (M4_MACROFILE ${PROJECT_NAME}.m4)
-set (M4_MACROFILE_PATH "share/aclocal")
+set (M4_MACROFILE_PATH share/aclocal)
 
 # Convert the developer script utilities (basically, just replace
 # the @<variable>@ variables)
