@@ -180,7 +180,7 @@ namespace AIRRAC {
       assert (lSegmentCabin_ptr != NULL);
 
       const stdair::CabinCode_T& lCabinCode = lSegmentCabin_ptr->getCabinCode();
-      const stdair::TripType_T& lTripType = "RT";
+      const stdair::TripType_T lTripType = "RT";
       const stdair::YieldFeaturesKey lYieldFeaturesKey (lTripType,
                                                         lCabinCode);
       const stdair::YieldFeatures* lYieldFeatures_ptr = stdair::BomManager::
