@@ -9,9 +9,6 @@
 # MYSQL_LIBRARY     - Where to find the MySQL library (not for general use).
 # MYSQL_FOUND       - If false, you cannot build anything that requires MySQL.
 
-set (MYSQL_FOUND 0)
-set (MYSQL_VERSION 0)
-
 if (UNIX)
   set (MYSQL_CONFIG_PREFER_PATH "$ENV{MYSQL_HOME}/bin" CACHE FILEPATH
     "preferred path to MySQL (mysql_config)")
@@ -120,29 +117,32 @@ endif (WIN32)
 
 if (NOT WIN32)
   find_library (MYSQL_EXTRA_LIBRARIES
-    NAMES
-      z zlib
-    PATHS
-      /usr/lib
-      /usr/local/lib
-    DOC
-      "if more libraries are necessary to link in a MySQL client (typically zlib), specify them here.")
+    NAMES z zlib
+    PATHS /usr/lib /usr/local/lib
+    DOC "If more libraries are necessary to link with a MySQL client (typically zlib), specify them here.")
 else (NOT WIN32)
-  set (MYSQL_EXTRA_LIBRARIES "")
+  unset (MYSQL_EXTRA_LIBRARIES)
 endif (NOT WIN32)
 
-#
-if (MYSQL_LIBRARY)
-  if (MYSQL_INCLUDE_DIR)
-    set (MYSQL_FOUND 1)
-    set (MYSQL_LIBRARIES "${MYSQL_LIBRARY}")
-    message (STATUS "Found MySQL version: ${MYSQL_VERSION}")
-    message (STATUS "Found MySQL library: ${MYSQL_LIBRARIES}")
-    message (STATUS "Found MySQL headers: ${MYSQL_INCLUDE_DIR}")
-  else (MYSQL_INCLUDE_DIR)
-    message (FATAL_ERROR "Could not find MySQL headers! Please install the development-libraries and headers.")
-  endif( MYSQL_INCLUDE_DIR )
-  mark_as_advanced (MYSQL_FOUND MYSQL_LIBRARY MYSQL_EXTRA_LIBRARIES MYSQL_INCLUDE_DIR)
-else (MYSQL_LIBRARY)
-  message (FATAL_ERROR "Could not find the MySQL libraries! Please install the development-libraries and headers.")
-endif (MYSQL_LIBRARY)
+##
+# Check that the just (above) defined variables are valid paths:
+#  - MYSQL_LIBRARY
+#  - MYSQL_INCLUDE_DIR
+# In that case, MYSQL_FOUND is set to True.
+
+# Given the way those variables have been calculated, they should
+# either be defined or correspond to valid paths. We use the
+# find_package_handle_standard_args() CMake macro to have a standard behaviour.
+include (FindPackageHandleStandardArgs)
+find_package_handle_standard_args (MySQL
+  REQUIRED_VARS MYSQL_LIBRARY MYSQL_INCLUDE_DIR
+  VERSION_VAR MYSQL_VERSION)
+
+if (MYSQL_FOUND)
+  set (MYSQL_LIBRARIES ${MYSQL_LIBRARY})
+  mark_as_advanced (MYSQL_FOUND MYSQL_LIBRARY MYSQL_LIBRARIES
+	MYSQL_EXTRA_LIBRARIES MYSQL_INCLUDE_DIR)
+  message (STATUS "Found MySQL version: ${MYSQL_VERSION}")
+else (MYSQL_FOUND)
+  message (FATAL_ERROR "Could not find the MYSQL libraries! Please install the development-libraries and headers (e.g., 'mysql-devel' for Fedora/RedHat).")
+endif (MYSQL_FOUND)
