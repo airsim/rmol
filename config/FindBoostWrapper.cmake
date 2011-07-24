@@ -7,6 +7,7 @@ set (Boost_HUMAN_VERSION
 message (STATUS "Found Boost version: ${Boost_HUMAN_VERSION}")
 
 # Check the version requirement only
+include (FindPackageHandleStandardArgs)
 find_package_handle_standard_args (BoostWrapper
   REQUIRED_VARS Boost_INCLUDE_DIRS
   VERSION_VAR Boost_HUMAN_VERSION)
