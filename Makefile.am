@@ -25,7 +25,7 @@ MAINTAINERCLEANFILES = Makefile.in aclocal.m4 configure \
 EXTRA_DIST =
 
 # Build in these directories:
-SUBDIRS = airrac rmol win32 po man $(INFO_DOC_DIR) samples $(HTML_DOC_DIR) $(TEST_DIR)
+SUBDIRS = airrac rmol win32 po man $(INFO_DOC_DIR) $(HTML_DOC_DIR) $(TEST_DIR)
 
 
 # Configuration helpers

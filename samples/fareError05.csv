@@ -1,3 +1,0 @@
-// Fares: fare ID; OriginCity; DestinationCity; DateRangeStart; DateRangeEnd; DepartureTimeRangeStart; DepartureTimeRangeEnd; POS; CabinCode; Channel; AdvancePurchase; SaturdayNight; ChangeFees; NonRefundable; MinimumStay; Price; nb Segments
-// Segment: AirlineCode; Class; 
-1; LHR; SYD; 2011-01-15; 2011-12-31; 00:00; 23:59; LHR; Y; DN; 10; T; T; T; 10; 320.0; BA; Y;

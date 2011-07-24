@@ -76,9 +76,6 @@ test "x$enable_exceptions" != xno && enable_exceptions=yes
 # Set the data directory for RMOL
 pkgdatadir="${datadir}/rmol"
 AC_SUBST(pkgdatadir)
-# Set the directory for data samples exported by RMOL
-sampledir="${pkgdatadir}/samples"
-AC_SUBST(sampledir)
 
 # Check for info pages
 AC_ARG_ENABLE(info-doc, 
@@ -357,8 +354,6 @@ AC_CONFIG_FILES(
 	doc/local/Makefile
 	doc/doxygen_html.cfg
 	po/Makefile.in
-	samples/Makefile
-	samples/RDS01/Makefile
 	test/Makefile
 	test/architecture/Makefile
 	test/gsl_vs_boost/Makefile
