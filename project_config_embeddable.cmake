@@ -248,6 +248,14 @@ macro (get_external_libs)
       get_git (${_arg_version})
     endif (${_arg_lower} STREQUAL "git")
 
+    if (${_arg_lower} STREQUAL "python")
+      get_python (${_arg_version})
+    endif (${_arg_lower} STREQUAL "python")
+
+    if (${_arg_lower} STREQUAL "zeromq")
+      get_zeromq (${_arg_version})
+    endif (${_arg_lower} STREQUAL "zeromq")
+
     if (${_arg_lower} STREQUAL "boost")
       get_boost (${_arg_version})
     endif (${_arg_lower} STREQUAL "boost")
@@ -287,9 +295,63 @@ macro (get_git)
   endif (Git_FOUND)
 endmacro (get_git)
 
+# ~~~~~~~~~~ Python ~~~~~~~~~
+macro (get_python)
+  unset (_required_version)
+  if (${ARGC} GREATER 0)
+    set (_required_version ${ARGV0})
+    message (STATUS "Requires PythonLibs-${_required_version}")
+  else (${ARGC} GREATER 0)
+    message (STATUS "Requires PythonLibs without specifying any version")
+  endif (${ARGC} GREATER 0)
+
+  find_package (PythonLibs ${_required_version} REQUIRED)
+
+  if (PYTHONLIBS_FOUND)
+	# Derive the version of Python (for whatever reason, FindPythonLibs
+	# does not seem to provide that version variable.
+	get_filename_component (PYTHONLIBS_LIB_FILENAME ${PYTHON_LIBRARIES} NAME)
+	string (REGEX REPLACE "^libpython([0-9]+.[0-9]+).*$" "\\1"
+      PYTHONLIBS_VERSION "${PYTHONLIBS_LIB_FILENAME}")
+	message (STATUS "Found PythonLibs ${PYTHONLIBS_VERSION}")
+
+    # Update the list of include directories for the project
+    include_directories (${PYTHON_INCLUDE_DIRS})
+
+    # Update the list of dependencies for the project
+    list (APPEND PROJ_DEP_LIBS_FOR_LIB ${PYTHON_LIBRARIES})
+
+  else (PYTHONLIBS_FOUND)
+	message (FATAL_ERROR "Python libraries are missing. Please install them (e.g., 'python-devel' for the Fedora/RedHat package)")
+  endif (PYTHONLIBS_FOUND)
+
+endmacro (get_python)
+
+# ~~~~~~~~~~ ZeroMQ ~~~~~~~~~
+macro (get_zeromq)
+  unset (_required_version)
+  if (${ARGC} GREATER 0)
+    set (_required_version ${ARGV0})
+    message (STATUS "Requires ZeroMQ-${_required_version}")
+  else (${ARGC} GREATER 0)
+    message (STATUS "Requires ZeroMQ without specifying any version")
+  endif (${ARGC} GREATER 0)
+
+  find_package (ZeroMQ ${_required_version} REQUIRED)
+
+  if (ZEROMQ_FOUND)
+    # Update the list of include directories for the project
+    include_directories (${ZeroMQ_INCLUDE_DIR})
+
+    # Update the list of dependencies for the project
+    list (APPEND PROJ_DEP_LIBS_FOR_LIB ${ZeroMQ_LIBRARIES})
+  endif (ZEROMQ_FOUND)
+
+endmacro (get_zeromq)
+
 # ~~~~~~~~~~ BOOST ~~~~~~~~~~
 macro (get_boost)
-  set (_required_version 0)
+  unset (_required_version)
   if (${ARGC} GREATER 0)
     set (_required_version ${ARGV0})
     message (STATUS "Requires Boost-${_required_version}")
@@ -307,40 +369,38 @@ macro (get_boost)
   set (BOOST_REQUIRED_COMPONENTS
     program_options date_time iostreams serialization filesystem 
     unit_test_framework)
-  find_package (Boost ${_required_version} REQUIRED
-    COMPONENTS ${BOOST_REQUIRED_COMPONENTS})
+
+  # The first check is for the required components.
+  find_package (Boost COMPONENTS ${BOOST_REQUIRED_COMPONENTS})
+
+  # The second check is for the required version (FindBoostWrapper.cmake is
+  # provided by us). Indeed, the Fedora/RedHat FindBoost.cmake does not seem
+  # to provide version enforcement.
+  find_package (BoostWrapper ${_required_version} REQUIRED)
 
   if (Boost_FOUND)
-    # 
-    set (Boost_HUMAN_VERSION
-      ${Boost_MAJOR_VERSION}.${Boost_MINOR_VERSION}.${Boost_SUBMINOR_VERSION})
-    message (STATUS "Found Boost version: ${Boost_HUMAN_VERSION}")
-
     # Update the list of include directories for the project
     include_directories (${Boost_INCLUDE_DIRS})
 
     # Update the list of dependencies for the project
-    set (PROJ_DEP_LIBS_FOR_LIB ${PROJ_DEP_LIBS_FOR_LIB}
+    list (APPEND PROJ_DEP_LIBS_FOR_LIB
       ${Boost_IOSTREAMS_LIBRARY} ${Boost_SERIALIZATION_LIBRARY}
       ${Boost_FILESYSTEM_LIBRARY} ${Boost_DATE_TIME_LIBRARY})
-    set (PROJ_DEP_LIBS_FOR_BIN ${PROJ_DEP_LIBS_FOR_BIN}
-      ${Boost_PROGRAM_OPTIONS_LIBRARY})
-    set (PROJ_DEP_LIBS_FOR_TST ${PROJ_DEP_LIBS_FOR_TST}
-      ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY})
+    list (APPEND PROJ_DEP_LIBS_FOR_BIN ${Boost_PROGRAM_OPTIONS_LIBRARY})
+    list (APPEND PROJ_DEP_LIBS_FOR_TST ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY})
 
     # For display purposes
     set (BOOST_REQUIRED_LIBS
       ${Boost_IOSTREAMS_LIBRARY} ${Boost_SERIALIZATION_LIBRARY}
       ${Boost_FILESYSTEM_LIBRARY} ${Boost_DATE_TIME_LIBRARY}
       ${Boost_PROGRAM_OPTIONS_LIBRARY} ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY})
-
   endif (Boost_FOUND)
 
 endmacro (get_boost)
 
 # ~~~~~~~~~~ Readline ~~~~~~~~~
 macro (get_readline)
-  set (_required_version 0)
+  unset (_required_version)
   if (${ARGC} GREATER 0)
     set (_required_version ${ARGV0})
     message (STATUS "Requires Readline-${_required_version}")
@@ -350,7 +410,7 @@ macro (get_readline)
 
   set (READLINE_FOUND False)
 
-  find_package (Readline)
+  find_package (Readline ${_required_version} REQUIRED)
   if (READLINE_LIBRARY)
     set (READLINE_FOUND True)
   endif (READLINE_LIBRARY)
@@ -360,14 +420,14 @@ macro (get_readline)
     include_directories (${READLINE_INCLUDE_DIR})
 
     # Update the list of dependencies for the project
-    set (PROJ_DEP_LIBS_FOR_LIB ${PROJ_DEP_LIBS_FOR_LIB} ${READLINE_LIBRARY})
+    list (APPEND PROJ_DEP_LIBS_FOR_LIB ${READLINE_LIBRARY})
   endif (READLINE_FOUND)
 
 endmacro (get_readline)
 
 # ~~~~~~~~~~ MySQL ~~~~~~~~~
 macro (get_mysql)
-  set (_required_version 0)
+  unset (_required_version)
   if (${ARGC} GREATER 0)
     set (_required_version ${ARGV0})
     message (STATUS "Requires MySQL-${_required_version}")
@@ -375,7 +435,7 @@ macro (get_mysql)
     message (STATUS "Requires MySQL without specifying any version")
   endif (${ARGC} GREATER 0)
 
-  find_package (MySQL)
+  find_package (MySQL ${_required_version} REQUIRED)
   if (MYSQL_FOUND)
 
     # Update the list of include directories for the project
@@ -389,7 +449,7 @@ endmacro (get_mysql)
 
 # ~~~~~~~~~~ SOCI ~~~~~~~~~~
 macro (get_soci)
-  set (_required_version 0)
+  unset (_required_version)
   if (${ARGC} GREATER 0)
     set (_required_version ${ARGV0})
     message (STATUS "Requires SOCI-${_required_version}")
@@ -397,35 +457,24 @@ macro (get_soci)
     message (STATUS "Requires SOCI without specifying any version")
   endif (${ARGC} GREATER 0)
 
-  find_package (SOCI)
-  if (SOCI_FOUND)
+  find_package (SOCIMySQL ${_required_version} REQUIRED)
+  if (SOCIMYSQL_FOUND)
     #
-    message (STATUS "Found SOCI version: ${SOCI_VERSION}")
+    message (STATUS "Found SOCI with MySQL back-end support version: ${SOCI_VERSION}")
 
     # Update the list of include directories for the project
     include_directories (${SOCI_INCLUDE_DIR})
-
-    # Update the list of dependencies for the project
-    set (PROJ_DEP_LIBS_FOR_LIB ${PROJ_DEP_LIBS_FOR_LIB} ${SOCI_LIBRARIES})
-  endif (SOCI_FOUND)
-
-  find_package (SOCIMySQL)
-  if (SOCIMYSQL_FOUND)
-    #
-    message (STATUS "Found MySQL back-end support for SOCI")
-
-    # Update the list of include directories for the project
     include_directories (${SOCIMYSQL_INCLUDE_DIR})
 
     # Update the list of dependencies for the project
-    set (PROJ_DEP_LIBS_FOR_LIB ${PROJ_DEP_LIBS_FOR_LIB} ${SOCIMYSQL_LIBRARIES})
+    list (APPEND PROJ_DEP_LIBS_FOR_LIB ${SOCI_LIBRARIES} ${SOCIMYSQL_LIBRARIES})
   endif (SOCIMYSQL_FOUND)
 
 endmacro (get_soci)
 
 # ~~~~~~~~~~ Doxygen ~~~~~~~~~
 macro (get_doxygen)
-  set (_required_version 0)
+  unset (_required_version)
   if (${ARGC} GREATER 0)
     set (_required_version ${ARGV0})
     message (STATUS "Requires Doxygen-${_required_version}")
@@ -433,12 +482,19 @@ macro (get_doxygen)
     message (STATUS "Requires Doxygen without specifying any version")
   endif (${ARGC} GREATER 0)
 
-  find_package (Doxygen REQUIRED)
+  # The first check is to get Doxygen installation details
+  find_package (Doxygen)
+
+  # The second check is for the required version (FindDoxygenWrapper.cmake is
+  # provided by us). Indeed, the Fedora/RedHat FindDoxygen.cmake does not seem
+  # to provide version enforcement.
+  find_package (DoxygenWrapper ${_required_version} REQUIRED)
+
 endmacro (get_doxygen)
 
 # ~~~~~~~~~~ StdAir ~~~~~~~~~
 macro (get_stdair)
-  set (_required_version 0)
+  unset (_required_version)
   if (${ARGC} GREATER 0)
     set (_required_version ${ARGV0})
     message (STATUS "Requires StdAir-${_required_version}")
@@ -446,7 +502,8 @@ macro (get_stdair)
     message (STATUS "Requires StdAir without specifying any version")
   endif (${ARGC} GREATER 0)
 
-  find_package (StdAir REQUIRED HINTS ${WITH_STDAIR_PREFIX})
+  find_package (StdAir ${_required_version} REQUIRED
+	HINTS ${WITH_STDAIR_PREFIX})
   if (StdAir_FOUND)
     #
     message (STATUS "Found StdAir version: ${STDAIR_VERSION}")
@@ -1045,9 +1102,45 @@ endmacro (install_dev_helper_files)
 #######################################
 ##          Overall Status           ##
 #######################################
+# Doxygen
+macro (display_doxygen)
+  message (STATUS)
+  message (STATUS "* Doxygen:")
+  message (STATUS "  - DOXYGEN_VERSION .............. : ${DOXYGEN_VERSION}")
+  message (STATUS "  - DOXYGEN_EXECUTABLE ........... : ${DOXYGEN_EXECUTABLE}")
+  message (STATUS "  - DOXYGEN_DOT_EXECUTABLE ....... : ${DOXYGEN_DOT_EXECUTABLE}")
+  message (STATUS "  - DOXYGEN_DOT_PATH ............. : ${DOXYGEN_DOT_PATH}")
+endmacro (display_doxygen)
+
+# Python
+macro (display_python)
+  if (PYTHONLIBS_FOUND)
+    message (STATUS)
+	message (STATUS "* Python:")
+	message (STATUS "  - PYTHONLIBS_VERSION ......... : ${PYTHONLIBS_VERSION}")
+	message (STATUS "  - PYTHON_LIBRARIES ........... : ${PYTHON_LIBRARIES}")
+	message (STATUS "  - PYTHON_INCLUDE_PATH ........ : ${PYTHON_INCLUDE_PATH}")
+	message (STATUS "  - PYTHON_INCLUDE_DIRS ........ : ${PYTHON_INCLUDE_DIRS}")
+	message (STATUS "  - PYTHON_DEBUG_LIBRARIES ..... : ${PYTHON_DEBUG_LIBRARIES}")
+	message (STATUS "  - Python_ADDITIONAL_VERSIONS . : ${Python_ADDITIONAL_VERSIONS}")
+  endif (PYTHONLIBS_FOUND)
+endmacro (display_python)
+
+# ZeroMQ
+macro (display_zeromq)
+  if (ZEROMQ_FOUND)
+    message (STATUS)
+	message (STATUS "* ZeroMQ:")
+	message (STATUS "  - ZeroMQ_VERSION ............. : ${ZeroMQ_VERSION}")
+	message (STATUS "  - ZeroMQ_LIBRARIES ........... : ${ZeroMQ_LIBRARIES}")
+	message (STATUS "  - ZeroMQ_INCLUDE_DIR ......... : ${ZeroMQ_INCLUDE_DIR}")
+  endif (ZEROMQ_FOUND)
+endmacro (display_zeromq)
+
 # Boost
 macro (display_boost)
   if (Boost_FOUND)
+    message (STATUS)
     message (STATUS "* Boost:")
     message (STATUS "  - Boost_VERSION .............. : ${Boost_VERSION}")
     message (STATUS "  - Boost_LIB_VERSION .......... : ${Boost_LIB_VERSION}")
@@ -1110,6 +1203,7 @@ endmacro (display_stdair)
 
 ##
 macro (display_status_all_modules)
+  message (STATUS)
   foreach (_module_name ${PROJ_ALL_MOD_FOR_BLD})
     message (STATUS "* Module ....................... : ${_module_name}")
     message (STATUS "  + Layers to be built ......... : ${${_module_name}_ALL_LAYERS}")
@@ -1144,10 +1238,12 @@ macro (display_status)
   message (STATUS "Modules to test ................ : ${PROJ_ALL_MOD_FOR_TST}")
   message (STATUS "Binaries to test ............... : ${PROJ_ALL_TST_TARGETS}")
   display_status_all_modules ()
+  message (STATUS)
   message (STATUS "BUILD_SHARED_LIBS .............. : ${BUILD_SHARED_LIBS}")
   message (STATUS "CMAKE_BUILD_TYPE ............... : ${CMAKE_BUILD_TYPE}")
   message (STATUS "CMAKE_MODULE_PATH .............. : ${CMAKE_MODULE_PATH}")
   message (STATUS "CMAKE_INSTALL_PREFIX ........... : ${CMAKE_INSTALL_PREFIX}")
+  display_doxygen ()
   message (STATUS)
   message (STATUS "----------------------------------")
   message (STATUS "--- Installation Configuration ---")
@@ -1177,6 +1273,8 @@ macro (display_status)
   message (STATUS "---     External libraries    ---")
   message (STATUS "---------------------------------")
   #
+  display_python ()
+  display_zeromq ()
   display_boost ()
   display_readline ()
   display_mysql ()
