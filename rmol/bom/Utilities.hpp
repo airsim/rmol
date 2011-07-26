@@ -3,8 +3,15 @@
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
+// StdAir
+#include <stdair/stdair_inventory_types.hpp>
 // RMOL
 #include <rmol/RMOL_Types.hpp>
+
+// Forward declarations
+namespace stdair {
+  class SegmentCabin;
+}
 
 namespace RMOL {
 
@@ -13,6 +20,16 @@ namespace RMOL {
   public:
     /** Compute the mean and the standard deviation from a set of samples. */
     static void computeDistributionParameters (const UnconstrainedDemandVector_T&, double&, double&);
+    
+    /**
+     * Build the list of remaining DCP's for the segment-date.
+     */
+    static stdair::DCPList_T buildRemainingDCPList (const stdair::DTD_T&);
+
+    /**
+     * Retrieve the number of departed similar segments.
+     */
+    static stdair::NbOfSegments_T getNbOfDepartedSimilarSegments (const stdair::SegmentCabin&, const stdair::Date_T&);
 
   };
 

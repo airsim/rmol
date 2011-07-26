@@ -74,10 +74,20 @@ namespace RMOL {
   
     /** Define the vector of historical unconstrained demand. */
   typedef std::vector<stdair::NbOfRequests_T> UnconstrainedDemandVector_T;
+  
+    /** Define the vector of historical bookings. */
+  typedef std::vector<stdair::NbOfBookings_T> BookingVector_T;
+  
+    /** Define the vector of censorship flags. */
+  typedef std::vector<stdair::Flag_T> FlagVector_T;
 
   /** Define the map betweent the booking class and it's corresponding
       unconstrained demand vector. */
-  typedef std::map<stdair::BookingClass*, UnconstrainedDemandVector_T>BookingClassUnconstrainedDemandMap_T;
+  typedef std::map<stdair::BookingClass*, UnconstrainedDemandVector_T>BookingClassUnconstrainedDemandVectorMap_T;
+
+  /** Define the map betweent the booking class and it's corresponding
+      unconstrained demand. */
+  typedef std::map<stdair::BookingClass*, stdair::NbOfRequests_T>BookingClassUnconstrainedDemandMap_T;
 
   /** Define the FRAT5 curve. */
   typedef std::map<const stdair::DTD_T, double> FRAT5Curve_T;
