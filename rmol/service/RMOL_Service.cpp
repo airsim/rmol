@@ -415,8 +415,8 @@ namespace RMOL {
     STDAIR_LOG_DEBUG ("Forecast");
     bool isForecasted = false;
     switch (iForecastingMethod) {
-    case stdair::ForecastingMethod::ADD_PK: Forecaster::forecastUsingAdditivePickUp (ioFlightDate, iRMEventTime); break;
-    case stdair::ForecastingMethod::MUL_PK: Forecaster::forecastUsingMultiplicativePickUp (ioFlightDate, iRMEventTime); break;
+    case stdair::ForecastingMethod::ADD_PK: isForecasted = Forecaster::forecastUsingAdditivePickUp (ioFlightDate, iRMEventTime); break;
+    case stdair::ForecastingMethod::MUL_PK: isForecasted = Forecaster::forecastUsingMultiplicativePickUp (ioFlightDate, iRMEventTime); break;
     default: assert (false); break;
     }
                                  

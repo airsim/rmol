@@ -82,7 +82,7 @@ namespace RMOL {
      * Forecast product-oriented and price-oriented demand given the
      * unconstrained demand of historical segments.
      */
-    static void forecastUsingMultiplicativePickUp(stdair::SegmentCabin&,
+    static bool forecastUsingMultiplicativePickUp(stdair::SegmentCabin&,
                                                   const BookingClassUnconstrainedDemandMap_T&,
                                                   const stdair::NbOfRequests_T&,
                                                   const double&);

@@ -298,7 +298,6 @@ namespace RMOL {
         }
       }
     }
-
     return isSucceeded;
   }
 
@@ -331,7 +330,7 @@ namespace RMOL {
     } else {
       // Retrieve the booking figures of the first DCP and consider them
       // as unconstrained demand figures.
-      stdair::DCPList_T::const_iterator itDCP = stdair::DEFAULT_DCP_LIST.begin();
+      stdair::DCPList_T::const_iterator itDCP =stdair::DEFAULT_DCP_LIST.begin();
       assert (itDCP != stdair::DEFAULT_DCP_LIST.end());
       const stdair::DCP_T& lFirstDCP = *itDCP;
       
@@ -340,8 +339,12 @@ namespace RMOL {
         GuillotineBlockHelper::
         getNbOfSegmentAlreadyPassedThisDTD (lGuillotineBlock, lFirstDCP,
                                             iEventDate);
+      
+      STDAIR_LOG_DEBUG ("Nb of usable similar segments: "
+                        << lNbOfUsableSegments);
         
-      UnconstrainedDemandVector_T lQEquivalentDemandVector (lNbOfUsableSegments, 0.0);
+      UnconstrainedDemandVector_T lQEquivalentDemandVector (lNbOfUsableSegments,
+                                                            0.0);
       stdair::NbOfBookings_T lCurrentSegmentQEquivalentDemand = 0.0;
       BookingClassUnconstrainedDemandVectorMap_T lBkgClassUncDemVectorMap;
       BookingClassUnconstrainedDemandMap_T lCurrentSegmentBkgClassDemMap;
@@ -436,12 +439,11 @@ namespace RMOL {
       const double lFRAT5Coef = itFRAT5->second;
       const double lSellUpCoef = -log(0.5) / (lFRAT5Coef - 1); 
       
-      forecastUsingMultiplicativePickUp (ioSegmentCabin,
-                                         lCurrentSegmentBkgClassDemMap,
-                                         lCurrentSegmentQEquivalentDemand,
-                                         lSellUpCoef);
+      return forecastUsingMultiplicativePickUp(ioSegmentCabin,
+                                               lCurrentSegmentBkgClassDemMap,
+                                               lCurrentSegmentQEquivalentDemand,
+                                               lSellUpCoef);
       
-      return true;
     }
   }
   
@@ -463,39 +465,45 @@ namespace RMOL {
     const stdair::NbOfSegments_T lNbOfUsableSegments = GuillotineBlockHelper::
       getNbOfSegmentAlreadyPassedThisDTD (lGuillotineBlock, iDCPEnd,
                                           iCurrentDate);
+      
+    STDAIR_LOG_DEBUG ("Nb of usable similar segments: "
+                      << lNbOfUsableSegments);
 
-    // Parse the booking class list and unconstrain historical bookings.
-    for (BookingClassUnconstrainedDemandVectorMap_T::iterator itBCUDV =
-           ioBkgClassUncDemMap.begin(); itBCUDV != ioBkgClassUncDemMap.end();
-         ++itBCUDV) {
-      stdair::BookingClass* lBC_ptr = itBCUDV->first;
-      assert (lBC_ptr != NULL);
-      const stdair::MapKey_T& lBCKey = lBC_ptr->describeKey();
-      const stdair::BlockIndex_T& lBlockIdx =
-        lGuillotineBlock.getBlockIndex (lBCKey);
-      UnconstrainedDemandVector_T& lUncDemVector = itBCUDV->second;
+    if (lNbOfUsableSegments > 0) {
 
-      STDAIR_LOG_DEBUG ("Unconstrain product-oriented bookings for " << lBCKey);
-      forecastUsingMultiplicativePickUp (lGuillotineBlock, lUncDemVector,
+      // Parse the booking class list and unconstrain historical bookings.
+      for (BookingClassUnconstrainedDemandVectorMap_T::iterator itBCUDV =
+             ioBkgClassUncDemMap.begin(); itBCUDV != ioBkgClassUncDemMap.end();
+           ++itBCUDV) {
+        stdair::BookingClass* lBC_ptr = itBCUDV->first;
+        assert (lBC_ptr != NULL);
+        const stdair::MapKey_T& lBCKey = lBC_ptr->describeKey();
+        const stdair::BlockIndex_T& lBlockIdx =
+          lGuillotineBlock.getBlockIndex (lBCKey);
+        UnconstrainedDemandVector_T& lUncDemVector = itBCUDV->second;
+        
+        STDAIR_LOG_DEBUG ("Unconstrain product-oriented bookings for "<<lBCKey);
+        forecastUsingMultiplicativePickUp (lGuillotineBlock, lUncDemVector,
+                                           iDCPBegin, iDCPEnd,
+                                           lNbOfUsableSegments, lBlockIdx,
+                                           iNbOfAnteriorSimilarSegments);
+      }
+      
+      // Unconstrain the Q-equivalent bookings.
+      // Retrieve the block index of the segment-cabin.
+      std::ostringstream lSCMapKey;
+      lSCMapKey << stdair::DEFAULT_SEGMENT_CABIN_VALUE_TYPE
+                << iSegmentCabin.describeKey();    
+      const stdair::BlockIndex_T& lCabinIdx =
+        lGuillotineBlock.getBlockIndex (lSCMapKey.str());
+      
+      STDAIR_LOG_DEBUG ("Unconstrain price-oriented bookings");
+      forecastUsingMultiplicativePickUp (lGuillotineBlock,
+                                         ioQEquivalentDemandVector,
                                          iDCPBegin, iDCPEnd,
-                                         lNbOfUsableSegments, lBlockIdx,
+                                         lNbOfUsableSegments, lCabinIdx,
                                          iNbOfAnteriorSimilarSegments);
     }
-
-    // Unconstrain the Q-equivalent bookings.
-    // Retrieve the block index of the segment-cabin.
-    std::ostringstream lSCMapKey;
-    lSCMapKey << stdair::DEFAULT_SEGMENT_CABIN_VALUE_TYPE
-              << iSegmentCabin.describeKey();    
-    const stdair::BlockIndex_T& lCabinIdx =
-      lGuillotineBlock.getBlockIndex (lSCMapKey.str());
-
-    STDAIR_LOG_DEBUG ("Unconstrain price-oriented bookings");
-    forecastUsingMultiplicativePickUp (lGuillotineBlock,
-                                       ioQEquivalentDemandVector,
-                                       iDCPBegin, iDCPEnd,
-                                       lNbOfUsableSegments, lCabinIdx,
-                                       iNbOfAnteriorSimilarSegments);
   }
 
   // ////////////////////////////////////////////////////////////////////
@@ -535,7 +543,7 @@ namespace RMOL {
         }
         
         // Get the bookings of the day.
-        //STDAIR_LOG_DEBUG ("Bookings of the day: " << lBookingView[i*lNbOfValueTypes + iBlockIdx][j]);
+        // STDAIR_LOG_DEBUG ("Bookings of the day: " << lBookingView[i*lNbOfValueTypes + iBlockIdx][j]);
         lNbOfHistoricalBkgs += lBookingView[i*lNbOfValueTypes + iBlockIdx][j];
       }
 
@@ -574,15 +582,17 @@ namespace RMOL {
     }
 
     // Update the unconstrained demand for the current segment.
-    const stdair::NbOfRequests_T& lUncDemandFactorMean =
-      lHBHolder.getDemandMean();
-    stdair::NbOfRequests_T& lPastDemand =
-      ioUncDemVector.at (iNbOfAnteriorSimilarSegments);
-    lPastDemand *= (1+lUncDemandFactorMean);    
+    if (lHBHolder.getNbOfFlights() > 0) {
+      const stdair::NbOfRequests_T& lUncDemandFactorMean =
+        lHBHolder.getDemandMean();
+      stdair::NbOfRequests_T& lPastDemand =
+        ioUncDemVector.at (iNbOfAnteriorSimilarSegments);
+      lPastDemand *= (1+lUncDemandFactorMean);
+    }
   }  
 
   // ////////////////////////////////////////////////////////////////////
-  void Forecaster::
+  bool Forecaster::
   forecastUsingMultiplicativePickUp (stdair::SegmentCabin& ioSegmentCabin,
                                      const BookingClassUnconstrainedDemandMap_T& iClassUncDemMap,
                                      const stdair::NbOfRequests_T& iUncDem,
@@ -611,7 +621,13 @@ namespace RMOL {
       stdair::BookingClass* lLowestBC_ptr = *itCurrentClass;
       lLowestBC_ptr->setMean (lPriceOriMean);
       lLowestBC_ptr->setStdDev (lPriceOriStdDev);
+      if (lPriceOriMean > 0) {
+        return true;
+      } else {
+        return false;
+      }
     } else {
+      bool isSucceeded = false;
       // Compute the demand for higher class using the formula
       // Pro_sell_up_from_Q_to_F = e ^ ((y_F/y_Q - 1) * ln (0.5) / (FRAT5 - 1))
       for (; itNextClass != lBCList.rend(); ++itCurrentClass, ++itNextClass) {
@@ -643,6 +659,10 @@ namespace RMOL {
                         lPriceOriDemStdDevFrac * lPriceOriDemStdDevFrac);
         lCurrentBC_ptr->setMean (lMean);
         lCurrentBC_ptr->setStdDev (lStdDev);
+
+        if (lMean > 0) {
+          isSucceeded = true;
+        }
         
         // DEBUG
         STDAIR_LOG_DEBUG ("Class " << lCurrentBC_ptr->describeKey()
@@ -669,11 +689,16 @@ namespace RMOL {
       lStdDev = sqrt (lStdDev * lStdDev + lPriceOriStdDev * lPriceOriStdDev);
       lCurrentBC_ptr->setMean (lMean);
       lCurrentBC_ptr->setStdDev (lStdDev);
+      
+      if (lMean > 0) {
+        isSucceeded = true;
+      }
 
       // DEBUG
       STDAIR_LOG_DEBUG ("Class " << lCurrentBC_ptr->describeKey()
                         << ", mean = " << lMean
                         << ", stddev = " << lStdDev);
+      return isSucceeded;
     }
   }
 
