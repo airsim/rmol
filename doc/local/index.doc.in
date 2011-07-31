@@ -5,49 +5,70 @@
 <!-- start of main block -->
 <div style="width: 100%;">
 <!-- start of left margin -->
-<div style="float:right; width:200px; background-color: #eeeeff; border: 1px solid #b0b0b0; margin: 0 0 10px 20px; padding: 10px; font-size: 90%;">
+<div style="float:right; width:200px; background-color: #eeeeff; 
+     border: 1px solid #b0b0b0; margin: 0 0 10px 20px; padding: 10px; 
+     font-size: 90%;">
+\endhtmlonly
 
-<b>Getting Started:</b>
-<ul>
-<li><a href="features.html">Features</a></li>
-<li><a href="installation.html">Installation</a></li>
-<li><a href="linking.html">Linking with RMOL</a></li>
-<li><a href="users_guide.html">Short Introduction to RMOL</a></li>
-<li><a href="tutorial.html">Some Tutorial Examples</a></li>
-<li><a href="verification.html">RMOL Verification</a></li>
-<li><a href="copyright.html">Copyright and License</a></li>
-<li><a href="help_wanted.html">Make a Difference</a></li>
-<li><a href="authors.html">Authors</a></li>
-</ul>
+\section getting_started Getting Started
 
-<a href="http://sourceforge.net/projects/rmol/"><b>RMOL at SourceForge:</b></a>
-<ul>
-<li><a href="http://sourceforge.net/project/showfiles.php?group_id=177703">Download RMOL</a></li>
-<li><a href="http://rmol.sourceforge.net/RPM-GPG-KEY-freshrpms-free">RPM-GPG-Key</a> for RMOL RPMs (save the file, and type 'rpm --import RPM-GPG-KEY-freshrpms-free' as root)</li>
-<li><a href="http://sourceforge.net/tracker/?group_id=177703&atid=882290">Bug Reports</a></li>
-<li><a href="http://sourceforge.net/tracker/?group_id=177703&atid=882293">Feature Requests</a></li>
-<li><a href="http://sourceforge.net/tracker/?group_id=177703&atid=882292">Submit Patches</a></li>
-<li><a href="http://sourceforge.net/tracker/?group_id=177703&atid=882291">Support Request</a></li>
-<li><a href="http://sourceforge.net/mail/?group_id=177703">Mailing lists</a></li>
-<li><a href="http://sourceforge.net/forum/forum.php?forum_id=613897">Discuss about Development issues</a></li>
-<li><a href="http://sourceforge.net/forum/forum.php?forum_id=613896">Ask for Help</a></li>
-<li><a href="http://sourceforge.net/forum/forum.php?forum_id=613895">Discuss RMOL</a></li>
-</ul>
+- \ref features
+- \ref installation
+- \ref linking
+- \ref users_guide
+- \ref tutorial
+- \ref verification
+- \ref copyright
+- \ref help_wanted
+- \ref howto_release
+- \ref authors
 
-<b>RMOL Development:</b>
-<ul>
-<li><a href="http://rmol.svn.sourceforge.net/viewvc/rmol/">SVN Repository</a></li>
-<li><a href="codingrules.html">Coding Rules</a></li>
-<li><a href="documentation.html">Documentation Rules</a></li>
-<li><a href="test.html">Test Rules</a></li>
-</ul>
+\section at_sourceforge RMOL at SourceForge
+- <a href="http://sourceforge.net/projects/rmol/">Project page</a>
+- <a href="http://sourceforge.net/project/showfiles.php?group_id=177703">Download RMOL</a>
+- <a href="https://sourceforge.net/apps/trac/rmol/newticket">Open a ticket for
+  a bug or feature</a>
+- <a href="http://sourceforge.net/mail/?group_id=177703">Mailing lists</a>
+- <a href="https://sourceforge.net/apps/phpbb/rmol/">Forums</a>
+  - <a href="https://sourceforge.net/apps/phpbb/rmol/viewforum.php?f=1">Discuss
+  about Development issues</a>
+  - <a href="https://sourceforge.net/apps/phpbb/rmol/viewforum.php?f=2">Ask for
+  Help</a>
+  - <a href="https://sourceforge.net/apps/phpbb/rmol/viewforum.php?f=3">Discuss
+  RMOL</a>
 
-<b>External Libraries:</b>
-<ul>
-<li><a href="http://www.gnu.org/software/gsl">GSL</a></li>
-<li><a href="http://www.boost.org">Boost</a></li>
-</ul>
 
+\section development RMOL Development
+- <a href="http://rmol.git.sourceforge.net/git/gitweb.cgi?p=rmol/rmol;a=tree;h=refs/heads/trunk;hb=trunk">Git Repository</a> (Subversion is deprecated)
+- \ref coding_rules
+- \ref documentation
+- \ref test
+
+
+\section external_libs External Libraries
+- <a href="http://www.boost.org">Boost (C++ STL extensions)</a>
+- <a href="http://www.python.org/">Python</a>
+- <a href="http://dev.mysql.com/">MySQL client</a>
+- <a href="http://soci.sourceforge.net/">SOCI (C++ DB API)</a>
+
+\section social_sponsorship Support RMOL
+\htmlonly
+<table width="100%">
+ <tr>
+  <td align="center" valign="middle" style="padding-left:10px">
+   <a href="http://twitter.com/share" class="twitter-share-button" data-count="none" data-via="denis_arnaud">Tweet</a>
+   <script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script><g:plusone></g:plusone> 
+  </td>
+ </tr>
+ <tr>
+  <td valign="middle">
+   <a class="urllink" href="http://sourceforge.net/projects/rmol" title="RMOL" rel="nofollow"><img src="http://sflogo.sourceforge.net/sflogo.php?group_id=177703&type=12&format=.png" alt="C++ Revenue Management Open Library" title="RMOL"/></a> 
+  </td>
+ </tr>
+</table>
+\endhtmlonly
+
+\htmlonly
 </div>
 <!-- end of left margin -->
 \endhtmlonly
@@ -67,8 +88,8 @@ The RMOL library originates from the department of Operational
 Research and Innovation at <a
 href="http://www.amadeus.com">Amadeus</a>, Sophia Antipolis,
 France. RMOL is released under the terms of the <a
-href="http://www.gnu.org/licenses/lgpl.html">GNU Lesser General Public
-License</a> (LGPL) for you to enjoy.
+href="http://www.gnu.org/licenses/lgpl-2.1.html">GNU Lesser General Public
+License</a> (LGPLv2.1) for you to enjoy.
 
 RMOL should work on
 <a href="http://en.wikipedia.org/wiki/GNU/Linux">GNU/Linux</a>,
