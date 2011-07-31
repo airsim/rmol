@@ -7,7 +7,6 @@ rmol/field/FldDistributionParameters.hpp
 rmol/field/FldYieldRange.hpp
 rmol/field/FldYieldRange.cpp
 rmol/field/FldAbstract.cpp
-rmol/config/rmol-paths.hpp
 rmol/RMOL_Service.hpp
 rmol/batches/rmol.cpp
 rmol/service/Logger.hpp
