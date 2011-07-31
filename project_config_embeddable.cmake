@@ -1051,6 +1051,16 @@ endmacro (module_test_build_all)
 
 
 ###################################################################
+##                         Documentation                         ##
+###################################################################
+macro (handle_html_doc)
+  if (${INSTALL_DOC} STREQUAL "ON")
+	add_subdirectory (doc)
+  endif (${INSTALL_DOC} STREQUAL "ON")
+endmacro (handle_html_doc)
+
+
+###################################################################
 ##                    Development Helpers                        ##
 ###################################################################
 # For other projects to use this component (let us name it myproj),
