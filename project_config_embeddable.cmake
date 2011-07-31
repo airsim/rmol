@@ -104,7 +104,11 @@ macro (set_project_options _build_doc)
 
   ##
   # Basic documentation (i.e., AUTHORS, NEWS, README, INSTALL)
-  set (BASICDOC_FILES AUTHORS NEWS README INSTALL)
+  set (DOC_INSTALL_FILE INSTALL)
+  if (NOT EXISTS ${DOC_INSTALL_FILE})
+    unset (DOC_INSTALL_FILE)
+  endif (NOT EXISTS ${DOC_INSTALL_FILE})
+  set (BASICDOC_FILES AUTHORS NEWS README ${DOC_INSTALL_FILE})
   set (BASICDOC_PATH "share/doc/${PACKAGE}-${PACKAGE_VERSION}")
 
 endmacro (set_project_options)
