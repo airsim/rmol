@@ -39,18 +39,34 @@
 
 
 \section development RMOL Development
-- <a href="http://rmol.svn.sourceforge.net/viewvc/rmol/">SVN Repository</a>
+- <a href="http://rmol.git.sourceforge.net/git/gitweb.cgi?p=rmol/rmol;a=tree;h=refs/heads/trunk;hb=trunk">Git Repository</a> (Subversion is deprecated)
 - \ref coding_rules
 - \ref documentation
 - \ref test
 
 
 \section external_libs External Libraries
-- <a href="http://www.gnu.org/software/gsl">GSL</a>
 - <a href="http://www.boost.org">Boost (C++ STL extensions)</a>
+- <a href="http://www.python.org/">Python</a>
 - <a href="http://dev.mysql.com/">MySQL client</a>
 - <a href="http://soci.sourceforge.net/">SOCI (C++ DB API)</a>
 
+\section social_sponsorship Support RMOL
+\htmlonly
+<table width="100%">
+ <tr>
+  <td align="center" valign="middle" style="padding-left:10px">
+   <a href="http://twitter.com/share" class="twitter-share-button" data-count="none" data-via="denis_arnaud">Tweet</a>
+   <script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script><g:plusone></g:plusone> 
+  </td>
+ </tr>
+ <tr>
+  <td valign="middle">
+   <a class="urllink" href="http://sourceforge.net/projects/rmol" title="RMOL" rel="nofollow"><img src="http://sflogo.sourceforge.net/sflogo.php?group_id=177703&type=12&format=.png" alt="C++ Revenue Management Open Library" title="RMOL"/></a> 
+  </td>
+ </tr>
+</table>
+\endhtmlonly
 
 \htmlonly
 </div>
@@ -72,8 +88,8 @@ The RMOL library originates from the department of Operational
 Research and Innovation at <a
 href="http://www.amadeus.com">Amadeus</a>, Sophia Antipolis,
 France. RMOL is released under the terms of the <a
-href="http://www.gnu.org/licenses/lgpl.html">GNU Lesser General Public
-License</a> (LGPL) for you to enjoy.
+href="http://www.gnu.org/licenses/lgpl-2.1.html">GNU Lesser General Public
+License</a> (LGPLv2.1) for you to enjoy.
 
 RMOL should work on
 <a href="http://en.wikipedia.org/wiki/GNU/Linux">GNU/Linux</a>,
