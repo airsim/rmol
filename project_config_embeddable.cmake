@@ -977,7 +977,8 @@ macro (add_test_suites)
     endforeach (_module_name)
 
     # Register all the module (CMake/CTest) test targets at once
-    add_custom_target (check DEPENDS ${_check_target_list})
+    add_custom_target (check)
+    add_dependencies (check ${_check_target_list})
 
     # Register, for reporting purpose, the list of modules to be tested
     set (PROJ_ALL_MOD_FOR_TST ${_test_suite_dir_list})
