@@ -132,7 +132,7 @@ namespace AIRRAC {
     void storeDateRangeEnd::operator() (boost::spirit::qi::unused_type,
                                         boost::spirit::qi::unused_type,
                                         boost::spirit::qi::unused_type) const {
-      const stdair::Date_T lDateEnd = _yieldRule.getDate ();
+      const stdair::Date_T& lDateEnd = _yieldRule.getDate ();
       // As a Boost date period (DatePeriod_T) defines the last day of
       // the period to be end-date - one day, we have to add one day to that
       // end date before.
