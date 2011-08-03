@@ -35,13 +35,13 @@ namespace AIRRAC {
   }
 
   // //////////////////////////////////////////////////////////////////////
-  stdair::Date_T YieldRuleStruct::getDate() const {
+  stdair::Date_T YieldRuleStruct::calculateDate() const {
     _itYear.check(); _itMonth.check(); _itDay.check();
     return stdair::Date_T (_itYear._value, _itMonth._value, _itDay._value);
   }
 
   // //////////////////////////////////////////////////////////////////////
-  stdair::Duration_T YieldRuleStruct::getTime() const {
+  stdair::Duration_T YieldRuleStruct::calculateTime() const {
     _itHours.check(); _itMinutes.check(); _itSeconds.check();
     return boost::posix_time::hours (_itHours._value)
       + boost::posix_time::minutes (_itMinutes._value)
