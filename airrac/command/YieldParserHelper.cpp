@@ -217,7 +217,7 @@ namespace AIRRAC {
                                      boost::spirit::qi::unused_type) const {
       std::ostringstream ostr;
       ostr << iChar;
-      const std::string cabinCodeStr = ostr.str();
+      const std::string& cabinCodeStr = ostr.str();
       const stdair::CabinCode_T lCabinCode (cabinCodeStr);
       _yieldRule.setCabinCode (lCabinCode);
      
@@ -299,7 +299,7 @@ namespace AIRRAC {
          lItVector++) {
         ostr << *lItVector;
       }
-      const std::string classCodeStr = ostr.str();
+      const std::string& classCodeStr = ostr.str();
       const stdair::ClassCode_T lClassCode (classCodeStr);
       // Insertion of this class Code list in the whole classCode name
       _yieldRule.addClassCode (lClassCode);
@@ -323,7 +323,7 @@ namespace AIRRAC {
       // STDAIR_LOG_DEBUG ("Do End");
       // Generation of the yield rule object.
       YieldRuleGenerator::createAirportPair (_bomRoot, _yieldRule);
-      STDAIR_LOG_DEBUG(_yieldRule.describe());
+      STDAIR_LOG_DEBUG (_yieldRule.describe());
     }  
     
     // ///////////////////////////////////////////////////////////////////
@@ -493,9 +493,7 @@ tripType =
     STDAIR_LOG_DEBUG ("Parsing yield input file: " << _filename);
 
     // File to be parsed
-    const std::string* lFileName = &_filename;
-    const char *lChar = (*lFileName).c_str();
-    std::ifstream fileToBeParsed(lChar, std::ios_base::in);
+    std::ifstream fileToBeParsed (_filename.c_str(), std::ios_base::in);
 
     // Check the filename exists and can be open
     if (fileToBeParsed == false) {
