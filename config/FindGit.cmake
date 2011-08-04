@@ -14,7 +14,7 @@ if (Git_EXECUTABLE)
       OUTPUT_VARIABLE ${prefix}_WC_REVISION_HASH
       OUTPUT_STRIP_TRAILING_WHITESPACE)
     if (NOT ${Git_error} EQUAL 0)
-      message (SEND_ERROR 
+      message (STATUS 
 	"Command \"${Git_EXECUTBALE} rev-list -n 1 HEAD\" in directory ${dir} failed with output:\n${Git_error}")
     else (NOT ${Git_error} EQUAL 0)
       execute_process (COMMAND ${Git_EXECUTABLE}

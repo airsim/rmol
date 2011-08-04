@@ -104,7 +104,11 @@ macro (set_project_options _build_doc)
 
   ##
   # Basic documentation (i.e., AUTHORS, NEWS, README, INSTALL)
-  set (BASICDOC_FILES AUTHORS NEWS README INSTALL)
+  set (DOC_INSTALL_FILE INSTALL)
+  if (NOT EXISTS ${DOC_INSTALL_FILE})
+    unset (DOC_INSTALL_FILE)
+  endif (NOT EXISTS ${DOC_INSTALL_FILE})
+  set (BASICDOC_FILES AUTHORS NEWS README ${DOC_INSTALL_FILE})
   set (BASICDOC_PATH "share/doc/${PACKAGE}-${PACKAGE_VERSION}")
 
 endmacro (set_project_options)
@@ -977,7 +981,8 @@ macro (add_test_suites)
     endforeach (_module_name)
 
     # Register all the module (CMake/CTest) test targets at once
-    add_custom_target (check DEPENDS ${_check_target_list})
+    add_custom_target (check)
+    add_dependencies (check ${_check_target_list})
 
     # Register, for reporting purpose, the list of modules to be tested
     set (PROJ_ALL_MOD_FOR_TST ${_test_suite_dir_list})
@@ -1048,6 +1053,16 @@ macro (module_test_build_all)
       COMMAND ${CMAKE_CTEST_COMMAND} DEPENDS ${${MODULE_NAME}_ALL_TST_TARGETS})
   endif (Boost_FOUND)
 endmacro (module_test_build_all)
+
+
+###################################################################
+##                         Documentation                         ##
+###################################################################
+macro (handle_html_doc)
+  if (${INSTALL_DOC} STREQUAL "ON")
+	add_subdirectory (doc)
+  endif (${INSTALL_DOC} STREQUAL "ON")
+endmacro (handle_html_doc)
 
 
 ###################################################################

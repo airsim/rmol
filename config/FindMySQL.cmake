@@ -134,9 +134,14 @@ endif (NOT WIN32)
 # either be defined or correspond to valid paths. We use the
 # find_package_handle_standard_args() CMake macro to have a standard behaviour.
 include (FindPackageHandleStandardArgs)
-find_package_handle_standard_args (MySQL
-  REQUIRED_VARS MYSQL_LIBRARY MYSQL_INCLUDE_DIR
-  VERSION_VAR MYSQL_VERSION)
+if (${CMAKE_VERSION} VERSION_GREATER 2.8.4)
+  find_package_handle_standard_args (MySQL
+	REQUIRED_VARS MYSQL_LIBRARY MYSQL_INCLUDE_DIR
+	VERSION_VAR MYSQL_VERSION)
+else (${CMAKE_VERSION} VERSION_GREATER 2.8.4)
+  find_package_handle_standard_args (MySQL
+	DEFAULT_MSG MYSQL_LIBRARY MYSQL_INCLUDE_DIR)
+endif (${CMAKE_VERSION} VERSION_GREATER 2.8.4)
 
 if (MYSQL_FOUND)
   set (MYSQL_LIBRARIES ${MYSQL_LIBRARY})
