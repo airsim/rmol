@@ -8,9 +8,14 @@ message (STATUS "Found Boost version: ${Boost_HUMAN_VERSION}")
 
 # Check the version requirement only
 include (FindPackageHandleStandardArgs)
-find_package_handle_standard_args (BoostWrapper
-  REQUIRED_VARS Boost_INCLUDE_DIRS
-  VERSION_VAR Boost_HUMAN_VERSION)
+if (${CMAKE_VERSION} VERSION_GREATER 2.8.4)
+  find_package_handle_standard_args (BoostWrapper
+	REQUIRED_VARS Boost_INCLUDE_DIRS Boost_LIBRARY_DIRS
+	VERSION_VAR Boost_HUMAN_VERSION)
+else (${CMAKE_VERSION} VERSION_GREATER 2.8.4)
+  find_package_handle_standard_args (BoostWrapper
+	DEFAULT_MSG Boost_INCLUDE_DIRS Boost_LIBRARY_DIRS)
+endif (${CMAKE_VERSION} VERSION_GREATER 2.8.4)
 
 if (BOOSTWRAPPER_FOUND)
   mark_as_advanced (BOOSTWRAPPER_FOUND Boost_HUMAN_VERSION)

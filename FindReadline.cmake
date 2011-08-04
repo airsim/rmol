@@ -59,9 +59,14 @@ set (READLINE_VERSION "${RL_VERSION_MAJOR}.${RL_VERSION_MINOR}")
 # find_package_handle_standard_args() CMake macro to have a standard 
 # behaviour.
 include (FindPackageHandleStandardArgs)
-find_package_handle_standard_args (Readline 
-  REQUIRED_VARS READLINE_INCLUDE_DIR READLINE_LIBRARY
-  VERSION_VAR READLINE_VERSION)
+if (${CMAKE_VERSION} VERSION_GREATER 2.8.4)
+  find_package_handle_standard_args (Readline 
+	REQUIRED_VARS READLINE_INCLUDE_DIR READLINE_LIBRARY
+	VERSION_VAR READLINE_VERSION)
+else (${CMAKE_VERSION} VERSION_GREATER 2.8.4)
+  find_package_handle_standard_args (Readline 
+	DEFAULT_MSG READLINE_INCLUDE_DIR READLINE_LIBRARY)
+endif (${CMAKE_VERSION} VERSION_GREATER 2.8.4)
 
 if (READLINE_FOUND)
   mark_as_advanced (READLINE_INCLUDE_DIR READLINE_LIBRARY)

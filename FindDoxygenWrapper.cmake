@@ -9,9 +9,15 @@ if (DOXYGEN_FOUND STREQUAL "YES")
   set (DOXYGEN_VERSION ${MY_TMP})
 
   # Check the version requirement only
-  find_package_handle_standard_args (DoxygenWrapper
-	REQUIRED_VARS DOXYGEN_EXECUTABLE
-	VERSION_VAR DOXYGEN_VERSION)
+  include (FindPackageHandleStandardArgs)
+  if (${CMAKE_VERSION} VERSION_GREATER 2.8.4)
+	find_package_handle_standard_args (DoxygenWrapper
+	  REQUIRED_VARS DOXYGEN_EXECUTABLE
+	  VERSION_VAR DOXYGEN_VERSION)
+  else (${CMAKE_VERSION} VERSION_GREATER 2.8.4)
+	find_package_handle_standard_args (DoxygenWrapper
+	  DEFAULT_MSG DOXYGEN_EXECUTABLE)
+  endif (${CMAKE_VERSION} VERSION_GREATER 2.8.4)
 
 endif (DOXYGEN_FOUND STREQUAL "YES")
 

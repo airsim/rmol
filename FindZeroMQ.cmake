@@ -71,9 +71,14 @@ set (ZeroMQ_VERSION "${ZMQ_VERSION_MAJOR}.${ZMQ_VERSION_MINOR}")
 # either be defined or correspond to valid paths. We use the
 # find_package_handle_standard_args() CMake macro to have a standard behaviour.
 include (FindPackageHandleStandardArgs)
-find_package_handle_standard_args (ZeroMQ 
-  REQUIRED_VARS ZeroMQ_LIBRARIES ZeroMQ_INCLUDE_DIR
-  VERSION_VAR ZeroMQ_VERSION)
+if (${CMAKE_VERSION} VERSION_GREATER 2.8.4)
+  find_package_handle_standard_args (ZeroMQ 
+	REQUIRED_VARS ZeroMQ_LIBRARIES ZeroMQ_INCLUDE_DIR
+	VERSION_VAR ZeroMQ_VERSION)
+else (${CMAKE_VERSION} VERSION_GREATER 2.8.4)
+  find_package_handle_standard_args (ZeroMQ 
+	DEFAULT_MSG ZeroMQ_LIBRARIES ZeroMQ_INCLUDE_DIR)
+endif (${CMAKE_VERSION} VERSION_GREATER 2.8.4)
 
 if (ZEROMQ_FOUND)
   mark_as_advanced (ZEROMQ_FOUND ZeroMQ_VERSION ZeroMQ_ROOT_DIR
