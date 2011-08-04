@@ -129,6 +129,10 @@ macro (store_in_cache)
 	"Where to install ${PROJECT_NAME}" FORCE)
   set (CMAKE_BUILD_TYPE "${CMAKE_BUILD_TYPE}" CACHE STRING
 	"Choose the type of build, options are: None Debug Release RelWithDebInfo MinSizeRel." FORCE)
+  set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}" CACHE STRING
+	"C++ compilation flags" FORCE)
+  set (COMPILE_FLAGS "${COMPILE_FLAGS}" CACHE STRING
+	"Supplementary C++ compilation flags" FORCE)
   set (CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH}" CACHE PATH
 	"Path to custom CMake Modules" FORCE)
   set (INSTALL_DOC "${INSTALL_DOC}" CACHE BOOL
@@ -537,11 +541,20 @@ endmacro (get_stdair)
 macro (init_build)
   ##
   # Compilation
-  # Note: the debug flag (-g) is set (or not) by giving the
-  # corresponding option when calling cmake:
-  # cmake -DCMAKE_BUILD_TYPE:STRING={Debug,Release,MinSizeRel,RelWithDebInfo}
-  #set (CMAKE_CXX_FLAGS "-Wall -Wextra -pedantic -Werror")
-  set (CMAKE_CXX_FLAGS "-Wall -Werror")
+  # Note:
+  #  * The debug flag (-g) is set (or not) by giving the corresponding option
+  #    when calling cmake:
+  #    cmake -DCMAKE_BUILD_TYPE:STRING={Debug,Release,MinSizeRel,RelWithDebInfo}
+  #  * The CMAKE_CXX_FLAGS is set by CMake to be equal to the CXXFLAGS 
+  #    environment variable. Hence:
+  #    CXXFLAGS="-O2"; export CXXFLAGS; cmake ..
+  #    will set CMAKE_CXX_FLAGS as being equal to -O2.
+  if (NOT CMAKE_CXX_FLAGS)
+	#set (CMAKE_CXX_FLAGS "-Wall -Wextra -pedantic -Werror")
+	set (CMAKE_CXX_FLAGS "-Wall -Werror")
+  endif (NOT CMAKE_CXX_FLAGS)
+
+  #
   include_directories (BEFORE ${CMAKE_SOURCE_DIR} ${CMAKE_BINARY_DIR})
   
   ##
@@ -1289,6 +1302,10 @@ macro (display_status)
   message (STATUS)
   message (STATUS "BUILD_SHARED_LIBS .............. : ${BUILD_SHARED_LIBS}")
   message (STATUS "CMAKE_BUILD_TYPE ............... : ${CMAKE_BUILD_TYPE}")
+  message (STATUS " * CMAKE_C_FLAGS ............... : ${CMAKE_C_FLAGS}")
+  message (STATUS " * CMAKE_CXX_FLAGS ............. : ${CMAKE_CXX_FLAGS}")
+  message (STATUS " * BUILD_FLAGS ................. : ${BUILD_FLAGS}")
+  message (STATUS " * COMPILE_FLAGS ............... : ${COMPILE_FLAGS}")
   message (STATUS "CMAKE_MODULE_PATH .............. : ${CMAKE_MODULE_PATH}")
   message (STATUS "CMAKE_INSTALL_PREFIX ........... : ${CMAKE_INSTALL_PREFIX}")
   display_doxygen ()
