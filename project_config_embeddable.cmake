@@ -762,9 +762,9 @@ macro (module_library_add_standard _layer_list)
   # If so required, installation of all the remaining header files 
   # for the module, i.e., the header files located in all the layers
   # except the root.
-  if (${_publish_all_headers_flag})
+  if (_publish_all_headers_flag)
     module_header_install_everything_else()
-  endif (${_publish_all_headers_flag})
+  endif (_publish_all_headers_flag)
 
   # Convenient message to the user/developer
   if (NOT "${INSTALL_LIB_DIR}" MATCHES "^/usr/${LIBDIR}$")
