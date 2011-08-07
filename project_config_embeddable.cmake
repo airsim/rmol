@@ -820,8 +820,13 @@ macro (module_library_add_specific
   #  * on external libraries (Boost, MySQL, SOCI, StdAir), as calculated by 
   #    the get_external_libs() macro above;
   #  * on the other module libraries, as provided as paramaters to this macro
-  target_link_libraries (${_lib_target} 
-    ${PROJ_DEP_LIBS_FOR_LIB} ${_intermodule_dependencies})
+  #  * on the main/standard library of the module (when, of course, the
+  #    current library is not the main/standard library).
+  if (NOT "${_lib_short_name}" STREQUAL "${MODULE_NAME}")
+	set (_intramodule_dependencies ${MODULE_NAME}lib)
+  endif (NOT "${_lib_short_name}" STREQUAL "${MODULE_NAME}")
+  target_link_libraries (${_lib_target} ${PROJ_DEP_LIBS_FOR_LIB} 
+	${_intermodule_dependencies} ${_intramodule_dependencies})
 
   # Register the library target in the project (for reporting purpose).
   # Note, the list() commands creates a new variable value in the current scope:
@@ -972,15 +977,23 @@ endmacro (module_binary_add)
 # Add a Python script to be installed
 macro (module_python_add _script_file)
   #
-  set (_full_python_script_path ${CMAKE_CURRENT_SOURCE_DIR}/${_script_file})
-  if (EXISTS ${_full_python_script_path})
-    # Install the development helpers
-    install (PROGRAMS ${_script_file} DESTINATION bin COMPONENT devel)
+  set (_full_script_src_path ${CMAKE_CURRENT_SOURCE_DIR}/${_script_file}.in)
+  set (_full_script_path ${CMAKE_CURRENT_BINARY_DIR}/${_script_file})
+  if (EXISTS ${_full_script_src_path})
+	#
+    configure_file (${_full_script_src_path} ${_full_script_path} @ONLY)
 
-  else (EXISTS ${_full_python_script_path})
+    # Add the 'scripts_${MODULE_NAME}' target, depending on the
+    # converted (Python) scripts
+    add_custom_target (scripts_${MODULE_NAME} ALL DEPENDS ${_full_script_path})
+
+    # Install the (Python) script file
+    install (PROGRAMS ${_full_script_path} DESTINATION bin COMPONENT devel)
+
+  else (EXISTS ${_full_script_src_path})
     message (FATAL_ERROR
-      "The Python script to be installed, '${_script_file}', does not exist")
-  endif (EXISTS ${_full_python_script_path})
+      "The Python template script, '${_script_file}.in', does not exist")
+  endif (EXISTS ${_full_script_src_path})
 
   # Register the binary target in the project (for reporting purpose)
   get_filename_component (_script_alone ${_script_file} NAME)
