@@ -32,6 +32,13 @@ macro (set_project_names _project_name_param)
 endmacro (set_project_names)
 
 ##
+# Set the project brief
+macro (set_project_brief _project_brief)
+  set (PACKAGE_BRIEF ${_project_brief})
+endmacro (set_project_brief)
+
+
+##
 # Set the project versions
 macro (set_project_versions _major _minor _patch)
   set (_full_version ${_major}.${_minor}.${_patch})
@@ -1286,6 +1293,7 @@ macro (display_status)
   message (STATUS "PACKAGE_PRETTY_NAME ............ : ${PACKAGE_PRETTY_NAME}")
   message (STATUS "PACKAGE ........................ : ${PACKAGE}")
   message (STATUS "PACKAGE_NAME ................... : ${PACKAGE_NAME}")
+  message (STATUS "PACKAGE_BRIEF .................. : ${PACKAGE_BRIEF}")
   message (STATUS "PACKAGE_VERSION ................ : ${PACKAGE_VERSION}")
   message (STATUS "GENERIC_LIB_VERSION ............ : ${GENERIC_LIB_VERSION}")
   message (STATUS "GENERIC_LIB_SOVERSION .......... : ${GENERIC_LIB_SOVERSION}")
