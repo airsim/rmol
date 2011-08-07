@@ -155,12 +155,8 @@ macro (packaging_init _project_name)
   include (InstallRequiredSystemLibraries)
 
   set (CPACK_PACKAGE_NAME "${_project_name}")
+  set (CPACK_PACKAGE_DESCRIPTION "${PACKAGE_BRIEF}")
 endmacro (packaging_init)
-
-#
-macro (packaging_set_description _project_description)
-  set (CPACK_PACKAGE_DESCRIPTION "${_project_description}")
-endmacro (packaging_set_description)
 
 #
 macro (packaging_set_summary _project_summary)
