@@ -183,9 +183,6 @@ namespace AIRRAC {
   // ////////////////////////////////////////////////////////////////////
   void AIRRAC_Service::buildSampleBom() {
 
-    // TODO: implement this within StdAir (where Yield objects should
-    // be created)
-
     // Retrieve the AirRAC service context
     if (_airracServiceContext == NULL) {
       throw stdair::NonInitialisedServiceException ("The AirRAC service has not"
@@ -193,15 +190,40 @@ namespace AIRRAC {
     }
     assert (_airracServiceContext != NULL);
 
-    // Retrieve the AirRAC service context
+    // Retrieve the AirRAC service context and whether it owns the Stdair
+    // service
     AIRRAC_ServiceContext& lAIRRAC_ServiceContext = *_airracServiceContext;
+    const bool doesOwnStdairService =
+      lAIRRAC_ServiceContext.getOwnStdairServiceFlag();
 
-    // Retrieve the STDAIR service object from the (AirRAC) service context
+    // Retrieve the StdAir service object from the (AirRAC) service context
     stdair::STDAIR_Service& lSTDAIR_Service =
       lAIRRAC_ServiceContext.getSTDAIR_Service();
 
-    // Delegate the BOM building to the dedicated service
-    lSTDAIR_Service.buildSampleBomForAirRAC();
+    /**
+     * 1. Have StdAir build the whole BOM tree, only when the StdAir service is
+     *    owned by the current component (AirRAC here)
+     */
+    if (doesOwnStdairService == true) {
+      //
+      lSTDAIR_Service.buildSampleBom();
+    }
+
+    /**
+     * 2. Delegate the complementary building of objects and links by the
+     *    appropriate levels/components
+     * 
+     * \note: Currently, no more things to do by AirRAC at that stage,
+     *        as there is no child
+     */
+
+    /**
+     * 3. Build the complementary objects/links for the current component (here,
+     *    SimFQT)
+     *
+     * \note: Currently, no more things to do by AirRAC at that stage,
+     *        as there is no child
+     */
   }
 
   // //////////////////////////////////////////////////////////////////////

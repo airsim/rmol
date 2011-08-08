@@ -69,7 +69,7 @@ int readConfiguration (int argc, char* argv[], bool& ioIsBuiltin,
      "The sample BOM tree can be either built-in or parsed from an input file. That latter must then be given with the -y/--yield option")
     ("yield,y",
      boost::program_options::value< std::string >(&ioYieldInputFilename)->default_value(K_AIRRAC_DEFAULT_YIELD_INPUT_FILENAME),
-     "(CVS) input file for the schedule")
+     "(CSV) input file for the yield rules")
     ("log,l",
      boost::program_options::value< std::string >(&ioLogFilename)->default_value(K_AIRRAC_DEFAULT_LOG_FILENAME),
      "Filename for the logs")
