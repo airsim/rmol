@@ -378,17 +378,19 @@ namespace RMOL {
                       << lOptimisationMeasure);
     STDAIR_LOG_DEBUG ("Result: " << lLegCabin.displayVirtualClassList());
 
-    std::ostringstream logStream;
     stdair::BidPriceVector_T lBidPriceVector = lLegCabin.getBidPriceVector();
+    std::ostringstream logStream;
     logStream << "Bid-Price Vector (BPV): ";
-    const unsigned int size = lBidPriceVector.size();
-    
-    for (unsigned int i = 0; i < size - 1; ++i) {
-      const double bidPrice = lBidPriceVector.at(i);
-      logStream << std::fixed << std::setprecision (2) << bidPrice << ", ";
+    unsigned int idx = 0;
+    for (stdair::BidPriceVector_T::const_iterator itBP = lBidPriceVector.begin();
+         itBP != lBidPriceVector.end(); ++itBP) {
+      if (idx != 0) {
+        logStream << ", ";
+      }
+      const stdair::BidPrice_T& lBidPrice = *itBP;
+      logStream << std::fixed << std::setprecision (2) << lBidPrice;
     }
-    const double bidPrice = lBidPriceVector.at(size -1);
-    logStream << std::fixed << std::setprecision (2) << bidPrice;
+    // DEBUG
     STDAIR_LOG_DEBUG (logStream.str());
   }
 
