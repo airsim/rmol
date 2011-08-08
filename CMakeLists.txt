@@ -8,6 +8,7 @@ include (config/project_config_embeddable.cmake)
 ##
 # Project info
 set_project_names (rmol)
+set_project_brief ("C++ library of Revenue Management and Optimisation classes and functions")
 set_project_versions (99 99 99)
 
 ##
@@ -22,7 +23,6 @@ set_project_options (on)
 #####################################
 #
 packaging_init (${PROJECT_NAME})
-packaging_set_description ("C++ library of Revenue Management and Optimisation classes and functions")
 packaging_set_summary ("${PROJECT_NAME} is a C++ library of Revenue Management and Optimisation classes and functions. Typically, that library may be used by service providers (e.g., airlines offering flight seats, hotels offering rooms, rental car companies offering rental days, broadcasting company offering advertisement slots, theaters offering seats, etc.) to help in optimising their revenues from seat capacities.
 Most of the algorithms implemented are public and documented in the following
 book:

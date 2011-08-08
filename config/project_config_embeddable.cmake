@@ -129,6 +129,10 @@ macro (store_in_cache)
 	"Where to install ${PROJECT_NAME}" FORCE)
   set (CMAKE_BUILD_TYPE "${CMAKE_BUILD_TYPE}" CACHE STRING
 	"Choose the type of build, options are: None Debug Release RelWithDebInfo MinSizeRel." FORCE)
+  set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}" CACHE STRING
+	"C++ compilation flags" FORCE)
+  set (COMPILE_FLAGS "${COMPILE_FLAGS}" CACHE STRING
+	"Supplementary C++ compilation flags" FORCE)
   set (CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH}" CACHE PATH
 	"Path to custom CMake Modules" FORCE)
   set (INSTALL_DOC "${INSTALL_DOC}" CACHE BOOL
@@ -372,7 +376,7 @@ macro (get_boost)
   set (Boost_USE_STATIC_RUNTIME OFF)
   set (BOOST_REQUIRED_COMPONENTS
     program_options date_time iostreams serialization filesystem 
-    unit_test_framework)
+    unit_test_framework python)
 
   # The first check is for the required components.
   find_package (Boost COMPONENTS ${BOOST_REQUIRED_COMPONENTS})
@@ -389,7 +393,8 @@ macro (get_boost)
     # Update the list of dependencies for the project
     list (APPEND PROJ_DEP_LIBS_FOR_LIB
       ${Boost_IOSTREAMS_LIBRARY} ${Boost_SERIALIZATION_LIBRARY}
-      ${Boost_FILESYSTEM_LIBRARY} ${Boost_DATE_TIME_LIBRARY})
+      ${Boost_FILESYSTEM_LIBRARY} ${Boost_DATE_TIME_LIBRARY}
+      ${Boost_PYTHON_LIBRARY})
     list (APPEND PROJ_DEP_LIBS_FOR_BIN ${Boost_PROGRAM_OPTIONS_LIBRARY})
     list (APPEND PROJ_DEP_LIBS_FOR_TST ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY})
 
@@ -397,7 +402,8 @@ macro (get_boost)
     set (BOOST_REQUIRED_LIBS
       ${Boost_IOSTREAMS_LIBRARY} ${Boost_SERIALIZATION_LIBRARY}
       ${Boost_FILESYSTEM_LIBRARY} ${Boost_DATE_TIME_LIBRARY}
-      ${Boost_PROGRAM_OPTIONS_LIBRARY} ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY})
+      ${Boost_PROGRAM_OPTIONS_LIBRARY} ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
+      ${Boost_PYTHON_LIBRARY})
   endif (Boost_FOUND)
 
 endmacro (get_boost)
@@ -535,11 +541,20 @@ endmacro (get_stdair)
 macro (init_build)
   ##
   # Compilation
-  # Note: the debug flag (-g) is set (or not) by giving the
-  # corresponding option when calling cmake:
-  # cmake -DCMAKE_BUILD_TYPE:STRING={Debug,Release,MinSizeRel,RelWithDebInfo}
-  #set (CMAKE_CXX_FLAGS "-Wall -Wextra -pedantic -Werror")
-  set (CMAKE_CXX_FLAGS "-Wall -Werror")
+  # Note:
+  #  * The debug flag (-g) is set (or not) by giving the corresponding option
+  #    when calling cmake:
+  #    cmake -DCMAKE_BUILD_TYPE:STRING={Debug,Release,MinSizeRel,RelWithDebInfo}
+  #  * The CMAKE_CXX_FLAGS is set by CMake to be equal to the CXXFLAGS 
+  #    environment variable. Hence:
+  #    CXXFLAGS="-O2"; export CXXFLAGS; cmake ..
+  #    will set CMAKE_CXX_FLAGS as being equal to -O2.
+  if (NOT CMAKE_CXX_FLAGS)
+	#set (CMAKE_CXX_FLAGS "-Wall -Wextra -pedantic -Werror")
+	set (CMAKE_CXX_FLAGS "-Wall -Werror")
+  endif (NOT CMAKE_CXX_FLAGS)
+
+  #
   include_directories (BEFORE ${CMAKE_SOURCE_DIR} ${CMAKE_BINARY_DIR})
   
   ##
@@ -744,9 +759,12 @@ macro (module_library_add_standard _layer_list)
     "${${MODULE_LIB_TARGET}_root_HEADERS}" "${${MODULE_LIB_TARGET}_SOURCES}" 
     ${_intermodule_dependencies})
 
-  # Installation of all the remaining header files for the module, i.e.,
-  # the header files located in all the layers except the root.
-  module_header_install_everything_else ()
+  # If so required, installation of all the remaining header files 
+  # for the module, i.e., the header files located in all the layers
+  # except the root.
+  if (_publish_all_headers_flag)
+    module_header_install_everything_else()
+  endif (_publish_all_headers_flag)
 
   # Convenient message to the user/developer
   if (NOT "${INSTALL_LIB_DIR}" MATCHES "^/usr/${LIBDIR}$")
@@ -763,6 +781,8 @@ endmacro (module_library_add_standard)
 #    short name: a 'lib' suffix is just appended to the short name.
 #  * The directory where to find the header files.
 #  * The header files to be published/installed along with the library.
+#    If there are no header to be exported, the 'na' keyword (standing for
+#    'non available') must be given.
 #  * The source files to build the library.
 #    Note that the source files contain at least the header files. Hence,
 #    even when there are no .cpp source files, the .hpp files will appear.
@@ -775,7 +795,7 @@ endmacro (module_library_add_standard)
 # external libraries (e.g., Boost, SOCI, StdAir) are automatically
 # appended, thanks to the get_external_libs() macro.
 macro (module_library_add_specific
-	_lib_short_name _lib_dir _lib_headers _lib_sources)
+    _lib_short_name _lib_dir _lib_headers _lib_sources)
   # Derive the library (CMake) target from its name
   set (_lib_target ${_lib_short_name}lib)
 
@@ -822,9 +842,6 @@ macro (module_library_add_specific
     add_dependencies (${_lib_target} hdr_cfg_${MODULE_NAME})
   endif (${_lib_short_name} STREQUAL ${MODULE_NAME})
 
-  # DEBUG
-  #message ("DEBUG -- [${_lib_target}] _lib_headers = ${_lib_headers}")
-
   ##
   # Library name (and soname)
   if (WIN32)
@@ -856,8 +873,11 @@ macro (module_library_add_specific
   list (APPEND ${MODULE_NAME}_ALL_LIBS ${_lib_target})
   set (${MODULE_NAME}_ALL_LIBS ${${MODULE_NAME}_ALL_LIBS} PARENT_SCOPE)
 
-  # Install the header files for the library
-  module_header_install_specific (${_lib_dir} "${_lib_headers}")
+  # If given/existing, install the header files for the library
+  string (TOLOWER "${_lib_headers}" _lib_headers_lower)
+  if (NOT "${_lib_headers_lower}" STREQUAL "na")
+    module_header_install_specific (${_lib_dir} "${_lib_headers}")
+  endif (NOT "${_lib_headers_lower}" STREQUAL "na")
 
 endmacro (module_library_add_specific)
 
@@ -946,11 +966,37 @@ macro (module_binary_add _exec_source_dir)
 endmacro (module_binary_add)
 
 ##
+# Add a Python script to be installed
+macro (module_python_add _script_file)
+  #
+  set (_full_python_script_path ${CMAKE_CURRENT_SOURCE_DIR}/${_script_file})
+  if (EXISTS ${_full_python_script_path})
+    # Install the development helpers
+    install (PROGRAMS ${_script_file} DESTINATION bin COMPONENT devel)
+
+  else (EXISTS ${_full_python_script_path})
+    message (FATAL_ERROR
+      "The Python script to be installed, '${_script_file}', does not exist")
+  endif (EXISTS ${_full_python_script_path})
+
+  # Register the binary target in the project (for reporting purpose)
+  get_filename_component (_script_alone ${_script_file} NAME)
+  list (APPEND PROJ_ALL_BIN_TARGETS ${_script_alone})
+  set (PROJ_ALL_BIN_TARGETS ${PROJ_ALL_BIN_TARGETS} PARENT_SCOPE)
+
+  # Register, for reporting purpose, the list of executables to be built
+  # and installed for that module
+  list (APPEND ${MODULE_NAME}_ALL_EXECS ${_script_alone})
+  set (${MODULE_NAME}_ALL_EXECS ${${MODULE_NAME}_ALL_EXECS} PARENT_SCOPE)
+
+endmacro (module_python_add)
+
+##
 # Installation of the CMake import helper, so that third party projects
 # can refer to it (for libraries, header files and binaries)
 macro (module_export_install)
-  install (EXPORT ${LIB_DEPENDENCY_EXPORT} DESTINATION
-    "${INSTALL_DATA_DIR}/${PACKAGE}/CMake" COMPONENT devel)
+  install (EXPORT ${LIB_DEPENDENCY_EXPORT}
+    DESTINATION "${INSTALL_DATA_DIR}/${PACKAGE}/CMake" COMPONENT devel)
 endmacro (module_export_install)
 
 
@@ -1105,11 +1151,11 @@ macro (install_dev_helper_files)
 
   # Install the development helpers
   install (PROGRAMS ${CMAKE_CURRENT_BINARY_DIR}/${CFG_SCRIPT} 
-	DESTINATION ${CFG_SCRIPT_PATH})
+    DESTINATION ${CFG_SCRIPT_PATH})
   install (FILES ${CMAKE_CURRENT_BINARY_DIR}/${PKGCFG_SCRIPT}
-	DESTINATION ${PKGCFG_SCRIPT_PATH})
+    DESTINATION ${PKGCFG_SCRIPT_PATH})
   install (FILES ${CMAKE_CURRENT_BINARY_DIR}/${M4_MACROFILE}
-	DESTINATION ${M4_MACROFILE_PATH})
+    DESTINATION ${M4_MACROFILE_PATH})
 
 endmacro (install_dev_helper_files)
 
@@ -1221,11 +1267,11 @@ macro (display_status_all_modules)
   message (STATUS)
   foreach (_module_name ${PROJ_ALL_MOD_FOR_BLD})
     message (STATUS "* Module ....................... : ${_module_name}")
-    message (STATUS "  + Layers to be built ......... : ${${_module_name}_ALL_LAYERS}")
+    message (STATUS "  + Layers to build ............ : ${${_module_name}_ALL_LAYERS}")
     message (STATUS "  + Dependencies on other layers : ${${_module_name}_INTER_TARGETS}")
-    message (STATUS "  + Libraries to be built ...... : ${${_module_name}_ALL_LIBS}")
-    message (STATUS "  + Executables to be built .... : ${${_module_name}_ALL_EXECS}")
-    message (STATUS "  + Test to be checked ......... : ${${_module_name}_ALL_TESTS}")
+    message (STATUS "  + Libraries to build/install . : ${${_module_name}_ALL_LIBS}")
+    message (STATUS "  + Executables to build/install : ${${_module_name}_ALL_EXECS}")
+    message (STATUS "  + Tests to perform ........... : ${${_module_name}_ALL_TESTS}")
   endforeach (_module_name)
 endmacro (display_status_all_modules)
 
@@ -1248,14 +1294,18 @@ macro (display_status)
   message (STATUS "---     Build Configuration    ---")
   message (STATUS "----------------------------------")
   message (STATUS "Modules to build ............... : ${PROJ_ALL_MOD_FOR_BLD}")
-  message (STATUS "Libraries to build ............. : ${PROJ_ALL_LIB_TARGETS}")
-  message (STATUS "Binaries to build .............. : ${PROJ_ALL_BIN_TARGETS}")
+  message (STATUS "Libraries to build/install ..... : ${PROJ_ALL_LIB_TARGETS}")
+  message (STATUS "Binaries to build/install ...... : ${PROJ_ALL_BIN_TARGETS}")
   message (STATUS "Modules to test ................ : ${PROJ_ALL_MOD_FOR_TST}")
   message (STATUS "Binaries to test ............... : ${PROJ_ALL_TST_TARGETS}")
   display_status_all_modules ()
   message (STATUS)
   message (STATUS "BUILD_SHARED_LIBS .............. : ${BUILD_SHARED_LIBS}")
   message (STATUS "CMAKE_BUILD_TYPE ............... : ${CMAKE_BUILD_TYPE}")
+  message (STATUS " * CMAKE_C_FLAGS ............... : ${CMAKE_C_FLAGS}")
+  message (STATUS " * CMAKE_CXX_FLAGS ............. : ${CMAKE_CXX_FLAGS}")
+  message (STATUS " * BUILD_FLAGS ................. : ${BUILD_FLAGS}")
+  message (STATUS " * COMPILE_FLAGS ............... : ${COMPILE_FLAGS}")
   message (STATUS "CMAKE_MODULE_PATH .............. : ${CMAKE_MODULE_PATH}")
   message (STATUS "CMAKE_INSTALL_PREFIX ........... : ${CMAKE_INSTALL_PREFIX}")
   display_doxygen ()
