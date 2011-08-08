@@ -185,20 +185,11 @@ namespace RMOL {
     /**
      * Build a sample BOM tree, and attach it to the BomRoot instance.
      *
-     * As for now, two sample BOM trees can be built.
-     * <ul>
-     *   <li>One BOM tree is based on two actual inventories (one for BA,
-     *     another for AF). Each inventory contains one flight. One of
-     *     those flights has two legs (and therefore three segments).</li>
-     *   <li>The other BOM tree is fake, as a hook for RMOL to work. It has
-     *     a single leg-cabin, which has the given capacity.</li>
-     * </ul>
+     * \see stdair::CmdBomManager::buildSampleBom() for more details.
      *
-     * @param const bool isForDemo Whether the sample BOM tree is for demo only.
      * @param const CabinCapacity_T Capacity of the cabin for RMOL optimisation.
      */
-    void buildSampleBom (const bool isForDemo = true,
-                         const stdair::CabinCapacity_T iCabinCapacity = 0);
+    void buildSampleBom (const stdair::CabinCapacity_T& iCabinCapacity = 0);
 
 
   public:

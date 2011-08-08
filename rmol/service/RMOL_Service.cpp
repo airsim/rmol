@@ -237,9 +237,8 @@ namespace RMOL {
   void RMOL_Service::
   initRmolService (const stdair::CabinCapacity_T& iCabinCapacity) {
     // Build a dummy inventory with a leg-cabin which has the given capacity.
-    // The STDAIR-held BOM tree is altered correspondingly.
-    const bool isForDemo = true;
-    buildSampleBom (isForDemo, iCabinCapacity);
+    // The StdAir-held BOM tree is altered correspondingly.
+    buildSampleBom (iCabinCapacity);
   }
 
   // ////////////////////////////////////////////////////////////////////
@@ -248,9 +247,8 @@ namespace RMOL {
                    const stdair::Filename_T& iInputFileName) {
 
     // Build a dummy inventory with a leg-cabin which has the given capacity.
-    // The STDAIR-held BOM tree is altered correspondingly.
-    const bool isForDemo = true;
-    buildSampleBom (isForDemo, iCabinCapacity);
+    // The StdAir-held BOM tree is altered correspondingly.
+    buildSampleBom (iCabinCapacity);
 
     // Retrieve the BOM tree root
     assert (_rmolServiceContext != NULL);
@@ -265,25 +263,52 @@ namespace RMOL {
   
   // ////////////////////////////////////////////////////////////////////
   void RMOL_Service::
-  buildSampleBom (const bool isForDemo,
-                  const stdair::CabinCapacity_T iCabinCapacity) {
+  buildSampleBom (const stdair::CabinCapacity_T& iCabinCapacity) {
 
-    // Retrieve the BOM tree root
+    // Retrieve the RMOL service context
+    if (_rmolServiceContext == NULL) {
+      throw stdair::NonInitialisedServiceException ("The RMOL service has not"
+                                                    " been initialised");
+    }
     assert (_rmolServiceContext != NULL);
-    RMOL_ServiceContext& lRMOL_ServiceContext = *_rmolServiceContext;
 
-    // Retrieve the StdAir service
+    // Retrieve the RMOL service context and whether it owns the Stdair
+    // service
+    RMOL_ServiceContext& lRMOL_ServiceContext = *_rmolServiceContext;
+    const bool doesOwnStdairService =
+      lRMOL_ServiceContext.getOwnStdairServiceFlag();
+
+    // Retrieve the StdAir service object from the (RMOL) service context
     stdair::STDAIR_Service& lSTDAIR_Service =
       lRMOL_ServiceContext.getSTDAIR_Service();
-    stdair::BomRoot& lBomRoot = lSTDAIR_Service.getBomRoot();
 
-    // Delegate the action to the dedicated command
-    if (isForDemo == true) {
-      stdair::CmdBomManager::buildSampleBomForRMOL (lBomRoot, iCabinCapacity);
-
-    } else {
-      stdair::CmdBomManager::buildSampleBom (lBomRoot);
+    /**
+     * 1. Have StdAir build the whole BOM tree, only when the StdAir service is
+     *    owned by the current component (RMOL here)
+     */
+    if (doesOwnStdairService == true) {
+      //
+      lSTDAIR_Service.buildSampleBom();
     }
+
+    /**
+     * 2. Delegate the complementary building of objects and links by the
+     *    appropriate levels/components
+     */
+    /**
+     * Let the revenue accounting (i.e., the AirRAC component) build the yields.
+    AIRRAC::AIRRAC_Service& lAIRRAC_Service =
+      lRMOL_ServiceContext.getAIRRAC_Service();
+    lAIRRAC_Service.buildSampleBom();
+     */
+
+    /**
+     * 3. Build the complementary objects/links for the current component (here,
+     *    SimFQT)
+     *
+     * \note: Currently, no more things to do by RMOL at that stage,
+     *        as there is no child
+     */
   }
 
   // ////////////////////////////////////////////////////////////////////
