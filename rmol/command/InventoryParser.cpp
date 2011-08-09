@@ -9,8 +9,10 @@
 #include <stdair/stdair_inventory_types.hpp>
 #include <stdair/stdair_maths_types.hpp>
 #include <stdair/stdair_exceptions.hpp>
+#include <stdair/basic/BasConst_DefaultObject.hpp>
 #include <stdair/basic/BasConst_Inventory.hpp>
 #include <stdair/basic/BasFileMgr.hpp>
+#include <stdair/bom/BomRetriever.hpp>
 #include <stdair/bom/BomManager.hpp>
 #include <stdair/bom/BomRoot.hpp>
 #include <stdair/bom/Inventory.hpp>
@@ -34,37 +36,54 @@ namespace RMOL {
   getSampleLegCabin (stdair::BomRoot& ioBomRoot) {
     stdair::LegCabin* oLegCabin_ptr = NULL;
 
-    // Retrieve the leg-cabin
-    const stdair::InventoryList_T& lInventoryList =
-      stdair::BomManager::getList<stdair::Inventory> (ioBomRoot);
-    stdair::InventoryList_T::const_iterator itInv = lInventoryList.begin();
-    assert (itInv != lInventoryList.end());
-    const stdair::Inventory* lInventory_ptr = *itInv;
-    assert (lInventory_ptr != NULL);
+    // Retrieve the Inventory
+    const stdair::Inventory* lInventory_ptr = stdair::BomRetriever::
+      retrieveInventoryFromKey (ioBomRoot, stdair::DEFAULT_AIRLINE_CODE);
 
-    const stdair::FlightDateList_T& lFlightDateList =
-      stdair::BomManager::getList<stdair::FlightDate> (*lInventory_ptr);
-    stdair::FlightDateList_T::const_iterator itFD = lFlightDateList.begin();
-    assert (itFD != lFlightDateList.end());
-    const stdair::FlightDate* lFD_ptr = *itFD;
-    assert (lFD_ptr != NULL);
-
-    const stdair::LegDateList_T& lLegDateList =
-      stdair::BomManager::getList<stdair::LegDate> (*lFD_ptr);
-    stdair::LegDateList_T::const_iterator itLD = lLegDateList.begin();
-    assert (itLD != lLegDateList.end());
-    const stdair::LegDate* lLD_ptr = *itLD;
-    assert (lLD_ptr != NULL);
-
-    const stdair::LegCabinList_T& lLegCabinList =
-      stdair::BomManager::getList<stdair::LegCabin> (*lLD_ptr);
-    stdair::LegCabinList_T::const_iterator itLegCabin = lLegCabinList.begin();
-    assert (itLegCabin != lLegCabinList.end());
-
-    oLegCabin_ptr = *itLegCabin;
-
-    assert (oLegCabin_ptr != NULL);
+    if (lInventory_ptr == NULL) {
+      std::ostringstream oStr;
+      oStr << "The inventory corresponding to the '"
+           << stdair::DEFAULT_AIRLINE_CODE << "' airline can not be found";
+      throw stdair::ObjectNotFoundException (oStr.str());
+    }
     
+    // Retrieve the FlightDate
+    const stdair::FlightDate* lFlightDate_ptr = stdair::BomRetriever::
+      retrieveFlightDateFromKey (*lInventory_ptr, stdair::DEFAULT_FLIGHT_NUMBER,
+                                 stdair::DEFAULT_DEPARTURE_DATE);
+    
+    if (lFlightDate_ptr == NULL) {
+      std::ostringstream oStr;
+      oStr << "The flight-date corresponding to ("
+           << stdair::DEFAULT_FLIGHT_NUMBER << ", "
+           << stdair::DEFAULT_DEPARTURE_DATE << ") can not be found";
+      throw stdair::ObjectNotFoundException (oStr.str());
+    }
+
+    // Retrieve the LegDate
+    const stdair::LegDateKey lLegDateKey (stdair::DEFAULT_ORIGIN);
+    const stdair::LegDate* lLegDate_ptr =
+      lFlightDate_ptr->getLegDate (lLegDateKey);
+
+    if (lLegDate_ptr == NULL) {
+      std::ostringstream oStr;
+      oStr << "The leg-date corresponding to the '"
+           << stdair::DEFAULT_ORIGIN << "' origin can not be found";
+      throw stdair::ObjectNotFoundException (oStr.str());
+    }
+    
+    // Retrieve the LegCabin
+    const stdair::LegCabinKey lLegCabinKey (stdair::DEFAULT_CABIN_CODE);
+    oLegCabin_ptr = lLegDate_ptr->getLegCabin (lLegCabinKey);
+
+    if (oLegCabin_ptr == NULL) {
+      std::ostringstream oStr;
+      oStr << "The leg-cabin corresponding to the '"
+           << stdair::DEFAULT_CABIN_CODE << "' cabin code can not be found";
+      throw stdair::ObjectNotFoundException (oStr.str());
+    }
+    
+    assert (oLegCabin_ptr != NULL);
     return *oLegCabin_ptr;
   }
 
