@@ -8,9 +8,10 @@ EXTRA_DIST = testLib.sh
 ##
 
 ##
-nofail_PRG = OptimiseTestSuite ForecasterTestSuite UnconstrainerTestSuite
+nofail_PRG = OptimiseTestSuite ForecasterTestSuite UnconstrainerTestSuite \
+	bomsforforecaster
 fail_PRG =
-extra_PRG = bomsforforecaster
+extra_PRG =
 
 #
 MAINTAINERCLEANFILES = Makefile.in

@@ -1,14 +1,50 @@
+/*!
+ * \page bomsforforecaster_cpp Command-Line Test to Demonstrate How To Test the RMOL Project
+ * \code
+ */
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
 // STL
 #include <cassert>
-#include <fstream>
 #include <limits>
+#include <sstream>
+#include <fstream>
+#include <string>
+// Boost Unit Test Framework (UTF)
+#define BOOST_TEST_DYN_LINK
+#define BOOST_TEST_MAIN
+#define BOOST_TEST_MODULE OptimiseTestSuite
+#include <boost/test/unit_test.hpp>
 // StdAir
+#include <stdair/basic/BasLogParams.hpp>
+#include <stdair/basic/BasDBParams.hpp>
 #include <stdair/service/Logger.hpp>
 // RMOL
 #include <rmol/RMOL_Service.hpp>
+#include <rmol/config/rmol-paths.hpp>
+
+namespace boost_utf = boost::unit_test;
+
+// (Boost) Unit Test XML Report
+std::ofstream utfReportStream ("bomsforforecaster_utfresults.xml");
+
+/**
+ * Configuration for the Boost Unit Test Framework (UTF)
+ */
+struct UnitTestConfig {
+  /** Constructor. */
+  UnitTestConfig() {
+    boost_utf::unit_test_log.set_stream (utfReportStream);
+    boost_utf::unit_test_log.set_format (boost_utf::XML);
+    boost_utf::unit_test_log.set_threshold_level (boost_utf::log_test_units);
+    //boost_utf::unit_test_log.set_threshold_level (boost_utf::log_successful_tests);
+  }
+
+  /** Destructor. */
+  ~UnitTestConfig() {
+  }
+};
 
 namespace RMOL {
 
@@ -178,67 +214,92 @@ namespace RMOL {
 
 }
 
-// ////////////// M A I N ///////////////
-int main (int argc, char* argv[]) {
+// /////////////// Main: Unit Test Suite //////////////
+
+// Set the UTF configuration (re-direct the output to a specific file)
+BOOST_GLOBAL_FIXTURE (UnitTestConfig);
+
+/**
+ * Main test suite
+ */
+BOOST_AUTO_TEST_SUITE (master_test_suite)
+
+/**
+ * Test the forecasting techniques.
+ */
+BOOST_AUTO_TEST_CASE (rmol_forecaster) {
 
   // Output log File
-  std::string lLogFilename ("./bomsforforecaster.log");
+  std::string lLogFilename ("bomsforforecaster.log");
   std::ofstream logOutputFile;
 
   // Open and clean the log outputfile
   logOutputFile.open (lLogFilename.c_str());
   logOutputFile.clear();
 
-  // Cabin capacity (it must be greater then 100 here)
-  const double cabinCapacity = 100.0;
-
   // Initialise the RMOL service
   const stdair::BasLogParams lLogParams (stdair::LOG::DEBUG, logOutputFile);
-  const stdair::AirlineCode_T lAirlineCode ("BA");
-  RMOL::RMOL_Service lRmolService (lLogParams, cabinCapacity);
+
+  // Initialise the RMOL service
+  RMOL::RMOL_Service rmolService (lLogParams);
+
+  // Cabin capacity (it must be greater then 100 here)
+  const double lCabinCapacity = 100.0;
+
+  // Build a sample BOM tree
+  rmolService.buildSampleBom (lCabinCapacity);
 
   // Register BCDataSet
   RMOL::BookingClassDataSet lBookingClassDataSet;
 
   // Register BookingClassData
-  RMOL::BookingClassData QClassData (10, 100, 1, false );
+  RMOL::BookingClassData QClassData (10, 100, 1, false);
   RMOL::BookingClassData MClassData (5, 150, 0.8, true);
   RMOL::BookingClassData BClassData (0, 200, 0.6, false);
   RMOL::BookingClassData YClassData (0, 300, 0.3, false);
 
   // Display
-  STDAIR_LOG_DEBUG(QClassData.toString());
-  STDAIR_LOG_DEBUG(MClassData.toString());
-  STDAIR_LOG_DEBUG(BClassData.toString());
-  STDAIR_LOG_DEBUG(YClassData.toString());
+  STDAIR_LOG_DEBUG (QClassData.toString());
+  STDAIR_LOG_DEBUG (MClassData.toString());
+  STDAIR_LOG_DEBUG (BClassData.toString());
+  STDAIR_LOG_DEBUG (YClassData.toString());
 
   // Add BookingClassData into the BCDataSet
-  lBookingClassDataSet.addBookingClassData (QClassData );
-  lBookingClassDataSet.addBookingClassData( MClassData );
-  lBookingClassDataSet.addBookingClassData( BClassData );
-  lBookingClassDataSet.addBookingClassData( YClassData );
+  lBookingClassDataSet.addBookingClassData (QClassData);
+  lBookingClassDataSet.addBookingClassData (MClassData);
+  lBookingClassDataSet.addBookingClassData (BClassData);
+  lBookingClassDataSet.addBookingClassData (YClassData);
 
-  //Display
-  STDAIR_LOG_DEBUG( lBookingClassDataSet.toString() );
+  // DEBUG
+  STDAIR_LOG_DEBUG (lBookingClassDataSet.toString());
 
   // Number of classes
   const unsigned int lNoOfClass = lBookingClassDataSet.getNumberOfClass();
-  STDAIR_LOG_DEBUG( "Number of Classes: " << lNoOfClass );
+
+  // DEBUG
+  STDAIR_LOG_DEBUG ("Number of Classes: " << lNoOfClass);
 
   // Minimum fare
-  lBookingClassDataSet.updateMinimumFare();
+  BOOST_CHECK_NO_THROW (lBookingClassDataSet.updateMinimumFare());
   const double lMinFare = lBookingClassDataSet.getMinimumFare();
-  STDAIR_LOG_DEBUG( "Minimum fare: " << lMinFare );
+
+  // DEBUG
+  STDAIR_LOG_DEBUG ("Minimum fare: " << lMinFare);
 
   // Censorship flag
-  lBookingClassDataSet.updateCensorshipFlag();
+  BOOST_CHECK_NO_THROW (lBookingClassDataSet.updateCensorshipFlag());
   const bool lCensorshipFlag = lBookingClassDataSet.getCensorshipFlag();
 
   // DEBUG
-  STDAIR_LOG_DEBUG ( "Censorship Flag: " << lCensorshipFlag );
+  STDAIR_LOG_DEBUG ("Censorship Flag: " << lCensorshipFlag);
 
   // Close the log output file
   logOutputFile.close();
-  return 0;
-
 }
+
+// End the test suite
+BOOST_AUTO_TEST_SUITE_END()
+
+/*!
+ * \endcode
+ */

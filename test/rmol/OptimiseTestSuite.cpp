@@ -69,15 +69,7 @@ int testOptimiseHelper (const unsigned short optimisationMethodFlag) {
     
   // Input file name
   const stdair::Filename_T lRMInputFileName (STDAIR_SAMPLE_DIR "/rm02.csv");
-  //const bool hasInputFile = true;
     
-  // Check that the file path given as input corresponds to an actual file
-  bool doesExistAndIsReadable =
-    stdair::BasFileMgr::doesExistAndIsReadable (lRMInputFileName);
-  BOOST_CHECK_MESSAGE (doesExistAndIsReadable == true,
-                       "The '" << lRMInputFileName
-                       << "' input file can not be open and read");
-
   // Set the log parameters
   std::ofstream logOutputFile;
   // Open and clean the log outputfile
@@ -86,7 +78,10 @@ int testOptimiseHelper (const unsigned short optimisationMethodFlag) {
     
   // Initialise the RMOL service
   const stdair::BasLogParams lLogParams (stdair::LOG::DEBUG, logOutputFile);
-  RMOL::RMOL_Service rmolService (lLogParams, cabinCapacity, lRMInputFileName);
+  RMOL::RMOL_Service rmolService (lLogParams);
+
+  // Parse the optimisation data and build a dummy BOM tree
+  rmolService.parseAndLoad (cabinCapacity, lRMInputFileName);
 
   switch (METHOD_FLAG) {
   case 0: {
