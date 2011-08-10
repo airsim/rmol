@@ -436,14 +436,18 @@ namespace RMOL {
   // ////////////////////////////////////////////////////////////////////
   bool RMOL_Service::optimise (stdair::FlightDate& ioFlightDate,
                                const stdair::DateTime_T& iRMEventTime,
-                               const stdair::ForecastingMethod::EN_ForecastingMethod& iForecastingMethod) {    
+                               const stdair::ForecastingMethod& iForecastingMethod) {    
     // Call the functions in the forecaster and the optimiser.
     // DEBUG
     STDAIR_LOG_DEBUG ("Forecast");
     bool isForecasted = false;
-    switch (iForecastingMethod) {
-    case stdair::ForecastingMethod::ADD_PK: isForecasted = Forecaster::forecastUsingAdditivePickUp (ioFlightDate, iRMEventTime); break;
-    case stdair::ForecastingMethod::MUL_PK: isForecasted = Forecaster::forecastUsingMultiplicativePickUp (ioFlightDate, iRMEventTime); break;
+    const stdair::ForecastingMethod::EN_ForecastingMethod& lENForecastingMethod =
+      iForecastingMethod.getMethod();
+    switch (lENForecastingMethod) {
+    case stdair::ForecastingMethod::ADD_PK:
+      isForecasted = Forecaster::forecastUsingAdditivePickUp (ioFlightDate, iRMEventTime); break;
+    case stdair::ForecastingMethod::MUL_PK:
+      isForecasted = Forecaster::forecastUsingMultiplicativePickUp (ioFlightDate, iRMEventTime); break;
     default: assert (false); break;
     }
                                  

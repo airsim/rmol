@@ -179,7 +179,7 @@ namespace RMOL {
      * Optimise (revenue management) an flight-date/network-date
      */
     bool optimise (stdair::FlightDate&, const stdair::DateTime_T&,
-                   const stdair::ForecastingMethod::EN_ForecastingMethod&);
+                   const stdair::ForecastingMethod&);
 
 
     /**
