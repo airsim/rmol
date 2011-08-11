@@ -237,17 +237,11 @@ BOOST_AUTO_TEST_CASE (rmol_forecaster) {
   logOutputFile.open (lLogFilename.c_str());
   logOutputFile.clear();
 
-  // Cabin capacity (it must be greater then 100 here)
-  const double cabinCapacity = 100.0;
-
   // Initialise the RMOL service
   const stdair::BasLogParams lLogParams (stdair::LOG::DEBUG, logOutputFile);
 
   // Initialise the RMOL service
   RMOL::RMOL_Service rmolService (lLogParams);
-
-  // Cabin capacity (it must be greater then 100 here)
-  const double lCabinCapacity = 100.0;
 
   // Build a sample BOM tree
   rmolService.buildSampleBom();
