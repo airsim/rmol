@@ -249,7 +249,7 @@ int main (int argc, char* argv[]) {
                       "A sample BOM tree will therefore be built.");
 
     // Build a sample BOM tree
-    rmolService.buildSampleBom (lCapacity);
+    rmolService.buildSampleBom();
 
   } else {
     // DEBUG

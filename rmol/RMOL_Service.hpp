@@ -122,14 +122,8 @@ namespace RMOL {
      * Build a sample BOM tree, and attach it to the BomRoot instance.
      *
      * \see stdair::CmdBomManager::buildSampleBom() for more details.
-     *
-     * Like for the parseAndLoad() method above, a dummy inventory,
-     * containing a single leg-cabin, is built as well. That leg-cabin
-     * has got the capacity given as parameter.
-     *
-     * @param const CabinCapacity_T Capacity of the single cabin.
      */
-    void buildSampleBom (const stdair::CabinCapacity_T& iCabinCapacity = 0);
+    void buildSampleBom();
 
     /**
      * Single resource optimization using the Monte Carlo algorithm.

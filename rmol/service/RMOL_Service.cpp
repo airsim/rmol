@@ -197,8 +197,7 @@ namespace RMOL {
   }
   
   // ////////////////////////////////////////////////////////////////////
-  void RMOL_Service::
-  buildSampleBom (const stdair::CabinCapacity_T& iCabinCapacity) {
+  void RMOL_Service::buildSampleBom() {
 
     // Retrieve the RMOL service context
     if (_rmolServiceContext == NULL) {
@@ -241,9 +240,8 @@ namespace RMOL {
      * 3. Build the complementary objects/links for the current component (here,
      *    RMOL)
      *
-     * Build a dummy inventory with a leg-cabin which has the given capacity.
+     * \note As of now, no further action needs to be done at that stage.
      */
-    lSTDAIR_Service.buildDummyInventory (iCabinCapacity);
   }
 
   // ////////////////////////////////////////////////////////////////////
