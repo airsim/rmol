@@ -16,8 +16,7 @@
 - \ref installation
 - \ref linking
 - \ref users_guide
-- \ref tutorial
-- \ref verification
+- \ref tutorials
 - \ref copyright
 - \ref help_wanted
 - \ref howto_release
@@ -55,14 +54,12 @@
 \htmlonly
 <table width="100%">
  <tr>
-  <td align="center" valign="middle" style="padding-left:10px">
+  <td align="left" valign="middle">
    <a href="http://twitter.com/share" class="twitter-share-button" data-count="none" data-via="denis_arnaud">Tweet</a>
-   <script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script><g:plusone></g:plusone> 
+   <script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
   </td>
- </tr>
- <tr>
-  <td valign="middle">
-   <a class="urllink" href="http://sourceforge.net/projects/rmol" title="RMOL" rel="nofollow"><img src="http://sflogo.sourceforge.net/sflogo.php?group_id=177703&type=12&format=.png" alt="C++ Revenue Management Open Library" title="RMOL"/></a> 
+  <td align="right" valign="middle">
+   <g:plusone></g:plusone> 
   </td>
  </tr>
 </table>
@@ -70,7 +67,7 @@
 
 \htmlonly
 </div>
-<!-- end of left margin -->
+<!-- end of right margin -->
 \endhtmlonly
 
 \section about About RMOL

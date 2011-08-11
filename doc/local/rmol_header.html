@@ -1,32 +1,73 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<html>
-<head>
-  <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
-  <title>Welcome to $projectname!</title>
-  <link href="doxygen.css" rel="stylesheet" type="text/css">
-  <link href="tabs.css" rel="stylesheet" type="text/css">
-  <link rel="shortcut icon" href="favicon.ico">
-  <script type="text/javascript">
-	var _gaq = _gaq || [];
-	_gaq.push(['_setAccount', 'UA-24867127-1']);
-	_gaq.push(['_setDomainName', 'none']);
-	_gaq.push(['_setAllowLinker', true]);
-	_gaq.push(['_trackPageview']);
-	(function() {
-    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-	})();
-  </script>
-  <script type="text/javascript" src="https://apis.google.com/js/plusone.js"></script>
-</head>
-<body>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+		  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+	<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+	<meta name="robots" content="index,follow"/>
+	<title>$title</title>
+	<link rel="shortcut icon" href="favicon.ico">
+	<link href="$relpath$tabs.css" rel="stylesheet" type="text/css"/>
+	<link href="$relpath$rmol.css" rel="stylesheet" type="text/css"/>
+	$treeview
+	$search
+	$mathjax
+	<script type="text/javascript">
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-24867127-1']);
+	  _gaq.push(['_setDomainName', 'sourceforge.net']);
+	  _gaq.push(['_setAllowLinker', true]);
+	  _gaq.push(['_trackPageview']);
+	  (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+	</script>
+	<script type="text/javascript"
+			src="https://apis.google.com/js/plusone.js"></script>
+  </head>
 
-<div style="width: 100%; height: 40px; background-color: #ffff00; border: 1px solid #b0b0b0; margin: 5px 5px 5px 0; padding: 2px;">
-  <a href="http://rmol.sourceforge.net"><img width="150" height="40" 
-  src="rmol_logo.png" alt="Rmol Logo" 
-  style="float: left; border: 0;"></a>
-  <a href="http://sourceforge.net/projects/rmol/"><img width="150" 
-  height="40" src="sfx_logo.png" alt="Get Revenue Management Optimisation Library at SourceForge.net. Fast, secure and Free Open Source software downloads" 
-  style="float: right; border: 0;"></a>
-</div>
+  <body>
+	<div id="top"><!-- do not remove this div! -->
+	  <!--BEGIN TITLEAREA-->
+	  <div id="titlearea">
+		<table width="100%">
+		  <tbody>
+			<tr style="height: 56px;">
+			  <!--BEGIN PROJECT_NAME-->
+			  <td style="padding-left: 0.5em;">
+				<div id="projectname"><a href="http://rmol.sourceforge.net"><img height="45px" alt="$projectname Logo" src="rmol_logo.png"></a>
+				  <!--BEGIN PROJECT_NUMBER-->
+				  &#160;<span id="projectnumber">$projectnumber</span>
+				  <!--END PROJECT_NUMBER-->
+				</div>
+				<!--BEGIN PROJECT_BRIEF-->
+				<div id="projectbrief">$projectbrief</div>
+				<!--END PROJECT_BRIEF-->
+			  </td>
+			  <!--END PROJECT_NAME-->
+			  <!--BEGIN !PROJECT_NAME-->
+			  <!--BEGIN PROJECT_BRIEF-->
+			  <td style="padding-left: 0.5em;">
+				<div id="projectbrief">$projectbrief</div>
+			  </td>
+			  <!--END PROJECT_BRIEF-->
+			  <!--END !PROJECT_NAME-->
+
+			  <!-- begin SOURCEFORGE_CUSTOM-->
+			  <td>
+				<div id="sflogo"><a href="http://rmol.sourceforge.net"><img height="45px" alt="SourceForge Logo" src="sfx_logo.png"></a></div>
+			  </td>
+			  <!-- end SOURCEFORGE_CUSTOM-->
+
+			  <!--BEGIN DISABLE_INDEX-->
+			  <!--BEGIN SEARCHENGINE-->
+			  <td>$searchbox</td>
+			  <!--END SEARCHENGINE-->
+			  <!--END DISABLE_INDEX-->
+			</tr>
+		  </tbody>
+		</table>
+	  </div>
+	  <!--END TITLEAREA-->
+
