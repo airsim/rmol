@@ -109,6 +109,11 @@ macro (set_project_options _build_doc)
     endif ()
   endforeach (_path_type)
 
+  # Define STDAIR_SAMPLE_DIR if the project is STDAIR
+  if ("${PROJECT_NAME}" STREQUAL "stdair")
+    set (STDAIR_SAMPLE_DIR ${INSTALL_SAMPLE_DIR})
+  endif ("${PROJECT_NAME}" STREQUAL "stdair")
+
   ##
   # Basic documentation (i.e., AUTHORS, NEWS, README, INSTALL)
   set (DOC_INSTALL_FILE INSTALL)
@@ -600,7 +605,8 @@ macro (set_install_directories)
   set (pkgdatadir    ${datarootdir}/${PACKAGE})
   set (sampledir     ${STDAIR_SAMPLE_DIR})
   set (docdir        ${datarootdir}/doc/${PACKAGE}-${PACKAGE_VERSION})
-  set (htmldir       ${docdir})
+  set (htmldir       ${docdir}/html)
+  set (pdfdir        ${htmldir})
   set (mandir        ${datarootdir}/man)
   set (infodir       ${datarootdir}/info)
   set (pkgincludedir ${includedir}/stdair)
