@@ -383,7 +383,7 @@ macro (get_boost)
   set (Boost_USE_MULTITHREADED ON)
   set (Boost_USE_STATIC_RUNTIME OFF)
   set (BOOST_REQUIRED_COMPONENTS
-    program_options date_time iostreams serialization filesystem 
+    regex program_options date_time iostreams serialization filesystem 
     unit_test_framework python)
 
   # The first check is for the required components.
@@ -400,18 +400,19 @@ macro (get_boost)
 
     # Update the list of dependencies for the project
     list (APPEND PROJ_DEP_LIBS_FOR_LIB
-      ${Boost_IOSTREAMS_LIBRARY} ${Boost_SERIALIZATION_LIBRARY}
-      ${Boost_FILESYSTEM_LIBRARY} ${Boost_DATE_TIME_LIBRARY}
-      ${Boost_PYTHON_LIBRARY})
-    list (APPEND PROJ_DEP_LIBS_FOR_BIN ${Boost_PROGRAM_OPTIONS_LIBRARY})
+      ${Boost_REGEX_LIBRARY} ${Boost_IOSTREAMS_LIBRARY} 
+	  ${Boost_SERIALIZATION_LIBRARY} ${Boost_FILESYSTEM_LIBRARY}
+	  ${Boost_DATE_TIME_LIBRARY} ${Boost_PYTHON_LIBRARY})
+    list (APPEND PROJ_DEP_LIBS_FOR_BIN
+	  ${Boost_REGEX_LIBRARY} ${Boost_PROGRAM_OPTIONS_LIBRARY})
     list (APPEND PROJ_DEP_LIBS_FOR_TST ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY})
 
     # For display purposes
     set (BOOST_REQUIRED_LIBS
-      ${Boost_IOSTREAMS_LIBRARY} ${Boost_SERIALIZATION_LIBRARY}
-      ${Boost_FILESYSTEM_LIBRARY} ${Boost_DATE_TIME_LIBRARY}
-      ${Boost_PROGRAM_OPTIONS_LIBRARY} ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
-      ${Boost_PYTHON_LIBRARY})
+      ${Boost_REGEX_LIBRARY} ${Boost_IOSTREAMS_LIBRARY} 
+	  ${Boost_SERIALIZATION_LIBRARY} ${Boost_FILESYSTEM_LIBRARY}
+	  ${Boost_DATE_TIME_LIBRARY} ${Boost_PROGRAM_OPTIONS_LIBRARY}
+	  ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY} ${Boost_PYTHON_LIBRARY})
   endif (Boost_FOUND)
 
 endmacro (get_boost)
