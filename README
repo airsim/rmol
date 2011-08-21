@@ -1,4 +1,22 @@
 
+Summary:
+--------
+RMOL is a C++ library of Revenue Management and Optimisation classes 
+and functions. Typically, that library may be used by service providers
+(e.g., airlines offering flight seats, hotels offering rooms, rental car
+companies offering rental days, broadcasting company offering advertisement 
+slots, theaters offering seats, etc.) to help in optimising their revenues 
+from seat capacities.
+Most of the algorithms implemented are public and documented in the 
+following book:
+The Theory and practice of Revenue Management, by Kalyan T. Talluri and
+Garrett J. van Ryzin, Kluwer Academic Publishers, 2004, ISBN 1-4020-7701-7
+
+RMOL makes an extensive use of existing open-source libraries for
+increased functionality, speed and accuracy. In particular the
+Boost (C++ Standard Extensions: http://www.boost.org) library is used.
+
+
 Getting and installing from the Fedora/CentOS/RedHat distribution:
 ------------------------------------------------------------------
 Just use Yum:
@@ -6,36 +24,51 @@ yum -y install rmol-devel rmol-doc
 
 You can also get the RPM packages (which may work on Linux
 distributions like Novel Suse and Mandriva) from the Fedora repository
-(e.g., for Fedora 11, 
-http://fr2.rpmfind.net/linux/fedora/releases/11/Everything/)
+(e.g., for Fedora 16, 
+http://fr2.rpmfind.net/linux/fedora/releases/16/Everything/)
 
 Building the library and test binary from Subversion repository:
 ----------------------------------------------------------------
-The Sourceforge Subversion repository is to be found here:
-svn co https://rmol.svn.sourceforge.net/svnroot/rmol/trunk rmolsvn
+The Sourceforge Git repository may be cloned as following:
+git clone ssh://rmol.git.sourceforge.net/gitroot/rmol/rmol rmolgit
+cd rmolgit
+git checkout trunk
 
 Then, you need the following packages (Fedora Core 6 names here, 
 but names may vary according to distributions):
-  * libtool, autoconf, automake
-  * gettext-devel
+  * cmake
   * gcc-c++
-  * gsl-devel
+  * stdair-devel
   * boost-devel
-  * doxygen
-  * tetex-latex (optional)
-  * rpm-build
+  * gsl-devel (optional)
+  * zeromq-devel
+  * readline-devel
+  * soci-mysql-devel
+  * python-devel
+  * gettext-devel (optional)
+  * doxygen, ghostscript, graphviz and tetex-latex (optional)
+  * rpm-build (optional)
 
 Building the library and test binary from the tarball:
 ------------------------------------------------------
 The latest stable source tarball (rmol*.tar.gz or .bz2) can be found here:
 http://sourceforge.net/project/showfiles.php?group_id=177703
 
-Then, as usual, you can just type the following sequence:
-"./configure --prefix=/home/latus/dev/deliveries/rmol-0.23.0 && make && make check && cd test && ../rmol/batches/rmol -i ../samples/sample3.csv"
-Of course, if you want to install the library (librmol*.so*), 
-just type: "make install".
+Then, as usual:
+* To configure the project, type something like:
+  mkdir build && cd build
+  cmake -DCMAKE_INSTALL_PREFIX=/home/user/dev/deliveries/rmol-99.99.99 \
+   -DWITH_STDAIR_PREFIX=/home/user/dev/deliveries/stdair-stable \
+   -DCMAKE_BUILD_TYPE:STRING=Debug -DINSTALL_DOC:BOOL=ON ..
+* To build the project, type:
+  make
+* To test the project, type:
+  make check
+* To install the library (librmol*.so*) and the binary (rmol),
+  make install
+* To package the source files, type:
+  make dist
+* To package the binary and the (HTML and PDF) documentation:
+  make package
 
-See the INSTALL file for more details.
-
-Denis Arnaud (February 2007, revised September 2009)
-
+Denis Arnaud (August 2011)

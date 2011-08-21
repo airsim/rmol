@@ -86,7 +86,7 @@ int readConfiguration(int argc, char* argv[],
      "The cabin set up can be either built-in or parsed from an input file. That latter must then be given with the -i/--input option")
     ("input,i",
      boost::program_options::value< std::string >(&ioInputFilename)->default_value(K_RMOL_DEFAULT_INPUT_FILENAME),
-     "(CVS) input file for the demand distributions")
+     "(CSV) input file for the demand distribution parameters and resource (leg-cabin) capacities")
     ("log,l",
      boost::program_options::value< std::string >(&ioLogFilename)->default_value(K_RMOL_DEFAULT_LOG_FILENAME),
      "Filename for the logs")

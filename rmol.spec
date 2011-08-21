@@ -8,14 +8,14 @@ Release:        1%{?dist}
 Summary:        C++ library of Revenue Management and Optimisation classes and functions
 
 Group:          System Environment/Libraries 
-License:        LGPLv2
+License:        LGPLv2+
 URL:            http://%{name}.sourceforge.net
 Source0:        http://downloads.sourceforge.net/%{name}/%{name}-%{version}.tar.bz2
-%{?el5:BuildRoot: %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)}
+BuildRoot:      %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 
-BuildRequires:  gsl-devel
-BuildRequires:  boost-devel
-BuildRequires:  cppunit-devel
+BuildRequires:  cmake, python-devel
+BuildRequires:  boost-devel, gsl-devel, soci-mysql-devel, zeromq-devel
+BuildRequires:  readline-devel, stdair-devel
 
 
 %description
@@ -30,44 +30,42 @@ book:
 The Theory and practice of Revenue Management, by Kalyan T. Talluri and
 Garrett J. van Ryzin, Kluwer Academic Publishers, 2004, ISBN 1-4020-7701-7
 
-Install the %{name} package if you need a library for high-level
-revenue management functionality.
+%{name} makes an extensive use of existing open-source libraries for
+increased functionality, speed and accuracy. In particular the
+Boost (C++ Standard Extensions: http://www.boost.org) library is used.
+
+Install the %{name} package if you need a library of basic C++ objects
+for Airline Revenue Management (RM), mainly for simulation purpose.
 
 %package        devel
-Summary:        Header files, libraries and development documentation for %{name}
+Summary:        Header files, libraries and development helper tools for %{name}
 Group:          Development/Libraries
-Requires:       %{name} = %{version}-%{release}
+Requires:       %{name}%{?_isa} = %{version}-%{release}
 Requires:       pkgconfig
 Requires(post): info
 Requires(preun): info
 
 %description    devel
-This package contains the header files, static libraries and
-development documentation for %{name}. If you would like to develop
+This package contains the header files, shared libraries and
+development helper tools for %{name}. If you would like to develop
 programs using %{name}, you will need to install %{name}-devel.
 
-%package doc
+%package        doc
 Summary:        HTML documentation for the %{name} library
 Group:          Documentation
-%if 0%{?fedora}
-BuildArch:      noarch
-BuildRequires:  texlive-latex
-%endif
-%{?el5:BuildRequires: tetex-latex}
+%{?fedora:BuildArch:      noarch}
+BuildRequires:  tex(latex)
 BuildRequires:  doxygen, ghostscript
 
-%description doc
-This package contains the documentation in the HTML format of the %{name}
-library. The documentation is the same as at the %{name} web page.
+%description    doc
+This package contains HTML pages, as well as a PDF reference manual,
+for %{name}. All that documentation is generated thanks to Doxygen
+(http://doxygen.org). The content is the same as what can be browsed
+online (http://%{name}.org).
 
 
 %prep
 %setup -q
-# find ./doc -type f -perm 755 -exec chmod 644 {} \;
-# Fix some permissions and formats
-rm -f INSTALL
-chmod -x ABOUT-NLS AUTHORS ChangeLog COPYING NEWS README TODO
-find . -type f -name '*.[hc]pp' -exec chmod 644 {} \;
 
 
 %build
@@ -75,17 +73,15 @@ find . -type f -name '*.[hc]pp' -exec chmod 644 {} \;
 make %{?_smp_mflags}
 
 %install
-# On Fedora, the BuildRoot is automatically cleaned. Which is not the case for
-# RedHat. See: https://fedoraproject.org/wiki/Packaging/Guidelines#BuildRoot_tag
-%if %{?rhel:rm -rf $RPM_BUILD_ROOT}
-make install DESTDIR=$RPM_BUILD_ROOT INSTALL="install -p"
+rm -rf $RPM_BUILD_ROOT
+make install DESTDIR=$RPM_BUILD_ROOT
+
 %find_lang %{name}
-# remove unpackaged files from the buildroot
-#rm -f $RPM_BUILD_ROOT%{_includedir}/%{name}/config.h
+
+# Remove unpackaged files from the buildroot
 rm -f $RPM_BUILD_ROOT%{_infodir}/dir
-rm -f $RPM_BUILD_ROOT%{_libdir}/lib%{name}.la
-# chmod 644 doc/html/installdox doc/html/*.png doc/html/*.ico
-rm -rf %{mydocs} && mkdir -p %{mydocs}
+
+mkdir -p %{mydocs}
 mv $RPM_BUILD_ROOT%{_docdir}/%{name}-%{version}/html %{mydocs}
 
 %clean
@@ -107,10 +103,8 @@ fi
 %defattr(-,root,root,-)
 %doc AUTHORS ChangeLog COPYING NEWS README
 %{_bindir}/%{name}
-%{_libdir}/lib*.so.*
-%{_mandir}/man3/%{name}.3.*
-%dir %{_datadir}/%{name}
-%{_datadir}/%{name}/samples/*.csv
+%{_libdir}/lib%{name}.so.*
+%{_mandir}/man1/%{name}.1.*
 
 %files devel
 %defattr(-,root,root,-)
@@ -120,12 +114,15 @@ fi
 %{_libdir}/pkgconfig/%{name}.pc
 %{_datadir}/aclocal/%{name}.m4
 %{_infodir}/%{name}-ref.info.*
+%dir %{_datadir}/%{name}
+%{_datadir}/%{name}/CMake
 %{_mandir}/man1/%{name}-config.1.*
+%{_mandir}/man3/%{name}-library.3.*
 
 %files doc
 %defattr(-,root,root,-)
 %doc %{mydocs}/html
-%doc AUTHORS ChangeLog COPYING NEWS README
+%doc COPYING
 
 
 %changelog

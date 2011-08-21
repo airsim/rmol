@@ -1,6 +1,6 @@
 /*!
 \page rmol
-	  C++ Revenue Management Optimisation Library
+	  Command-line utility for the C++ Revenue Management Optimisation Library
 
 \section sec_synopsis SYNOPSIS
 
@@ -21,23 +21,26 @@
  \b -h, \b --help<br>
     Produce that message and show usage.
 
+ \b -d, \b --draws<br>
+    Number of to-be-generated random draws.<br>
+
+ \b -c, \b --capacity<br>
+    Resource capacity (e.g., for a flight leg-cabin).<br>
+
+ \b -m, \b --method<br>
+    Revenue Management method to be used (0 = Monte-Carlo, 1 = Dynamic
+    Programming, 2 = EMSR, 3 = EMSR-a, 4 = EMSR-b)
+
  \b -b, \b --builtin<br>
-    The sample BOM tree can be either built-in or parsed from an input
-    file.  When that option is selected, an input file must then be
-    given with the -i/--input option. When that option is not selected,
-    the \b rmol program builds a simple use case directly from internal
-    hard-coded parameters (demand distribution details and resource/cabin
-    capacities).
-
- \b -r, \b --rmol<br>
-    The sample BOM tree corresponds to a typical usage by RMOL
-
- \b -c, \b --crs<br>
-    The sample BOM tree corresponds to a typical usage by SimCRS
+    The leg-cabin set up can be either built-in or parsed from an input
+    file. That latter must then be given with the -i/--input
+    option. In any case, a sample ("dummy") BOM tree is built from
+    hard-coded parameters to wrap the leg-cabin set-up and allow the usage
+    of classical StdAir API (e.g, stdair::BomDisplay::csvDisplay()).<br>
 
  \b -i, \b --input <path-to-input-file><br>
-    Path (absolute or relative) of the (CVS) input file specifying the demand
-    distribution parameters and resource (cabin) capacities.<br>
+    Path (absolute or relative) of the (CSV) input file specifying the demand
+    distribution parameters and resource (leg-cabin) capacities.<br>
 
  \b -l, \b --log <path-to-output-log-file><br>
     Path (absolute or relative) of the output log file.
