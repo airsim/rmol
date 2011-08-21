@@ -27,6 +27,7 @@ distributions like Novel Suse and Mandriva) from the Fedora repository
 (e.g., for Fedora 16, 
 http://fr2.rpmfind.net/linux/fedora/releases/16/Everything/)
 
+
 Building the library and test binary from Subversion repository:
 ----------------------------------------------------------------
 The Sourceforge Git repository may be cloned as following:
