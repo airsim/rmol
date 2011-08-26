@@ -53,6 +53,9 @@ namespace RMOL {
     /** Get the unconstraining demand of the (i+1)-th flight. */
     const stdair::NbOfBookings_T& getUnconstrainedDemand (const short i) const;
 
+    /** Get the flag of the (i+1)-th flight. */
+    const stdair::Flag_T& getCensorshipFlag (const short i) const;
+
     /** Get the unconstraining demand of the first flight. */
     const stdair::NbOfBookings_T& getUnconstrainedDemandOnFirstElement() const {
       return getUnconstrainedDemand (0);
@@ -92,7 +95,6 @@ namespace RMOL {
     HistoricalBookingHolder ();
 
   private:
-      
     /** The list of (N) buckets/classes. */
     HistoricalBookingVector_T _historicalBookingVector;
       

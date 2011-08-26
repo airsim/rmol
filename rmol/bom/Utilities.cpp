@@ -14,6 +14,7 @@
 #include <stdair/bom/SegmentCabin.hpp>
 #include <stdair/service/Logger.hpp>
 // RMOL
+#include <rmol/basic/BasConst_General.hpp>
 #include <rmol/bom/Utilities.hpp>
 #include <rmol/bom/GuillotineBlockHelper.hpp>
 
@@ -29,6 +30,7 @@ namespace RMOL {
     // Compute the mean
     for (UnconstrainedDemandVector_T::const_iterator itSample = iVector.begin();
          itSample != iVector.end(); ++itSample) {
+      //STDAIR_LOG_NOTIFICATION (*itSample);
       ioMean += *itSample;
     }
     ioMean /= lNbOfSamples;
@@ -54,6 +56,31 @@ namespace RMOL {
     stdair::DCPList_T oDCPList;
 
     const stdair::DCPList_T lWholeDCPList = stdair::DEFAULT_DCP_LIST;
+    stdair::DCPList_T::const_iterator itDCP = lWholeDCPList.begin();
+    while (itDCP != lWholeDCPList.end()) {
+      const stdair::DCP_T& lDCP = *itDCP;
+      if (iDTD >= lDCP) {
+        break;
+      }
+      ++itDCP;
+    }
+    assert (itDCP != lWholeDCPList.end());
+
+    oDCPList.push_back (iDTD);
+    ++itDCP;
+    for (; itDCP != lWholeDCPList.end(); ++itDCP) {
+      oDCPList.push_back (*itDCP);
+    }
+    
+    return oDCPList;
+  }
+
+  // ////////////////////////////////////////////////////////////////////
+  stdair::DCPList_T Utilities::
+  buildRemainingDCPList2 (const stdair::DTD_T& iDTD) {
+    stdair::DCPList_T oDCPList;
+
+    const stdair::DCPList_T lWholeDCPList = RMOL::DEFAULT_DCP_LIST;
     stdair::DCPList_T::const_iterator itDCP = lWholeDCPList.begin();
     while (itDCP != lWholeDCPList.end()) {
       const stdair::DCP_T& lDCP = *itDCP;

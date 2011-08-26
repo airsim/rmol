@@ -6,6 +6,8 @@
 // //////////////////////////////////////////////////////////////////////
 // RMOL
 #include <rmol/RMOL_Types.hpp>
+#include <stdair/stdair_maths_types.hpp>
+#include <stdair/stdair_rm_types.hpp>
 
 // Forward declarations.
 namespace stdair {
@@ -26,6 +28,15 @@ namespace RMOL {
 	is used.
      */
     static void optimalOptimisationByMCIntegration (stdair::LegCabin&);
+
+    /**
+     * Monte-Carlo
+     */
+    static stdair::GeneratedDemandVector_T
+    generateDemandVector (const stdair::MeanValue_T&,
+                          const stdair::StdDevValue_T&, const unsigned int&);
+    
+    static void optimisationByMCIntegration (stdair::LegCabin&);
     
   };
 }

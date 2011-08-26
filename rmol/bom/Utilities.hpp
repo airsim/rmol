@@ -25,6 +25,7 @@ namespace RMOL {
      * Build the list of remaining DCP's for the segment-date.
      */
     static stdair::DCPList_T buildRemainingDCPList (const stdair::DTD_T&);
+    static stdair::DCPList_T buildRemainingDCPList2 (const stdair::DTD_T&);
 
     /**
      * Retrieve the number of departed similar segments.

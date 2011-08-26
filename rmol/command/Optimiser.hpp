@@ -62,6 +62,10 @@ namespace RMOL {
      */
     static void buildVirtualClassListForLegBasedOptimisation(stdair::LegCabin&);
 
+    /** Optimiser */
+    static double optimiseUsingOnDForecast (stdair::FlightDate&,
+                                            const bool& iReduceFluctuations = false);
+
   };
 }
 #endif // __RMOL_COMMAND_OPTIMISER_HPP
