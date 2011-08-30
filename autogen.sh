@@ -21,13 +21,14 @@ autoreconf -fvi          	&& \
 echo "" && \
 echo "Now, the configuration script has to be run. For instance:" && \
 echo "mkdir -p tmp && cd tmp && \\" && \
-echo " ../configure --prefix=/home/user/dev/deliveries/rmol-99.99.99 \\" && \
+echo " ../configure --prefix=/home/user/dev/deliveries/rmol-0.24.0 \\" && \
 echo " --with-stdair=/home/user/dev/deliveries/stdair-stable --srcdir=.." && \
 echo "" && \
 echo "Alternatively" && \
 echo "mkdir build && cd build && \\" && \
-echo " cmake -DCMAKE_INSTALL_PREFIX=/home/user/dev/deliveries/rmol-99.99.99 \\" && \
+echo " cmake -DCMAKE_INSTALL_PREFIX=/home/user/dev/deliveries/rmol-0.24.0 \\" && \
 echo " -DWITH_STDAIR_PREFIX=/home/user/dev/deliveries/stdair-stable \\" && \
+echo " -DWITH_AIRRAC_PREFIX=/home/user/dev/deliveries/airrac-stable \\" && \
 echo " -DLIB_SUFFIX=64 -DCMAKE_BUILD_TYPE:STRING=Debug .." && \
 echo "" && \
 echo "Then:" && \
