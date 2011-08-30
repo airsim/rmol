@@ -292,6 +292,10 @@ macro (get_external_libs)
       get_stdair (${_arg_version})
     endif (${_arg_lower} STREQUAL "stdair")
 
+    if (${_arg_lower} STREQUAL "airrac")
+      get_airrac (${_arg_version})
+    endif (${_arg_lower} STREQUAL "airrac")
+
     if (${_arg_lower} STREQUAL "doxygen")
       get_doxygen (${_arg_version})
     endif (${_arg_lower} STREQUAL "doxygen")
@@ -542,6 +546,38 @@ macro (get_stdair)
   endif (StdAir_FOUND)
 
 endmacro (get_stdair)
+
+# ~~~~~~~~~~ AirRAC ~~~~~~~~~
+macro (get_airrac)
+  unset (_required_version)
+  if (${ARGC} GREATER 0)
+    set (_required_version ${ARGV0})
+    message (STATUS "Requires AirRAC-${_required_version}")
+  else (${ARGC} GREATER 0)
+    message (STATUS "Requires AirRAC without specifying any version")
+  endif (${ARGC} GREATER 0)
+
+  find_package (AirRAC ${_required_version} REQUIRED
+	HINTS ${WITH_AIRRAC_PREFIX})
+  if (AirRAC_FOUND)
+    #
+    message (STATUS "Found AirRAC version: ${AIRRAC_VERSION}")
+
+    # Update the list of include directories for the project
+    include_directories (${AIRRAC_INCLUDE_DIRS})
+
+    # Update the list of dependencies for the project
+    set (PROJ_DEP_LIBS_FOR_LIB ${PROJ_DEP_LIBS_FOR_LIB} ${AIRRAC_LIBRARIES})
+
+  else (AirRAC_FOUND)
+    set (ERROR_MSG "The AirRAC library cannot be found. If it is installed in")
+    set (ERROR_MSG "${ERROR_MSG} a in a non standard directory, just invoke")
+    set (ERROR_MSG "${ERROR_MSG} 'cmake' specifying the -DWITH_AIRRAC_PREFIX=")
+    set (ERROR_MSG "${ERROR_MSG}<AirRAC install path> variable.")
+    message (FATAL_ERROR "${ERROR_MSG}")
+  endif (AirRAC_FOUND)
+
+endmacro (get_airrac)
 
 
 ##############################################
@@ -1501,6 +1537,20 @@ macro (display_stdair)
   endif (StdAir_FOUND)
 endmacro (display_stdair)
 
+# AirRAC
+macro (display_airrac)
+  if (AirRAC_FOUND)
+    message (STATUS)
+    message (STATUS "* AirRAC:")
+    message (STATUS "  - AIRRAC_VERSION ............. : ${AIRRAC_VERSION}")
+    message (STATUS "  - AIRRAC_BINARY_DIRS ......... : ${AIRRAC_BINARY_DIRS}")
+    message (STATUS "  - AIRRAC_EXECUTABLES ......... : ${AIRRAC_EXECUTABLES}")
+    message (STATUS "  - AIRRAC_LIBRARY_DIRS ........ : ${AIRRAC_LIBRARY_DIRS}")
+    message (STATUS "  - AIRRAC_LIBRARIES ........... : ${AIRRAC_LIBRARIES}")
+    message (STATUS "  - AIRRAC_INCLUDE_DIRS ........ : ${AIRRAC_INCLUDE_DIRS}")
+  endif (AirRAC_FOUND)
+endmacro (display_airrac)
+
 ##
 macro (display_status_all_modules)
   message (STATUS)
@@ -1585,6 +1635,7 @@ macro (display_status)
   display_mysql ()
   display_soci ()
   display_stdair ()
+  display_airrac ()
   #
   message (STATUS)
   message (STATUS "Change a value with: cmake -D<Variable>=<Value>" )
