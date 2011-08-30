@@ -9,7 +9,7 @@ include (config/project_config_embeddable.cmake)
 # Project info
 set_project_names (rmol)
 set_project_brief ("C++ library of Revenue Management and Optimisation classes and functions")
-set_project_versions (99 99 99)
+set_project_versions (0 24 0)
 
 ##
 # Project options
@@ -39,11 +39,8 @@ packaging_set_other_options (TBZ2 "TBZ2;TGZ")
 ##            Dependencies            ##
 ########################################
 #
-# Reverse the commenting below in order to rely on an actually external AirRAC,
-# rather than on the embedded AirRAC
-#get_external_libs (git "boost 1.41" mysql "soci 3.0" "stdair 0.35"
-#				  "airrac 0.3" doxygen)
-get_external_libs (git "boost 1.41" mysql "soci 3.0" "stdair 0.35" doxygen)
+get_external_libs (git "boost 1.41" mysql "soci 3.0" "stdair 0.35"
+				  "airrac 0.3" doxygen)
 
 
 ##############################################
@@ -55,10 +52,7 @@ init_build ()
 
 ##
 # Sub-modules
-# Reverse the commenting below in order to rely on an actually external AirRAC,
-# rather than on the embedded AirRAC
-#add_modules (${PROJECT_NAME})
-add_modules (airrac ${PROJECT_NAME})
+add_modules (${PROJECT_NAME})
 
 ##
 # For other projects to use RMOL, install a few helpers for standard
