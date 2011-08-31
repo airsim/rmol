@@ -224,13 +224,7 @@ macro (packaging_set_other_options _package_type_list _source_package_type_list)
   #set (CPACK_SOURCE_IGNORE_DIRECTORY ${CPACK_SOURCE_IGNORE_FILES} .git)
 
   # Initialise the source package generator with the variables above
-=======
-    "${AUTOTOOLS_IGNRD};${SCM_IGNRD};${EDIT_IGNRD};${PACK_IGNRD}")
-  #set (CPACK_SOURCE_IGNORE_DIRECTORY ${CPACK_SOURCE_IGNORE_FILES} .git)
-
-  # Initialise the source package generator with the variables above
   include (InstallRequiredSystemLibraries)
->>>>>>> trunk
   include (CPack)
 
   # Add a 'dist' target, similar to what is given by GNU Autotools
