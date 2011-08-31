@@ -157,8 +157,6 @@ endmacro (store_in_cache)
 #####################################
 #
 macro (packaging_init _project_name)
-  include (InstallRequiredSystemLibraries)
-
   set (CPACK_PACKAGE_NAME "${_project_name}")
   set (CPACK_PACKAGE_DESCRIPTION "${PACKAGE_BRIEF}")
 endmacro (packaging_init)
@@ -216,7 +214,7 @@ macro (packaging_set_other_options _package_type_list _source_package_type_list)
     "${CPACK_PACKAGE_NAME}-${CPACK_PACKAGE_VERSION}"
     CACHE INTERNAL "tarball basename")
   set (AUTOTOOLS_IGNRD "/tmp/;/tmp2/;/autom4te\\\\.cache/;autogen\\\\.sh$")
-  set (PACK_IGNRD "${CPACK_PACKAGE_NAME}\\\\.spec;/build/;\\\\.gz$;\\\\.bz2$")
+  set (PACK_IGNRD "${CMAKE_CURRENT_BINARY_DIR};${CPACK_PACKAGE_NAME}\\\\.spec;\\\\.gz$;\\\\.bz2$")
   set (EDIT_IGNRD "\\\\.swp$;\\\\.#;/#;~$")
   set (SCM_IGNRD 
     "/CVS/;/\\\\.svn/;/\\\\.bzr/;/\\\\.hg/;/\\\\.git/;\\\\.gitignore$")
@@ -226,6 +224,13 @@ macro (packaging_set_other_options _package_type_list _source_package_type_list)
   #set (CPACK_SOURCE_IGNORE_DIRECTORY ${CPACK_SOURCE_IGNORE_FILES} .git)
 
   # Initialise the source package generator with the variables above
+=======
+    "${AUTOTOOLS_IGNRD};${SCM_IGNRD};${EDIT_IGNRD};${PACK_IGNRD}")
+  #set (CPACK_SOURCE_IGNORE_DIRECTORY ${CPACK_SOURCE_IGNORE_FILES} .git)
+
+  # Initialise the source package generator with the variables above
+  include (InstallRequiredSystemLibraries)
+>>>>>>> trunk
   include (CPack)
 
   # Add a 'dist' target, similar to what is given by GNU Autotools
@@ -233,7 +238,7 @@ macro (packaging_set_other_options _package_type_list _source_package_type_list)
 
   ##
   # Reset the generator types for the binary packages. Indeed, the variable
-  # has been reset by "include (Cpack)".
+  # has been reset by "include (CPack)".
   set (CPACK_GENERATOR "${_package_type_list}")
 
 endmacro (packaging_set_other_options)
