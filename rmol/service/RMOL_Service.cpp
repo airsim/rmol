@@ -29,6 +29,7 @@
 #include <stdair/bom/SegmentCabin.hpp>
 #include <stdair/bom/BookingClass.hpp>
 #include <stdair/bom/OnDDate.hpp>
+#include <stdair/bom/OnDDateTypes.hpp>
 #include <stdair/command/CmdBomManager.hpp>
 #include <stdair/service/Logger.hpp>
 #include <stdair/STDAIR_Service.hpp>
@@ -670,9 +671,9 @@ namespace RMOL {
     stdair::ProportionFactor_T lPreviousProportionFactor = 0;
 
     // Retrieve the minimal willingness to pay associated to the demand
-    const stdair::ForecastStruct& lTotalForecast =
+    const stdair::ForecastCharacteristics_T& lTotalForecast =
       iOnDDate.getTotalForecast (iCabinCode);
-    const stdair::WTP_T& lMinWTP = lTotalForecast.getMinWTP();
+    const stdair::WTP_T& lMinWTP = lTotalForecast.first;
    
     // Retrieve the remaining percentage of booking requests
     const stdair::ContinuousAttributeLite<stdair::FloatDuration_T>
@@ -682,14 +683,18 @@ namespace RMOL {
     const stdair::Probability_T lRemainingProportion =
       lArrivalPattern.getRemainingProportion(-float(iDTD));
 
-    
-
     // Compute the characteristics (mean and std dev) of the total
     // forecast demand to come
+    const stdair::MeanStdDevPair_T lForecatsMeanStdDevPair =
+      lTotalForecast.second;
+    const stdair::MeanValue_T& lMeanValue =
+      lForecatsMeanStdDevPair.first;
     const stdair::MeanValue_T& lRemainingMeanValue =
-      lRemainingProportion*lTotalForecast.getForecastMean();
+      lRemainingProportion*lMeanValue;
+    const stdair::StdDevValue_T& lStdDevValue =
+      lForecatsMeanStdDevPair.second;
     const stdair::StdDevValue_T& lRemainingStdDevValue =
-      lRemainingProportion*lTotalForecast.getForecastStdDev();
+      lRemainingProportion*lStdDevValue;
 
     // Retrieve the frat5 coef corresponding to the input dtd
     stdair::DTDFratMap_T::const_iterator itDFC =
@@ -701,11 +706,10 @@ namespace RMOL {
     stdair::RealNumber_T lFrat5Coef =
       stdair::DEFAULT_DTD_FRAT5COEF_MAP.at(iDTD);
 
-    STDAIR_LOG_DEBUG ("Remaining proportion "
-                      << lRemainingProportion << " Total "
-                      << lTotalForecast.getForecastMean() << " StdDev "
-                      << lTotalForecast.getForecastStdDev() <<"Frat5 Coef "
-                      << lFrat5Coef);
+    STDAIR_LOG_DEBUG ("Remaining proportion " << lRemainingProportion
+                      << " Total " << lMeanValue
+                      << " StdDev " << lStdDevValue
+                      << "Frat5 Coef " << lFrat5Coef);
 
     std::ostringstream oStr;
     // Compute the "forecast demand to come" proportion by class
@@ -848,7 +852,9 @@ namespace RMOL {
         stdair::CabinClassPair_T lCabinClassPair (iCabinCode, iClassCode);
         stdair::CabinClassPairList_T lCabinClassPairList;
         lCabinClassPairList.push_back(lCabinClassPair);
-        lOnDDate_ptr->setDemandInformation(lCabinClassPairList, iYield, iMeanValue, iStdDevValue);
+        const stdair::MeanStdDevPair_T lMeanStdDevPair (iMeanValue, iStdDevValue);
+        const stdair::ForecastCharacteristics_T lForecastCharacteristics (iYield, lMeanStdDevPair);
+        lOnDDate_ptr->setDemandInformation(lCabinClassPairList, lForecastCharacteristics);
         lFoundOnDDate = true;
         STDAIR_LOG_DEBUG (iAirlineCode << " Class " << iClassCode
                           << " Mean " << iMeanValue
@@ -936,7 +942,9 @@ namespace RMOL {
           stdair::CabinClassPair_T lCabinClassPair (iCabinCode, lClassCode);
           lCabinClassPairList.push_back(lCabinClassPair);
         }
-        lOnDDate_ptr->setDemandInformation(lCabinClassPairList, iYield, iMeanValue, iStdDevValue);
+        const stdair::MeanStdDevPair_T lMeanStdDevPair (iMeanValue, iStdDevValue);
+        const stdair::DemandCharacteristics_T lDemandCharacteristics (iYield, lMeanStdDevPair);
+        lOnDDate_ptr->setDemandInformation(lCabinClassPairList, lDemandCharacteristics);
         lFoundOnDDate = true;
         std::ostringstream oACStr;
         for (stdair::AirlineCodeList_T::const_iterator itAC = iAirlineCodeList.begin();
@@ -1094,7 +1102,8 @@ namespace RMOL {
           for (stdair::StringDemandStructMap_T::const_iterator itStrDS = lStringDemandStructMap.begin();
                itStrDS != lStringDemandStructMap.end(); ++itStrDS) {
             std::string lCabinClassPath = itStrDS->first;
-            const stdair::DemandStruct& lDemandStruct = itStrDS->second;
+            const stdair::DemandCharacteristics_T& lDemandCharacteristics =
+              itStrDS->second;
             const stdair::CabinClassPairList_T& lCabinClassPairList =
               lOnDDate_ptr->getCabinClassPairList(lCabinClassPath);
             const unsigned int lNbOfSegments = lOnDDate_ptr->getNbOfSegments();
@@ -1130,8 +1139,10 @@ namespace RMOL {
                 const int lNbOfLegs = lLegCabinList.size();
                 // Determine the yield (equally distributed over legs).
                 const stdair::Yield_T& lYield = lBookingClass_ptr->getYield()/lNbOfLegs;
-                const stdair::MeanValue_T& lMeanValue = lDemandStruct.getDemandMean();
-                const stdair::StdDevValue_T& lStdDevValue = lDemandStruct.getDemandStdDev();
+                const stdair::MeanStdDevPair_T& lMeanStdDevPair =
+                  lDemandCharacteristics.second;
+                const stdair::MeanValue_T& lMeanValue = lMeanStdDevPair.first;
+                const stdair::StdDevValue_T& lStdDevValue = lMeanStdDevPair.second;
                 for (stdair::LegCabinList_T::const_iterator itLC = lLegCabinList.begin();
                      itLC != lLegCabinList.end(); ++itLC) {
                   stdair::LegCabin* lLegCabin_ptr = *itLC;
@@ -1194,7 +1205,8 @@ namespace RMOL {
           for (stdair::StringDemandStructMap_T::const_iterator itStrDS = lStringDemandStructMap.begin();
                itStrDS != lStringDemandStructMap.end(); ++itStrDS) {
             std::string lCabinClassPath = itStrDS->first;
-            const stdair::DemandStruct& lDemandStruct = itStrDS->second;
+            const stdair::DemandCharacteristics_T& lDemandCharacteristics =
+              itStrDS->second;
             const stdair::CabinClassPairList_T& lCabinClassPairList =
               lOnDDate_ptr->getCabinClassPairList(lCabinClassPath);
             const unsigned int lNbOfSegments = lOnDDate_ptr->getNbOfSegments();
@@ -1223,9 +1235,11 @@ namespace RMOL {
                 assert (!lLegCabinList.empty());
                 const int lNbOfLegs = lLegCabinList.size();
                 // Determine the yield (equally distributed over segments and then legs).
-                const stdair::Yield_T& lYield = lDemandStruct.getYield()/(lNbOfLegs*lNbOfSegments);
-                const stdair::MeanValue_T& lMeanValue = lDemandStruct.getDemandMean();
-                const stdair::StdDevValue_T& lStdDevValue = lDemandStruct.getDemandStdDev();
+                const stdair::MeanStdDevPair_T& lMeanStdDevPair =
+                  lDemandCharacteristics.second;
+                const stdair::Yield_T& lYield = lDemandCharacteristics.first/(lNbOfLegs*lNbOfSegments);
+                const stdair::MeanValue_T& lMeanValue = lMeanStdDevPair.first;
+                const stdair::StdDevValue_T& lStdDevValue = lMeanStdDevPair.second;
                 for (stdair::LegCabinList_T::const_iterator itLC = lLegCabinList.begin();
                      itLC != lLegCabinList.end(); ++itLC) {
                   stdair::LegCabin* lLegCabin_ptr = *itLC;
@@ -1464,7 +1478,7 @@ namespace RMOL {
           for (stdair::StringDemandStructMap_T::const_iterator itStrDS = lStringDemandStructMap.begin();
                itStrDS != lStringDemandStructMap.end(); ++itStrDS) {
             std::string lCabinClassPath = itStrDS->first;
-            const stdair::DemandStruct& lDemandStruct = itStrDS->second;
+            const stdair::DemandCharacteristics_T& lDemandCharacteristics = itStrDS->second;
             const stdair::CabinClassPairList_T& lCabinClassPairList =
               lOnDDate_ptr->getCabinClassPairList(lCabinClassPath);
             const unsigned int lNbOfSegments = lOnDDate_ptr->getNbOfSegments();
@@ -1534,7 +1548,7 @@ namespace RMOL {
                 // Determine the displacement-adjusted yield.
                 // It is set to 100 (positive small value), if the computed value is negative.                
                 const stdair::Yield_T& lDAYield =
-                  std::max(100., lDemandStruct.getYield() - lComplementaryBidPrice);
+                  std::max(100., lDemandCharacteristics.first - lComplementaryBidPrice);
                 
                                 
                 stdair::Yield_T lYield = lDAYield;
@@ -1552,9 +1566,10 @@ namespace RMOL {
                   lYield = lStaticProrationYield;
                 }
                 */
-                
-                const stdair::MeanValue_T& lMeanValue = lDemandStruct.getDemandMean();
-                const stdair::StdDevValue_T& lStdDevValue = lDemandStruct.getDemandStdDev();
+                const stdair::MeanStdDevPair_T& lMeanStdDevPair =
+                  lDemandCharacteristics.second;
+                const stdair::MeanValue_T& lMeanValue = lMeanStdDevPair.first;
+                const stdair::StdDevValue_T& lStdDevValue = lMeanStdDevPair.second;
                 for (stdair::LegCabinList_T::const_iterator itLC = lLegCabinList.begin();
                      itLC != lLegCabinList.end(); ++itLC) {
                   stdair::LegCabin* lLegCabin_ptr = *itLC;
@@ -1625,7 +1640,7 @@ namespace RMOL {
         for (stdair::StringDemandStructMap_T::const_iterator itStrDS = lStringDemandStructMap.begin();
              itStrDS != lStringDemandStructMap.end(); ++itStrDS) {
           std::string lCabinClassPath = itStrDS->first;
-          const stdair::DemandStruct& lDemandStruct = itStrDS->second;
+          const stdair::DemandCharacteristics_T& lDemandCharacteristics = itStrDS->second;
           const stdair::CabinClassPairList_T& lCabinClassPairList =
             lOnDDate_ptr->getCabinClassPairList(lCabinClassPath);
           const unsigned int lNbOfSegments = lOnDDate_ptr->getNbOfSegments();
@@ -1682,11 +1697,12 @@ namespace RMOL {
               assert (lSegmentCabin_ptr != NULL);
               const stdair::LegCabinList_T lLegCabinList =
                 stdair::BomManager::getList<stdair::LegCabin> (*lSegmentCabin_ptr);
-              assert (!lLegCabinList.empty());                
-              
-              const stdair::Yield_T& lYield = lDemandStruct.getYield();
-              const stdair::MeanValue_T& lMeanValue = lDemandStruct.getDemandMean();
-              const stdair::StdDevValue_T& lStdDevValue = lDemandStruct.getDemandStdDev();
+              assert (!lLegCabinList.empty());
+              const stdair::Yield_T& lYield = lDemandCharacteristics.first;            
+              const stdair::MeanStdDevPair_T& lMeanStdDevPair =
+                lDemandCharacteristics.second;
+              const stdair::MeanValue_T& lMeanValue = lMeanStdDevPair.first;
+              const stdair::StdDevValue_T& lStdDevValue = lMeanStdDevPair.second;
               for (stdair::LegCabinList_T::const_iterator itLC = lLegCabinList.begin();
                    itLC != lLegCabinList.end(); ++itLC) {
                 stdair::LegCabin* lLegCabin_ptr = *itLC;
