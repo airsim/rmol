@@ -73,7 +73,7 @@
 \section about About RMOL
 
 RMOL is a C++ library of revenue management and optimisation classes
-and functions.
+and functions. RMOL mainly targets simulation purposes. \ref N
 
 RMOL makes an extensive use of existing open-source libraries for
 increased functionality, speed and accuracy. In particular <a
@@ -95,6 +95,16 @@ Microsoft Windows (with <a href="http://www.cygwin.com/">Cygwin</a>,
 <a href="http://www.mingw.org/">MinGW/MSYS</a>, or 
 <a href="http://msdn.microsoft.com/visualc/">Microsoft Visual C++ .NET</a>) and
 <a href="http://www.apple.com/macosx/">Mac OS X</a> operating systems.
+
+\note
+\anchor N
+(N) - The RMOL library is \b NOT intended, in any way, to be used by
+airlines for production systems. If you want to report issue, bug or 
+feature request, or if you just want to give feedback, have a look on 
+the right-hand side of this page for the preferred reporting methods.
+In any case, please do not contact Amadeus for any matter related 
+to RMOL.
+
 
 \htmlonly
 </div>
