@@ -64,7 +64,8 @@ namespace RMOL {
 
     // Initialise bid price vector with the first element (index 0) equal to
     // the highest yield.
-    stdair::BidPriceVector_T& lBPV = ioLegCabin.getEmptyBidPriceVector();
+    ioLegCabin.emptyBidPriceVector();
+    stdair::BidPriceVector_T& lBPV = ioLegCabin.getBidPriceVector();
     //const stdair::Yield_T& y1 = lFirstVC.getYield ();
     //lBPV.push_back (y1);
     stdair::UnsignedIndex_T idx = 1;    
@@ -175,13 +176,13 @@ namespace RMOL {
     // Number of MC samples
     unsigned int K = 100000;
 
-    const stdair::YieldDemandMap_T& lYieldDemandMap =
-      ioLegCabin.getYieldDemandMap();
+    const stdair::YieldLevelDemandMap_T& lYieldDemandMap =
+      ioLegCabin.getYieldLevelDemandMap();
     assert (!lYieldDemandMap.empty());
 
     std::ostringstream oStr;
     oStr << "Yield list ";
-    for (stdair::YieldDemandMap_T::const_iterator itYD =
+    for (stdair::YieldLevelDemandMap_T::const_iterator itYD =
            lYieldDemandMap.begin();
          itYD != lYieldDemandMap.end(); ++itYD) {
       const stdair::Yield_T& y = itYD->first;
@@ -189,18 +190,18 @@ namespace RMOL {
     }
 
     STDAIR_LOG_DEBUG (oStr.str());
-
+    ioLegCabin.emptyBidPriceVector();
     stdair::BidPriceVector_T& lBidPriceVector =
-      ioLegCabin.getEmptyBidPriceVector();
+      ioLegCabin.getBidPriceVector();
     const stdair::Availability_T& lAvailabilityPool =
       ioLegCabin.getAvailabilityPool();
     // Initialise the minimal bid price to 1.0 (just to avoid problems
     // of division by zero).
     const stdair::BidPrice_T& lMinBP = 1.0;
 
-    stdair::YieldDemandMap_T::const_reverse_iterator itCurrentYD =
+    stdair::YieldLevelDemandMap_T::const_reverse_iterator itCurrentYD =
       lYieldDemandMap.rbegin();
-    stdair::YieldDemandMap_T::const_reverse_iterator itNextYD = itCurrentYD;
+    stdair::YieldLevelDemandMap_T::const_reverse_iterator itNextYD = itCurrentYD;
     ++itNextYD;
     
     // Initialise the partial sum holder

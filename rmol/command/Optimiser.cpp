@@ -142,7 +142,7 @@ namespace RMOL {
     }
 
     // Browse the virtual class map from high to low yield.
-    ioLegCabin.resetVirtualClassList();
+    ioLegCabin.emptyVirtualClassList();
     for (stdair::VirtualClassMap_T::reverse_iterator itVC =
            lVirtualClassMap.rbegin(); itVC != lVirtualClassMap.rend(); ++itVC) {
       stdair::VirtualClassStruct& lVC = itVC->second;
