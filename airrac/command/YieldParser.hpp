@@ -9,6 +9,8 @@
 // StdAir
 #include <stdair/stdair_basic_types.hpp>
 #include <stdair/command/CmdAbstract.hpp>
+//AirRAC
+#include <airrac/AIRRAC_Types.hpp>
 
 /// Forward declarations
 namespace stdair {
@@ -27,11 +29,11 @@ namespace AIRRAC {
      * the corresponding data model in memory. It can then be used,
      * for instance in a simulator.
      *
-     * @param const stdair::Filename_T& The file-name of the CSV-formatted
+     * @param const YieldFilePath& The file-name of the CSV-formatted
      *        yield input file.
      * @param stdair::BomRoot& Root of the BOM tree.
      */
-    static void generateYieldStore (const stdair::Filename_T&, stdair::BomRoot&);
+    static void generateYieldStore (const YieldFilePath&, stdair::BomRoot&);
   };
 }
 #endif // __AIRRAC_CMD_YIELDPARSER_HPP

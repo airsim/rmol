@@ -167,7 +167,7 @@ namespace AIRRAC {
   
   // ////////////////////////////////////////////////////////////////////
   void AIRRAC_Service::
-  parseAndLoad (const stdair::Filename_T& iYieldInputFilename) {
+  parseAndLoad (const YieldFilePath& iYieldFilename) {
 
     // Retrieve the BOM root object.
     assert (_airracServiceContext != NULL);
@@ -177,7 +177,7 @@ namespace AIRRAC {
     stdair::BomRoot& lBomRoot = lSTDAIR_Service.getBomRoot();
     
     // Initialise the airline inventories
-    YieldParser::generateYieldStore (iYieldInputFilename, lBomRoot);
+    YieldParser::generateYieldStore (iYieldFilename, lBomRoot);
   }
 
   // ////////////////////////////////////////////////////////////////////

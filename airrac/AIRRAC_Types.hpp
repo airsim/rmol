@@ -9,6 +9,7 @@
 #include <string>
 // StdAir
 #include <stdair/stdair_exceptions.hpp>
+#include <stdair/stdair_file.hpp>
 
 namespace AIRRAC {
 
@@ -70,6 +71,19 @@ namespace AIRRAC {
   };
 
   class QuotingException : public stdair::RootException {
+  };	
+
+  // ///////// Files ///////////
+  /**
+   * Yield input file.
+   */
+  class YieldFilePath : public stdair::InputFilePath {
+  public:
+    /**
+     * Constructor.
+     */
+    explicit YieldFilePath (const stdair::Filename_T& iFilename)
+      : stdair::InputFilePath (iFilename) {}
   };
 
   // //////// Type definitions specific to AirRAC /////////

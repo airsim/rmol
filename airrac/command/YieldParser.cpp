@@ -13,22 +13,24 @@
 namespace AIRRAC {
 
   // //////////////////////////////////////////////////////////////////////
-  void YieldParser::generateYieldStore (const stdair::Filename_T& iFilename,
+  void YieldParser::generateYieldStore (const YieldFilePath& iYieldFilename,
                                         stdair::BomRoot& ioBomRoot) {
+
+    const stdair::Filename_T lFilename = iYieldFilename.name();
 
     // Check that the file path given as input corresponds to an actual file
     const bool doesExistAndIsReadable =
-      stdair::BasFileMgr::doesExistAndIsReadable (iFilename);
+      stdair::BasFileMgr::doesExistAndIsReadable (lFilename);
     if (doesExistAndIsReadable == false) {
-      STDAIR_LOG_ERROR ("The yield input file, '" << iFilename
+      STDAIR_LOG_ERROR ("The yield input file, '" << lFilename
                         << "', can not be retrieved on the file-system");
-      throw YieldInputFileNotFoundException ("The yield file '" + iFilename
+      throw YieldInputFileNotFoundException ("The yield file '" + lFilename
                                              + "' does not exist or can not "
                                              "be read");
     }
 
     // Initialise the yield file parser.
-    YieldFileParser lYieldParser (ioBomRoot, iFilename);
+    YieldFileParser lYieldParser (ioBomRoot, lFilename);
 
     // Parse the CSV-formatted yield store input file, and generate the
     // corresponding Yield-related objects.
