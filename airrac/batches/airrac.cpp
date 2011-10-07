@@ -196,7 +196,8 @@ int main (int argc, char* argv[]) {
   } else {
 
     // Build the BOM tree from parsing a yield file
-    airracService.parseAndLoad (lYieldInputFilename);
+    AIRRAC::YieldFilePath lYieldFilePath (lYieldInputFilename);
+    airracService.parseAndLoad (lYieldFilePath);
    
   }
 
