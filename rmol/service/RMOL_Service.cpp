@@ -923,13 +923,7 @@ namespace RMOL {
           // Get the operating airline code and check if it is the airline we are looking for.
           const bool isOtherAirlineOperating =  lSegmentDate_ptr->isOtherAirlineOperating();
           if (isOtherAirlineOperating == true) {
-            const bool hasListSegmentDate =
-              stdair::BomManager::hasList<stdair::SegmentDate> (*lSegmentDate_ptr);
-            assert (hasListSegmentDate == true);
-            const stdair::SegmentDateList_T& lOperatingSDList =
-              stdair::BomManager::getList<stdair::SegmentDate> (*lSegmentDate_ptr);
-            assert (lOperatingSDList.size() == 1);
-            const stdair::SegmentDate* lOperatingSD_ptr = *lSegmentDateList.begin();
+            const stdair::SegmentDate* lOperatingSD_ptr = lSegmentDate_ptr->getOperatingSegmentDate ();
             assert (lOperatingSD_ptr != NULL);
             const stdair::FlightDate* lOperatingFD_ptr =
               stdair::BomManager::getParentPtr<stdair::FlightDate>(*lOperatingSD_ptr);
@@ -1510,15 +1504,10 @@ namespace RMOL {
               const stdair::SegmentDate* lSegmentDate_ptr = *itSD;
               assert (lSegmentDate_ptr != NULL);
               // Get the operating airline code and check if it is the airline we are looking for.
-              const bool isOtherAirlineOperating =  lSegmentDate_ptr->isOtherAirlineOperating();
+              const bool isOtherAirlineOperating = lSegmentDate_ptr->isOtherAirlineOperating();
               if (isOtherAirlineOperating == true) {
-                const bool hasListSegmentDate =
-                  stdair::BomManager::hasList<stdair::SegmentDate> (*lSegmentDate_ptr);
-                assert (hasListSegmentDate == true);
-                const stdair::SegmentDateList_T& lOperatingSDList =
-                  stdair::BomManager::getList<stdair::SegmentDate> (*lSegmentDate_ptr);
-                assert (lOperatingSDList.size() == 1);
-                const stdair::SegmentDate* lOperatingSegmentDate_ptr = *lOperatingSDList.begin();
+                const stdair::SegmentDate* lOperatingSegmentDate_ptr =
+                  lSegmentDate_ptr->getOperatingSegmentDate ();
                 assert (lOperatingSegmentDate_ptr != NULL);
                 lSegmentDate_ptr = lOperatingSegmentDate_ptr;
               }
@@ -1678,13 +1667,8 @@ namespace RMOL {
             // Get the operating airline code and check if it is the airline we are looking for.
             const bool isOtherAirlineOperating =  lSegmentDate_ptr->isOtherAirlineOperating();
             if (isOtherAirlineOperating == true) {
-              const bool hasListSegmentDate =
-                stdair::BomManager::hasList<stdair::SegmentDate> (*lSegmentDate_ptr);
-              assert (hasListSegmentDate == true);
-              const stdair::SegmentDateList_T& lOperatingSDList =
-                stdair::BomManager::getList<stdair::SegmentDate> (*lSegmentDate_ptr);
-              assert (lOperatingSDList.size() == 1);
-              const stdair::SegmentDate* lOperatingSegmentDate_ptr = *lOperatingSDList.begin();
+              const stdair::SegmentDate* lOperatingSegmentDate_ptr =
+                  lSegmentDate_ptr->getOperatingSegmentDate ();
               assert (lOperatingSegmentDate_ptr != NULL);
               lSegmentDate_ptr = lOperatingSegmentDate_ptr;
             }
