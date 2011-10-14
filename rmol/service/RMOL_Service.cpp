@@ -920,18 +920,24 @@ namespace RMOL {
         for (;itAC != iAirlineCodeList.end(); ++itAC, ++itSD) {
           const stdair::AirlineCode_T lForecastAirlineCode = *itAC;
           const stdair::SegmentDate* lSegmentDate_ptr = *itSD;
-          // Get the operating airline code and check if it is the airline we are looking for.
-          const bool isOtherAirlineOperating =  lSegmentDate_ptr->isOtherAirlineOperating();
-          if (isOtherAirlineOperating == true) {
-            const stdair::SegmentDate* lOperatingSD_ptr = lSegmentDate_ptr->getOperatingSegmentDate ();
-            assert (lOperatingSD_ptr != NULL);
+          // Check if the operating airline is a different one and check if it
+          // is the airline that we are looking for.
+          const stdair::SegmentDate* lOperatingSegmentDate_ptr =
+            lSegmentDate_ptr->getOperatingSegmentDate ();
+          if (lOperatingSegmentDate_ptr != NULL) {
             const stdair::FlightDate* lOperatingFD_ptr =
-              stdair::BomManager::getParentPtr<stdair::FlightDate>(*lOperatingSD_ptr);
-            const stdair::AirlineCode_T lOperatingAirlineCode = lOperatingFD_ptr->getAirlineCode();
-            if (lOperatingAirlineCode != lForecastAirlineCode) {break;}
+              stdair::BomManager::getParentPtr<stdair::FlightDate>(*lOperatingSegmentDate_ptr);
+            const stdair::AirlineCode_T lOperatingAirlineCode =
+              lOperatingFD_ptr->getAirlineCode();
+            if (lOperatingAirlineCode != lForecastAirlineCode) {
+              break;
+            }
           } else {
-            const stdair::AirlineCode_T lOperatingAirlineCode = lOnDDate_ptr->getAirlineCode();
-            if (lOperatingAirlineCode != lForecastAirlineCode) {break;}
+            const stdair::AirlineCode_T lOperatingAirlineCode =
+              lOnDDate_ptr->getAirlineCode();
+            if (lOperatingAirlineCode != lForecastAirlineCode) {
+              break;
+            }
           }          
         }
         if (itAC == iAirlineCodeList.end()) {lFoundOnDDate = true;}
@@ -1120,9 +1126,11 @@ namespace RMOL {
             stdair::SegmentDateList_T::const_iterator itSD = lOnDSegmentDateList.begin();
             for (; itSD != lOnDSegmentDateList.end(); ++itCCP, ++itSD) {
               const stdair::SegmentDate* lSegmentDate_ptr = *itSD;
+              const stdair::SegmentDate* lOperatingSegmentDate_ptr =
+                lSegmentDate_ptr->getOperatingSegmentDate ();
               assert (lSegmentDate_ptr != NULL);
               // Only operated legs receive the demand information.
-              if (!lSegmentDate_ptr->isOtherAirlineOperating()) {
+              if (lOperatingSegmentDate_ptr == NULL) {
                 const stdair::CabinCode_T lCabinCode = itCCP->first;
                 const stdair::ClassCode_T lClassCode = itCCP->second;
                 const stdair::SegmentCabin* lSegmentCabin_ptr =
@@ -1224,8 +1232,10 @@ namespace RMOL {
             for (; itSD != lOnDSegmentDateList.end(); ++itCCP, ++itSD) {
               const stdair::SegmentDate* lSegmentDate_ptr = *itSD;
               assert (lSegmentDate_ptr != NULL);
+              const stdair::SegmentDate* lOperatingSegmentDate_ptr =
+                lSegmentDate_ptr->getOperatingSegmentDate ();
               // Only operated legs receive the demand information.
-              if (!lSegmentDate_ptr->isOtherAirlineOperating()) {
+              if (lOperatingSegmentDate_ptr == NULL) {
                 const stdair::CabinCode_T lCabinCode = itCCP->first;
                 const stdair::ClassCode_T lClassCode = itCCP->second;
                 const stdair::SegmentCabin* lSegmentCabin_ptr =
@@ -1504,11 +1514,9 @@ namespace RMOL {
               const stdair::SegmentDate* lSegmentDate_ptr = *itSD;
               assert (lSegmentDate_ptr != NULL);
               // Get the operating airline code and check if it is the airline we are looking for.
-              const bool isOtherAirlineOperating = lSegmentDate_ptr->isOtherAirlineOperating();
-              if (isOtherAirlineOperating == true) {
-                const stdair::SegmentDate* lOperatingSegmentDate_ptr =
-                  lSegmentDate_ptr->getOperatingSegmentDate ();
-                assert (lOperatingSegmentDate_ptr != NULL);
+              const stdair::SegmentDate* lOperatingSegmentDate_ptr =
+                lSegmentDate_ptr->getOperatingSegmentDate ();
+              if (lOperatingSegmentDate_ptr != NULL) {
                 lSegmentDate_ptr = lOperatingSegmentDate_ptr;
               }
               const stdair::CabinCode_T lCabinCode = itCCP->first;
@@ -1538,8 +1546,10 @@ namespace RMOL {
               stdair::BidPrice_T lComplementaryBidPrice = lTotalBidPrice - lBidPrice;
               const stdair::SegmentDate* lSegmentDate_ptr = *itSD;
               assert (lSegmentDate_ptr != NULL);
+              const stdair::SegmentDate* lOperatingSegmentDate_ptr =
+                lSegmentDate_ptr->getOperatingSegmentDate ();
               // Only operated legs receive the demand information.
-              if (!lSegmentDate_ptr->isOtherAirlineOperating()) {
+              if (lOperatingSegmentDate_ptr == NULL) {
                 const stdair::CabinCode_T lCabinCode = itCCP->first;
                 const stdair::ClassCode_T lClassCode = itCCP->second;
                 const stdair::SegmentCabin* lSegmentCabin_ptr =
@@ -1665,11 +1675,9 @@ namespace RMOL {
             const stdair::SegmentDate* lSegmentDate_ptr = *itSD;
             assert (lSegmentDate_ptr != NULL);
             // Get the operating airline code and check if it is the airline we are looking for.
-            const bool isOtherAirlineOperating =  lSegmentDate_ptr->isOtherAirlineOperating();
-            if (isOtherAirlineOperating == true) {
-              const stdair::SegmentDate* lOperatingSegmentDate_ptr =
-                  lSegmentDate_ptr->getOperatingSegmentDate ();
-              assert (lOperatingSegmentDate_ptr != NULL);
+            const stdair::SegmentDate* lOperatingSegmentDate_ptr =
+              lSegmentDate_ptr->getOperatingSegmentDate ();
+            if (lOperatingSegmentDate_ptr != NULL) {
               lSegmentDate_ptr = lOperatingSegmentDate_ptr;
             }
             const stdair::CabinCode_T lCabinCode = itCCP->first;
@@ -1693,8 +1701,10 @@ namespace RMOL {
           for (; itSD != lOnDSegmentDateList.end(); ++itCCP, ++itSD) {
             const stdair::SegmentDate* lSegmentDate_ptr = *itSD;
             assert (lSegmentDate_ptr != NULL);
+            const stdair::SegmentDate* lOperatingSegmentDate_ptr =
+              lSegmentDate_ptr->getOperatingSegmentDate ();
             // Only operated legs receive the demand information.
-            if (!lSegmentDate_ptr->isOtherAirlineOperating()) {
+            if (lOperatingSegmentDate_ptr == NULL) {
               const stdair::CabinCode_T lCabinCode = itCCP->first;
               const stdair::ClassCode_T lClassCode = itCCP->second;
               const stdair::SegmentCabin* lSegmentCabin_ptr =
