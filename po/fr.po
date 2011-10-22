@@ -1,0 +1,567 @@
+# French translations for RMOL package.
+# Copyright (C) 2011 THE RMOL'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the RMOL package.
+#
+# Denis Arnaud <denis.arnaud@gmail.com>, 2011.
+msgid ""
+msgstr ""
+"Project-Id-Version: RMOL 99.99.99\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-06-03 22:56+0200\n"
+"PO-Revision-Date: 2011-06-03 23:11+0200\n"
+"Last-Translator: Denis Arnaud\n"
+"Language-Team: American English <kde-i18n-doc@kde.org>\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Lokalize 1.2\n"
+
+#: rmol/basic/BasConst.cpp:10 test/architecture/stdair.cpp:44
+#: test/rmol/bomsforforecaster.cpp:197
+msgid "BA"
+msgstr "BA"
+
+#: rmol/batches/rmol.cpp:19
+msgid "rmol.log"
+msgstr "rmol.log"
+
+#: rmol/batches/rmol.cpp:26
+msgid "/rm01.csv"
+msgstr "/rm01.csv"
+
+#: rmol/batches/rmol.cpp:49 rmol/command/Utilities.cpp:167
+msgid " "
+msgstr " "
+
+#: rmol/batches/rmol.cpp:66
+msgid "Generic options"
+msgstr "Options génériques"
+
+#: rmol/batches/rmol.cpp:68 rmol/batches/rmol.cpp:135
+msgid "prefix"
+msgstr "préfixe"
+
+#: rmol/batches/rmol.cpp:68
+msgid "print installation prefix"
+msgstr "affiche le préfixe d'installation"
+
+#: rmol/batches/rmol.cpp:69
+msgid "version,v"
+msgstr "version,v"
+
+#: rmol/batches/rmol.cpp:69
+msgid "print version string"
+msgstr "affiche le numéro de version"
+
+#: rmol/batches/rmol.cpp:70
+msgid "help,h"
+msgstr "help,h"
+
+#: rmol/batches/rmol.cpp:70
+msgid "produce help message"
+msgstr "Produit ce message d'aide"
+
+#: rmol/batches/rmol.cpp:74
+msgid "Configuration"
+msgstr "Configuration"
+
+#: rmol/batches/rmol.cpp:76
+msgid "draws,d"
+msgstr "draws,d"
+
+#: rmol/batches/rmol.cpp:78
+msgid "Number of to-be-generated random draws"
+msgstr "Nombre de tirages aléatoires à générer"
+
+#: rmol/batches/rmol.cpp:79
+msgid "capacity,c"
+msgstr "capacity,c"
+
+#: rmol/batches/rmol.cpp:81
+msgid "Resource capacity (e.g., for a flight leg)"
+msgstr "Capacité de la ressource (e.g., pour un vol)"
+
+#: rmol/batches/rmol.cpp:82
+msgid "method,m"
+msgstr "method,m"
+
+#: rmol/batches/rmol.cpp:84
+msgid ""
+"Revenue Management method to be used (0 = Monte-Carlo, 1 = Dynamic "
+"Programming, 2 = EMSR, 3 = EMSR-a, 4 = EMSR-b)"
+msgstr ""
+"Méthode de yield management à utiliser (0 = Monte-Carlo, 1 = Programmation "
+"Dynamique, 2 = EMSR, 3 = EMSR-a, 4 = EMSR-b)"
+
+#: rmol/batches/rmol.cpp:85
+msgid "builtin,b"
+msgstr "builtin,b"
+
+#: rmol/batches/rmol.cpp:86
+msgid ""
+"The cabin set up can be either built-in or parsed from an input file. That "
+"latter must then be given with the -i/--input option"
+msgstr ""
+
+#: rmol/batches/rmol.cpp:87
+msgid "input,i"
+msgstr "input,i"
+
+#: rmol/batches/rmol.cpp:89
+msgid "(CVS) input file for the demand distributions"
+msgstr ""
+
+#: rmol/batches/rmol.cpp:90
+msgid "log,l"
+msgstr "log,l"
+
+#: rmol/batches/rmol.cpp:92
+msgid "Filename for the logs"
+msgstr "Nom de fichier pour les logs"
+
+#: rmol/batches/rmol.cpp:97
+msgid "Hidden options"
+msgstr "Options cachées"
+
+#: rmol/batches/rmol.cpp:99 rmol/batches/rmol.cpp:113
+msgid "copyright"
+msgstr ""
+
+#: rmol/batches/rmol.cpp:101
+msgid "Show the copyright (license)"
+msgstr "Affiche le copyright (licence)"
+
+#: rmol/batches/rmol.cpp:109
+msgid "Allowed options"
+msgstr "Options autorisées"
+
+#: rmol/batches/rmol.cpp:120
+msgid "rmol.cfg"
+msgstr "rmol.cfg"
+
+#: rmol/batches/rmol.cpp:125
+msgid "help"
+msgstr "help"
+
+#: rmol/batches/rmol.cpp:130
+msgid "version"
+msgstr "version"
+
+#: rmol/batches/rmol.cpp:131
+msgid ", version "
+msgstr ", version"
+
+#: rmol/batches/rmol.cpp:136
+msgid "Installation prefix: "
+msgstr "Préfixe d'installation:"
+
+#: rmol/batches/rmol.cpp:140
+msgid "builtin"
+msgstr "builtin"
+
+#: rmol/batches/rmol.cpp:143
+msgid "yes"
+msgstr "yes"
+
+#: rmol/batches/rmol.cpp:143
+msgid "no"
+msgstr "no"
+
+#: rmol/batches/rmol.cpp:144
+msgid "The BOM should be built-in? "
+msgstr "Le BOM doit être embarqué?"
+
+#: rmol/batches/rmol.cpp:147 rmol/batches/rmol.cpp:148
+msgid "input"
+msgstr "input"
+
+#: rmol/batches/rmol.cpp:149
+msgid "Input filename is: "
+msgstr "Le fichier d'entrée est:"
+
+#: rmol/batches/rmol.cpp:153 rmol/batches/rmol.cpp:154
+msgid "log"
+msgstr "log"
+
+#: rmol/batches/rmol.cpp:155
+msgid "Log filename is: "
+msgstr "Le fichier de log est:"
+
+#: rmol/batches/rmol.cpp:158
+msgid "The number of random draws is: "
+msgstr "Le nombre de tirages aléatoires est:"
+
+#: rmol/batches/rmol.cpp:159
+msgid "The resource capacity is: "
+msgstr "La capacité de la ressource est:"
+
+#: rmol/batches/rmol.cpp:160
+msgid "The optimisation method is: "
+msgstr "La méthode d'optimisation est:"
+
+#: rmol/batches/rmol.cpp:248
+msgid "Please specify an input file!"
+msgstr "Donnez un fichier d'entrée svp!"
+
+#: rmol/batches/rmol.cpp:257
+msgid "rmol will parse "
+msgstr "rmol va parser"
+
+#: rmol/batches/rmol.cpp:258
+msgid " and build the corresponding BOM tree."
+msgstr " et construire l'arbre BOM correspondant."
+
+#: rmol/bom/Bucket.cpp:56 rmol/bom/BucketHolder.cpp:49
+#: rmol/bom/BucketHolder.cpp:50 rmol/bom/BucketHolder.cpp:51
+#: rmol/bom/Demand.cpp:43 rmol/service/RMOL_Service.cpp:322
+#: rmol/service/RMOL_Service.cpp:364
+msgid ", "
+msgstr ", "
+
+#: rmol/bom/Bucket.cpp:64 rmol/bom/Bucket.cpp:65
+#: rmol/bom/PartialSumHolder.cpp:72 rmol/bom/PartialSumHolderHolder.cpp:69
+msgid "; "
+msgstr "; "
+
+#: rmol/bom/PartialSumHolder.cpp:60
+msgid "Partial Sum (K = "
+msgstr "Somme partielle (K = "
+
+#: rmol/bom/PartialSumHolder.cpp:60
+msgid ")"
+msgstr ")"
+
+#: rmol/command/InventoryParser.cpp:121
+msgid "The input file, '"
+msgstr ""
+
+#: rmol/command/InventoryParser.cpp:122
+msgid "', can not be retrieved on the file-system"
+msgstr ""
+
+#: rmol/command/InventoryParser.cpp:135 rmol/command/InventoryParser.cpp:136
+msgid "Can not open input file '"
+msgstr ""
+
+#: rmol/command/InventoryParser.cpp:135 rmol/command/InventoryParser.cpp:137
+#: rmol/command/InventoryParser.cpp:195
+msgid "'"
+msgstr ""
+
+#: rmol/command/InventoryParser.cpp:194
+msgid "Problem when reading input file '"
+msgstr ""
+
+#: rmol/command/Utilities.cpp:36
+msgid "There is no element to sum up."
+msgstr ""
+
+#: rmol/command/Utilities.cpp:52
+msgid "Negative mean is not expected."
+msgstr ""
+
+#: rmol/command/Utilities.cpp:66
+msgid "No value to compute the squared error"
+msgstr ""
+
+#: rmol/command/Utilities.cpp:169
+msgid "\n"
+msgstr ""
+
+#: rmol/service/RMOL_ServiceContext.cpp:37
+msgid "RMOL_ServiceContext -- Owns StdAir service: "
+msgstr ""
+
+#: rmol/service/RMOL_Service.cpp:311
+msgid "Optimisation by Monte-Carlo performed in "
+msgstr ""
+
+#: rmol/service/RMOL_Service.cpp:313 rmol/service/RMOL_Service.cpp:355
+#: rmol/service/RMOL_Service.cpp:387 rmol/service/RMOL_Service.cpp:407
+msgid "Result: "
+msgstr ""
+
+#: rmol/service/RMOL_Service.cpp:317 rmol/service/RMOL_Service.cpp:359
+msgid "Bid-Price Vector (BPV): "
+msgstr ""
+
+#: rmol/service/RMOL_Service.cpp:353
+msgid "Optimisation EMSR performed in "
+msgstr ""
+
+#: rmol/service/RMOL_Service.cpp:415
+msgid "The Rmol service has not been initialised"
+msgstr ""
+
+#: test/architecture/stdair.cpp:35
+msgid "Welcome to Rmol"
+msgstr ""
+
+#: test/architecture/stdair.cpp:52
+msgid "Inventory: "
+msgstr ""
+
+#: test/architecture/stdair.cpp:65
+msgid "FlightDate: "
+msgstr ""
+
+#: test/architecture/stdair.cpp:69
+msgid "LHR"
+msgstr ""
+
+#: test/architecture/stdair.cpp:70
+msgid "SYD"
+msgstr ""
+
+#: test/architecture/stdair.cpp:78 test/architecture/stdair.cpp:90
+#: test/architecture/stdair.cpp:101
+msgid "SegmentDate: "
+msgstr ""
+
+#: test/architecture/stdair.cpp:82
+msgid "BKK"
+msgstr ""
+
+#: test/architecture/stdair.cpp:113 test/architecture/stdair.cpp:123
+msgid "LegDate: "
+msgstr ""
+
+#: test/architecture/stdair.cpp:127
+msgid "Full Inventory: "
+msgstr ""
+
+#: test/architecture/stdair.cpp:135
+msgid "Browse the flight-date list"
+msgstr ""
+
+#: test/architecture/stdair.cpp:142 test/architecture/stdair.cpp:203
+msgid "Current flight-date: "
+msgstr ""
+
+#: test/architecture/stdair.cpp:149
+msgid "Browse the segment-date list"
+msgstr ""
+
+#: test/architecture/stdair.cpp:157
+msgid "Current segment-date: "
+msgstr ""
+
+#: test/architecture/stdair.cpp:161
+msgid "Browse the leg-date list"
+msgstr ""
+
+#: test/architecture/stdair.cpp:169
+msgid "Current leg-date: "
+msgstr ""
+
+#: test/architecture/stdair.cpp:178
+msgid "stdair.log"
+msgstr ""
+
+#: test/architecture/stdair.cpp:196
+msgid "Browse the list of flight-dates"
+msgstr ""
+
+#: test/gsl_vs_boost/boost_vs_gsl.cpp:22
+msgid "Compare Boost.Math vs GSL (GNU Scientific Library)"
+msgstr ""
+
+#: test/gsl_vs_boost/boost_vs_gsl.cpp:26
+msgid "* For the GSL, see http://www.gnu.org/software/gsl/manual/html_node/"
+msgstr ""
+
+#: test/gsl_vs_boost/boost_vs_gsl.cpp:28
+msgid "* For Boost.Math, see "
+msgstr ""
+
+#: test/gsl_vs_boost/boost_vs_gsl.cpp:29
+msgid ""
+"http://www.boost.org/doc/libs/1_44_0/libs/math/doc/sf_and_dist/html/index."
+"html"
+msgstr ""
+
+#: test/gsl_vs_boost/boost_vs_gsl.cpp:32
+msgid "All the following resuls are compared with a precision of 1e-8. "
+msgstr ""
+
+#: test/gsl_vs_boost/boost_vs_gsl.cpp:34
+msgid "If one of those results are not equal for GSL and Boost, "
+msgstr ""
+
+#: test/gsl_vs_boost/boost_vs_gsl.cpp:35
+msgid "the program aborts."
+msgstr ""
+
+#: test/gsl_vs_boost/boost_vs_gsl.cpp:48 test/gsl_vs_boost/boost_vs_gsl.cpp:50
+#: test/gsl_vs_boost/boost_vs_gsl.cpp:95 test/gsl_vs_boost/boost_vs_gsl.cpp:97
+msgid "___________________________________________"
+msgstr ""
+
+#: test/gsl_vs_boost/boost_vs_gsl.cpp:49
+msgid "   pdf and cdf of a normal distribution    "
+msgstr ""
+
+#: test/gsl_vs_boost/boost_vs_gsl.cpp:52 test/gsl_vs_boost/boost_vs_gsl.cpp:99
+msgid "Mean = "
+msgstr ""
+
+#: test/gsl_vs_boost/boost_vs_gsl.cpp:53
+#: test/gsl_vs_boost/boost_vs_gsl.cpp:100
+msgid "Sigma = "
+msgstr ""
+
+#: test/gsl_vs_boost/boost_vs_gsl.cpp:57 test/gsl_vs_boost/boost_vs_gsl.cpp:63
+#: test/gsl_vs_boost/boost_vs_gsl.cpp:104
+#: test/gsl_vs_boost/boost_vs_gsl.cpp:110
+msgid "_______________________________________________________________________"
+msgstr ""
+
+#: test/gsl_vs_boost/boost_vs_gsl.cpp:59
+#: test/gsl_vs_boost/boost_vs_gsl.cpp:106
+msgid "                   GSL           Boost           GSL           Boost   "
+msgstr ""
+
+#: test/gsl_vs_boost/boost_vs_gsl.cpp:61
+msgid " Value (x)         pdf            pdf            cdf            cdf "
+msgstr ""
+
+#: test/gsl_vs_boost/boost_vs_gsl.cpp:96
+msgid " Inverse of cdf for a normal distribution  "
+msgstr ""
+
+#: test/gsl_vs_boost/boost_vs_gsl.cpp:108
+msgid " Value (x)        icdf           icdf           1-icdf         1-icdf "
+msgstr ""
+
+#: test/rmol/bomsforforecaster.cpp:44
+msgid "[Booking class data information]"
+msgstr ""
+
+#: test/rmol/bomsforforecaster.cpp:45
+msgid "Booking counter: "
+msgstr ""
+
+#: test/rmol/bomsforforecaster.cpp:46
+msgid "Fare: "
+msgstr ""
+
+#: test/rmol/bomsforforecaster.cpp:47
+msgid "Sell-up Factor: "
+msgstr ""
+
+#: test/rmol/bomsforforecaster.cpp:48
+msgid "censorshipFlag: "
+msgstr ""
+
+#: test/rmol/bomsforforecaster.cpp:142
+msgid "[Booking class data set information]"
+msgstr ""
+
+#: test/rmol/bomsforforecaster.cpp:143
+msgid "Number of classes: "
+msgstr ""
+
+#: test/rmol/bomsforforecaster.cpp:144 test/rmol/bomsforforecaster.cpp:231
+msgid "Minimum fare: "
+msgstr ""
+
+#: test/rmol/bomsforforecaster.cpp:145
+msgid "The data of the class set are sensored: "
+msgstr ""
+
+#: test/rmol/bomsforforecaster.cpp:185
+msgid "./bomsforforecaster.log"
+msgstr ""
+
+#: test/rmol/bomsforforecaster.cpp:226
+msgid "Number of Classes: "
+msgstr ""
+
+#: test/rmol/bomsforforecaster.cpp:238
+msgid "Censorship Flag: "
+msgstr ""
+
+#: test/rmol/ForecasterTestSuite.cpp:31
+msgid "ForecasterTestSuite_utfresults.xml"
+msgstr ""
+
+#: test/rmol/ForecasterTestSuite.cpp:69
+#: test/rmol/UnconstrainerTestSuite.cpp:68
+msgid "The test has failed. Please see the log file for "
+msgstr ""
+
+#: test/rmol/ForecasterTestSuite.cpp:70
+#: test/rmol/UnconstrainerTestSuite.cpp:69
+msgid "more details"
+msgstr ""
+
+#: test/rmol/OptimiseTestSuite.cpp:29
+msgid "OptimiseTestSuite_utfresults.xml"
+msgstr ""
+
+#: test/rmol/OptimiseTestSuite.cpp:57
+msgid "OptimiseTestSuite_"
+msgstr ""
+
+#: test/rmol/OptimiseTestSuite.cpp:57
+msgid ".log"
+msgstr ""
+
+#: test/rmol/OptimiseTestSuite.cpp:71
+msgid "/rm02.csv"
+msgstr ""
+
+#: test/rmol/OptimiseTestSuite.cpp:78
+msgid "The '"
+msgstr ""
+
+#: test/rmol/OptimiseTestSuite.cpp:79
+msgid "' input file can not be open and read"
+msgstr ""
+
+#: test/rmol/OptimiseTestSuite.cpp:94
+msgid "Optimisation by Monte-Carlo (MC)"
+msgstr ""
+
+#: test/rmol/OptimiseTestSuite.cpp:104
+msgid "Optimisation by Dynamic Programming (DP)"
+msgstr ""
+
+#: test/rmol/OptimiseTestSuite.cpp:113
+msgid "Calculate the Bid-Price Vectors (BPV) by EMSR"
+msgstr ""
+
+#: test/rmol/OptimiseTestSuite.cpp:122
+msgid "Calculate the Authorisation Levels (AUs) by EMSRa"
+msgstr ""
+
+#: test/rmol/OptimiseTestSuite.cpp:135
+msgid "Calculate the Authorisation Levels (AUs) by EMSRb"
+msgstr ""
+
+#: test/rmol/UnconstrainerTestSuite.cpp:30
+msgid "UnconstrainerTestSuite_utfresults.xml"
+msgstr ""
+
+#: test/valarrays/valarrays.cpp:28
+msgid "["
+msgstr ""
+
+#: test/valarrays/valarrays.cpp:28
+msgid "]: "
+msgstr ""
+
+#: test/valarrays/valarrays.cpp:45
+msgid "v1"
+msgstr ""
+
+#: test/valarrays/valarrays.cpp:46
+msgid "v2"
+msgstr ""
+
+#: test/valarrays/valarrays.cpp:52
+msgid "v3"
+msgstr ""
+

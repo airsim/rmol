@@ -1,0 +1,191 @@
+/*! 
+\page tutorials Tutorials
+
+\section tut_toc Table of Contents
+- \ref tut_introduction
+ - \ref tut_intro_configuration
+- \ref tut_build_bom_tree
+ - \ref tut_build_bom_root
+ - \ref tut_build_inventory
+ - \ref tut_build_link
+ - \ref tut_build_inventory_another
+ - \ref tut_dump_bom_tree
+ - \ref tut_result_output
+- \ref tut_extend_bom_tree
+ - \ref tut_extend_inventory
+ - \ref tut_extend_build
+ - \ref tut_extend_result_output
+
+\section tut_introduction Introduction
+This page contains some tutorial examples that will help you getting
+started using StdAir. Most examples show how to construct some simple
+business objects, i.e., instances of the so-named Business Object
+Model (BOM).
+
+\subsection tut_intro_configuration Preparing the StdAir Project for Development
+
+The source code for these examples can be found in the
+<tt>batches</tt> and <tt>test/stdair</tt> directories. They are
+compiled along with the rest of the \c StdAir project. See the User
+Guide (\ref users_guide) for more details on how to build the \c StdAir
+project.
+
+\section tut_build_bom_tree Build a Predefined BOM Tree
+A few steps:
+- \ref tut_build_bom_root
+- \ref tut_build_inventory
+- \ref tut_build_link
+
+\subsection tut_build_bom_root Instanciate the BOM Root Object
+
+\dontinclude CmdBomManager.cpp
+
+First, a BOM root object (i.e., a root for all the classes in the project) 
+is instantiated by the <tt>stdair::STDAIR_ServiceContext</tt> context object,
+when the <tt>stdair::STDAIR_Service</tt> is itself instantiated. The 
+corresponding \c StdAir type (class) is <tt>stdair::BomRoot</tt>.
+
+In the following sample, that object is named \c ioBomRoot, and is given
+as input/output parameter of the
+<tt>stdair::CmdBomManager::buildSampleBom()</tt> method:
+
+\skipline ioBomRoot
+
+\subsection tut_build_inventory Instanciate the (Airline) Inventory Object
+
+An airline inventory object can then be instantiated. Let us give it
+the "BA" airline code (corresponding to <a
+href="http://www.ba.com">British Airways</a>) as the object key. That
+is, an object (let us name it \c lBAKey) of type (class)
+<tt>stdair::InventoryKey</tt> has first to be instantiated.
+
+\skipline lBAKey
+
+Thanks to that key, an airline inventory object, i.e. of type (class)
+<tt>stdair::Inventory</tt>, can be instantiated. Let us name that
+airline inventory object \c lBAInv.
+
+\skipline lBAInv
+
+\subsection tut_build_link Link the Inventory Object with the BOM Root
+
+Then, both objects have to be linked: the airline inventory object
+(<tt>stdair::Inventory</tt>) has to be linked with the root of the BOM
+tree (<tt>stdair::BomRoot</tt>). That operation is as simple as using the 
+<tt>stdair::FacBomManager::addToListAndMap()</tt> method:
+
+\line addToListAndMap
+\line linkWithParent
+
+\subsection tut_build_inventory_another Build Another Airline Inventory
+
+Another airline inventory object, corresponding to the Air France (<a
+href="http://www.airfrance.com">Air France</a>) company, is
+instantiated the same way:
+
+\skipline lAFKey
+\until linkWithParent
+
+See the corresponding full program (\ref cmd_bom_manager_cpp) for more details.
+
+\subsection tut_dump_bom_tree Dump The BOM Tree Content
+
+\dontinclude BomDisplay.cpp
+
+From the \c BomRoot (of type <tt>stdair::BomRoot</tt>) object
+instance, the list of airline inventories (of type
+<tt>stdair::Inventory</tt>) can then be retrieved...
+
+\skipline lInventoryList
+\line getList
+
+... and browsed:
+\skipline const_iterator
+\until csvDisplay
+
+See the corresponding full program (\ref bom_display_cpp) for more details.
+
+\subsection tut_result_output Result of the Tutorial Program
+
+When the <tt>stdair.cpp</tt> program is run (with the <tt>-b</tt>
+option), the output should look like:
+
+\include stdair.ref
+
+See the corresponding full program (\ref batch_stdair_cpp) for more details.
+
+
+\section tut_extend_bom_tree Extend the Pre-Defined BOM Tree
+
+Now that we master how to instantiate the pre-defined StdAir classes,
+let us see how to extend that BOM.
+
+\subsection tut_extend_inventory Extend an Airline Inventory Object
+For instance, let us assume that some (IT) provider (e.g., you) would
+like to have a specific implementation of the \c Inventory object. The
+corresponding class has just to extend the <tt>stdair::Inventory</tt>
+class:
+
+\dontinclude MPInventory.hpp
+
+\skipline namespace
+\skipline class Inventory
+
+The STL containers have to be defined accordingly too:
+
+\skipline InventoryList_T
+
+See the full class definition (\ref test_archi_inv_hpp) and
+implementation (\ref test_archi_inv_cpp) for more details.
+
+\subsection tut_extend_build Build the Specific BOM Objects
+
+\dontinclude StandardAirlineITTestSuite.cpp
+
+The BOM root object (<tt>stdair::BomRoot</tt>) is instantiated the
+classical way:
+
+\skipline lBomRoot
+\line FacBom
+
+Then, the specific implementation of the airline inventory object
+(<tt>myprovider::Inventory</tt>) can be instantiated the same way as a
+standard Inventory (<tt>stdair::Inventory</tt>) would be:
+
+\skipline lBAKey
+\skipline lBAInv
+\line FacBom
+
+Then, the specific implementation of the airline inventory object
+(<tt>myprovider::Inventory</tt>) is linked to the root of the BOM tree
+(<tt>stdair::BomRoot</tt>) the same way as the standard Inventory
+(<tt>stdair::Inventory</tt>) would be:
+
+\skipline addToList
+
+Another specific airline inventory object is instantiated the same way:
+
+\skipline lAFKey
+\until FacBomManager
+
+From the \c BomRoot (of type <tt>stdair::BomRoot</tt>) object
+instance, the list of specific airline inventories (of type
+<tt>stdair::Inventory</tt>) can then be retrieved...
+
+\skipline lInventoryList
+\line getList
+
+... and browsed:
+\skipline const_iterator
+\until }
+
+\subsection tut_extend_result_output Result of the Tutorial Program
+
+When this program is run, the output should look like:
+
+\include StandardAirlineITTestSuite.ref
+
+See the corresponding full program (\ref StandardAirlineITTestSuite_cpp) for
+more details.
+
+*/

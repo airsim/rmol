@@ -1,0 +1,18 @@
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+libdir=@libdir@
+includedir=@includedir@
+datarootdir=@datarootdir@
+datadir=@datadir@
+pkgdatadir=@pkgdatadir@
+sampledir=@sampledir@
+docdir=@docdir@
+mandir=@mandir@
+infodir=@infodir@
+
+Name: @PACKAGE_PRETTY_NAME@
+Description: C++ library of Revenue Management and Optimisation classes and functions
+Version: @PACKAGE_VERSION@
+URL: http://sourceforge.net/projects/@PACKAGE@/
+Libs: -L${libdir} -l@PACKAGE@ @LDFLAGS@ @LIBS@
+Cflags: -I${includedir}

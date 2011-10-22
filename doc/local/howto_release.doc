@@ -1,22 +1,6 @@
 /*!
 \page howto_release Make a new release
 
-<<<<<<< HEAD
-\htmlonly
-<!-- 
-The following tags are permitted: a, b, blockquote, br, code, dd, div,
-dl, dt, em, hr, i, li, ol, p, pre, strong, tt, ul, u. All other tags will be
-stripped. All tags aside from the following must be closed: br, hr, li, p.
-Failure to close tags may result in HTML output which is not rendered
-properly. Any style attributes or on* attributes (such as mouseover) will be
-stripped. JavaScript will result in the total stripping of HTML tags from
-your input. Please limit your input to properly formed HTML snippets
-conforming to the above rules. 
--->
-\endhtmlonly
-
-=======
->>>>>>> 0.24
 \section description Introduction
 
 This document describes briefly the recommended procedure of releasing
@@ -28,98 +12,6 @@ The following steps are required to make a release of the distribution package.
 
 \section initialisation Initialisation
 
-<<<<<<< HEAD
-Check out locally the full
-<a href="https://rmol.svn.sourceforge.net/svnroot/rmol">Subversion project</a>:
-\verbatim 
-cd ~
-mkdir -p dev
-cd ~/dev
-svn co https://rmol.svn.sourceforge.net/svnroot/rmol rmolsvn
-\endverbatim 
-
-
-\section branch_preparation Branch preparation
-
-Prepare the branch for its creation on the Subversion repository:
-\verbatim 
-cd ~/dev
-cd rmolsvn/branches/rmol
-mkdir 0.23.0
-svn add 0.23.0
-svn ci -m "[Branch 0.23.0] Prepared the branch 0.23.0 to be copied from head of the trunk."
-\endverbatim 
-
-\section check_release_revision Check Subversion revision for the release
-
-Check to which Subversion revision the release corresponds to. For instance
-the <a href="http://sourceforge.net/apps/trac/rmol/changeset/218/">RMOL
-	release 0.23.0 corresponds to Subversion revision r218</a>.
-The trunk <tt>configure.ac</tt> file specifies a fake release number, namely
-99.99.99,
-for current (head) development. When a release is made, two Subversion 
-revisions are committed with, as the sole change, the release number within
-the <tt>configure.ac</tt> file:
-- one revision is committed with the to-be-released version number (e.g.,
-  0.23.0) and commit message prefixed with "[Release x.y.z]",
-- and another one with the release number back to 99.99.99 and message stating
-  "[Release] Back to working version (99.99.99)."
-.
-That way, it is then easy to spot the starting point of any release within
-the Subversion repository, with something like:
-\verbatim 
-cd ~/dev
-cd rmolsvn/trunk/rmol
-svn log configure.ac | less
-\endverbatim 
-
-
-\section create_release_branch Create the release branch
-
-Create a release branch by copying the
-<a href="https://rmol.svn.sourceforge.net/svnroot/rmol/trunk/rmol">source
-   tree</a> to be released, from the found revision (e.g., 
-<a href="http://sourceforge.net/apps/trac/rmol/changeset/233">r233</a>)
-into the dedicated 
-<a href="https://rmol.svn.sourceforge.net/svnroot/rmol/branches/rmol/0.23.0">'branches' sub-directory of the Subversion repository</a>, e.g.:
-\verbatim 
-svn copy -r233 \
- https://rmol.svn.sourceforge.net/svnroot/rmol/trunk/rmol \
- https://rmol.svn.sourceforge.net/svnroot/rmol/branches/rmol/0.23.0/main \
- -m "[Release] Created the main 0.23.0 release branch, from revision r233."
-\endverbatim 
-
-Check the results:<br>
-\c firefox -new-tab \"<a href="http://sourceforge.net/apps/trac/rmol/browser/branches/rmol/0.23.0/main">http://sourceforge.net/apps/trac/rmol/browser/branches/rmol/0.23.0/main</a>\"
-
-
-\section checkout_new_release Check-out the new release
-
-Check-out the release RMOL sources from the branch, so that patches
-may be made (for instance, on the RPM specification file):
-\verbatim 
-cd ~/dev
-cd rmolsvn/branches/rmol/0.23.0
-svn up
-cd main
-\endverbatim 
-
-
-\section alter_released_files Alter released files
-
-<b>Only if needed</b>, alter a few files on the branch.
-
-<b>Note that the release branch is not the place where to develop for a 
-release.</b>
-The <b>release</b> branch is aimed at keeping track of a release and of all
-the patches having made their way into that branch, so that the software
-can always be generated according to that release.
-
-Developments for a particular release should be made on the trunk (e.g., by
-adding features not activated by default, but activated for the release
-developers only) or, if really needed, on a dedicated <b>development</b> branch.
-
-=======
 Clone locally the full
 <a href="http://rmol.git.sourceforge.net/git/gitweb.cgi?p=rmol/rmol;a=tree;h=refs/heads/trunk;hb=trunk">Git project</a>:
 \verbatim 
@@ -180,17 +72,11 @@ Commit the change-logs and publish the trunk (main development branch):
 git commit -m "[Doc] Integrated the change-log of the release 0.50.0."
 git push
 \endverbatim
->>>>>>> 0.24
 
 \section create_packages Create distribution packages
 
 Create the distribution packages using the following command:<br>
 \verbatim 
-<<<<<<< HEAD
-cd ~/dev
-cd rmolsvn/branches/rmol/0.23.0/main
-./autogen.sh && make distcheck
-=======
 cd ~/dev/sim/rmolgit
 git checkout 0.50.0
 rm -rf build && mkdir -p build
@@ -198,18 +84,12 @@ cd build
 cmake -DCMAKE_INSTALL_PREFIX=/home/user/dev/deliveries/rmol-0.50.0 \
  -DCMAKE_BUILD_TYPE:STRING=Debug -DINSTALL_DOC:BOOL=ON ..
 make check && make dist
->>>>>>> 0.24
 \endverbatim 
 
 
 This will configure, compile and check the package. The output packages
-<<<<<<< HEAD
-will be named, for instance, <tt>rmol-0.23.0.tar.gz</tt> and
-<tt>rmol-0.23.0.tar.bz2</tt>.
-=======
 will be named, for instance, <tt>rmol-0.50.0.tar.gz</tt> and
 <tt>rmol-0.50.0.tar.bz2</tt>.
->>>>>>> 0.24
 
 
 \section generate_rpm_packages Generation the RPM packages
@@ -217,22 +97,6 @@ will be named, for instance, <tt>rmol-0.50.0.tar.gz</tt> and
 Optionally, generate the RPM package (for instance, for 
 <a href="http://fedoraproject.org">Fedora</a>/<a href="http://www.redhat.com">RedHat</a>):
 \verbatim 
-<<<<<<< HEAD
-cd ~/dev
-cd rmolsvn/branches/rmol/0.23.0/main
-./autogen.sh && make dist
-\endverbatim 
-
-To perform this step, autoconf, automake and libtool tools have to be
-available in the system.
-\verbatim 
-cp rmol.spec ~/dev/packages/SPECS \
-  && cp rmol-0.23.0.tar.bz2 ~/dev/packages/SOURCES
-cd ~/dev/packages/SPECS
-rpmbuild -ba rmol.spec
-rpmlint -i ../SPECS/rmol.spec ../SRPMS/rmol-0.23.0-1.fc13.src.rpm \
-  ../RPMS/i686/rmol-*
-=======
 cd ~/dev/sim/rmolgit
 git checkout 0.50.0
 rm -rf build && mkdir -p build
@@ -251,7 +115,6 @@ cd ~/dev/packages/SPECS
 rpmbuild -ba rmol.spec
 rpmlint -i ../SPECS/rmol.spec ../SRPMS/rmol-0.50.0-1.fc15.src.rpm \
   ../RPMS/noarch/rmol-* ../RPMS/i686/rmol-*
->>>>>>> 0.24
 \endverbatim 
 
 
@@ -259,24 +122,6 @@ rpmlint -i ../SPECS/rmol.spec ../SRPMS/rmol-0.50.0-1.fc15.src.rpm \
 
 Update the \c NEWS and \c ChangeLog files with appropriate
 information, including what has changed since the previous release. Then
-<<<<<<< HEAD
-commit the changes into the 
-<a href="https://sourceforge.net/apps/trac/rmol/browser">RMOL's 
-  Subversion (SVN) repository</a>.
-
-
-\section create_doc_packages Create the documentation packages
-
-Create the documentation packages using the following command:
-<tt>make dist-html</tt> and <tt>make dist-tex</tt>
-
-The output documentation packages will be named, for instance:
-- <tt>rmol-doc-0.23.0.tar.gz</tt> and <tt>rmol-doc-0.23.0.tar.bz2</tt>
-  for the HTML documentation.
-- <tt>rmol-pdf-0.23.0.tar.gz</tt> and <tt>rmol-pdf-0.23.0.tar.bz2</tt>
-  for the PDF documentation.
-
-=======
 commit and push the changes into the 
 <a href="http://rmol.git.sourceforge.net/git/gitweb.cgi?p=rmol/rmol;a=summary">RMOL's Git repository</a>.
 
@@ -294,7 +139,6 @@ The output binary package will be named, for instance,
 and PDF documentation. The binary package contains also the executables
 and shared libraries, as well as C++ header files, but all of those do not
 interest us for now.
->>>>>>> 0.24
 
 \section upload_files Upload the files to SourceForge
 
@@ -308,15 +152,9 @@ Check
 In order to update the Web site files, either:
 - <a href="https://sourceforge.net/apps/trac/sourceforge/wiki/Shell%20service#Accessingyourfileswithothertools">synchronise them with rsync and SSH</a>:
 \verbatim 
-<<<<<<< HEAD
-cd ~/dev
-cd rmolsvn/branches/rmol/0.23.0/main
-rsync -aiv doc/html/ joe,rmol@web.sourceforge.net:htdocs/
-=======
 cd ~/dev/sim/rmolgit
 git checkout 0.50.0
 rsync -aiv doc/html/ doc/latex/refman.pdf joe,rmol@web.sourceforge.net:htdocs/
->>>>>>> 0.24
 \endverbatim 
 where \c -aiv options mean:
   - \c -a: archive/mirror mode; equals \c -rlptgoD

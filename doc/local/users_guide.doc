@@ -1,0 +1,62 @@
+/*! 
+\page users_guide Users Guide
+
+\section ug_toc Table of Contents
+- \ref ug_introduction
+- \ref ug_get_started
+  - \ref ug_get_source
+  - \ref ug_build_binaries
+  - \ref ug_build_and_run_tests
+  - \ref ug_install_project
+- \ref ug_bom_tree
+ - \ref ug_bom_forecaster
+ - \ref ug_bom_optimiser
+- \ref ug_extending_bom_tree
+
+
+\section ug_introduction Introduction
+
+The \c RMOL library contains classes for revenue management.
+This document does not cover all the aspects of the \c RMOL library. It 
+does however explain the most important things you need to know in order
+to start using \c RMOL. 
+
+\section ug_get_started Get Started
+
+\subsection ug_get_source Get the RMOL library
+
+\subsection ug_build_binaries Build the RMOL project
+To run the configuration script the first time, go to the top
+directory (where the RMOL package has been un-packed), and issue the
+following command:
+ - <tt>mkdir -p build && cd build && cmake ..</tt>
+ - <tt>make</tt>
+
+\note The RMOL project can either be cloned from the <a
+href="http://rmol.git.sourceforge.net/git/gitweb.cgi?p=rmol/rmol;a=tree;h=refs/heads/trunk;hb=trunk">Git
+Repository</a> or downloaded as a tar-ball package from the <a
+href="http://sourceforge.net/project/showfiles.php?group_id=177703">Sourceforge
+Web site</a>.
+
+\subsection ug_build_and_run_tests Build and Run the Tests
+
+\subsection ug_install_project Install the RMOL Project (Binaries, Documentation)
+
+\section ug_bom_tree Exploring the Predefined BOM Tree
+
+\c RMOL predefines a BOM (Business Object Model) tree specific to the
+airline IT arena.
+
+\subsection ug_bom_forecaster Forecaster BOM Tree
+- \c RMOL::EMDetruncator
+- \c RMOL::Detruncator
+- \c RMOL::Forecaster
+
+\subsection ug_bom_optimiser Optimiser BOM Tree
+- \c RMOL::DPOptimiser
+- \c RMOL::MCOptimiser
+- \c RMOL::Optimiser
+
+\section ug_extending_bom_tree Extending the BOM Tree
+
+*/

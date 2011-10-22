@@ -1,0 +1,125 @@
+#!/bin/sh
+
+prefix=@prefix@
+exec_prefix=${prefix}
+bindir=${exec_prefix}/bin
+libdir=${exec_prefix}/lib@LIB_SUFFIX@
+libexecdir=${exec_prefix}/libexec
+sbindir=${exec_prefix}/sbin
+sysconfdir=${prefix}/etc
+includedir=${prefix}/include
+datarootdir=${prefix}/share
+datadir=${datarootdir}
+pkgdatadir=${datarootdir}/@PACKAGE@
+sampledir=@sampledir@
+docdir=${datarootdir}/doc/@PACKAGE@-@PACKAGE_VERSION@
+mandir=${datarootdir}/man
+infodir=${datarootdir}/info
+htmldir=${docdir}/html
+htmldocpath=${htmldir}/index.html
+pdfdir=${docdir}/html
+refmanpath=${pdfdir}/refman.pdf
+pkgincludedir=${includedir}/@PACKAGE@
+pkglibdir=${libdir}/@PACKAGE@
+pkglibexecdir=${libexecdir}/@PACKAGE@
+
+
+usage()
+{
+  cat <<EOF
+Usage: @PACKAGE@-config [OPTION]
+
+Known values for OPTION are:
+
+  --prefix        print @PACKAGE_PRETTY_NAME@ installation prefix
+  --sampledir     print where the (StdAir CSV) sample files are located
+  --libs          print library linking information
+  --cflags        print pre-processor and compiler flags
+  --mandir        print where the manual (MAN) pages are located
+  --infodir       print where the information (info) pages are located
+  --docdir        print where the documentation is located
+  --htmldocpath   print where the HTML documentation is located
+  --refmanpath    print where the reference manual (PDF) is located
+  --help          display this help and exit
+  --version       output version information
+EOF
+  exit $1
+}
+
+if test $# -eq 0; then
+  usage 1
+fi
+
+cflags=false
+libs=false
+
+while test $# -gt 0; do
+  case "$1" in
+  -*=*) optarg=`echo "$1" | sed 's/[-_a-zA-Z0-9]*=//'` ;;
+  *) optarg= ;;
+  esac
+
+  case $1 in
+    --prefix=*)
+      prefix=$optarg
+      ;;
+
+    --prefix)
+      echo $prefix
+      ;;
+
+    --sampledir)
+      echo $sampledir
+      ;;
+
+    --version)
+      echo @PACKAGE_VERSION@
+      ;;
+
+    --mandir)
+      echo $mandir
+      ;;
+
+    --infodir)
+      echo $infodir
+      ;;
+
+    --docdir)
+      echo $docdir
+      ;;
+
+    --htmldocpath)
+      echo $htmldocpath
+      ;;
+
+    --refmanpath)
+      echo $refmanpath
+      ;;
+
+    --help)
+      usage 0
+      ;;
+
+    --cflags)
+      if [ "${prefix}" != "/usr" ]; then
+        echo -I${includedir}
+      else
+        echo
+      fi
+      ;;
+
+    --libs)
+      if [ "${prefix}" != "/usr" ]; then
+        echo -L${libdir} -l@PACKAGE@
+      else
+        echo -l@PACKAGE@
+      fi
+      ;;
+
+    *)
+      usage
+      exit 1
+      ;;
+  esac
+  shift
+done
