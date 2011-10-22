@@ -1,0 +1,40 @@
+/*!
+\page features Main features
+
+A short list of the main features of RMOL is given below sorted in different
+categories. Many more features and functions exist and for these we refer to
+the reference documentation.
+
+
+\section rmo_features Optimisation features
+- <a href="http://en.wikipedia.org/wiki/Dynamic_programming">Dynamic
+  Programming (DP)</a>
+- <a href="http://en.wikipedia.org/wiki/Expected_marginal_seat_revenue#EMSRa">EMSRa</a>
+  and 
+  <a href="http://en.wikipedia.org/wiki/Expected_marginal_seat_revenue#EMSRb">EMSRb</a>
+- Network optimisation with
+  <a href="http://en.wikipedia.org/wiki/Linear_programming">Linear
+  Programming (LP)</a>
+
+
+\section rmu_features Unconstraining
+- Inventory censorflag and guillotine
+- E-M (Expectation Maximisation)
+
+
+\section rmf_features Forecasting features
+- <a href="http://en.wikipedia.org/wiki/Exponential_smoothing">Exponential
+  Smoothing</a>
+- <a href="http://en.wikipedia.org/wiki/Moving_average">Moving Average</a>
+
+
+\section rmc_features Overbooking features
+- Cancellations and No-Shows
+- Cost-based optimisation
+- Service-based optimisation
+
+
+\section other_features Other features
+- CSV input file parsing
+
+*/

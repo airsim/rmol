@@ -1,0 +1,43 @@
+/*!
+\page authors People
+
+
+\section admins Project Admins
+
+- Denis Arnaud <denis_arnaud@users.sourceforge.net> (\ref N)
+- Anh Quan Nguyen <quannaus@users.sourceforge.net> (\ref N)
+
+
+\section developers Developers
+
+- Anh Quan Nguyen <quannaus@users.sourceforge.net> (\ref N)
+- Denis Arnaud <denis_arnaud@users.sourceforge.net> (\ref N)
+- Nicolas Bondoux <nbondoux@users.sourceforge.net> (\ref N)
+
+
+\section retired Retired Developers
+
+- Patrick Grandjean <pgrandjean@users.sourceforge.net> (\ref N)
+- Benoit Lardeux <benlardeux@users.sourceforge.net> (\ref N)
+- Karim Duval <duvalkarim@users.sourceforge.net> (\ref N)
+- Ngoc-Thach Hoang <hoangngocthach@users.sourceforge.net> (\ref N)
+- Son Nguyen Kim <snguyenkim@users.sourceforge.net> (\ref N)
+
+
+\section contributors Contributors
+
+- Emmanuel Bastien <ebastien@users.sourceforge.net> (\ref N)
+- Christophe Lacombe <ddtof@users.sourceforge.net> (\ref N)
+
+
+\section distributors Distribution Maintainers
+
+- <a href="http://fedoraproject.org">Fedora</a>/<a href="http://www.redhat.com">RedHat</a>:
+  Denis Arnaud <denis_arnaud@users.sourceforge.net> (\ref N)
+- <a href="http://www.debian.org">Debian</a>: Emmanuel Bastien <ebastien@users.sourceforge.net> (\ref N)
+
+\note
+\anchor N
+(N) - <a href="http://www.amadeus.com">Amadeus</a> employees.
+ 
+*/
