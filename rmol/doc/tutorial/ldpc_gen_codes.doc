@@ -1,6 +1,0 @@
-/*! 
-\page ldpc_gen_codes Generation of LDPC codes
-
-\include ldpc_gen_codes.cpp
-
-*/
