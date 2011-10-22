@@ -7,17 +7,16 @@
 // RMOL
 #include <rmol/RMOL_Types.hpp>
 
-namespace RMOL {
+/** Forward declarations. */
+namespace stdair {
+  class LegCabin;
+}
 
-  /** Forward declarations. */
-  // class Resource;
-  class BucketHolder;
-  class Bucket;
+namespace RMOL {
 
   /** Class Implementing the EMSR algorithm for Bid-Price Vector computing. */
   class Emsr {
   public:
-
     /**
     Compute the Bid-Price Vector using the EMSR algorithm. Then
     compute the protection levels and booking limits by using the BPV.
@@ -29,37 +28,19 @@ namespace RMOL {
     a list of EMSR values. We merge all these lists and sort the values
     from high to low in order to obtain the BPV.
     */
-    static void heuristicOptimisationByEmsr (const ResourceCapacity_T,
-                                             BucketHolder&,
-                                             BidPriceVector_T&);
+    static void heuristicOptimisationByEmsr (stdair::LegCabin&);
 
     /** 
 	Calculate the optimal protections for the set of buckets/classes
 	given in input, and update those buckets accordingly.
-	
-	<br>The cabin capacity is used to a double to allow for some
-	overbooking.
-     */
-    static void heuristicOptimisationByEmsrA (const ResourceCapacity_T,
-                                              BucketHolder&);
-
-    /**
-     Compute the optimal booking limits & protection limits for a set of 
-     buckets/classes
-     */
-    static void heuristicOptimisationByEmsrAwithSellup 
-    (const ResourceCapacity_T, BucketHolder&, SellupProbabilityVector_T&);
+    */
+    static void heuristicOptimisationByEmsrA (stdair::LegCabin&);
 
     /**
     Complute the protection levels and booking limites by using
     the EMSR-b algorithm.
-
-    <br>The cabin capacity is used to a double to allow for some
-	overbooking.
     */
-    static void heuristicOptimisationByEmsrB (const ResourceCapacity_T,
-                                              BucketHolder&,
-                                              Bucket&);
+    static void heuristicOptimisationByEmsrB (stdair::LegCabin&);
 
   };
 }

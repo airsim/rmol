@@ -7,13 +7,12 @@
 // RMOL
 #include <rmol/RMOL_Types.hpp>
 
+/** Forward declarations. */
+namespace stdair {
+  class LegCabin;
+}
+
 namespace RMOL {
-
-  /** Forward declarations. */
-  //class Resource;
-  class BucketHolder;
-  
-
   /** Utility methods for the Dynamic Programming algorithms. */
   class DPOptimiser {
   public:
@@ -22,12 +21,8 @@ namespace RMOL {
 	Dynamic Programming to compute the cumulative protection levels
 	and booking limits (described in the book Revenue Management -
 	Talluri & Van Ryzin, p.41-42).
-    
-    <br>The cabin capacity is used to a double to allow for some overbooking.
      */
-    static void optimalOptimisationByDP (const ResourceCapacity_T,
-                                         BucketHolder&,
-                                         BidPriceVector_T&);
+    static void optimalOptimisationByDP (stdair::LegCabin&);
 
     /**
      Compute the cdf_Q of a gaussian.

@@ -53,7 +53,6 @@ info/rmol-ref.info
 info/stamp-vti
 info/version-ref.texi
 po/Makevars.template
-po/??.gmo
 rmol/config.h.in*
 *_results.xml
 

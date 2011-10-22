@@ -17,5 +17,11 @@ namespace RMOL {
 
   /** Default epsilon value to qualify a denominator */
   extern const double DEFAULT_EPSILON;
+
+  /** Default stopping value for an iterative algorithm. */
+  extern const double DEFAULT_STOPPING_CRITERION;
+
+  /** Default negative value used to initialze a double variable. */
+  extern const double DEFAULT_INITIALIZER_DOUBLE_NEGATIVE;
 }
 #endif // __RMOL_BAS_BASCONST_GENERAL_HPP

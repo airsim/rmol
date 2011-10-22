@@ -1,6 +1,7 @@
 /*!
 \page howto_release Make a new release
 
+<<<<<<< HEAD
 \htmlonly
 <!-- 
 The following tags are permitted: a, b, blockquote, br, code, dd, div,
@@ -14,6 +15,8 @@ conforming to the above rules.
 -->
 \endhtmlonly
 
+=======
+>>>>>>> 0.24
 \section description Introduction
 
 This document describes briefly the recommended procedure of releasing
@@ -25,6 +28,7 @@ The following steps are required to make a release of the distribution package.
 
 \section initialisation Initialisation
 
+<<<<<<< HEAD
 Check out locally the full
 <a href="https://rmol.svn.sourceforge.net/svnroot/rmol">Subversion project</a>:
 \verbatim 
@@ -115,20 +119,97 @@ Developments for a particular release should be made on the trunk (e.g., by
 adding features not activated by default, but activated for the release
 developers only) or, if really needed, on a dedicated <b>development</b> branch.
 
+=======
+Clone locally the full
+<a href="http://rmol.git.sourceforge.net/git/gitweb.cgi?p=rmol/rmol;a=tree;h=refs/heads/trunk;hb=trunk">Git project</a>:
+\verbatim 
+cd ~
+mkdir -p dev/sim
+cd ~/dev/sim
+git clone git://rmol.git.sourceforge.net/gitroot/rmol/rmol rmolgit
+cd rmolgit
+git checkout trunk
+\endverbatim 
+
+
+\section branch_creation Branch creation
+
+Create the branch, on your local clone, corresponding to the new release
+(say, 0.50.0):
+\verbatim
+cd ~/dev/sim/rmolgit
+git checkout trunk
+git checkout -b 0.50.0
+\endverbatim
+Update the version in the various build system files, replacing 99.99.99 by
+the correct version number:
+\verbatim
+vi CMakeLists.txt
+vi autogen.sh
+\endverbatim
+
+Update the version and add a change-log in the ChangeLog and in the 
+RPM specification files:
+\verbatim
+vi ChangeLog
+vi rmol.spec
+\endverbatim
+
+\section branch_publish Commit and publish the release branch
+
+Commit the new release:
+\verbatim
+cd ~/dev/sim/rmolgit
+git add -A
+git commit -m "[Release 0.50.0] Release of version 0.50.0."
+git push
+\endverbatim
+
+\section trunk_update Update the change-log in the trunk as well
+
+Update the change-log in the ChangeLog and RPM specification files:
+\verbatim
+cd ~/dev/sim/rmolgit
+git checkout trunk
+vi ChangeLog
+vi rmol.spec
+\endverbatim
+
+Commit the change-logs and publish the trunk (main development branch):
+\verbatim
+git commit -m "[Doc] Integrated the change-log of the release 0.50.0."
+git push
+\endverbatim
+>>>>>>> 0.24
 
 \section create_packages Create distribution packages
 
 Create the distribution packages using the following command:<br>
 \verbatim 
+<<<<<<< HEAD
 cd ~/dev
 cd rmolsvn/branches/rmol/0.23.0/main
 ./autogen.sh && make distcheck
+=======
+cd ~/dev/sim/rmolgit
+git checkout 0.50.0
+rm -rf build && mkdir -p build
+cd build
+cmake -DCMAKE_INSTALL_PREFIX=/home/user/dev/deliveries/rmol-0.50.0 \
+ -DCMAKE_BUILD_TYPE:STRING=Debug -DINSTALL_DOC:BOOL=ON ..
+make check && make dist
+>>>>>>> 0.24
 \endverbatim 
 
 
 This will configure, compile and check the package. The output packages
+<<<<<<< HEAD
 will be named, for instance, <tt>rmol-0.23.0.tar.gz</tt> and
 <tt>rmol-0.23.0.tar.bz2</tt>.
+=======
+will be named, for instance, <tt>rmol-0.50.0.tar.gz</tt> and
+<tt>rmol-0.50.0.tar.bz2</tt>.
+>>>>>>> 0.24
 
 
 \section generate_rpm_packages Generation the RPM packages
@@ -136,6 +217,7 @@ will be named, for instance, <tt>rmol-0.23.0.tar.gz</tt> and
 Optionally, generate the RPM package (for instance, for 
 <a href="http://fedoraproject.org">Fedora</a>/<a href="http://www.redhat.com">RedHat</a>):
 \verbatim 
+<<<<<<< HEAD
 cd ~/dev
 cd rmolsvn/branches/rmol/0.23.0/main
 ./autogen.sh && make dist
@@ -150,6 +232,26 @@ cd ~/dev/packages/SPECS
 rpmbuild -ba rmol.spec
 rpmlint -i ../SPECS/rmol.spec ../SRPMS/rmol-0.23.0-1.fc13.src.rpm \
   ../RPMS/i686/rmol-*
+=======
+cd ~/dev/sim/rmolgit
+git checkout 0.50.0
+rm -rf build && mkdir -p build
+cd build
+cmake -DCMAKE_INSTALL_PREFIX=/home/user/dev/deliveries/rmol-0.50.0 \
+ -DCMAKE_BUILD_TYPE:STRING=Debug -DINSTALL_DOC:BOOL=ON ..
+make dist
+\endverbatim 
+
+To perform this step, rpm-build, rpmlint and rpmdevtools have to be available
+on the system.
+\verbatim 
+cp rmol.spec ~/dev/packages/SPECS \
+  && cp rmol-0.50.0.tar.bz2 ~/dev/packages/SOURCES
+cd ~/dev/packages/SPECS
+rpmbuild -ba rmol.spec
+rpmlint -i ../SPECS/rmol.spec ../SRPMS/rmol-0.50.0-1.fc15.src.rpm \
+  ../RPMS/noarch/rmol-* ../RPMS/i686/rmol-*
+>>>>>>> 0.24
 \endverbatim 
 
 
@@ -157,6 +259,7 @@ rpmlint -i ../SPECS/rmol.spec ../SRPMS/rmol-0.23.0-1.fc13.src.rpm \
 
 Update the \c NEWS and \c ChangeLog files with appropriate
 information, including what has changed since the previous release. Then
+<<<<<<< HEAD
 commit the changes into the 
 <a href="https://sourceforge.net/apps/trac/rmol/browser">RMOL's 
   Subversion (SVN) repository</a>.
@@ -173,6 +276,25 @@ The output documentation packages will be named, for instance:
 - <tt>rmol-pdf-0.23.0.tar.gz</tt> and <tt>rmol-pdf-0.23.0.tar.bz2</tt>
   for the PDF documentation.
 
+=======
+commit and push the changes into the 
+<a href="http://rmol.git.sourceforge.net/git/gitweb.cgi?p=rmol/rmol;a=summary">RMOL's Git repository</a>.
+
+
+\section create_bin_packages Create the binary package, including the documentation
+
+Create the binary package, which includes HTML and PDF documentation,
+using the following command:
+\verbatim 
+make package
+\endverbatim 
+
+The output binary package will be named, for instance,
+<tt>rmol-0.50.0-Linux.tar.bz2</tt>. That package contains both the HTML
+and PDF documentation. The binary package contains also the executables
+and shared libraries, as well as C++ header files, but all of those do not
+interest us for now.
+>>>>>>> 0.24
 
 \section upload_files Upload the files to SourceForge
 
@@ -186,9 +308,15 @@ Check
 In order to update the Web site files, either:
 - <a href="https://sourceforge.net/apps/trac/sourceforge/wiki/Shell%20service#Accessingyourfileswithothertools">synchronise them with rsync and SSH</a>:
 \verbatim 
+<<<<<<< HEAD
 cd ~/dev
 cd rmolsvn/branches/rmol/0.23.0/main
 rsync -aiv doc/html/ joe,rmol@web.sourceforge.net:htdocs/
+=======
+cd ~/dev/sim/rmolgit
+git checkout 0.50.0
+rsync -aiv doc/html/ doc/latex/refman.pdf joe,rmol@web.sourceforge.net:htdocs/
+>>>>>>> 0.24
 \endverbatim 
 where \c -aiv options mean:
   - \c -a: archive/mirror mode; equals \c -rlptgoD

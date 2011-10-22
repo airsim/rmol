@@ -1,15 +1,17 @@
+# rmol
 include $(top_srcdir)/Makefile.common
 include $(srcdir)/core/sources.mk
 
-## Source directory
+#
+SUBDIRS = basic bom factory command service core config batches
 
+#
 MAINTAINERCLEANFILES = Makefile.in
-
-SUBDIRS = basic field bom factory command service core config batches
 
 EXTRA_DIST = config_msvc.h
 
 
 # Header files
-nobase_pkginclude_HEADERS = $(service_h_sources)
+nobase_pkginclude_HEADERS = $(rmol_service_h_sources)
 #nobase_nodist_pkginclude_HEADERS = $(top_builddir)/@PACKAGE@/config.h
+

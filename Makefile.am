@@ -1,4 +1,4 @@
-## top directory
+## rmol top directory
 include $(top_srcdir)/Makefile.common
 
 ACLOCAL_AMFLAGS = -I config
@@ -25,7 +25,7 @@ MAINTAINERCLEANFILES = Makefile.in aclocal.m4 configure \
 EXTRA_DIST =
 
 # Build in these directories:
-SUBDIRS = rmol win32 po man $(INFO_DOC_DIR) $(HTML_DOC_DIR) samples $(TEST_DIR)
+SUBDIRS = airrac rmol win32 po man $(INFO_DOC_DIR) $(HTML_DOC_DIR) $(TEST_DIR)
 
 
 # Configuration helpers
@@ -44,8 +44,11 @@ uninstall-local:
 dist-html:
 	$(MAKE) -C doc dist-html
 
+dist-pdf:
+	$(MAKE) -C doc dist-pdf
 
-snapshot: snapshot-src snapshot-html
+
+snapshot: snapshot-src snapshot-html snapshot-pdf
 
 
 snapshot-src:
@@ -54,7 +57,10 @@ snapshot-src:
 snapshot-html:
 	$(MAKE) -C doc dist-html html_tarname=@PACKAGE_TARNAME@-doc-`date +"%Y%m%d"`
 
-upload: upload-src upload-html
+snapshot-pdf:
+	$(MAKE) -C doc dist-pdf pdf_tarname=@PACKAGE_TARNAME@-pdf-`date +"%Y%m%d"`
+
+upload: upload-src upload-html upload-pdf
 
 upload-src: dist
 	@UPLOAD_COMMAND@ @PACKAGE_TARNAME@-@VERSION@.tar.gz \
@@ -63,4 +69,8 @@ upload-src: dist
 upload-html: dist-html
 	@UPLOAD_COMMAND@ @PACKAGE_TARNAME@-doc-@VERSION@.tar.gz \
 	@PACKAGE_TARNAME@-doc-@VERSION@.tar.bz2
+
+upload-pdf: dist-pdf
+	@UPLOAD_COMMAND@ @PACKAGE_TARNAME@-pdf-@VERSION@.tar.gz \
+	@PACKAGE_TARNAME@-pdf-@VERSION@.tar.bz2
 

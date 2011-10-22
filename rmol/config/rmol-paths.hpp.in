@@ -1,0 +1,24 @@
+#ifndef __RMOL_PATHS_HPP__
+#define __RMOL_PATHS_HPP__
+
+#define PACKAGE "@PACKAGE@"
+#define PACKAGE_NAME "@PACKAGE_NAME@"
+#define PACKAGE_VERSION "@PACKAGE_VERSION@"
+#define PREFIXDIR "@prefix@"
+#define EXEC_PREFIX "@exec_prefix@"
+#define BINDIR "@bindir@"
+#define LIBDIR "@libdir@"
+#define LIBEXECDIR "@libexecdir@"
+#define SBINDIR "@sbindir@"
+#define SYSCONFDIR "@sysconfdir@"
+#define INCLUDEDIR "@includedir@"
+#define DATAROOTDIR "@datarootdir@"
+#define DATADIR "@datadir@"
+#define DOCDIR "@docdir@"
+#define MANDIR "@mandir@"
+#define INFODIR "@infodir@"
+#define HTMLDIR "@htmldir@"
+#define PDFDIR "@pdfdir@"
+#define STDAIR_SAMPLE_DIR "@sampledir@"
+
+#endif // __RMOL_PATHS_HPP__

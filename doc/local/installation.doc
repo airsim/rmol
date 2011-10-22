@@ -13,7 +13,11 @@
 - \ref specifying_system_type
 - \ref sharing_defaults
 - \ref defining_variables
+<<<<<<< HEAD
 - \ref configure_invocation
+=======
+- \ref cmake_invocation
+>>>>>>> 0.24
 
 
 \section rpm_linux Fedora/RedHat Linux distributions
@@ -33,10 +37,17 @@ RPM packages can also be available on the
 RMOL should compile without errors or warnings on most GNU/Linux systems,
 on UNIX systems like Solaris SunOS, and on POSIX based environments for
 Microsoft Windows like Cygwin or MinGW with MSYS. It can be also built on
+<<<<<<< HEAD
 Microsoft Windows NT/2000/XP using Microsoft's Visual C++ .NET, but our 
 support for this compiler is limited. For GNU/Linux, SunOS, Cygwin and MinGW
 we assume that you have at least the following GNU software installed on
 your computer:
+=======
+Microsoft Windows NT/2000/XP/Vista/7 using Microsoft's Visual C++ .NET, but 
+our support for this compiler is limited. For GNU/Linux, SunOS, Cygwin and 
+MinGW we assume that you have at least the following GNU software installed 
+on your computer:
+>>>>>>> 0.24
 - GNU Autotools:
   - <a href="http://www.gnu.org/software/autoconf/">autoconf</a>, 
   - <a href="http://www.gnu.org/software/automake/">automake</a>,
@@ -69,8 +80,13 @@ releases of RMOL.
 
 \section basic_instructions Basic Installation
 
+<<<<<<< HEAD
    Briefly, the shell commands <tt>`./configure; make; make install'</tt> 
 should configure, build, and install this package.  The following
+=======
+   Briefly, the shell commands <tt>`./cmake .. && make install'</tt> 
+should configure, build and install this package.  The following
+>>>>>>> 0.24
 more-detailed instructions are generic; see the \c `README' file for
 instructions specific to this package.  Some packages provide this
 \c `INSTALL' file but do not implement all of the features documented
@@ -79,6 +95,7 @@ necessarily a bug.  More recommendations for GNU packages can be found
 in the info page corresponding to "Makefile Conventions: 
 (standards)Makefile Conventions".
 
+<<<<<<< HEAD
    The \c `configure' shell script attempts to guess correct values for
 various system-dependent variables used during compilation.  It uses
 those values to create a \c `Makefile' in each directory of the package.
@@ -87,6 +104,16 @@ definitions.  Finally, it creates a shell script \c `config.status' that
 you can run in the future to recreate the current configuration, and a
 file \c `config.log' containing compiler output (useful mainly for
 debugging \c `configure').
+=======
+   The \c `cmake' shell script attempts to guess correct values for
+various system-dependent variables used during compilation.  It uses
+those values to create a \c `Makefile' in each directory of the package.
+It may also create one or more \c `.h' files containing system-dependent
+definitions.  Finally, it creates a \c `CMakeCache.txt' cache file that
+you can refer to in the future to recreate the current configuration, and
+files \c `CMakeFiles' containing compiler output (useful mainly for
+debugging \c `cmake').
+>>>>>>> 0.24
 
    It can also use an optional file (typically called \c `config.cache'
 and enabled with \c `--cache-file=config.cache' or simply \c `-C') that 
@@ -101,6 +128,7 @@ be considered for the next release.  If you are using the cache, and at
 some point \c `config.cache' contains results you don't want to keep, you
 may remove or edit it.
 
+<<<<<<< HEAD
    The file <tt>`configure.ac'</tt> (or <tt>`configure.in'</tt>) is
 used to create \c `configure' by a program called \c `autoconf'.  You
 need <tt>`configure.ac'</tt> if you want to change it or regenerate \c
@@ -110,6 +138,15 @@ The simplest way to compile this package is:
 -# \c `cd' to the directory containing the package's source code and
    type <tt>`./configure'</tt> to configure the package for your
    system.  Running \c `configure' might take a while.  While running,
+=======
+   The file <tt>`CMakeLists.txt'</tt> is used to create the \c `Makefile' 
+files.
+
+The simplest way to compile this package is:
+-# \c `cd' to the directory containing the package's source code and
+   type <tt>`./cmake ..'</tt> to configure the package for your
+   system.  Running \c `cmake' is generally fast.  While running,
+>>>>>>> 0.24
    it prints some messages telling which features it is checking for.
 -# Type \c `make' to compile the package.
 -# Optionally, type <tt>`make check'<tt> to run any self-tests that
@@ -120,12 +157,15 @@ The simplest way to compile this package is:
    root, it is recommended that the package be configured and built as
    a regular user, and only the `make install' phase executed with
    root privileges.
+<<<<<<< HEAD
 -# Optionally, type <tt>`make installcheck'</tt> to repeat any
    self-tests, but this time using the binaries in their final
    installed location.  This target does not install anything.
    Running this target as a regular user, particularly if the prior
    <tt>`make install'</tt> required root privileges, verifies that the
    installation completed correctly.
+=======
+>>>>>>> 0.24
 -# You can remove the program binaries and object files from the
    source code directory by typing <tt>`make clean'</tt>.  To also
    remove the files that \c `configure' created (so you can compile
@@ -138,26 +178,41 @@ The simplest way to compile this package is:
    files again.  In practice, not all packages have tested that
    uninstallation works correctly, even though it is required by the
    GNU Coding Standards.
+<<<<<<< HEAD
 -# Some packages, particularly those that use Automake, provide
    <tt>`make distcheck'</tt>, which can by used by developers to test
    that all other targets like <tt>`make install'</tt> and <tt>`make
    uninstall'</tt> work correctly.  This target is generally not run
    by end users.
+=======
+>>>>>>> 0.24
 
 
 \section compilers Compilers and Options
 
    Some systems require unusual options for compilation or linking
+<<<<<<< HEAD
 that the \c `configure' script does not know about.  Run
 <tt>`./configure --help'</tt> for details on some of the pertinent
 environment variables.
 
    You can give \c `configure' initial values for configuration parameters
+=======
+that the \c `cmake' script does not know about.  Run
+<tt>`./cmake --help'</tt> for details on some of the pertinent
+environment variables.
+
+   You can give \c `cmake' initial values for configuration parameters
+>>>>>>> 0.24
 by setting variables in the command line or in the environment.  Here
 is an example:
 
 \verbatim
+<<<<<<< HEAD
 ./configure CC=c99 CFLAGS=-g LIBS=-lposix
+=======
+./cmake CC=c99 CFLAGS=-g LIBS=-lposix
+>>>>>>> 0.24
 \endverbatim
 
    \see \ref defining_variables for more details.
@@ -253,7 +308,11 @@ specified in terms of <tt>`${prefix}'</tt> at \c `configure' time.
 \section optional_features Optional Features
 
    If the package supports it, you can cause programs to be installed
+<<<<<<< HEAD
 with an extra prefix or suffix on their names by giving \c `configure'
+=======
+with an extra prefix or suffix on their names by giving \c `cmake'
+>>>>>>> 0.24
 the option <tt>`--program-prefix=PREFIX'</tt> or
 <tt>`--program-suffix=SUFFIX'</tt>.
 
@@ -314,7 +373,11 @@ in your \c `PATH', put it _after_ \c `/usr/bin'.
 not \c `/usr/local'.  It is recommended to use the following options:
 
 \verbatim
+<<<<<<< HEAD
 ./configure --prefix=/boot/common
+=======
+./cmake -DCMAKE_INSTALL_PREFIX=/boot/common
+>>>>>>> 0.24
 \endverbatim
 
 
@@ -380,9 +443,15 @@ CONFIG_SHELL=/bin/bash /bin/bash ./configure CONFIG_SHELL=/bin/bash
 \endverbatim
 
 
+<<<<<<< HEAD
 \section configure_invocation `configure' Invocation
 
    \c `configure' recognizes the following options to control how it
+=======
+\section cmake_invocation `cmake' Invocation
+
+   \c `cmake' recognizes the following options to control how it
+>>>>>>> 0.24
 operates.
 - <tt>`--help'</tt>, \c `-h' print a summary of all of the options to
   `configure', and exit.
@@ -411,6 +480,7 @@ operates.
 - <tt>`--no-create'</tt>, \c `-n' run the configure checks, but stop
   before creating any output files.
 
+<<<<<<< HEAD
 \c `configure' also accepts some other, not widely useful, options.  Run
 <tt>`configure --help'</tt> for more details.
 
@@ -506,6 +576,174 @@ External libraries:
 ------------------------------------------------------------------------------
 Now type 'make && make install' to build and install rmol-99.99.99 library
 ------------------------------------------------------------------------------
+=======
+\c `cmake' also accepts some other, not widely useful, options.  Run
+<tt>`cmake --help'</tt> for more details.
+
+The \c `cmake' script produces an ouput like this:
+
+\verbatim
+cmake -DCMAKE_INSTALL_PREFIX=/home/user/dev/deliveries/rmol-99.99.99 -DLIB_SUFFIX=64 -DCMAKE_BUILD_TYPE:STRING=Debug -DWITH_STDAIR_PREFIX=/home/user/dev/deliveries/stdair-stable -DINSTALL_DOC:BOOL=ON ..
+-- The C compiler identification is GNU
+-- The CXX compiler identification is GNU
+-- Check for working C compiler: /usr/lib64/ccache/gcc
+-- Check for working C compiler: /usr/lib64/ccache/gcc -- works
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working CXX compiler: /usr/lib64/ccache/c++
+-- Check for working CXX compiler: /usr/lib64/ccache/c++ -- works
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Requires Git without specifying any version
+-- Current Git revision name: 56c6c98cf2cfb4008a0acd35d08075cf5f79e693 trunk
+-- Requires Boost-1.41
+-- Boost version: 1.46.0
+-- Found the following Boost libraries:
+--   program_options
+--   date_time
+--   iostreams
+--   serialization
+--   filesystem
+--   unit_test_framework
+--   python
+-- Found Boost version: 1.46.0
+-- Found BoostWrapper: /usr/include (Required is at least version "1.41")
+-- Requires MySQL without specifying any version
+-- Using mysql-config: /usr/bin/mysql_config
+-- Found MySQL: /usr/lib64/mysql/libmysqlclient.so 
+-- Found MySQL version: 5.5.14
+-- Requires SOCI-3.0
+-- Using soci-config: /usr/bin/soci-config
+-- SOCI headers are buried
+-- Found SOCI: /usr/lib64/libsoci_core.so (Required is at least version "3.0")
+-- Found SOCIMySQL: /usr/lib64/libsoci_mysql.so (Required is at least version "3.0")
+-- Found SOCI with MySQL back-end support version: 3.0.0
+-- Requires StdAir-0.35
+-- Found StdAir version: 0.37.1
+-- Requires Doxygen without specifying any version
+-- Found Doxygen: /usr/bin/doxygen 
+-- Found DoxygenWrapper: /usr/bin/doxygen 
+-- Found Doxygen version: 1.7.4
+-- Had to set the linker language for 'airraclib' to CXX
+-- Had to set the linker language for 'rmollib' to CXX
+-- Test 'UnconstrainerTest' to be built with 'UnconstrainerTestSuite.cpp'
+-- Test 'ForecasterTest' to be built with 'ForecasterTestSuite.cpp'
+-- Test 'OptimiseTest' to be built with 'OptimiseTestSuite.cpp'
+-- Test 'BOMsForForecasterTest' to be built with 'bomsforforecaster.cpp'
+-- 
+-- =============================================================
+-- ----------------------------------
+-- ---     Project Information    ---
+-- ----------------------------------
+-- PROJECT_NAME ................... : rmol
+-- PACKAGE_PRETTY_NAME ............ : RMOL
+-- PACKAGE ........................ : rmol
+-- PACKAGE_NAME ................... : RMOL
+-- PACKAGE_BRIEF .................. : C++ library of Revenue Management and Optimisation classes and functions
+-- PACKAGE_VERSION ................ : 99.99.99
+-- GENERIC_LIB_VERSION ............ : 99.99.99
+-- GENERIC_LIB_SOVERSION .......... : 99.99
+-- 
+-- ----------------------------------
+-- ---     Build Configuration    ---
+-- ----------------------------------
+-- Modules to build ............... : airrac;rmol
+-- Libraries to build/install ..... : airraclib;rmollib
+-- Binaries to build/install ...... : airrac;rmol
+-- Modules to test ................ : rmol
+-- Binaries to test ............... : UnconstrainerTesttst;UnconstrainerTesttst;ForecasterTesttst;UnconstrainerTesttst;ForecasterTesttst;OptimiseTesttst;UnconstrainerTesttst;ForecasterTesttst;OptimiseTesttst;BOMsForForecasterTesttst
+-- 
+-- * Module ....................... : airrac
+--   + Layers to build ............ : .;basic;bom;factory;command;service
+--   + Dependencies on other layers : 
+--   + Libraries to build/install . : airraclib
+--   + Executables to build/install : airrac
+--   + Tests to perform ........... : 
+-- * Module ....................... : rmol
+--   + Layers to build ............ : .;basic;bom;factory;command;service
+--   + Dependencies on other layers : airraclib
+--   + Libraries to build/install . : rmollib
+--   + Executables to build/install : rmol
+--   + Tests to perform ........... : UnconstrainerTesttst;UnconstrainerTesttst;ForecasterTesttst;UnconstrainerTesttst;ForecasterTesttst;OptimiseTesttst;UnconstrainerTesttst;ForecasterTesttst;OptimiseTesttst;BOMsForForecasterTesttst
+-- 
+-- BUILD_SHARED_LIBS .............. : ON
+-- CMAKE_BUILD_TYPE ............... : Debug
+--  * CMAKE_C_FLAGS ............... : 
+--  * CMAKE_CXX_FLAGS ............. : -Wall -Werror
+--  * BUILD_FLAGS ................. : 
+--  * COMPILE_FLAGS ............... : 
+-- CMAKE_MODULE_PATH .............. : /home/user/dev/sim/rmol/rmolgithub/config/
+-- CMAKE_INSTALL_PREFIX ........... : /home/user/dev/deliveries/rmol-99.99.99
+-- 
+-- * Doxygen:
+--   - DOXYGEN_VERSION .............. : 1.7.4
+--   - DOXYGEN_EXECUTABLE ........... : /usr/bin/doxygen
+--   - DOXYGEN_DOT_EXECUTABLE ....... : /usr/bin/dot
+--   - DOXYGEN_DOT_PATH ............. : /usr/bin
+-- 
+-- ----------------------------------
+-- --- Installation Configuration ---
+-- ----------------------------------
+-- INSTALL_LIB_DIR ................ : /home/user/dev/deliveries/rmol-99.99.99/lib64
+-- INSTALL_BIN_DIR ................ : /home/user/dev/deliveries/rmol-99.99.99/bin
+-- INSTALL_INCLUDE_DIR ............ : /home/user/dev/deliveries/rmol-99.99.99/include
+-- INSTALL_DATA_DIR ............... : /home/user/dev/deliveries/rmol-99.99.99/share
+-- INSTALL_SAMPLE_DIR ............. : /home/user/dev/deliveries/rmol-99.99.99/share/rmol/samples
+-- INSTALL_DOC .................... : ON
+-- 
+-- ----------------------------------
+-- ---   Packaging Configuration  ---
+-- ----------------------------------
+-- CPACK_PACKAGE_CONTACT .......... : Denis Arnaud <denis_arnaud - at - users dot sourceforge dot net>
+-- CPACK_PACKAGE_VENDOR ........... : Denis Arnaud
+-- CPACK_PACKAGE_VERSION .......... : 99.99.99
+-- CPACK_PACKAGE_DESCRIPTION_FILE . : /home/user/dev/sim/rmol/rmolgithub/README
+-- CPACK_RESOURCE_FILE_LICENSE .... : /home/user/dev/sim/rmol/rmolgithub/COPYING
+-- CPACK_GENERATOR ................ : TBZ2
+-- CPACK_DEBIAN_PACKAGE_DEPENDS ... : 
+-- CPACK_SOURCE_GENERATOR ......... : TBZ2;TGZ
+-- CPACK_SOURCE_PACKAGE_FILE_NAME . : rmol-99.99.99
+-- 
+-- ---------------------------------
+-- ---     External libraries    ---
+-- ---------------------------------
+-- 
+-- * Boost:
+--   - Boost_VERSION .............. : 104600
+--   - Boost_LIB_VERSION .......... : 1_46
+--   - Boost_HUMAN_VERSION ........ : 1.46.0
+--   - Boost_INCLUDE_DIRS ......... : /usr/include
+--   - Boost required components .. : program_options;date_time;iostreams;serialization;filesystem;unit_test_framework;python
+--   - Boost required libraries ... : optimized;/usr/lib64/libboost_iostreams-mt.so;debug;/usr/lib64/libboost_iostreams-mt.so;optimized;/usr/lib64/libboost_serialization-mt.so;debug;/usr/lib64/libboost_serialization-mt.so;optimized;/usr/lib64/libboost_filesystem-mt.so;debug;/usr/lib64/libboost_filesystem-mt.so;optimized;/usr/lib64/libboost_date_time-mt.so;debug;/usr/lib64/libboost_date_time-mt.so;optimized;/usr/lib64/libboost_program_options-mt.so;debug;/usr/lib64/libboost_program_options-mt.so;optimized;/usr/lib64/libboost_unit_test_framework-mt.so;debug;/usr/lib64/libboost_unit_test_framework-mt.so;optimized;/usr/lib64/libboost_python-mt.so;debug;/usr/lib64/libboost_python-mt.so
+-- 
+-- * MySQL:
+--   - MYSQL_VERSION .............. : 5.5.14
+--   - MYSQL_INCLUDE_DIR .......... : /usr/include/mysql
+--   - MYSQL_LIBRARIES ............ : /usr/lib64/mysql/libmysqlclient.so
+-- 
+-- * SOCI:
+--   - SOCI_VERSION ............... : 3.0.0
+--   - SOCI_INCLUDE_DIR ........... : /usr/include/soci
+--   - SOCIMYSQL_INCLUDE_DIR ...... : /usr/include/soci
+--   - SOCI_LIBRARIES ............. : /usr/lib64/libsoci_core.so
+--   - SOCIMYSQL_LIBRARIES ........ : /usr/lib64/libsoci_mysql.so
+-- 
+-- * StdAir:
+--   - STDAIR_VERSION ............. : 0.37.1
+--   - STDAIR_BINARY_DIRS ......... : /home/user/dev/deliveries/stdair-0.37.1/bin
+--   - STDAIR_EXECUTABLES ......... : stdair
+--   - STDAIR_LIBRARY_DIRS ........ : /home/user/dev/deliveries/stdair-0.37.1/lib64
+--   - STDAIR_LIBRARIES ........... : stdairlib;stdairuicllib
+--   - STDAIR_INCLUDE_DIRS ........ : /home/user/dev/deliveries/stdair-0.37.1/include
+--   - STDAIR_SAMPLE_DIR .......... : /home/user/dev/deliveries/stdair-0.37.1/share/stdair/samples
+-- 
+-- Change a value with: cmake -D<Variable>=<Value>
+-- =============================================================
+-- 
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/user/dev/sim/rmol/rmolgithub/build
+>>>>>>> 0.24
 
 \endverbatim
 
@@ -515,6 +753,7 @@ the testing process <tt>`make check'</tt>. As a result, you should
 obtain a similar report:
 \verbatim
 
+<<<<<<< HEAD
 [...]
 
 Making check in test
@@ -560,6 +799,33 @@ make[1]: Leaving directory `/home/dan/dev/rmol/rmolsvn/trunk/rmol/test'
 make[1]: Entering directory `/home/dan/dev/sim/rmolsvn/trunk/rmol'
 make[1]: Nothing to be done for `check-am'.
 make[1]: Leaving directory `/home/dan/dev/sim/rmolsvn/trunk/rmol'
+=======
+[  0%] Built target hdr_cfg_rmol
+[  0%] Built target hdr_cfg_airrac
+[ 30%] Built target airraclib
+[ 86%] Built target rmollib
+[ 90%] Built target BOMsForForecasterTesttst
+[ 93%] Built target UnconstrainerTesttst
+[ 96%] Built target ForecasterTesttst
+[100%] Built target OptimiseTesttst
+Scanning dependencies of target check_rmoltst
+Test project /home/user/dev/sim/rmol/rmolgithub/build/test/rmol
+    Start 1: UnconstrainerTesttst
+1/4 Test #1: UnconstrainerTesttst .............   Passed    0.04 sec
+    Start 2: ForecasterTesttst
+2/4 Test #2: ForecasterTesttst ................   Passed    0.04 sec
+    Start 3: OptimiseTesttst
+3/4 Test #3: OptimiseTesttst ..................   Passed    0.44 sec
+    Start 4: BOMsForForecasterTesttst
+4/4 Test #4: BOMsForForecasterTesttst .........   Passed    0.02 sec
+
+100% tests passed, 0 tests failed out of 4
+
+Total Test time (real) =   0.78 sec
+[100%] Built target check_rmoltst
+Scanning dependencies of target check
+[100%] Built target check
+>>>>>>> 0.24
 
 \endverbatim
 
@@ -585,9 +851,18 @@ make clean
 to remove all files created during compilation process, or even
 
 \verbatim
+<<<<<<< HEAD
 make distclean
 \endverbatim
 
 to remove all files generated by the \c `configure' script.
+=======
+cd ~/dev/sim/rmolgit
+rm -rf build && mkdir build
+cd build
+\endverbatim
+
+to remove everything.
+>>>>>>> 0.24
 
 */

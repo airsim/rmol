@@ -1,0 +1,47 @@
+/*!
+
+\page rmol-config
+	Configuration Script for the C++ Revenue Management Optimisation Library
+
+\section sec_synopsis SYNOPSIS
+<b>rmol-config</b> <tt>[--prefix] [--version] [--libs] [--cflags]</tt>
+
+\section sec_description DESCRIPTION
+
+\e rmol-config is a tool that is used by configure to determine the
+compiler and linker flags that should be used to compile and link
+programs that use \e RMOL. It is also used internally by the .m4
+macros, that are included with \e RMOL, for GNU autoconf.
+
+\section sec_options OPTIONS
+
+\e rmol-config accepts the following options:
+
+ \b --version<br>
+    Print the currently installed version of RMOL on the standard output.
+
+ \b --sampledir<br>
+    Show where the (CSV) sample files are located.
+
+ \b --libs<br>
+    Print the linker flags that are necessary to link with the RMOL library.
+
+ \b --cflags<br>
+    Print the compiler flags that are necessary to compile with the
+    RMOL library.
+
+ \b --prefix<br>
+    Show the RMOL installation prefix.
+
+\section sec_see_also SEE ALSO
+ \b rmol(1), \b rmol-config(1), \b boost-config(1)
+
+\section sec_copyright COPYRIGHT
+
+Copyright © 2009-2011 Denis Arnaud
+
+See the COPYING file for more information on the (LGPLv2+) license, or
+directly on Internet:<br>
+http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
+
+*/
