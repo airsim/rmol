@@ -173,6 +173,14 @@ namespace RMOL {
   }
 
   // ////////////////////////////////////////////////////////////////////
+  const stdair::Flag_T& HistoricalBookingHolder::
+  getCensorshipFlag (const short i) const {
+    const HistoricalBooking& lHistorialBooking =
+      _historicalBookingVector.at(i);
+    return lHistorialBooking.getFlag();
+  }
+
+  // ////////////////////////////////////////////////////////////////////
   void HistoricalBookingHolder::setUnconstrainedDemand
   (const stdair::NbOfBookings_T& iExpectedDemand, const short i) {
     _historicalBookingVector.at(i).setUnconstrainedDemand(iExpectedDemand);

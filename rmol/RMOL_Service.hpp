@@ -10,7 +10,9 @@
 #include <stdair/stdair_basic_types.hpp>
 #include <stdair/stdair_inventory_types.hpp>
 #include <stdair/stdair_service_types.hpp>
+#include <stdair/stdair_maths_types.hpp>
 #include <stdair/basic/ForecastingMethod.hpp>
+#include <stdair/basic/PartnershipTechnique.hpp>
 // RMOL
 #include <rmol/RMOL_Types.hpp>
 
@@ -19,6 +21,11 @@ namespace stdair {
   class FlightDate;
   struct BasLogParams;
   struct BasDBParams;
+  class BomRoot;
+  class AirlineClassList;
+  class YieldFeatures;
+  class Inventory;
+  class OnDDate;
 }
 
 namespace RMOL {
@@ -154,8 +161,72 @@ namespace RMOL {
      * Optimise (revenue management) an flight-date/network-date
      */
     bool optimise (stdair::FlightDate&, const stdair::DateTime_T&,
-                   const stdair::ForecastingMethod&);
+                   const stdair::ForecastingMethod&, const stdair::PartnershipTechnique&);
 
+    /**
+     * Forecaster
+     */
+
+    // O&D based forecast
+    void forecastOnD (const stdair::DateTime_T&);
+
+    stdair::YieldFeatures* getYieldFeatures(const stdair::OnDDate&, const stdair::CabinCode_T&,
+                                            stdair::BomRoot&);
+    
+    void forecastOnD (const stdair::YieldFeatures&, stdair::OnDDate&,
+                      const stdair::CabinCode_T&, const stdair::DTD_T&, 
+                      stdair::BomRoot&);
+
+    void setOnDForecast (const stdair::AirlineClassList&, const stdair::MeanValue_T&,
+                         const stdair::StdDevValue_T&, stdair::OnDDate&, const stdair::CabinCode_T&,
+                         stdair::BomRoot&);
+
+    // Single segment O&D
+    void setOnDForecast (const stdair::AirlineCode_T&, const stdair::Date_T&, const stdair::AirportCode_T&,
+                         const stdair::AirportCode_T&, const stdair::CabinCode_T&, const stdair::ClassCode_T&,
+                         const stdair::MeanValue_T&, const stdair::StdDevValue_T&, const stdair::Yield_T&, stdair::BomRoot&);
+
+    // Multiple segment O&D
+    void setOnDForecast (const stdair::AirlineCodeList_T&, const stdair::AirlineCode_T&,const stdair::Date_T&,
+                         const stdair::AirportCode_T&, const stdair::AirportCode_T&, const stdair::CabinCode_T&,
+                         const stdair::ClassCodeList_T&, const stdair::MeanValue_T&, const stdair::StdDevValue_T&,
+                         const stdair::Yield_T&, stdair::BomRoot&);
+
+    // Initialise (or re-initialise) the demand projections in all leg cabins
+    void resetDemandInformation (const stdair::DateTime_T&);
+
+    void resetDemandInformation (const stdair::DateTime_T&, const stdair::Inventory&);
+
+    /* Projection of demand */
+
+    // Aggregated demand at booking class level.
+    void projectAggregatedDemandOnLegCabins(const stdair::DateTime_T&);
+
+    // Static rule prorated yield
+    void projectOnDDemandOnLegCabinsUsingYP(const stdair::DateTime_T&);
+
+    // Displacement-adjusted yield
+    void projectOnDDemandOnLegCabinsUsingDA(const stdair::DateTime_T&);
+
+    // Dynamic yield proration (PF = BP_i/BP_{total}, where BP_{total} = sum(BP_i))
+    void projectOnDDemandOnLegCabinsUsingDYP(const stdair::DateTime_T&);
+
+    void projectOnDDemandOnLegCabinsUsingDYP(const stdair::DateTime_T&, const stdair::Inventory&);
+
+    /** Optimiser */
+    // O&D-based optimisation (using demand aggregation or demand aggregation).
+    void optimiseOnD (const stdair::DateTime_T&);
+
+    // O&D-based optimisation using displacement-adjusted yield.
+    void optimiseOnDUsingRMCooperation (const stdair::DateTime_T&);
+
+    // Advanced version of O&D-based optimisation using displacement-adjusted yield.
+    // Network optimisation instead of separate inventory optimisation.    
+    void optimiseOnDUsingAdvancedRMCooperation (const stdair::DateTime_T&);
+
+    // Update bid priceand send to partners
+    void updateBidPrice (const stdair::DateTime_T&);
+    void updateBidPrice (const stdair::FlightDate&, stdair::BomRoot&);
 
   public:
     // //////////////// Export support methods /////////////////
@@ -257,6 +328,9 @@ namespace RMOL {
      * Service Context.
      */
     RMOL_ServiceContext* _rmolServiceContext;
+
+    /** Forecaster : previous forecast date. */
+    stdair::Date_T _previousForecastDate;
   };
 }
 #endif // __RMOL_SVC_RMOL_SERVICE_HPP

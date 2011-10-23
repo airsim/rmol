@@ -109,8 +109,9 @@ namespace RMOL {
     stdair::VirtualClassList_T& lVirtualClassList =
       ioLegCabin.getVirtualClassList ();
     const stdair::CabinCapacity_T& lCapacity = ioLegCabin.getOfferedCapacity();
+    ioLegCabin.emptyBidPriceVector();
     stdair::BidPriceVector_T& lBidPriceVector =
-      ioLegCabin.getEmptyBidPriceVector();
+      ioLegCabin.getBidPriceVector();
     
     // Cabin capacity in integer.
     const int lCabinCapacity = static_cast<const int> (lCapacity);

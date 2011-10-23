@@ -142,7 +142,7 @@ namespace RMOL {
     }
 
     // Browse the virtual class map from high to low yield.
-    ioLegCabin.resetVirtualClassList();
+    ioLegCabin.emptyVirtualClassList();
     for (stdair::VirtualClassMap_T::reverse_iterator itVC =
            lVirtualClassMap.rbegin(); itVC != lVirtualClassMap.rend(); ++itVC) {
       stdair::VirtualClassStruct& lVC = itVC->second;
@@ -150,4 +150,44 @@ namespace RMOL {
       ioLegCabin.addVirtualClass (lVC);
     }
   }
+  
+  // ////////////////////////////////////////////////////////////////////
+  double Optimiser::
+  optimiseUsingOnDForecast (stdair::FlightDate& ioFlightDate,
+                            const bool& iReduceFluctuations) {
+    double lMaxBPVariation = 0.0;
+    // Check if the flight date holds a list of leg dates.
+    // If so, retieve it and optimise the cabins.
+    if (stdair::BomManager::hasList<stdair::LegDate> (ioFlightDate)) {
+      STDAIR_LOG_DEBUG ("Optimisation for the flight date: "
+                        << ioFlightDate.toString());
+      const stdair::LegDateList_T& lLDList =
+        stdair::BomManager::getList<stdair::LegDate> (ioFlightDate);
+      for (stdair::LegDateList_T::const_iterator itLD = lLDList.begin();
+           itLD != lLDList.end(); ++itLD) {
+        stdair::LegDate* lLD_ptr = *itLD;
+        assert (lLD_ptr != NULL);
+
+        //
+        const stdair::LegCabinList_T& lLCList =
+          stdair::BomManager::getList<stdair::LegCabin> (*lLD_ptr);
+        for (stdair::LegCabinList_T::const_iterator itLC = lLCList.begin();
+             itLC != lLCList.end(); ++itLC) {
+          stdair::LegCabin* lLC_ptr = *itLC;
+          assert (lLC_ptr != NULL);
+          MCOptimiser::optimisationByMCIntegration (*lLC_ptr);
+          const stdair::BidPrice_T& lCurrentBidPrice =
+            lLC_ptr->getCurrentBidPrice();
+          const stdair::BidPrice_T& lPreviousBidPrice =
+            lLC_ptr->getPreviousBidPrice();
+          assert (lPreviousBidPrice != 0);
+          const double lBPVariation =
+            std::abs((lCurrentBidPrice - lPreviousBidPrice)/lPreviousBidPrice);
+          lMaxBPVariation = std::max(lMaxBPVariation, lBPVariation);
+        }
+      }
+    }
+    return lMaxBPVariation;
+  }
+
 }

@@ -9,7 +9,7 @@ include (config/project_config_embeddable.cmake)
 # Project info
 set_project_names (rmol)
 set_project_brief ("C++ library of Revenue Management and Optimisation classes and functions")
-set_project_versions (0 24 0)
+set_project_versions (0 25 0)
 
 ##
 # Project options
@@ -39,7 +39,7 @@ packaging_set_other_options (TBZ2 "TBZ2;TGZ")
 ##            Dependencies            ##
 ########################################
 #
-get_external_libs (git "boost 1.41" mysql "soci 3.0" "stdair 0.35"
+get_external_libs (git "boost 1.41" mysql "soci 3.0" "stdair 0.38"
 				  "airrac 0.2" doxygen)
 
 
