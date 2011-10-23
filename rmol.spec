@@ -13,7 +13,8 @@ URL:            http://%{name}.sourceforge.net
 Source0:        http://downloads.sourceforge.net/%{name}/%{name}-%{version}.tar.bz2
 BuildRoot:      %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 
-BuildRequires:  cmake, python-devel, boost-devel
+BuildRequires:  cmake, python-devel
+BuildRequires:  boost-devel, soci-mysql-devel, zeromq-devel
 BuildRequires:  readline-devel, stdair-devel, airrac-devel
 
 
@@ -41,8 +42,6 @@ Summary:        Header files, libraries and development helper tools for %{name}
 Group:          Development/Libraries
 Requires:       %{name}%{?_isa} = %{version}-%{release}
 Requires:       pkgconfig
-Requires(post): info
-Requires(preun): info
 
 %description    devel
 This package contains the header files, shared libraries and
@@ -68,20 +67,19 @@ online (http://%{name}.org).
 
 
 %build
-%configure --disable-static
+%cmake .
 make %{?_smp_mflags}
 
 %install
 rm -rf $RPM_BUILD_ROOT
 make install DESTDIR=$RPM_BUILD_ROOT
 
-%find_lang %{name}
-
-# Remove unpackaged files from the buildroot
-rm -f $RPM_BUILD_ROOT%{_infodir}/dir
-
 mkdir -p %{mydocs}
 mv $RPM_BUILD_ROOT%{_docdir}/%{name}-%{version}/html %{mydocs}
+rm -f %{mydocs}/html/installdox
+
+%check
+ctest
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -90,15 +88,8 @@ rm -rf $RPM_BUILD_ROOT
 
 %postun -p /sbin/ldconfig
 
-%post devel
-/sbin/install-info %{_infodir}/%{name}-ref.info.* %{_infodir}/dir || :
 
-%preun devel 
-if [ "$1" = 0 ]; then
-   /sbin/install-info --delete %{_infodir}/%{name}-ref.info.* %{_infodir}/dir || :
-fi
-
-%files -f %{name}.lang
+%files
 %defattr(-,root,root,-)
 %doc AUTHORS ChangeLog COPYING NEWS README
 %{_bindir}/%{name}
@@ -112,7 +103,6 @@ fi
 %{_libdir}/lib%{name}.so
 %{_libdir}/pkgconfig/%{name}.pc
 %{_datadir}/aclocal/%{name}.m4
-%{_infodir}/%{name}-ref.info.*
 %dir %{_datadir}/%{name}
 %{_datadir}/%{name}/CMake
 %{_mandir}/man1/%{name}-config.1.*
