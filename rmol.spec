@@ -2,7 +2,7 @@
 %global mydocs __tmp_docdir
 #
 Name:           rmol
-Version:        0.24.0
+Version:        0.25.0
 Release:        1%{?dist}
 
 Summary:        C++ library of Revenue Management and Optimisation classes and functions
@@ -13,9 +13,8 @@ URL:            http://%{name}.sourceforge.net
 Source0:        http://downloads.sourceforge.net/%{name}/%{name}-%{version}.tar.bz2
 BuildRoot:      %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 
-BuildRequires:  cmake, python-devel
-BuildRequires:  boost-devel, gsl-devel, soci-mysql-devel, zeromq-devel
-BuildRequires:  readline-devel, stdair-devel
+BuildRequires:  cmake, python-devel, boost-devel
+BuildRequires:  readline-devel, stdair-devel, airrac-devel
 
 
 %description
@@ -126,8 +125,30 @@ fi
 
 
 %changelog
-* Tue Aug 30 2011 Denis Arnaud <denis.arnaud_fedora@m4x.org> 0.24.0-1
+* Sun Oct 23 2011 Denis Arnaud <denis.arnaud_fedora@m4x.org> 0.25.0-1
 - Upstream integration
+
+* Sat Jul 23 2011 Denis Arnaud <denis.arnaud_fedora@m4x.org> - 0.23.1-5
+- Rebuild for Boost-1.47.0-2
+
+* Mon Apr 25 2011 Denis Arnaud <denis.arnaud_fedora@m4x.org> - 0.23.1-4
+- Rebuild for Boost-1.46.1-2
+
+* Wed Feb 09 2011 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.23.1-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_15_Mass_Rebuild
+
+* Sun Feb 06 2011 Thomas Spura <tomspur@fedoraproject.org> - 0.23.1-2
+- rebuild for new boost
+
+* Tue Sep 07 2010 Denis Arnaud <denis.arnaud_fedora@m4x.org> 0.23.1-1
+- Upstream integration
+- Fixed bug #631080 (https://bugzilla.redhat.com/show_bug.cgi?id=631080)
+
+* Wed Jul 28 2010 Denis Arnaud <denis.arnaud_fedora@m4x.org> 0.23.0-3
+- Added a patch to fix Rawhide build error
+
+* Fri Jan 22 2010 Rahul Sundaram <sundaram@fedoraproject.org> 0.23.0-2
+- Rebuild for Boost soname bump
 
 * Tue Sep 15 2009 Denis Arnaud <denis.arnaud_fedora@m4x.org> 0.23.0-1
 - Upstream integration

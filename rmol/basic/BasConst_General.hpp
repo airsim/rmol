@@ -4,6 +4,8 @@
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
+// StdAir
+#include <stdair/stdair_types.hpp>
 
 namespace RMOL {
 
@@ -23,5 +25,9 @@ namespace RMOL {
 
   /** Default negative value used to initialze a double variable. */
   extern const double DEFAULT_INITIALIZER_DOUBLE_NEGATIVE;
+  
+  /** Defaut data collection point list. */
+  extern const stdair::DCPList_T DEFAULT_DCP_LIST;
+  struct DefaultDCPList { static stdair::DCPList_T init(); };
 }
 #endif // __RMOL_BAS_BASCONST_GENERAL_HPP

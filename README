@@ -58,7 +58,7 @@ http://sourceforge.net/project/showfiles.php?group_id=177703
 Then, as usual:
 * To configure the project, type something like:
   mkdir build && cd build
-  cmake -DCMAKE_INSTALL_PREFIX=/home/user/dev/deliveries/rmol-0.24.0 \
+  cmake -DCMAKE_INSTALL_PREFIX=/home/user/dev/deliveries/rmol-0.25.0 \
    -DWITH_STDAIR_PREFIX=/home/user/dev/deliveries/stdair-stable \
    -DWITH_AIRRAC_PREFIX=/home/user/dev/deliveries/airrac-stable \
    -DCMAKE_BUILD_TYPE:STRING=Debug -DINSTALL_DOC:BOOL=ON ..
@@ -73,4 +73,5 @@ Then, as usual:
 * To package the binary and the (HTML and PDF) documentation:
   make package
 
-Denis Arnaud (August 2011)
+Denis Arnaud (October 2011)
+
