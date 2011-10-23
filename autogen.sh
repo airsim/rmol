@@ -93,7 +93,7 @@ cat > configure << _EOF
 # -----
 # The Hudson/Jenkins-based CI build-server often builds any simulator-related
 # projects with the same set up of options:
-# ./configure --with-stdair=/opt/stdair
+# ./configure --with-stdair=/opt/stdair --with-airrac=/opt/airrac
 #
 _EOF
 
@@ -123,7 +123,7 @@ do
   then
     echo ""
     echo "Usage:"
-    echo "    \$0 [--prefix=<install_dir>] [--with-stdair=<stdair_install_dir>] [--with-doc | --without-doc] [-n|-N|--norm] [-b|--buildir]"
+    echo "    \$0 [--prefix=<install_dir>] [--with-stdair=<stdair_install_dir>] [--with-airrac=<airrac_install_dir>] [--with-doc|--without-doc] [-n|-N|--norm] [-b|--buildir]"
     echo "      --with-doc/--without-doc : Force the (resp. non) generation of the documentation" 
     echo "      -n/-N/--norm             : Do not remove/clean older potential 'build' sub-directory" 
     echo "      -b/-B/--buildir          : Do the build in a dedicated 'build' sub-directory, rather than in-place" 
@@ -146,6 +146,18 @@ then
   then
     STDAIR_DIR=\`echo "\${opt_elem}" | sed -e "s/^--with-stdair=\(.*\)\$/\1/"\`
     STDAIR_OPTION="-DWITH_STDAIR_PREFIX=\${STDAIR_DIR}"
+  fi
+_EOF
+fi
+#
+if [ "${PROJECT_NAME}" != "airrac" ]
+then
+	cat >> configure << _EOF
+  IS_OPTION_AIRRAC=\`echo "\${opt_elem}" | grep "^--with-airrac="\`
+  if [ "\${IS_OPTION_AIRRAC}" != "" ]
+  then
+    AIRRAC_DIR=\`echo "\${opt_elem}" | sed -e "s/^--with-airrac=\(.*\)\$/\1/"\`
+    AIRRAC_OPTION="-DWITH_AIRRAC_PREFIX=\${AIRRAC_DIR}"
   fi
 _EOF
 fi
