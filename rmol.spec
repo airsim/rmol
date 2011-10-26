@@ -51,7 +51,9 @@ programs using %{name}, you will need to install %{name}-devel.
 %package        doc
 Summary:        HTML documentation for the %{name} library
 Group:          Documentation
-%{?fedora:BuildArch:      noarch}
+%if 0%{?fedora} || 0%{?rhel} > 5
+BuildArch:      noarch
+%endif
 BuildRequires:  tex(latex)
 BuildRequires:  doxygen, ghostscript
 
