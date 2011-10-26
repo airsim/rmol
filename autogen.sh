@@ -51,7 +51,7 @@ fi
 #
 VERSION_MAJOR=0
 VERSION_MINOR=25
-VERSION_PATCH=0
+VERSION_PATCH=1
 VERSION_TMP_STRING=`grep "set_project_versions" CMakeLists.txt | sed -e "s/set_project_versions.*\([0-9]\+.\+[0-9]\+.\+[0-9]\+\).\+/\1/"`
 VERSION_STRING=`echo "${VERSION_TMP_STRING}" | grep "^[0-9]\+.[0-9]\+.[0-9]\+$"`
 
@@ -195,7 +195,7 @@ fi
 BUILD_OPTION="-DCMAKE_BUILD_TYPE:STRING=Debug"
 
 #
-CMAKE_CMD="cmake \${PREFIX_OPTION} \${STDAIR_OPTION} \${LIB_OPTION} \${BUILD_OPTION} \${DOC_OPTION} \${SOURCE_DIR}"
+CMAKE_CMD="cmake \${PREFIX_OPTION} \${STDAIR_OPTION} \${AIRRAC_OPTION} \${LIB_OPTION} \${BUILD_OPTION} \${DOC_OPTION} \${SOURCE_DIR}"
 
 # Trace on
 set -x

@@ -1,5 +1,8 @@
+* Thu Oct 27 2011 Denis Arnaud <denis_arnaud at users dot sourceforge dot net> 0.25.1
+- Updated the code for StdAir-0.43.3.
+
 * Sun Oct 23 2011 Denis Arnaud <denis_arnaud at users dot sourceforge dot net> 0.25.0
-- Updated the code for StdAir-0.43.
+- Updated the code for StdAir-0.43.2.
 
 * Tue Aug 30 2011 Denis Arnaud <denis_arnaud at users dot sourceforge dot net> 0.24.0
 - First released version working with StdAir (and AirRAC).
