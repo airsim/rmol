@@ -120,7 +120,11 @@ macro (set_project_options _build_doc)
   if (NOT EXISTS ${DOC_INSTALL_FILE})
     unset (DOC_INSTALL_FILE)
   endif (NOT EXISTS ${DOC_INSTALL_FILE})
-  set (BASICDOC_FILES AUTHORS NEWS README ${DOC_INSTALL_FILE})
+  set (DOC_NEWS_FILE NEWS)
+  if (NOT EXISTS ${DOC_NEWS_FILE})
+    unset (DOC_NEWS_FILE)
+  endif (NOT EXISTS ${DOC_NEWS_FILE})
+  set (BASICDOC_FILES AUTHORS ${DOC_NEWS_FILE} README ${DOC_INSTALL_FILE})
   set (BASICDOC_PATH "share/doc/${PACKAGE}-${PACKAGE_VERSION}")
 
 endmacro (set_project_options)
@@ -291,9 +295,49 @@ macro (get_external_libs)
       get_stdair (${_arg_version})
     endif (${_arg_lower} STREQUAL "stdair")
 
+    if (${_arg_lower} STREQUAL "sevmgr")
+      get_sevmgr (${_arg_version})
+    endif (${_arg_lower} STREQUAL "sevmgr")
+
+    if (${_arg_lower} STREQUAL "trademgen")
+      get_trademgen (${_arg_version})
+    endif (${_arg_lower} STREQUAL "trademgen")
+
+    if (${_arg_lower} STREQUAL "travelccm")
+      get_travelccm (${_arg_version})
+    endif (${_arg_lower} STREQUAL "travelccm")
+
+    if (${_arg_lower} STREQUAL "airsched")
+      get_airsched (${_arg_version})
+    endif (${_arg_lower} STREQUAL "airsched")
+
     if (${_arg_lower} STREQUAL "airrac")
       get_airrac (${_arg_version})
     endif (${_arg_lower} STREQUAL "airrac")
+
+    if (${_arg_lower} STREQUAL "rmol")
+      get_rmol (${_arg_version})
+    endif (${_arg_lower} STREQUAL "rmol")
+
+    if (${_arg_lower} STREQUAL "airinv")
+      get_airinv (${_arg_version})
+    endif (${_arg_lower} STREQUAL "airinv")
+
+    if (${_arg_lower} STREQUAL "avlcal")
+      get_avlcal (${_arg_version})
+    endif (${_arg_lower} STREQUAL "avlcal")
+
+    if (${_arg_lower} STREQUAL "simfqt")
+      get_simfqt (${_arg_version})
+    endif (${_arg_lower} STREQUAL "simfqt")
+
+    if (${_arg_lower} STREQUAL "simlfs")
+      get_simlfs (${_arg_version})
+    endif (${_arg_lower} STREQUAL "simlfs")
+
+    if (${_arg_lower} STREQUAL "simcrs")
+      get_simcrs (${_arg_version})
+    endif (${_arg_lower} STREQUAL "simcrs")
 
     if (${_arg_lower} STREQUAL "doxygen")
       get_doxygen (${_arg_version})
@@ -577,6 +621,70 @@ macro (get_airrac)
   endif (AirRAC_FOUND)
 
 endmacro (get_airrac)
+
+# ~~~~~~~~~~ RMOL ~~~~~~~~~
+macro (get_rmol)
+  unset (_required_version)
+  if (${ARGC} GREATER 0)
+    set (_required_version ${ARGV0})
+    message (STATUS "Requires RMOL-${_required_version}")
+  else (${ARGC} GREATER 0)
+    message (STATUS "Requires RMOL without specifying any version")
+  endif (${ARGC} GREATER 0)
+
+  find_package (RMOL ${_required_version} REQUIRED
+	HINTS ${WITH_RMOL_PREFIX})
+  if (RMOL_FOUND)
+    #
+    message (STATUS "Found RMOL version: ${RMOL_VERSION}")
+
+    # Update the list of include directories for the project
+    include_directories (${RMOL_INCLUDE_DIRS})
+
+    # Update the list of dependencies for the project
+    set (PROJ_DEP_LIBS_FOR_LIB ${PROJ_DEP_LIBS_FOR_LIB} ${RMOL_LIBRARIES})
+
+  else (RMOL_FOUND)
+    set (ERROR_MSG "The RMOL library cannot be found. If it is installed in")
+    set (ERROR_MSG "${ERROR_MSG} a in a non standard directory, just invoke")
+    set (ERROR_MSG "${ERROR_MSG} 'cmake' specifying the -DWITH_RMOL_PREFIX=")
+    set (ERROR_MSG "${ERROR_MSG}<RMOL install path> variable.")
+    message (FATAL_ERROR "${ERROR_MSG}")
+  endif (RMOL_FOUND)
+
+endmacro (get_rmol)
+
+# ~~~~~~~~~~ Airinv ~~~~~~~~~
+macro (get_airinv)
+  unset (_required_version)
+  if (${ARGC} GREATER 0)
+    set (_required_version ${ARGV0})
+    message (STATUS "Requires Airinv-${_required_version}")
+  else (${ARGC} GREATER 0)
+    message (STATUS "Requires Airinv without specifying any version")
+  endif (${ARGC} GREATER 0)
+
+  find_package (Airinv ${_required_version} REQUIRED
+	HINTS ${WITH_AIRINV_PREFIX})
+  if (Airinv_FOUND)
+    #
+    message (STATUS "Found Airinv version: ${AIRINV_VERSION}")
+
+    # Update the list of include directories for the project
+    include_directories (${AIRINV_INCLUDE_DIRS})
+
+    # Update the list of dependencies for the project
+    set (PROJ_DEP_LIBS_FOR_LIB ${PROJ_DEP_LIBS_FOR_LIB} ${AIRINV_LIBRARIES})
+
+  else (Airinv_FOUND)
+    set (ERROR_MSG "The Airinv library cannot be found. If it is installed in")
+    set (ERROR_MSG "${ERROR_MSG} a in a non standard directory, just invoke")
+    set (ERROR_MSG "${ERROR_MSG} 'cmake' specifying the -DWITH_AIRINV_PREFIX=")
+    set (ERROR_MSG "${ERROR_MSG}<Airinv install path> variable.")
+    message (FATAL_ERROR "${ERROR_MSG}")
+  endif (Airinv_FOUND)
+
+endmacro (get_airinv)
 
 
 ##############################################
@@ -1573,6 +1681,34 @@ macro (display_airrac)
   endif (AirRAC_FOUND)
 endmacro (display_airrac)
 
+# RMOL
+macro (display_rmol)
+  if (RMOL_FOUND)
+    message (STATUS)
+    message (STATUS "* RMOL:")
+    message (STATUS "  - RMOL_VERSION ............... : ${RMOL_VERSION}")
+    message (STATUS "  - RMOL_BINARY_DIRS ........... : ${RMOL_BINARY_DIRS}")
+    message (STATUS "  - RMOL_EXECUTABLES ........... : ${RMOL_EXECUTABLES}")
+    message (STATUS "  - RMOL_LIBRARY_DIRS .......... : ${RMOL_LIBRARY_DIRS}")
+    message (STATUS "  - RMOL_LIBRARIES ............. : ${RMOL_LIBRARIES}")
+    message (STATUS "  - RMOL_INCLUDE_DIRS .......... : ${RMOL_INCLUDE_DIRS}")
+  endif (RMOL_FOUND)
+endmacro (display_rmol)
+
+# Airinv
+macro (display_airinv)
+  if (Airinv_FOUND)
+    message (STATUS)
+    message (STATUS "* Airinv:")
+    message (STATUS "  - AIRINV_VERSION ............. : ${AIRINV_VERSION}")
+    message (STATUS "  - AIRINV_BINARY_DIRS ......... : ${AIRINV_BINARY_DIRS}")
+    message (STATUS "  - AIRINV_EXECUTABLES ......... : ${AIRINV_EXECUTABLES}")
+    message (STATUS "  - AIRINV_LIBRARY_DIRS ........ : ${AIRINV_LIBRARY_DIRS}")
+    message (STATUS "  - AIRINV_LIBRARIES ........... : ${AIRINV_LIBRARIES}")
+    message (STATUS "  - AIRINV_INCLUDE_DIRS ........ : ${AIRINV_INCLUDE_DIRS}")
+  endif (Airinv_FOUND)
+endmacro (display_airinv)
+
 ##
 macro (display_status_all_modules)
   message (STATUS)
@@ -1658,6 +1794,8 @@ macro (display_status)
   display_soci ()
   display_stdair ()
   display_airrac ()
+  display_rmol ()
+  display_airinv ()
   #
   message (STATUS)
   message (STATUS "Change a value with: cmake -D<Variable>=<Value>" )
