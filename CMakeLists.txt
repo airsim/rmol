@@ -9,7 +9,7 @@ include (config/project_config_embeddable.cmake)
 # Project info
 set_project_names (rmol)
 set_project_brief ("C++ library of Revenue Management and Optimisation classes and functions")
-set_project_versions (0 25 1)
+set_project_versions (0 25 2)
 
 ##
 # Project options

@@ -1,3 +1,6 @@
+* Wed Nov 02 2011 Denis Arnaud <denis_arnaud at users dot sourceforge dot net> 0.25.2
+- Re-instantiated the dummy inventory.
+
 * Thu Oct 27 2011 Denis Arnaud <denis_arnaud at users dot sourceforge dot net> 0.25.1
 - Updated the code for StdAir-0.43.3.
 

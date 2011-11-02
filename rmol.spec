@@ -2,7 +2,7 @@
 %global mydocs __tmp_docdir
 #
 Name:           rmol
-Version:        0.25.0
+Version:        0.25.2
 Release:        1%{?dist}
 
 Summary:        C++ library of Revenue Management and Optimisation classes and functions
@@ -117,19 +117,22 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Wed Nov 02 2011 Denis Arnaud <denis.arnaud_fedora@m4x.org> 0.25.2-1
+- Upstream integration
+
 * Sun Oct 23 2011 Denis Arnaud <denis.arnaud_fedora@m4x.org> 0.25.0-1
 - Upstream integration
 
-* Sat Jul 23 2011 Denis Arnaud <denis.arnaud_fedora@m4x.org> - 0.23.1-5
+* Sat Jul 23 2011 Denis Arnaud <denis.arnaud_fedora@m4x.org> 0.23.1-5
 - Rebuild for Boost-1.47.0-2
 
-* Mon Apr 25 2011 Denis Arnaud <denis.arnaud_fedora@m4x.org> - 0.23.1-4
+* Mon Apr 25 2011 Denis Arnaud <denis.arnaud_fedora@m4x.org> 0.23.1-4
 - Rebuild for Boost-1.46.1-2
 
-* Wed Feb 09 2011 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.23.1-3
+* Wed Feb 09 2011 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> 0.23.1-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_15_Mass_Rebuild
 
-* Sun Feb 06 2011 Thomas Spura <tomspur@fedoraproject.org> - 0.23.1-2
+* Sun Feb 06 2011 Thomas Spura <tomspur@fedoraproject.org> 0.23.1-2
 - rebuild for new boost
 
 * Tue Sep 07 2010 Denis Arnaud <denis.arnaud_fedora@m4x.org> 0.23.1-1
@@ -171,3 +174,4 @@ rm -rf $RPM_BUILD_ROOT
 
 * Wed Mar  4 2009 Denis Arnaud <denis.arnaud_fedora@m4x.org> 0.18.0-1
 - Second RPM release
+
