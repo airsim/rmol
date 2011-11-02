@@ -10,6 +10,7 @@
 #include <stdair/basic/BasChronometer.hpp>
 #include <stdair/basic/ContinuousAttributeLite.hpp>
 #include <stdair/bom/BomManager.hpp>
+#include <stdair/bom/BomRetriever.hpp>
 #include <stdair/bom/BomRoot.hpp>
 #include <stdair/bom/Inventory.hpp>
 #include <stdair/bom/FlightDate.hpp>
@@ -278,7 +279,8 @@ namespace RMOL {
     stdair::BomRoot& lBomRoot = lSTDAIR_Service.getBomRoot();
 
     //
-    stdair::LegCabin& lLegCabin = InventoryParser::getSampleLegCabin (lBomRoot);
+    stdair::LegCabin& lLegCabin =
+      stdair::BomRetriever::retrieveDummyLegCabin (lBomRoot);
 
     stdair::BasChronometer lOptimisationChronometer;
     lOptimisationChronometer.start();
@@ -321,7 +323,8 @@ namespace RMOL {
     stdair::BomRoot& lBomRoot = lSTDAIR_Service.getBomRoot();
 
     //
-    stdair::LegCabin& lLegCabin = InventoryParser::getSampleLegCabin (lBomRoot);
+    stdair::LegCabin& lLegCabin =
+      stdair::BomRetriever::retrieveDummyLegCabin (lBomRoot);
 
     stdair::BasChronometer lOptimisationChronometer;
     lOptimisationChronometer.start();
@@ -361,7 +364,8 @@ namespace RMOL {
     stdair::BomRoot& lBomRoot = lSTDAIR_Service.getBomRoot();
 
     //
-    stdair::LegCabin& lLegCabin = InventoryParser::getSampleLegCabin (lBomRoot);
+    stdair::LegCabin& lLegCabin =
+      stdair::BomRetriever::retrieveDummyLegCabin (lBomRoot);
 
     Optimiser::heuristicOptimisationByEmsrA (lLegCabin);
 
@@ -381,7 +385,8 @@ namespace RMOL {
     stdair::BomRoot& lBomRoot = lSTDAIR_Service.getBomRoot();
 
     //
-    stdair::LegCabin& lLegCabin = InventoryParser::getSampleLegCabin (lBomRoot);
+    stdair::LegCabin& lLegCabin =
+      stdair::BomRetriever::retrieveDummyLegCabin (lBomRoot);
 
     Optimiser::heuristicOptimisationByEmsrB (lLegCabin);
 

@@ -32,101 +32,6 @@
 namespace RMOL {
 
   // ////////////////////////////////////////////////////////////////////
-  stdair::LegCabin& InventoryParser::
-  getSampleLegCabin (stdair::BomRoot& ioBomRoot) {
-    stdair::LegCabin* oLegCabin_ptr = NULL;
-
-    // Retrieve the Inventory
-    const stdair::Inventory* lInventory_ptr = stdair::BomRetriever::
-      retrieveInventoryFromKey (ioBomRoot, stdair::DEFAULT_AIRLINE_CODE);
-
-    if (lInventory_ptr == NULL) {
-      std::ostringstream oStr;
-      oStr << "The inventory corresponding to the '"
-           << stdair::DEFAULT_AIRLINE_CODE << "' airline can not be found";
-      throw stdair::ObjectNotFoundException (oStr.str());
-    }
-    
-    // Retrieve the FlightDate
-    const stdair::FlightDate* lFlightDate_ptr = stdair::BomRetriever::
-      retrieveFlightDateFromKey (*lInventory_ptr, stdair::DEFAULT_FLIGHT_NUMBER,
-                                 stdair::DEFAULT_DEPARTURE_DATE);
-    
-    if (lFlightDate_ptr == NULL) {
-      std::ostringstream oStr;
-      oStr << "The flight-date corresponding to ("
-           << stdair::DEFAULT_FLIGHT_NUMBER << ", "
-           << stdair::DEFAULT_DEPARTURE_DATE << ") can not be found";
-      throw stdair::ObjectNotFoundException (oStr.str());
-    }
-
-    // Retrieve the LegDate
-    const stdair::LegDateKey lLegDateKey (stdair::DEFAULT_ORIGIN);
-    const stdair::LegDate* lLegDate_ptr =
-      lFlightDate_ptr->getLegDate (lLegDateKey);
-
-    if (lLegDate_ptr == NULL) {
-      std::ostringstream oStr;
-      oStr << "The leg-date corresponding to the '"
-           << stdair::DEFAULT_ORIGIN << "' origin can not be found";
-      throw stdair::ObjectNotFoundException (oStr.str());
-    }
-    
-    // Retrieve the LegCabin
-    const stdair::LegCabinKey lLegCabinKey (stdair::DEFAULT_CABIN_CODE);
-    oLegCabin_ptr = lLegDate_ptr->getLegCabin (lLegCabinKey);
-
-    if (oLegCabin_ptr == NULL) {
-      std::ostringstream oStr;
-      oStr << "The leg-cabin corresponding to the '"
-           << stdair::DEFAULT_CABIN_CODE << "' cabin code can not be found";
-      throw stdair::ObjectNotFoundException (oStr.str());
-    }
-    
-    assert (oLegCabin_ptr != NULL);
-    return *oLegCabin_ptr;
-  }
-
-  // ////////////////////////////////////////////////////////////////////
-  stdair::SegmentCabin& InventoryParser::
-  getSampleSegmentCabin (stdair::BomRoot& ioBomRoot) {
-    stdair::SegmentCabin* oSegmentCabin_ptr = NULL;
-
-    // Retrieve the segment-cabin.
-    const stdair::InventoryList_T& lInventoryList =
-      stdair::BomManager::getList<stdair::Inventory> (ioBomRoot);
-    stdair::InventoryList_T::const_iterator itInv = lInventoryList.begin();
-    assert (itInv != lInventoryList.end());
-    const stdair::Inventory* lInventory_ptr = *itInv;
-    assert (lInventory_ptr != NULL);
-
-    const stdair::FlightDateList_T& lFlightDateList =
-      stdair::BomManager::getList<stdair::FlightDate> (*lInventory_ptr);
-    stdair::FlightDateList_T::const_iterator itFD = lFlightDateList.begin();
-    assert (itFD != lFlightDateList.end());
-    const stdair::FlightDate* lFD_ptr = *itFD;
-    assert (lFD_ptr != NULL);
-
-    const stdair::SegmentDateList_T& lSegmentDateList =
-      stdair::BomManager::getList<stdair::SegmentDate> (*lFD_ptr);
-    stdair::SegmentDateList_T::const_iterator itSD = lSegmentDateList.begin();
-    assert (itSD != lSegmentDateList.end());
-    const stdair::SegmentDate* lSD_ptr = *itSD;
-    assert (lSD_ptr != NULL);
-
-    const stdair::SegmentCabinList_T& lSegmentCabinList =
-      stdair::BomManager::getList<stdair::SegmentCabin> (*lSD_ptr);
-    stdair::SegmentCabinList_T::const_iterator itSegmentCabin =
-      lSegmentCabinList.begin();
-    assert (itSegmentCabin != lSegmentCabinList.end());
-    oSegmentCabin_ptr = *itSegmentCabin;
-
-    assert (oSegmentCabin_ptr != NULL);
-    
-    return *oSegmentCabin_ptr;
-  }
-
-  // ////////////////////////////////////////////////////////////////////
   bool InventoryParser::
   parseInputFileAndBuildBom (const std::string& iInputFileName,
                              stdair::BomRoot& ioBomRoot) {
@@ -143,10 +48,12 @@ namespace RMOL {
     }
 
     // Retrieve the (sample) leg-cabin
-    stdair::LegCabin& lLegCabin = getSampleLegCabin (ioBomRoot);
+    stdair::LegCabin& lLegCabin =
+      stdair::BomRetriever::retrieveDummyLegCabin (ioBomRoot);
 
-    // Retrieve the (sample) leg-cabin
-    stdair::SegmentCabin& lSegmentCabin = getSampleSegmentCabin (ioBomRoot);
+    // Retrieve the (sample) segment-cabin
+    stdair::SegmentCabin& lSegmentCabin =
+      stdair::BomRetriever::retrieveDummySegmentCabin (ioBomRoot);
 
     // Open the input file
     std::ifstream inputFile (iInputFileName.c_str());

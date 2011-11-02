@@ -47,7 +47,8 @@ struct UnitTestConfig {
 
 
 // //////////////////////////////////////////////////////////////////////
-int testOptimiseHelper (const unsigned short optimisationMethodFlag) {
+int testOptimiseHelper (const unsigned short optimisationMethodFlag,
+                        const bool isBuiltin) {
 
   // Return value
   int oExpectedBookingLimit = 0;
@@ -67,9 +68,6 @@ int testOptimiseHelper (const unsigned short optimisationMethodFlag) {
   // Cabin Capacity (it must be greater then 100 here)
   const double cabinCapacity = 100.0;
     
-  // Input file name
-  const stdair::Filename_T lRMInputFileName (STDAIR_SAMPLE_DIR "/rm02.csv");
-    
   // Set the log parameters
   std::ofstream logOutputFile;
   // Open and clean the log outputfile
@@ -80,8 +78,18 @@ int testOptimiseHelper (const unsigned short optimisationMethodFlag) {
   const stdair::BasLogParams lLogParams (stdair::LOG::DEBUG, logOutputFile);
   RMOL::RMOL_Service rmolService (lLogParams);
 
-  // Parse the optimisation data and build a dummy BOM tree
-  rmolService.parseAndLoad (cabinCapacity, lRMInputFileName);
+  // Check wether or not a (CSV) input file should be read
+  if (isBuiltin == true) {
+
+    // Build the default sample BOM tree and build a dummy BOM tree.
+    rmolService.buildSampleBom();
+
+  } else {
+
+    // Parse the optimisation data and build a dummy BOM tree 
+    const stdair::Filename_T lRMInputFileName (STDAIR_SAMPLE_DIR "/rm02.csv");
+    rmolService.parseAndLoad (cabinCapacity, lRMInputFileName);
+  }
 
   switch (METHOD_FLAG) {
   case 0: {
@@ -168,14 +176,22 @@ BOOST_AUTO_TEST_SUITE (master_test_suite)
  * Test the Monte-Carlo (MC) algorithm
  */
 BOOST_AUTO_TEST_CASE (rmol_optimisation_monte_carlo) {
-  BOOST_CHECK_NO_THROW (testOptimiseHelper(0););
+  
+  // State whether the BOM tree should be built-in or parsed from an input file
+  const bool isBuiltin = false;
+  
+  BOOST_CHECK_NO_THROW (testOptimiseHelper(0, isBuiltin););
 }
 
 /**
  * Test the Dynamic Programming (DP) algorithm
  */
 BOOST_AUTO_TEST_CASE (rmol_optimisation_dynamic_programming) {
-  BOOST_CHECK_NO_THROW (testOptimiseHelper(1););
+  
+  // State whether the BOM tree should be built-in or parsed from an input file
+  const bool isBuiltin = false;
+  
+  BOOST_CHECK_NO_THROW (testOptimiseHelper(1, isBuiltin););
 }
 
 /**
@@ -183,7 +199,11 @@ BOOST_AUTO_TEST_CASE (rmol_optimisation_dynamic_programming) {
  * Expected Marginal Seat Revenue (EMSR) algorithm
  */
 BOOST_AUTO_TEST_CASE (rmol_optimisation_emsr_bpv) {
-  BOOST_CHECK_NO_THROW (testOptimiseHelper(2););
+  
+  // State whether the BOM tree should be built-in or parsed from an input file
+  const bool isBuiltin = false;
+  
+  BOOST_CHECK_NO_THROW (testOptimiseHelper(2, isBuiltin););
 }
 
 /**
@@ -191,7 +211,11 @@ BOOST_AUTO_TEST_CASE (rmol_optimisation_emsr_bpv) {
  * Expected Marginal Seat Revenue (EMSRa) algorithm
  */
 BOOST_AUTO_TEST_CASE (rmol_optimisation_emsr_a) {
-  BOOST_CHECK_NO_THROW (testOptimiseHelper(3););
+
+  // State whether the BOM tree should be built-in or parsed from an input file
+  const bool isBuiltin = false;
+  
+  BOOST_CHECK_NO_THROW (testOptimiseHelper(3, isBuiltin););
   // const int lBookingLimit = testOptimiseHelper(3);
   // const int lExpectedBookingLimit = 61;
   // BOOST_CHECK_EQUAL (lBookingLimit, lExpectedBookingLimit);
@@ -206,7 +230,69 @@ BOOST_AUTO_TEST_CASE (rmol_optimisation_emsr_a) {
  * Expected Marginal Seat Revenue (EMSRb) algorithm
  */
 BOOST_AUTO_TEST_CASE (rmol_optimisation_emsr_b) {
-  BOOST_CHECK_NO_THROW (testOptimiseHelper(4););
+
+  // State whether the BOM tree should be built-in or parsed from an input file
+  const bool isBuiltin = false;
+  
+  BOOST_CHECK_NO_THROW (testOptimiseHelper(4, isBuiltin););
+}
+
+/**
+ * Test the Monte-Carlo (MC) algorithm with the built-in BOM tree.
+ */
+BOOST_AUTO_TEST_CASE (rmol_optimisation_monte_carlo_built_in) {
+  
+  // State whether the BOM tree should be built-in or parsed from an input file
+  const bool isBuiltin = true;
+  
+  BOOST_CHECK_NO_THROW (testOptimiseHelper(5, isBuiltin););
+}
+
+/**
+ * Test the Dynamic Programming (DP) algorithm with the built-in BOM tree.
+ */
+BOOST_AUTO_TEST_CASE (rmol_optimisation_dynamic_programming_built_in) {
+  
+  // State whether the BOM tree should be built-in or parsed from an input file
+  const bool isBuiltin = true;
+  
+  BOOST_CHECK_NO_THROW (testOptimiseHelper(6, isBuiltin););
+}
+
+/**
+ * Test the calculation of Bid-Price Vectors (BPV) thanks to the
+ * Expected Marginal Seat Revenue (EMSR) algorithm with the built-in BOM tree.
+ */
+BOOST_AUTO_TEST_CASE (rmol_optimisation_emsr_bpv_built_in) {
+  
+  // State whether the BOM tree should be built-in or parsed from an input file
+  const bool isBuiltin = true;
+  
+  BOOST_CHECK_NO_THROW (testOptimiseHelper(7, isBuiltin););
+}
+
+/**
+ * Test the calculation of Authorisation levels (AU) thanks to the
+ * Expected Marginal Seat Revenue (EMSRa) algorithm with the built-in BOM tree.
+ */
+BOOST_AUTO_TEST_CASE (rmol_optimisation_emsr_a_built_in) {
+
+  // State whether the BOM tree should be built-in or parsed from an input file
+  const bool isBuiltin = true;
+  
+  BOOST_CHECK_NO_THROW (testOptimiseHelper(8, isBuiltin););
+}
+
+/**
+ * Test the calculation of Authorisation levels (AU) thanks to the
+ * Expected Marginal Seat Revenue (EMSRb) algorithm with the built-in BOM tree.
+ */
+BOOST_AUTO_TEST_CASE (rmol_optimisation_emsr_b_built_in) {
+
+  // State whether the BOM tree should be built-in or parsed from an input file
+  const bool isBuiltin = true;
+  
+  BOOST_CHECK_NO_THROW (testOptimiseHelper(9, isBuiltin););
 }
 
 // End the test suite

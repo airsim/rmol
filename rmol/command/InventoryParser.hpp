@@ -24,19 +24,6 @@ namespace RMOL {
    */
   class InventoryParser : public stdair::CmdAbstract {
   public:
-    /**
-     * Get the sample leg-cabin (for optimisation).
-     *
-     * @param stdair::BomRoot& The BOM tree.
-     */
-    static stdair::LegCabin& getSampleLegCabin (stdair::BomRoot&);
-    
-    /**
-     * Get the sample leg-cabin (for optimisation).
-     *
-     * @param stdair::BomRoot& The BOM tree.
-     */
-    static stdair::SegmentCabin& getSampleSegmentCabin (stdair::BomRoot&);
     
     /**
      * Parse the input values from a CSV-formatted inventory file.
