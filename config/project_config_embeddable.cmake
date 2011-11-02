@@ -120,7 +120,11 @@ macro (set_project_options _build_doc)
   if (NOT EXISTS ${DOC_INSTALL_FILE})
     unset (DOC_INSTALL_FILE)
   endif (NOT EXISTS ${DOC_INSTALL_FILE})
-  set (BASICDOC_FILES AUTHORS NEWS README ${DOC_INSTALL_FILE})
+  set (DOC_NEWS_FILE NEWS)
+  if (NOT EXISTS ${DOC_NEWS_FILE})
+    unset (DOC_NEWS_FILE)
+  endif (NOT EXISTS ${DOC_NEWS_FILE})
+  set (BASICDOC_FILES AUTHORS ${DOC_NEWS_FILE} README ${DOC_INSTALL_FILE})
   set (BASICDOC_PATH "share/doc/${PACKAGE}-${PACKAGE_VERSION}")
 
 endmacro (set_project_options)
@@ -291,9 +295,49 @@ macro (get_external_libs)
       get_stdair (${_arg_version})
     endif (${_arg_lower} STREQUAL "stdair")
 
+    if (${_arg_lower} STREQUAL "sevmgr")
+      get_sevmgr (${_arg_version})
+    endif (${_arg_lower} STREQUAL "sevmgr")
+
+    if (${_arg_lower} STREQUAL "trademgen")
+      get_trademgen (${_arg_version})
+    endif (${_arg_lower} STREQUAL "trademgen")
+
+    if (${_arg_lower} STREQUAL "travelccm")
+      get_travelccm (${_arg_version})
+    endif (${_arg_lower} STREQUAL "travelccm")
+
+    if (${_arg_lower} STREQUAL "airsched")
+      get_airsched (${_arg_version})
+    endif (${_arg_lower} STREQUAL "airsched")
+
     if (${_arg_lower} STREQUAL "airrac")
       get_airrac (${_arg_version})
     endif (${_arg_lower} STREQUAL "airrac")
+
+    if (${_arg_lower} STREQUAL "rmol")
+      get_rmol (${_arg_version})
+    endif (${_arg_lower} STREQUAL "rmol")
+
+    if (${_arg_lower} STREQUAL "airinv")
+      get_airinv (${_arg_version})
+    endif (${_arg_lower} STREQUAL "airinv")
+
+    if (${_arg_lower} STREQUAL "avlcal")
+      get_avlcal (${_arg_version})
+    endif (${_arg_lower} STREQUAL "avlcal")
+
+    if (${_arg_lower} STREQUAL "simfqt")
+      get_simfqt (${_arg_version})
+    endif (${_arg_lower} STREQUAL "simfqt")
+
+    if (${_arg_lower} STREQUAL "simlfs")
+      get_simlfs (${_arg_version})
+    endif (${_arg_lower} STREQUAL "simlfs")
+
+    if (${_arg_lower} STREQUAL "simcrs")
+      get_simcrs (${_arg_version})
+    endif (${_arg_lower} STREQUAL "simcrs")
 
     if (${_arg_lower} STREQUAL "doxygen")
       get_doxygen (${_arg_version})
@@ -546,6 +590,134 @@ macro (get_stdair)
 
 endmacro (get_stdair)
 
+# ~~~~~~~~~~ SEvMgr ~~~~~~~~~
+macro (get_sevmgr)
+  unset (_required_version)
+  if (${ARGC} GREATER 0)
+    set (_required_version ${ARGV0})
+    message (STATUS "Requires SEvMgr-${_required_version}")
+  else (${ARGC} GREATER 0)
+    message (STATUS "Requires SEvMgr without specifying any version")
+  endif (${ARGC} GREATER 0)
+
+  find_package (SEvMgr ${_required_version} REQUIRED
+	HINTS ${WITH_SEVMGR_PREFIX})
+  if (SEvMgr_FOUND)
+    #
+    message (STATUS "Found SEvMgr version: ${SEVMGR_VERSION}")
+
+    # Update the list of include directories for the project
+    include_directories (${SEVMGR_INCLUDE_DIRS})
+
+    # Update the list of dependencies for the project
+    set (PROJ_DEP_LIBS_FOR_LIB ${PROJ_DEP_LIBS_FOR_LIB} ${SEVMGR_LIBRARIES})
+
+  else (SEvMgr_FOUND)
+    set (ERROR_MSG "The SEvMgr library cannot be found. If it is installed in")
+    set (ERROR_MSG "${ERROR_MSG} a in a non standard directory, just invoke")
+    set (ERROR_MSG "${ERROR_MSG} 'cmake' specifying the -DWITH_SEVMGR_PREFIX=")
+    set (ERROR_MSG "${ERROR_MSG}<SEvMgr install path> variable.")
+    message (FATAL_ERROR "${ERROR_MSG}")
+  endif (SEvMgr_FOUND)
+
+endmacro (get_sevmgr)
+
+# ~~~~~~~~~~ TraDemGen ~~~~~~~~~
+macro (get_trademgen)
+  unset (_required_version)
+  if (${ARGC} GREATER 0)
+    set (_required_version ${ARGV0})
+    message (STATUS "Requires TraDemGen-${_required_version}")
+  else (${ARGC} GREATER 0)
+    message (STATUS "Requires TraDemGen without specifying any version")
+  endif (${ARGC} GREATER 0)
+
+  find_package (TraDemGen ${_required_version} REQUIRED
+	HINTS ${WITH_TRADEMGEN_PREFIX})
+  if (TraDemGen_FOUND)
+    #
+    message (STATUS "Found TraDemGen version: ${TRADEMGEN_VERSION}")
+
+    # Update the list of include directories for the project
+    include_directories (${TRADEMGEN_INCLUDE_DIRS})
+
+    # Update the list of dependencies for the project
+    set (PROJ_DEP_LIBS_FOR_LIB ${PROJ_DEP_LIBS_FOR_LIB} ${TRADEMGEN_LIBRARIES})
+
+  else (TraDemGen_FOUND)
+    set (ERROR_MSG "The TraDemGen library cannot be found. If it is installed in")
+    set (ERROR_MSG "${ERROR_MSG} a in a non standard directory, just invoke")
+    set (ERROR_MSG "${ERROR_MSG} 'cmake' specifying the -DWITH_TRADEMGEN_PREFIX=")
+    set (ERROR_MSG "${ERROR_MSG}<TraDemGen install path> variable.")
+    message (FATAL_ERROR "${ERROR_MSG}")
+  endif (TraDemGen_FOUND)
+
+endmacro (get_trademgen)
+
+# ~~~~~~~~~~ TravelCCM ~~~~~~~~~
+macro (get_travelccm)
+  unset (_required_version)
+  if (${ARGC} GREATER 0)
+    set (_required_version ${ARGV0})
+    message (STATUS "Requires TravelCCM-${_required_version}")
+  else (${ARGC} GREATER 0)
+    message (STATUS "Requires TravelCCM without specifying any version")
+  endif (${ARGC} GREATER 0)
+
+  find_package (TravelCCM ${_required_version} REQUIRED
+	HINTS ${WITH_TRAVELCCM_PREFIX})
+  if (TravelCCM_FOUND)
+    #
+    message (STATUS "Found TravelCCM version: ${TRAVELCCM_VERSION}")
+
+    # Update the list of include directories for the project
+    include_directories (${TRAVELCCM_INCLUDE_DIRS})
+
+    # Update the list of dependencies for the project
+    set (PROJ_DEP_LIBS_FOR_LIB ${PROJ_DEP_LIBS_FOR_LIB} ${TRAVELCCM_LIBRARIES})
+
+  else (TravelCCM_FOUND)
+    set (ERROR_MSG "The TravelCCM library cannot be found. If it is installed in")
+    set (ERROR_MSG "${ERROR_MSG} a in a non standard directory, just invoke")
+    set (ERROR_MSG "${ERROR_MSG} 'cmake' specifying the -DWITH_TRAVELCCM_PREFIX=")
+    set (ERROR_MSG "${ERROR_MSG}<TravelCCM install path> variable.")
+    message (FATAL_ERROR "${ERROR_MSG}")
+  endif (TravelCCM_FOUND)
+
+endmacro (get_travelccm)
+
+# ~~~~~~~~~~ AirSched ~~~~~~~~~
+macro (get_airsched)
+  unset (_required_version)
+  if (${ARGC} GREATER 0)
+    set (_required_version ${ARGV0})
+    message (STATUS "Requires AirSched-${_required_version}")
+  else (${ARGC} GREATER 0)
+    message (STATUS "Requires AirSched without specifying any version")
+  endif (${ARGC} GREATER 0)
+
+  find_package (AirSched ${_required_version} REQUIRED
+	HINTS ${WITH_AIRSCHED_PREFIX})
+  if (AirSched_FOUND)
+    #
+    message (STATUS "Found AirSched version: ${AIRSCHED_VERSION}")
+
+    # Update the list of include directories for the project
+    include_directories (${AIRSCHED_INCLUDE_DIRS})
+
+    # Update the list of dependencies for the project
+    set (PROJ_DEP_LIBS_FOR_LIB ${PROJ_DEP_LIBS_FOR_LIB} ${AIRSCHED_LIBRARIES})
+
+  else (AirSched_FOUND)
+    set (ERROR_MSG "The AirSched library cannot be found. If it is installed")
+    set (ERROR_MSG "${ERROR_MSG} in a in a non standard directory, just invoke")
+    set (ERROR_MSG "${ERROR_MSG} 'cmake' specifying the -DWITH_AIRSCHED_PREFIX=")
+    set (ERROR_MSG "${ERROR_MSG}<AirSched install path> variable.")
+    message (FATAL_ERROR "${ERROR_MSG}")
+  endif (AirSched_FOUND)
+
+endmacro (get_airsched)
+
 # ~~~~~~~~~~ AirRAC ~~~~~~~~~
 macro (get_airrac)
   unset (_required_version)
@@ -577,6 +749,198 @@ macro (get_airrac)
   endif (AirRAC_FOUND)
 
 endmacro (get_airrac)
+
+# ~~~~~~~~~~ RMOL ~~~~~~~~~
+macro (get_rmol)
+  unset (_required_version)
+  if (${ARGC} GREATER 0)
+    set (_required_version ${ARGV0})
+    message (STATUS "Requires RMOL-${_required_version}")
+  else (${ARGC} GREATER 0)
+    message (STATUS "Requires RMOL without specifying any version")
+  endif (${ARGC} GREATER 0)
+
+  find_package (RMOL ${_required_version} REQUIRED
+	HINTS ${WITH_RMOL_PREFIX})
+  if (RMOL_FOUND)
+    #
+    message (STATUS "Found RMOL version: ${RMOL_VERSION}")
+
+    # Update the list of include directories for the project
+    include_directories (${RMOL_INCLUDE_DIRS})
+
+    # Update the list of dependencies for the project
+    set (PROJ_DEP_LIBS_FOR_LIB ${PROJ_DEP_LIBS_FOR_LIB} ${RMOL_LIBRARIES})
+
+  else (RMOL_FOUND)
+    set (ERROR_MSG "The RMOL library cannot be found. If it is installed in")
+    set (ERROR_MSG "${ERROR_MSG} a in a non standard directory, just invoke")
+    set (ERROR_MSG "${ERROR_MSG} 'cmake' specifying the -DWITH_RMOL_PREFIX=")
+    set (ERROR_MSG "${ERROR_MSG}<RMOL install path> variable.")
+    message (FATAL_ERROR "${ERROR_MSG}")
+  endif (RMOL_FOUND)
+
+endmacro (get_rmol)
+
+# ~~~~~~~~~~ AirInv ~~~~~~~~~
+macro (get_airinv)
+  unset (_required_version)
+  if (${ARGC} GREATER 0)
+    set (_required_version ${ARGV0})
+    message (STATUS "Requires AirInv-${_required_version}")
+  else (${ARGC} GREATER 0)
+    message (STATUS "Requires AirInv without specifying any version")
+  endif (${ARGC} GREATER 0)
+
+  find_package (AirInv ${_required_version} REQUIRED
+	HINTS ${WITH_AIRINV_PREFIX})
+  if (AirInv_FOUND)
+    #
+    message (STATUS "Found AirInv version: ${AIRINV_VERSION}")
+
+    # Update the list of include directories for the project
+    include_directories (${AIRINV_INCLUDE_DIRS})
+
+    # Update the list of dependencies for the project
+    set (PROJ_DEP_LIBS_FOR_LIB ${PROJ_DEP_LIBS_FOR_LIB} ${AIRINV_LIBRARIES})
+
+  else (AirInv_FOUND)
+    set (ERROR_MSG "The AirInv library cannot be found. If it is installed in")
+    set (ERROR_MSG "${ERROR_MSG} a in a non standard directory, just invoke")
+    set (ERROR_MSG "${ERROR_MSG} 'cmake' specifying the -DWITH_AIRINV_PREFIX=")
+    set (ERROR_MSG "${ERROR_MSG}<AirInv install path> variable.")
+    message (FATAL_ERROR "${ERROR_MSG}")
+  endif (AirInv_FOUND)
+
+endmacro (get_airinv)
+
+# ~~~~~~~~~~ AvlCal ~~~~~~~~~
+macro (get_avlcal)
+  unset (_required_version)
+  if (${ARGC} GREATER 0)
+    set (_required_version ${ARGV0})
+    message (STATUS "Requires AvlCal-${_required_version}")
+  else (${ARGC} GREATER 0)
+    message (STATUS "Requires AvlCal without specifying any version")
+  endif (${ARGC} GREATER 0)
+
+  find_package (AvlCal ${_required_version} REQUIRED
+	HINTS ${WITH_AVLCAL_PREFIX})
+  if (AvlCal_FOUND)
+    #
+    message (STATUS "Found AvlCal version: ${AVLCAL_VERSION}")
+
+    # Update the list of include directories for the project
+    include_directories (${AVLCAL_INCLUDE_DIRS})
+
+    # Update the list of dependencies for the project
+    set (PROJ_DEP_LIBS_FOR_LIB ${PROJ_DEP_LIBS_FOR_LIB} ${AVLCAL_LIBRARIES})
+
+  else (AvlCal_FOUND)
+    set (ERROR_MSG "The AvlCal library cannot be found. If it is installed in")
+    set (ERROR_MSG "${ERROR_MSG} a in a non standard directory, just invoke")
+    set (ERROR_MSG "${ERROR_MSG} 'cmake' specifying the -DWITH_AVLCAL_PREFIX=")
+    set (ERROR_MSG "${ERROR_MSG}<AvlCal install path> variable.")
+    message (FATAL_ERROR "${ERROR_MSG}")
+  endif (AvlCal_FOUND)
+
+endmacro (get_avlcal)
+
+# ~~~~~~~~~~ SimFQT ~~~~~~~~~
+macro (get_simfqt)
+  unset (_required_version)
+  if (${ARGC} GREATER 0)
+    set (_required_version ${ARGV0})
+    message (STATUS "Requires SimFQT-${_required_version}")
+  else (${ARGC} GREATER 0)
+    message (STATUS "Requires SimFQT without specifying any version")
+  endif (${ARGC} GREATER 0)
+
+  find_package (SimFQT ${_required_version} REQUIRED
+	HINTS ${WITH_SIMFQT_PREFIX})
+  if (SimFQT_FOUND)
+    #
+    message (STATUS "Found SimFQT version: ${SIMFQT_VERSION}")
+
+    # Update the list of include directories for the project
+    include_directories (${SIMFQT_INCLUDE_DIRS})
+
+    # Update the list of dependencies for the project
+    set (PROJ_DEP_LIBS_FOR_LIB ${PROJ_DEP_LIBS_FOR_LIB} ${SIMFQT_LIBRARIES})
+
+  else (SimFQT_FOUND)
+    set (ERROR_MSG "The SimFQT library cannot be found. If it is installed in")
+    set (ERROR_MSG "${ERROR_MSG} a in a non standard directory, just invoke")
+    set (ERROR_MSG "${ERROR_MSG} 'cmake' specifying the -DWITH_SIMFQT_PREFIX=")
+    set (ERROR_MSG "${ERROR_MSG}<SimFQT install path> variable.")
+    message (FATAL_ERROR "${ERROR_MSG}")
+  endif (SimFQT_FOUND)
+
+endmacro (get_simfqt)
+
+# ~~~~~~~~~~ SimLFS ~~~~~~~~~
+macro (get_simlfs)
+  unset (_required_version)
+  if (${ARGC} GREATER 0)
+    set (_required_version ${ARGV0})
+    message (STATUS "Requires SimLFS-${_required_version}")
+  else (${ARGC} GREATER 0)
+    message (STATUS "Requires SimLFS without specifying any version")
+  endif (${ARGC} GREATER 0)
+
+  find_package (SimLFS ${_required_version} REQUIRED
+	HINTS ${WITH_SIMLFS_PREFIX})
+  if (SimLFS_FOUND)
+    #
+    message (STATUS "Found SimLFS version: ${SIMLFS_VERSION}")
+
+    # Update the list of include directories for the project
+    include_directories (${SIMLFS_INCLUDE_DIRS})
+
+    # Update the list of dependencies for the project
+    set (PROJ_DEP_LIBS_FOR_LIB ${PROJ_DEP_LIBS_FOR_LIB} ${SIMLFS_LIBRARIES})
+
+  else (SimLFS_FOUND)
+    set (ERROR_MSG "The SimLFS library cannot be found. If it is installed in")
+    set (ERROR_MSG "${ERROR_MSG} a in a non standard directory, just invoke")
+    set (ERROR_MSG "${ERROR_MSG} 'cmake' specifying the -DWITH_SIMLFS_PREFIX=")
+    set (ERROR_MSG "${ERROR_MSG}<SimLFS install path> variable.")
+    message (FATAL_ERROR "${ERROR_MSG}")
+  endif (SimLFS_FOUND)
+
+endmacro (get_simlfs)
+
+# ~~~~~~~~~~ SimCRS ~~~~~~~~~
+macro (get_simcrs)
+  unset (_required_version)
+  if (${ARGC} GREATER 0)
+    set (_required_version ${ARGV0})
+    message (STATUS "Requires SimCRS-${_required_version}")
+  else (${ARGC} GREATER 0)
+    message (STATUS "Requires SimCRS without specifying any version")
+  endif (${ARGC} GREATER 0)
+
+  find_package (SimCRS ${_required_version} REQUIRED
+	HINTS ${WITH_SIMCRS_PREFIX})
+  if (SimCRS_FOUND)
+    #
+    message (STATUS "Found SimCRS version: ${SIMCRS_VERSION}")
+
+    # Update the list of include directories for the project
+    include_directories (${SIMCRS_INCLUDE_DIRS})
+
+    # Update the list of dependencies for the project
+    set (PROJ_DEP_LIBS_FOR_LIB ${PROJ_DEP_LIBS_FOR_LIB} ${SIMCRS_LIBRARIES})
+
+  else (SimCRS_FOUND)
+    set (ERROR_MSG "The SimCRS library cannot be found. If it is installed in")
+    set (ERROR_MSG "${ERROR_MSG} a in a non standard directory, just invoke")
+    set (ERROR_MSG "${ERROR_MSG} 'cmake' specifying the -DWITH_SIMCRS_PREFIX=")
+    set (ERROR_MSG "${ERROR_MSG}<SimCRS install path> variable.")
+    message (FATAL_ERROR "${ERROR_MSG}")
+  endif (SimCRS_FOUND)
+
+endmacro (get_simcrs)
 
 
 ##############################################
@@ -1559,6 +1923,62 @@ macro (display_stdair)
   endif (StdAir_FOUND)
 endmacro (display_stdair)
 
+# SEvMgr
+macro (display_sevmgr)
+  if (SEvMgr_FOUND)
+    message (STATUS)
+    message (STATUS "* SEvMgr:")
+    message (STATUS "  - SEVMGR_VERSION ............. : ${SEVMGR_VERSION}")
+    message (STATUS "  - SEVMGR_BINARY_DIRS ......... : ${SEVMGR_BINARY_DIRS}")
+    message (STATUS "  - SEVMGR_EXECUTABLES ......... : ${SEVMGR_EXECUTABLES}")
+    message (STATUS "  - SEVMGR_LIBRARY_DIRS ........ : ${SEVMGR_LIBRARY_DIRS}")
+    message (STATUS "  - SEVMGR_LIBRARIES ........... : ${SEVMGR_LIBRARIES}")
+    message (STATUS "  - SEVMGR_INCLUDE_DIRS ........ : ${SEVMGR_INCLUDE_DIRS}")
+  endif (SEvMgr_FOUND)
+endmacro (display_sevmgr)
+
+# TraDemGen
+macro (display_trademgen)
+  if (TraDemGen_FOUND)
+    message (STATUS)
+    message (STATUS "* TraDemGen:")
+    message (STATUS "  - TRADEMGEN_VERSION .......... : ${TRADEMGEN_VERSION}")
+    message (STATUS "  - TRADEMGEN_BINARY_DIRS ...... : ${TRADEMGEN_BINARY_DIRS}")
+    message (STATUS "  - TRADEMGEN_EXECUTABLES ...... : ${TRADEMGEN_EXECUTABLES}")
+    message (STATUS "  - TRADEMGEN_LIBRARY_DIRS ..... : ${TRADEMGEN_LIBRARY_DIRS}")
+    message (STATUS "  - TRADEMGEN_LIBRARIES ........ : ${TRADEMGEN_LIBRARIES}")
+    message (STATUS "  - TRADEMGEN_INCLUDE_DIRS ..... : ${TRADEMGEN_INCLUDE_DIRS}")
+  endif (TraDemGen_FOUND)
+endmacro (display_trademgen)
+
+# TravelCCM
+macro (display_travelccm)
+  if (TravelCCM_FOUND)
+    message (STATUS)
+    message (STATUS "* TravelCCM:")
+    message (STATUS "  - TRAVELCCM_VERSION .......... : ${TRAVELCCM_VERSION}")
+    message (STATUS "  - TRAVELCCM_BINARY_DIRS ...... : ${TRAVELCCM_BINARY_DIRS}")
+    message (STATUS "  - TRAVELCCM_EXECUTABLES ...... : ${TRAVELCCM_EXECUTABLES}")
+    message (STATUS "  - TRAVELCCM_LIBRARY_DIRS ..... : ${TRAVELCCM_LIBRARY_DIRS}")
+    message (STATUS "  - TRAVELCCM_LIBRARIES ........ : ${TRAVELCCM_LIBRARIES}")
+    message (STATUS "  - TRAVELCCM_INCLUDE_DIRS ..... : ${TRAVELCCM_INCLUDE_DIRS}")
+  endif (TravelCCM_FOUND)
+endmacro (display_travelccm)
+
+# AirSched
+macro (display_airsched)
+  if (AirSched_FOUND)
+    message (STATUS)
+    message (STATUS "* AirSched:")
+    message (STATUS "  - AIRSCHED_VERSION ........... : ${AIRSCHED_VERSION}")
+    message (STATUS "  - AIRSCHED_BINARY_DIRS ....... : ${AIRSCHED_BINARY_DIRS}")
+    message (STATUS "  - AIRSCHED_EXECUTABLES ....... : ${AIRSCHED_EXECUTABLES}")
+    message (STATUS "  - AIRSCHED_LIBRARY_DIRS ...... : ${AIRSCHED_LIBRARY_DIRS}")
+    message (STATUS "  - AIRSCHED_LIBRARIES ......... : ${AIRSCHED_LIBRARIES}")
+    message (STATUS "  - AIRSCHED_INCLUDE_DIRS ...... : ${AIRSCHED_INCLUDE_DIRS}")
+  endif (AirSched_FOUND)
+endmacro (display_airsched)
+
 # AirRAC
 macro (display_airrac)
   if (AirRAC_FOUND)
@@ -1572,6 +1992,90 @@ macro (display_airrac)
     message (STATUS "  - AIRRAC_INCLUDE_DIRS ........ : ${AIRRAC_INCLUDE_DIRS}")
   endif (AirRAC_FOUND)
 endmacro (display_airrac)
+
+# RMOL
+macro (display_rmol)
+  if (RMOL_FOUND)
+    message (STATUS)
+    message (STATUS "* RMOL:")
+    message (STATUS "  - RMOL_VERSION ............... : ${RMOL_VERSION}")
+    message (STATUS "  - RMOL_BINARY_DIRS ........... : ${RMOL_BINARY_DIRS}")
+    message (STATUS "  - RMOL_EXECUTABLES ........... : ${RMOL_EXECUTABLES}")
+    message (STATUS "  - RMOL_LIBRARY_DIRS .......... : ${RMOL_LIBRARY_DIRS}")
+    message (STATUS "  - RMOL_LIBRARIES ............. : ${RMOL_LIBRARIES}")
+    message (STATUS "  - RMOL_INCLUDE_DIRS .......... : ${RMOL_INCLUDE_DIRS}")
+  endif (RMOL_FOUND)
+endmacro (display_rmol)
+
+# AirInv
+macro (display_airinv)
+  if (AirInv_FOUND)
+    message (STATUS)
+    message (STATUS "* AirInv:")
+    message (STATUS "  - AIRINV_VERSION ............. : ${AIRINV_VERSION}")
+    message (STATUS "  - AIRINV_BINARY_DIRS ......... : ${AIRINV_BINARY_DIRS}")
+    message (STATUS "  - AIRINV_EXECUTABLES ......... : ${AIRINV_EXECUTABLES}")
+    message (STATUS "  - AIRINV_LIBRARY_DIRS ........ : ${AIRINV_LIBRARY_DIRS}")
+    message (STATUS "  - AIRINV_LIBRARIES ........... : ${AIRINV_LIBRARIES}")
+    message (STATUS "  - AIRINV_INCLUDE_DIRS ........ : ${AIRINV_INCLUDE_DIRS}")
+  endif (AirInv_FOUND)
+endmacro (display_airinv)
+
+# AvlCal
+macro (display_avlcal)
+  if (AvlCal_FOUND)
+    message (STATUS)
+    message (STATUS "* AvlCal:")
+    message (STATUS "  - AVLCAL_VERSION ............. : ${AVLCAL_VERSION}")
+    message (STATUS "  - AVLCAL_BINARY_DIRS ......... : ${AVLCAL_BINARY_DIRS}")
+    message (STATUS "  - AVLCAL_EXECUTABLES ......... : ${AVLCAL_EXECUTABLES}")
+    message (STATUS "  - AVLCAL_LIBRARY_DIRS ........ : ${AVLCAL_LIBRARY_DIRS}")
+    message (STATUS "  - AVLCAL_LIBRARIES ........... : ${AVLCAL_LIBRARIES}")
+    message (STATUS "  - AVLCAL_INCLUDE_DIRS ........ : ${AVLCAL_INCLUDE_DIRS}")
+  endif (AvlCal_FOUND)
+endmacro (display_avlcal)
+
+# SimFQT
+macro (display_simfqt)
+  if (SimFQT_FOUND)
+    message (STATUS)
+    message (STATUS "* SimFQT:")
+    message (STATUS "  - SIMFQT_VERSION ............. : ${SIMFQT_VERSION}")
+    message (STATUS "  - SIMFQT_BINARY_DIRS ......... : ${SIMFQT_BINARY_DIRS}")
+    message (STATUS "  - SIMFQT_EXECUTABLES ......... : ${SIMFQT_EXECUTABLES}")
+    message (STATUS "  - SIMFQT_LIBRARY_DIRS ........ : ${SIMFQT_LIBRARY_DIRS}")
+    message (STATUS "  - SIMFQT_LIBRARIES ........... : ${SIMFQT_LIBRARIES}")
+    message (STATUS "  - SIMFQT_INCLUDE_DIRS ........ : ${SIMFQT_INCLUDE_DIRS}")
+  endif (SimFQT_FOUND)
+endmacro (display_simfqt)
+
+# SimLFS
+macro (display_simlfs)
+  if (SimLFS_FOUND)
+    message (STATUS)
+    message (STATUS "* SimLFS:")
+    message (STATUS "  - SIMLFS_VERSION ............. : ${SIMLFS_VERSION}")
+    message (STATUS "  - SIMLFS_BINARY_DIRS ......... : ${SIMLFS_BINARY_DIRS}")
+    message (STATUS "  - SIMLFS_EXECUTABLES ......... : ${SIMLFS_EXECUTABLES}")
+    message (STATUS "  - SIMLFS_LIBRARY_DIRS ........ : ${SIMLFS_LIBRARY_DIRS}")
+    message (STATUS "  - SIMLFS_LIBRARIES ........... : ${SIMLFS_LIBRARIES}")
+    message (STATUS "  - SIMLFS_INCLUDE_DIRS ........ : ${SIMLFS_INCLUDE_DIRS}")
+  endif (SimLFS_FOUND)
+endmacro (display_simlfs)
+
+# SimCRS
+macro (display_simcrs)
+  if (SimCRS_FOUND)
+    message (STATUS)
+    message (STATUS "* SimCRS:")
+    message (STATUS "  - SIMCRS_VERSION ............. : ${SIMCRS_VERSION}")
+    message (STATUS "  - SIMCRS_BINARY_DIRS ......... : ${SIMCRS_BINARY_DIRS}")
+    message (STATUS "  - SIMCRS_EXECUTABLES ......... : ${SIMCRS_EXECUTABLES}")
+    message (STATUS "  - SIMCRS_LIBRARY_DIRS ........ : ${SIMCRS_LIBRARY_DIRS}")
+    message (STATUS "  - SIMCRS_LIBRARIES ........... : ${SIMCRS_LIBRARIES}")
+    message (STATUS "  - SIMCRS_INCLUDE_DIRS ........ : ${SIMCRS_INCLUDE_DIRS}")
+  endif (SimCRS_FOUND)
+endmacro (display_simcrs)
 
 ##
 macro (display_status_all_modules)
@@ -1657,7 +2161,17 @@ macro (display_status)
   display_mysql ()
   display_soci ()
   display_stdair ()
+  display_sevmgr ()
+  display_trademgen ()
+  display_travelccm ()
+  display_airsched ()
   display_airrac ()
+  display_rmol ()
+  display_airinv ()
+  display_avlcal ()
+  display_simfqt ()
+  display_simlfs ()
+  display_simcrs ()
   #
   message (STATUS)
   message (STATUS "Change a value with: cmake -D<Variable>=<Value>" )
