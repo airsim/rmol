@@ -1,9 +1,11 @@
 # Find SOCI includes and library.
 #
-#  SOCI_VERSION     - The SOCI version
-#  SOCI_INCLUDE_DIR - Where to find soci.h, etc.
-#  SOCI_LIBRARIES   - List of libraries when using SOCI.
-#  SOCI_FOUND       - Whether SOCI has been found
+#  SOCI_VERSION        - The SOCI version, e.g, 300100
+#  SOCI_LIB_VERSION    - The SOCI library version, e.g., 3_1_0
+#  SOCI_HUMAN_VERSION  - The SOCI human-readable version, e.g., 3.1.0
+#  SOCI_INCLUDE_DIR    - Where to find soci.h, etc.
+#  SOCI_LIBRARIES      - List of libraries when using SOCI.
+#  SOCI_FOUND          - Whether SOCI has been found
 
 # Check for SOCI main header.
 set (CHECK_HEADERS soci.h)
@@ -20,26 +22,52 @@ else (SOCI_INCLUDE_DIR)
     PATH_SUFFIXES ${CHECK_SUFFIXES})
 endif (SOCI_INCLUDE_DIR)
 
-#
-if (UNIX)
-  set (SOCI_CONFIG_PREFER_PATH "$ENV{SOCI_HOME}/bin" CACHE FILEPATH
-    "preferred path to SOCI (soci-config)")
 
-  find_program (SOCI_CONFIG soci-config
-    ${SOCI_CONFIG_PREFER_PATH}
-    /usr/local/soci/bin/
-    /usr/local/bin/
-    /usr/bin/)
+# Extract version information from version.h
+if (SOCI_INCLUDE_DIR)
+  # Extract SOCI_VERSION and SOCI_LIB_VERSION from version.h
+  # Read the whole file:
+  set (SOCI_VERSION 0)
+  set (SOCI_LIB_VERSION "")
+  file (READ "${SOCI_INCLUDE_DIR}/version.h" _soci_VERSION_HPP_CONTENTS)
+  if (SOCI_DEBUG)
+    message (STATUS "[ ${CMAKE_CURRENT_LIST_FILE}:${CMAKE_CURRENT_LIST_LINE} ] "
+      "location of version.h: ${SOCI_INCLUDE_DIR}/version.h")
+  endif (SOCI_DEBUG)
+  
+  string (REGEX REPLACE ".*#define SOCI_VERSION ([0-9]+).*" "\\1" SOCI_VERSION
+	"${_soci_VERSION_HPP_CONTENTS}")
+  string (REGEX REPLACE ".*#define SOCI_LIB_VERSION \"([0-9_]+)\".*" "\\1"
+	SOCI_LIB_VERSION "${_soci_VERSION_HPP_CONTENTS}")
+  
+  set (SOCI_LIB_VERSION ${SOCI_LIB_VERSION} 
+	CACHE INTERNAL "The library version string for SOCI libraries")
+  set (SOCI_VERSION ${SOCI_VERSION} 
+	CACHE INTERNAL "The version number for SOCI libraries")
+  
+  if (NOT "${SOCI_VERSION}" STREQUAL "0")
+    math (EXPR SOCI_MAJOR_VERSION "${SOCI_VERSION} / 100000")
+    math (EXPR SOCI_MINOR_VERSION "${SOCI_VERSION} / 100 % 1000")
+    math (EXPR SOCI_SUBMINOR_VERSION "${SOCI_VERSION} % 100")
+	
+    set (SOCI_ERROR_REASON
+      "${SOCI_ERROR_REASON}SOCI version: ${SOCI_MAJOR_VERSION}.${SOCI_MINOR_VERSION}.${SOCI_SUBMINOR_VERSION}\nSOCI include path: ${SOCI_INCLUDE_DIR}")
+  endif (NOT "${SOCI_VERSION}" STREQUAL "0")
 
-  if (SOCI_CONFIG)
-    message (STATUS "Using soci-config: ${SOCI_CONFIG}")
+  #
+  set (SOCI_HUMAN_VERSION
+	"${SOCI_MAJOR_VERSION}.${SOCI_MINOR_VERSION}.${SOCI_SUBMINOR_VERSION}")
 
-	# Version
-	exec_program (${SOCI_CONFIG} ARGS --version OUTPUT_VARIABLE MY_TMP)
-	#string (REGEX REPLACE "([0-9]+.[0-9]+)(.[0-9]*)?$" "\\1" SOCI_VERSION "${MY_TMP}")
-	set (SOCI_VERSION ${MY_TMP})
-  endif (SOCI_CONFIG)
-endif (UNIX)
+  if (SOCI_DEBUG)
+    message (STATUS "[ ${CMAKE_CURRENT_LIST_FILE}:${CMAKE_CURRENT_LIST_LINE} ] "
+      "version.h reveals SOCI ${SOCI_HUMAN_VERSION}")
+  endif (SOCI_DEBUG)
+
+else (SOCI_INCLUDE_DIR)
+  set (SOCI_ERROR_REASON
+    "${SOCI_ERROR_REASON}Unable to find the SOCI header files. Please set SOCI_ROOT to the root directory containing SOCI or SOCI_INCLUDEDIR to the directory containing SOCI's headers.")
+endif (SOCI_INCLUDE_DIR)
+
 
 # Determine whether the headers are buried
 if (EXISTS ${SOCI_INCLUDE_DIR}/core)
@@ -73,14 +101,14 @@ endif (SOCI_LIBRARY_DIR)
 # either be defined or correspond to valid paths. We use the
 # find_package_handle_standard_args() CMake macro to have a standard behaviour.
 include (FindPackageHandleStandardArgs)
-if (${CMAKE_VERSION} VERSION_GREATER 2.8.4)
+if (${CMAKE_VERSION} VERSION_GREATER 2.8.1)
   find_package_handle_standard_args (SOCI 
 	REQUIRED_VARS SOCI_LIBRARIES SOCI_INCLUDE_DIR
-	VERSION_VAR SOCI_VERSION)
-else (${CMAKE_VERSION} VERSION_GREATER 2.8.4)
+	VERSION_VAR SOCI_HUMAN_VERSION)
+else (${CMAKE_VERSION} VERSION_GREATER 2.8.1)
   find_package_handle_standard_args (SOCI 
 	DEFAULT_MSG SOCI_LIBRARIES SOCI_INCLUDE_DIR)
-endif (${CMAKE_VERSION} VERSION_GREATER 2.8.4)
+endif (${CMAKE_VERSION} VERSION_GREATER 2.8.1)
 
 if (SOCI_FOUND)
   mark_as_advanced (SOCI_FOUND SOCI_LIBRARIES SOCI_INCLUDE_DIR)

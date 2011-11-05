@@ -368,7 +368,13 @@ macro (get_python)
     message (STATUS "Requires PythonLibs without specifying any version")
   endif (${ARGC} GREATER 0)
 
+  # The first check searches for the libraries and include paths.
+  # However, on some older versions (e.g., on RedHat/CentOS 5.x),
+  # only the static library is searched.
   find_package (PythonLibs ${_required_version} REQUIRED)
+
+  # The second check is to get the dynamic library for sure.
+  find_package (PythonLibsWrapper ${_required_version} REQUIRED)
 
   if (PYTHONLIBS_FOUND)
 	# Derive the version of Python (for whatever reason, FindPythonLibs
@@ -526,7 +532,8 @@ macro (get_soci)
   find_package (SOCIMySQL ${_required_version} REQUIRED)
   if (SOCIMYSQL_FOUND)
     #
-    message (STATUS "Found SOCI with MySQL back-end support version: ${SOCI_VERSION}")
+    message (STATUS "Found SOCI with MySQL back-end support version:"
+	  " ${SOCI_HUMAN_VERSION}")
 
     # Update the list of include directories for the project
     include_directories (${SOCI_INCLUDE_DIR})
@@ -1641,9 +1648,13 @@ macro (doc_add_web_pages)
 	ARGS -E chdir ${TEX_GEN_DIR} makeindex -q ${REFMAN_IDX}
 	COMMAND ${CMAKE_COMMAND}
 	ARGS -E chdir ${TEX_GEN_DIR} pdflatex -interaction batchmode ${REFMAN_TEX} || echo "Second PDF generation done."
+	COMMAND ${CMAKE_COMMAND}
+	ARGS -E chdir ${TEX_GEN_DIR} makeindex -q ${REFMAN_IDX}
+	COMMAND ${CMAKE_COMMAND}
+	ARGS -E chdir ${TEX_GEN_DIR} pdflatex -interaction batchmode ${REFMAN_TEX} || echo "Third PDF generation done."
 	COMMENT "Generating PDF Reference Manual ('${REFMAN_PDF}')..."
 	COMMAND ${CMAKE_COMMAND}
-	ARGS -E chdir ${TEX_GEN_DIR} test -f ${REFMAN_PDF} || echo "Warning: the PDF reference manual \\\('${REFMAN_PDF_FULL}'\\\) has failed to build. You can perform a simple re-build \\\('make' in the 'doc/latex' sub-directory\\\)."
+	ARGS -E chdir ${TEX_GEN_DIR} test -f ${REFMAN_PDF} || (touch ${REFMAN_PDF} && echo "Warning: the PDF reference manual \\\('${REFMAN_PDF_FULL}'\\\) has failed to build. You can perform a simple re-build \\\('make' in the 'doc/latex' sub-directory\\\).")
 	COMMENT "Checking whether the PDF Reference Manual ('${REFMAN_PDF}') has been built...")
   # Add the 'pdf' target, depending on the generated PDF manual
   add_custom_target (pdf ALL DEPENDS ${REFMAN_PDF_FULL})
@@ -1901,6 +1912,8 @@ macro (display_soci)
     message (STATUS)
     message (STATUS "* SOCI:")
     message (STATUS "  - SOCI_VERSION ............... : ${SOCI_VERSION}")
+    message (STATUS "  - SOCI_LIB_VERSION ........... : ${SOCI_LIB_VERSION}")
+    message (STATUS "  - SOCI_HUMAN_VERSION ......... : ${SOCI_HUMAN_VERSION}")
     message (STATUS "  - SOCI_INCLUDE_DIR ........... : ${SOCI_INCLUDE_DIR}")
     message (STATUS "  - SOCIMYSQL_INCLUDE_DIR ...... : ${SOCIMYSQL_INCLUDE_DIR}")
     message (STATUS "  - SOCI_LIBRARIES ............. : ${SOCI_LIBRARIES}")

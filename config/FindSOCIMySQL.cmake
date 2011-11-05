@@ -1,13 +1,15 @@
 # 
 # Find SOCI includes and library for core and MySQL.
 # Following are the variables defined by the FindSOCI*.cmake macros:
-#  SOCI_VERSION          - The SOCI version
+#  SOCI_VERSION          - The SOCI version, e.g, 300100
+#  SOCI_LIB_VERSION      - The SOCI library version, e.g., 3_1_0
+#  SOCI_HUMAN_VERSION    - The SOCI human-readable version, e.g., 3.1.0
 #  SOCI_INCLUDE_DIR      - Where to find soci.h, etc.
 #  SOCI_LIBRARIES        - List of libraries when using SOCI.
 #  SOCI_FOUND            - Whether SOCI has been found
 #  SOCIMYSQL_INCLUDE_DIR - Where to find soci-mysql.h, etc.
 #  SOCIMYSQL_LIBRARIES   - List of libraries when using SOCI MySQL.
-#  SOCIMYSQL_FOUND       - List of libraries when using SOCI MySQL.
+#  SOCIMYSQL_FOUND       - Whether the SOCI MySQL library has been found
 #
 # Note: it is assumed that the _required_version variable be set before 
 # calling 'find_package (SOCIMySQL)'
@@ -45,14 +47,14 @@ endif (SOCIMYSQL_LIBRARY_DIR)
 
 #
 include (FindPackageHandleStandardArgs)
-if (${CMAKE_VERSION} VERSION_GREATER 2.8.4)
+if (${CMAKE_VERSION} VERSION_GREATER 2.8.1)
   find_package_handle_standard_args (SOCIMySQL 
 	REQUIRED_VARS SOCIMYSQL_LIBRARIES SOCIMYSQL_INCLUDE_DIR
-	VERSION_VAR SOCI_VERSION)
-else (${CMAKE_VERSION} VERSION_GREATER 2.8.4)
+	VERSION_VAR SOCI_HUMAN_VERSION)
+else (${CMAKE_VERSION} VERSION_GREATER 2.8.1)
   find_package_handle_standard_args (SOCIMySQL 
 	DEFAULT_MSG SOCIMYSQL_LIBRARIES SOCIMYSQL_INCLUDE_DIR)
-endif (${CMAKE_VERSION} VERSION_GREATER 2.8.4)
+endif (${CMAKE_VERSION} VERSION_GREATER 2.8.1)
 
 if (SOCIMYSQL_FOUND)
   mark_as_advanced (SOCIMYSQL_FOUND SOCIMYSQL_LIBRARIES SOCIMYSQL_INCLUDE_DIR)
