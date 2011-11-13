@@ -484,7 +484,13 @@ macro (get_xapian)
     message (STATUS "Requires Xapian without specifying any version")
   endif (${ARGC} GREATER 0)
 
-  find_package (Xapian ${_required_version} REQUIRED)
+  # The first check is to get Xapian installation details
+  find_package (Xapian)
+
+  # The second check is for the required version (FindXapianWrapper.cmake is
+  # provided by us). Indeed, the Fedora/RedHat xapian-config.cmake does not seem
+  # to provide version enforcement.
+  find_package (XapianWrapper ${_required_version} REQUIRED)
 
   if (XAPIAN_FOUND)
     # Update the list of include directories for the project
