@@ -279,6 +279,10 @@ macro (get_external_libs)
       get_boost (${_arg_version})
     endif (${_arg_lower} STREQUAL "boost")
 
+    if (${_arg_lower} STREQUAL "xapian")
+      get_xapian (${_arg_version})
+    endif (${_arg_lower} STREQUAL "xapian")
+
     if (${_arg_lower} STREQUAL "readline")
       get_readline (${_arg_version})
     endif (${_arg_lower} STREQUAL "readline")
@@ -469,6 +473,34 @@ macro (get_boost)
   endif (Boost_FOUND)
 
 endmacro (get_boost)
+
+# ~~~~~~~~~~ Xapian ~~~~~~~~~
+macro (get_xapian)
+  unset (_required_version)
+  if (${ARGC} GREATER 0)
+    set (_required_version ${ARGV0})
+    message (STATUS "Requires Xapian-${_required_version}")
+  else (${ARGC} GREATER 0)
+    message (STATUS "Requires Xapian without specifying any version")
+  endif (${ARGC} GREATER 0)
+
+  # The first check is to get Xapian installation details
+  find_package (Xapian)
+
+  # The second check is for the required version (FindXapianWrapper.cmake is
+  # provided by us). Indeed, the Fedora/RedHat xapian-config.cmake does not seem
+  # to provide version enforcement.
+  find_package (XapianWrapper ${_required_version} REQUIRED)
+
+  if (XAPIAN_FOUND)
+    # Update the list of include directories for the project
+    include_directories (${XAPIAN_INCLUDE_DIR})
+
+    # Update the list of dependencies for the project
+    list (APPEND PROJ_DEP_LIBS_FOR_LIB ${XAPIAN_LIBRARIES})
+  endif (XAPIAN_FOUND)
+
+endmacro (get_xapian)
 
 # ~~~~~~~~~~ Readline ~~~~~~~~~
 macro (get_readline)
@@ -1884,6 +1916,17 @@ macro (display_boost)
   endif (Boost_FOUND)
 endmacro (display_boost)
 
+# Xapian
+macro (display_xapian)
+  if (XAPIAN_FOUND)
+    message (STATUS)
+	message (STATUS "* Xapian:")
+	message (STATUS "  - XAPIAN_VERSION ............. : ${XAPIAN_VERSION}")
+	message (STATUS "  - XAPIAN_LIBRARIES ........... : ${XAPIAN_LIBRARIES}")
+	message (STATUS "  - XAPIAN_INCLUDE_DIR ......... : ${XAPIAN_INCLUDE_DIR}")
+  endif (XAPIAN_FOUND)
+endmacro (display_xapian)
+
 # Readline
 macro (display_readline)
   if (READLINE_FOUND)
@@ -2170,6 +2213,7 @@ macro (display_status)
   display_python ()
   display_zeromq ()
   display_boost ()
+  display_xapian ()
   display_readline ()
   display_mysql ()
   display_soci ()
