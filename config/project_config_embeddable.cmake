@@ -139,6 +139,8 @@ endmacro (install_basic_documentation)
 macro (store_in_cache)
   # Force some variables that could be defined in the command line to be
   # written to cache
+  set (PACKAGE_VERSION "${PACKAGE_VERSION}" CACHE STRING
+  "Version of the project/package")
   set (BUILD_SHARED_LIBS "${BUILD_SHARED_LIBS}" CACHE BOOL
 	"Set to OFF to build static libraries" FORCE)
   set (CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}" CACHE PATH
