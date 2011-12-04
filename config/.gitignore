@@ -1,16 +1,10 @@
 tmp
 /build/
-INSTALL
-Makefile.in
-aclocal.m4
-autom4te.cache/
 config/
-configure
 doc/
 man/
 info/
 po/
-samples/
 test/
 airinv/
 airrac/
@@ -25,4 +19,4 @@ simfqt/
 simlfs/
 trademgen/
 travelccm/
-
+*.pyc

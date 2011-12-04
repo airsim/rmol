@@ -1279,12 +1279,11 @@ macro (module_library_add_standard _layer_list)
   endif (_publish_all_headers_flag)
 
   # Convenient message to the user/developer
-  if (NOT CMAKE_INSTALL_RPATH_USE_LINK_PATH
-      AND "${CMAKE_INSTALL_PREFIX}" STREQUAL "/usr")
+  if (NOT CMAKE_INSTALL_RPATH_USE_LINK_PATH)
     install (CODE "message (\"On Unix-based platforms, run "
 	  "export LD_LIBRARY_PATH=${INSTALL_LIB_DIR}:\$LD_LIBRARY_PATH "
 	  "once per session\")")
-  endif()
+  endif (NOT CMAKE_INSTALL_RPATH_USE_LINK_PATH)
 
 endmacro (module_library_add_standard)
 
