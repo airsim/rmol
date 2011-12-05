@@ -1,3 +1,9 @@
+2011-12-05:
+- Version 0.25.3
+- [Build] Improved the CMake build framework.
+- [Build] Suppressed any support to the GNU Autotools. Those are no longer
+  maintained.
+
 2011-11-02:
 - Version 0.25.2
 - Re-instantiated the dummy inventory.
