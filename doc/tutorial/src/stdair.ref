@@ -1,0 +1,79 @@
+[D]../../batches/stdair.cpp:243: Welcome to stdair
+[D]../../../stdair/command/CmdBomManager.cpp:41: StdAir will build the BOM tree from built-in specifications.
+[D]../../batches/stdair.cpp:286: 
+===============================================================
+BomRoot:  -- ROOT -- 
+===============================================================
++++++++++++++++++++++++++++++++++++++++++++++++++
+Inventory: BA
++++++++++++++++++++++++++++++++++++++++++++++++++
+******************************************
+FlightDate: BA9, 2011-Jun-10
+******************************************
+******************************************
+Leg-Dates:
+----------
+Flight, Leg, BoardDate, BoardTime, OffDate, OffTime, Date Offset, Time Offset, Elapsed, Distance, Capacity, 
+BA9 2011-Jun-10, LHR-BKK, 2011-Jun-10, 21:45:00, 2011-Jun-11, 15:40:00, 11:05:00, 1, 06:50:00, 9900, 0, 
+BA9 2011-Jun-10, BKK-SYD, 2011-Jun-11, 17:05:00, 2011-Jun-12, 15:40:00, 09:05:00, 1, 13:30:00, 8100, 0, 
+******************************************
+******************************************
+LegCabins:
+----------
+Flight, Leg, Cabin, OffedCAP, PhyCAP, RgdADJ, AU, UPR, SS, Staff, WL, Group, CommSpace, AvPool, Avl, NAV, GAV, ACP, ETB, BidPrice, 
+BA9 2011-Jun-10, LHR-BKK 2011-Jun-10, Y, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9, 9, 0, 0, 3.52965e-319, 0, 0, 
+BA9 2011-Jun-10, BKK-SYD 2011-Jun-11, Y, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9, 9, 0, 0, 0, 0, 0, 
+******************************************
+******************************************
+Buckets:
+--------
+Flight, Leg, Cabin, Yield, AU/SI, SS, AV, 
+******************************************
+******************************************
+SegmentCabins:
+--------------
+Flight, Segment, Cabin, FF, Bkgs, MIN, UPR, CommSpace, AvPool, BP, 
+BA9 2011-Jun-10, LHR-SYD 2011-Jun-10, Y, EcoSaver, 0, 0, 0, 0, 9, 0, 
+BA9 2011-Jun-10, LHR-BKK 2011-Jun-10, Y, EcoSaver, 0, 0, 0, 0, 9, 0, 
+BA9 2011-Jun-10, BKK-SYD 2011-Jun-11, Y, EcoSaver, 0, 0, 0, 0, 9, 0, 
+******************************************
+******************************************
+Subclasses:
+-----------
+Flight, Segment, Cabin, FF, Subclass, MIN/AU (Prot), Nego, NS%, OB%, Bkgs, GrpBks (pdg), StfBkgs, WLBkgs, ETB, ClassAvl, RevAvl, SegAvl, 
+BA9 2011-Jun-10, LHR-SYD 2011-Jun-10, Y, EcoSaver, Q, 0 (0), 0, 0, 0, 0, 0 (0), 0, 0, 0, 0, 0, 0, 
++++++++++++++++++++++++++++++++++++++++++++++++++
+Inventory: AF
++++++++++++++++++++++++++++++++++++++++++++++++++
+******************************************
+FlightDate: AF84, 2011-Mar-20
+******************************************
+******************************************
+Leg-Dates:
+----------
+Flight, Leg, BoardDate, BoardTime, OffDate, OffTime, Date Offset, Time Offset, Elapsed, Distance, Capacity, 
+AF84 2011-Mar-20, CDG-SFO, 2011-Mar-20, 10:40:00, 2011-Mar-20, 12:50:00, 11:10:00, 0, -09:00:00, 9900, 0, 
+******************************************
+******************************************
+LegCabins:
+----------
+Flight, Leg, Cabin, OffedCAP, PhyCAP, RgdADJ, AU, UPR, SS, Staff, WL, Group, CommSpace, AvPool, Avl, NAV, GAV, ACP, ETB, BidPrice, 
+AF84 2011-Mar-20, CDG-SFO 2011-Mar-20, Y, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9, 9, 0, 0, 0, 0, 0, 
+******************************************
+******************************************
+Buckets:
+--------
+Flight, Leg, Cabin, Yield, AU/SI, SS, AV, 
+******************************************
+******************************************
+SegmentCabins:
+--------------
+Flight, Segment, Cabin, FF, Bkgs, MIN, UPR, CommSpace, AvPool, BP, 
+AF84 2011-Mar-20, CDG-SFO 2011-Mar-20, Y, EcoSaver, 0, 0, 0, 0, 9, 0, 
+******************************************
+******************************************
+Subclasses:
+-----------
+Flight, Segment, Cabin, FF, Subclass, MIN/AU (Prot), Nego, NS%, OB%, Bkgs, GrpBks (pdg), StfBkgs, WLBkgs, ETB, ClassAvl, RevAvl, SegAvl, 
+AF84 2011-Mar-20, CDG-SFO 2011-Mar-20, Y, EcoSaver, Q, 0 (0), 0, 0, 0, 0, 0 (0), 0, 0, 0, 0, 0, 0, 
+
