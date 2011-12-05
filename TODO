@@ -1,5 +1,4 @@
-1. Alter the documentation (doc/ directory).
-2. Alter the man (man/ directory) and info (info/ directory) pages.
-3. Alter the i18n (.po) files (po/ directory).
-4. Automate the delivery of Distribution packages: .deb.
+1. Have CMake generate the i18n (.po) files (po/ directory).
+2. Have CMake generate the info (info/ directory) pages.
+3. Automate the delivery of Distribution packages: .deb.
 
