@@ -55,13 +55,19 @@ Building the library and test binary from the tarball:
 The latest stable source tarball (rmol*.tar.gz or .bz2) can be found here:
 http://sourceforge.net/project/showfiles.php?group_id=177703
 
+To customise the following to your environment, you can alter the path
+to the installation directory:
+export INSTALL_BASEDIR=/home/user/dev/deliveries
+export LIBSUFFIX_4_CMAKE="-DLIB_SUFFIX=64"
+
 Then, as usual:
 * To configure the project, type something like:
   mkdir build && cd build
-  cmake -DCMAKE_INSTALL_PREFIX=/home/user/dev/deliveries/rmol-99.99.99 \
-   -DWITH_STDAIR_PREFIX=/home/user/dev/deliveries/stdair-stable \
-   -DWITH_AIRRAC_PREFIX=/home/user/dev/deliveries/airrac-stable \
-   -DCMAKE_BUILD_TYPE:STRING=Debug -DINSTALL_DOC:BOOL=ON ..
+  cmake -DCMAKE_INSTALL_PREFIX=${INSTALL_BASEDIR}/rmol-99.99.99 \
+   -DWITH_STDAIR_PREFIX=${INSTALL_BASEDIR}/stdair-stable \
+   -DWITH_AIRRAC_PREFIX=${INSTALL_BASEDIR}/airrac-stable \
+   -DCMAKE_BUILD_TYPE:STRING=Debug -DINSTALL_DOC:BOOL=ON \
+   ${LIBSUFFIX_4_CMAKE} ..
 * To build the project, type:
   make
 * To test the project, type:
@@ -72,6 +78,10 @@ Then, as usual:
   make dist
 * To package the binary and the (HTML and PDF) documentation:
   make package
+* To run the local binary version:
+  ./rmol/rmol -b
+* To run the installed version:
+  ${INSTALL_BASEDIR}/rmol-99.99.99/bin/rmol -b
 
-Denis Arnaud (October 2011)
+Denis Arnaud (December 2011)
 

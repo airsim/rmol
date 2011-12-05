@@ -9,6 +9,18 @@ SourceForge project site.
 
 The following steps are required to make a release of the distribution package.
 
+- \ref initialisation
+- \ref branch_update
+- \ref branch_publish
+- \ref create_packages
+- \ref upload_doc
+- \ref generate_rpm_packages
+- \ref update_changelog
+- \ref create_bin_packages
+- \ref upload_files
+- \ref post_news
+- \ref send_announce
+
 
 \section initialisation Initialisation
 
@@ -24,25 +36,27 @@ git checkout trunk
 \endverbatim 
 
 
-\section branch_creation Branch creation
+\section branch_update Release branch maintenance
 
-Create the branch, on your local clone, corresponding to the new release
-(say, 0.50.0):
+Switch to the release branch, on your local clone, and merge the latest updates
+from the trunk. Decide about the new version to be released.
 \verbatim
 cd ~/dev/sim/rmolgit
-git checkout trunk
-git checkout -b 0.50.0
+git checkout releases
+git merge trunk
 \endverbatim
-Update the version in the various build system files, replacing 99.99.99 by
-the correct version number:
+Update the version in the various build system files, replacing the old version
+numbers by the correct ones:
 \verbatim
 vi CMakeLists.txt
 vi autogen.sh
+vi README
 \endverbatim
 
-Update the version and add a change-log in the ChangeLog and in the 
-RPM specification files:
+Update the version, add some news in the \c NEWS file, add a change-log
+in the \c ChangeLog file and in the RPM specification files:
 \verbatim
+vi NEWS
 vi ChangeLog
 vi rmol.spec
 \endverbatim
@@ -53,68 +67,83 @@ Commit the new release:
 \verbatim
 cd ~/dev/sim/rmolgit
 git add -A
-git commit -m "[Release 0.50.0] Release of version 0.50.0."
+git commit -m "[Release 0.5.0] Release of the 0.5.0 version of RMOL."
 git push
 \endverbatim
 
-\section trunk_update Update the change-log in the trunk as well
-
-Update the change-log in the ChangeLog and RPM specification files:
-\verbatim
-cd ~/dev/sim/rmolgit
-git checkout trunk
-vi ChangeLog
-vi rmol.spec
-\endverbatim
-
-Commit the change-logs and publish the trunk (main development branch):
-\verbatim
-git commit -m "[Doc] Integrated the change-log of the release 0.50.0."
-git push
-\endverbatim
-
-\section create_packages Create distribution packages
+\section create_packages Create source packages (tar-balls)
 
 Create the distribution packages using the following command:<br>
 \verbatim 
 cd ~/dev/sim/rmolgit
-git checkout 0.50.0
+git checkout releases
 rm -rf build && mkdir -p build
 cd build
-cmake -DCMAKE_INSTALL_PREFIX=/home/user/dev/deliveries/rmol-0.50.0 \
- -DCMAKE_BUILD_TYPE:STRING=Debug -DINSTALL_DOC:BOOL=ON ..
+export INSTALL_BASEDIR=/home/user/dev/deliveries
+export LIBSUFFIX_4_CMAKE="-DLIB_SUFFIX=64"
+cmake -DCMAKE_INSTALL_PREFIX=${INSTALL_BASEDIR}/rmol-0.5.0 \
+ -DWITH_STDAIR_PREFIX=${INSTALL_BASEDIR}/stdair-stable \
+ -DWITH_AIRRAC_PREFIX=${INSTALL_BASEDIR}/airsched-stable \
+ -DWITH_AIRRAC_PREFIX=${INSTALL_BASEDIR}/airrac-stable \
+ -DWITH_RMOL_PREFIX=${INSTALL_BASEDIR}/rmol-stable \
+ -DWITH_RMOL_PREFIX=${INSTALL_BASEDIR}/airinv-stable \
+ -DWITH_RMOL_PREFIX=${INSTALL_BASEDIR}/simfqt-stable \
+ -DCMAKE_BUILD_TYPE:STRING=Debug -DINSTALL_DOC:BOOL=ON \
+ ${LIBSUFFIX_4_CMAKE} ..
 make check && make dist
+make install
 \endverbatim 
 
-
 This will configure, compile and check the package. The output packages
-will be named, for instance, <tt>rmol-0.50.0.tar.gz</tt> and
-<tt>rmol-0.50.0.tar.bz2</tt>.
+will be named, for instance, <tt>rmol-0.5.0.tar.gz</tt> and
+<tt>rmol-0.5.0.tar.bz2</tt>.
 
 
-\section generate_rpm_packages Generation the RPM packages
+\section upload_doc Upload the HTML documentation to SourceForge
+
+In order to update the Web site files, either:
+- <a href="https://sourceforge.net/apps/trac/sourceforge/wiki/Shell%20service#Accessingyourfileswithothertools">synchronise them with rsync and SSH</a>:
+Upload the just generated HTML (and PDF) documentation onto the 
+<a href="http://rmol.sourceforge.net">SourceForge Web site</a>.
+\verbatim 
+cd ~/dev/sim/rmolgit/build
+git checkout releases
+rsync -aiv ${INSTALL_BASEDIR}/rmol-0.5.0/share/doc/rmol-0.5.0/html/ \
+ your_sf_user,rmol@web.sourceforge.net:htdocs/
+\endverbatim 
+where \c -aiv options mean:
+  - \c -a: archive/mirror mode; equals \c -rlptgoD
+    (no \c -H, \c -A, \c -X)
+  - \c -v: increase verbosity
+  - \c -i: output a change-summary for all updates
+  - Note the trailing slashes (/) at the end of both the source and target 
+    directories. It means that the content of the source directory 
+    (<tt>doc/html</tt>), rather than the directory itself, has to be copied
+    into the content of the target directory.
+- or use the
+ <a href="https://sourceforge.net/apps/trac/sourceforge/wiki/Shell%20service">SourceForge Shell service</a>.
+
+
+\section generate_rpm_packages Generate the RPM packages
 
 Optionally, generate the RPM package (for instance, for 
 <a href="http://fedoraproject.org">Fedora</a>/<a href="http://www.redhat.com">RedHat</a>):
 \verbatim 
-cd ~/dev/sim/rmolgit
-git checkout 0.50.0
-rm -rf build && mkdir -p build
-cd build
-cmake -DCMAKE_INSTALL_PREFIX=/home/user/dev/deliveries/rmol-0.50.0 \
- -DCMAKE_BUILD_TYPE:STRING=Debug -DINSTALL_DOC:BOOL=ON ..
+cd ~/dev/sim/rmolgit/build
+git checkout releases
 make dist
 \endverbatim 
 
 To perform this step, rpm-build, rpmlint and rpmdevtools have to be available
 on the system.
 \verbatim 
-cp rmol.spec ~/dev/packages/SPECS \
-  && cp rmol-0.50.0.tar.bz2 ~/dev/packages/SOURCES
+cp ../rmol.spec ~/dev/packages/SPECS \
+  && cp rmol-0.5.0.tar.bz2 ~/dev/packages/SOURCES
 cd ~/dev/packages/SPECS
 rpmbuild -ba rmol.spec
-rpmlint -i ../SPECS/rmol.spec ../SRPMS/rmol-0.50.0-1.fc15.src.rpm \
-  ../RPMS/noarch/rmol-* ../RPMS/i686/rmol-*
+cd ~/dev/packages
+rpmlint -i SPECS/rmol.spec SRPMS/rmol-0.5.0-1.fc16.src.rpm \
+  RPMS/noarch/rmol-* RPMS/i686/rmol-*
 \endverbatim 
 
 
@@ -131,11 +160,13 @@ commit and push the changes into the
 Create the binary package, which includes HTML and PDF documentation,
 using the following command:
 \verbatim 
+cd ~/dev/sim/rmolgit/build
+git checkout releases
 make package
 \endverbatim 
 
 The output binary package will be named, for instance,
-<tt>rmol-0.50.0-Linux.tar.bz2</tt>. That package contains both the HTML
+<tt>rmol-0.5.0-Linux.tar.bz2</tt>. That package contains both the HTML
 and PDF documentation. The binary package contains also the executables
 and shared libraries, as well as C++ header files, but all of those do not
 interest us for now.
@@ -147,35 +178,13 @@ Check
 <a href="https://sourceforge.net/apps/trac/sourceforge/wiki/Release%20files%20for%20download#SCP">SourceForge help page on uploading software</a>.
 
 
-\section upload_doc Upload the documentation to SourceForge
-
-In order to update the Web site files, either:
-- <a href="https://sourceforge.net/apps/trac/sourceforge/wiki/Shell%20service#Accessingyourfileswithothertools">synchronise them with rsync and SSH</a>:
-\verbatim 
-cd ~/dev/sim/rmolgit
-git checkout 0.50.0
-rsync -aiv doc/html/ doc/latex/refman.pdf joe,rmol@web.sourceforge.net:htdocs/
-\endverbatim 
-where \c -aiv options mean:
-  - \c -a: archive/mirror mode; equals \c -rlptgoD
-    (no \c -H, \c -A, \c -X)
-  - \c -v: increase verbosity
-  - \c -i: output a change-summary for all updates
-  - Note the trailing slashes (/) at the end of both the source and target 
-    directories. It means that the content of the source directory 
-    (<tt>doc/html</tt>), rather than the directory itself, has to be copied
-    into the content of the target directory.
-- or use the
- <a href="https://sourceforge.net/apps/trac/sourceforge/wiki/Shell%20service">SourceForge Shell service</a>.
-
-
 \section post_news Make a new post
 
 - submit a new entry in the
   <a href="https://sourceforge.net/news/submit.php?group_id=177703">SourceForge
   project-related news feed</a>
-- make a new post on the
-  <a href="https://sourceforge.net/apps/wordpress/rmol/wp-admin/">SourceForge
+- make a new post on the <a
+  href="https://sourceforge.net/apps/wordpress/rmol/wp-admin/">SourceForge
   hosted WordPress blog</a>
 - and update, if necessary,
   <a href="https://sourceforge.net/apps/trac/rmol/report">Trac tickets</a>.
