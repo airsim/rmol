@@ -2,8 +2,16 @@
 # script. Indeed, that latter does not work well on EPEL 5, where only the Python
 # static library is searched. In that latter case, the Python dynamic library is
 # searched, and the PYTHON_LIBRARIES variable re-set accordingly.
-#
+# Moreover, on EPEL 5 and 6, only PYTHON_INCLUDE_PATH is defined, where as
+# PYTHON_INCLUDE_DIRS is expected to be set.
 
+#
+if (PYTHON_INCLUDE_PATH AND "${PYTHON_INCLUDE_DIRS}" STREQUAL "")
+  set (PYTHON_INCLUDE_DIRS ${PYTHON_INCLUDE_PATH} PARENT_SCOPE)
+  set (PYTHON_INCLUDE_DIRS ${PYTHON_INCLUDE_PATH})
+endif ()
+
+#
 if ("${PYTHON_LIBRARIES}" MATCHES "libpython[1-9.]*.a")
   # The PythonLibs finder has found only the static library
   message (STATUS "The Python static library has been found by the regular PythonLibs finder: ${PYTHON_LIBRARIES}")
