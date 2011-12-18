@@ -64,6 +64,7 @@ endmacro (set_project_versions)
 #  * CMAKE_INSTALL_RPATH_USE_LINK_PATH
 #                         - Whether or not to set the run-path/rpath within
 #                           the (executable and library) binaries
+#  * ENABLE_TEST         - Whether or not to build and check the unit tests
 #  * INSTALL_DOC         - Whether or not to build and install the documentation
 #  * INSTALL_LIB_DIR     - Installation directory for the libraries
 #  * INSTALL_BIN_DIR     - Installation directory for the binaries
@@ -71,7 +72,7 @@ endmacro (set_project_versions)
 #  * INSTALL_DATA_DIR    - Installation directory for the data files
 #  * INSTALL_SAMPLE_DIR  - Installation directory for the (CSV) sample files
 #
-macro (set_project_options _build_doc)
+macro (set_project_options _build_doc _enable_tests)
   # Shared libraries
   option (BUILD_SHARED_LIBS "Set to OFF to build static libraries" ON)
 
@@ -85,6 +86,10 @@ macro (set_project_options _build_doc)
   if (CMAKE_INSTALL_PREFIX STREQUAL "/usr/local")
     set (CMAKE_INSTALL_PREFIX "/usr")
   endif()
+
+  # Unit tests (thanks to CMake/CTest)
+  option (ENABLE_TEST "Set to OFF to skip build/check unit tests"
+	${_enable_tests})
 
   # Documentation
   option (INSTALL_DOC "Set to OFF to skip build/install Documentation" 
@@ -175,6 +180,8 @@ macro (store_in_cache)
     "Supplementary C++ compilation flags" FORCE)
   set (CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH}" CACHE PATH
     "Path to custom CMake Modules" FORCE)
+  set (ENABLE_TEST "${ENABLE_TEST}" CACHE BOOL
+    "Set to OFF to skip build/check unit tests" FORCE)
   set (INSTALL_DOC "${INSTALL_DOC}" CACHE BOOL
     "Set to OFF to skip build/install Documentation" FORCE)
 endmacro (store_in_cache)
@@ -1077,9 +1084,9 @@ macro (init_build)
   set_install_directories ()
 
   ##
-  # Initialise the list of modules to build and those to test
+  # Initialise the list of modules to build and test suites to check
   set (PROJ_ALL_MOD_FOR_BLD "")
-  set (PROJ_ALL_MOD_FOR_TST "")
+  set (PROJ_ALL_SUITES_FOR_TST "")
 
   ##
   # Initialise the list of targets to build: libraries, binaries and tests
@@ -1537,39 +1544,54 @@ endmacro (module_export_install)
 ###################################################################
 ##                            Tests                              ##
 ###################################################################
-#
-macro (add_test_suites)
-  #
-  set (_test_suite_dir_list ${ARGV})
+##
+# Initialise the CTest framework with CMake, if so enabled
+macro (init_test)
+  # Register the main test target. Every specific test will then be added
+  # as a dependency on that target. When the unit tests are disabled
+  # (i.e., the ENABLE_TEST variable is set to OFF), that target remains empty.
+  add_custom_target (check)
+  
+  if (Boost_FOUND AND ENABLE_TEST)
+	# Tell CMake/CTest that tests will be performed
+	enable_testing() 
 
-  if (Boost_FOUND)
-    # Tell CMake/CTest that tests will be performed
-    enable_testing() 
+  endif (Boost_FOUND AND ENABLE_TEST)
+endmacro (init_test)
 
+##
+# Register a specific test sub-directory/suite to be checked by CMake/CTest.
+# That macro must be called once for each test sub-directory/suite.
+# The parameter is:
+#  * The test directory path, ommitting the 'test/' prefix. Most often, it is
+#    the same as the module name. And when there is a single module (which is
+#    the most common case), it corresponds to the project name.
+macro (add_test_suite _test_suite_dir)
+  if (Boost_FOUND AND ENABLE_TEST)
     # Browse all the modules, and register test suites for each of them
-    set (_check_target_list "")
-    foreach (_module_name ${_test_suite_dir_list})
-      set (${_module_name}_ALL_TST_TARGETS "")
-      # Each individual test suite is specified within the dedicated
-      # sub-directory. The CMake file within each of those test sub-directories
-      # specifies a target named check_${_module_name}tst.
-      add_subdirectory (test/${_module_name})
+    set (_check_target check_${_test_suite_dir}tst)
 
-      # Register, for book-keeping purpose (a few lines below), 
-      # the (CMake/CTest) test target of the current module 
-      list (APPEND _check_target_list check_${_module_name}tst)
-    endforeach (_module_name)
+    # Each individual test suite is specified within the dedicated
+    # sub-directory. The CMake file within each of those test sub-directories
+    # specifies a target named check_${_module_name}tst.
+    add_subdirectory (test/${_test_suite_dir})
 
-    # Register all the module (CMake/CTest) test targets at once
-    add_custom_target (check)
-    add_dependencies (check ${_check_target_list})
+    # Register the test suite (i.e., add the test target as a dependency of
+	# the 'check' target).
+    add_dependencies (check ${_check_target})
 
-    # Register, for reporting purpose, the list of modules to be tested
-    set (PROJ_ALL_MOD_FOR_TST ${_test_suite_dir_list})
+	# Register, for book-keeping purpose (a few lines below), 
+	# the (CMake/CTest) test target of the current test suite. When the
+	# test directory corresponds to any given module, the test targets will
+	# be added to that module dependencies.
+	set (${_test_suite_dir}_ALL_TST_TARGETS "")
 
-  endif (Boost_FOUND)
+    # Register, for reporting purpose, the list of test suites to be checked
+    list (APPEND PROJ_ALL_SUITES_FOR_TST ${_test_suite_dir})
 
-endmacro (add_test_suites)
+  endif (Boost_FOUND AND ENABLE_TEST)
+
+endmacro (add_test_suite)
 
 ##
 # Register a test with CMake/CTest.
@@ -1579,8 +1601,19 @@ endmacro (add_test_suites)
 #    semi-colon (';') seperated.
 #  * A list of intermodule dependencies. That list is separated by
 #    either white space or semi-colons (';').
-macro (module_test_add_suite _test_name _test_sources)
-  if (Boost_FOUND)
+macro (module_test_add_suite _module_name _test_name _test_sources)
+  if (Boost_FOUND AND ENABLE_TEST)
+
+	# If the module is already known, the corresponding library is added to
+	# the list of dependencies.
+	set (MODULE_NAME ${_module_name})
+	set (MODULE_LIB_TARGET "")
+	foreach (_module_item ${PROJ_ALL_MOD_FOR_BLD})
+	  if ("${_module_name}" STREQUAL "${_module_item}")
+		set (MODULE_LIB_TARGET ${MODULE_NAME}lib)
+	  endif ("${_module_name}" STREQUAL "${_module_item}")
+	endforeach (_module_item ${PROJ_ALL_MOD_FOR_BLD})
+
     # Register the test binary target
     add_executable (${_test_name}tst ${_test_sources})
     set_target_properties (${_test_name}tst PROPERTIES
@@ -1591,8 +1624,9 @@ macro (module_test_add_suite _test_name _test_sources)
     # Build the list of library targets on which that test depends upon
     set (_library_list "")
     foreach (_arg_lib ${ARGV})
-      if (NOT "${_test_name};${_test_sources}" MATCHES "${_arg_lib}")
-	list (APPEND _library_list ${_arg_lib}lib)
+      if (NOT "${_module_name};${_test_name};${_test_sources}"
+		  MATCHES "${_arg_lib}")
+		list (APPEND _library_list ${_arg_lib}lib)
       endif ()
     endforeach (_arg_lib)
 
@@ -1609,7 +1643,7 @@ macro (module_test_add_suite _test_name _test_sources)
     else (WIN32)
       add_test (${_test_name}tst ${_test_name})
     endif (WIN32)
-  endif (Boost_FOUND)
+  endif (Boost_FOUND AND ENABLE_TEST)
 
   # Register the binary target in the project (for reporting purpose)
   list (APPEND PROJ_ALL_TST_TARGETS ${${MODULE_NAME}_ALL_TST_TARGETS})
@@ -2232,6 +2266,17 @@ macro (display_status_all_modules)
 endmacro (display_status_all_modules)
 
 ##
+macro (display_status_all_test_suites)
+  message (STATUS)
+  foreach (_test_suite ${PROJ_ALL_SUITES_FOR_TST})
+    message (STATUS "* Test Suite ...................... : ${_test_suite}")
+    message (STATUS "  + Dependencies on other layers .. : ${${_test_suite}_INTER_TARGETS}")
+    message (STATUS "  + Library dependencies .......... : ${${_test_suite}_ALL_LIBS}")
+    message (STATUS "  + Tests to perform .............. : ${${_test_suite}_ALL_TESTS}")
+  endforeach (_test_suite)
+endmacro (display_status_all_test_suites)
+
+##
 macro (display_status)
   message (STATUS)
   message (STATUS "=============================================================")
@@ -2253,9 +2298,10 @@ macro (display_status)
   message (STATUS "Modules to build .................. : ${PROJ_ALL_MOD_FOR_BLD}")
   message (STATUS "Libraries to build/install ........ : ${PROJ_ALL_LIB_TARGETS}")
   message (STATUS "Binaries to build/install ......... : ${PROJ_ALL_BIN_TARGETS}")
-  message (STATUS "Modules to test ................... : ${PROJ_ALL_MOD_FOR_TST}")
+  message (STATUS "Test suites to check .............. : ${PROJ_ALL_SUITES_FOR_TST}")
   message (STATUS "Binaries to test .................. : ${PROJ_ALL_TST_TARGETS}")
   display_status_all_modules ()
+  display_status_all_test_suites ()
   message (STATUS)
   message (STATUS "BUILD_SHARED_LIBS ................. : ${BUILD_SHARED_LIBS}")
   message (STATUS "CMAKE_BUILD_TYPE .................. : ${CMAKE_BUILD_TYPE}")
@@ -2263,6 +2309,7 @@ macro (display_status)
   message (STATUS " * CMAKE_CXX_FLAGS ................ : ${CMAKE_CXX_FLAGS}")
   message (STATUS " * BUILD_FLAGS .................... : ${BUILD_FLAGS}")
   message (STATUS " * COMPILE_FLAGS .................. : ${COMPILE_FLAGS}")
+  message (STATUS "ENABLE_TEST ....................... : ${ENABLE_TEST}" )
   message (STATUS "CMAKE_MODULE_PATH ................. : ${CMAKE_MODULE_PATH}")
   message (STATUS "CMAKE_INSTALL_PREFIX .............. : ${CMAKE_INSTALL_PREFIX}")
   display_doxygen ()
