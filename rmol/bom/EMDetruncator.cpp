@@ -46,7 +46,7 @@ namespace RMOL {
       double lStdDev = lStdDevOfUncensoredBookings;
 
       // DEBUG
-      STDAIR_LOG_DEBUG ("mean: " << lDemandMean << ", std: " << lStdDev);
+      // STDAIR_LOG_DEBUG ("mean: " << lDemandMean << ", std: " << lStdDev);
         
       if (lStdDev != 0) {
         bool stopUnconstraining = false;
