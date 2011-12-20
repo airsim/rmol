@@ -97,8 +97,8 @@ namespace RMOL {
     if (lNbOfDepartedSegments > 52) lNbOfDepartedSegments = 52; 
 
     // DEBUG
-    STDAIR_LOG_DEBUG ("Nb of similar departed segments: "
-                      << lNbOfDepartedSegments);
+    // STDAIR_LOG_DEBUG ("Nb of similar departed segments: "
+    //                   << lNbOfDepartedSegments);
     
     // If the DCP list includes only DTD0 or the number of departed
     // segments are less than two, remaining demand for all classes
@@ -134,16 +134,16 @@ namespace RMOL {
 	const stdair::DCP_T& lNextDCP = *itNextDCP;
 
         // DEBUG
-        STDAIR_LOG_DEBUG ("Unconstrain demand for "
-                          << ioSegmentCabin.describeKey()
-                          << " and the DCP's " << lCurrentDCP << ", "
-                          << lNextDCP);
+        // STDAIR_LOG_DEBUG ("Unconstrain demand for "
+        //                   << ioSegmentCabin.describeKey()
+        //                   << " and the DCP's " << lCurrentDCP << ", "
+        //                   << lNextDCP);
 	Detruncator::unconstrainUsingAdditivePickUp (ioSegmentCabin,
                                                      lBkgClassUncDemMap,
                                                      lQEquivalentDemandVector,
                                                      lCurrentDCP-1, lNextDCP,
                                                      iEventDate);
-        STDAIR_LOG_DEBUG ("Detrucation successful");
+        //STDAIR_LOG_DEBUG ("Detrucation successful");
       }
       
       // Retrieve the FRAT5 coefficient and compute the sell-up coef.
@@ -333,8 +333,8 @@ namespace RMOL {
     }
       
     // DEBUG
-    STDAIR_LOG_DEBUG ("Nb of anterior similar segments: "
-                      << lNbOfAnteriorSimilarSegments);
+    // STDAIR_LOG_DEBUG ("Nb of anterior similar segments: "
+    //                   << lNbOfAnteriorSimilarSegments);
 
     // If the iSegmentDTD is the last DCP or there is no anterior similar
     // segment, remaining demand for all classes will be set to zero
@@ -363,8 +363,8 @@ namespace RMOL {
         lSize = lNbOfUsableSegments - lNbOfDepartedSegments + 52;
       }
       
-      STDAIR_LOG_DEBUG ("Nb of usable similar segments: "
-                        << lNbOfUsableSegments);
+      // STDAIR_LOG_DEBUG ("Nb of usable similar segments: "
+      //                   << lNbOfUsableSegments);
         
       UnconstrainedDemandVector_T lQEquivalentDemandVector (lSize, 0.0);
       stdair::NbOfBookings_T lCurrentSegmentQEquivalentDemand = 0.0;
@@ -492,8 +492,8 @@ namespace RMOL {
       getNbOfSegmentAlreadyPassedThisDTD (lGuillotineBlock, iDCPEnd,
                                           iCurrentDate);
       
-    STDAIR_LOG_DEBUG ("Nb of usable similar segments: "
-                      << lNbOfUsableSegments);
+    // STDAIR_LOG_DEBUG ("Nb of usable similar segments: "
+    //                   << lNbOfUsableSegments);
 
     if (lNbOfUsableSegments > 0) {
 
@@ -508,7 +508,7 @@ namespace RMOL {
           lGuillotineBlock.getBlockIndex (lBCKey);
         UnconstrainedDemandVector_T& lUncDemVector = itBCUDV->second;
         
-        STDAIR_LOG_DEBUG ("Unconstrain product-oriented bookings for "<<lBCKey);
+        //STDAIR_LOG_DEBUG ("Unconstrain product-oriented bookings for "<<lBCKey);
         forecastUsingMultiplicativePickUp (lGuillotineBlock, lUncDemVector,
                                            iDCPBegin, iDCPEnd,
                                            lNbOfUsableSegments, lBlockIdx,
@@ -524,7 +524,7 @@ namespace RMOL {
       const stdair::BlockIndex_T& lCabinIdx =
         lGuillotineBlock.getBlockIndex (lSCMapKey.str());
       
-      STDAIR_LOG_DEBUG ("Unconstrain price-oriented bookings");
+      //STDAIR_LOG_DEBUG ("Unconstrain price-oriented bookings");
       forecastUsingMultiplicativePickUp (lGuillotineBlock,
                                          ioQEquivalentDemandVector,
                                          iDCPBegin, iDCPEnd,
@@ -595,12 +595,12 @@ namespace RMOL {
       }
       
       // DEBUG
-      STDAIR_LOG_DEBUG ("Historical bkgs: " << lNbOfHistoricalBkgs
-                        << ", censored: " << lCensorshipFlag);
+      // STDAIR_LOG_DEBUG ("Historical bkgs: " << lNbOfHistoricalBkgs
+      //                   << ", censored: " << lCensorshipFlag);
     }
 
     // DEBUG
-    STDAIR_LOG_DEBUG ("Unconstrain by multiplicative pick-up using EM");
+    //STDAIR_LOG_DEBUG ("Unconstrain by multiplicative pick-up using EM");
     
     // Unconstrain the booking figures
     Detruncator::unconstrainUsingMultiplicativePickUp (lHBHolder);
@@ -688,12 +688,12 @@ namespace RMOL {
       }
       
       // DEBUG
-      STDAIR_LOG_DEBUG ("Historical bkgs: " << lNbOfHistoricalBkgs
-                        << ", censored: " << lCensorshipFlag);
+      // STDAIR_LOG_DEBUG ("Historical bkgs: " << lNbOfHistoricalBkgs
+      //                   << ", censored: " << lCensorshipFlag);
     }
 
     // DEBUG
-    STDAIR_LOG_DEBUG ("Unconstrain by multiplicative pick-up using EM");
+    //STDAIR_LOG_DEBUG ("Unconstrain by multiplicative pick-up using EM");
     
     // Unconstrain the booking figures
     Detruncator::unconstrainUsingMultiplicativePickUp (lHBHolder);
@@ -756,8 +756,8 @@ namespace RMOL {
     double lPriceOriStdDev = sqrt (iUncDem);
     
     // DEBUG
-    STDAIR_LOG_DEBUG ("Price-oriented demand: mean = " << lPriceOriMean
-                      << ", stddev = " << lPriceOriStdDev);
+    // STDAIR_LOG_DEBUG ("Price-oriented demand: mean = " << lPriceOriMean
+    //                   << ", stddev = " << lPriceOriStdDev);
     
     // Retrieve the classes from low to high and compute the distributions of
     // product-oriented and price-oriented demand.
@@ -820,9 +820,9 @@ namespace RMOL {
         }
         
         // DEBUG
-        STDAIR_LOG_DEBUG ("Class " << lCurrentBC_ptr->describeKey()
-                          << ", mean = " << lMean
-                          << ", stddev = " << lStdDev);
+        // STDAIR_LOG_DEBUG ("Class " << lCurrentBC_ptr->describeKey()
+        //                   << ", mean = " << lMean
+        //                   << ", stddev = " << lStdDev);
 
         // Update the price-oriented demand
         lPriceOriMean *= lSellUp;
@@ -850,9 +850,9 @@ namespace RMOL {
       }
 
       // DEBUG
-      STDAIR_LOG_DEBUG ("Class " << lCurrentBC_ptr->describeKey()
-                        << ", mean = " << lMean
-                        << ", stddev = " << lStdDev);
+      // STDAIR_LOG_DEBUG ("Class " << lCurrentBC_ptr->describeKey()
+      //                   << ", mean = " << lMean
+      //                   << ", stddev = " << lStdDev);
       return isSucceeded;
     }
   }

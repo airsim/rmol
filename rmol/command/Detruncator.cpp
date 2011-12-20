@@ -49,7 +49,7 @@ namespace RMOL {
         lGuillotineBlock.getBlockIndex (lBCKey);
       UnconstrainedDemandVector_T& lUncDemVector = itBCUDV->second;
 
-      STDAIR_LOG_DEBUG ("Unconstrain product-oriented bookings for " << lBCKey);
+      // STDAIR_LOG_DEBUG ("Unconstrain product-oriented bookings for " << lBCKey);
       // STDAIR_LOG_NOTIFICATION (lBCKey << ";" << iDCPBegin
       //                          << ";" << iDCPEnd);
       unconstrainUsingAdditivePickUp (lGuillotineBlock, lUncDemVector,
@@ -65,7 +65,7 @@ namespace RMOL {
     const stdair::BlockIndex_T& lCabinIdx =
       lGuillotineBlock.getBlockIndex (lSCMapKey.str());
 
-    STDAIR_LOG_DEBUG ("Unconstrain price-oriented bookings");
+    //STDAIR_LOG_DEBUG ("Unconstrain price-oriented bookings");
     //STDAIR_LOG_NOTIFICATION (iDCPBegin << ";" << iDCPEnd);
     unconstrainUsingAdditivePickUp (lGuillotineBlock, ioQEquivalentDemandVector,
                                     iDCPBegin, iDCPEnd, lNbOfUsableSegments,
@@ -118,14 +118,14 @@ namespace RMOL {
       lHBHolder.addHistoricalBooking (lHistoricalBkg);
 
       // DEBUG
-      STDAIR_LOG_DEBUG ("Historical bkgs: " << lNbOfHistoricalBkgs
-                        << ", censored: " << lCensorshipFlag);
+      //STDAIR_LOG_DEBUG ("Historical bkgs: " << lNbOfHistoricalBkgs
+      //                  << ", censored: " << lCensorshipFlag);
       // STDAIR_LOG_NOTIFICATION (lNbOfHistoricalBkgs
       //                          << ";" << lCensorshipFlag);
     }
 
     // DEBUG
-    STDAIR_LOG_DEBUG ("Unconstrain by EM");
+    // STDAIR_LOG_DEBUG ("Unconstrain by EM");
     
     // Unconstrain the booking figures
     EMDetruncator::unconstrainUsingEMMethod (lHBHolder);
@@ -188,14 +188,14 @@ namespace RMOL {
       lHBHolder.addHistoricalBooking (lHistoricalBkg);
 
       // DEBUG
-      STDAIR_LOG_DEBUG ("Historical bkgs: " << lNbOfHistoricalBkgs
-                        << ", censored: " << lCensorshipFlag);
+      // STDAIR_LOG_DEBUG ("Historical bkgs: " << lNbOfHistoricalBkgs
+      //                  << ", censored: " << lCensorshipFlag);
       // STDAIR_LOG_NOTIFICATION (lNbOfHistoricalBkgs
       //                          << ";" << lCensorshipFlag);
     }
 
     // DEBUG
-    STDAIR_LOG_DEBUG ("Unconstrain by EM");
+    // STDAIR_LOG_DEBUG ("Unconstrain by EM");
     
     // Unconstrain the booking figures
     EMDetruncator::unconstrainUsingEMMethod (lHBHolder);
@@ -257,8 +257,8 @@ namespace RMOL {
         lGuillotineBlock.getBlockIndex (lBCKey);
       UnconstrainedDemandVector_T& lUncDemVector = itBCUDV->second;
 
-      STDAIR_LOG_DEBUG("Retrieve the unconstrained product-oriented demand for "
-                       << lBCKey);
+      //STDAIR_LOG_DEBUG("Retrieve the unconstrained product-oriented demand for "
+      //                 << lBCKey);
       retrieveUnconstrainedDemandForFirstDCP (lGuillotineBlock, lUncDemVector,
                                               iFirstDCP, lBlockIdx,
                                               iNbOfSegments, iNbOfUsedSegments);
@@ -272,7 +272,7 @@ namespace RMOL {
     const stdair::BlockIndex_T& lCabinValueIdx =
       lGuillotineBlock.getBlockIndex (lSCMapKey.str());
     
-    STDAIR_LOG_DEBUG ("Retrieve the unconstrained price-oriented demand");
+    // STDAIR_LOG_DEBUG ("Retrieve the unconstrained price-oriented demand");
     retrieveUnconstrainedDemandForFirstDCP (lGuillotineBlock,
                                             ioQEquivalentDemandVector,iFirstDCP,
                                             lCabinValueIdx, iNbOfSegments,
@@ -342,7 +342,7 @@ namespace RMOL {
         lGuillotineBlock.getBlockIndex (lBCKey);
       UnconstrainedDemandVector_T& lUncDemVector = itBCUDV->second;
 
-      STDAIR_LOG_DEBUG ("Unconstrain product-oriented bookings for " << lBCKey);
+      //STDAIR_LOG_DEBUG ("Unconstrain product-oriented bookings for " << lBCKey);
       unconstrainUsingMultiplicativePickUp (lGuillotineBlock, lUncDemVector,
                                             iDCPBegin, iDCPEnd,
                                             lNbOfUsableSegments, lBlockIdx,
@@ -357,7 +357,7 @@ namespace RMOL {
     const stdair::BlockIndex_T& lCabinIdx =
       lGuillotineBlock.getBlockIndex (lSCMapKey.str());
 
-    STDAIR_LOG_DEBUG ("Unconstrain price-oriented bookings");
+    //STDAIR_LOG_DEBUG ("Unconstrain price-oriented bookings");
     unconstrainUsingMultiplicativePickUp (lGuillotineBlock,
                                           ioQEquivalentDemandVector,
                                           iDCPBegin, iDCPEnd,
@@ -426,12 +426,12 @@ namespace RMOL {
       }
       
       // DEBUG
-      STDAIR_LOG_DEBUG ("Historical bkgs: " << lNbOfHistoricalBkgs
-                        << ", censored: " << lCensorshipFlag);
+      // STDAIR_LOG_DEBUG ("Historical bkgs: " << lNbOfHistoricalBkgs
+      //                   << ", censored: " << lCensorshipFlag);
     }
 
     // DEBUG
-    STDAIR_LOG_DEBUG ("Unconstrain by multiplicative pick-up using EM");
+    // STDAIR_LOG_DEBUG ("Unconstrain by multiplicative pick-up using EM");
     
     // Unconstrain the booking figures
     unconstrainUsingMultiplicativePickUp (lHBHolder);
@@ -510,12 +510,12 @@ namespace RMOL {
       }
       
       // DEBUG
-      STDAIR_LOG_DEBUG ("Historical bkgs: " << lNbOfHistoricalBkgs
-                        << ", censored: " << lCensorshipFlag);
+      // STDAIR_LOG_DEBUG ("Historical bkgs: " << lNbOfHistoricalBkgs
+      //                   << ", censored: " << lCensorshipFlag);
     }
 
     // DEBUG
-    STDAIR_LOG_DEBUG ("Unconstrain by multiplicative pick-up");
+    // STDAIR_LOG_DEBUG ("Unconstrain by multiplicative pick-up");
     
     // Unconstrain the booking figures
     unconstrainUsingMultiplicativePickUp (lHBHolder);
