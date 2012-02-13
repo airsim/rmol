@@ -1,5 +1,5 @@
-#ifndef __RMOL_BOM_GUILLOTINEBLOCKHELPER_HPP
-#define __RMOL_BOM_GUILLOTINEBLOCKHELPER_HPP
+#ifndef __RMOL_BOM_SEGMENTSNAPSHOTTABLEHELPER_HPP
+#define __RMOL_BOM_SEGMENTSNAPSHOTTABLEHELPER_HPP
 
 // //////////////////////////////////////////////////////////////////////
 // Import section
@@ -12,7 +12,7 @@
 
 // Forward declarations
 namespace stdair {
-  class GuillotineBlock;
+  class SegmentSnapshotTable;
   class SegmentCabin;
 }
 
@@ -20,14 +20,14 @@ namespace RMOL {
   
   /** Class representing the actual business functions for
       an airline guillotine block. */
-  class GuillotineBlockHelper {
+  class SegmentSnapshotTableHelper {
   public:
     // ////////// Business Methods /////////
     /**
      * Retrieve the number of similar segments which already passed the
      * given DTD.
      */
-    static stdair::NbOfSegments_T getNbOfSegmentAlreadyPassedThisDTD (const stdair::GuillotineBlock&, const stdair::DTD_T&, const stdair::Date_T&);
+    static stdair::NbOfSegments_T getNbOfSegmentAlreadyPassedThisDTD (const stdair::SegmentSnapshotTable&, const stdair::DTD_T&, const stdair::Date_T&);
 
     /**
      * Check if the given segment has passed the given DTD.
@@ -37,4 +37,4 @@ namespace RMOL {
   };
 
 }
-#endif // __RMOL_BOM_GUILLOTINEBLOCKHELPER_HPP
+#endif // __RMOL_BOM_SEGMENTSNAPSHOTTABLEHELPER_HPP

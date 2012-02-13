@@ -19,13 +19,17 @@ namespace RMOL {
   class Utilities {
   public:
     /** Compute the mean and the standard deviation from a set of samples. */
-    static void computeDistributionParameters (const UnconstrainedDemandVector_T&, double&, double&);
+    static void computeDistributionParameters (const stdair::UncDemVector_T&, double&, double&);
     
     /**
      * Build the list of remaining DCP's for the segment-date.
      */
     static stdair::DCPList_T buildRemainingDCPList (const stdair::DTD_T&);
-    static stdair::DCPList_T buildRemainingDCPList2 (const stdair::DTD_T&);
+
+    /**
+     * Build the list of past DCP's for the segment-date.
+     */
+    static stdair::DCPList_T buildPastDCPList (const stdair::DTD_T&);
 
     /**
      * Retrieve the number of departed similar segments.

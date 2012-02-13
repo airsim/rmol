@@ -16,19 +16,19 @@
 // RMOL
 #include <rmol/basic/BasConst_General.hpp>
 #include <rmol/bom/Utilities.hpp>
-#include <rmol/bom/GuillotineBlockHelper.hpp>
+#include <rmol/bom/SegmentSnapshotTableHelper.hpp>
 
 namespace RMOL {
   // ////////////////////////////////////////////////////////////////////
   void Utilities::
-  computeDistributionParameters (const UnconstrainedDemandVector_T& iVector,
+  computeDistributionParameters (const stdair::UncDemVector_T& iVector,
                                  double& ioMean, double& ioStdDev) {
     ioMean = 0.0; ioStdDev = 0.0;
     unsigned int lNbOfSamples = iVector.size();
     assert (lNbOfSamples > 1);
 
     // Compute the mean
-    for (UnconstrainedDemandVector_T::const_iterator itSample = iVector.begin();
+    for (stdair::UncDemVector_T::const_iterator itSample = iVector.begin();
          itSample != iVector.end(); ++itSample) {
       //STDAIR_LOG_NOTIFICATION (*itSample);
       ioMean += *itSample;
@@ -36,7 +36,7 @@ namespace RMOL {
     ioMean /= lNbOfSamples;
 
     // Compute the standard deviation
-    for (UnconstrainedDemandVector_T::const_iterator itSample = iVector.begin();
+    for (stdair::UncDemVector_T::const_iterator itSample = iVector.begin();
          itSample != iVector.end(); ++itSample) {
       const double& lSample = *itSample;
       ioStdDev += ((lSample - ioMean) * (lSample - ioMean));
@@ -77,39 +77,34 @@ namespace RMOL {
 
   // ////////////////////////////////////////////////////////////////////
   stdair::DCPList_T Utilities::
-  buildRemainingDCPList2 (const stdair::DTD_T& iDTD) {
+  buildPastDCPList (const stdair::DTD_T& iDTD) {
     stdair::DCPList_T oDCPList;
 
-    const stdair::DCPList_T lWholeDCPList = RMOL::DEFAULT_DCP_LIST;
+    const stdair::DCPList_T lWholeDCPList = stdair::DEFAULT_DCP_LIST;
     stdair::DCPList_T::const_iterator itDCP = lWholeDCPList.begin();
     while (itDCP != lWholeDCPList.end()) {
       const stdair::DCP_T& lDCP = *itDCP;
-      if (iDTD >= lDCP) {
+      if (iDTD <= lDCP) {
+        oDCPList.push_back (lDCP);
+        ++itDCP;
+      } else {
         break;
       }
-      ++itDCP;
-    }
-    assert (itDCP != lWholeDCPList.end());
-
-    oDCPList.push_back (iDTD);
-    ++itDCP;
-    for (; itDCP != lWholeDCPList.end(); ++itDCP) {
-      oDCPList.push_back (*itDCP);
     }
     
     return oDCPList;
   }
-
+  
   // ////////////////////////////////////////////////////////////////////
   stdair::NbOfSegments_T Utilities::
   getNbOfDepartedSimilarSegments (const stdair::SegmentCabin& iSegmentCabin,
                                   const stdair::Date_T& iEventDate) {
     stdair::DTD_T lDTD = 0;
     // Retrieve the guillotine block.
-    const stdair::GuillotineBlock& lGuillotineBlock =
-      iSegmentCabin.getGuillotineBlock();
-    return GuillotineBlockHelper::
-      getNbOfSegmentAlreadyPassedThisDTD (lGuillotineBlock, lDTD, iEventDate);
+    const stdair::SegmentSnapshotTable& lSegmentSnapshotTable =
+      iSegmentCabin.getSegmentSnapshotTable();
+    return SegmentSnapshotTableHelper::
+      getNbOfSegmentAlreadyPassedThisDTD (lSegmentSnapshotTable, lDTD, iEventDate);
   }
 
 }
