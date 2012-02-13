@@ -31,12 +31,11 @@ namespace RMOL {
   /** Default negative value used to initialze a double variable. */
   const double DEFAULT_INITIALIZER_DOUBLE_NEGATIVE = -10.0;
 
-  /** Default cumulative[for the remaining period] FRAT5 curve for
-      forecasting and optimisation. */
-  const FRAT5Curve_T DEFAULT_CUMULATIVE_FRAT5_CURVE =
-    DefaultMap::createCumulativeFRAT5Curve();
-  FRAT5Curve_T DefaultMap::createCumulativeFRAT5Curve() {
-    FRAT5Curve_T oCurve;
+  /** Default FRAT5 curve for forecasting and optimisation. */
+  const stdair::FRAT5Curve_T DEFAULT_FRAT5_CURVE =
+    DefaultMap::createFRAT5Curve();
+  stdair::FRAT5Curve_T DefaultMap::createFRAT5Curve() {
+    stdair::FRAT5Curve_T oCurve;
     // oCurve[63] = 1.4;  oCurve[56] = 1.45;
     // oCurve[49] = 1.5;  oCurve[42] = 1.55; oCurve[35] = 1.6;
     // oCurve[31] = 1.7;  oCurve[27] = 1.8;  oCurve[23] = 2.0;
