@@ -25,34 +25,88 @@ namespace RMOL {
     /**
      * Forecast demand for  a flight-date using additive pick-up method.
     */
-    static bool forecastUsingAddPkUp (stdair::FlightDate&,
-                                      const stdair::DateTime_T&);
+    static bool forecastUsingAdditivePickUp (stdair::FlightDate&,
+                                             const stdair::DateTime_T&);
+    
+    /**
+     * Forecast demand for  a flight-date using multiplicative pick-up method.
+    */
+    static bool forecastUsingMultiplicativePickUp (stdair::FlightDate&,
+                                                   const stdair::DateTime_T&);
+
 
   private:
     /**
      * Forecast demand for a segment-cabin using addtive pick-up method.
      */
-    static bool forecastUsingAddPkUp (stdair::SegmentCabin&,
-                                      const stdair::Date_T&);
+    static bool forecastUsingAdditivePickUp (stdair::SegmentCabin&,
+                                             const stdair::DCPList_T&,
+                                             const stdair::Date_T&);
 
     /**
-     * Distribute the unconstrained Q-equivalent demand into the classes.
+     * Forecast product-oriented and price-oriented demand given the
+     * unconstrained demand of historical segments.
      */
-    static void distributeQEquiUncDemToClasses (stdair::UncDemCurveHolder_T&,
-                                                stdair::BookingClassUncDemCurveHolderMap_T&,
-                                                const stdair::BookingClassList_T&);
+    static void forecastUsingAdditivePickUp (stdair::SegmentCabin&,
+                                             const BookingClassUnconstrainedDemandVectorMap_T&, const UnconstrainedDemandVector_T&, const double&);
+    
+    /**
+     * Forecast demand for a segment-cabin using addtive pick-up method.
+     */
+    static bool forecastUsingMultiplicativePickUp (stdair::SegmentCabin&,
+                                                   const stdair::Date_T&,
+                                                   const stdair::DTD_T&);
+    /**
+     * Forecast demand between two DCP's.
+     */
+    static void forecastUsingMultiplicativePickUp(const stdair::SegmentCabin&,
+                                                  BookingClassUnconstrainedDemandVectorMap_T&,
+                                                  UnconstrainedDemandVector_T&,
+                                                  const stdair::DCP_T&,
+                                                  const stdair::DCP_T&,
+                                                  const stdair::Date_T&,
+                                                  const stdair::NbOfSegments_T&,
+                                                  const stdair::NbOfSegments_T&);
+    
+    /**
+     * Forecast the product-oriented demand for a given class ou
+     * Q-equivalent class. */
+    static void forecastUsingMultiplicativePickUp(const stdair::GuillotineBlock&,
+                                                  UnconstrainedDemandVector_T&,
+                                                  const stdair::DCP_T&,
+                                                  const stdair::DCP_T&,
+                                                  const stdair::NbOfSegments_T&,
+                                                  const stdair::BlockIndex_T&,
+                                                  const stdair::NbOfSegments_T&,
+                                                  const stdair::NbOfSegments_T&);
+    
+    /**
+     * Forecast the product-oriented demand for a given class ou
+     * Q-equivalent class. */
+    static void forecastUsingMultiplicativePickUp(const stdair::GuillotineBlock&,
+                                                  UnconstrainedDemandVector_T&,
+                                                  const stdair::DCP_T&,
+                                                  const stdair::DCP_T&,
+                                                  const stdair::NbOfSegments_T&,
+                                                  const stdair::BlockIndex_T&,
+                                                  const stdair::NbOfSegments_T&,
+                                                  const stdair::NbOfSegments_T&,
+                                                  const stdair::SegmentCabin&,
+                                                  const stdair::Date_T&);
 
-  
-    
     /**
-     * Precompute the sell-up factors for each class and each DCP.
+     * Forecast product-oriented and price-oriented demand given the
+     * unconstrained demand of historical segments.
      */
-    static stdair::BookingClassSellUpCurveMap_T computeSellUpFactorCurves (const stdair::SellUpCurve_T&, const stdair::BookingClassList_T&);
-    
+    static bool forecastUsingMultiplicativePickUp(stdair::SegmentCabin&,
+                                                  const BookingClassUnconstrainedDemandMap_T&,
+                                                  const stdair::NbOfRequests_T&,
+                                                  const double&);
+
     /**
-     * Set the achievable demand forecast to zero for departed segment.
+     * Set the remaining demand forecast to zero for departed segment.
      */
-    static void setAchievableDemandForecastToZero (const stdair::SegmentCabin&);
+    static void setRemainingDemandForecastToZero (const stdair::SegmentCabin&);
   };
 }
 #endif // __RMOL_COMMAND_FORECASTER_HPP

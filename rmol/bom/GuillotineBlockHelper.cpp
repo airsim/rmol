@@ -9,15 +9,15 @@
 #include <stdair/bom/SegmentDate.hpp>
 #include <stdair/bom/SegmentCabin.hpp>
 #include <stdair/bom/BookingClass.hpp>
-#include <stdair/bom/SegmentSnapshotTable.hpp>
+#include <stdair/bom/GuillotineBlock.hpp>
 #include <stdair/service/Logger.hpp>
 // RMOL
-#include <rmol/bom/SegmentSnapshotTableHelper.hpp>
+#include <rmol/bom/GuillotineBlockHelper.hpp>
 
 namespace RMOL {
   // ////////////////////////////////////////////////////////////////////
-  stdair::NbOfSegments_T SegmentSnapshotTableHelper::
-  getNbOfSegmentAlreadyPassedThisDTD (const stdair::SegmentSnapshotTable& iGB,
+  stdair::NbOfSegments_T GuillotineBlockHelper::
+  getNbOfSegmentAlreadyPassedThisDTD (const stdair::GuillotineBlock& iGB,
                                       const stdair::DTD_T& iDTD,
                                       const stdair::Date_T& iCurrentDate) {
     stdair::NbOfSegments_T oNbOfSegments = 0;
@@ -38,7 +38,7 @@ namespace RMOL {
   }
   
   // ////////////////////////////////////////////////////////////////////
-  bool SegmentSnapshotTableHelper::
+  bool GuillotineBlockHelper::
   hasPassedThisDTD (const stdair::SegmentCabin& iSegmentCabin,
                     const stdair::DTD_T& iDTD,
                     const stdair::Date_T& iCurrentDate) {
