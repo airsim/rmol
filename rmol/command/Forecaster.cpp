@@ -192,10 +192,13 @@ namespace RMOL {
     } else {
       // Compute the demand for higher class using the formula
       // Pro_sell_up_from_Q_to_F = e ^ ((y_F/y_Q - 1) * ln (0.5) / (FRAT5 - 1))
+      stdair::BookingClass* lLowestClass_ptr = *itCurrentClass;
+      assert (lLowestClass_ptr != NULL);
+      const stdair::Yield_T& lLowestYield = lLowestClass_ptr->getYield();
+      double lPsup = 1.0;
       for (; itNextClass != lBCList.rend(); ++itCurrentClass, ++itNextClass) {
         stdair::BookingClass* lCurrentBC_ptr = *itCurrentClass;
         assert (lCurrentBC_ptr != NULL);
-        const stdair::Yield_T& lCurrentYield = lCurrentBC_ptr->getYield();
         stdair::BookingClass* lNextBC_ptr = *itNextClass;
         assert (lNextBC_ptr != NULL);
         const stdair::Yield_T& lNextYield = lNextBC_ptr->getYield();
@@ -203,9 +206,9 @@ namespace RMOL {
         // Compute the part of price-oriented demand distributed to the
         // current class.
         const double lSellUp =
-          exp ((1.0 - lNextYield/lCurrentYield) * iSellUpFactor);
-        const double lPriceOriDemMeanFrac = lPriceOriMean * (1.0 - lSellUp);
-        const double lPriceOriDemStdDevFrac = lPriceOriStdDev * (1.0 - lSellUp);
+          exp ((1.0 - lNextYield/lLowestYield) * iSellUpFactor);
+        const double lPriceOriDemMeanFrac = lPriceOriMean * (lPsup - lSellUp);
+        const double lPriceOriDemStdDevFrac = lPriceOriStdDev * sqrt(lPsup - lSellUp);
 
         // Compute the product-oriented demand distribution for the
         // current class.
@@ -228,9 +231,8 @@ namespace RMOL {
         //                          << ", mean = " << lMean
         //                          << ", stddev = " << lStdDev);
 
-        // Update the price-oriented demand
-        lPriceOriMean *= lSellUp;
-        lPriceOriStdDev *= lSellUp;
+        // Update the psup
+	lPsup = lSellUp;
       }
 
       // Compute the demand distribution for the highest class (which is the
@@ -245,8 +247,8 @@ namespace RMOL {
       Utilities::computeDistributionParameters(lDemandVector, lMean, lStdDev);
         
       // Compute the demand distribution for the current class;
-      lMean += lPriceOriMean;
-      lStdDev = sqrt (lStdDev * lStdDev + lPriceOriStdDev * lPriceOriStdDev);
+      lMean += lPriceOriMean * lPsup;
+      lStdDev = sqrt (lStdDev * lStdDev + lPriceOriStdDev * lPriceOriStdDev * lPsup);
       lCurrentBC_ptr->setMean (lMean);
       lCurrentBC_ptr->setStdDev (lStdDev);
 
