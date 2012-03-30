@@ -459,13 +459,7 @@ namespace RMOL {
         iForecastingMethod.getMethod();
       switch (lForecastingMethod) {
       case stdair::ForecastingMethod::ADD_PK: {
-        isForecasted = Forecaster::forecastUsingAdditivePickUp (ioFlightDate,
-                                                                iRMEventTime);
-        break;
-      }
-      case stdair::ForecastingMethod::MUL_PK: {
-        isForecasted =
-          Forecaster::forecastUsingMultiplicativePickUp (ioFlightDate,
+        isForecasted = Forecaster::forecastUsingAddPkUp (ioFlightDate,
                                                          iRMEventTime);
         break;
       }
