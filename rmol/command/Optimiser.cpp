@@ -102,8 +102,7 @@ namespace RMOL {
         buildVirtualClassListForLegBasedOptimisation (*lLC_ptr);
 
         // Optimise using Monte-Carlo Integration method.
-        //optimalOptimisationByMCIntegration (10000, *lLC_ptr);
-        heuristicOptimisationByEmsr (*lLC_ptr);
+        optimalOptimisationByMCIntegration (10000, *lLC_ptr);
       }
     }
   }
