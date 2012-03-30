@@ -9,13 +9,12 @@
 
 namespace RMOL {
 
-  /** Default cumulative (for the remaining period) FRAT5 curve for
-      forecasting and optimisation. */
-  extern const FRAT5Curve_T DEFAULT_CUMULATIVE_FRAT5_CURVE;
+  /** Default FRAT5 curve for forecasting and optimisation. */
+  extern const stdair::FRAT5Curve_T DEFAULT_FRAT5_CURVE;
 
-  /** Default PoS probability mass. */
+  /** Default FRAT5 curve. */
   struct DefaultMap {
-    static FRAT5Curve_T createCumulativeFRAT5Curve();
+    static stdair::FRAT5Curve_T createFRAT5Curve();
   };
 }
 #endif // __RMOL_BAS_BASCONST_CURVES_HPP
