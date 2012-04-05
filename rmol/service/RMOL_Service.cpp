@@ -398,7 +398,7 @@ namespace RMOL {
   bool RMOL_Service::
   optimise (stdair::FlightDate& ioFlightDate,
             const stdair::DateTime_T& iRMEventTime,
-            const stdair::ForecastingMethod& iForecastingMethod,
+            const stdair::UnconstrainingMethod& iUnconstrainingMethod,
             const stdair::PartnershipTechnique& iPartnershipTechnique) {
 
     
@@ -455,10 +455,10 @@ namespace RMOL {
       
       // 1. Forecast
       bool isForecasted = false;
-      const stdair::ForecastingMethod::EN_ForecastingMethod& lForecastingMethod=
-        iForecastingMethod.getMethod();
-      switch (lForecastingMethod) {
-      case stdair::ForecastingMethod::ADD_PK: {
+      const stdair::UnconstrainingMethod::EN_UnconstrainingMethod& lUnconstrainingMethod =
+        iUnconstrainingMethod.getMethod();
+      switch (lUnconstrainingMethod) {
+      case stdair::UnconstrainingMethod::TIME_FRAME: {
         isForecasted = Forecaster::forecastUsingAddPkUp (ioFlightDate,
                                                          iRMEventTime);
         break;
