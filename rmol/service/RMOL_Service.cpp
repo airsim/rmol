@@ -39,7 +39,12 @@
 #include <rmol/factory/FacRmolServiceContext.hpp>
 #include <rmol/command/InventoryParser.hpp>
 #include <rmol/command/Optimiser.hpp>
+#include <rmol/command/OptimiserForQFF.hpp>
 #include <rmol/command/Forecaster.hpp>
+#include <rmol/command/ForecasterForNewQFF.hpp>
+#include <rmol/command/ForecasterForOldQFF.hpp>
+#include <rmol/command/MRTForNewQFF.hpp>
+#include <rmol/command/MRTForOldQFF.hpp>
 #include <rmol/service/RMOL_ServiceContext.hpp>
 #include <rmol/RMOL_Service.hpp>
 
@@ -395,6 +400,92 @@ namespace RMOL {
   }
 
   // ////////////////////////////////////////////////////////////////////
+  void RMOL_Service::heuristicOptimisationByMCIntegrationForQFF() {
+    assert (_rmolServiceContext != NULL);
+    RMOL_ServiceContext& lRMOL_ServiceContext = *_rmolServiceContext;
+
+    // Retrieve the StdAir service
+    stdair::STDAIR_Service& lSTDAIR_Service =
+      lRMOL_ServiceContext.getSTDAIR_Service();
+    stdair::BomRoot& lBomRoot = lSTDAIR_Service.getBomRoot();
+
+    //
+    stdair::LegCabin& lLegCabin =
+      stdair::BomRetriever::retrieveDummyLegCabin (lBomRoot);
+
+    OptimiserForQFF::optimalOptimisationByMCIntegration (lLegCabin);
+
+    std::ostringstream logStream;
+    stdair::BidPriceVector_T lBidPriceVector = lLegCabin.getBidPriceVector();
+    logStream << "Bid-Price Vector (BPV): ";
+    unsigned int size = lBidPriceVector.size();
+    
+    for (unsigned int i = 0; i < size - 1; ++i) {
+      const double bidPrice = lBidPriceVector.at(i);
+      logStream << std::fixed << std::setprecision (2) << bidPrice << ", ";
+    }
+    const double bidPrice = lBidPriceVector.at(size -1);
+    logStream << std::fixed << std::setprecision (2) << bidPrice;
+    STDAIR_LOG_DEBUG (logStream.str());
+
+  }
+
+  // ////////////////////////////////////////////////////////////////////
+  void RMOL_Service::heuristicOptimisationByEmsrBForQFF() {
+    assert (_rmolServiceContext != NULL);
+    RMOL_ServiceContext& lRMOL_ServiceContext = *_rmolServiceContext;
+
+    // Retrieve the StdAir service
+    stdair::STDAIR_Service& lSTDAIR_Service =
+      lRMOL_ServiceContext.getSTDAIR_Service();
+    stdair::BomRoot& lBomRoot = lSTDAIR_Service.getBomRoot();
+
+    //
+    stdair::LegCabin& lLegCabin =
+      stdair::BomRetriever::retrieveDummyLegCabin (lBomRoot);
+
+    OptimiserForQFF::heuristicOptimisationByEMSRb (lLegCabin);
+
+    // DEBUG
+    STDAIR_LOG_DEBUG ("Result: " << lLegCabin.displayVirtualClassList());
+  }
+
+  // ////////////////////////////////////////////////////////////////////
+  void RMOL_Service::MRTForNewQFF() {
+    assert (_rmolServiceContext != NULL);
+    RMOL_ServiceContext& lRMOL_ServiceContext = *_rmolServiceContext;
+
+    // Retrieve the StdAir service
+    stdair::STDAIR_Service& lSTDAIR_Service =
+      lRMOL_ServiceContext.getSTDAIR_Service();
+    stdair::BomRoot& lBomRoot = lSTDAIR_Service.getBomRoot();
+
+    const bool isForFareFamilies = true;
+    stdair::LegCabin& lLegCabin =
+      stdair::BomRetriever::retrieveDummyLegCabin (lBomRoot, isForFareFamilies);
+
+    MRTForNewQFF::initForOptimiser (lLegCabin);
+  }
+
+  // ////////////////////////////////////////////////////////////////////
+  const stdair::SegmentCabin& RMOL_Service::
+  retrieveDummySegmentCabin(const bool isForFareFamilies) {
+    assert (_rmolServiceContext != NULL);
+    RMOL_ServiceContext& lRMOL_ServiceContext = *_rmolServiceContext;
+
+    // Retrieve the StdAir service
+    stdair::STDAIR_Service& lSTDAIR_Service =
+      lRMOL_ServiceContext.getSTDAIR_Service();
+    stdair::BomRoot& lBomRoot = lSTDAIR_Service.getBomRoot();
+
+    const stdair::SegmentCabin& lSegmentCabin = 
+      stdair::BomRetriever::retrieveDummySegmentCabin(lBomRoot, 
+                                                      isForFareFamilies);
+    return lSegmentCabin;
+    
+  }
+
+  // ////////////////////////////////////////////////////////////////////
   bool RMOL_Service::
   optimise (stdair::FlightDate& ioFlightDate,
             const stdair::DateTime_T& iRMEventTime,
@@ -461,6 +552,11 @@ namespace RMOL {
       case stdair::UnconstrainingMethod::TIME_FRAME: {
         isForecasted = Forecaster::forecastUsingAddPkUp (ioFlightDate,
                                                          iRMEventTime);
+        break;
+      }
+      case stdair::UnconstrainingMethod::NEW_QFF: {
+        isForecasted = ForecasterForNewQFF::forecast (ioFlightDate,
+                                                      iRMEventTime);
         break;
       }
       default: {
