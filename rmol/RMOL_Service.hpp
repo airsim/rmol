@@ -13,6 +13,7 @@
 #include <stdair/stdair_maths_types.hpp>
 #include <stdair/basic/UnconstrainingMethod.hpp>
 #include <stdair/basic/ForecastingMethod.hpp>
+#include <stdair/basic/OptimisationMethod.hpp>
 #include <stdair/basic/PartnershipTechnique.hpp>
 // RMOL
 #include <rmol/RMOL_Types.hpp>
@@ -184,8 +185,9 @@ namespace RMOL {
      * Optimise (revenue management) an flight-date/network-date
      */
     bool optimise (stdair::FlightDate&, const stdair::DateTime_T&,
-                   const stdair::UnconstrainingMethod&,  
-		   const stdair::ForecastingMethod&, 
+                   const stdair::UnconstrainingMethod&,
+		   const stdair::ForecastingMethod&,    
+		   const stdair::OptimisationMethod&,
 		   const stdair::PartnershipTechnique&);
 
     /**

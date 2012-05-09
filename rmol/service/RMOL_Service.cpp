@@ -490,7 +490,8 @@ namespace RMOL {
   optimise (stdair::FlightDate& ioFlightDate,
             const stdair::DateTime_T& iRMEventTime,
             const stdair::UnconstrainingMethod& iUnconstrainingMethod,
-	    const stdair::ForecastingMethod& iForecastingMethod,
+	    const stdair::ForecastingMethod& iForecastingMethod, 
+	    const stdair::OptimisationMethod& iOptimisationMethod,
             const stdair::PartnershipTechnique& iPartnershipTechnique) {
 
     
