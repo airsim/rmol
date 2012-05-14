@@ -106,8 +106,9 @@ namespace RMOL {
         lBookingClass.setYield (lYield);
         lBookingClass.setMean (lMean);
         lBookingClass.setStdDev (lStdDev);
-
-        stdair::VirtualClassStruct lVirtualClass (lBookingClass);
+        stdair::BookingClassList_T lBookingClassList;
+        lBookingClassList.push_back(&lBookingClass);
+        stdair::VirtualClassStruct lVirtualClass (lBookingClassList);
         lVirtualClass.setYield (lYield);
         lVirtualClass.setMean (lMean);
         lVirtualClass.setStdDev (lStdDev);
