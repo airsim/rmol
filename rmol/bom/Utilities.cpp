@@ -12,11 +12,15 @@
 #include <stdair/basic/BasConst_Inventory.hpp>
 #include <stdair/bom/BomManager.hpp>
 #include <stdair/bom/SegmentCabin.hpp>
+#include <stdair/bom/FareFamily.hpp>
+#include <stdair/bom/BookingClass.hpp>
+#include <stdair/bom/BookingClassTypes.hpp>
 #include <stdair/service/Logger.hpp>
 // RMOL
 #include <rmol/basic/BasConst_General.hpp>
 #include <rmol/bom/Utilities.hpp>
 #include <rmol/bom/SegmentSnapshotTableHelper.hpp>
+#include <rmol/basic/BasConst_Curves.hpp>
 
 namespace RMOL {
   // ////////////////////////////////////////////////////////////////////
@@ -105,6 +109,136 @@ namespace RMOL {
       iSegmentCabin.getSegmentSnapshotTable();
     return SegmentSnapshotTableHelper::
       getNbOfSegmentAlreadyPassedThisDTD (lSegmentSnapshotTable, lDTD, iEventDate);
+  }
+  
+// ////////////////////////////////////////////////////////////////////
+  const BookingClassMeanStdDevPairMap_T Utilities::
+  createBookingClassMeanStdDevPairMap(
+    const stdair::FareFamilyList_T& iFareFamilyList,
+    const bool isCumulated) {
+    BookingClassMeanStdDevPairMap_T lBCMSDMap;
+    stdair::FareFamilyList_T::const_iterator itFF = iFareFamilyList.begin();
+    // Browse the fare families
+    for (; itFF != iFareFamilyList.end(); ++itFF) {
+      // Retrieve the unconstrained demand  
+      const stdair::FareFamily* lFF_ptr = *itFF;
+      const stdair::MeanStdDevPairVector_T& lFareFamilyDemand = 
+        lFF_ptr->getMeanStdDev();
+      const unsigned int& lFareFamilyDemandSize = lFareFamilyDemand.size();
+      // Retrieve the class list.
+      const stdair::BookingClassList_T& lBookingClassList =
+        stdair::BomManager::getList<stdair::BookingClass> (*lFF_ptr);
+
+      // Retrieve the PSellUp curve
+      const stdair::BookingClassSellUpCurveMap_T& lBCSUCMap = 
+        createBookingClassSellUpCurveMap(lBookingClassList, isCumulated);
+      stdair::BookingClassList_T::const_iterator itBC = 
+        lBookingClassList.begin();
+      // Browse the booking class list
+      for (; itBC != lBookingClassList.end(); ++itBC) {
+        stdair::MeanValue_T lMean = 0.0;
+        stdair::StdDevValue_T lStdDev = 0.0;
+        stdair::BookingClass* lBC_ptr = *itBC;
+        stdair::BookingClassSellUpCurveMap_T::const_iterator itBCSUCMap =
+          lBCSUCMap.find(lBC_ptr);
+        assert (itBCSUCMap != lBCSUCMap.end());
+        const stdair::SellUpCurve_T& lSellUpCurve = itBCSUCMap->second;
+        const unsigned int& lSellUpCurveSize = lSellUpCurve.size();      
+        if (lSellUpCurveSize != lFareFamilyDemandSize) {
+          std::ostringstream ostr;
+          ostr << "The Fare Family demand vector size (" 
+               << lFareFamilyDemandSize << ") is not the same than "
+               << "the sell up curve size (" << lSellUpCurveSize << ").";
+          STDAIR_LOG_DEBUG(ostr.str());
+          throw FareFamilyDemandVectorSizeException (ostr.str());
+        }
+        assert(lSellUpCurveSize == lFareFamilyDemandSize);
+        // Retrieve the sell up curves and the fare family demand
+        for (unsigned int idx = 0; idx < lSellUpCurveSize; ++idx) {
+          const double& lPSellUp = lSellUpCurve[idx];
+          // Calculate the demand and its standard deviation
+          const stdair::MeanStdDevPair_T& lMeanStdDevPair = 
+            lFareFamilyDemand[idx];
+          stdair::MeanValue_T lDailyDemand = lMeanStdDevPair.first;
+          lDailyDemand *= lPSellUp;
+          stdair::StdDevValue_T lDailyStdDev = lMeanStdDevPair.second;
+          lDailyStdDev *= sqrt(lPSellUp);
+          lMean += lDailyDemand;
+          lStdDev = sqrt(lStdDev * lStdDev + lDailyStdDev * lDailyStdDev);
+        }
+        // Insert the demand and its standard deviation in the map
+        const stdair::MeanStdDevPair_T lMeanStdDevPair (lMean, lStdDev);
+        const bool insertionSucceeded = lBCMSDMap.insert(
+          BookingClassMeanStdDevPairMap_T::
+          value_type(lBC_ptr, lMeanStdDevPair)).second;
+        assert (insertionSucceeded == true);
+      }
+    }
+  return lBCMSDMap;
+
+  }
+
+  // ////////////////////////////////////////////////////////////////////
+  const stdair::BookingClassSellUpCurveMap_T Utilities::
+  createBookingClassSellUpCurveMap(
+    const stdair::BookingClassList_T& iBookingClassList,
+    const bool isCumulated) {
+    stdair::BookingClassSellUpCurveMap_T lBCSUCMap;
+    
+    // Retrieve the yield of the cheapest booking class of the fare family
+    stdair::BookingClassList_T::const_reverse_iterator ritBC =
+         iBookingClassList.rbegin();
+    stdair::BookingClass* lCheapestBC_ptr = *ritBC;
+    assert (lCheapestBC_ptr != NULL);
+    const stdair::Yield_T& lcheapestYield = lCheapestBC_ptr->getYield ();
+      
+    stdair::BookingClassList_T::const_reverse_iterator ritNextBC = ritBC;
+    ++ritNextBC; 
+    const stdair::FRAT5Curve_T& lFRAT5Curve = DEFAULT_FRAT5_CURVE;
+    stdair::SellUpCurve_T lBasedSellUpCurve (lFRAT5Curve.size(), 1.0);
+    for (; ritNextBC != iBookingClassList.rend(); ++ritBC, ++ritNextBC) {
+      stdair::BookingClass* lBC_ptr = *ritBC;
+      stdair::BookingClass* lNextBC_ptr = *ritNextBC;
+    
+      // Create a SellUpCurve
+      stdair::SellUpCurve_T lSellUpCurve;
+      stdair::FRAT5Curve_T::const_reverse_iterator ritFRAT5CURV = 
+        lFRAT5Curve.rbegin();
+      assert(ritFRAT5CURV != lFRAT5Curve.rend());
+      unsigned int idx = 0;
+      for (; ritFRAT5CURV != lFRAT5Curve.rend(); ++ritFRAT5CURV, ++idx) {
+        const double lFRAT5 = ritFRAT5CURV->second;
+        assert(lFRAT5 > 1);
+        // Retrieve yield of the next BC to calculate the probability of sell up
+        const stdair::Yield_T& lNextYield = lNextBC_ptr->getYield ();
+        double lPSUp = 1.0;
+        
+        // Calculate the probability of sell up
+        const double lSellUpConstant = -log(0.5)/(lFRAT5 - 1);
+        lPSUp = exp(-(lNextYield/lcheapestYield-1) * lSellUpConstant);
+        double& lBasedFactor = lBasedSellUpCurve[idx];
+        if (isCumulated == true) {
+          lSellUpCurve.push_back(lBasedFactor);
+        } else {
+          lSellUpCurve.push_back(lBasedFactor - lPSUp);
+        }
+        
+        lBasedFactor = lPSUp;
+      }
+      // Insert the Sell Up curve in the map
+      const bool insertionSucceeded = lBCSUCMap.insert(
+        stdair::BookingClassSellUpCurveMap_T::
+        value_type(lBC_ptr, lSellUpCurve)).second;
+      assert (insertionSucceeded == true);
+    }
+    // Insert the Sell Up curve of the last booking class in the map
+    stdair::BookingClass* lBC_ptr = *ritBC;
+    const bool insertionSucceeded = lBCSUCMap.insert(
+        stdair::BookingClassSellUpCurveMap_T::
+        value_type(lBC_ptr, lBasedSellUpCurve)).second;
+      assert (insertionSucceeded == true);
+
+    return lBCSUCMap;
   }
 
 }

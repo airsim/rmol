@@ -5,6 +5,7 @@
 // //////////////////////////////////////////////////////////////////////
 // StdAir
 #include <stdair/stdair_inventory_types.hpp>
+#include <stdair/bom/FareFamilyTypes.hpp>
 // RMOL
 #include <rmol/RMOL_Types.hpp>
 
@@ -36,8 +37,27 @@ namespace RMOL {
      */
     static stdair::NbOfSegments_T getNbOfDepartedSimilarSegments (const stdair::SegmentCabin&, const stdair::Date_T&);
 
-  };
+    /**
+     * Build the map of mean and standard deviation pair for each booking class
+     * of the fare family list. If the boolean is true the mean and the 
+     * standard deviation is cumulated.
+     */
+    static const BookingClassMeanStdDevPairMap_T 
+      createBookingClassMeanStdDevPairMap(const stdair::FareFamilyList_T&,
+                                          const bool isCumulated = false);
 
+    /**
+     * Build the map of sell up curve for each booking class of 
+     * the booking class list. If the boolean is true the probability
+     * is cumulated.
+     */
+    static const stdair::BookingClassSellUpCurveMap_T 
+      createBookingClassSellUpCurveMap(const stdair::BookingClassList_T&, 
+                                       const bool isCumulated = false);
+
+   
+  };
+    
 }
 
 #endif // __RMOL_BOM_UTILITIES_HPP
