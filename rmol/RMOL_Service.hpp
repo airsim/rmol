@@ -28,6 +28,7 @@ namespace stdair {
   class YieldFeatures;
   class Inventory;
   class OnDDate;
+  class SegmentCabin;
 }
 
 namespace RMOL {
@@ -158,6 +159,31 @@ namespace RMOL {
      * Single resource optimization using EMSR-b heuristic.
      */
     void heuristicOptimisationByEmsrB();
+
+    /**
+     * Single resource optimization using the Monte Carlo algorithm for QFF method.
+     */
+    void heuristicOptimisationByMCIntegrationForQFF();
+
+    /**
+     * Single resource optimization using EMSR-b heuristic for QFF method.
+     */
+    void heuristicOptimisationByEmsrBForQFF();
+
+    /**
+     * Single resource pre-optimization using Marginal Revenue Transformation for QFF method.
+     */
+    void MRTForNewQFF();
+
+    /**
+     * Retrieve one sample segment-cabin of the dummy inventory of "XX".
+     * @param const bool Boolean to choose the sample segment-cabin.
+     *                   True:  the dummy segment-cabin with fare families.
+     *                   False: the dummy segment-cabin without fare families.
+     *                   By default the value is false.
+     */
+    const stdair::SegmentCabin& 
+    retrieveDummySegmentCabin(const bool isForFareFamilies = false);  
 
     /**
      * Optimise (revenue management) an flight-date/network-date

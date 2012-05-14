@@ -132,7 +132,9 @@ namespace RMOL {
       assert (lBookingClass_ptr != NULL);
 
       const stdair::Yield_T& lYield = lBookingClass_ptr->getYield();
-      stdair::VirtualClassStruct lVirtualClass (*lBookingClass_ptr);
+      stdair::BookingClassList_T lBookingClassList;
+      lBookingClassList.push_back(lBookingClass_ptr);
+      stdair::VirtualClassStruct lVirtualClass (lBookingClassList);
       lVirtualClass.setYield (lYield);
       lVirtualClass.setMean (lBookingClass_ptr->getMean());
       lVirtualClass.setStdDev (lBookingClass_ptr->getStdDev());

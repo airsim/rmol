@@ -55,7 +55,7 @@ int testOptimiseHelper (const unsigned short optimisationMethodFlag,
 
   // Output log File
   std::ostringstream oStr;
-  oStr << "OptimiseTestSuite_" << optimisationMethodFlag << ".log";
+  oStr << "OptimiseTestSuite_" << optimisationMethodFlag << "_" << isBuiltin << ".log";
   const stdair::Filename_T lLogFilename (oStr.str());
     
   // Number of random draws to be generated (best if greater than 100)
@@ -95,7 +95,7 @@ int testOptimiseHelper (const unsigned short optimisationMethodFlag,
   case 0: {
     // DEBUG
     STDAIR_LOG_DEBUG ("Optimisation by Monte-Carlo (MC)");
-    
+
     // Calculate the optimal protections by the Monte Carlo
     // Integration approach        
     rmolService.optimalOptimisationByMCIntegration (K);
@@ -245,7 +245,7 @@ BOOST_AUTO_TEST_CASE (rmol_optimisation_monte_carlo_built_in) {
   // State whether the BOM tree should be built-in or parsed from an input file
   const bool isBuiltin = true;
   
-  BOOST_CHECK_NO_THROW (testOptimiseHelper(5, isBuiltin););
+  BOOST_CHECK_NO_THROW (testOptimiseHelper(0, isBuiltin););
 }
 
 /**
@@ -256,7 +256,7 @@ BOOST_AUTO_TEST_CASE (rmol_optimisation_dynamic_programming_built_in) {
   // State whether the BOM tree should be built-in or parsed from an input file
   const bool isBuiltin = true;
   
-  BOOST_CHECK_NO_THROW (testOptimiseHelper(6, isBuiltin););
+  BOOST_CHECK_NO_THROW (testOptimiseHelper(1, isBuiltin););
 }
 
 /**
@@ -268,7 +268,7 @@ BOOST_AUTO_TEST_CASE (rmol_optimisation_emsr_bpv_built_in) {
   // State whether the BOM tree should be built-in or parsed from an input file
   const bool isBuiltin = true;
   
-  BOOST_CHECK_NO_THROW (testOptimiseHelper(7, isBuiltin););
+  BOOST_CHECK_NO_THROW (testOptimiseHelper(2, isBuiltin););
 }
 
 /**
@@ -280,7 +280,7 @@ BOOST_AUTO_TEST_CASE (rmol_optimisation_emsr_a_built_in) {
   // State whether the BOM tree should be built-in or parsed from an input file
   const bool isBuiltin = true;
   
-  BOOST_CHECK_NO_THROW (testOptimiseHelper(8, isBuiltin););
+  BOOST_CHECK_NO_THROW (testOptimiseHelper(3, isBuiltin););
 }
 
 /**
@@ -292,7 +292,7 @@ BOOST_AUTO_TEST_CASE (rmol_optimisation_emsr_b_built_in) {
   // State whether the BOM tree should be built-in or parsed from an input file
   const bool isBuiltin = true;
   
-  BOOST_CHECK_NO_THROW (testOptimiseHelper(9, isBuiltin););
+  BOOST_CHECK_NO_THROW (testOptimiseHelper(4, isBuiltin););
 }
 
 // End the test suite
