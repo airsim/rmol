@@ -176,7 +176,11 @@ namespace RMOL {
     void MRTForNewQFF();
 
     /**
-     * Retrieve the segment cabin using Fare Families of the sample Bom.
+     * Retrieve one sample segment-cabin of the dummy inventory of "XX".
+     * @param const bool Boolean to choose the sample segment-cabin.
+     *                   True:  the dummy segment-cabin with fare families.
+     *                   False: the dummy segment-cabin without fare families.
+     *                   By default the value is false.
      */
     const stdair::SegmentCabin& 
     retrieveDummySegmentCabin(const bool isForFareFamilies = false);  

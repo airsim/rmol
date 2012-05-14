@@ -413,7 +413,7 @@ namespace RMOL {
     stdair::LegCabin& lLegCabin =
       stdair::BomRetriever::retrieveDummyLegCabin (lBomRoot);
 
-    OptimiserForQFF::optimalOptimisationByMCIntegration (lLegCabin);
+    OptimiserForQFF::heuristicOptimisationByMCIntegration (lLegCabin);
 
     std::ostringstream logStream;
     stdair::BidPriceVector_T lBidPriceVector = lLegCabin.getBidPriceVector();
@@ -490,8 +490,8 @@ namespace RMOL {
   optimise (stdair::FlightDate& ioFlightDate,
             const stdair::DateTime_T& iRMEventTime,
             const stdair::UnconstrainingMethod& iUnconstrainingMethod,
-	    const stdair::ForecastingMethod& iForecastingMethod, 
-	    const stdair::OptimisationMethod& iOptimisationMethod,
+            const stdair::ForecastingMethod& iForecastingMethod, 
+            const stdair::OptimisationMethod& iOptimisationMethod,
             const stdair::PartnershipTechnique& iPartnershipTechnique) {
 
     
@@ -548,16 +548,28 @@ namespace RMOL {
       
       // 1. Forecast
       bool isForecasted = false;
-      const stdair::UnconstrainingMethod::EN_UnconstrainingMethod& lUnconstrainingMethod =
-        iUnconstrainingMethod.getMethod();
-      switch (lUnconstrainingMethod) {
-      case stdair::UnconstrainingMethod::TIME_FRAME: {
+      //const stdair::UnconstrainingMethod::EN_UnconstrainingMethod& lUnconstrainingMethod =
+      //  iUnconstrainingMethod.getMethod();
+      const stdair::ForecastingMethod::EN_ForecastingMethod& lForecastingMethod =
+        iForecastingMethod.getMethod();
+      switch (lForecastingMethod) {
+      case stdair::ForecastingMethod::Q_FORECASTING: {
         isForecasted = Forecaster::forecastUsingAddPkUp (ioFlightDate,
                                                          iRMEventTime);
         break;
       }
-      case stdair::UnconstrainingMethod::NEW_QFF: {
+      case stdair::ForecastingMethod::HYBRID_FORECASTING: {
+        isForecasted = Forecaster::forecastUsingAddPkUp (ioFlightDate,
+                                                         iRMEventTime);
+        break;
+      }
+      case stdair::ForecastingMethod::NEW_QFF: {
         isForecasted = ForecasterForNewQFF::forecast (ioFlightDate,
+                                                      iRMEventTime);
+        break;
+      }
+      case stdair::ForecastingMethod::OLD_QFF: {
+        isForecasted = ForecasterForOldQFF::forecast (ioFlightDate,
                                                       iRMEventTime);
         break;
       }
@@ -574,8 +586,72 @@ namespace RMOL {
       if (isForecasted == true) {
         // DEBUG
         STDAIR_LOG_DEBUG ("Optimise");
-        
-        Optimiser::optimise (ioFlightDate);
+
+        const stdair::OptimisationMethod::EN_OptimisationMethod& lOptimisationMethod = 
+          iOptimisationMethod.getMethod();
+        switch (lOptimisationMethod) {
+
+        case stdair::OptimisationMethod::LEG_BASED_MC: {
+          switch (lForecastingMethod) {
+          case stdair::ForecastingMethod::Q_FORECASTING: {
+            Optimiser::optimise (ioFlightDate);
+            break;
+          }
+          case stdair::ForecastingMethod::HYBRID_FORECASTING: {
+            Optimiser::optimise (ioFlightDate);
+            break;
+          }
+          case stdair::ForecastingMethod::NEW_QFF: {
+            MRTForNewQFF::initForOptimiser (ioFlightDate);
+            OptimiserForQFF::optimiseUsingMC (ioFlightDate);
+            break;
+          }
+          case stdair::ForecastingMethod::OLD_QFF: {
+            MRTForOldQFF::initForOptimiser (ioFlightDate);
+            OptimiserForQFF::optimiseUsingMC (ioFlightDate);
+            break;
+          }
+          default: {
+            assert (false);
+            break;
+          }
+          }
+          break;
+        }
+
+        case stdair::OptimisationMethod::LEG_BASED_EMSR_B: {
+          switch (lForecastingMethod) {
+          case stdair::ForecastingMethod::Q_FORECASTING: {
+            Optimiser::optimise (ioFlightDate);
+            break;
+          }
+          case stdair::ForecastingMethod::HYBRID_FORECASTING: {
+            Optimiser::optimise (ioFlightDate);
+            break;
+          }
+          case stdair::ForecastingMethod::NEW_QFF: {
+            MRTForNewQFF::initForOptimiser (ioFlightDate);
+            OptimiserForQFF::optimiseUsingEMSRb (ioFlightDate);
+            return false;
+          }
+          case stdair::ForecastingMethod::OLD_QFF: {
+            MRTForOldQFF::initForOptimiser (ioFlightDate);
+            OptimiserForQFF::optimiseUsingEMSRb (ioFlightDate);
+            return false;
+          }
+          default: {
+            assert (false);
+            break;
+          }
+          }
+          break;
+        }
+
+        default: {
+          assert (false);
+          break;
+        }
+        }
         return true;
       }
       break;
