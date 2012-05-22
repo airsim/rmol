@@ -36,26 +36,30 @@ namespace RMOL {
      * Retrieve the number of departed similar segments.
      */
     static stdair::NbOfSegments_T getNbOfDepartedSimilarSegments (const stdair::SegmentCabin&, const stdair::Date_T&);
+    
+    /**
+     * Precompute the sell-up factors for each class and each DCP.
+     */
+    static stdair::BookingClassSellUpCurveMap_T computeSellUpFactorCurves (const stdair::FRAT5Curve_T&, const stdair::BookingClassList_T&);
 
     /**
-     * Build the map of mean and standard deviation pair for each booking class
-     * of the fare family list. If the boolean is true the mean and the 
-     * standard deviation is cumulated.
+     * Precompute the dispatching factors for each class and each DCP.
      */
-    static const BookingClassMeanStdDevPairMap_T 
-      createBookingClassMeanStdDevPairMap(const stdair::FareFamilyList_T&,
-                                          const bool isCumulated = false);
+    static stdair::BookingClassDispatchingCurveMap_T computeDispatchingFactorCurves (const stdair::FRAT5Curve_T&, const stdair::BookingClassList_T&);
 
     /**
-     * Build the map of sell up curve for each booking class of 
-     * the booking class list. If the boolean is true the probability
-     * is cumulated.
+     * Dispatching the demand forecast to all classes.
      */
-    static const stdair::BookingClassSellUpCurveMap_T 
-      createBookingClassSellUpCurveMap(const stdair::BookingClassList_T&, 
-                                       const bool isCumulated = false);
+    static void dispatchDemandForecast
+    (const stdair::BookingClassDispatchingCurveMap_T&,
+     const double&, const double&, const stdair::DTD_T&);
 
-   
+    /**
+     * Dispatching the demand forecast to all classes for FA.
+     */
+    static void dispatchDemandForecastForFA
+    (const stdair::BookingClassSellUpCurveMap_T&,
+     const double&, const double&, const stdair::DTD_T&);
   };
     
 }

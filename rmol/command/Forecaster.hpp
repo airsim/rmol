@@ -15,44 +15,32 @@
 namespace stdair {
   class FlightDate;
   class SegmentCabin;
-  class GuillotineBlock;
 }
 
 namespace RMOL {
-  /** Class wrapping the optimisation algorithms. */
+  /** Class wrapping the forecasting algorithms. */
   class Forecaster {    
   public:
     /**
-     * Forecast demand for  a flight-date using additive pick-up method.
+     * Forecast demand for a flight-date.
     */
-    static bool forecastUsingAddPkUp (stdair::FlightDate&,
-                                      const stdair::DateTime_T&);
+    static bool forecast (stdair::FlightDate&, const stdair::DateTime_T&,
+                          const stdair::UnconstrainingMethod::EN_UnconstrainingMethod&,
+                          const stdair::ForecastingMethod::EN_ForecastingMethod&);
 
   private:
     /**
-     * Forecast demand for a segment-cabin using addtive pick-up method.
+     * Forecast demand for a segment-cabin.
      */
-    static bool forecastUsingAddPkUp (stdair::SegmentCabin&,
-                                      const stdair::Date_T&);
+    static bool forecast (stdair::SegmentCabin&, const stdair::Date_T&,
+                          const stdair::UnconstrainingMethod::EN_UnconstrainingMethod&,
+                          const stdair::ForecastingMethod::EN_ForecastingMethod&);
 
     /**
-     * Distribute the unconstrained Q-equivalent demand into the classes.
+     * Set the demand forecasts to zero.
      */
-    static void distributeQEquiUncDemToClasses (stdair::UncDemCurveHolder_T&,
-                                                stdair::BookingClassUncDemCurveHolderMap_T&,
-                                                const stdair::BookingClassList_T&);
+    static void setDemandForecastsToZero (const stdair::SegmentCabin&);
 
-  
-    
-    /**
-     * Precompute the sell-up factors for each class and each DCP.
-     */
-    static stdair::BookingClassSellUpCurveMap_T computeSellUpFactorCurves (const stdair::SellUpCurve_T&, const stdair::BookingClassList_T&);
-    
-    /**
-     * Set the achievable demand forecast to zero for departed segment.
-     */
-    static void setAchievableDemandForecastToZero (const stdair::SegmentCabin&);
   };
 }
 #endif // __RMOL_COMMAND_FORECASTER_HPP

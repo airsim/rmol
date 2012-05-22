@@ -53,10 +53,10 @@ struct UnitTestConfig {
 
 // //////////////////////////////////////////////////////////////////////
 int testMRTForNewQFFHelper () {
-
+  
   // Return value
   int oExpectedBookingLimit = 0;
-
+  /*
   // Output log File
   std::ostringstream oStr;
   oStr << "MRTForNewQFFTestSuite.log";
@@ -152,8 +152,9 @@ int testMRTForNewQFFHelper () {
 
   // Close the log file
   logOutputFile.close();
-  
+  */
   return oExpectedBookingLimit;
+  
 }
 
 

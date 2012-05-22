@@ -7,23 +7,26 @@
 #include <cmath>
 // StdAir
 #include <stdair/basic/BasConst_Inventory.hpp>
-#include <stdair/bom/PolicyStruct.hpp>
+#include <stdair/bom/SegmentCabin.hpp>
+#include <stdair/bom/Policy.hpp>
 #include <stdair/bom/BookingClass.hpp>
 #include <stdair/bom/FareFamily.hpp>
+#include <stdair/bom/NestingNode.hpp>
 #include <stdair/bom/BomManager.hpp>
-
+#include <stdair/factory/FacBomManager.hpp>
 // RMOL
 #include <rmol/bom/PolicyHelper.hpp>
 
 namespace RMOL {
   // ////////////////////////////////////////////////////////////////////
-  const stdair::BookingClassList_T PolicyHelper::
-  diffBetweenTwoPolicies (const stdair::PolicyStruct& iFirstPolicy,
-                          const stdair::PolicyStruct& iSecondPolicy) {
-    stdair::BookingClassList_T lBookingClassList;
+  void PolicyHelper::
+  diffBetweenTwoPolicies (stdair::NestingNode& ioNode,
+                          const stdair::Policy& iFirstPolicy,
+                          const stdair::Policy& iSecondPolicy) {
+
     // Retrieve the booking class list of the first policy
     const stdair::BookingClassList_T& lFirstBCList = 
-      iFirstPolicy.getBookingClasses();
+          stdair::BomManager::getList<stdair::BookingClass> (iFirstPolicy);
 
     // Browse the booking class list
     for (stdair::BookingClassList_T::const_iterator itBC = lFirstBCList.begin();
@@ -39,32 +42,22 @@ namespace RMOL {
         stdair::BomManager::getParent<stdair::FareFamily> (*iFirstPolicyBC_ptr);
       
       // Retrieve the list of booking class between the both booking classes
-      // and insert it in the global booking class list
-      const stdair::BookingClassList_T& lCurrentBookingClassList = 
-        diffBetweenBookingClassAndPolicy(lFareFamily, 
-                                         lFirstPolicyClassCode, 
-                                         iSecondPolicy);
-      for (stdair::BookingClassList_T::const_iterator itBC = 
-           lCurrentBookingClassList.begin(); 
-           itBC != lCurrentBookingClassList.end(); ++itBC) {
-        stdair::BookingClass* lBC_ptr = *itBC;
-        assert (lBC_ptr != NULL);
-        lBookingClassList.push_back(lBC_ptr);
-      }
+      diffBetweenBookingClassAndPolicy (ioNode, lFareFamily, 
+                                        lFirstPolicyClassCode, 
+                                        iSecondPolicy);
     }
-    return lBookingClassList;
   }
 
   // ////////////////////////////////////////////////////////////////////
   const bool PolicyHelper::
   intersectionBetweenPolicyAndBookingClassList (const stdair::BookingClassList_T& iBCList,
-                                            const stdair::PolicyStruct& iPolicy,
+                                            const stdair::Policy& iPolicy,
                                             stdair::ClassCode_T& oClassCode) {
     bool isInBookingClassList = false;
 
     // Retrieve the booking classes of the policy
-    const stdair::BookingClassList_T& lPolicyBookingClassList = 
-      iPolicy.getBookingClasses();
+    const stdair::BookingClassList_T& lPolicyBookingClassList =
+      stdair::BomManager::getList<stdair::BookingClass> (iPolicy);
 
     // Browse the booking class list of the fare family
     stdair::BookingClassList_T::const_iterator itFFBC = iBCList.begin();
@@ -93,10 +86,11 @@ namespace RMOL {
   }
 
   // ////////////////////////////////////////////////////////////////////
-  const stdair::BookingClassList_T PolicyHelper::
-  diffBetweenBookingClassAndPolicy (const stdair::FareFamily& iFareFamily,
-        const stdair::ClassCode_T& iFirstPolicyClassCode,
-        const stdair::PolicyStruct& iSecondPolicy) {    
+  void PolicyHelper::
+  diffBetweenBookingClassAndPolicy (stdair::NestingNode& ioNode,
+                                    const stdair::FareFamily& iFareFamily,
+                                    const stdair::ClassCode_T& iFirstPolicyClassCode,
+                                    const stdair::Policy& iSecondPolicy) {    
     const stdair::BookingClassList_T& lFFBCList = 
         stdair::BomManager::getList<stdair::BookingClass> (iFareFamily);
     const bool isEmptyBookingClassList = lFFBCList.empty();
@@ -107,8 +101,6 @@ namespace RMOL {
       STDAIR_LOG_DEBUG(ostr.str());
       throw EmptyBookingClassListException (ostr.str());
     }
-    
-    stdair::BookingClassList_T lBookingClassList;
     
     // Retrieve the reverse iterator for the first booking class   
     stdair::BookingClassList_T::const_reverse_iterator ritBC;   
@@ -143,7 +135,7 @@ namespace RMOL {
     if (hasABookingClassIn == false) {
       for (; ritBC != lFFBCList.rend(); ++ritBC) {
         stdair::BookingClass* lBC_ptr = *ritBC;
-        lBookingClassList.push_back(lBC_ptr);
+        stdair::FacBomManager::addToList (ioNode, *lBC_ptr);
       }
     } else {
       
@@ -155,11 +147,115 @@ namespace RMOL {
         if (lSecondPolicyClassCode == lClassCode) {
           break;
         }
-        lBookingClassList.push_back(lBC_ptr);
+        stdair::FacBomManager::addToList (ioNode, *lBC_ptr);
       }
       assert(ritBC != lFFBCList.rend());
     }
-    
-    return lBookingClassList;
+  }
+
+  // ////////////////////////////////////////////////////////////////////
+  void PolicyHelper::
+  computeLastNode (stdair::NestingNode& ioNode,
+                   const stdair::Policy& iPolicy,
+                   const stdair::SegmentCabin& iSegmentCabin) {
+    // Compare the number of booking classes in the policy and the number
+    // of fare families of the segment-cabin.
+    const stdair::BookingClassList_T& lBCList =
+      stdair::BomManager::getList<stdair::BookingClass> (iPolicy);
+    const unsigned int lNbOfClasses = lBCList.size();
+    const stdair::FareFamilyList_T& lFFList =
+      stdair::BomManager::getList<stdair::FareFamily> (iSegmentCabin);
+    const unsigned int lNbOfFFs = lFFList.size();
+    assert (lNbOfFFs >= lNbOfClasses);
+
+    // Number of closed fare families in the policy.
+    const unsigned int lNbOfClosedFFs = lNbOfFFs - lNbOfClasses;
+    stdair::FareFamilyList_T::const_reverse_iterator itFF = lFFList.rbegin();
+    for (unsigned i=0; i<lNbOfClosedFFs; ++i, ++itFF) {
+      const stdair::FareFamily* lFF_ptr = *itFF;
+      assert (lFF_ptr != NULL);
+      const stdair::BookingClassList_T& lCurrentBCList =
+        stdair::BomManager::getList<stdair::BookingClass> (*lFF_ptr);
+      for (stdair::BookingClassList_T::const_reverse_iterator itCurrentBC =
+             lCurrentBCList.rbegin(); itCurrentBC != lCurrentBCList.rend();
+           ++itCurrentBC) {
+        stdair::BookingClass* lCurrentBC_ptr = *itCurrentBC;
+        assert (lCurrentBC_ptr != NULL);
+        stdair::FacBomManager::addToList (ioNode, *lCurrentBC_ptr);
+      }
+    }
+
+    //
+    for (stdair::BookingClassList_T::const_reverse_iterator itBC =
+           lBCList.rbegin(); itBC != lBCList.rend(); ++itBC) {
+      const stdair::BookingClass* lBC_ptr = *itBC;
+      assert (lBC_ptr != NULL);
+      const stdair::FareFamily& lFF =
+        stdair::BomManager::getParent<stdair::FareFamily> (*lBC_ptr);
+
+      const stdair::BookingClassList_T& lCurrentBCList =
+        stdair::BomManager::getList<stdair::BookingClass> (lFF);
+      for (stdair::BookingClassList_T::const_reverse_iterator itCurrentBC =
+             lCurrentBCList.rbegin(); itCurrentBC != lCurrentBCList.rend();
+           ++itCurrentBC) {
+        stdair::BookingClass* lCurrentBC_ptr = *itCurrentBC;
+        assert (lCurrentBC_ptr != NULL);
+        if (lCurrentBC_ptr->describeKey() != lBC_ptr->describeKey()) {
+          stdair::FacBomManager::addToList (ioNode, *lCurrentBC_ptr);
+        } else {
+          break;
+        }
+      }      
+    }
+  }
+
+  // ////////////////////////////////////////////////////////////////////
+  bool PolicyHelper::isNested (const stdair::Policy& iFirstPolicy,
+                               const stdair::Policy& iSecondPolicy) {
+    // The number of classes in the first policy should be smaller or equal
+    // to the number of classes in the second one.
+    const stdair::BookingClassList_T& lFirstBCList =
+      stdair::BomManager::getList<stdair::BookingClass> (iFirstPolicy);
+    const stdair::BookingClassList_T& lSecondBCList =
+      stdair::BomManager::getList<stdair::BookingClass> (iSecondPolicy);
+    if (lFirstBCList.size() > lSecondBCList.size()) {
+      return false;
+    }
+
+    // Browse the two lists of booking classes and verify if the pairs
+    // of classes are in order.
+    stdair::BookingClassList_T::const_iterator itFirstBC = lFirstBCList.begin();
+    for (stdair::BookingClassList_T::const_iterator itSecondBC =
+           lSecondBCList.begin(); itFirstBC != lFirstBCList.end();
+         ++itFirstBC, ++itSecondBC) {
+      const stdair::BookingClass* lFirstBC_ptr = *itFirstBC;
+      assert (lFirstBC_ptr != NULL);
+      const std::string lFirstKey = lFirstBC_ptr->describeKey();
+      const stdair::BookingClass* lSecondBC_ptr = *itSecondBC;
+      assert (lSecondBC_ptr != NULL);
+      const std::string lSecondKey = lSecondBC_ptr->describeKey();
+      if (lFirstKey == lSecondKey) {
+        break;
+      }
+      
+      // Retrieve the parent FF and its booking class list.
+      const stdair::FareFamily& lFF =
+        stdair::BomManager::getParent<stdair::FareFamily> (*lFirstBC_ptr);
+      const stdair::BookingClassList_T& lBCList =
+        stdair::BomManager::getList<stdair::BookingClass> (lFF);
+      for (stdair::BookingClassList_T::const_iterator itBC = lBCList.begin();
+           itBC != lBCList.end(); ++itBC) {
+        const stdair::BookingClass* lBC_ptr = *itBC;
+        assert (lBC_ptr != NULL);
+        const std::string lKey = lBC_ptr->describeKey();
+        if (lFirstKey == lKey) {
+          break;
+        } else if (lSecondKey == lKey) {
+          return false;
+        }
+      }
+    }
+
+    return true;
   }
 }
