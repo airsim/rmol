@@ -51,10 +51,10 @@ namespace RMOL {
     // to the DTD.
     stdair::DateOffset_T lDateOffset = lBoardingDate - iCurrentDate;
     stdair::DTD_T lDateOffsetInDays = lDateOffset.days();
-    if (iDTD < lDateOffsetInDays) {
-      return false;
-    } else {
+    if (iDTD > lDateOffsetInDays) {
       return true;
+    } else {
+      return false;
     }
   }
 }

@@ -80,7 +80,8 @@ namespace RMOL {
   }
 
   // ////////////////////////////////////////////////////////////////////
-  void Optimiser::optimise (stdair::FlightDate& ioFlightDate) {
+  void Optimiser::optimise (stdair::FlightDate& ioFlightDate,
+                            const stdair::OptimisationMethod::EN_OptimisationMethod& iOptimisationMethod) {
     // Browse the leg-cabin list and build the virtual class list for
     // each cabin.
     const stdair::LegDateList_T& lLDList =
@@ -101,8 +102,20 @@ namespace RMOL {
         // Build the virtual class list.
         buildVirtualClassListForLegBasedOptimisation (*lLC_ptr);
 
-        // Optimise using Monte-Carlo Integration method.
-        optimalOptimisationByMCIntegration (10000, *lLC_ptr);
+        switch (iOptimisationMethod) {
+        case stdair::OptimisationMethod::LEG_BASED_MC: {
+          optimalOptimisationByMCIntegration (10000, *lLC_ptr);
+          break;
+        }
+        case stdair::OptimisationMethod::LEG_BASED_EMSR_B: {
+          heuristicOptimisationByEmsrB (*lLC_ptr);
+          break;
+        }
+        default: {
+          assert (false);
+          break;
+        }
+        }
       }
     }
   }
@@ -131,16 +144,22 @@ namespace RMOL {
       stdair::BookingClass* lBookingClass_ptr = *itBC;
       assert (lBookingClass_ptr != NULL);
 
-      const stdair::Yield_T& lYield = lBookingClass_ptr->getYield();
-      stdair::BookingClassList_T lBookingClassList;
-      lBookingClassList.push_back(lBookingClass_ptr);
-      stdair::VirtualClassStruct lVirtualClass (lBookingClassList);
-      lVirtualClass.setYield (lYield);
-      lVirtualClass.setMean (lBookingClass_ptr->getMean());
-      lVirtualClass.setStdDev (lBookingClass_ptr->getStdDev());
-
-      lVirtualClassMap.insert (stdair::VirtualClassMap_T::
-                               value_type (lYield, lVirtualClass));
+      // If the demand forecast of the class is zero, there no need to create
+      // a virtual class.
+      // TODO: use float utils
+      const stdair::NbOfRequests_T& lMean = lBookingClass_ptr->getMean();
+      if (lMean > 0.0) {
+        const stdair::Yield_T& lYield = lBookingClass_ptr->getAdjustedYield();
+        stdair::BookingClassList_T lBookingClassList;
+        lBookingClassList.push_back(lBookingClass_ptr);
+        stdair::VirtualClassStruct lVirtualClass (lBookingClassList);
+        lVirtualClass.setYield (lYield);
+        lVirtualClass.setMean (lMean);
+        lVirtualClass.setStdDev (lBookingClass_ptr->getStdDev());
+        
+        lVirtualClassMap.insert (stdair::VirtualClassMap_T::
+                                 value_type (lYield, lVirtualClass));
+      }
     }
 
     // Browse the virtual class map from high to low yield.

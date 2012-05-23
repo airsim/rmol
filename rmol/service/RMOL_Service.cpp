@@ -39,12 +39,8 @@
 #include <rmol/factory/FacRmolServiceContext.hpp>
 #include <rmol/command/InventoryParser.hpp>
 #include <rmol/command/Optimiser.hpp>
-#include <rmol/command/OptimiserForQFF.hpp>
+#include <rmol/command/PreOptimiser.hpp>
 #include <rmol/command/Forecaster.hpp>
-#include <rmol/command/ForecasterForNewQFF.hpp>
-#include <rmol/command/ForecasterForOldQFF.hpp>
-#include <rmol/command/MRTForNewQFF.hpp>
-#include <rmol/command/MRTForOldQFF.hpp>
 #include <rmol/service/RMOL_ServiceContext.hpp>
 #include <rmol/RMOL_Service.hpp>
 
@@ -400,74 +396,6 @@ namespace RMOL {
   }
 
   // ////////////////////////////////////////////////////////////////////
-  void RMOL_Service::heuristicOptimisationByMCIntegrationForQFF() {
-    assert (_rmolServiceContext != NULL);
-    RMOL_ServiceContext& lRMOL_ServiceContext = *_rmolServiceContext;
-
-    // Retrieve the StdAir service
-    stdair::STDAIR_Service& lSTDAIR_Service =
-      lRMOL_ServiceContext.getSTDAIR_Service();
-    stdair::BomRoot& lBomRoot = lSTDAIR_Service.getBomRoot();
-
-    //
-    stdair::LegCabin& lLegCabin =
-      stdair::BomRetriever::retrieveDummyLegCabin (lBomRoot);
-
-    OptimiserForQFF::heuristicOptimisationByMCIntegration (lLegCabin);
-
-    std::ostringstream logStream;
-    stdair::BidPriceVector_T lBidPriceVector = lLegCabin.getBidPriceVector();
-    logStream << "Bid-Price Vector (BPV): ";
-    unsigned int size = lBidPriceVector.size();
-    
-    for (unsigned int i = 0; i < size - 1; ++i) {
-      const double bidPrice = lBidPriceVector.at(i);
-      logStream << std::fixed << std::setprecision (2) << bidPrice << ", ";
-    }
-    const double bidPrice = lBidPriceVector.at(size -1);
-    logStream << std::fixed << std::setprecision (2) << bidPrice;
-    STDAIR_LOG_DEBUG (logStream.str());
-
-  }
-
-  // ////////////////////////////////////////////////////////////////////
-  void RMOL_Service::heuristicOptimisationByEmsrBForQFF() {
-    assert (_rmolServiceContext != NULL);
-    RMOL_ServiceContext& lRMOL_ServiceContext = *_rmolServiceContext;
-
-    // Retrieve the StdAir service
-    stdair::STDAIR_Service& lSTDAIR_Service =
-      lRMOL_ServiceContext.getSTDAIR_Service();
-    stdair::BomRoot& lBomRoot = lSTDAIR_Service.getBomRoot();
-
-    //
-    stdair::LegCabin& lLegCabin =
-      stdair::BomRetriever::retrieveDummyLegCabin (lBomRoot);
-
-    OptimiserForQFF::heuristicOptimisationByEMSRb (lLegCabin);
-
-    // DEBUG
-    STDAIR_LOG_DEBUG ("Result: " << lLegCabin.displayVirtualClassList());
-  }
-
-  // ////////////////////////////////////////////////////////////////////
-  void RMOL_Service::MRTForNewQFF() {
-    assert (_rmolServiceContext != NULL);
-    RMOL_ServiceContext& lRMOL_ServiceContext = *_rmolServiceContext;
-
-    // Retrieve the StdAir service
-    stdair::STDAIR_Service& lSTDAIR_Service =
-      lRMOL_ServiceContext.getSTDAIR_Service();
-    stdair::BomRoot& lBomRoot = lSTDAIR_Service.getBomRoot();
-
-    const bool isForFareFamilies = true;
-    stdair::LegCabin& lLegCabin =
-      stdair::BomRetriever::retrieveDummyLegCabin (lBomRoot, isForFareFamilies);
-
-    MRTForNewQFF::initForOptimiser (lLegCabin);
-  }
-
-  // ////////////////////////////////////////////////////////////////////
   const stdair::SegmentCabin& RMOL_Service::
   retrieveDummySegmentCabin(const bool isForFareFamilies) {
     assert (_rmolServiceContext != NULL);
@@ -491,16 +419,51 @@ namespace RMOL {
             const stdair::DateTime_T& iRMEventTime,
             const stdair::UnconstrainingMethod& iUnconstrainingMethod,
             const stdair::ForecastingMethod& iForecastingMethod, 
+            const stdair::PreOptimisationMethod& iPreOptimisationMethod,
             const stdair::OptimisationMethod& iOptimisationMethod,
             const stdair::PartnershipTechnique& iPartnershipTechnique) {
 
     
     STDAIR_LOG_DEBUG ("Forecast & Optimisation");
-
+    
     const stdair::PartnershipTechnique::EN_PartnershipTechnique& lPartnershipTechnique =
       iPartnershipTechnique.getTechnique();
     
-    switch (lPartnershipTechnique) {
+    switch (lPartnershipTechnique) {      
+    case stdair::PartnershipTechnique::NONE:{
+      // DEBUG
+      STDAIR_LOG_DEBUG ("Forecast");
+      
+      // 1. Forecasting
+      bool isForecasted = false;
+      const stdair::UnconstrainingMethod::EN_UnconstrainingMethod& lUnconstrainingMethod =
+        iUnconstrainingMethod.getMethod();
+      
+      const stdair::ForecastingMethod::EN_ForecastingMethod& lForecastingMethod =
+        iForecastingMethod.getMethod();
+      isForecasted = Forecaster::forecast (ioFlightDate, iRMEventTime,
+                                           lUnconstrainingMethod,
+                                           lForecastingMethod);
+      // DEBUG
+      STDAIR_LOG_DEBUG ("Forecast successful: " << isForecasted);
+      
+
+      if (isForecasted == true) {
+        // 2a. MRT or FA
+        // DEBUG
+        STDAIR_LOG_DEBUG ("Pre-optimise");
+        
+        const stdair::PreOptimisationMethod::EN_PreOptimisationMethod& lPreOptMethod = iPreOptimisationMethod.getMethod();
+        PreOptimiser::preOptimise (ioFlightDate, lPreOptMethod);
+        
+        // 2b. Optimisation
+        // DEBUG
+        STDAIR_LOG_DEBUG ("Optimise");
+
+        const stdair::OptimisationMethod::EN_OptimisationMethod& lOptimisationMethod = iOptimisationMethod.getMethod();
+        Optimiser::optimise (ioFlightDate, lOptimisationMethod);
+      }
+    }
     case stdair::PartnershipTechnique::RAE_DA:
     case stdair::PartnershipTechnique::IBP_DA:{
       if (_previousForecastDate < iRMEventTime.date()) {
@@ -541,125 +504,11 @@ namespace RMOL {
         optimiseOnDUsingAdvancedRMCooperation (iRMEventTime);
       }
       break;
-    }      
-    case stdair::PartnershipTechnique::NONE:{
-      // DEBUG
-      STDAIR_LOG_DEBUG ("Forecast");
-      
-      // 1. Forecast
-      bool isForecasted = false;
-      //const stdair::UnconstrainingMethod::EN_UnconstrainingMethod& lUnconstrainingMethod =
-      //  iUnconstrainingMethod.getMethod();
-      const stdair::ForecastingMethod::EN_ForecastingMethod& lForecastingMethod =
-        iForecastingMethod.getMethod();
-      switch (lForecastingMethod) {
-      case stdair::ForecastingMethod::Q_FORECASTING: {
-        isForecasted = Forecaster::forecastUsingAddPkUp (ioFlightDate,
-                                                         iRMEventTime);
-        break;
-      }
-      case stdair::ForecastingMethod::HYBRID_FORECASTING: {
-        isForecasted = Forecaster::forecastUsingAddPkUp (ioFlightDate,
-                                                         iRMEventTime);
-        break;
-      }
-      case stdair::ForecastingMethod::NEW_QFF: {
-        isForecasted = ForecasterForNewQFF::forecast (ioFlightDate,
-                                                      iRMEventTime);
-        break;
-      }
-      case stdair::ForecastingMethod::OLD_QFF: {
-        isForecasted = ForecasterForOldQFF::forecast (ioFlightDate,
-                                                      iRMEventTime);
-        break;
-      }
-      default: {
-        assert (false);
-        break;
-      }
-      }
-      
-      // DEBUG
-      STDAIR_LOG_DEBUG ("Forecast successful: " << isForecasted);
-      
-      // 2. Optimisation
-      if (isForecasted == true) {
-        // DEBUG
-        STDAIR_LOG_DEBUG ("Optimise");
-
-        const stdair::OptimisationMethod::EN_OptimisationMethod& lOptimisationMethod = 
-          iOptimisationMethod.getMethod();
-        switch (lOptimisationMethod) {
-
-        case stdair::OptimisationMethod::LEG_BASED_MC: {
-          switch (lForecastingMethod) {
-          case stdair::ForecastingMethod::Q_FORECASTING: {
-            Optimiser::optimise (ioFlightDate);
-            break;
-          }
-          case stdair::ForecastingMethod::HYBRID_FORECASTING: {
-            Optimiser::optimise (ioFlightDate);
-            break;
-          }
-          case stdair::ForecastingMethod::NEW_QFF: {
-            MRTForNewQFF::initForOptimiser (ioFlightDate);
-            OptimiserForQFF::optimiseUsingMC (ioFlightDate);
-            break;
-          }
-          case stdair::ForecastingMethod::OLD_QFF: {
-            MRTForOldQFF::initForOptimiser (ioFlightDate);
-            OptimiserForQFF::optimiseUsingMC (ioFlightDate);
-            break;
-          }
-          default: {
-            assert (false);
-            break;
-          }
-          }
-          break;
-        }
-
-        case stdair::OptimisationMethod::LEG_BASED_EMSR_B: {
-          switch (lForecastingMethod) {
-          case stdair::ForecastingMethod::Q_FORECASTING: {
-            Optimiser::optimise (ioFlightDate);
-            break;
-          }
-          case stdair::ForecastingMethod::HYBRID_FORECASTING: {
-            Optimiser::optimise (ioFlightDate);
-            break;
-          }
-          case stdair::ForecastingMethod::NEW_QFF: {
-            MRTForNewQFF::initForOptimiser (ioFlightDate);
-            OptimiserForQFF::optimiseUsingEMSRb (ioFlightDate);
-            return false;
-          }
-          case stdair::ForecastingMethod::OLD_QFF: {
-            MRTForOldQFF::initForOptimiser (ioFlightDate);
-            OptimiserForQFF::optimiseUsingEMSRb (ioFlightDate);
-            return false;
-          }
-          default: {
-            assert (false);
-            break;
-          }
-          }
-          break;
-        }
-
-        default: {
-          assert (false);
-          break;
-        }
-        }
-        return true;
-      }
-      break;
     }
     default:{
       assert (false);
       break;
-    }
+      }
     }
     return false;  
   }

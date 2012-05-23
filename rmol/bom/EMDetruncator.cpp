@@ -16,7 +16,7 @@
 namespace RMOL {
     
   // ////////////////////////////////////////////////////////////////////
-  void EMDetruncator::unconstrainUsingEMMethod
+  void EMDetruncator::unconstrain
   (HistoricalBookingHolder& ioHistoricalBookingHolder) {
       
     // Number of flights.

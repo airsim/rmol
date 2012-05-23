@@ -13,7 +13,7 @@ namespace RMOL {
   public:
     /** Unconstrain the censored booking data using the Expection-Maximisation
         algorithm. */
-    static void unconstrainUsingEMMethod (HistoricalBookingHolder&);
+    static void unconstrain (HistoricalBookingHolder&);
   };
 }
 #endif // __RMOL_BOM_EMDETRUNCATOR_HPP

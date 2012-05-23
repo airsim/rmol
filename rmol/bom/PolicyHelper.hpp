@@ -13,9 +13,11 @@
 
 // Forward declarations
 namespace stdair {
-  struct PolicyStruct;
+  class SegmentCabin;
+  class Policy;
   class FareFamily;
   class BookingClass;
+  class NestingNode;
 }
 
 namespace RMOL {
@@ -28,11 +30,24 @@ namespace RMOL {
     
     /** 
      * Find the booking class list representing the difference 
-     * between two Policies 
+     * between two Policies (first minus second)
      */
-    static const stdair::BookingClassList_T 
-    diffBetweenTwoPolicies (const stdair::PolicyStruct&,
-                            const stdair::PolicyStruct&);
+    static void
+    diffBetweenTwoPolicies (stdair::NestingNode&, const stdair::Policy&,
+                            const stdair::Policy&);
+
+    /**
+     * Compute the list of the booking class which is not in the node.
+     */
+    static void
+    computeLastNode (stdair::NestingNode&, const stdair::Policy&,
+                     const stdair::SegmentCabin&);
+
+    /**
+     * Check if the first policy is nested under the second policy.
+     */
+    static bool isNested (const stdair::Policy&, const stdair::Policy&);
+    
   
   private:
 
@@ -42,16 +57,17 @@ namespace RMOL {
      */
     static const bool 
     intersectionBetweenPolicyAndBookingClassList (const stdair::BookingClassList_T&,
-                                                  const stdair::PolicyStruct&,
+                                                  const stdair::Policy&,
                                                   stdair::ClassCode_T&);
 
     /** 
      * Find the booking class list between two booking class in a fare family 
      */
-    static const stdair::BookingClassList_T 
-    diffBetweenBookingClassAndPolicy (const stdair::FareFamily&,
+    static void
+    diffBetweenBookingClassAndPolicy (stdair::NestingNode&,
+                                      const stdair::FareFamily&,
                                       const stdair::ClassCode_T&,
-                                      const stdair::PolicyStruct&);
+                                      const stdair::Policy&);
 
   };
 

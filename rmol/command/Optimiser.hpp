@@ -4,6 +4,8 @@
 // //////////////////////////////////////////////////////////////////////
 // Import section
 // //////////////////////////////////////////////////////////////////////
+// STDAIR
+#include <stdair/basic/OptimisationMethod.hpp>
 // RMOL
 #include <rmol/RMOL_Types.hpp>
 
@@ -55,7 +57,8 @@ namespace RMOL {
     /**
        Optimise a flight-date using leg-based Monte Carlo Integration.
     */
-    static void optimise (stdair::FlightDate&);
+    static void optimise (stdair::FlightDate&,
+                          const stdair::OptimisationMethod::EN_OptimisationMethod&);
 
     /**
      * Build the virtual class list for the given leg-cabin.
