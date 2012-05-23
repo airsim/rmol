@@ -396,57 +396,6 @@ namespace RMOL {
   }
 
   // ////////////////////////////////////////////////////////////////////
-  void RMOL_Service::heuristicOptimisationByMCIntegrationForQFF() {
-    assert (_rmolServiceContext != NULL);
-    RMOL_ServiceContext& lRMOL_ServiceContext = *_rmolServiceContext;
-
-    // Retrieve the StdAir service
-    stdair::STDAIR_Service& lSTDAIR_Service =
-      lRMOL_ServiceContext.getSTDAIR_Service();
-    stdair::BomRoot& lBomRoot = lSTDAIR_Service.getBomRoot();
-
-    //
-    stdair::LegCabin& lLegCabin =
-      stdair::BomRetriever::retrieveDummyLegCabin (lBomRoot);
-
-    //OptimiserForQFF::heuristicOptimisationByMCIntegration (lLegCabin);
-
-    std::ostringstream logStream;
-    stdair::BidPriceVector_T lBidPriceVector = lLegCabin.getBidPriceVector();
-    logStream << "Bid-Price Vector (BPV): ";
-    unsigned int size = lBidPriceVector.size();
-    
-    for (unsigned int i = 0; i < size - 1; ++i) {
-      const double bidPrice = lBidPriceVector.at(i);
-      logStream << std::fixed << std::setprecision (2) << bidPrice << ", ";
-    }
-    const double bidPrice = lBidPriceVector.at(size -1);
-    logStream << std::fixed << std::setprecision (2) << bidPrice;
-    STDAIR_LOG_DEBUG (logStream.str());
-
-  }
-
-  // ////////////////////////////////////////////////////////////////////
-  void RMOL_Service::heuristicOptimisationByEmsrBForQFF() {
-    assert (_rmolServiceContext != NULL);
-    RMOL_ServiceContext& lRMOL_ServiceContext = *_rmolServiceContext;
-
-    // Retrieve the StdAir service
-    stdair::STDAIR_Service& lSTDAIR_Service =
-      lRMOL_ServiceContext.getSTDAIR_Service();
-    stdair::BomRoot& lBomRoot = lSTDAIR_Service.getBomRoot();
-
-    //
-    stdair::LegCabin& lLegCabin =
-      stdair::BomRetriever::retrieveDummyLegCabin (lBomRoot);
-
-    //    OptimiserForQFF::heuristicOptimisationByEMSRb (lLegCabin);
-
-    // DEBUG
-    STDAIR_LOG_DEBUG ("Result: " << lLegCabin.displayVirtualClassList());
-  }
-
-  // ////////////////////////////////////////////////////////////////////
   const stdair::SegmentCabin& RMOL_Service::
   retrieveDummySegmentCabin(const bool isForFareFamilies) {
     assert (_rmolServiceContext != NULL);
@@ -511,8 +460,8 @@ namespace RMOL {
         // DEBUG
         STDAIR_LOG_DEBUG ("Optimise");
 
-        //const stdair::OptimisationMethod::EN_OptimisationMethod& lOptimisationMethod = iOptimisationMethod.getMethod();
-        //Optimiser::optimise (ioFlightDate, lOptimisationMethod);
+        const stdair::OptimisationMethod::EN_OptimisationMethod& lOptimisationMethod = iOptimisationMethod.getMethod();
+        Optimiser::optimise (ioFlightDate, lOptimisationMethod);
       }
     }
     case stdair::PartnershipTechnique::RAE_DA:

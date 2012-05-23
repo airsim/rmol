@@ -18,7 +18,6 @@
 #include <stdair/bom/BookingClass.hpp>
 #include <stdair/service/Logger.hpp>
 // RMOL
-#include <rmol/basic/BasConst_Curves.hpp>
 #include <rmol/bom/Utilities.hpp>
 #include <rmol/bom/SegmentSnapshotTableHelper.hpp>
 #include <rmol/bom/HistoricalBookingHolder.hpp>

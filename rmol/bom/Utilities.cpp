@@ -20,7 +20,6 @@
 #include <rmol/basic/BasConst_General.hpp>
 #include <rmol/bom/Utilities.hpp>
 #include <rmol/bom/SegmentSnapshotTableHelper.hpp>
-#include <rmol/basic/BasConst_Curves.hpp>
 
 namespace RMOL {
   // ////////////////////////////////////////////////////////////////////

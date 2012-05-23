@@ -17,7 +17,6 @@
 #include <stdair/factory/FacBomManager.hpp>
 #include <stdair/service/Logger.hpp>
 // RMOL
-#include <rmol/basic/BasConst_Curves.hpp>
 #include <rmol/bom/PolicyHelper.hpp>
 #include <rmol/bom/Utilities.hpp>
 #include <rmol/command/MarginalRevenueTransformation.hpp>

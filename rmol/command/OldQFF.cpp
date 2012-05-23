@@ -17,7 +17,6 @@
 #include <stdair/bom/Policy.hpp>
 #include <stdair/service/Logger.hpp>
 // RMOL
-#include <rmol/basic/BasConst_Curves.hpp>
 #include <rmol/bom/Utilities.hpp>
 #include <rmol/bom/SegmentSnapshotTableHelper.hpp>
 #include <rmol/bom/HistoricalBookingHolder.hpp>
@@ -286,9 +285,9 @@ namespace RMOL {
           // Retrieve the disutility for the current policy to the next one.
           const stdair::FareFamily& lCurrentFF =
             stdair::BomManager::getParent<stdair::FareFamily> (*lCurrentBC_ptr);
-          const stdair::FFDisutility_T& lDisutilityCurve =
+          const stdair::FFDisutilityCurve_T& lDisutilityCurve =
             lCurrentFF.getDisutilityCurve();
-          stdair::FFDisutility_T::const_iterator itDU =
+          stdair::FFDisutilityCurve_T::const_iterator itDU =
             lDisutilityCurve.find (iCurrentDCP);
           assert (itDU != lDisutilityCurve.end());
           const double& lDU = itDU->second;
