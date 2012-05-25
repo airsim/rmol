@@ -207,18 +207,53 @@ namespace RMOL {
                                                     " been initialised");
     }
     assert (_rmolServiceContext != NULL);
-    RMOL_ServiceContext& lRMOL_ServiceContext = *_rmolServiceContext;
+    RMOL_ServiceContext& lRMOL_ServiceContext = *_rmolServiceContext; 
+    const bool doesOwnStdairService =
+      lRMOL_ServiceContext.getOwnStdairServiceFlag();
 
     // Retrieve the StdAir service object from the (RMOL) service context
     stdair::STDAIR_Service& lSTDAIR_Service =
       lRMOL_ServiceContext.getSTDAIR_Service();
-    stdair::BomRoot& lBomRoot = lSTDAIR_Service.getBomRoot();
+    stdair::BomRoot& lPersistentBomRoot = 
+      lSTDAIR_Service.getPersistentBomRoot();
 
-    // Build a dummy inventory with a leg-cabin which has the given capacity.
+    /**
+     * 1. Build a dummy inventory with a leg-cabin which has the given capacity.
+     */
     lSTDAIR_Service.buildDummyInventory (iCabinCapacity);
 
-    // Complete the BOM tree with the optimisation problem specification
-    InventoryParser::parseInputFileAndBuildBom (iInputFileName, lBomRoot);
+    /**
+     * 2. Complete the BOM tree with the optimisation problem specification
+     */
+    InventoryParser::parseInputFileAndBuildBom (iInputFileName, 
+						lPersistentBomRoot);  
+ 
+    /**
+     * 3. Delegate the complementary building of objects and links by the
+     *    appropriate levels/components
+     */
+    /**
+     * Let the revenue accounting (i.e., the AirRAC component) build the yields.
+    AIRRAC::AIRRAC_Service& lAIRRAC_Service =
+      lRMOL_ServiceContext.getAIRRAC_Service();
+    lAIRRAC_Service.buildSampleBom();
+     */   
+
+    /**
+     * 4. Build the complementary objects/links for the current component (here,
+     *    RMOL)
+     */ 
+    buildComplementaryLinks (lPersistentBomRoot);
+    
+    /**
+     * 5. Have RMOL clone the whole persistent BOM tree, only when the StdAir
+     *    service is owned by the current component (RMOL here).
+     */
+    if (doesOwnStdairService == true) {
+ 
+      //
+      clonePersistentBom ();
+    }
   }
   
   // ////////////////////////////////////////////////////////////////////
@@ -239,7 +274,9 @@ namespace RMOL {
 
     // Retrieve the StdAir service object from the (RMOL) service context
     stdair::STDAIR_Service& lSTDAIR_Service =
-      lRMOL_ServiceContext.getSTDAIR_Service();
+      lRMOL_ServiceContext.getSTDAIR_Service();   
+    stdair::BomRoot& lPersistentBomRoot = 
+      lSTDAIR_Service.getPersistentBomRoot();
 
     /**
      * 1. Have StdAir build the whole BOM tree, only when the StdAir service is
@@ -259,15 +296,87 @@ namespace RMOL {
     AIRRAC::AIRRAC_Service& lAIRRAC_Service =
       lRMOL_ServiceContext.getAIRRAC_Service();
     lAIRRAC_Service.buildSampleBom();
-     */
-
+     */   
+  
     /**
      * 3. Build the complementary objects/links for the current component (here,
      *    RMOL)
-     *
-     * \note As of now, no further action needs to be done at that stage.
+     */ 
+    buildComplementaryLinks (lPersistentBomRoot);
+    
+    /**
+     * 4. Have RMOL clone the whole persistent BOM tree, only when the StdAir
+     *    service is owned by the current component (RMOL here).
      */
-  }
+    if (doesOwnStdairService == true) {
+ 
+      //
+      clonePersistentBom ();
+    }
+  } 
+
+  // ////////////////////////////////////////////////////////////////////
+  void RMOL_Service::clonePersistentBom () {   
+
+    // Retrieve the RMOL service context
+    if (_rmolServiceContext == NULL) {
+      throw stdair::NonInitialisedServiceException("The RMOL service has not "
+                                                   "been initialised");
+    }
+    assert (_rmolServiceContext != NULL);
+
+    // Retrieve the RMOL service context and whether it owns the Stdair
+    // service
+    RMOL_ServiceContext& lRMOL_ServiceContext = *_rmolServiceContext;
+    const bool doesOwnStdairService =
+      lRMOL_ServiceContext.getOwnStdairServiceFlag();
+
+    // Retrieve the StdAir service object from the (RMOL) service context
+    stdair::STDAIR_Service& lSTDAIR_Service =
+      lRMOL_ServiceContext.getSTDAIR_Service();
+ 
+    /**
+     * 1. Have RMOL clone the whole persistent BOM tree, only when the StdAir
+     *    service is owned by the current component (RMOL here).
+     */
+    if (doesOwnStdairService == true) {
+ 
+      //
+      lSTDAIR_Service.clonePersistentBom ();
+    }
+
+    /**
+     * 2. Build the complementary links on the clone BOM root object
+     */ 
+    stdair::BomRoot& lBomRoot = 
+      lSTDAIR_Service.getBomRoot();
+    buildComplementaryLinks (lBomRoot); 
+  }     
+
+  // ////////////////////////////////////////////////////////////////////
+  void RMOL_Service::buildComplementaryLinks (stdair::BomRoot& ioBomRoot) { 
+
+    // Retrieve the RMOL service context
+    if (_rmolServiceContext == NULL) {
+      throw stdair::NonInitialisedServiceException("The RMOL service has not "
+                                                   "been initialised");
+    }
+    assert (_rmolServiceContext != NULL);
+
+    // Retrieve the RMOL service context and whether it owns the Stdair
+    // service
+    RMOL_ServiceContext& lRMOL_ServiceContext = *_rmolServiceContext;
+
+    // Retrieve the StdAir service object from the (RMOL) service context
+    stdair::STDAIR_Service& lSTDAIR_Service =
+      lRMOL_ServiceContext.getSTDAIR_Service();
+
+    /**
+     * Create the links between the dummy leg cabin the and the dummy segment 
+     * cabin.
+     */
+    lSTDAIR_Service.buildDummyLegSegmentAccesses (ioBomRoot);
+  }   
 
   // ////////////////////////////////////////////////////////////////////
   void RMOL_Service::optimalOptimisationByMCIntegration (const int K) {
@@ -276,8 +385,12 @@ namespace RMOL {
 
     // Retrieve the StdAir service
     stdair::STDAIR_Service& lSTDAIR_Service =
-      lRMOL_ServiceContext.getSTDAIR_Service();
-    stdair::BomRoot& lBomRoot = lSTDAIR_Service.getBomRoot();
+      lRMOL_ServiceContext.getSTDAIR_Service();   
+    // TODO: gsabatier
+    // Replace the getPersistentBomRoot method by the getBomRoot method,
+    // in order to work on the clone Bom root instead of the persistent one.
+    // Does not work for now because virtual classes are not cloned.
+    stdair::BomRoot& lBomRoot = lSTDAIR_Service.getPersistentBomRoot();
 
     //
     stdair::LegCabin& lLegCabin =
@@ -320,8 +433,12 @@ namespace RMOL {
 
     // Retrieve the StdAir service
     stdair::STDAIR_Service& lSTDAIR_Service =
-      lRMOL_ServiceContext.getSTDAIR_Service();
-    stdair::BomRoot& lBomRoot = lSTDAIR_Service.getBomRoot();
+      lRMOL_ServiceContext.getSTDAIR_Service();    
+    // TODO: gsabatier
+    // Replace the getPersistentBomRoot method by the getBomRoot method,
+    // in order to work on the clone Bom root instead of the persistent one.
+    // Does not work for now because virtual classes are not cloned.
+    stdair::BomRoot& lBomRoot = lSTDAIR_Service.getPersistentBomRoot();
 
     //
     stdair::LegCabin& lLegCabin =
@@ -361,8 +478,12 @@ namespace RMOL {
 
     // Retrieve the StdAir service
     stdair::STDAIR_Service& lSTDAIR_Service =
-      lRMOL_ServiceContext.getSTDAIR_Service();
-    stdair::BomRoot& lBomRoot = lSTDAIR_Service.getBomRoot();
+      lRMOL_ServiceContext.getSTDAIR_Service();     
+    // TODO: gsabatier
+    // Replace the getPersistentBomRoot method by the getBomRoot method,
+    // in order to work on the clone Bom root instead of the persistent one.
+    // Does not work for now because virtual classes are not cloned. 
+    stdair::BomRoot& lBomRoot = lSTDAIR_Service.getPersistentBomRoot();
 
     //
     stdair::LegCabin& lLegCabin =
@@ -382,8 +503,12 @@ namespace RMOL {
 
     // Retrieve the StdAir service
     stdair::STDAIR_Service& lSTDAIR_Service =
-      lRMOL_ServiceContext.getSTDAIR_Service();
-    stdair::BomRoot& lBomRoot = lSTDAIR_Service.getBomRoot();
+      lRMOL_ServiceContext.getSTDAIR_Service();    
+    // TODO: gsabatier
+    // Replace the getPersistentBomRoot method by the getBomRoot method,
+    // in order to work on the clone Bom root instead of the persistent one.
+    // Does not work for now because virtual classes are not cloned.
+    stdair::BomRoot& lBomRoot = lSTDAIR_Service.getPersistentBomRoot();
 
     //
     stdair::LegCabin& lLegCabin =
@@ -404,7 +529,11 @@ namespace RMOL {
     // Retrieve the StdAir service
     stdair::STDAIR_Service& lSTDAIR_Service =
       lRMOL_ServiceContext.getSTDAIR_Service();
-    stdair::BomRoot& lBomRoot = lSTDAIR_Service.getBomRoot();
+    // TODO: gsabatier
+    // Replace the getPersistentBomRoot method by the getBomRoot method,
+    // in order to work on the clone Bom root instead of the persistent one.
+    // Does not work for now because virtual classes are not cloned.
+    stdair::BomRoot& lBomRoot = lSTDAIR_Service.getPersistentBomRoot();
 
     const stdair::SegmentCabin& lSegmentCabin = 
       stdair::BomRetriever::retrieveDummySegmentCabin(lBomRoot, 

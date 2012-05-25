@@ -137,6 +137,17 @@ namespace RMOL {
     void buildSampleBom();
 
     /**
+     * Clone the persistent BOM object.
+     */
+    void clonePersistentBom ();
+
+    /**
+     * Build all the complementary links in the given bom root object.
+     * Build the links between dummy leg cabin and dummy segment cabin.
+     */
+    void buildComplementaryLinks (stdair::BomRoot&); 
+
+    /**
      * Single resource optimization using the Monte Carlo algorithm.
      */
     void optimalOptimisationByMCIntegration (const int K);
