@@ -454,15 +454,23 @@ namespace RMOL {
         STDAIR_LOG_DEBUG ("Pre-optimise");
         
         const stdair::PreOptimisationMethod::EN_PreOptimisationMethod& lPreOptMethod = iPreOptimisationMethod.getMethod();
-        PreOptimiser::preOptimise (ioFlightDate, lPreOptMethod);
+        bool isPreOptimised = PreOptimiser::preOptimise (ioFlightDate, lPreOptMethod);
+        
+        // DEBUG
+        STDAIR_LOG_DEBUG ("Pre-Optimise successful: " << isPreOptimised);
         
         // 2b. Optimisation
         // DEBUG
         STDAIR_LOG_DEBUG ("Optimise");
 
         const stdair::OptimisationMethod::EN_OptimisationMethod& lOptimisationMethod = iOptimisationMethod.getMethod();
-        Optimiser::optimise (ioFlightDate, lOptimisationMethod);
+        bool optimiseSucceeded = 
+          Optimiser::optimise (ioFlightDate, lOptimisationMethod);
+        // DEBUG
+        STDAIR_LOG_DEBUG ("Optimise successful: " << optimiseSucceeded);
+        return optimiseSucceeded ;
       }
+      break;
     }
     case stdair::PartnershipTechnique::RAE_DA:
     case stdair::PartnershipTechnique::IBP_DA:{
