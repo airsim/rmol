@@ -190,11 +190,12 @@ namespace RMOL {
         // Retrieve the number of bookings
         const stdair::ClassIndex_T& lClassIdx =
           iSegmentSnapshotTable.getClassIndex(lBookingClass_ptr->describeKey());
-        const stdair::NbOfBookings_T lNbOfBookings =
-          lBookingView[i*lNbOfClasses + lClassIdx][iDCPBegin-iDCPEnd]
-          - lBookingView[i*lNbOfClasses + lClassIdx][0];
-        const stdair::NbOfBookings_T lNbOfQEquivalentBkgs=lNbOfBookings/lSellUp;
+        stdair::NbOfBookings_T lNbOfBookings = 0.0;
+        for (short j = 0; j < lNbOfDTDs; ++j) {
+          lNbOfBookings += lBookingView[i*lNbOfClasses + lClassIdx][j];
+        }
 
+        const stdair::NbOfBookings_T lNbOfQEquivalentBkgs=lNbOfBookings/lSellUp;
         lNbOfHistoricalBkgs += lNbOfQEquivalentBkgs;
       }
 
