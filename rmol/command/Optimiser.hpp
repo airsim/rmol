@@ -57,13 +57,13 @@ namespace RMOL {
     /**
        Optimise a flight-date using leg-based Monte Carlo Integration.
     */
-    static void optimise (stdair::FlightDate&,
+    static bool optimise (stdair::FlightDate&,
                           const stdair::OptimisationMethod::EN_OptimisationMethod&);
 
     /**
      * Build the virtual class list for the given leg-cabin.
      */
-    static void buildVirtualClassListForLegBasedOptimisation(stdair::LegCabin&);
+    static bool buildVirtualClassListForLegBasedOptimisation(stdair::LegCabin&);
 
     /** Optimiser */
     static double optimiseUsingOnDForecast (stdair::FlightDate&,

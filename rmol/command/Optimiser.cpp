@@ -80,8 +80,9 @@ namespace RMOL {
   }
 
   // ////////////////////////////////////////////////////////////////////
-  void Optimiser::optimise (stdair::FlightDate& ioFlightDate,
+  bool Optimiser::optimise (stdair::FlightDate& ioFlightDate,
                             const stdair::OptimisationMethod::EN_OptimisationMethod& iOptimisationMethod) {
+    bool optimiseSucceded = false;
     // Browse the leg-cabin list and build the virtual class list for
     // each cabin.
     const stdair::LegDateList_T& lLDList =
@@ -100,34 +101,40 @@ namespace RMOL {
         assert (lLC_ptr != NULL);
 
         // Build the virtual class list.
-        buildVirtualClassListForLegBasedOptimisation (*lLC_ptr);
-
-        switch (iOptimisationMethod) {
-        case stdair::OptimisationMethod::LEG_BASED_MC: {
-          optimalOptimisationByMCIntegration (10000, *lLC_ptr);
-          break;
-        }
-        case stdair::OptimisationMethod::LEG_BASED_EMSR_B: {
-          heuristicOptimisationByEmsrB (*lLC_ptr);
-          break;
-        }
-        default: {
-          assert (false);
-          break;
-        }
+        bool hasVirtualClass = 
+          buildVirtualClassListForLegBasedOptimisation (*lLC_ptr);
+        if (hasVirtualClass == true) {
+          switch (iOptimisationMethod) {
+          case stdair::OptimisationMethod::LEG_BASED_MC: {
+            optimalOptimisationByMCIntegration (10000, *lLC_ptr);
+            optimiseSucceded = true;
+            break;
+          }
+          case stdair::OptimisationMethod::LEG_BASED_EMSR_B: {
+            heuristicOptimisationByEmsrB (*lLC_ptr);
+            optimiseSucceded = true;
+            break;
+          }
+          default: {
+            assert (false);
+            break;
+          }
+          }
         }
       }
     }
+    return optimiseSucceded;
   }
 
   // ////////////////////////////////////////////////////////////////////
-  void Optimiser::
+  bool Optimiser::
   buildVirtualClassListForLegBasedOptimisation (stdair::LegCabin& ioLegCabin) {
     // The map holding all virtual classes to be created.
     stdair::VirtualClassMap_T lVirtualClassMap;
-    
+    bool isNotEmpty = false;
+
     // Retrieve the segment-cabin
-    const stdair::SegmentCabinList_T lSegmentCabinList =
+    const stdair::SegmentCabinList_T& lSegmentCabinList =
       stdair::BomManager::getList<stdair::SegmentCabin> (ioLegCabin);
     stdair::SegmentCabinList_T::const_iterator itSC = lSegmentCabinList.begin();
     assert (itSC != lSegmentCabinList.end());
@@ -156,7 +163,7 @@ namespace RMOL {
         lVirtualClass.setYield (lYield);
         lVirtualClass.setMean (lMean);
         lVirtualClass.setStdDev (lBookingClass_ptr->getStdDev());
-        
+
         lVirtualClassMap.insert (stdair::VirtualClassMap_T::
                                  value_type (lYield, lVirtualClass));
       }
@@ -169,7 +176,11 @@ namespace RMOL {
       stdair::VirtualClassStruct& lVC = itVC->second;
       
       ioLegCabin.addVirtualClass (lVC);
+      if (isNotEmpty == false) {
+        isNotEmpty = true;
+      }
     }
+    return isNotEmpty;
   }
   
   // ////////////////////////////////////////////////////////////////////
