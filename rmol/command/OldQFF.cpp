@@ -193,11 +193,8 @@ namespace RMOL {
           const stdair::ClassIndex_T& lClassIdx =
             iSegmentSnapshotTable.getClassIndex(lBC_ptr->describeKey());
           const stdair::NbOfBookings_T lNbOfBookings =
-            lPriceBookingView[i*lNbOfClasses + lClassIdx][j+1]
-            - lPriceBookingView[i*lNbOfClasses + lClassIdx][j]
-            + lProductBookingView[i*lNbOfClasses + lClassIdx][j+1]
-            - lProductBookingView[i*lNbOfClasses + lClassIdx][j];
-
+            lPriceBookingView[i*lNbOfClasses + lClassIdx][j]
+            + lProductBookingView[i*lNbOfClasses + lClassIdx][j];
           lNbOfBksOfTheDay += lNbOfBookings;
 
           if (lAvlView[i*lNbOfClasses + lClassIdx][j] >= 1.0) {
@@ -244,76 +241,80 @@ namespace RMOL {
 
       // Browse the list of booking classes of the policy and use the
       // cumulative price-oriented demand forecast of each class.
-      const stdair::BookingClassList_T& lBCList =
-        stdair::BomManager::getList<stdair::BookingClass> (*lPolicy_ptr);
-      stdair::BookingClassList_T::const_reverse_iterator itCurrentBC =
-        lBCList.rbegin();
-      if (itCurrentBC != lBCList.rend()) {
-        stdair::BookingClass* lLowestBC_ptr = *itCurrentBC;
-        assert (lLowestBC_ptr != NULL);
+      bool hasAListOfBC = 
+        stdair::BomManager::hasList<stdair::BookingClass> (*lPolicy_ptr);
+      if (hasAListOfBC == true) { 
+        const stdair::BookingClassList_T& lBCList =
+          stdair::BomManager::getList<stdair::BookingClass> (*lPolicy_ptr);
+        stdair::BookingClassList_T::const_reverse_iterator itCurrentBC =
+          lBCList.rbegin();
+        if (itCurrentBC != lBCList.rend()) {
+          stdair::BookingClass* lLowestBC_ptr = *itCurrentBC;
+          assert (lLowestBC_ptr != NULL);
 
-        // Retrieve the sell-up factor for the lowest class.
-        stdair::BookingClassSellUpCurveMap_T::const_iterator itBCSU =
-          iBCSellUpCurveMap.find (lLowestBC_ptr);
-        assert (itBCSU != iBCSellUpCurveMap.end());
-        const stdair::SellUpCurve_T& lSellUpCurve = itBCSU->second;
-        stdair::SellUpCurve_T::const_iterator itSellUpFactor =
-          lSellUpCurve.find (iCurrentDCP);
-        assert (itSellUpFactor != lSellUpCurve.end());
-        const double& lSUToLowestClass = itSellUpFactor->second;
-        
-        const double lAdditinalPolicyDemandMean = iMean * lSUToLowestClass;
-        const double lAdditinalPolicyDemandStdDev = iStdDev * sqrt (lSUToLowestClass);
-
-        //
-        lPolicy_ptr->setDemand (lPolicyDemand + lAdditinalPolicyDemandMean);
-        lPolicy_ptr->setStdDev (sqrt (lPolicyStdDev*lPolicyStdDev
-               + lAdditinalPolicyDemandStdDev * lAdditinalPolicyDemandStdDev));
-
-        lPolicy_ptr->addYieldDemand (lLowestBC_ptr->getYield(),
-                                     lAdditinalPolicyDemandStdDev);
-
-        // Iterate other classes.
-        stdair::BookingClassList_T::const_reverse_iterator itNextBC=itCurrentBC;
-        ++itNextBC;
-        for (; itNextBC != lBCList.rend(); ++itNextBC, ++itCurrentBC) {
-          stdair::BookingClass* lCurrentBC_ptr = *itCurrentBC;
-          assert (lCurrentBC_ptr != NULL);
-          stdair::BookingClass* lNextBC_ptr = *itNextBC;
-          assert (lNextBC_ptr != NULL);
-
-          // Retrieve the disutility for the current policy to the next one.
-          const stdair::FareFamily& lCurrentFF =
-            stdair::BomManager::getParent<stdair::FareFamily> (*lCurrentBC_ptr);
-          const stdair::FFDisutilityCurve_T& lDisutilityCurve =
-            lCurrentFF.getDisutilityCurve();
-          stdair::FFDisutilityCurve_T::const_iterator itDU =
-            lDisutilityCurve.find (iCurrentDCP);
-          assert (itDU != lDisutilityCurve.end());
-          const double& lDU = itDU->second;
+          // Retrieve the sell-up factor for the lowest class.
+          stdair::BookingClassSellUpCurveMap_T::const_iterator itBCSU =
+            iBCSellUpCurveMap.find (lLowestBC_ptr);
+          assert (itBCSU != iBCSellUpCurveMap.end());
+          const stdair::SellUpCurve_T& lSellUpCurve = itBCSU->second;
+          stdair::SellUpCurve_T::const_iterator itSellUpFactor =
+            lSellUpCurve.find (iCurrentDCP);
+          assert (itSellUpFactor != lSellUpCurve.end());
+          const double& lSUToLowestClass = itSellUpFactor->second;
           
-        // Retrieve the sell-up factor for the next class.
-          stdair::BookingClassSellUpCurveMap_T::const_iterator itBCSUN =
-            iBCSellUpCurveMap.find (lNextBC_ptr);
-          assert (itBCSUN != iBCSellUpCurveMap.end());
-          const stdair::SellUpCurve_T& lSellUpCurveN = itBCSUN->second;
-          stdair::SellUpCurve_T::const_iterator itSellUpFactorN =
-            lSellUpCurveN.find (iCurrentDCP);
-          assert (itSellUpFactorN != lSellUpCurveN.end());
-          const double& lSUToNextClass = itSellUpFactorN->second;
-          assert (lSUToNextClass > 0.0);
+          const double lAdditinalPolicyDemandMean = iMean * lSUToLowestClass;
+          const double lAdditinalPolicyDemandStdDev = iStdDev * sqrt (lSUToLowestClass);
 
-          // Retrieve the yields of the two classes
-          const stdair::Yield_T& lCurrentYield = lCurrentBC_ptr->getYield();
-          const stdair::Yield_T& lNextYield = lNextBC_ptr->getYield();
-          const double lBuyUpFactor = exp ((lCurrentYield-lNextYield)*lDU);
+          //
+          lPolicy_ptr->setDemand (lPolicyDemand + lAdditinalPolicyDemandMean);
+          lPolicy_ptr->setStdDev (sqrt (lPolicyStdDev*lPolicyStdDev
+                 + lAdditinalPolicyDemandStdDev * lAdditinalPolicyDemandStdDev));
 
-          // Withdraw an amount demand forecast from the current class. This
-          // amount of forecast will be added to the next class.
-          const double lDemandForNextClass =
-            iMean * lSUToNextClass * lBuyUpFactor;
-          lPolicy_ptr->addYieldDemand (lNextYield, lDemandForNextClass);
-          lPolicy_ptr->addYieldDemand (lCurrentYield, -lDemandForNextClass);
+          lPolicy_ptr->addYieldDemand (lLowestBC_ptr->getYield(),
+                                       lAdditinalPolicyDemandMean);
+
+          // Iterate other classes.
+          stdair::BookingClassList_T::const_reverse_iterator itNextBC=itCurrentBC;
+          ++itNextBC;
+          for (; itNextBC != lBCList.rend(); ++itNextBC, ++itCurrentBC) {
+            stdair::BookingClass* lCurrentBC_ptr = *itCurrentBC;
+            assert (lCurrentBC_ptr != NULL);
+            stdair::BookingClass* lNextBC_ptr = *itNextBC;
+            assert (lNextBC_ptr != NULL);
+
+            // Retrieve the disutility for the current policy to the next one.
+            const stdair::FareFamily& lCurrentFF =
+              stdair::BomManager::getParent<stdair::FareFamily> (*lCurrentBC_ptr);
+            const stdair::FFDisutilityCurve_T& lDisutilityCurve =
+              lCurrentFF.getDisutilityCurve();
+            stdair::FFDisutilityCurve_T::const_iterator itDU =
+              lDisutilityCurve.find (iCurrentDCP);
+            assert (itDU != lDisutilityCurve.end());
+            const double& lDU = itDU->second;
+            
+          // Retrieve the sell-up factor for the next class.
+            stdair::BookingClassSellUpCurveMap_T::const_iterator itBCSUN =
+              iBCSellUpCurveMap.find (lNextBC_ptr);
+            assert (itBCSUN != iBCSellUpCurveMap.end());
+            const stdair::SellUpCurve_T& lSellUpCurveN = itBCSUN->second;
+            stdair::SellUpCurve_T::const_iterator itSellUpFactorN =
+              lSellUpCurveN.find (iCurrentDCP);
+            assert (itSellUpFactorN != lSellUpCurveN.end());
+            const double& lSUToNextClass = itSellUpFactorN->second;
+            assert (lSUToNextClass > 0.0);
+
+            // Retrieve the yields of the two classes
+            const stdair::Yield_T& lCurrentYield = lCurrentBC_ptr->getYield();
+            const stdair::Yield_T& lNextYield = lNextBC_ptr->getYield();
+            const double lBuyUpFactor = exp ((lCurrentYield-lNextYield)*lDU);
+            assert(lSUToNextClass < lSUToLowestClass);
+            // Withdraw an amount demand forecast from the current class. This
+            // amount of forecast will be added to the next class.
+            const double lDemandForNextClass =
+              iMean * lSUToNextClass * lBuyUpFactor;
+            lPolicy_ptr->addYieldDemand (lNextYield, lDemandForNextClass);
+            lPolicy_ptr->addYieldDemand (lCurrentYield, -lDemandForNextClass);
+          }
         }
       }
     }
