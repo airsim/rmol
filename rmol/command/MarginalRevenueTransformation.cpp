@@ -28,6 +28,7 @@ namespace RMOL {
   prepareDemandInput (stdair::SegmentCabin& ioSegmentCabin) {
     // Build the convex hull, then adjust the yield and demand of all
     // classes based on the hull.
+  
     buildNestedConvexHull (ioSegmentCabin);
     bool isSucceeded = adjustYieldAndDemand (ioSegmentCabin);
 
@@ -45,9 +46,9 @@ namespace RMOL {
     const stdair::PolicyList_T& lPolicyList =
       stdair::BomManager::getList<stdair::Policy> (ioSegmentCabin);
 
-    // By construction, the empty policy is the last one on the list of
+    // By construction, the empty policy is the first one on the list of
     // eligible policies.
-    stdair::PolicyList_T::const_reverse_iterator itPolicy=lPolicyList.rbegin();
+    stdair::PolicyList_T::const_iterator itPolicy=lPolicyList.begin();
     stdair::Policy* lEmptyPolicy_ptr = *itPolicy;
     assert (lEmptyPolicy_ptr != NULL);
     ioSegmentCabin.addPolicy (*lEmptyPolicy_ptr);
@@ -103,9 +104,9 @@ namespace RMOL {
     const stdair::PolicyList_T& lPolicyList =
       stdair::BomManager::getList<stdair::Policy> (ioSegmentCabin);
 
-    // By construction, the empty policy is the last one on the list of
+    // By construction, the empty policy is the first one on the list of
     // eligible policies.
-    stdair::PolicyList_T::const_reverse_iterator itPolicy=lPolicyList.rbegin();
+    stdair::PolicyList_T::const_iterator itPolicy=lPolicyList.begin();
     stdair::Policy* lEmptyPolicy_ptr = *itPolicy;
     assert (lEmptyPolicy_ptr != NULL);
     ioSegmentCabin.addPolicy (*lEmptyPolicy_ptr);
@@ -120,7 +121,7 @@ namespace RMOL {
       // Demand and total revenue of the current policy.
       const double& lCurrentDem = lCurrentPolicy_ptr->getDemand();
       const double lCurrentTR = lCurrentPolicy_ptr->getTotalRevenue();
-      
+
       // Search for the next policy.
       double lGradient = 0.0;
       stdair::Policy* lNextPolicy_ptr = NULL;
@@ -156,7 +157,7 @@ namespace RMOL {
   adjustYieldAndDemand (stdair::SegmentCabin& ioSegmentCabin) {
     // Reset the yield-based nesting structure
     stdair::FacBomManager::resetYieldBasedNestingStructure (ioSegmentCabin);
-
+    unsigned int lBookingClassCounter = 0;
     // Browse the list of policies on the convex hull, compute the differences
     // between pairs of consecutive policies.
     const stdair::PolicyList_T& lConvexHull = ioSegmentCabin.getConvexHull();
@@ -233,30 +234,40 @@ namespace RMOL {
         stdair::BookingClass* lClass = *itBC;
         assert (lClass != NULL);
         lClass->setAdjustedYield (lAdjustedYield);
+        ++lBookingClassCounter;
       }
     }
 
-    // At the last node. All the classes which haven't been added to the
-    // nesting structure will be added to the next nesting node, with
-    // an ajusted yield of zero.// Retrieve the node. If there isn't any node left, create new one.
-    stdair::NestingNode* lLastNode_ptr = NULL;
-    if (itNode == lNodeList.end()) {
-      // Create a nesting node
-      stdair::NestingNodeCode_T lNodeCode ("XXX");
-      stdair::NestingNodeKey lNodeKey (lNodeCode);
-      stdair::NestingNode& lNestingNode =
-        stdair::FacBom<stdair::NestingNode>::instance().create (lNodeKey);
-      stdair::FacBomManager::addToList (lYieldBasedNS, lNestingNode);
-      stdair::FacBomManager::linkWithParent (lYieldBasedNS, lNestingNode);
-      lLastNode_ptr = &lNestingNode;
-    } else {
-      lLastNode_ptr = *itNode;
+    const stdair::BookingClassList_T& lSCBookingClassList = 
+       stdair::BomManager::getList<stdair::BookingClass> (ioSegmentCabin);
+    const unsigned int lNbOfBookingClass = lSCBookingClassList.size();
+    assert (lNbOfBookingClass >= lBookingClassCounter); 
+    if (lBookingClassCounter < lNbOfBookingClass) {
+      // At the last node. All the classes which haven't been added to the
+      // nesting structure will be added to the next nesting node, with
+      // an ajusted yield of zero.
+      // Retrieve the node. If there isn't any node left, create new one.
+      stdair::NestingNode* lLastNode_ptr = NULL;
+      if (itNode == lNodeList.end()) {
+        // Create a nesting node
+        stdair::NestingNodeCode_T lNodeCode ("XXX");
+        stdair::NestingNodeKey lNodeKey (lNodeCode);
+        stdair::NestingNode& lNestingNode =
+          stdair::FacBom<stdair::NestingNode>::instance().create (lNodeKey);
+        stdair::FacBomManager::addToList (lYieldBasedNS, lNestingNode);
+        stdair::FacBomManager::linkWithParent (lYieldBasedNS, lNestingNode);
+        lLastNode_ptr = 
+          stdair::BomManager::getObjectPtr<stdair::NestingNode>(lYieldBasedNS, 
+                                                           lNodeKey.toString());
+      } else {
+        lLastNode_ptr = *itNode;
+      }
+      assert (lLastNode_ptr != NULL);
+      const stdair::Policy* lLastPolicy_ptr = *itCurrentPolicy;
+      assert (lLastPolicy_ptr != NULL);
+      PolicyHelper::computeLastNode (*lLastNode_ptr, *lLastPolicy_ptr,
+                                     ioSegmentCabin);
     }
-    assert (lLastNode_ptr != NULL);
-    const stdair::Policy* lLastPolicy_ptr = *itCurrentPolicy;
-    assert (lLastPolicy_ptr != NULL);
-    PolicyHelper::computeLastNode (*lLastNode_ptr, *lLastPolicy_ptr,
-                                   ioSegmentCabin);
 
     return true;
   }

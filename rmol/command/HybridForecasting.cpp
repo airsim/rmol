@@ -159,10 +159,10 @@ namespace RMOL {
       }
 
       // Retrieve the historical product-oriented bookings
-      stdair::NbOfBookings_T lNbOfHistoricalBkgs = 
-        lBookingView[i*lNbOfClasses + lClassIdx][iDCPBegin-iDCPEnd]
-        - lBookingView[i*lNbOfClasses + lClassIdx][0];
-              
+      stdair::NbOfBookings_T lNbOfHistoricalBkgs = 0.0;
+      for (short j = 0; j < lNbOfDTDs; ++j) {
+        lNbOfHistoricalBkgs += lBookingView[i*lNbOfClasses + lClassIdx][j];
+      }              
       HistoricalBooking lHistoricalBkg (lNbOfHistoricalBkgs, lCensorshipFlag);
       ioHBHolder.addHistoricalBooking (lHistoricalBkg);
     }

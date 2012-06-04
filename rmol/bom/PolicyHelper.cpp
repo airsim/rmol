@@ -7,6 +7,7 @@
 #include <cmath>
 // StdAir
 #include <stdair/basic/BasConst_Inventory.hpp>
+#include <stdair/basic/BasConst_Yield.hpp>
 #include <stdair/bom/SegmentCabin.hpp>
 #include <stdair/bom/Policy.hpp>
 #include <stdair/bom/BookingClass.hpp>
@@ -56,6 +57,11 @@ namespace RMOL {
     bool isInBookingClassList = false;
 
     // Retrieve the booking classes of the policy
+    bool hasAListOfBC = 
+      stdair::BomManager::hasList<stdair::BookingClass> (iPolicy);
+    if (hasAListOfBC == false) {
+      return isInBookingClassList;
+    } 
     const stdair::BookingClassList_T& lPolicyBookingClassList =
       stdair::BomManager::getList<stdair::BookingClass> (iPolicy);
 
@@ -81,7 +87,7 @@ namespace RMOL {
       }
     }
     // If the policy has not any booking class in the fare family,
-    // return the end of the reverse iterator
+    // return false
     return isInBookingClassList;
   }
 
@@ -160,6 +166,7 @@ namespace RMOL {
                    const stdair::SegmentCabin& iSegmentCabin) {
     // Compare the number of booking classes in the policy and the number
     // of fare families of the segment-cabin.
+    ioNode.setYield(stdair::DEFAULT_YIELD_VALUE);
     const stdair::BookingClassList_T& lBCList =
       stdair::BomManager::getList<stdair::BookingClass> (iPolicy);
     const unsigned int lNbOfClasses = lBCList.size();
@@ -214,8 +221,20 @@ namespace RMOL {
                                const stdair::Policy& iSecondPolicy) {
     // The number of classes in the first policy should be smaller or equal
     // to the number of classes in the second one.
+    bool hasAListOfBCFirstPolicy = 
+      stdair::BomManager::hasList<stdair::BookingClass> (iFirstPolicy);
+    // All policies are nested with the empty policy
+    if (hasAListOfBCFirstPolicy == false) {
+      return true;
+    } 
     const stdair::BookingClassList_T& lFirstBCList =
       stdair::BomManager::getList<stdair::BookingClass> (iFirstPolicy);
+    bool hasAListOfBCSecondPolicy = 
+      stdair::BomManager::hasList<stdair::BookingClass> (iSecondPolicy);
+    // The empty policy is not nested
+    if (hasAListOfBCSecondPolicy == false) {
+      return false;
+    } 
     const stdair::BookingClassList_T& lSecondBCList =
       stdair::BomManager::getList<stdair::BookingClass> (iSecondPolicy);
     if (lFirstBCList.size() > lSecondBCList.size()) {

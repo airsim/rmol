@@ -114,7 +114,7 @@ namespace RMOL {
 
           // Dispatch the forecast to all classes for Fare Adjustment or MRT.
           // The sell-up probability will be used in this case.
-          Utilities::dispatchDemandForecastForFA (lBCDispatchingCurveMap,
+          Utilities::dispatchDemandForecastForFA (lBCSellUpCurveMap,
                                                   lMean, lStdDev, lCurrentDCP);
 
           // Add the demand forecast to the fare family.
@@ -206,11 +206,11 @@ namespace RMOL {
         // Retrieve the number of bookings
         const stdair::ClassIndex_T& lClassIdx =
           iSegmentSnapshotTable.getClassIndex(lBookingClass_ptr->describeKey());
-        const stdair::NbOfBookings_T lNbOfBookings =
-          lPriceBookingView[i*lNbOfClasses + lClassIdx][iDCPBegin-iDCPEnd]
-          - lPriceBookingView[i*lNbOfClasses + lClassIdx][0]
-          + lProductBookingView[i*lNbOfClasses + lClassIdx][iDCPBegin-iDCPEnd]
-          - lProductBookingView[i*lNbOfClasses + lClassIdx][0];
+        stdair::NbOfBookings_T lNbOfBookings = 0.0;
+        for (short j = 0; j < lNbOfDTDs; ++j) {
+          lNbOfBookings += lPriceBookingView[i*lNbOfClasses + lClassIdx][j] +
+            lProductBookingView[i*lNbOfClasses + lClassIdx][j];
+        }
         const stdair::NbOfBookings_T lNbOfQEquivalentBkgs=lNbOfBookings/lSellUp;
 
         lNbOfHistoricalBkgs += lNbOfQEquivalentBkgs;
@@ -241,19 +241,25 @@ namespace RMOL {
 
       // Browse the list of booking classes of the policy and use the
       // cumulative price-oriented demand forecast of each class.
-      const stdair::BookingClassList_T& lBCList =
-        stdair::BomManager::getList<stdair::BookingClass> (*lPolicy_ptr);
-      for (stdair::BookingClassList_T::const_iterator itBC = lBCList.begin();
-           itBC != lBCList.end(); ++itBC) {
-        const stdair::BookingClass* lBC_ptr = *itBC;
-        assert (lBC_ptr != NULL);
-        const stdair::Yield_T& lYield = lBC_ptr->getYield();
-        const double& lDemand = lBC_ptr->getCumuPriceDemMean();
-        const double& lStdDev = lBC_ptr->getCumuPriceDemStdDev();
+      bool hasAListOfBC = 
+        stdair::BomManager::hasList<stdair::BookingClass> (*lPolicy_ptr);
+      if (hasAListOfBC == true) { 
+        const stdair::BookingClassList_T& lBCList =
+          stdair::BomManager::getList<stdair::BookingClass> (*lPolicy_ptr);
+        for (stdair::BookingClassList_T::const_iterator itBC = lBCList.begin();
+             itBC != lBCList.end(); ++itBC) {
+          const stdair::BookingClass* lBC_ptr = *itBC;
+          assert (lBC_ptr != NULL);
+          const stdair::Yield_T& lYield = lBC_ptr->getYield();
+          const double& lDemand = lBC_ptr->getCumuPriceDemMean();
+          const double& lStdDev = lBC_ptr->getCumuPriceDemStdDev();
 
-        lPolicy_ptr->addYieldDemand (lYield, lDemand);
-        lPolicyDemand += lDemand;
-        lPolicyStdDev = sqrt (lPolicyStdDev*lPolicyStdDev + lStdDev*lStdDev);
+          lPolicy_ptr->addYieldDemand (lYield, lDemand);
+          lPolicyDemand += lDemand;
+          lPolicyStdDev = sqrt (lPolicyStdDev*lPolicyStdDev + lStdDev*lStdDev);
+        }
+        lPolicy_ptr->setDemand(lPolicyDemand);
+        lPolicy_ptr->setStdDev(lPolicyStdDev);
       }
     }
   }

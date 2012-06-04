@@ -179,6 +179,8 @@ namespace RMOL {
         lBC_ptr->setPriceDemStdDev (0.0);
         lBC_ptr->setProductDemMean (0.0);
         lBC_ptr->setProductDemStdDev (0.0);
+        lBC_ptr->setCumuPriceDemMean (0.0);
+        lBC_ptr->setCumuPriceDemStdDev (0.0);
       }
     }
   }

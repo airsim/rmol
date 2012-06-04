@@ -155,17 +155,35 @@ namespace RMOL {
       // a virtual class.
       // TODO: use float utils
       const stdair::NbOfRequests_T& lMean = lBookingClass_ptr->getMean();
+      const stdair::StdDevValue_T& lStdDev = lBookingClass_ptr->getStdDev();
       if (lMean > 0.0) {
         const stdair::Yield_T& lYield = lBookingClass_ptr->getAdjustedYield();
+        const stdair::Yield_T lRoundedYield = floor(lYield +0.5);
         stdair::BookingClassList_T lBookingClassList;
         lBookingClassList.push_back(lBookingClass_ptr);
-        stdair::VirtualClassStruct lVirtualClass (lBookingClassList);
-        lVirtualClass.setYield (lYield);
-        lVirtualClass.setMean (lMean);
-        lVirtualClass.setStdDev (lBookingClass_ptr->getStdDev());
 
-        lVirtualClassMap.insert (stdair::VirtualClassMap_T::
-                                 value_type (lYield, lVirtualClass));
+      // If there is already a virtual class with this yield, add the current
+      // booking class to its list and sum the two demand distributions.
+        stdair::VirtualClassMap_T::iterator itVCMap = 
+          lVirtualClassMap.find(lRoundedYield);
+        if (itVCMap == lVirtualClassMap.end()) {
+          stdair::VirtualClassStruct lVirtualClass (lBookingClassList);
+          lVirtualClass.setYield (lRoundedYield);
+          lVirtualClass.setMean (lMean);
+          lVirtualClass.setStdDev (lStdDev);
+
+          lVirtualClassMap.insert (stdair::VirtualClassMap_T::
+                                   value_type (lRoundedYield, lVirtualClass));
+        } else {
+          stdair::VirtualClassStruct& lVirtualClass = itVCMap->second;
+          const stdair::NbOfRequests_T& lVCMean = lVirtualClass.getMean();
+          const stdair::StdDevValue_T& lVCStdDev = lVirtualClass.getStdDev();
+          lVirtualClass.setMean (lVCMean + lMean);
+          lVirtualClass.setStdDev (sqrt(lVCStdDev * lVCStdDev + 
+            lStdDev * lStdDev));
+
+          lVirtualClass.addBookingClass(*lBookingClass_ptr);
+        }
       }
     }
 
