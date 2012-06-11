@@ -28,7 +28,7 @@ namespace RMOL {
   // ////////////////////////////////////////////////////////////////////
   bool PreOptimiser::
   preOptimise (stdair::FlightDate& ioFlightDate,
-               const stdair::PreOptimisationMethod::EN_PreOptimisationMethod& iPreOptimisationMethod) {
+               const stdair::PreOptimisationMethod& iPreOptimisationMethod) {
     bool isSucceeded = true;
     const stdair::SegmentDateList_T& lSDList =
       stdair::BomManager::getList<stdair::SegmentDate> (ioFlightDate);
@@ -61,8 +61,10 @@ namespace RMOL {
   // ////////////////////////////////////////////////////////////////////
   bool PreOptimiser::
   preOptimise (stdair::SegmentCabin& ioSegmentCabin,
-               const stdair::PreOptimisationMethod::EN_PreOptimisationMethod& iPreOptimisationMethod) {
-    switch (iPreOptimisationMethod) {
+               const stdair::PreOptimisationMethod& iPreOptimisationMethod) {
+    const stdair::PreOptimisationMethod::EN_PreOptimisationMethod& lPreOptimisationMethod =
+      iPreOptimisationMethod.getMethod();
+    switch (lPreOptimisationMethod) {
     case stdair::PreOptimisationMethod::NONE: {
       return DemandInputPreparation::prepareDemandInput (ioSegmentCabin);
     }

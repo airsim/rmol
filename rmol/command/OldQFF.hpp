@@ -27,7 +27,7 @@ namespace RMOL {
     */
     static bool forecast (stdair::SegmentCabin&, const stdair::Date_T&,
                           const stdair::DTD_T&,
-                          const stdair::UnconstrainingMethod::EN_UnconstrainingMethod&,
+                          const stdair::UnconstrainingMethod&,
                           const stdair::NbOfSegments_T&);
 
   private:
@@ -46,10 +46,22 @@ namespace RMOL {
     /**
      * Dispatch the demand forecast to the policies.
      */
-    static void dispatchDemandForecastToPolicies (const stdair::PolicyList_T&,
-                                                  const stdair::DCP_T&,
-                                                  const double&, const double&,
-                                                  const stdair::BookingClassSellUpCurveMap_T&);
+    static void 
+    dispatchDemandForecastToPolicies (const stdair::PolicyList_T&,
+                                      const stdair::DCP_T&,
+                                      const stdair::MeanValue_T&, 
+                                      const stdair::StdDevValue_T&,
+                                      const stdair::BookingClassSellUpCurveMap_T&);
+
+    /**
+     * Dispatch the demand forecast to the policy.
+     */
+    static void 
+    dispatchDemandForecastToPolicy (stdair::Policy&,
+                                    const stdair::DCP_T&,
+                                    const stdair::MeanValue_T&,
+                                    const stdair::StdDevValue_T&,
+                                    const stdair::BookingClassSellUpCurveMap_T&);
   };
 }
 #endif // __RMOL_COMMAND_OLDQFF_HPP

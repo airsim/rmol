@@ -26,7 +26,7 @@ namespace RMOL {
 
   // ////////////////////////////////////////////////////////////////////
   void Optimiser::
-  optimalOptimisationByMCIntegration (const int K,
+  optimalOptimisationByMCIntegration (const stdair::NbOfSamples_T& K,
                                       stdair::LegCabin& ioLegCabin) {
     // Retrieve the segment-cabin
     const stdair::SegmentCabinList_T lSegmentCabinList =
@@ -80,50 +80,81 @@ namespace RMOL {
   }
 
   // ////////////////////////////////////////////////////////////////////
-  bool Optimiser::optimise (stdair::FlightDate& ioFlightDate,
-                            const stdair::OptimisationMethod::EN_OptimisationMethod& iOptimisationMethod) {
-    bool optimiseSucceded = false;
-    // Browse the leg-cabin list and build the virtual class list for
-    // each cabin.
+  bool Optimiser::
+  optimise (stdair::FlightDate& ioFlightDate,
+            const stdair::OptimisationMethod& iOptimisationMethod) {
+    bool optimiseSucceeded = false;
+    // Browse the leg-date list 
     const stdair::LegDateList_T& lLDList =
       stdair::BomManager::getList<stdair::LegDate> (ioFlightDate);
     for (stdair::LegDateList_T::const_iterator itLD = lLDList.begin();
          itLD != lLDList.end(); ++itLD) {
       stdair::LegDate* lLD_ptr = *itLD;
       assert (lLD_ptr != NULL);
-
-      //
-      const stdair::LegCabinList_T& lLCList =
-        stdair::BomManager::getList<stdair::LegCabin> (*lLD_ptr);
-      for (stdair::LegCabinList_T::const_iterator itLC = lLCList.begin();
-           itLC != lLCList.end(); ++itLC) {
-        stdair::LegCabin* lLC_ptr = *itLC;
-        assert (lLC_ptr != NULL);
-
-        // Build the virtual class list.
-        bool hasVirtualClass = 
-          buildVirtualClassListForLegBasedOptimisation (*lLC_ptr);
-        if (hasVirtualClass == true) {
-          switch (iOptimisationMethod) {
-          case stdair::OptimisationMethod::LEG_BASED_MC: {
-            optimalOptimisationByMCIntegration (10000, *lLC_ptr);
-            optimiseSucceded = true;
-            break;
-          }
-          case stdair::OptimisationMethod::LEG_BASED_EMSR_B: {
-            heuristicOptimisationByEmsrB (*lLC_ptr);
-            optimiseSucceded = true;
-            break;
-          }
-          default: {
-            assert (false);
-            break;
-          }
-          }
-        }
+      const bool isSucceeded = optimise(*lLD_ptr, iOptimisationMethod);
+      // If at least one leg date is optimised, the optimisation is succeeded.
+      if (isSucceeded == true) {
+        optimiseSucceeded = true;
+        // Do not return now because all leg dates need to be optimised.
       }
     }
-    return optimiseSucceded;
+    return optimiseSucceeded;
+  }
+
+  // ////////////////////////////////////////////////////////////////////
+  bool Optimiser::
+  optimise (stdair::LegDate& ioLegDate,
+            const stdair::OptimisationMethod& iOptimisationMethod) {
+    bool optimiseSucceeded = false;
+    // Browse the leg-cabin list 
+    const stdair::LegCabinList_T& lLCList =
+      stdair::BomManager::getList<stdair::LegCabin> (ioLegDate);
+    for (stdair::LegCabinList_T::const_iterator itLC = lLCList.begin();
+         itLC != lLCList.end(); ++itLC) {
+      stdair::LegCabin* lLC_ptr = *itLC;
+      assert (lLC_ptr != NULL);
+      const bool isSucceeded = optimise(*lLC_ptr, iOptimisationMethod);
+      // If at least one leg cabin is optimised, the optimisation is succeeded.
+      if (isSucceeded == true) {
+        optimiseSucceeded = true;
+        // Do not return now because all leg cabins need to be optimised.
+      }
+    }
+    return optimiseSucceeded;
+  }
+
+  // ////////////////////////////////////////////////////////////////////
+  bool Optimiser::
+  optimise (stdair::LegCabin& ioLegCabin,
+            const stdair::OptimisationMethod& iOptimisationMethod) {
+    bool optimiseSucceeded = false;
+    // Build the virtual class list.
+    const bool hasVirtualClass = 
+      buildVirtualClassListForLegBasedOptimisation (ioLegCabin);
+    if (hasVirtualClass == true) {
+      const stdair::OptimisationMethod::EN_OptimisationMethod& lOptimisationMethod = 
+        iOptimisationMethod.getMethod();
+      switch (lOptimisationMethod) {
+      case stdair::OptimisationMethod::LEG_BASED_MC: {
+        // Number of samples generated for the Monte Carlo integration.
+        // It is important that number is greater than 100.
+        const stdair::NbOfSamples_T lNbOfSamples = 10000;
+        optimalOptimisationByMCIntegration (lNbOfSamples, ioLegCabin);
+        optimiseSucceeded = true;
+        return optimiseSucceeded;
+      }
+      case stdair::OptimisationMethod::LEG_BASED_EMSR_B: {
+        heuristicOptimisationByEmsrB (ioLegCabin);
+        optimiseSucceeded = true;
+        return optimiseSucceeded;
+      }
+      default: {
+        assert (false);
+        break;
+      }
+      }
+    }
+    return optimiseSucceeded;
   }
 
   // ////////////////////////////////////////////////////////////////////
@@ -158,29 +189,36 @@ namespace RMOL {
       const stdair::StdDevValue_T& lStdDev = lBookingClass_ptr->getStdDev();
       if (lMean > 0.0) {
         const stdair::Yield_T& lYield = lBookingClass_ptr->getAdjustedYield();
-        const stdair::Yield_T lRoundedYield = floor(lYield +0.5);
-        stdair::BookingClassList_T lBookingClassList;
-        lBookingClassList.push_back(lBookingClass_ptr);
+        // TODO: use float utils
+        assert (lYield >= 0.0);
+        const stdair::Yield_T lRoundedYieldDouble = std::floor(lYield +0.5);
+        const stdair::YieldLevel_T lRoundedYieldLevel = 
+          static_cast<stdair::YieldLevel_T>(lRoundedYieldDouble);
 
-      // If there is already a virtual class with this yield, add the current
-      // booking class to its list and sum the two demand distributions.
+        // If there is already a virtual class with this yield, add the current
+        // booking class to its list and sum the two demand distributions.
+        // Otherwise, create a new virtual class.
         stdair::VirtualClassMap_T::iterator itVCMap = 
-          lVirtualClassMap.find(lRoundedYield);
+          lVirtualClassMap.find(lRoundedYieldLevel);
         if (itVCMap == lVirtualClassMap.end()) {
+          stdair::BookingClassList_T lBookingClassList;
+          lBookingClassList.push_back(lBookingClass_ptr);
           stdair::VirtualClassStruct lVirtualClass (lBookingClassList);
-          lVirtualClass.setYield (lRoundedYield);
+          lVirtualClass.setYield (lRoundedYieldLevel);
           lVirtualClass.setMean (lMean);
           lVirtualClass.setStdDev (lStdDev);
 
           lVirtualClassMap.insert (stdair::VirtualClassMap_T::
-                                   value_type (lRoundedYield, lVirtualClass));
+                                value_type (lRoundedYieldLevel, lVirtualClass));
         } else {
           stdair::VirtualClassStruct& lVirtualClass = itVCMap->second;
-          const stdair::NbOfRequests_T& lVCMean = lVirtualClass.getMean();
+          const stdair::MeanValue_T& lVCMean = lVirtualClass.getMean();
           const stdair::StdDevValue_T& lVCStdDev = lVirtualClass.getStdDev();
-          lVirtualClass.setMean (lVCMean + lMean);
-          lVirtualClass.setStdDev (sqrt(lVCStdDev * lVCStdDev + 
-            lStdDev * lStdDev));
+          const stdair::MeanValue_T lNewMean = lVCMean + lMean;
+          const stdair::StdDevValue_T lNewStdDev = 
+            std::sqrt(lVCStdDev * lVCStdDev + lStdDev * lStdDev);
+          lVirtualClass.setMean (lNewMean);
+          lVirtualClass.setStdDev (lNewStdDev);
 
           lVirtualClass.addBookingClass(*lBookingClass_ptr);
         }

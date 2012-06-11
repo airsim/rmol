@@ -31,7 +31,7 @@ namespace RMOL {
 	100 is a minimum for K, as statistics must be drawn from those
 	random generations.
      */
-    static void optimalOptimisationByMCIntegration (const int K, 
+    static void optimalOptimisationByMCIntegration (const stdair::NbOfSamples_T&, 
                                                     stdair::LegCabin&);
     
     /**
@@ -58,7 +58,7 @@ namespace RMOL {
        Optimise a flight-date using leg-based Monte Carlo Integration.
     */
     static bool optimise (stdair::FlightDate&,
-                          const stdair::OptimisationMethod::EN_OptimisationMethod&);
+                          const stdair::OptimisationMethod&);
 
     /**
      * Build the virtual class list for the given leg-cabin.
@@ -68,6 +68,19 @@ namespace RMOL {
     /** Optimiser */
     static double optimiseUsingOnDForecast (stdair::FlightDate&,
                                             const bool& iReduceFluctuations = false);
+
+  private:
+    /**
+       Optimise a leg-date using leg-based Monte Carlo Integration.
+    */
+    static bool optimise (stdair::LegDate&,
+                          const stdair::OptimisationMethod&);
+    /**
+       Optimise a leg-cabin using leg-based Monte Carlo Integration.
+    */
+    static bool optimise (stdair::LegCabin&,
+                          const stdair::OptimisationMethod&);
+
 
   };
 }

@@ -33,8 +33,8 @@ namespace RMOL {
   bool Forecaster::
   forecast (stdair::FlightDate& ioFlightDate,
             const stdair::DateTime_T& iEventTime,
-            const stdair::UnconstrainingMethod::EN_UnconstrainingMethod& iUnconstrainingMethod,
-            const stdair::ForecastingMethod::EN_ForecastingMethod& iForecastingMethod) {
+            const stdair::UnconstrainingMethod& iUnconstrainingMethod,
+            const stdair::ForecastingMethod& iForecastingMethod) {
     // Build the offset dates.
     const stdair::Date_T& lEventDate = iEventTime.date();
     
@@ -81,8 +81,8 @@ namespace RMOL {
   bool Forecaster::
   forecast (stdair::SegmentCabin& ioSegmentCabin,
             const stdair::Date_T& iEventDate,
-            const stdair::UnconstrainingMethod::EN_UnconstrainingMethod& iUnconstrainingMethod,
-            const stdair::ForecastingMethod::EN_ForecastingMethod& iForecastingMethod) {
+            const stdair::UnconstrainingMethod& iUnconstrainingMethod,
+            const stdair::ForecastingMethod& iForecastingMethod) {
     // Retrieve the number of departed similar segments.
     stdair::NbOfSegments_T lNbOfDepartedSegments =
       Utilities::getNbOfDepartedSimilarSegments (ioSegmentCabin, iEventDate);
@@ -106,7 +106,9 @@ namespace RMOL {
       // If the forecasting method is QFF (old or new), but there are
       // not more than two fare families in the cabin, hybrid
       // forecasting will be used.
-      switch (iForecastingMethod) {
+      const stdair::ForecastingMethod::EN_ForecastingMethod lForecastingMethod = 
+        iForecastingMethod.getMethod();
+      switch (lForecastingMethod) {
       case stdair::ForecastingMethod::Q_FORECASTING: {
         return QForecasting::forecast (ioSegmentCabin, iEventDate,
                                        lDaysBeforeDeparture,

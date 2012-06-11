@@ -411,7 +411,7 @@ namespace RMOL {
     std::ostringstream logStream;
     stdair::BidPriceVector_T lBidPriceVector = lLegCabin.getBidPriceVector();
     logStream << "Bid-Price Vector (BPV): ";
-    unsigned int size = lBidPriceVector.size();
+    const unsigned int size = lBidPriceVector.size();
     
     for (unsigned int i = 0; i < size - 1; ++i) {
       const double bidPrice = lBidPriceVector.at(i);
@@ -458,7 +458,7 @@ namespace RMOL {
     stdair::BidPriceVector_T lBidPriceVector = lLegCabin.getBidPriceVector();
     std::ostringstream logStream;
     logStream << "Bid-Price Vector (BPV): ";
-    unsigned int idx = 0;
+    stdair::UnsignedIndex_T idx = 0;
     for (stdair::BidPriceVector_T::const_iterator itBP = lBidPriceVector.begin();
          itBP != lBidPriceVector.end(); ++itBP) {
       if (idx != 0) {
@@ -565,14 +565,10 @@ namespace RMOL {
       
       // 1. Forecasting
       bool isForecasted = false;
-      const stdair::UnconstrainingMethod::EN_UnconstrainingMethod& lUnconstrainingMethod =
-        iUnconstrainingMethod.getMethod();
       
-      const stdair::ForecastingMethod::EN_ForecastingMethod& lForecastingMethod =
-        iForecastingMethod.getMethod();
       isForecasted = Forecaster::forecast (ioFlightDate, iRMEventTime,
-                                           lUnconstrainingMethod,
-                                           lForecastingMethod);
+                                           iUnconstrainingMethod,
+                                           iForecastingMethod);
       // DEBUG
       STDAIR_LOG_DEBUG ("Forecast successful: " << isForecasted);
       
@@ -582,22 +578,22 @@ namespace RMOL {
         // DEBUG
         STDAIR_LOG_DEBUG ("Pre-optimise");
         
-        const stdair::PreOptimisationMethod::EN_PreOptimisationMethod& lPreOptMethod = iPreOptimisationMethod.getMethod();
-        bool isPreOptimised = PreOptimiser::preOptimise (ioFlightDate, lPreOptMethod);
+        const bool isPreOptimised = 
+          PreOptimiser::preOptimise (ioFlightDate, iPreOptimisationMethod );
         
         // DEBUG
         STDAIR_LOG_DEBUG ("Pre-Optimise successful: " << isPreOptimised);
-        
-        // 2b. Optimisation
-        // DEBUG
-        STDAIR_LOG_DEBUG ("Optimise");
 
-        const stdair::OptimisationMethod::EN_OptimisationMethod& lOptimisationMethod = iOptimisationMethod.getMethod();
-        bool optimiseSucceeded = 
-          Optimiser::optimise (ioFlightDate, lOptimisationMethod);
-        // DEBUG
-        STDAIR_LOG_DEBUG ("Optimise successful: " << optimiseSucceeded);
-        return optimiseSucceeded ;
+        if (isPreOptimised == true) {
+          // 2b. Optimisation
+          // DEBUG
+          STDAIR_LOG_DEBUG ("Optimise");
+          const bool optimiseSucceeded = 
+            Optimiser::optimise (ioFlightDate, iOptimisationMethod);
+          // DEBUG
+          STDAIR_LOG_DEBUG ("Optimise successful: " << optimiseSucceeded);
+          return optimiseSucceeded ;
+        }
       }
       break;
     }
@@ -1273,7 +1269,7 @@ namespace RMOL {
               itStrDS->second;
             const stdair::CabinClassPairList_T& lCabinClassPairList =
               lOnDDate_ptr->getCabinClassPairList(lCabinClassPath);
-            const unsigned int lNbOfSegments = lOnDDate_ptr->getNbOfSegments();
+            const stdair::NbOfSegments_T& lNbOfSegments = lOnDDate_ptr->getNbOfSegments();
             // Sanity check
             assert (lCabinClassPairList.size() == lNbOfSegments);
             
@@ -1378,7 +1374,7 @@ namespace RMOL {
               itStrDS->second;
             const stdair::CabinClassPairList_T& lCabinClassPairList =
               lOnDDate_ptr->getCabinClassPairList(lCabinClassPath);
-            const unsigned int lNbOfSegments = lOnDDate_ptr->getNbOfSegments();
+            const stdair::NbOfSegments_T& lNbOfSegments = lOnDDate_ptr->getNbOfSegments();
             // Sanity check
             assert (lCabinClassPairList.size() == lNbOfSegments);
             
@@ -1652,7 +1648,7 @@ namespace RMOL {
             const stdair::YieldDemandPair_T& lYieldDemandPair = itStrDS->second;
             const stdair::CabinClassPairList_T& lCabinClassPairList =
               lOnDDate_ptr->getCabinClassPairList(lCabinClassPath);
-            const unsigned int lNbOfSegments = lOnDDate_ptr->getNbOfSegments();
+            const stdair::NbOfSegments_T& lNbOfSegments = lOnDDate_ptr->getNbOfSegments();
             // Sanity check
             assert (lCabinClassPairList.size() == lNbOfSegments);
 
@@ -1816,7 +1812,7 @@ namespace RMOL {
           const stdair::YieldDemandPair_T& lYieldDemandPair = itStrDS->second;
           const stdair::CabinClassPairList_T& lCabinClassPairList =
             lOnDDate_ptr->getCabinClassPairList(lCabinClassPath);
-          const unsigned int lNbOfSegments = lOnDDate_ptr->getNbOfSegments();
+          const stdair::NbOfSegments_T& lNbOfSegments = lOnDDate_ptr->getNbOfSegments();
           // Sanity check
           assert (lCabinClassPairList.size() == lNbOfSegments);
           

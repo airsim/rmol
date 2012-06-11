@@ -27,7 +27,7 @@ namespace RMOL {
     */
     static bool forecast (stdair::SegmentCabin&, const stdair::Date_T&,
                           const stdair::DTD_T&,
-                          const stdair::UnconstrainingMethod::EN_UnconstrainingMethod&,
+                          const stdair::UnconstrainingMethod&,
                           const stdair::NbOfSegments_T&);
     
     /**

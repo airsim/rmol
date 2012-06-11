@@ -23,7 +23,7 @@ namespace RMOL {
      * Unconstrain booking figures between two DCP's.
      */
     static void unconstrain (HistoricalBookingHolder&,
-                 const stdair::UnconstrainingMethod::EN_UnconstrainingMethod&);
+                 const stdair::UnconstrainingMethod&);
     
   };
 }
