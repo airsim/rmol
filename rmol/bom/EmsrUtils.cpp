@@ -34,7 +34,7 @@ namespace RMOL {
     // new average yield for the new aggregated class/bucket.
     const stdair::MeanValue_T lNewMean = lAggregatedMean + lCurrentMean;
     const stdair::StdDevValue_T lNewSD =
-      sqrt (lAggregatedSD*lAggregatedSD + lCurrentSD*lCurrentSD);
+      std::sqrt (lAggregatedSD*lAggregatedSD + lCurrentSD*lCurrentSD);
     stdair::Yield_T lNewYield = lCurrentYield;
     if (lNewMean > 0) {
       lNewYield = (lAggregatedYield*lAggregatedMean +
