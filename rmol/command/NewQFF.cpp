@@ -264,8 +264,10 @@ namespace RMOL {
     // Reset the demand forecast of the policy
     ioPolicy.resetDemandForecast();
 
-    stdair::MeanValue_T lPolicyDemand = ioPolicy.getDemand();
-    stdair::StdDevValue_T lPolicyStdDev = ioPolicy.getStdDev();
+    const stdair::MeanValue_T& lPolicyDemand = ioPolicy.getDemand();
+    const stdair::StdDevValue_T& lPolicyStdDev = ioPolicy.getStdDev();
+    stdair::MeanValue_T lNewPolicyDemand = lPolicyDemand;
+    stdair::MeanValue_T lNewPolicyStdDev = 0.0;
 
     // Browse the list of booking classes of the policy and use the
     // cumulative price-oriented demand forecast of each class.
@@ -284,12 +286,14 @@ namespace RMOL {
           lBC_ptr->getCumuPriceDemStdDev();
 
         ioPolicy.addYieldDemand (lYield, lDemand);
-        lPolicyDemand += lDemand;
-        lPolicyStdDev = 
-          std::sqrt (lPolicyStdDev*lPolicyStdDev + lStdDev*lStdDev);
+        lNewPolicyDemand += lDemand;
+        const stdair::StdDevValue_T lSquareNewPolicyStdDev =
+          lPolicyStdDev*lPolicyStdDev + lStdDev*lStdDev;
+        lNewPolicyStdDev = 
+          std::sqrt (lSquareNewPolicyStdDev);
       }
-      ioPolicy.setDemand(lPolicyDemand);
-      ioPolicy.setStdDev(lPolicyStdDev);
+      ioPolicy.setDemand(lNewPolicyDemand);
+      ioPolicy.setStdDev(lNewPolicyStdDev);
     }
   }
 }

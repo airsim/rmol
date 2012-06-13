@@ -11,6 +11,7 @@
 // StdAir
 #include <stdair/service/Logger.hpp>
 // RMOL
+#include <rmol/basic/BasConst_General.hpp>
 #include <rmol/RMOL_Service.hpp>
 #include <rmol/config/rmol-paths.hpp>
 
@@ -26,7 +27,7 @@ const bool K_RMOL_DEFAULT_BUILT_IN_INPUT = false;
 const std::string K_RMOL_DEFAULT_INPUT_FILENAME (STDAIR_SAMPLE_DIR "/rm01.csv");
 
 /** Default number of random draws to be generated (best if over 100). */
-const int K_RMOL_DEFAULT_RANDOM_DRAWS = 100000;
+const int K_RMOL_DEFAULT_RANDOM_DRAWS = RMOL::DEFAULT_NUMBER_OF_DRAWS_FOR_MC_SIMULATION;
 
 /** Default value for the capacity of the resource (e.g., a flight cabin). */
 const double K_RMOL_DEFAULT_CAPACITY = 500.0;

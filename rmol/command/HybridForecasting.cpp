@@ -135,7 +135,7 @@ namespace RMOL {
       iSegmentSnapshotTable.getClassIndex (iBookingClass.describeKey());
 
     // Retrieve the gross daily booking and availability snapshots.
-    const stdair::ConstSegmentCabinDTDRangeSnapshotView_T& lBookingView =
+    const stdair::ConstSegmentCabinDTDRangeSnapshotView_T lBookingView =
       iSegmentSnapshotTable.getConstSegmentCabinDTDRangeProductOrientedGrossBookingSnapshotView (iSegmentBegin, iSegmentEnd, iDCPEnd, iDCPBegin);
     const stdair::ConstSegmentCabinDTDRangeSnapshotView_T lAvlView =
       iSegmentSnapshotTable.getConstSegmentCabinDTDRangeAvailabilitySnapshotView (iSegmentBegin, iSegmentEnd, iDCPEnd, iDCPBegin);

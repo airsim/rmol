@@ -20,6 +20,7 @@
 #include <stdair/basic/BasFileMgr.hpp>
 #include <stdair/service/Logger.hpp>
 // RMOL
+#include <rmol/basic/BasConst_General.hpp>
 #include <rmol/RMOL_Service.hpp>
 #include <rmol/config/rmol-paths.hpp>
 
@@ -59,7 +60,7 @@ int testOptimiseHelper (const unsigned short optimisationMethodFlag,
   const stdair::Filename_T lLogFilename (oStr.str());
     
   // Number of random draws to be generated (best if greater than 100)
-  const int K = 100000;
+  const int K = RMOL::DEFAULT_NUMBER_OF_DRAWS_FOR_MC_SIMULATION;
     
   // Methods of optimisation (0 = Monte-Carlo, 1 = Dynamic Programming, 
   // 2 = EMSR, 3 = EMSR-a, 4 = EMSR-b, 5 = EMSR-a with sellup prob.)

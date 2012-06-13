@@ -17,6 +17,7 @@
 #include <stdair/bom/BookingClass.hpp>
 #include <stdair/service/Logger.hpp>
 // RMOL
+#include <rmol/basic/BasConst_General.hpp>
 #include <rmol/bom/MCOptimiser.hpp>
 #include <rmol/bom/Emsr.hpp>
 #include <rmol/bom/DPOptimiser.hpp>
@@ -138,7 +139,8 @@ namespace RMOL {
       case stdair::OptimisationMethod::LEG_BASED_MC: {
         // Number of samples generated for the Monte Carlo integration.
         // It is important that number is greater than 100.
-        const stdair::NbOfSamples_T lNbOfSamples = 10000;
+        const stdair::NbOfSamples_T lNbOfSamples =
+          DEFAULT_NUMBER_OF_DRAWS_FOR_MC_SIMULATION;
         optimalOptimisationByMCIntegration (lNbOfSamples, ioLegCabin);
         optimiseSucceeded = true;
         return optimiseSucceeded;
@@ -246,7 +248,9 @@ namespace RMOL {
     double lMaxBPVariation = 0.0;
     // Check if the flight date holds a list of leg dates.
     // If so, retieve it and optimise the cabins.
-    if (stdair::BomManager::hasList<stdair::LegDate> (ioFlightDate)) {
+    const bool hasLegDateList =
+      stdair::BomManager::hasList<stdair::LegDate> (ioFlightDate);
+    if (hasLegDateList == true) {
       STDAIR_LOG_DEBUG ("Optimisation for the flight date: "
                         << ioFlightDate.toString());
       const stdair::LegDateList_T& lLDList =

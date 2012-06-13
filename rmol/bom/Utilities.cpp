@@ -46,7 +46,7 @@ namespace RMOL {
       ioStdDev += ((lSample - ioMean) * (lSample - ioMean));
     }
     ioStdDev /= (lNbOfSamples - 1);
-    ioStdDev = sqrt (ioStdDev);
+    ioStdDev = std::sqrt (ioStdDev);
 
     // Sanity check
     if (ioStdDev == 0) {
@@ -155,17 +155,18 @@ namespace RMOL {
       for (stdair::FRAT5Curve_T::const_iterator itFRAT5 = iFRAT5Curve.begin();
            itFRAT5 != iFRAT5Curve.end(); ++itFRAT5) {
         const stdair::DTD_T& lDTD = itFRAT5->first;
-        const double lFRAT5 = itFRAT5->second;
+        const stdair::FRAT5_T& lFRAT5 = itFRAT5->second;
         const double lSellUpCoef = log(0.5)/(lFRAT5-1);
-        stdair::SellupProbability_T lSellUpFactor = 
+        const stdair::SellupProbability_T lSellUpFactor = 
           exp ((lCurrentYield/lLowestYield - 1.0) * lSellUpCoef);
-        bool insert = lCurrentSellUpCurve.insert (stdair::SellUpCurve_T::value_type(lDTD, lSellUpFactor)).second;
-        assert (insert == true);
+        const bool isInsertionSuccessful =
+          lCurrentSellUpCurve.insert (stdair::SellUpCurve_T::value_type(lDTD, lSellUpFactor)).second;
+        assert (isInsertionSuccessful == true);
       }
-      bool insert = oBCSellUpFactorMap.
+      const bool isInsertionSuccessful = oBCSellUpFactorMap.
         insert (stdair::BookingClassSellUpCurveMap_T::
                 value_type(lCurrentBC_ptr, lCurrentSellUpCurve)).second;
-      assert (insert == true);
+      assert (isInsertionSuccessful == true);
     }
     return oBCSellUpFactorMap;
   }
@@ -218,7 +219,7 @@ namespace RMOL {
         for (stdair::FRAT5Curve_T::const_iterator itFRAT5 = iFRAT5Curve.begin();
          itFRAT5 != iFRAT5Curve.end(); ++itFRAT5) {
           const stdair::DTD_T& lDTD = itFRAT5->first;
-          const double lFRAT5 = itFRAT5->second;
+          const stdair::FRAT5_T& lFRAT5 = itFRAT5->second;
           const double lDispatchingCoef = log(0.5)/(lFRAT5-1);
           double lDispatchingFactor = 
             exp ((lNextYield/lLowestYield - 1.0) * lDispatchingCoef);

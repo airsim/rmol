@@ -14,7 +14,7 @@ namespace RMOL {
   
   /** Default value for the number of draws within the Monte-Carlo
       Integration algorithm. */
-  const int DEFAULT_NUMBER_OF_DRAWS_FOR_MC_SIMULATION = 100000;
+  const int DEFAULT_NUMBER_OF_DRAWS_FOR_MC_SIMULATION = 10000;
 
   /** Default value for the precision of the integral computation in
       the Dynamic Programming algorithm (100 means that the precision

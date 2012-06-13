@@ -673,9 +673,11 @@ namespace RMOL {
          itInv != lInventoryList.end(); ++itInv) {
       const stdair::Inventory* lInventory_ptr = *itInv;
       assert (lInventory_ptr != NULL);
-      if (stdair::BomManager::hasList<stdair::OnDDate> (*lInventory_ptr)) {
+      const bool hasOnDDateList =
+        stdair::BomManager::hasList<stdair::OnDDate> (*lInventory_ptr);
+      if (hasOnDDateList == true) {
         const stdair::OnDDateList_T lOnDDateList =
-        stdair::BomManager::getList<stdair::OnDDate> (*lInventory_ptr);
+          stdair::BomManager::getList<stdair::OnDDate> (*lInventory_ptr);
 
         for (stdair::OnDDateList_T::const_iterator itOD = lOnDDateList.begin();
              itOD != lOnDDateList.end(); ++itOD) {
@@ -994,7 +996,9 @@ namespace RMOL {
       const stdair::Date_T& lDepartureDate = lOnDDate_ptr->getDate();
       const stdair::AirportCode_T& lOrigin = lOnDDate_ptr->getOrigin();
       const stdair::AirportCode_T& lDestination = lOnDDate_ptr->getDestination();
-      if (!stdair::BomManager::hasList<stdair::SegmentDate> (*lOnDDate_ptr)) {
+      const bool hasSegmentDateList =
+        stdair::BomManager::hasList<stdair::SegmentDate> (*lOnDDate_ptr);
+      if (hasSegmentDateList == false) {
         STDAIR_LOG_ERROR ("The O&D date " << lOnDDate_ptr->describeKey()
                           << "has not been correctly initialized : SegmentDate list is missing");
         assert (false);
@@ -1057,7 +1061,9 @@ namespace RMOL {
       const stdair::Date_T& lDepartureDate = lOnDDate_ptr->getDate();
       const stdair::AirportCode_T& lOrigin = lOnDDate_ptr->getOrigin();
       const stdair::AirportCode_T& lDestination = lOnDDate_ptr->getDestination();
-      if (!stdair::BomManager::hasList<stdair::SegmentDate> (*lOnDDate_ptr)) {
+      const bool hasSegmentDateList =
+        stdair::BomManager::hasList<stdair::SegmentDate> (*lOnDDate_ptr);
+      if (hasSegmentDateList == false) {
         STDAIR_LOG_ERROR ("The O&D date " << lOnDDate_ptr->describeKey()
                           << "has not been correctly initialized : SegmentDate list is missing");
         assert (false);
@@ -1194,7 +1200,9 @@ namespace RMOL {
       if (itDCP != stdair::DEFAULT_DCP_LIST.end()) {
         // Check if the flight date holds a list of leg dates.
         // If so, find all leg cabin and reset the forecast they are holding.
-        if (stdair::BomManager::hasList<stdair::LegDate> (*lFlightDate_ptr)) {
+        const bool hasLegDateList =
+          stdair::BomManager::hasList<stdair::LegDate> (*lFlightDate_ptr);
+        if (hasLegDateList == true) {
           const stdair::LegDateList_T lLegDateList =
             stdair::BomManager::getList<stdair::LegDate> (*lFlightDate_ptr);
           assert (!lLegDateList.empty());
@@ -1530,7 +1538,9 @@ namespace RMOL {
          itSegmentDate != lSegmentDateList.end(); ++itSegmentDate) {
       stdair::SegmentDate* lSegmentDate_ptr = *itSegmentDate;
       assert (lSegmentDate_ptr != NULL);
-      if (stdair::BomManager::hasList<stdair::SegmentDate>(*lSegmentDate_ptr)) {
+      const bool hasSegmentDateList =
+        stdair::BomManager::hasList<stdair::SegmentDate>(*lSegmentDate_ptr);
+      if (hasSegmentDateList == true) {
         const stdair::LegDateList_T& lLegDateList =
           stdair::BomManager::getList<stdair::LegDate>(*lSegmentDate_ptr);
         // Get the list of marketing carriers segments.
