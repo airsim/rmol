@@ -25,14 +25,14 @@ namespace RMOL {
      * Prepare the demand input for the optimser.
     */
     static bool preOptimise (stdair::FlightDate&, 
-                             const stdair::PreOptimisationMethod::EN_PreOptimisationMethod&);
+                             const stdair::PreOptimisationMethod&);
 
   private:
     /**
      * Prepare the demand input for the optimser.
      */
     static bool preOptimise (stdair::SegmentCabin&, 
-                             const stdair::PreOptimisationMethod::EN_PreOptimisationMethod&);
+                             const stdair::PreOptimisationMethod&);
     
     /**
      * Set the demand forecasts to zero.

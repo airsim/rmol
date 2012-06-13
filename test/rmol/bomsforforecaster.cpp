@@ -110,7 +110,7 @@ namespace RMOL {
     }
 
     // Getters
-    unsigned int getNumberOfClass () const {
+    stdair::NbOfClasses_T getNumberOfClass () const {
       return _bookingClassDataList.size();
     }
 
@@ -271,10 +271,10 @@ BOOST_AUTO_TEST_CASE (rmol_forecaster) {
   STDAIR_LOG_DEBUG (lBookingClassDataSet.toString());
 
   // Number of classes
-  const unsigned int lNoOfClass = lBookingClassDataSet.getNumberOfClass();
+  const stdair::NbOfClasses_T lNbOfClass = lBookingClassDataSet.getNumberOfClass();
 
   // DEBUG
-  STDAIR_LOG_DEBUG ("Number of Classes: " << lNoOfClass);
+  STDAIR_LOG_DEBUG ("Number of Classes: " << lNbOfClass);
 
   // Minimum fare
   BOOST_CHECK_NO_THROW (lBookingClassDataSet.updateMinimumFare());

@@ -31,7 +31,7 @@ namespace RMOL {
   forecast (stdair::SegmentCabin& ioSegmentCabin,
             const stdair::Date_T& iCurrentDate,
             const stdair::DTD_T& iCurrentDTD,
-            const stdair::UnconstrainingMethod::EN_UnconstrainingMethod& iUnconstrainingMethod,
+            const stdair::UnconstrainingMethod& iUnconstrainingMethod,
             const stdair::NbOfSegments_T& iNbOfDepartedSegments) {
     // Retrieve the snapshot table.
     const stdair::SegmentSnapshotTable& lSegmentSnapshotTable =
@@ -40,8 +40,8 @@ namespace RMOL {
     // Retrieve the FRAT5Curve.
     const stdair::FareFamilyList_T& lFFList =
       stdair::BomManager::getList<stdair::FareFamily>(ioSegmentCabin);
-    stdair::FareFamilyList_T::const_iterator itFF = lFFList.begin();
-    assert (itFF != lFFList.end());
+    stdair::FareFamilyList_T::const_reverse_iterator itFF = lFFList.rbegin();
+    assert (itFF != lFFList.rend());
     stdair::FareFamily* lFF_ptr = *itFF;
     assert (lFF_ptr != NULL);
     const stdair::FRAT5Curve_T lFRAT5Curve = lFF_ptr->getFrat5Curve();
@@ -50,9 +50,9 @@ namespace RMOL {
     // and the dispatching curves.
     const stdair::BookingClassList_T& lBCList =
       stdair::BomManager::getList<stdair::BookingClass>(ioSegmentCabin);
-    stdair::BookingClassSellUpCurveMap_T lBCSellUpCurveMap =
+    const stdair::BookingClassSellUpCurveMap_T lBCSellUpCurveMap =
       Utilities::computeSellUpFactorCurves (lFRAT5Curve, lBCList);
-    stdair::BookingClassDispatchingCurveMap_T lBCDispatchingCurveMap =
+    const stdair::BookingClassDispatchingCurveMap_T lBCDispatchingCurveMap =
       Utilities::computeDispatchingFactorCurves (lFRAT5Curve, lBCList);
       
 
@@ -101,7 +101,8 @@ namespace RMOL {
             lHBHolder.getUnconstrainedDemand (i);
           lUncDemVector.push_back (lUncDemand);
         }
-        double lMean, lStdDev;
+        stdair::MeanValue_T lMean = 0.0;
+        stdair::StdDevValue_T lStdDev = 0.0;
         Utilities::computeDistributionParameters (lUncDemVector,
                                                   lMean, lStdDev);
 
@@ -115,12 +116,12 @@ namespace RMOL {
                                                 lMean, lStdDev, lCurrentDCP);
 
         // Add the demand forecast to the fare family.
-        const double& lCurrentMean = lFF_ptr->getMean();
-        const double& lCurrentStdDev = lFF_ptr->getStdDev();
+        const stdair::MeanValue_T& lCurrentMean = lFF_ptr->getMean();
+        const stdair::StdDevValue_T& lCurrentStdDev = lFF_ptr->getStdDev();
 
-        const double lNewMean = lCurrentMean + lMean;
-        const double lNewStdDev = sqrt (lCurrentStdDev * lCurrentStdDev
-                                        + lStdDev * lStdDev);
+        const stdair::MeanValue_T lNewMean = lCurrentMean + lMean;
+        const stdair::StdDevValue_T lNewStdDev = 
+          std::sqrt (lCurrentStdDev * lCurrentStdDev + lStdDev * lStdDev);
 
         lFF_ptr->setMean (lNewMean);
         lFF_ptr->setStdDev (lNewStdDev);       
@@ -146,28 +147,29 @@ namespace RMOL {
               << iSegmentCabin.describeKey();    
     const stdair::ClassIndex_T& lCabinIdx =
       iSegmentSnapshotTable.getClassIndex (lSCMapKey.str());
-    
+
     // Retrieve the gross daily booking and availability snapshots.
-    stdair::ConstSegmentCabinDTDRangeSnapshotView_T lBookingView =
+    const stdair::ConstSegmentCabinDTDRangeSnapshotView_T lBookingView =
       iSegmentSnapshotTable.getConstSegmentCabinDTDRangePriceOrientedGrossBookingSnapshotView (iSegmentBegin, iSegmentEnd, iDCPEnd, iDCPBegin);
-    stdair::ConstSegmentCabinDTDRangeSnapshotView_T lAvlView =
+    const stdair::ConstSegmentCabinDTDRangeSnapshotView_T lAvlView =
       iSegmentSnapshotTable.getConstSegmentCabinDTDRangeAvailabilitySnapshotView (iSegmentBegin, iSegmentEnd, iDCPEnd, iDCPBegin);
     
     // Browse the list of segments and build the historical booking holder.
     const stdair::ClassIndexMap_T& lVTIdxMap =
       iSegmentSnapshotTable.getClassIndexMap();
-    const unsigned int lNbOfClasses = lVTIdxMap.size();
+    const stdair::NbOfClasses_T lNbOfClasses = lVTIdxMap.size();
 
     for (short i = 0; i <= iSegmentEnd-iSegmentBegin; ++i) {
       stdair::Flag_T lCensorshipFlag = false;
       const short lNbOfDTDs = iDCPBegin - iDCPEnd + 1;
-      
+      const stdair::UnsignedIndex_T lIdx = i*lNbOfClasses + lCabinIdx;
+
       // Parse the DTDs during the period and compute the censorship flag
       for (short j = 0; j < lNbOfDTDs; ++j) {
         // Check if the data has been censored during this day.
         // STDAIR_LOG_DEBUG ("i: " << i << ", NbOfClasses: " << lNbOfClasses
         //                   << ", ClassIdx: " << iClassIdx << ", j: " << j);
-        if (lAvlView[i*lNbOfClasses + lCabinIdx][j] < 1.0) {
+        if (lAvlView[lIdx][j] < 1.0) {
           lCensorshipFlag = true;
           break;
         }
@@ -184,7 +186,7 @@ namespace RMOL {
         stdair::SellUpCurve_T::const_iterator itSellUp =
           lSellUpCurve.find (iDCPBegin);
         assert (itSellUp != lSellUpCurve.end());
-        const double& lSellUp = itSellUp->second;
+        const stdair::SellupProbability_T& lSellUp = itSellUp->second;
         assert (lSellUp != 0);
 
         // Retrieve the number of bookings

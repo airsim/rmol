@@ -155,9 +155,8 @@ namespace RMOL {
   // ////////////////////////////////////////////////////////////////////
   bool MarginalRevenueTransformation::
   adjustYieldAndDemand (stdair::SegmentCabin& ioSegmentCabin) {
-    // Reset the yield-based nesting structure
-    stdair::FacBomManager::resetYieldBasedNestingStructure (ioSegmentCabin);
-    unsigned int lBookingClassCounter = 0;
+    bool isSucceeded = false;
+    stdair::NbOfClasses_T lBookingClassCounter = 0;
     // Browse the list of policies on the convex hull, compute the differences
     // between pairs of consecutive policies.
     const stdair::PolicyList_T& lConvexHull = ioSegmentCabin.getConvexHull();
@@ -165,9 +164,14 @@ namespace RMOL {
     assert (itCurrentPolicy != lConvexHull.end());
     stdair::PolicyList_T::const_iterator itNextPolicy = itCurrentPolicy;
     ++itNextPolicy;
+    // If the nesting has only one element (the empty policy),
+    // there is no optimisation and no pre-optimisation.
     if (itNextPolicy == lConvexHull.end()) {
-      return false;
+      return isSucceeded;
     }
+
+    // Reset the yield-based nesting structure
+    stdair::FacBomManager::resetYieldBasedNestingStructure (ioSegmentCabin);
 
     // Retrieve the yield-based nesting structure.
     stdair::SimpleNestingStructure& lYieldBasedNS =
@@ -206,15 +210,16 @@ namespace RMOL {
       // standard deviation computation, we can take the difference between
       // the squares of the standard deviations of the two policies instead of
       // the sum of the squares.
-      const double lAdjustedDemMean =
+      const stdair::MeanValue_T lAdjustedDemMean =
         lNextPolicy_ptr->getDemand()-lCurrentPolicy_ptr->getDemand();
       assert (lAdjustedDemMean > 0.0);
-      const double& lCurrentStdDev = lCurrentPolicy_ptr->getStdDev();
-      const double& lNextStdDev = lNextPolicy_ptr->getStdDev();
+      const stdair::StdDevValue_T& lCurrentStdDev = 
+        lCurrentPolicy_ptr->getStdDev();
+      const stdair::StdDevValue_T& lNextStdDev = lNextPolicy_ptr->getStdDev();
       assert (lNextStdDev > lCurrentStdDev);
-      const double lAdjustedDemStdDev =
-        sqrt (lNextStdDev*lNextStdDev - lCurrentStdDev*lCurrentStdDev);
-      const double lAdjustedYield =
+      const stdair::StdDevValue_T lAdjustedDemStdDev =
+        std::sqrt (lNextStdDev*lNextStdDev - lCurrentStdDev*lCurrentStdDev);
+      const stdair::Yield_T lAdjustedYield =
         (lNextPolicy_ptr->getTotalRevenue()-lCurrentPolicy_ptr->getTotalRevenue())/(lAdjustedDemMean);
       assert (lAdjustedYield > 0.0);
       lNode_ptr->setYield (lAdjustedYield);
@@ -240,12 +245,12 @@ namespace RMOL {
 
     const stdair::BookingClassList_T& lSCBookingClassList = 
        stdair::BomManager::getList<stdair::BookingClass> (ioSegmentCabin);
-    const unsigned int lNbOfBookingClass = lSCBookingClassList.size();
+    const stdair::NbOfClasses_T lNbOfBookingClass = lSCBookingClassList.size();
     assert (lNbOfBookingClass >= lBookingClassCounter); 
     if (lBookingClassCounter < lNbOfBookingClass) {
       // At the last node. All the classes which haven't been added to the
       // nesting structure will be added to the next nesting node, with
-      // an ajusted yield of zero.
+      // an adjusted yield of zero.
       // Retrieve the node. If there isn't any node left, create new one.
       stdair::NestingNode* lLastNode_ptr = NULL;
       if (itNode == lNodeList.end()) {
@@ -269,7 +274,8 @@ namespace RMOL {
                                      ioSegmentCabin);
     }
 
-    return true;
+    isSucceeded = true;
+    return isSucceeded;
   }
   
 }

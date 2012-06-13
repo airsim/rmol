@@ -25,16 +25,16 @@ namespace RMOL {
      * Forecast demand for a flight-date.
     */
     static bool forecast (stdair::FlightDate&, const stdair::DateTime_T&,
-                          const stdair::UnconstrainingMethod::EN_UnconstrainingMethod&,
-                          const stdair::ForecastingMethod::EN_ForecastingMethod&);
+                          const stdair::UnconstrainingMethod&,
+                          const stdair::ForecastingMethod&);
 
   private:
     /**
      * Forecast demand for a segment-cabin.
      */
     static bool forecast (stdair::SegmentCabin&, const stdair::Date_T&,
-                          const stdair::UnconstrainingMethod::EN_UnconstrainingMethod&,
-                          const stdair::ForecastingMethod::EN_ForecastingMethod&);
+                          const stdair::UnconstrainingMethod&,
+                          const stdair::ForecastingMethod&);
 
     /**
      * Set the demand forecasts to zero.

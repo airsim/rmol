@@ -32,14 +32,18 @@ namespace RMOL {
       stdair::BookingClass* lBC_ptr = *itBC;
       assert (lBC_ptr != NULL);
 
-      const double& lPriceDemMean = lBC_ptr->getPriceDemMean();
-      const double& lPriceStdDev = lBC_ptr->getPriceDemStdDev();
-      const double& lProductDemMean = lBC_ptr->getProductDemMean();
-      const double& lProductStdDev = lBC_ptr->getProductDemStdDev();
+      const stdair::MeanValue_T& lPriceDemMean = lBC_ptr->getPriceDemMean();
+      const stdair::StdDevValue_T& lPriceStdDev = lBC_ptr->getPriceDemStdDev();
+      const stdair::MeanValue_T& lProductDemMean = lBC_ptr->getProductDemMean();
+      const stdair::StdDevValue_T& lProductStdDev = 
+        lBC_ptr->getProductDemStdDev();
 
-      lBC_ptr->setMean (lPriceDemMean + lProductDemMean);
-      lBC_ptr->setStdDev (sqrt(lPriceStdDev*lPriceStdDev
-                                  + lProductStdDev*lProductStdDev));
+      const stdair::MeanValue_T lNewMeanValue = lPriceDemMean + lProductDemMean;
+      const stdair::StdDevValue_T lNewStdDev =
+        std::sqrt(lPriceStdDev*lPriceStdDev + lProductStdDev*lProductStdDev);
+
+      lBC_ptr->setMean (lNewMeanValue);
+      lBC_ptr->setStdDev (lNewStdDev);
     }
 
     return isSucceeded;

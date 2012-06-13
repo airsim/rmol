@@ -411,7 +411,7 @@ namespace RMOL {
     std::ostringstream logStream;
     stdair::BidPriceVector_T lBidPriceVector = lLegCabin.getBidPriceVector();
     logStream << "Bid-Price Vector (BPV): ";
-    unsigned int size = lBidPriceVector.size();
+    const unsigned int size = lBidPriceVector.size();
     
     for (unsigned int i = 0; i < size - 1; ++i) {
       const double bidPrice = lBidPriceVector.at(i);
@@ -458,7 +458,7 @@ namespace RMOL {
     stdair::BidPriceVector_T lBidPriceVector = lLegCabin.getBidPriceVector();
     std::ostringstream logStream;
     logStream << "Bid-Price Vector (BPV): ";
-    unsigned int idx = 0;
+    stdair::UnsignedIndex_T idx = 0;
     for (stdair::BidPriceVector_T::const_iterator itBP = lBidPriceVector.begin();
          itBP != lBidPriceVector.end(); ++itBP) {
       if (idx != 0) {
@@ -565,14 +565,10 @@ namespace RMOL {
       
       // 1. Forecasting
       bool isForecasted = false;
-      const stdair::UnconstrainingMethod::EN_UnconstrainingMethod& lUnconstrainingMethod =
-        iUnconstrainingMethod.getMethod();
       
-      const stdair::ForecastingMethod::EN_ForecastingMethod& lForecastingMethod =
-        iForecastingMethod.getMethod();
       isForecasted = Forecaster::forecast (ioFlightDate, iRMEventTime,
-                                           lUnconstrainingMethod,
-                                           lForecastingMethod);
+                                           iUnconstrainingMethod,
+                                           iForecastingMethod);
       // DEBUG
       STDAIR_LOG_DEBUG ("Forecast successful: " << isForecasted);
       
@@ -582,22 +578,22 @@ namespace RMOL {
         // DEBUG
         STDAIR_LOG_DEBUG ("Pre-optimise");
         
-        const stdair::PreOptimisationMethod::EN_PreOptimisationMethod& lPreOptMethod = iPreOptimisationMethod.getMethod();
-        bool isPreOptimised = PreOptimiser::preOptimise (ioFlightDate, lPreOptMethod);
+        const bool isPreOptimised = 
+          PreOptimiser::preOptimise (ioFlightDate, iPreOptimisationMethod );
         
         // DEBUG
         STDAIR_LOG_DEBUG ("Pre-Optimise successful: " << isPreOptimised);
-        
-        // 2b. Optimisation
-        // DEBUG
-        STDAIR_LOG_DEBUG ("Optimise");
 
-        const stdair::OptimisationMethod::EN_OptimisationMethod& lOptimisationMethod = iOptimisationMethod.getMethod();
-        bool optimiseSucceeded = 
-          Optimiser::optimise (ioFlightDate, lOptimisationMethod);
-        // DEBUG
-        STDAIR_LOG_DEBUG ("Optimise successful: " << optimiseSucceeded);
-        return optimiseSucceeded ;
+        if (isPreOptimised == true) {
+          // 2b. Optimisation
+          // DEBUG
+          STDAIR_LOG_DEBUG ("Optimise");
+          const bool optimiseSucceeded = 
+            Optimiser::optimise (ioFlightDate, iOptimisationMethod);
+          // DEBUG
+          STDAIR_LOG_DEBUG ("Optimise successful: " << optimiseSucceeded);
+          return optimiseSucceeded ;
+        }
       }
       break;
     }
@@ -677,9 +673,11 @@ namespace RMOL {
          itInv != lInventoryList.end(); ++itInv) {
       const stdair::Inventory* lInventory_ptr = *itInv;
       assert (lInventory_ptr != NULL);
-      if (stdair::BomManager::hasList<stdair::OnDDate> (*lInventory_ptr)) {
+      const bool hasOnDDateList =
+        stdair::BomManager::hasList<stdair::OnDDate> (*lInventory_ptr);
+      if (hasOnDDateList == true) {
         const stdair::OnDDateList_T lOnDDateList =
-        stdair::BomManager::getList<stdair::OnDDate> (*lInventory_ptr);
+          stdair::BomManager::getList<stdair::OnDDate> (*lInventory_ptr);
 
         for (stdair::OnDDateList_T::const_iterator itOD = lOnDDateList.begin();
              itOD != lOnDDateList.end(); ++itOD) {
@@ -998,7 +996,9 @@ namespace RMOL {
       const stdair::Date_T& lDepartureDate = lOnDDate_ptr->getDate();
       const stdair::AirportCode_T& lOrigin = lOnDDate_ptr->getOrigin();
       const stdair::AirportCode_T& lDestination = lOnDDate_ptr->getDestination();
-      if (!stdair::BomManager::hasList<stdair::SegmentDate> (*lOnDDate_ptr)) {
+      const bool hasSegmentDateList =
+        stdair::BomManager::hasList<stdair::SegmentDate> (*lOnDDate_ptr);
+      if (hasSegmentDateList == false) {
         STDAIR_LOG_ERROR ("The O&D date " << lOnDDate_ptr->describeKey()
                           << "has not been correctly initialized : SegmentDate list is missing");
         assert (false);
@@ -1061,7 +1061,9 @@ namespace RMOL {
       const stdair::Date_T& lDepartureDate = lOnDDate_ptr->getDate();
       const stdair::AirportCode_T& lOrigin = lOnDDate_ptr->getOrigin();
       const stdair::AirportCode_T& lDestination = lOnDDate_ptr->getDestination();
-      if (!stdair::BomManager::hasList<stdair::SegmentDate> (*lOnDDate_ptr)) {
+      const bool hasSegmentDateList =
+        stdair::BomManager::hasList<stdair::SegmentDate> (*lOnDDate_ptr);
+      if (hasSegmentDateList == false) {
         STDAIR_LOG_ERROR ("The O&D date " << lOnDDate_ptr->describeKey()
                           << "has not been correctly initialized : SegmentDate list is missing");
         assert (false);
@@ -1198,7 +1200,9 @@ namespace RMOL {
       if (itDCP != stdair::DEFAULT_DCP_LIST.end()) {
         // Check if the flight date holds a list of leg dates.
         // If so, find all leg cabin and reset the forecast they are holding.
-        if (stdair::BomManager::hasList<stdair::LegDate> (*lFlightDate_ptr)) {
+        const bool hasLegDateList =
+          stdair::BomManager::hasList<stdair::LegDate> (*lFlightDate_ptr);
+        if (hasLegDateList == true) {
           const stdair::LegDateList_T lLegDateList =
             stdair::BomManager::getList<stdair::LegDate> (*lFlightDate_ptr);
           assert (!lLegDateList.empty());
@@ -1273,7 +1277,7 @@ namespace RMOL {
               itStrDS->second;
             const stdair::CabinClassPairList_T& lCabinClassPairList =
               lOnDDate_ptr->getCabinClassPairList(lCabinClassPath);
-            const unsigned int lNbOfSegments = lOnDDate_ptr->getNbOfSegments();
+            const stdair::NbOfSegments_T& lNbOfSegments = lOnDDate_ptr->getNbOfSegments();
             // Sanity check
             assert (lCabinClassPairList.size() == lNbOfSegments);
             
@@ -1378,7 +1382,7 @@ namespace RMOL {
               itStrDS->second;
             const stdair::CabinClassPairList_T& lCabinClassPairList =
               lOnDDate_ptr->getCabinClassPairList(lCabinClassPath);
-            const unsigned int lNbOfSegments = lOnDDate_ptr->getNbOfSegments();
+            const stdair::NbOfSegments_T& lNbOfSegments = lOnDDate_ptr->getNbOfSegments();
             // Sanity check
             assert (lCabinClassPairList.size() == lNbOfSegments);
             
@@ -1534,7 +1538,9 @@ namespace RMOL {
          itSegmentDate != lSegmentDateList.end(); ++itSegmentDate) {
       stdair::SegmentDate* lSegmentDate_ptr = *itSegmentDate;
       assert (lSegmentDate_ptr != NULL);
-      if (stdair::BomManager::hasList<stdair::SegmentDate>(*lSegmentDate_ptr)) {
+      const bool hasSegmentDateList =
+        stdair::BomManager::hasList<stdair::SegmentDate>(*lSegmentDate_ptr);
+      if (hasSegmentDateList == true) {
         const stdair::LegDateList_T& lLegDateList =
           stdair::BomManager::getList<stdair::LegDate>(*lSegmentDate_ptr);
         // Get the list of marketing carriers segments.
@@ -1652,7 +1658,7 @@ namespace RMOL {
             const stdair::YieldDemandPair_T& lYieldDemandPair = itStrDS->second;
             const stdair::CabinClassPairList_T& lCabinClassPairList =
               lOnDDate_ptr->getCabinClassPairList(lCabinClassPath);
-            const unsigned int lNbOfSegments = lOnDDate_ptr->getNbOfSegments();
+            const stdair::NbOfSegments_T& lNbOfSegments = lOnDDate_ptr->getNbOfSegments();
             // Sanity check
             assert (lCabinClassPairList.size() == lNbOfSegments);
 
@@ -1816,7 +1822,7 @@ namespace RMOL {
           const stdair::YieldDemandPair_T& lYieldDemandPair = itStrDS->second;
           const stdair::CabinClassPairList_T& lCabinClassPairList =
             lOnDDate_ptr->getCabinClassPairList(lCabinClassPath);
-          const unsigned int lNbOfSegments = lOnDDate_ptr->getNbOfSegments();
+          const stdair::NbOfSegments_T& lNbOfSegments = lOnDDate_ptr->getNbOfSegments();
           // Sanity check
           assert (lCabinClassPairList.size() == lNbOfSegments);
           

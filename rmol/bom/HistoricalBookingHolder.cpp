@@ -86,7 +86,7 @@ namespace RMOL {
       }
     }
     lResult /= (iNbOfUncensoredData - 1);
-    lResult = sqrt (lResult);
+    lResult = std::sqrt (lResult);
       
     return lResult;
   }
@@ -130,7 +130,7 @@ namespace RMOL {
 
     lResult /= (lSize - 1);
 
-    lResult = sqrt (lResult);
+    lResult = std::sqrt (lResult);
 
     return lResult;
   }
@@ -202,7 +202,7 @@ namespace RMOL {
     e = exp (e);
     //STDAIR_LOG_DEBUG ("e: " << e);
 
-    double s = sqrt (1 - e);
+    double s = std::sqrt (1 - e);
     //STDAIR_LOG_DEBUG ("s: " << s);
     
     if (lBooking >= iMean) {
@@ -218,7 +218,7 @@ namespace RMOL {
     
     e = - (lBooking - iMean) * (lBooking - iMean) * 0.5 / (iSD * iSD);
     e = exp (e);
-    d2 = e * iSD / sqrt(2 * 3.14159265);
+    d2 = e * iSD / std::sqrt(2 * 3.14159265);
     //STDAIR_LOG_DEBUG ("d2: " << d2);
     
     if (d1 == 0) {

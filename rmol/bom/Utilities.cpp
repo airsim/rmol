@@ -25,9 +25,10 @@ namespace RMOL {
   // ////////////////////////////////////////////////////////////////////
   void Utilities::
   computeDistributionParameters (const stdair::UncDemVector_T& iVector,
-                                 double& ioMean, double& ioStdDev) {
+                                 stdair::MeanValue_T& ioMean,
+                                 stdair::StdDevValue_T& ioStdDev) {
     ioMean = 0.0; ioStdDev = 0.0;
-    unsigned int lNbOfSamples = iVector.size();
+    const stdair::NbOfSamples_T lNbOfSamples = iVector.size();
     assert (lNbOfSamples > 1);
 
     // Compute the mean
@@ -41,11 +42,11 @@ namespace RMOL {
     // Compute the standard deviation
     for (stdair::UncDemVector_T::const_iterator itSample = iVector.begin();
          itSample != iVector.end(); ++itSample) {
-      const double& lSample = *itSample;
+      const stdair::MeanValue_T& lSample = *itSample;
       ioStdDev += ((lSample - ioMean) * (lSample - ioMean));
     }
     ioStdDev /= (lNbOfSamples - 1);
-    ioStdDev = sqrt (ioStdDev);
+    ioStdDev = std::sqrt (ioStdDev);
 
     // Sanity check
     if (ioStdDev == 0) {
@@ -154,17 +155,18 @@ namespace RMOL {
       for (stdair::FRAT5Curve_T::const_iterator itFRAT5 = iFRAT5Curve.begin();
            itFRAT5 != iFRAT5Curve.end(); ++itFRAT5) {
         const stdair::DTD_T& lDTD = itFRAT5->first;
-        const double lFRAT5 = itFRAT5->second;
+        const stdair::FRAT5_T& lFRAT5 = itFRAT5->second;
         const double lSellUpCoef = log(0.5)/(lFRAT5-1);
-        double lSellUpFactor = 
+        const stdair::SellupProbability_T lSellUpFactor = 
           exp ((lCurrentYield/lLowestYield - 1.0) * lSellUpCoef);
-        bool insert = lCurrentSellUpCurve.insert (stdair::SellUpCurve_T::value_type(lDTD, lSellUpFactor)).second;
-        assert (insert == true);
+        const bool isInsertionSuccessful =
+          lCurrentSellUpCurve.insert (stdair::SellUpCurve_T::value_type(lDTD, lSellUpFactor)).second;
+        assert (isInsertionSuccessful == true);
       }
-      bool insert = oBCSellUpFactorMap.
+      const bool isInsertionSuccessful = oBCSellUpFactorMap.
         insert (stdair::BookingClassSellUpCurveMap_T::
                 value_type(lCurrentBC_ptr, lCurrentSellUpCurve)).second;
-      assert (insert == true);
+      assert (isInsertionSuccessful == true);
     }
     return oBCSellUpFactorMap;
   }
@@ -217,7 +219,7 @@ namespace RMOL {
         for (stdair::FRAT5Curve_T::const_iterator itFRAT5 = iFRAT5Curve.begin();
          itFRAT5 != iFRAT5Curve.end(); ++itFRAT5) {
           const stdair::DTD_T& lDTD = itFRAT5->first;
-          const double lFRAT5 = itFRAT5->second;
+          const stdair::FRAT5_T& lFRAT5 = itFRAT5->second;
           const double lDispatchingCoef = log(0.5)/(lFRAT5-1);
           double lDispatchingFactor = 
             exp ((lNextYield/lLowestYield - 1.0) * lDispatchingCoef);
@@ -249,7 +251,8 @@ namespace RMOL {
   // ////////////////////////////////////////////////////////////////////
   void Utilities::dispatchDemandForecast
   (const stdair::BookingClassDispatchingCurveMap_T& iBCDispatchingCurveMap,
-   const double& iMean, const double& iStdDev,
+   const stdair::MeanValue_T& iMean, 
+   const stdair::StdDevValue_T& iStdDev,
    const stdair::DTD_T& iCurrentDCP) {
     for (stdair::BookingClassDispatchingCurveMap_T::const_iterator itBCDC =
            iBCDispatchingCurveMap.begin();
@@ -262,15 +265,16 @@ namespace RMOL {
       assert (itDispatchingFactor != lDispatchingCurve.end());
       const double& lDF = itDispatchingFactor->second;
 
-      const double& lCurrentMean = lBC_ptr->getPriceDemMean();
-      const double& lCurrentStdDev = lBC_ptr->getPriceDemStdDev();
+      const stdair::MeanValue_T& lCurrentMean = lBC_ptr->getPriceDemMean();
+      const stdair::StdDevValue_T& lCurrentStdDev = lBC_ptr->getPriceDemStdDev();
 
-      const double lAdditionalMean = iMean * lDF;
-      const double lAdditionalStdDev = iStdDev * sqrt (lDF);
+      const stdair::MeanValue_T lAdditionalMean = iMean * lDF;
+      const stdair::StdDevValue_T lAdditionalStdDev = iStdDev * std::sqrt (lDF);
 
-      const double lNewMean = lCurrentMean + lAdditionalMean;
-      const double lNewStdDev = sqrt (lCurrentStdDev * lCurrentStdDev
-                                      + lAdditionalStdDev * lAdditionalStdDev);
+      const stdair::MeanValue_T lNewMean = lCurrentMean + lAdditionalMean;
+      const stdair::StdDevValue_T lNewStdDev = 
+        std::sqrt (lCurrentStdDev * lCurrentStdDev
+                   + lAdditionalStdDev * lAdditionalStdDev);
 
       lBC_ptr->setPriceDemMean (lNewMean);
       lBC_ptr->setPriceDemStdDev (lNewStdDev);
@@ -280,7 +284,8 @@ namespace RMOL {
   // ////////////////////////////////////////////////////////////////////
   void Utilities::dispatchDemandForecastForFA
   (const stdair::BookingClassSellUpCurveMap_T& iBCSellUpCurveMap,
-   const double& iMean, const double& iStdDev,
+   const stdair::MeanValue_T& iMean,
+   const stdair::StdDevValue_T& iStdDev,
    const stdair::DTD_T& iCurrentDCP) {
     for (stdair::BookingClassSellUpCurveMap_T::const_iterator itBCSU =
            iBCSellUpCurveMap.begin();
@@ -291,17 +296,19 @@ namespace RMOL {
       stdair::SellUpCurve_T::const_iterator itSellUpFactor =
         lSellUpCurve.find (iCurrentDCP);
       assert (itSellUpFactor != lSellUpCurve.end());
-      const double& lSU = itSellUpFactor->second;
+      const stdair::SellupProbability_T& lSU = itSellUpFactor->second;
 
-      const double& lCurrentMean = lBC_ptr->getCumuPriceDemMean();
-      const double& lCurrentStdDev = lBC_ptr->getCumuPriceDemStdDev();
+      const stdair::MeanValue_T& lCurrentMean = lBC_ptr->getCumuPriceDemMean();
+      const stdair::StdDevValue_T& lCurrentStdDev = 
+        lBC_ptr->getCumuPriceDemStdDev();
 
-      const double lAdditionalMean = iMean * lSU;
-      const double lAdditionalStdDev = iStdDev * sqrt (lSU);
+      const stdair::MeanValue_T lAdditionalMean = iMean * lSU;
+      const stdair::StdDevValue_T lAdditionalStdDev = iStdDev * std::sqrt (lSU);
 
-      const double lNewMean = lCurrentMean + lAdditionalMean;
-      const double lNewStdDev = sqrt (lCurrentStdDev * lCurrentStdDev
-                                      + lAdditionalStdDev * lAdditionalStdDev);
+      const stdair::MeanValue_T lNewMean = lCurrentMean + lAdditionalMean;
+      const stdair::StdDevValue_T lNewStdDev = 
+        std::sqrt (lCurrentStdDev * lCurrentStdDev
+                   + lAdditionalStdDev * lAdditionalStdDev);
 
       lBC_ptr->setCumuPriceDemMean (lNewMean);
       lBC_ptr->setCumuPriceDemStdDev (lNewStdDev);

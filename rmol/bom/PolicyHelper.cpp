@@ -57,7 +57,7 @@ namespace RMOL {
     bool isInBookingClassList = false;
 
     // Retrieve the booking classes of the policy
-    bool hasAListOfBC = 
+    const bool hasAListOfBC = 
       stdair::BomManager::hasList<stdair::BookingClass> (iPolicy);
     if (hasAListOfBC == false) {
       return isInBookingClassList;
@@ -169,14 +169,14 @@ namespace RMOL {
     ioNode.setYield(stdair::DEFAULT_YIELD_VALUE);
     const stdair::BookingClassList_T& lBCList =
       stdair::BomManager::getList<stdair::BookingClass> (iPolicy);
-    const unsigned int lNbOfClasses = lBCList.size();
+    const stdair::NbOfClasses_T lNbOfClasses = lBCList.size();
     const stdair::FareFamilyList_T& lFFList =
       stdair::BomManager::getList<stdair::FareFamily> (iSegmentCabin);
-    const unsigned int lNbOfFFs = lFFList.size();
+    const stdair::NbOfFareFamilies_T lNbOfFFs = lFFList.size();
     assert (lNbOfFFs >= lNbOfClasses);
 
     // Number of closed fare families in the policy.
-    const unsigned int lNbOfClosedFFs = lNbOfFFs - lNbOfClasses;
+    const stdair::NbOfFareFamilies_T lNbOfClosedFFs = lNbOfFFs - lNbOfClasses;
     stdair::FareFamilyList_T::const_reverse_iterator itFF = lFFList.rbegin();
     for (unsigned i=0; i<lNbOfClosedFFs; ++i, ++itFF) {
       const stdair::FareFamily* lFF_ptr = *itFF;
@@ -219,26 +219,28 @@ namespace RMOL {
   // ////////////////////////////////////////////////////////////////////
   bool PolicyHelper::isNested (const stdair::Policy& iFirstPolicy,
                                const stdair::Policy& iSecondPolicy) {
+    bool isNested = false;
     // The number of classes in the first policy should be smaller or equal
     // to the number of classes in the second one.
-    bool hasAListOfBCFirstPolicy = 
+    const bool hasAListOfBCFirstPolicy = 
       stdair::BomManager::hasList<stdair::BookingClass> (iFirstPolicy);
     // All policies are nested with the empty policy
     if (hasAListOfBCFirstPolicy == false) {
-      return true;
+      isNested = true;
+      return isNested;
     } 
     const stdair::BookingClassList_T& lFirstBCList =
       stdair::BomManager::getList<stdair::BookingClass> (iFirstPolicy);
-    bool hasAListOfBCSecondPolicy = 
+    const bool hasAListOfBCSecondPolicy = 
       stdair::BomManager::hasList<stdair::BookingClass> (iSecondPolicy);
     // The empty policy is not nested
     if (hasAListOfBCSecondPolicy == false) {
-      return false;
+      return isNested;
     } 
     const stdair::BookingClassList_T& lSecondBCList =
       stdair::BomManager::getList<stdair::BookingClass> (iSecondPolicy);
     if (lFirstBCList.size() > lSecondBCList.size()) {
-      return false;
+      return isNested;
     }
 
     // Browse the two lists of booking classes and verify if the pairs
@@ -270,11 +272,12 @@ namespace RMOL {
         if (lFirstKey == lKey) {
           break;
         } else if (lSecondKey == lKey) {
-          return false;
+          return isNested;
         }
       }
     }
 
-    return true;
+    isNested = true;
+    return isNested;
   }
 }

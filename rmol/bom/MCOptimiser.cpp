@@ -15,10 +15,10 @@
 #include <stdair/bom/BookingClass.hpp>
 #include <stdair/bom/VirtualClassStruct.hpp>
 #include <stdair/service/Logger.hpp>
-
 #include <stdair/basic/RandomGeneration.hpp>
 #include <stdair/basic/BasConst_General.hpp>
 // RMOL
+#include <rmol/basic/BasConst_General.hpp>
 #include <rmol/bom/MCOptimiser.hpp>
 
 namespace RMOL {
@@ -153,7 +153,7 @@ namespace RMOL {
   stdair::GeneratedDemandVector_T MCOptimiser::
   generateDemandVector (const stdair::MeanValue_T& iMean,
                         const stdair::StdDevValue_T& iStdDev,
-                        const unsigned int& K) {
+                        const stdair::NbOfSamples_T& K) {
     stdair::GeneratedDemandVector_T oDemandVector;
     if (iStdDev > 0) {
       stdair::RandomGeneration lGenerator (stdair::DEFAULT_RANDOM_SEED);
@@ -174,7 +174,7 @@ namespace RMOL {
   void MCOptimiser::
   optimisationByMCIntegration (stdair::LegCabin& ioLegCabin) {
     // Number of MC samples
-    unsigned int K = 100000;
+    stdair::NbOfSamples_T K = DEFAULT_NUMBER_OF_DRAWS_FOR_MC_SIMULATION;
 
     const stdair::YieldLevelDemandMap_T& lYieldDemandMap =
       ioLegCabin.getYieldLevelDemandMap();
