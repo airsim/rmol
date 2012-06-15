@@ -196,33 +196,34 @@ namespace RMOL {
         const stdair::Yield_T lRoundedYieldDouble = std::floor(lYield +0.5);
         const stdair::YieldLevel_T lRoundedYieldLevel = 
           static_cast<stdair::YieldLevel_T>(lRoundedYieldDouble);
+        if (lRoundedYieldLevel > 0) {
+          // If there is already a virtual class with this yield, add the current
+          // booking class to its list and sum the two demand distributions.
+          // Otherwise, create a new virtual class.
+          stdair::VirtualClassMap_T::iterator itVCMap = 
+            lVirtualClassMap.find(lRoundedYieldLevel);
+          if (itVCMap == lVirtualClassMap.end()) {
+            stdair::BookingClassList_T lBookingClassList;
+            lBookingClassList.push_back(lBookingClass_ptr);
+            stdair::VirtualClassStruct lVirtualClass (lBookingClassList);
+            lVirtualClass.setYield (lRoundedYieldLevel);
+            lVirtualClass.setMean (lMean);
+            lVirtualClass.setStdDev (lStdDev);
 
-        // If there is already a virtual class with this yield, add the current
-        // booking class to its list and sum the two demand distributions.
-        // Otherwise, create a new virtual class.
-        stdair::VirtualClassMap_T::iterator itVCMap = 
-          lVirtualClassMap.find(lRoundedYieldLevel);
-        if (itVCMap == lVirtualClassMap.end()) {
-          stdair::BookingClassList_T lBookingClassList;
-          lBookingClassList.push_back(lBookingClass_ptr);
-          stdair::VirtualClassStruct lVirtualClass (lBookingClassList);
-          lVirtualClass.setYield (lRoundedYieldLevel);
-          lVirtualClass.setMean (lMean);
-          lVirtualClass.setStdDev (lStdDev);
+            lVirtualClassMap.insert (stdair::VirtualClassMap_T::
+                                  value_type (lRoundedYieldLevel, lVirtualClass));
+          } else {
+            stdair::VirtualClassStruct& lVirtualClass = itVCMap->second;
+            const stdair::MeanValue_T& lVCMean = lVirtualClass.getMean();
+            const stdair::StdDevValue_T& lVCStdDev = lVirtualClass.getStdDev();
+            const stdair::MeanValue_T lNewMean = lVCMean + lMean;
+            const stdair::StdDevValue_T lNewStdDev = 
+              std::sqrt(lVCStdDev * lVCStdDev + lStdDev * lStdDev);
+            lVirtualClass.setMean (lNewMean);
+            lVirtualClass.setStdDev (lNewStdDev);
 
-          lVirtualClassMap.insert (stdair::VirtualClassMap_T::
-                                value_type (lRoundedYieldLevel, lVirtualClass));
-        } else {
-          stdair::VirtualClassStruct& lVirtualClass = itVCMap->second;
-          const stdair::MeanValue_T& lVCMean = lVirtualClass.getMean();
-          const stdair::StdDevValue_T& lVCStdDev = lVirtualClass.getStdDev();
-          const stdair::MeanValue_T lNewMean = lVCMean + lMean;
-          const stdair::StdDevValue_T lNewStdDev = 
-            std::sqrt(lVCStdDev * lVCStdDev + lStdDev * lStdDev);
-          lVirtualClass.setMean (lNewMean);
-          lVirtualClass.setStdDev (lNewStdDev);
-
-          lVirtualClass.addBookingClass(*lBookingClass_ptr);
+            lVirtualClass.addBookingClass(*lBookingClass_ptr);
+          }
         }
       }
     }
