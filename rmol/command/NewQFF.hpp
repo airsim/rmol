@@ -24,7 +24,10 @@ namespace RMOL {
   public:
     /**
      * Forecast demand for a segment-cabin.
-     */
+     *
+     * @param const stdair::Date_T& Current Date
+     * @param const stdair::NbOfSegments_T& Number of usable historical segments
+    */
     static bool forecast (stdair::SegmentCabin&, const stdair::Date_T&,
                           const stdair::DTD_T&,
                           const stdair::UnconstrainingMethod&,
@@ -43,6 +46,11 @@ namespace RMOL {
 
     /**
      * Prepare the historical price-oriented booking figures for a given cabin
+     *
+     * @param const stdair::DCP_T& DCP range start
+     * @param const stdair::DCP_T& DCP range end
+     * @param const stdair::NbOfSegments_T& Segment range start index
+     * @param const stdair::NbOfSegments_T& Segment range end index 
      */
     static void preparePriceOrientedHistoricalBooking
     (const stdair::FareFamily&, const stdair::SegmentSnapshotTable&,

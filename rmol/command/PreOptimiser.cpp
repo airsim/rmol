@@ -62,9 +62,7 @@ namespace RMOL {
   bool PreOptimiser::
   preOptimise (stdair::SegmentCabin& ioSegmentCabin,
                const stdair::PreOptimisationMethod& iPreOptimisationMethod) {
-    const stdair::PreOptimisationMethod::EN_PreOptimisationMethod& lPreOptimisationMethod =
-      iPreOptimisationMethod.getMethod();
-    switch (lPreOptimisationMethod) {
+    switch (iPreOptimisationMethod.getMethod()) {
     case stdair::PreOptimisationMethod::NONE: {
       return DemandInputPreparation::prepareDemandInput (ioSegmentCabin);
     }
