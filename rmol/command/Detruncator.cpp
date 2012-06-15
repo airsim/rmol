@@ -15,10 +15,8 @@ namespace RMOL {
   // ////////////////////////////////////////////////////////////////////  
   void Detruncator::
   unconstrain (HistoricalBookingHolder& ioHBHolder,
-               const stdair::UnconstrainingMethod& iUnconstrainingMethod) {
-    const stdair::UnconstrainingMethod::EN_UnconstrainingMethod& lUnconstrainingMethod = 
-      iUnconstrainingMethod.getMethod();
-    switch (lUnconstrainingMethod) {
+               const stdair::UnconstrainingMethod& iMethod) {
+    switch (iMethod.getMethod()) {
     case stdair::UnconstrainingMethod::EM: {
       EMDetruncator::unconstrain (ioHBHolder);
       break;

@@ -81,11 +81,11 @@ namespace RMOL {
   }
 
   // ////////////////////////////////////////////////////////////////////
-  bool Optimiser::
-  optimise (stdair::FlightDate& ioFlightDate,
-            const stdair::OptimisationMethod& iOptimisationMethod) {
+  bool Optimiser::optimise (stdair::FlightDate& ioFlightDate,
+                            const stdair::OptimisationMethod& iOptimisationMethod) {
     bool optimiseSucceeded = false;
-    // Browse the leg-date list 
+    // Browse the leg-cabin list and build the virtual class list for
+    // each cabin.
     const stdair::LegDateList_T& lLDList =
       stdair::BomManager::getList<stdair::LegDate> (ioFlightDate);
     for (stdair::LegDateList_T::const_iterator itLD = lLDList.begin();
@@ -129,33 +129,37 @@ namespace RMOL {
   optimise (stdair::LegCabin& ioLegCabin,
             const stdair::OptimisationMethod& iOptimisationMethod) {
     bool optimiseSucceeded = false;
-    // Build the virtual class list.
-    const bool hasVirtualClass = 
-      buildVirtualClassListForLegBasedOptimisation (ioLegCabin);
-    if (hasVirtualClass == true) {
-      const stdair::OptimisationMethod::EN_OptimisationMethod& lOptimisationMethod = 
-        iOptimisationMethod.getMethod();
-      switch (lOptimisationMethod) {
-      case stdair::OptimisationMethod::LEG_BASED_MC: {
-        // Number of samples generated for the Monte Carlo integration.
-        // It is important that number is greater than 100.
-        const stdair::NbOfSamples_T lNbOfSamples =
-          DEFAULT_NUMBER_OF_DRAWS_FOR_MC_SIMULATION;
-        optimalOptimisationByMCIntegration (lNbOfSamples, ioLegCabin);
-        optimiseSucceeded = true;
-        return optimiseSucceeded;
-      }
-      case stdair::OptimisationMethod::LEG_BASED_EMSR_B: {
-        heuristicOptimisationByEmsrB (ioLegCabin);
-        optimiseSucceeded = true;
-        return optimiseSucceeded;
-      }
-      default: {
-        assert (false);
-        break;
-      }
+    //
+    const stdair::LegCabinList_T& lLCList =
+      stdair::BomManager::getList<stdair::LegCabin> (ioLegCabin);
+    for (stdair::LegCabinList_T::const_iterator itLC = lLCList.begin();
+         itLC != lLCList.end(); ++itLC) {
+      stdair::LegCabin* lLC_ptr = *itLC;
+      assert (lLC_ptr != NULL);
+
+      // Build the virtual class list.
+      bool hasVirtualClass = 
+        buildVirtualClassListForLegBasedOptimisation (*lLC_ptr);
+      if (hasVirtualClass == true) {
+        switch (iOptimisationMethod.getMethod()) {
+        case stdair::OptimisationMethod::LEG_BASED_MC: {
+          optimalOptimisationByMCIntegration (10000, *lLC_ptr);
+          optimiseSucceeded = true;
+          break;
+        }
+        case stdair::OptimisationMethod::LEG_BASED_EMSR_B: {
+          heuristicOptimisationByEmsrB (*lLC_ptr);
+          optimiseSucceeded = true;
+          break;
+        }
+        default: {
+          assert (false);
+          break;
+        }
+        }
       }
     }
+  
     return optimiseSucceeded;
   }
 
