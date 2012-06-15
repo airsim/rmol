@@ -581,15 +581,17 @@ namespace RMOL {
         
         // DEBUG
         STDAIR_LOG_DEBUG ("Pre-Optimise successful: " << isPreOptimised);
-        
-        // 2b. Optimisation
-        // DEBUG
-        STDAIR_LOG_DEBUG ("Optimise");
-        const bool optimiseSucceeded = 
-          Optimiser::optimise (ioFlightDate, iOptimisationMethod);
-        // DEBUG
-        STDAIR_LOG_DEBUG ("Optimise successful: " << optimiseSucceeded);
-        return optimiseSucceeded ;
+
+        if (isPreOptimised == true) {
+          // 2b. Optimisation
+          // DEBUG
+          STDAIR_LOG_DEBUG ("Optimise");
+          const bool optimiseSucceeded = 
+            Optimiser::optimise (ioFlightDate, iOptimisationMethod);
+          // DEBUG
+          STDAIR_LOG_DEBUG ("Optimise successful: " << optimiseSucceeded);
+          return optimiseSucceeded ;
+        }
       }
       break;
     }
