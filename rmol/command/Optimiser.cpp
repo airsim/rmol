@@ -81,11 +81,11 @@ namespace RMOL {
   }
 
   // ////////////////////////////////////////////////////////////////////
-  bool Optimiser::
-  optimise (stdair::FlightDate& ioFlightDate,
-            const stdair::OptimisationMethod& iOptimisationMethod) {
+  bool Optimiser::optimise (stdair::FlightDate& ioFlightDate,
+                            const stdair::OptimisationMethod& iOptimisationMethod) {
     bool optimiseSucceeded = false;
-    // Browse the leg-date list 
+    // Browse the leg-cabin list and build the virtual class list for
+    // each cabin.
     const stdair::LegDateList_T& lLDList =
       stdair::BomManager::getList<stdair::LegDate> (ioFlightDate);
     for (stdair::LegDateList_T::const_iterator itLD = lLDList.begin();
@@ -129,33 +129,33 @@ namespace RMOL {
   optimise (stdair::LegCabin& ioLegCabin,
             const stdair::OptimisationMethod& iOptimisationMethod) {
     bool optimiseSucceeded = false;
+    //
     // Build the virtual class list.
-    const bool hasVirtualClass = 
+    bool hasVirtualClass = 
       buildVirtualClassListForLegBasedOptimisation (ioLegCabin);
     if (hasVirtualClass == true) {
-      const stdair::OptimisationMethod::EN_OptimisationMethod& lOptimisationMethod = 
-        iOptimisationMethod.getMethod();
-      switch (lOptimisationMethod) {
+      switch (iOptimisationMethod.getMethod()) {
       case stdair::OptimisationMethod::LEG_BASED_MC: {
         // Number of samples generated for the Monte Carlo integration.
-        // It is important that number is greater than 100.
+        // It is important that number is greater than 100 (=10000 here).
         const stdair::NbOfSamples_T lNbOfSamples =
           DEFAULT_NUMBER_OF_DRAWS_FOR_MC_SIMULATION;
         optimalOptimisationByMCIntegration (lNbOfSamples, ioLegCabin);
         optimiseSucceeded = true;
-        return optimiseSucceeded;
+        break;
       }
       case stdair::OptimisationMethod::LEG_BASED_EMSR_B: {
         heuristicOptimisationByEmsrB (ioLegCabin);
         optimiseSucceeded = true;
-        return optimiseSucceeded;
+        break;
       }
       default: {
         assert (false);
-        break;
+          break;
       }
       }
     }
+  
     return optimiseSucceeded;
   }
 

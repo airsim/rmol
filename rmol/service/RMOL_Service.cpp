@@ -564,22 +564,20 @@ namespace RMOL {
       STDAIR_LOG_DEBUG ("Forecast");
       
       // 1. Forecasting
-      bool isForecasted = false;
-      
-      isForecasted = Forecaster::forecast (ioFlightDate, iRMEventTime,
-                                           iUnconstrainingMethod,
-                                           iForecastingMethod);
+      const bool isForecasted = Forecaster::forecast (ioFlightDate,
+                                                      iRMEventTime,
+                                                      iUnconstrainingMethod,
+                                                      iForecastingMethod);
       // DEBUG
       STDAIR_LOG_DEBUG ("Forecast successful: " << isForecasted);
-      
 
       if (isForecasted == true) {
         // 2a. MRT or FA
         // DEBUG
         STDAIR_LOG_DEBUG ("Pre-optimise");
         
-        const bool isPreOptimised = 
-          PreOptimiser::preOptimise (ioFlightDate, iPreOptimisationMethod );
+        const bool isPreOptimised =
+          PreOptimiser::preOptimise (ioFlightDate, iPreOptimisationMethod);
         
         // DEBUG
         STDAIR_LOG_DEBUG ("Pre-Optimise successful: " << isPreOptimised);

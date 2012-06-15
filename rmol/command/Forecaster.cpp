@@ -106,7 +106,7 @@ namespace RMOL {
       // If the forecasting method is QFF (old or new), but there are
       // not more than two fare families in the cabin, hybrid
       // forecasting will be used.
-      const stdair::ForecastingMethod::EN_ForecastingMethod lForecastingMethod = 
+      const stdair::ForecastingMethod::EN_ForecastingMethod lForecastingMethod =
         iForecastingMethod.getMethod();
       switch (lForecastingMethod) {
       case stdair::ForecastingMethod::Q_FORECASTING: {
