@@ -1,5 +1,5 @@
-#ifndef __RMOL_COMMAND_HYBRIDFORECASTING_HPP
-#define __RMOL_COMMAND_HYBRIDFORECASTING_HPP
+#ifndef __RMOL_COMMAND_BASEDFORECASTING_HPP
+#define __RMOL_COMMAND_BASEDFORECASTING_HPP
 
 // //////////////////////////////////////////////////////////////////////
 // Import section
@@ -18,7 +18,7 @@ namespace stdair {
 
 namespace RMOL {
   /** Class wrapping the forecasting algorithms. */
-  class HybridForecasting {    
+  class BasedForecasting {    
   public:
     /**
      * Forecast demand for a segment cabin.
@@ -35,18 +35,18 @@ namespace RMOL {
                           const stdair::NbOfSegments_T&);
     
     /**
-     * Prepare the historical product-oriented booking figures for a given cabin
+     * Prepare the historical booking figures for a given cabin
      *
      * @param const stdair::DCP_T& DCP range start
      * @param const stdair::DCP_T& DCP range end
      * @param const stdair::NbOfSegments_T& Segment range start index
      * @param const stdair::NbOfSegments_T& Segment range end index 
      */
-    static void prepareProductOrientedHistoricalBooking
+    static void prepareHistoricalBooking
     (const stdair::SegmentCabin&, const stdair::BookingClass&,
      const stdair::SegmentSnapshotTable&, HistoricalBookingHolder&,
      const stdair::DCP_T&, const stdair::DCP_T&,
      const stdair::NbOfSegments_T&, const stdair::NbOfSegments_T&);
   };
 }
-#endif // __RMOL_COMMAND_HYBRIDFORECASTING_HPP
+#endif // __RMOL_COMMAND_BASEDFORECASTING_HPP

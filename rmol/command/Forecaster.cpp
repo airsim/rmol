@@ -21,6 +21,7 @@
 #include <rmol/bom/SegmentSnapshotTableHelper.hpp>
 #include <rmol/bom/HistoricalBookingHolder.hpp>
 #include <rmol/bom/HistoricalBooking.hpp>
+#include <rmol/command/BasedForecasting.hpp>
 #include <rmol/command/Forecaster.hpp>
 #include <rmol/command/QForecasting.hpp>
 #include <rmol/command/HybridForecasting.hpp>
@@ -146,6 +147,12 @@ namespace RMOL {
                                    lDaysBeforeDeparture, iUnconstrainingMethod,
                                    lNbOfDepartedSegments);
         }
+      }
+      case stdair::ForecastingMethod::BASED_FORECASTING: {
+        return BasedForecasting::forecast (ioSegmentCabin, iEventDate,
+                                            lDaysBeforeDeparture,
+                                            iUnconstrainingMethod,
+                                            lNbOfDepartedSegments);
       }
       default:{
         assert (false);
