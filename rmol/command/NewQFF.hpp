@@ -23,9 +23,12 @@ namespace RMOL {
   class NewQFF {
   public:
     /**
-     * Forecast demand for a segment-cabin.
+     * Forecast demand for a segment cabin.
      *
+     * @param stdair::SegmentCabin& Current Segment Cabin
      * @param const stdair::Date_T& Current Date
+     * @param const stdair::DTD_T& Current DTD 
+     * @param const stdair::UnconstrainingMethod& Method used for the unconstraining
      * @param const stdair::NbOfSegments_T& Number of usable historical segments
     */
     static bool forecast (stdair::SegmentCabin&, const stdair::Date_T&,
