@@ -23,7 +23,7 @@ namespace RMOL {
     /**
      * Forecast demand for a segment cabin.
      * Compute for the current DTD the mean and the standard deviation
-     * of unconstrained bookings of similiar flights.
+     * of unconstrained bookings of similar flights.
      *
      * @param stdair::SegmentCabin& Current Segment Cabin
      * @param const stdair::Date_T& Current Date

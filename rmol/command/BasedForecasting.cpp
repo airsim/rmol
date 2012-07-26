@@ -159,7 +159,7 @@ namespace RMOL {
         }
       }
 
-      // Retrieve the historical product-oriented bookings
+      // Retrieve the historical bookings
       stdair::NbOfBookings_T lNbOfHistoricalBkgs = 0.0;
       for (short j = 0; j < lNbOfDTDs; ++j) {
         lNbOfHistoricalBkgs += 
