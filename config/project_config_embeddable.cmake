@@ -71,8 +71,9 @@ endmacro (set_project_versions)
 #  * INSTALL_INCLUDE_DIR - Installation directory for the header files
 #  * INSTALL_DATA_DIR    - Installation directory for the data files
 #  * INSTALL_SAMPLE_DIR  - Installation directory for the (CSV) sample files
+#  * RUN_GCOV            - Whether or not to perform code coverage
 #
-macro (set_project_options _build_doc _enable_tests)
+macro (set_project_options _build_doc _enable_tests _run_gcov)
   # Shared libraries
   option (BUILD_SHARED_LIBS "Set to OFF to build static libraries" ON)
 
@@ -109,6 +110,10 @@ macro (set_project_options _build_doc _enable_tests)
     "Installation directory for data files")
   set (INSTALL_SAMPLE_DIR share/${PROJECT_NAME}/samples CACHE PATH
     "Installation directory for (CSV) sample files")
+
+  # GCOV
+  option (RUN_GCOV "Set to OFF to skip code coverage" 
+    ${_run_gcov})
 
   # Make relative paths absolute (needed later on)
   foreach (_path_type LIB BIN INCLUDE DATA SAMPLE)
@@ -298,6 +303,14 @@ macro (get_external_libs)
       get_git (${_arg_version})
     endif (${_arg_lower} STREQUAL "git")
 
+    if (${_arg_lower} STREQUAL "gcov")
+      get_gcov (${_arg_version})
+    endif (${_arg_lower} STREQUAL "gcov")
+
+    if (${_arg_lower} STREQUAL "lcov")
+      get_lcov (${_arg_version})
+    endif (${_arg_lower} STREQUAL "lcov")
+
     if (${_arg_lower} STREQUAL "python")
       get_python (${_arg_version})
     endif (${_arg_lower} STREQUAL "python")
@@ -396,6 +409,34 @@ macro (get_git)
     message (STATUS "Current Git revision name: ${PROJ_WC_REVISION_NAME}")
   endif (Git_FOUND)
 endmacro (get_git)
+
+# ~~~~~~~~~~ Gcov ~~~~~~~~~~
+macro (get_gcov)
+  if (${RUN_GCOV} STREQUAL "ON")	
+    message (STATUS "Requires gcov without specifying any version")
+
+    find_package (GCOV)
+    if (GCOV_FOUND)
+      GCOV_WC_INFO (${CMAKE_CURRENT_SOURCE_DIR} PROJ)
+      set (GCOV_REVISION ${PROJ_WC_REVISION_HASH})
+      message (STATUS "Current gcov revision name: ${PROJ_WC_REVISION_NAME}")
+    endif (GCOV_FOUND)
+  endif (${RUN_GCOV} STREQUAL "ON")
+endmacro (get_gcov)
+
+# ~~~~~~~~~~ Lcov ~~~~~~~~~~
+macro (get_lcov)
+  if (${RUN_GCOV} STREQUAL "ON")	
+    message (STATUS "Requires lcov without specifying any version")
+
+    find_package (LCOV)
+    if (LCOV_FOUND)
+      LCOV_WC_INFO (${CMAKE_CURRENT_SOURCE_DIR} PROJ)
+      set (LCOV_REVISION ${PROJ_WC_REVISION_HASH})
+      message (STATUS "Current lcov revision name: ${PROJ_WC_REVISION_NAME}")
+    endif (LCOV_FOUND)
+  endif (${RUN_GCOV} STREQUAL "ON")	
+endmacro (get_lcov)
 
 # ~~~~~~~~~~ Python ~~~~~~~~~
 macro (get_python)
@@ -1065,7 +1106,11 @@ macro (init_build)
   #    will set CMAKE_CXX_FLAGS as being equal to -O2.
   if (NOT CMAKE_CXX_FLAGS)
 	#set (CMAKE_CXX_FLAGS "-Wall -Wextra -pedantic -Werror")
-	set (CMAKE_CXX_FLAGS "-Wall -Werror")
+        if (${RUN_GCOV} STREQUAL "ON")
+	  set (CMAKE_CXX_FLAGS "-Wall -Werror -fprofile-arcs -ftest-coverage")
+        else (${RUN_GCOV} STREQUAL "ON")
+          set (CMAKE_CXX_FLAGS "-Wall -Werror")
+	endif (${RUN_GCOV} STREQUAL "ON")
   endif (NOT CMAKE_CXX_FLAGS)
   # Tell the source code the version of Boost (only once)
   if (NOT "${CMAKE_CXX_FLAGS}" MATCHES "-DBOOST_VERSION=")
@@ -1119,9 +1164,9 @@ macro (set_install_directories)
   set (pdfdir        ${htmldir})
   set (mandir        ${datarootdir}/man)
   set (infodir       ${datarootdir}/info)
-  set (pkgincludedir ${includedir}/stdair)
-  set (pkglibdir     ${libdir}/stdair)
-  set (pkglibexecdir ${libexecdir}/stdair)
+  set (pkgincludedir ${includedir}/${PACKAGE})
+  set (pkglibdir     ${libdir}/${PACKAGE})
+  set (pkglibexecdir ${libexecdir}/${PACKAGE})
 endmacro (set_install_directories)
 
 
@@ -1921,6 +1966,43 @@ endmacro (doc_add_man_pages)
 
 
 ###################################################################
+##                            GCOV                               ##
+###################################################################
+
+macro (gcov_task)
+  if (${RUN_GCOV} STREQUAL "ON")
+    set (GCDA_GCNO_PATH "${CMAKE_BINARY_DIR}/${PROJECT_NAME}/CMakeFiles/${PROJECT_NAME}lib.dir")
+    set (GCDA_FILE "${GCDA_GCNO_PATH}/command/CmdBomSerialiser.cpp.gcda")
+    set (GCNO_FILE "${GCDA_GCNO_PATH}/command/CmdBomSerialiser.cpp.gcno")
+    # Removed generated gcda and gcno files relative to the CmdBomSerialiser object: 
+    # gcov failed processing the CmdBomSerialiser.cpp.gcda file without displaying a clear message
+    add_custom_command (TARGET check
+                        # This task is post-build and post-check
+                        POST_BUILD  
+                        # Because the "-f" option is given, the commands do not fail when the files are missing
+	                COMMAND "rm" "-f" "${GCDA_FILE}"
+                        COMMAND "rm" "-f" "${GCNO_FILE}"
+                        ) 
+    # Build a coverage report info and html pages using gcda and gcno files
+    add_custom_command (TARGET check
+                        # This task is post-build and post-check
+                        POST_BUILD 
+                        # Create a directory for the gcov reports
+                        COMMAND "mkdir" "-p" "${CMAKE_BINARY_DIR}/gcov" 
+                        # Generate a global gcov report using the directory containing the gcda/gcno files
+                        COMMAND "geninfo" "${GCDA_GCNO_PATH}" "-o" "${CMAKE_BINARY_DIR}/gcov/gcov_tmp_report.info"	
+                        # Extract from the global report the data relative to the module files (i, e remove external libraries) and copy them in a second report
+			COMMAND "lcov" "-e" "${CMAKE_BINARY_DIR}/gcov/gcov_tmp_report.info" "'${CMAKE_CURRENT_SOURCE_DIR}/*'" ">>" "${CMAKE_BINARY_DIR}/gcov/gcov_report.info"
+                        # Generate html documentation about the module files coverage
+                        COMMAND "genhtml" "-o" "${CMAKE_BINARY_DIR}/gcov" "-p" "${CMAKE_CURRENT_SOURCE_DIR}*" "${CMAKE_BINARY_DIR}/gcov/gcov_report.info"
+                        # Delete heavy .info files
+                        COMMAND "rm" "${CMAKE_BINARY_DIR}/gcov/*.info"
+	               )
+  endif (${RUN_GCOV} STREQUAL "ON")
+endmacro (gcov_task)
+
+
+###################################################################
 ##                    Development Helpers                        ##
 ###################################################################
 # For other projects to use this component (let us name it myproj),
@@ -1981,6 +2063,31 @@ macro (display_doxygen)
   message (STATUS "  - DOXYGEN_DOT_EXECUTABLE ........ : ${DOXYGEN_DOT_EXECUTABLE}")
   message (STATUS "  - DOXYGEN_DOT_PATH .............. : ${DOXYGEN_DOT_PATH}")
 endmacro (display_doxygen)
+
+
+# Gcov
+macro (display_gcov)
+  if (${RUN_GCOV} STREQUAL "ON")
+    message (STATUS)
+    message (STATUS "* gcov:")
+    message (STATUS "  - GCOV_VERSION .................. : ${GCOV_VERSION}")
+    message (STATUS "  - GCOV_EXECUTABLE ............... : ${GCOV_EXECUTABLE}")
+    message (STATUS "  - GCOV_DOT_EXECUTABLE ........... : ${GCOV_DOT_EXECUTABLE}")
+    message (STATUS "  - GCOV_DOT_PATH ................. : ${GCOV_DOT_PATH}")
+  endif (${RUN_GCOV} STREQUAL "ON")
+endmacro (display_gcov)
+
+# Lcov
+macro (display_lcov)
+  if (${RUN_GCOV} STREQUAL "ON")
+    message (STATUS)
+    message (STATUS "* lcov:")
+    message (STATUS "  - LCOV_VERSION .................. : ${LCOV_VERSION}")
+    message (STATUS "  - LCOV_EXECUTABLE ............... : ${LCOV_EXECUTABLE}")
+    message (STATUS "  - LCOV_DOT_EXECUTABLE ........... : ${LCOV_DOT_EXECUTABLE}")
+    message (STATUS "  - LCOV_DOT_PATH ................. : ${LCOV_DOT_PATH}")
+  endif (${RUN_GCOV} STREQUAL "ON")
+endmacro (display_lcov)
 
 # Python
 macro (display_python)
@@ -2313,6 +2420,8 @@ macro (display_status)
   message (STATUS "CMAKE_MODULE_PATH ................. : ${CMAKE_MODULE_PATH}")
   message (STATUS "CMAKE_INSTALL_PREFIX .............. : ${CMAKE_INSTALL_PREFIX}")
   display_doxygen ()
+  display_gcov ()
+  display_lcov ()
   message (STATUS)
   message (STATUS "-------------------------------------")
   message (STATUS "---  Installation Configuration   ---")
