@@ -41,8 +41,8 @@ packaging_set_other_options (TBZ2 "TBZ2;TGZ")
 ##            Dependencies            ##
 ########################################
 #
-get_external_libs (git "boost 1.41" mysql "soci 3.0" "stdair 0.45"
-	"airrac 0.2" doxygen "gcov 4.6.3" "lcov 1.9")
+get_external_libs (git "boost 1.41" mysql "soci 3.0" "stdair 1.00.0"
+	"airrac 1.00.0" doxygen "gcov 4.6.3" "lcov 1.9")
 
 
 ##############################################
