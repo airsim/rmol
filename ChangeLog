@@ -1,3 +1,7 @@
+* Tue Dec 11 2012 Denis Arnaud <denis_arnaud at users dot sourceforge dot net> 1.00.0
+- Open source release
+- [Dev] Added revenue management algorithms dedicated to Fare Families.
+- [Build] Test coverage option with gcov.
 
 * Mon Dec 05 2011 Denis Arnaud <denis_arnaud at users dot sourceforge dot net> 0.25.3
 - [Build] Improved the CMake build framework.

@@ -2,7 +2,7 @@
 %global mydocs __tmp_docdir
 #
 Name:           rmol
-Version:        0.25.3
+Version:        1.00.0
 Release:        1%{?dist}
 
 Summary:        C++ library of Revenue Management and Optimisation classes and functions
@@ -117,6 +117,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Tue Dec 12 2012 Denis Arnaud <denis.arnaud_fedora@m4x.org> 1.00.0-1
+- Open source release
+
 * Mon Dec 05 2011 Denis Arnaud <denis.arnaud_fedora@m4x.org> 0.25.3-1
 - Upstream integration
 

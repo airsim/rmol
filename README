@@ -63,7 +63,7 @@ export LIBSUFFIX_4_CMAKE="-DLIB_SUFFIX=64"
 Then, as usual:
 * To configure the project, type something like:
   mkdir build && cd build
-  cmake -DCMAKE_INSTALL_PREFIX=${INSTALL_BASEDIR}/rmol-0.25.3 \
+  cmake -DCMAKE_INSTALL_PREFIX=${INSTALL_BASEDIR}/rmol-1.00.0 \
    -DWITH_STDAIR_PREFIX=${INSTALL_BASEDIR}/stdair-stable \
    -DWITH_AIRRAC_PREFIX=${INSTALL_BASEDIR}/airrac-stable \
    -DCMAKE_BUILD_TYPE:STRING=Debug -DINSTALL_DOC:BOOL=ON \
@@ -75,7 +75,7 @@ Then, as usual:
 * To install the library (librmol*.so*) and the binary (rmol),
   make install
   cd ${INSTALL_BASEDIR}
-  rm -f rmol-stable && ln -s rmol-0.25.3 rmol-stable
+  rm -f rmol-stable && ln -s rmol-1.00.0 rmol-stable
   cd -
 * To package the source files, type:
   make dist
