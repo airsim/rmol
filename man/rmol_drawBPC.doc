@@ -1,16 +1,16 @@
 /*!
-\page rmol
+\page rmol_drawBPC
 	  Command-line utility for the C++ Revenue Management Optimisation Library
 
 \section sec_synopsis SYNOPSIS
 
-<b>rmol</b> <tt>[--prefix] [-v|--version] [-h|--help] [-b|--builtin] [-i|--input <path-to-input>] [-l|--log <path-to-output-log-file>]</tt>
+<b>rmol_drawBPC</b> <tt>[--prefix] [-v|--version] [-h|--help] [-b|--builtin] [-i|--input <path-to-input>] [-l|--log <path-to-output-log-file>]</tt>
 
 \section sec_description DESCRIPTION
 
-\e rmol is a small program showing how to use the RMOL library.
+\e rmol_drawBPC is a small program showing how to use the RMOL library.
 
-\e rmol accepts the following options:
+\e rmol_drawBPC accepts the following options:
 
  \b --prefix<br>
     Show the RMOL installation prefix.
@@ -45,11 +45,11 @@
  \b -l, \b --log <path-to-output-log-file><br>
     Path (absolute or relative) of the output log file.
 
-See the output of the <tt>`rmol --help'</tt> command for default options.
+See the output of the <tt>`rmol_drawBPC --help'</tt> command for default options.
 
 
 \section sec_see_also SEE ALSO
-\b rmol-config(1), \b rmol-library(3)
+\b rmol(1), \b rmol-config(1), \b rmol-library(3)
 
 
 \section sec_support SUPPORT
