@@ -96,6 +96,14 @@ macro (set_project_options _build_doc _enable_tests _run_gcov)
   option (INSTALL_DOC "Set to OFF to skip build/install Documentation" 
     ${_build_doc})
 
+  # Initialise a few variables
+  set (DOXYGEN_OUTPUT_REL)
+  set (REFMAN_TEX)
+  set (REFMAN_PDF)
+  set (CSS_ALL_TARGETS)
+  set (IMG_ALL_TARGETS)
+  set (MAN_ALL_TARGETS)
+
   # Set the library installation directory (either 32 or 64 bits)
   set (LIBDIR "lib${LIB_SUFFIX}" CACHE PATH
     "Library directory name, either lib or lib64")
@@ -331,6 +339,10 @@ macro (get_external_libs)
       get_readline (${_arg_version})
     endif (${_arg_lower} STREQUAL "readline")
 
+    if (${_arg_lower} STREQUAL "curses")
+      get_curses (${_arg_version})
+    endif (${_arg_lower} STREQUAL "curses")
+
     if (${_arg_lower} STREQUAL "mysql")
       get_mysql (${_arg_version})
     endif (${_arg_lower} STREQUAL "mysql")
@@ -387,9 +399,9 @@ macro (get_external_libs)
       get_simcrs (${_arg_version})
     endif (${_arg_lower} STREQUAL "simcrs")
 
-    if (${_arg_lower} STREQUAL "dsim")
-      get_dsim (${_arg_version})
-    endif (${_arg_lower} STREQUAL "dsim")
+    if (${_arg_lower} STREQUAL "tvlsim")
+      get_tvlsim (${_arg_version})
+    endif (${_arg_lower} STREQUAL "tvlsim")
 
     if (${_arg_lower} STREQUAL "doxygen")
       get_doxygen (${_arg_version})
@@ -604,6 +616,34 @@ macro (get_readline)
   endif (READLINE_FOUND)
 
 endmacro (get_readline)
+
+# ~~~~~~~~~~ (N)Curses ~~~~~~~~~
+macro (get_curses)
+  unset (_required_version)
+  if (${ARGC} GREATER 0)
+    set (_required_version ${ARGV0})
+    message (STATUS "Requires (N)Curses-${_required_version}")
+  else (${ARGC} GREATER 0)
+    message (STATUS "Requires (N)Curses without specifying any version")
+  endif (${ARGC} GREATER 0)
+
+  set (CURSES_FOUND False)
+
+  set (CURSES_NEED_NCURSES True)
+  find_package (Curses ${_required_version} REQUIRED)
+  if (CURSES_LIBRARY)
+    set (CURSES_FOUND True)
+  endif (CURSES_LIBRARY)
+
+  if (CURSES_FOUND)
+    # Update the list of include directories for the project
+    include_directories (${CURSES_INCLUDE_DIR})
+
+    # Update the list of dependencies for the project
+    list (APPEND PROJ_DEP_LIBS_FOR_LIB ${CURSES_LIBRARY})
+  endif (CURSES_FOUND)
+
+endmacro (get_curses)
 
 # ~~~~~~~~~~ MySQL ~~~~~~~~~
 macro (get_mysql)
@@ -1057,21 +1097,21 @@ macro (get_simcrs)
 
 endmacro (get_simcrs)
 
-# ~~~~~~~~~~ DSim ~~~~~~~~~
-macro (get_dsim)
+# ~~~~~~~~~~ TvlSim ~~~~~~~~~
+macro (get_tvlsim)
   unset (_required_version)
   if (${ARGC} GREATER 0)
     set (_required_version ${ARGV0})
-    message (STATUS "Requires DSim-${_required_version}")
+    message (STATUS "Requires TvlSim-${_required_version}")
   else (${ARGC} GREATER 0)
-    message (STATUS "Requires DSim without specifying any version")
+    message (STATUS "Requires TvlSim without specifying any version")
   endif (${ARGC} GREATER 0)
 
-  find_package (DSim ${_required_version} REQUIRED
+  find_package (TvlSim ${_required_version} REQUIRED
 	HINTS ${WITH_TVLSIM_PREFIX})
-  if (DSim_FOUND)
+  if (TvlSim_FOUND)
     #
-    message (STATUS "Found DSim version: ${TVLSIM_VERSION}")
+    message (STATUS "Found TvlSim version: ${TVLSIM_VERSION}")
 
     # Update the list of include directories for the project
     include_directories (${TVLSIM_INCLUDE_DIRS})
@@ -1079,15 +1119,15 @@ macro (get_dsim)
     # Update the list of dependencies for the project
     set (PROJ_DEP_LIBS_FOR_LIB ${PROJ_DEP_LIBS_FOR_LIB} ${TVLSIM_LIBRARIES})
 
-  else (DSim_FOUND)
-    set (ERROR_MSG "The DSim library cannot be found. If it is installed in")
+  else (TvlSim_FOUND)
+    set (ERROR_MSG "The TvlSim library cannot be found. If it is installed in")
     set (ERROR_MSG "${ERROR_MSG} a in a non standard directory, just invoke")
     set (ERROR_MSG "${ERROR_MSG} 'cmake' specifying the -DWITH_TVLSIM_PREFIX=")
-    set (ERROR_MSG "${ERROR_MSG}<DSim install path> variable.")
+    set (ERROR_MSG "${ERROR_MSG}<TvlSim install path> variable.")
     message (FATAL_ERROR "${ERROR_MSG}")
-  endif (DSim_FOUND)
+  endif (TvlSim_FOUND)
 
-endmacro (get_dsim)
+endmacro (get_tvlsim)
 
 
 ##############################################
@@ -1773,16 +1813,25 @@ macro (doc_add_web_pages)
   set (REFMAN refman)
   set (TEX_GEN_DIR ${CMAKE_CURRENT_BINARY_DIR}/latex)
   set (REFMAN_TEX ${REFMAN}.tex)
+  set (REFMAN_TEX ${REFMAN_TEX} PARENT_SCOPE)
   set (REFMAN_TEX_FULL ${TEX_GEN_DIR}/${REFMAN_TEX})
+  set (REFMAN_TEX_OTHERS ${TEX_GEN_DIR}/index.tex ${TEX_GEN_DIR}/namespaces.tex
+	${TEX_GEN_DIR}/annotated.tex ${TEX_GEN_DIR}/hierarchy.tex
+	${TEX_GEN_DIR}/files.tex)
 
   # Add the build rule for Doxygen
-  set (DOXYGEN_OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/html/index.html)
-  add_custom_command (OUTPUT ${DOXYGEN_OUTPUT} ${REFMAN_TEX_FULL}
+  set (DOXYGEN_OUTPUT_REL html/index.html)
+  set (DOXYGEN_OUTPUT_REL ${DOXYGEN_OUTPUT_REL} PARENT_SCOPE)
+  set (DOXYGEN_OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/${DOXYGEN_OUTPUT_REL})
+  set (DOXYGEN_OUTPUT ${DOXYGEN_OUTPUT} PARENT_SCOPE)
+  add_custom_command (
+	OUTPUT ${DOXYGEN_OUTPUT} ${REFMAN_TEX_FULL} ${REFMAN_TEX_OTHERS}
 	COMMAND ${DOXYGEN_EXECUTABLE} ARGS ${DOXYGEN_CFG}
 	DEPENDS ${DOXYGEN_CFG} ${doc_SOURCES}
 	COMMENT "Generating documentation with Doxygen, from '${DOXYGEN_CFG}'...")
   # Add the 'doc' target, depending on the generated HTML documentation
-  add_custom_target (doc ALL DEPENDS ${DOXYGEN_OUTPUT})
+  add_custom_target (doc ALL DEPENDS
+	${DOXYGEN_OUTPUT} ${REFMAN_TEX_FULL} ${REFMAN_TEX_OTHERS})
 
   ##
   # Copy the needed files into the generated HTML directory
@@ -1796,10 +1845,17 @@ macro (doc_add_web_pages)
 	add_custom_command (OUTPUT ${CSS_GEN_FULL_DIR}
 	  COMMAND ${CMAKE_COMMAND}
 	  ARGS -E copy ${CSS_SRC_FULL_DIR} ${CSS_GEN_FULL_DIR}
-	  DEPENDS ${DOXYGEN_OUTPUT} ${CSS_SRC_FULL_DIR}
+	  DEPENDS doc ${CSS_SRC_FULL_DIR}
 	  COMMENT "Copying style '${CSS_SRC_FULL_DIR}' into '${htmldoc_DIR}'...")
+
+	# Transpose the CSS-related operation into a target, so that CMake
+	# can handle it properly
 	add_custom_target (css_${style_SRC} ALL DEPENDS ${CSS_GEN_FULL_DIR})
+	list (APPEND CSS_ALL_TARGETS css_${style_SRC})
   endforeach (style_SRC)
+  set (CSS_ALL_TARGETS ${CSS_ALL_TARGETS} PARENT_SCOPE)
+  add_custom_target (css_style)
+  add_dependencies (css_style ${CSS_ALL_TARGETS})
 
   # Images
   foreach (image_SRC ${image_SOURCES})
@@ -1808,10 +1864,17 @@ macro (doc_add_web_pages)
 	add_custom_command (OUTPUT ${IMG_GEN_FULL_DIR}
 	  COMMAND ${CMAKE_COMMAND} 
 	  ARGS -E copy ${IMG_SRC_FULL_DIR} ${IMG_GEN_FULL_DIR}
-	  DEPENDS ${DOXYGEN_OUTPUT} ${IMG_SRC_FULL_DIR}
+	  DEPENDS doc ${IMG_SRC_FULL_DIR}
 	  COMMENT "Copying image '${IMG_SRC_FULL_DIR}' into '${htmldoc_DIR}'...")
+
+	# Transpose the image-related operation into a target, so that CMake
+	# can handle it properly
 	add_custom_target (img_${image_SRC} ALL DEPENDS ${IMG_GEN_FULL_DIR})
+	list (APPEND IMG_ALL_TARGETS img_${image_SRC})
   endforeach (image_SRC)
+  set (IMG_ALL_TARGETS ${IMG_ALL_TARGETS} PARENT_SCOPE)
+  add_custom_target (img_style)
+  add_dependencies (img_style ${IMG_ALL_TARGETS})
 
   ##
   # PDF, generated by (Pdf)Latex from the Latex source file, itself generated
@@ -1819,27 +1882,28 @@ macro (doc_add_web_pages)
   set (REFMAN_IDX ${REFMAN}.idx)
   set (REFMAN_IDX_FULL ${TEX_GEN_DIR}/${REFMAN_IDX})
   set (REFMAN_PDF ${REFMAN}.pdf)
+  set (REFMAN_PDF ${REFMAN_PDF} PARENT_SCOPE)
   set (REFMAN_PDF_FULL ${TEX_GEN_DIR}/${REFMAN_PDF})
+  set (WARNING_PDF_MSG "Warning: the PDF reference manual ('${REFMAN_PDF_FULL}') has failed to build. You can perform a simple re-build ('make' in the 'doc/latex' sub-directory).")
   # Note the "|| echo" addition to the pdflatex command, as that latter returns
   # as if there were an error.
   add_custom_command (OUTPUT ${REFMAN_IDX_FULL} ${REFMAN_PDF_FULL}
-	DEPENDS ${DOXYGEN_OUTPUT} ${REFMAN_TEX_FULL}
 	COMMAND ${CMAKE_COMMAND}
-	ARGS -E chdir ${TEX_GEN_DIR} pdflatex -interaction batchmode ${REFMAN_TEX} || echo "First PDF generation done."
+	ARGS -E chdir ${TEX_GEN_DIR} pdflatex -interaction batchmode ${REFMAN_TEX} && echo 'First PDF generation done.' || echo 'First PDF generation done.'
 	COMMAND ${CMAKE_COMMAND}
-	ARGS -E chdir ${TEX_GEN_DIR} makeindex -q ${REFMAN_IDX}
+	ARGS -E chdir ${TEX_GEN_DIR} egrep -s -e 'Fatal error occurred' -e 'Rerun to get cross-references right' refman.log && (cd ${TEX_GEN_DIR} && pdflatex -interaction batchmode ${REFMAN_TEX} && echo 'Second PDF generation done.') || echo 'Second PDF generation was not necessary'
 	COMMAND ${CMAKE_COMMAND}
-	ARGS -E chdir ${TEX_GEN_DIR} pdflatex -interaction batchmode ${REFMAN_TEX} || echo "Second PDF generation done."
+	ARGS -E chdir ${TEX_GEN_DIR} egrep -s -e 'Fatal error occurred' -e 'Rerun to get cross-references right' refman.log && (cd ${TEX_GEN_DIR} && pdflatex -interaction batchmode ${REFMAN_TEX} && echo 'Third PDF generation done.') || echo 'Third PDF generation was not necessary'
 	COMMAND ${CMAKE_COMMAND}
-	ARGS -E chdir ${TEX_GEN_DIR} makeindex -q ${REFMAN_IDX}
+	ARGS -E chdir ${TEX_GEN_DIR} test ! -f ${REFMAN_PDF} && (cd ${TEX_GEN_DIR} && echo '${WARNING_PDF_MSG}' > ${REFMAN_PDF} && echo '${WARNING_PDF_MSG}') || echo 'The PDF reference manual has been successfully built'
 	COMMAND ${CMAKE_COMMAND}
-	ARGS -E chdir ${TEX_GEN_DIR} pdflatex -interaction batchmode ${REFMAN_TEX} || echo "Third PDF generation done."
-	COMMENT "Generating PDF Reference Manual ('${REFMAN_PDF}')..."
-	COMMAND ${CMAKE_COMMAND}
-	ARGS -E chdir ${TEX_GEN_DIR} test -f ${REFMAN_PDF} || (touch ${REFMAN_PDF} && echo "Warning: the PDF reference manual \\\('${REFMAN_PDF_FULL}'\\\) has failed to build. You can perform a simple re-build \\\('make' in the 'doc/latex' sub-directory\\\).")
-	COMMENT "Checking whether the PDF Reference Manual ('${REFMAN_PDF}') has been built...")
+	ARGS -E chdir ${TEX_GEN_DIR} echo 'The file size of the PDF reference manual is: ' && (cd ${TEX_GEN_DIR} && du -sh ${REFMAN_PDF} | cut -f1)
+	DEPENDS doc
+	COMMENT "Generating PDF Reference Manual ('${REFMAN_TEX}' => '${REFMAN_PDF}')...")
+
   # Add the 'pdf' target, depending on the generated PDF manual
-  add_custom_target (pdf ALL DEPENDS ${REFMAN_PDF_FULL})
+  add_custom_target (pdf ALL DEPENDS ${REFMAN_IDX_FULL} ${REFMAN_PDF_FULL})
+  add_dependencies (pdf css_style img_style)
 
   # Clean-up $build/html and $build/latex on 'make clean'
   set_property (DIRECTORY APPEND PROPERTY ADDITIONAL_MAKE_CLEAN_FILES 
@@ -1877,12 +1941,11 @@ macro (doc_add_man_pages)
   endforeach (_idx RANGE 1 9)
 
   # Initialise the lists gathering information for each valid manual section
-  set (man_doxy_output_list "")
-  set (man_dir_list "")
+  set (man_dir_list)
 
   # Parse the arguments
-  set (options "")
-  set (oneValueArgs "")
+  set (options)
+  set (oneValueArgs)
 
   # Added one argument option for every manual section
   foreach (man_sect ${man_section_list})
@@ -1945,9 +2008,11 @@ macro (doc_add_man_pages)
 		DEPENDS ${DOXYGEN_CFG${man_sect}} ${man${man_sect}_SOURCES}
 		COMMENT "Generating section ${man_sect} manual pages with Doxygen, from '${DOXYGEN_CFG${man_sect}}'...")
 
-	  # Add the current manual section output to the dedicated list,
-	  # so that it can then be added to the corresponding target (see below).
-	  list (APPEND man_doxy_output_list ${DOXYGEN_OUTPUT${man_sect}})
+	  # Transpose the man-page-related operation into a target, so that CMake
+	  # can handle it properly
+	  add_custom_target (man_${man_sect} 
+		ALL DEPENDS ${DOXYGEN_OUTPUT${man_sect}})
+	  list (APPEND MAN_ALL_TARGETS man_${man_sect})
 
 	  # Specifiy what to do for the installation of the manual pages
 	  install (DIRECTORY "${man${man_sect}_DIR}" DESTINATION ${MAN_PATH})
@@ -1956,7 +2021,9 @@ macro (doc_add_man_pages)
   endforeach (man_sect ${man_section_list})
 
   # Add the 'man' target, depending on the generated manual page documentation
-  add_custom_target (man ALL DEPENDS ${man_doxy_output_list})
+  set (MAN_ALL_TARGETS ${MAN_ALL_TARGETS} PARENT_SCOPE)
+  add_custom_target (man)
+  add_dependencies (${MAN_ALL_TARGETS})
 
   # Clean-up $build/man1 and $build/man3 on 'make clean'
   set_property (DIRECTORY APPEND PROPERTY ADDITIONAL_MAKE_CLEAN_FILES 
@@ -2149,6 +2216,17 @@ macro (display_readline)
     message (STATUS "  - READLINE_LIBRARY .............. : ${READLINE_LIBRARY}")
   endif (READLINE_FOUND)
 endmacro (display_readline)
+
+# (N)Curses
+macro (display_curses)
+  if (CURSES_FOUND)
+    message (STATUS)
+    message (STATUS "* (N)Curses:")
+    message (STATUS "  - CURSES_VERSION .............. : ${CURSES_VERSION}")
+    message (STATUS "  - CURSES_INCLUDE_DIR .......... : ${CURSES_INCLUDE_DIR}")
+    message (STATUS "  - CURSES_LIBRARY .............. : ${CURSES_LIBRARY}")
+  endif (CURSES_FOUND)
+endmacro (display_curses)
 
 # MySQL
 macro (display_mysql)
@@ -2345,19 +2423,19 @@ macro (display_simcrs)
   endif (SimCRS_FOUND)
 endmacro (display_simcrs)
 
-# DSim
-macro (display_dsim)
-  if (DSim_FOUND)
+# TvlSim
+macro (display_tvlsim)
+  if (TvlSim_FOUND)
     message (STATUS)
-    message (STATUS "* DSim:")
+    message (STATUS "* TvlSim:")
     message (STATUS "  - TVLSIM_VERSION .................. : ${TVLSIM_VERSION}")
     message (STATUS "  - TVLSIM_BINARY_DIRS .............. : ${TVLSIM_BINARY_DIRS}")
     message (STATUS "  - TVLSIM_EXECUTABLES .............. : ${TVLSIM_EXECUTABLES}")
     message (STATUS "  - TVLSIM_LIBRARY_DIRS ............. : ${TVLSIM_LIBRARY_DIRS}")
     message (STATUS "  - TVLSIM_LIBRARIES ................ : ${TVLSIM_LIBRARIES}")
     message (STATUS "  - TVLSIM_INCLUDE_DIRS ............. : ${TVLSIM_INCLUDE_DIRS}")
-  endif (DSim_FOUND)
-endmacro (display_dsim)
+  endif (TvlSim_FOUND)
+endmacro (display_tvlsim)
 
 ##
 macro (display_status_all_modules)
@@ -2382,6 +2460,19 @@ macro (display_status_all_test_suites)
     message (STATUS "  + Tests to perform .............. : ${${_test_suite}_ALL_TESTS}")
   endforeach (_test_suite)
 endmacro (display_status_all_test_suites)
+
+##
+macro (display_doc_generation)
+  message (STATUS)
+    message (STATUS "* Documentation to be generated ... :")
+	if (INSTALL_DOC)
+      message (STATUS "  + HTML main page ................ : ${DOXYGEN_OUTPUT_REL}")
+      message (STATUS "  + CSS-related files ............. : ${CSS_ALL_TARGETS}")
+      message (STATUS "  + Image-related files ........... : ${IMG_ALL_TARGETS}")
+      message (STATUS "  + PDF reference manual .......... : ${REFMAN_TEX} => ${REFMAN_PDF}")
+	endif (INSTALL_DOC)
+    message (STATUS "  + Man page sections ............. : ${MAN_ALL_TARGETS}")
+endmacro (display_doc_generation)
 
 ##
 macro (display_status)
@@ -2409,6 +2500,7 @@ macro (display_status)
   message (STATUS "Binaries to test .................. : ${PROJ_ALL_TST_TARGETS}")
   display_status_all_modules ()
   display_status_all_test_suites ()
+  display_doc_generation ()
   message (STATUS)
   message (STATUS "BUILD_SHARED_LIBS ................. : ${BUILD_SHARED_LIBS}")
   message (STATUS "CMAKE_BUILD_TYPE .................. : ${CMAKE_BUILD_TYPE}")
@@ -2458,6 +2550,7 @@ macro (display_status)
   display_boost ()
   display_xapian ()
   display_readline ()
+  display_curses ()
   display_mysql ()
   display_soci ()
   display_stdair ()
@@ -2472,7 +2565,7 @@ macro (display_status)
   display_simfqt ()
   display_simlfs ()
   display_simcrs ()
-  display_dsim ()
+  display_tvlsim ()
   #
   message (STATUS)
   message (STATUS "Change a value with: cmake -D<Variable>=<Value>" )
