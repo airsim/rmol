@@ -1,3 +1,7 @@
+2015-06-14:
+- Version 1.00.1
+- The CMake helper files are now aligned with those of StdAir.
+
 2012-12-11
 - Version 1.00.0
 - Open source release

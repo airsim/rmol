@@ -1,3 +1,6 @@
+* Sun Jun 14 2015 Denis Arnaud <denis_arnaud at users dot sourceforge dot net> 1.00.1
+- The CMake helper files are now aligned with those of StdAir.
+
 * Tue Dec 11 2012 Denis Arnaud <denis_arnaud at users dot sourceforge dot net> 1.00.0
 - Open source release
 - [Dev] Added revenue management algorithms dedicated to Fare Families.
