@@ -25,9 +25,15 @@ set_project_options (on on off)
 #####################################
 #
 packaging_init (${PROJECT_NAME})
-packaging_set_summary ("${PROJECT_NAME} is a C++ library of Revenue Management and Optimisation classes and functions. Typically, that library may be used by service providers (e.g., airlines offering flight seats, hotels offering rooms, rental car companies offering rental days, broadcasting company offering advertisement slots, theaters offering seats, etc.) to help in optimising their revenues from seat capacities.
-Most of the algorithms implemented are public and documented in the following
-book:
+packaging_set_summary (
+"${PROJECT_NAME} is a C++ library of Revenue Management (RM)
+and Optimisation classes and functions. Typically, that library
+may be used by service providers (e.g., airlines offering flight seats,
+hotels offering rooms, rental car companies offering rental days,
+broadcasting company offering advertisement slots, theaters offering seats,
+etc.) to help in optimising their revenues from seat capacities.
+Most of the algorithms implemented are public and documented in the
+following book:
 The Theory and practice of Revenue Management, by Kalyan T. Talluri and
 Garrett J. van Ryzin, Kluwer Academic Publishers, 2004, ISBN 1-4020-7701-7")
 packaging_set_contact ("Denis Arnaud <denis_arnaud - at - users dot sourceforge dot net>")
@@ -42,7 +48,7 @@ packaging_set_other_options (TBZ2 "TBZ2;TGZ")
 ########################################
 #
 get_external_libs (git "python 2.6" "boost 1.41" "mysql 5.0" "soci 3.0"
-        "zeromq 2.0" readline curses "doxygen 1.4" "gcov 4.6.3" "lcov 1.9"
+        readline curses "doxygen 1.4" "gcov 4.6.3" "lcov 1.9"
         "stdair 1.00.0" "airrac 1.00.0")
 
 

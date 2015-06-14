@@ -17,8 +17,11 @@ set (M4_MACROFILE_PATH share/aclocal)
 # Convert the developer script utilities (basically, just replace
 # the @<variable>@ variables)
 configure_file (${CFG_SCRIPT}.in ${CFG_SCRIPT} @ONLY)
+add_custom_target (${CFG_SCRIPT} DEPENDS ${CFG_SCRIPT}.in)
 configure_file (${PKGCFG_SCRIPT}.in ${PKGCFG_SCRIPT} @ONLY)
+add_custom_target (${PKGCFG_SCRIPT} DEPENDS ${PKGCFG_SCRIPT}.in)
 configure_file (${M4_MACROFILE}.in ${M4_MACROFILE} @ONLY)
+add_custom_target (${M4_MACROFILE} DEPENDS ${M4_MACROFILE}.in)
 
 #
 add_custom_target (devhelpers ALL DEPENDS)

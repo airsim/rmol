@@ -65,8 +65,7 @@ namespace RMOL {
                 ioHistoricalBookingHolder.
                 calculateExpectedDemand (lDemandMean, lStdDev, i, demand);
               //STDAIR_LOG_DEBUG ("expected: " << expectedDemand);
-              assert (expectedDemand >= 0 || expectedDemand < 0);
-                
+               
               double absDiff =
                 static_cast<double>(expectedDemand - demand);
                 
