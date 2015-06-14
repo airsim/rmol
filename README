@@ -28,45 +28,52 @@ yum -y install rmol-devel rmol-doc
 
 You can also get the RPM packages (which may work on Linux
 distributions like Novel Suse and Mandriva) from the Fedora repository
-(e.g., for Fedora 18, 
-http://fr2.rpmfind.net/linux/fedora/releases/18/Everything/)
+(e.g., for Fedora 22, 
+http://fr2.rpmfind.net/linux/fedora/releases/22/Everything/)
 
 
 Building the library and test binary from Git repository:
----------------------------------------------------------
-The Sourceforge Git repository may be cloned as following:
-git clone ssh://git.code.sf.net/p/rmol/code rmolgit
+----------------------------------------------------------------
+The Git repository may be cloned as following:
+$ git clone git@github.com:airsim/rmol.git rmolgit # through SSH
+$ git clone https://github.com/airsim/rmol.git # if the firewall filters SSH
 cd rmolgit
 git checkout trunk
 
 Then, you need the following packages (Fedora/RedHat/CentOS names here, 
 but names may vary according to distributions):
-  * cmake
-  * gcc-c++
-  * stdair-devel, airrac-devel
-  * boost-devel
-  * zeromq-devel
-  * readline-devel, ncurses-devel
-  * soci-mysql-devel
-  * python-devel
-  * gettext-devel (optional)
-  * doxygen, ghostscript, graphviz and tetex-latex (optional)
-  * rpm-build (optional)
+* cmake
+* gcc-c++
+* boost-devel / libboost-dev
+* python-devel / python-dev
+* gettext-devel / gettext-dev
+* sqlite3-devel / libsqlite3-dev
+* readline-devel / readline-dev
+* ncurses-devel
+* soci-mysql-devel, soci-sqlite3-devel
+* stdair-devel / libstdair-dev
+* airrac-devel / libairrac-dev
+* doxygen, ghostscript, graphviz
+* tetex-latex (optional)
+* rpm-build (optional)
+
 
 Building the library and test binary from the tarball:
 ------------------------------------------------------
 The latest stable source tarball (rmol*.tar.gz or .bz2) can be found here:
-http://sourceforge.net/project/showfiles.php?group_id=177703
+https://sourceforge.net/projects/rmol/files/
 
 To customise the following to your environment, you can alter the path
 to the installation directory:
 export INSTALL_BASEDIR=/home/user/dev/deliveries
-export LIBSUFFIX_4_CMAKE="-DLIB_SUFFIX=64"
+export RMOL_VER=99.99.99
+if [ -d /usr/lib64 ]; then LIBSUFFIX=64; fi
+export LIBSUFFIX_4_CMAKE="-DLIB_SUFFIX=$LIBSUFFIX"
 
 Then, as usual:
 * To configure the project, type something like:
   mkdir build && cd build
-  cmake -DCMAKE_INSTALL_PREFIX=${INSTALL_BASEDIR}/rmol-99.99.99 \
+  cmake -DCMAKE_INSTALL_PREFIX=${INSTALL_BASEDIR}/rmol-$RMOL_VER \
    -DWITH_STDAIR_PREFIX=${INSTALL_BASEDIR}/stdair-stable \
    -DWITH_AIRRAC_PREFIX=${INSTALL_BASEDIR}/airrac-stable \
    -DCMAKE_BUILD_TYPE:STRING=Debug -DENABLE_TEST:BOOL=ON -DINSTALL_DOC:BOOL=ON \
@@ -83,13 +90,13 @@ Then, as usual:
 * To package the binary and the (HTML and PDF) documentation:
   make package
 * To browse the (just installed, if enabled) HTML documentation:
-  midori file://${INSTALL_BASEDIR}/rmol-99.99.99/share/doc/rmol-99.99.99/html/index.html
+  midori file://${INSTALL_BASEDIR}/rmol-$RMOL_VER/share/doc/rmol/html/index.html
 * To browse the (just installed, if enabled) PDF documentation:
-  evince ${INSTALL_BASEDIR}/rmol-99.99.99/share/doc/rmol-99.99.99/html/refman.pdf
+  evince ${INSTALL_BASEDIR}/rmol-$RMOL_VER/share/doc/rmol/html/refman.pdf
 * To run the local binary version:
   ./rmol/rmol -b
 * To run the installed version:
-  ${INSTALL_BASEDIR}/rmol-99.99.99/bin/rmol -b
+  ${INSTALL_BASEDIR}/rmol-$RMOL_VER/bin/rmol -b
 
-Denis Arnaud (December 2012)
+Denis Arnaud (June 2015)
 
