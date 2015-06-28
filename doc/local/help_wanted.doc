@@ -8,8 +8,10 @@ you can do:
 
 - Start using RMOL
 - Tell your friends about RMOL and help them to get started using it  
-- If you find a bug, report it to us. Without your help we can never hope to
-produce a bug free code. 
+- If you find a bug, report it to us (on the <a
+href="http://github.com/airsim/rmol/issues/new">dedicated
+GitHub's Web site</a>). Without your help we can never hope
+to produce a bug free code.
 - Help us to improve the documentation by providing information about
 documentation bugs 
 - Answer support requests in the RMOL discussion forums on SourceForge. If

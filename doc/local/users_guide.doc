@@ -26,17 +26,26 @@ to start using \c RMOL.
 \subsection ug_get_source Get the RMOL library
 
 \subsection ug_build_binaries Build the RMOL project
-To run the configuration script the first time, go to the top
-directory (where the RMOL package has been un-packed), and issue the
-following command:
- - <tt>mkdir -p build && cd build && cmake ..</tt>
- - <tt>make</tt>
-
-\note The RMOL project can either be cloned from the <a
-href="http://rmol.git.sourceforge.net/git/gitweb.cgi?p=rmol/rmol;a=tree;h=refs/heads/trunk;hb=trunk">Git
-Repository</a> or downloaded as a tar-ball package from the <a
-href="http://sourceforge.net/project/showfiles.php?group_id=177703">Sourceforge
-Web site</a>.
+To build RMOL, go to the top directory (where the RMOL package has been
+un-packed), and issue the following commands only once:
+\verbatim
+$ export INSTALL_BASEDIR=~/dev/deliveries
+$ export RMOL_VER=99.99.99
+$ if [ -d /usr/lib64 ]; then LIBSUFFIX=64; fi
+$ export LIBSUFFIX_4_CMAKE="-DLIB_SUFFIX=$LIBSUFFIX"
+$ rm -rf build && mkdir build && cd build
+$ cmake -DCMAKE_INSTALL_PREFIX=${INSTALL_BASEDIR}/rmol-$RMOL_VER \
+	-DCMAKE_BUILD_TYPE:STRING=Debug -DENABLE_TEST:BOOL=ON \
+	-DINSTALL_DOC:BOOL=ON -DRUN_GCOV:BOOL=OFF ${LIBSUFFIX_4_CMAKE} ..
+\endverbatim
+Then, everytime you change the source code:
+\verbatim
+$ make check
+\endverbatim
+When everything is fine, install RMOL locally:
+\verbatim
+$ make install
+\endverbatim
 
 \subsection ug_build_and_run_tests Build and Run the Tests
 

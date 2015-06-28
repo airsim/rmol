@@ -22,23 +22,21 @@
 - \ref howto_release
 - \ref authors
 
-\section at_sourceforge RMOL at SourceForge
-- <a href="http://sourceforge.net/projects/rmol/">Project page</a>
-- <a href="http://sourceforge.net/project/showfiles.php?group_id=177703">Download RMOL</a>
-- <a href="https://sourceforge.net/apps/trac/rmol/newticket">Open a ticket for
-  a bug or feature</a>
-- <a href="http://sourceforge.net/mail/?group_id=177703">Mailing lists</a>
-- <a href="https://sourceforge.net/apps/phpbb/rmol/">Forums</a>
-  - <a href="https://sourceforge.net/apps/phpbb/rmol/viewforum.php?f=1">Discuss
-  about Development issues</a>
-  - <a href="https://sourceforge.net/apps/phpbb/rmol/viewforum.php?f=2">Ask for
-  Help</a>
-  - <a href="https://sourceforge.net/apps/phpbb/rmol/viewforum.php?f=3">Discuss
-  RMOL</a>
+\section at_github RMOL on GitHub
+- <a href="http://github.com/airsim/rmol">Project page</a>
+- <a href="http://github.com/airsim/rmol/tags">Download RMOL</a>
+- <a href="http://github.com/airsim/rmol/issues">Issues/tickets (bugs or features)</a>
+  - <a href="http://github.com/airsim/rmol/issues/new">Open an issue/ticket</a>
 
 
 \section development RMOL Development
-- <a href="http://rmol.git.sourceforge.net/git/gitweb.cgi?p=rmol/rmol;a=tree;h=refs/heads/trunk;hb=trunk">Git Repository</a> (Subversion is deprecated)
+- <a href="http://github.com/airsim/rmol">Git Repository</a>
+\verbatim 
+$ git clone git@github.com:airsim/rmol.git rmolgit # If SSH is allowed
+$ git clone https://github.com/airsim/rmol.git rmolgit # If the firewall does not allow SSH
+$ cd rmolgit
+$ git checkout trunk
+\endverbatim 
 - \ref coding_rules
 - \ref documentation
 - \ref test
@@ -75,16 +73,19 @@
 RMOL is a C++ library of revenue management and optimisation classes
 and functions. RMOL mainly targets simulation purposes. \ref N
 
+RMOL mainly targets simulation purposes. \ref N
+Indeed, RMOL is an important component of the Travel Market Simulator.
+However, it may be used in a stand-alone mode.
+
 RMOL makes an extensive use of existing open-source libraries for
 increased functionality, speed and accuracy. In particular <a
-href="http://www.gnu.org/software/gsl">GSL</a> (<em>GNU Scientific
-Library</em>) and <a href="http://www.boost.org">Boost</a> (<em>C++
-Standard Extensions</em>) libraries are used.
+href="http://www.boost.org">Boost</a> (<em>C++ STL Extensions</em>)
+library is used.
 
-The RMOL library originates from the department of Operational
-Research and Innovation at <a
-href="http://www.amadeus.com">Amadeus</a>, Sophia Antipolis,
-France. RMOL is released under the terms of the <a
+The RMOL library originates from the Travel Intelligence (TI)
+Business Unit (BI) at <a
+href="http://www.amadeus.com/blog/tag/travel-intelligence/">Amadeus</a>.
+RMOL is released under the terms of the <a
 href="http://www.gnu.org/licenses/lgpl-2.1.html">GNU Lesser General Public
 License</a> (LGPLv2.1) for you to enjoy.
 
@@ -95,6 +96,8 @@ Microsoft Windows (with <a href="http://www.cygwin.com/">Cygwin</a>,
 <a href="http://www.mingw.org/">MinGW/MSYS</a>, or 
 <a href="http://msdn.microsoft.com/visualc/">Microsoft Visual C++ .NET</a>) and
 <a href="http://www.apple.com/macosx/">Mac OS X</a> operating systems.
+
+Generated on $datetime
 
 \note
 \anchor N

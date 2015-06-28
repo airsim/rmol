@@ -2118,7 +2118,7 @@ macro (doc_add_web_pages)
   set (docstyles_SOURCES ${docstyles_DIR}/${style_SOURCES})
   # Images
   set (docimages_DIR ${CMAKE_CURRENT_SOURCE_DIR}/images)
-  set (image_SOURCES ${CPACK_PACKAGE_NAME}_logo.png sfx_logo.png favicon.ico)
+  set (image_SOURCES ${CPACK_PACKAGE_NAME}_logo.png github_logo.png favicon.ico)
   set (docimages_SOURCES "")
   foreach (_doc_img_src ${image_SOURCES})
 	list (APPEND docimages_SOURCES ${docimages_DIR}/${_doc_img_src})
