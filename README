@@ -46,10 +46,10 @@ but names may vary according to distributions):
 * gcc-c++
 * boost-devel / libboost-dev
 * python-devel / python-dev
-* gettext-devel / gettext-dev
+* gettext-devel / gettext
 * sqlite3-devel / libsqlite3-dev
-* readline-devel / readline-dev
-* ncurses-devel
+* readline-devel / libreadline-dev
+* libncurses5-devel
 * soci-mysql-devel, soci-sqlite3-devel
 * stdair-devel / libstdair-dev
 * airrac-devel / libairrac-dev
@@ -60,8 +60,9 @@ but names may vary according to distributions):
 
 Building the library and test binary from the tarball:
 ------------------------------------------------------
-The latest stable source tarball (rmol*.tar.gz or .bz2) can be found here:
-https://sourceforge.net/projects/rmol/files/
+The latest stable source tarball (stdair*.tar.gz or .bz2) can be
+found on GitHub: http://github.com/airsim/rmol/releases, e.g.,
+http://github.com/airsim/stdair/archive/rmol-1.00.1.tar.gz
 
 To customise the following to your environment, you can alter the path
 to the installation directory:

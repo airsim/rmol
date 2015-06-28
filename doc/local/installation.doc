@@ -24,9 +24,6 @@ Linux distributions, RPM packages are available and can be installed
 with your usual package manager. For instance:<br>
 <code> yum -y install rmol-devel rmol-doc </code>
 
-RPM packages can also be available on the
-<a href="http://sourceforge.net/project/showfiles.php?group_id=177703">SourceForge download site</a>.
-
 
 \section requirements RMOL Requirements
 
@@ -515,7 +512,7 @@ cmake -DCMAKE_INSTALL_PREFIX=/home/user/dev/deliveries/rmol-99.99.99 -DLIB_SUFFI
 -- ----------------------------------
 -- ---   Packaging Configuration  ---
 -- ----------------------------------
--- CPACK_PACKAGE_CONTACT .......... : Denis Arnaud <denis_arnaud - at - users dot sourceforge dot net>
+-- CPACK_PACKAGE_CONTACT .......... : Denis Arnaud <denis.arnaud_rmol - at - m4x dot org>
 -- CPACK_PACKAGE_VENDOR ........... : Denis Arnaud
 -- CPACK_PACKAGE_VERSION .......... : 99.99.99
 -- CPACK_PACKAGE_DESCRIPTION_FILE . : /home/user/dev/sim/rmol/rmolgithub/README
@@ -602,7 +599,7 @@ Scanning dependencies of target check
 \endverbatim
 
 Check if all the executed tests PASSED. If not, please contact us by filling
-a <a href="https://sourceforge.net/apps/trac/rmol/newticket">bug-report</a>.
+a <a href="github.com/airsim/rmol/issues/new">bug-report</a>.
 
 Finally, you should install the compiled and linked library, include files
 and (optionally) HTML and PDF documentation by typing:
