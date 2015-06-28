@@ -113,8 +113,6 @@ macro (set_project_options _build_doc _enable_tests _run_gcov)
   # Offer the user the choice of overriding the installation directories
   set (INSTALL_LIB_DIR ${LIBDIR} CACHE PATH
 	"Installation directory for libraries")
-  set (INSTALL_PY_LIB_DIR ${LIBDIR}/python${PYTHONLIBS_VERSION}/${PROJECT_NAME}
-	CACHE PATH "Installation directory for Python libraries")
   set (INSTALL_BIN_DIR bin CACHE PATH "Installation directory for executables")
   set (INSTALL_LIBEXEC_DIR CACHE PATH
 	"Installation directory for internal executables")
@@ -498,7 +496,11 @@ macro (get_python)
       PYTHONLIBS_VERSION "${PYTHONLIBS_LIB_FILENAME}")
 	message (STATUS "Found PythonLibs ${PYTHONLIBS_VERSION}")
 
-    # Update the list of include directories for the project
+	# Set the Python installation directory
+	set (INSTALL_PY_LIB_DIR ${INSTALL_LIB_DIR}/python${PYTHONLIBS_VERSION}/site-packages/libpy${PROJECT_NAME}
+	  CACHE PATH "Installation directory for Python libraries")
+
+	# Update the list of include directories for the project
     include_directories (${PYTHON_INCLUDE_DIRS})
 
     # Update the list of dependencies for the project
@@ -1420,7 +1422,7 @@ macro (set_install_directories)
   set (exec_prefix   ${prefix})
   set (bindir        ${exec_prefix}/bin)
   set (libdir        ${exec_prefix}/${LIBDIR})
-  set (pylibdir	     ${libdir}/python${PYTHONLIBS_VERSION}/${PACKAGE})
+  set (pylibdir	     ${libdir}/python${PYTHONLIBS_VERSION}/site-packages/libpy${PACKAGE})
   set (libexecdir    ${exec_prefix}/libexec)
   set (sbindir       ${exec_prefix}/sbin)
   set (sysconfdir    ${prefix}/etc)
