@@ -6,7 +6,7 @@ import re
 import math
 import matplotlib.pyplot as plt
 
-sys.path.append('@INSTALL_LIB_DIR@')
+#sys.path.append('@INSTALL_LIB_DIR@')
 
 #------------------------------------------------------------------------------	
 def usage (script_name):
@@ -19,7 +19,8 @@ def usage (script_name):
     print
     print "  -h, --help           : outputs help and quits"
     print "  -o, --output <path>  : path to output file (if blank, stdout)"
-    print "  <path>               : input file (if blank, stdin)"
+    print "  <path>               : input file"
+    print "                         Default: 'rmol.log'"
     print "  -p, --plot           : plot (if blank, no plot is produced)"
     print
 
@@ -36,7 +37,7 @@ def handle_opt():
 	
     # Default options
     plotFlag = False
-    input_filename = ''
+    input_filename = 'rmol.log'
     output_filename = ''
     input_file = sys.stdin
     output_file = sys.stdout
@@ -103,18 +104,18 @@ def main():
     #    booking date for that key
     OnDStats = {}
 
-    # Iterate while there are booking requests in the TraDemGen log file
+    # Iterate while there are booking requests in the rmol.log file
     for line in input_file:
-        # The lines of interest contain the "Poped" key-word
+        # The lines of interest contain the "Bid-Price Vector" key-word
         matchedLine = re.search ("Bid-Price Vector", line)
 
         # If there is no match, the loop will continue on to the next line
         if not matchedLine:
             continue
 
-        # There is a match. Now, the booking request information will
+        # There is a match. Now, the Bid-Price Vector (BPV) information will
         # be extracted
-        extractor = re.compile ("^.*Bid-Price Vector \(BPV\): ([:num:][, ])+$")
+        extractor = re.compile ("^.*Bid-Price Vector \(BPV\): ([0-9, ])+$")
         extractedList = extractor.search (line)
 
         # DEBUG
