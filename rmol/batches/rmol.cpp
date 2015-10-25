@@ -172,31 +172,31 @@ void optimise (RMOL::RMOL_Service& rmolService,
   case 0: {
     // Calculate the optimal protections by the Monte Carlo
     // Integration approach
-    rmolService.optimalOptimisationByMCIntegration (iRandomDraws);
+    rmolService.optimize<RMOL::OptimizationType::OPT_MC> (iRandomDraws);
     break;
   }
   case 1: {
     // Calculate the optimal protections by DP.
-    rmolService.optimalOptimisationByDP ();
+    rmolService.optimize<RMOL::OptimizationType::OPT_DP>();
     break;
   }
   case 2: {
     // Calculate the Bid-Price Vector by EMSR
-    rmolService.heuristicOptimisationByEmsr ();
+    rmolService.optimize<RMOL::OptimizationType::HEUR_EMSR>();
     break;
   }
   case 3: {
     // Calculate the protections by EMSR-a
-    rmolService.heuristicOptimisationByEmsrA ();
+    rmolService.optimize<RMOL::OptimizationType::HEUR_EMSRA>();
     break;
   }
   case 4: {
     // Calculate the protections by EMSR-b
-    rmolService.heuristicOptimisationByEmsrB ();
+    rmolService.optimize<RMOL::OptimizationType::HEUR_EMSRB>();
     break;
   }
   default: {
-    rmolService.optimalOptimisationByMCIntegration (iRandomDraws);
+    rmolService.optimize<RMOL::OptimizationType::OPT_MC> (iRandomDraws);
   }
   }
 }
