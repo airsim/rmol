@@ -379,7 +379,90 @@ namespace RMOL {
   }   
 
   // ////////////////////////////////////////////////////////////////////
-  void RMOL_Service::optimalOptimisationByMCIntegration (const int K) {
+  template<>
+  void RMOL_Service::
+  optimize<OptimizationType::OPT_MC> (const stdair::NbOfSamples_T iDraws) {
+    /**
+     * Single resource optimization using the Monte Carlo algorithm.
+     */
+    optimalOptimisationByMCIntegration (iDraws);
+  }
+
+  // ////////////////////////////////////////////////////////////////////
+  template<>
+  void RMOL_Service::
+  optimize<OptimizationType::OPT_DP> (const stdair::NbOfSamples_T iDraws) {
+    /**
+     * Single resource optimization using dynamic programming.
+     */
+    optimalOptimisationByDP();
+  }
+
+  // ////////////////////////////////////////////////////////////////////
+  template<>
+  void RMOL_Service::
+  optimize<OptimizationType::HEUR_EMSR> (const stdair::NbOfSamples_T iDraws) {
+    /**
+     * Single resource optimization using EMSR heuristic.
+     */
+    heuristicOptimisationByEmsr();
+  }
+
+  // ////////////////////////////////////////////////////////////////////
+  template<>
+  void RMOL_Service::
+  optimize<OptimizationType::HEUR_EMSRA> (const stdair::NbOfSamples_T iDraws) {
+    /**
+     * Single resource optimization using EMSR-a heuristic.
+     */
+    heuristicOptimisationByEmsrA();
+  }
+
+  // ////////////////////////////////////////////////////////////////////
+  template<>
+  void RMOL_Service::
+  optimize<OptimizationType::HEUR_EMSRB> (const stdair::NbOfSamples_T iDraws) {
+    /**
+     * Single resource optimization using EMSR-b heuristic.
+     */
+    heuristicOptimisationByEmsrB();
+  }
+
+  // ////////////////////////////////////////////////////////////////////
+  template<>
+  void RMOL_Service::
+  optimize<OptimizationType::HEUR_MC_4_QFF>(const stdair::NbOfSamples_T iDraws) {
+    /**
+     * Single resource optimization using the Monte Carlo algorithm
+     * for QFF method.
+     */
+    // heuristicOptimisationByMCIntegrationForQFF();
+  }
+
+  // ////////////////////////////////////////////////////////////////////
+  template<>
+  void RMOL_Service::
+  optimize<OptimizationType::HEUR_EMSRB_4_QFF>(const stdair::NbOfSamples_T iDraws) {
+    /**
+     * Single resource optimization using EMSR-b heuristic for QFF method.
+     */
+    // heuristicOptimisationByEmsrBForQFF();
+  }
+
+  // ////////////////////////////////////////////////////////////////////
+  template<>
+  void RMOL_Service::
+  optimize<OptimizationType::HEUR_MRT_QFF> (const stdair::NbOfSamples_T iDraws) {
+    /**
+     * Single resource pre-optimization using
+     * Marginal Revenue Transformation (MRT) for QFF method.
+     */
+    // MRTForNewQFF();
+  }
+
+  // ////////////////////////////////////////////////////////////////////
+  void RMOL_Service::
+  optimalOptimisationByMCIntegration (const stdair::NbOfSamples_T& iDraws) {
     assert (_rmolServiceContext != NULL);
     RMOL_ServiceContext& lRMOL_ServiceContext = *_rmolServiceContext;
 
@@ -388,7 +471,7 @@ namespace RMOL {
       lRMOL_ServiceContext.getSTDAIR_Service();   
     // TODO: gsabatier
     // Replace the getPersistentBomRoot method by the getBomRoot method,
-    // in order to work on the clone Bom root instead of the persistent one.
+    // in order to work on the cloned Bom root instead of the persistent one.
     // Does not work for now because virtual classes are not cloned.
     stdair::BomRoot& lBomRoot = lSTDAIR_Service.getPersistentBomRoot();
 
@@ -399,7 +482,7 @@ namespace RMOL {
     stdair::BasChronometer lOptimisationChronometer;
     lOptimisationChronometer.start();
 
-    Optimiser::optimalOptimisationByMCIntegration (K, lLegCabin);
+    Optimiser::optimalOptimisationByMCIntegration (iDraws, lLegCabin);
 
     const double lOptimisationMeasure = lOptimisationChronometer.elapsed();
     
@@ -522,7 +605,7 @@ namespace RMOL {
 
   // ////////////////////////////////////////////////////////////////////
   const stdair::SegmentCabin& RMOL_Service::
-  retrieveDummySegmentCabin(const bool isForFareFamilies) {
+  retrieveDummySegmentCabin (const bool isForFareFamilies) {
     assert (_rmolServiceContext != NULL);
     RMOL_ServiceContext& lRMOL_ServiceContext = *_rmolServiceContext;
 

@@ -75,31 +75,31 @@ namespace RMOL {
         case 0: {
           // Calculate the optimal protections by the Monte Carlo
           // Integration approach
-          _rmolService->optimalOptimisationByMCIntegration (iRandomDraws);
+          _rmolService->optimize<OptimizationType::OPT_MC> (iRandomDraws);
           break;
         }
         case 1: {
           // Calculate the optimal protections by DP.
-          _rmolService->optimalOptimisationByDP ();
+          _rmolService->optimize<OptimizationType::OPT_DP>();
           break;
         }
         case 2: {
           // Calculate the Bid-Price Vector by EMSR
-          _rmolService->heuristicOptimisationByEmsr ();
+          _rmolService->optimize<OptimizationType::HEUR_EMSR>();
           break;
         }
         case 3: {
           // Calculate the protections by EMSR-a
-          _rmolService->heuristicOptimisationByEmsrA ();
+          _rmolService->optimize<OptimizationType::HEUR_EMSRA>();
           break;
         }
         case 4: {
           // Calculate the protections by EMSR-b
-          _rmolService->heuristicOptimisationByEmsrB ();
+          _rmolService->optimize<OptimizationType::HEUR_EMSRB>();
           break;
         }
         default: {
-          _rmolService->optimalOptimisationByMCIntegration (iRandomDraws);
+          _rmolService->optimize<OptimizationType::OPT_MC> (iRandomDraws);
         }
         }
         

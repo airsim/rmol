@@ -56,11 +56,13 @@ int testOptimiseHelper (const unsigned short optimisationMethodFlag,
 
   // Output log File
   std::ostringstream oStr;
-  oStr << "OptimiseTestSuite_" << optimisationMethodFlag << "_" << isBuiltin << ".log";
+  oStr << "OptimiseTestSuite_" << optimisationMethodFlag << "_" << isBuiltin
+       << ".log";
   const stdair::Filename_T lLogFilename (oStr.str());
     
   // Number of random draws to be generated (best if greater than 100)
-  const int K = RMOL::DEFAULT_NUMBER_OF_DRAWS_FOR_MC_SIMULATION;
+  const stdair::NbOfSamples_T iDraws =
+    RMOL::DEFAULT_NUMBER_OF_DRAWS_FOR_MC_SIMULATION;
     
   // Methods of optimisation (0 = Monte-Carlo, 1 = Dynamic Programming, 
   // 2 = EMSR, 3 = EMSR-a, 4 = EMSR-b, 5 = EMSR-a with sellup prob.)
@@ -99,7 +101,7 @@ int testOptimiseHelper (const unsigned short optimisationMethodFlag,
 
     // Calculate the optimal protections by the Monte Carlo
     // Integration approach        
-    rmolService.optimalOptimisationByMCIntegration (K);
+    rmolService.optimize<RMOL::OptimizationType::OPT_MC> (iDraws);
     break;
   }
       
@@ -108,7 +110,7 @@ int testOptimiseHelper (const unsigned short optimisationMethodFlag,
     STDAIR_LOG_DEBUG ("Optimisation by Dynamic Programming (DP)");
     
     // Calculate the optimal protections by DP.
-    rmolService.optimalOptimisationByDP ();
+    rmolService.optimize<RMOL::OptimizationType::OPT_DP>();
     break;
   }
       
@@ -117,7 +119,7 @@ int testOptimiseHelper (const unsigned short optimisationMethodFlag,
     STDAIR_LOG_DEBUG ("Calculate the Bid-Price Vectors (BPV) by EMSR");
     
     // Calculate the Bid-Price Vector by EMSR
-    rmolService.heuristicOptimisationByEmsr ();
+    rmolService.optimize<RMOL::OptimizationType::HEUR_EMSR>();
     break;
   }
       
@@ -127,7 +129,7 @@ int testOptimiseHelper (const unsigned short optimisationMethodFlag,
     
     // Calculate the protections by EMSR-a
     // Test the EMSR-a algorithm implementation
-    rmolService.heuristicOptimisationByEmsrA ();
+    rmolService.optimize<RMOL::OptimizationType::HEUR_EMSRA>();
 
     // Return a cumulated booking limit value to test
     // oExpectedBookingLimit = static_cast<int> (lBookingLimitVector.at(2));
@@ -139,11 +141,11 @@ int testOptimiseHelper (const unsigned short optimisationMethodFlag,
     STDAIR_LOG_DEBUG ("Calculate the Authorisation Levels (AUs) by EMSRb");
     
     // Calculate the protections by EMSR-b
-    rmolService.heuristicOptimisationByEmsrB ();
+    rmolService.optimize<RMOL::OptimizationType::HEUR_EMSRB>();
     break;
   }
 
-  default: rmolService.optimalOptimisationByMCIntegration (K);
+  default: rmolService.optimize<RMOL::OptimizationType::OPT_MC> (iDraws);
   }
         
   // Close the log file
