@@ -115,15 +115,16 @@ def main():
 
         # There is a match. Now, the Bid-Price Vector (BPV) information will
         # be extracted
-        extractor = re.compile ("^.*Bid-Price Vector \(BPV\): ([0-9, ])+$")
+        extractor = re.compile ("^(?:.*Bid-Price Vector \(BPV\): )([0-9., ]+)+$")
         extractedList = extractor.search (line)
+        bpcListString = extractedList.group(1)
 
         # DEBUG
         print ("Extracted list: " + str(extractedList))
-        print ("1: " + extractedList.group(1))
+        print ("1: " + bpcListString)
 
         # BPC
-        bpc = extractedList.group(1).split(', ')
+        bpc = bpcListString.split(', ')
 
         # DEBUG
         print bpc
@@ -131,7 +132,7 @@ def main():
     # Plot with MatplotLib
     if plotFlag:
         # Plot with solid line ('-') and blue ('b') circles ('o')
-        plt.plot_date (sorted(bpc), linestyle='solid', marker='o')
+        plt.plot (bpc, linestyle='solid', marker='o')
 
     #
     output_file.write ("\n")
