@@ -36,7 +36,11 @@ struct UnitTestConfig {
   /** Constructor. */
   UnitTestConfig() {
     boost_utf::unit_test_log.set_stream (utfReportStream);
+#if defined(BOOST_VERSION) && BOOST_VERSION >= 105900
+    boost_utf::unit_test_log.set_format (boost_utf::OF_XML);
+#else // BOOST_VERSION
     boost_utf::unit_test_log.set_format (boost_utf::XML);
+#endif // BOOST_VERSION    
     boost_utf::unit_test_log.set_threshold_level (boost_utf::log_test_units);
     //boost_utf::unit_test_log.set_threshold_level (boost_utf::log_successful_tests);
   }
