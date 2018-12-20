@@ -1,1 +1,1 @@
-from libpyrmol import *
+from pyrmol import *

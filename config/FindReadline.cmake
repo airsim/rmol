@@ -4,9 +4,16 @@
 if (READLINE_INCLUDE_DIR AND READLINE_LIBRARY AND NCURSES_LIBRARY)
   set (READLINE_FOUND True)
 else (READLINE_INCLUDE_DIR AND READLINE_LIBRARY AND NCURSES_LIBRARY)
-  find_path (READLINE_INCLUDE_DIR readline/readline.h /usr/include/readline)
+  find_path (READLINE_ROOT
+	  NAMES include/readline/readline.h)
+
+  find_path (READLINE_INCLUDE_DIR
+	  NAMES readline/readline.h /usr/include/readline
+	  HINTS ${READLINE_ROOT}/include)
   
-  find_library (READLINE_LIBRARY NAMES readline)
+  find_library (READLINE_LIBRARY
+	  NAMES readline
+	  HINTS ${READLINE_ROOT}/lib)
 endif (READLINE_INCLUDE_DIR AND READLINE_LIBRARY AND NCURSES_LIBRARY)
 
 #
