@@ -25,9 +25,8 @@ namespace RMOL {
 
   // //////////////////////////////////////////////////////////////////////
   const char OptimizationType::
-  _typeLabels[LAST_VALUE] = { 'M', 'D', 'E', 'A', 'B', 'Q', 'C' or 'R' };
+  _typeLabels[LAST_VALUE] = { 'M', 'D', 'E', 'A', 'B', 'Q', 'C', 'R' };
 
-  
   // //////////////////////////////////////////////////////////////////////
   OptimizationType::OptimizationType()
     : _type (LAST_VALUE) {

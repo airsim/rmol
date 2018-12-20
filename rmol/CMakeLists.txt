@@ -46,15 +46,16 @@ module_library_add_specific (pyrmol python "na" python/pyrmol.cpp)
 #  * If specified, the name to be given to the executable. If no such name
 #    is given as parameter, the executable is given the name of the current
 #    module.
-module_binary_add (batches)
+module_binary_add (batches rmol)
 
 ##
 # Installing Python and Shell scripts
 module_script_add (tools/rmol_extractBPC)
-python_module_add (python/__init__.py)
 module_script_add (python/rmol_drawBPC)
+python_module_add (python/__init__.py)
 
 ##
 # Install the CMake import helper, so that third party projects can refer to it
 # (for libraries, header files and binaries)
 module_export_install ()
+

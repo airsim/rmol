@@ -15,7 +15,7 @@ if (NOT SQLITE3)
   message (FATAL_ERROR "Could not find the sqlite3 command-line program! Please install it (e.g., 'sqlite3-devel' for Fedora/RedHat/CentOS).")
 else (NOT SQLITE3)
   exec_program (sqlite3 ARGS --version OUTPUT_VARIABLE MY_TMP)
-  string (REGEX REPLACE "([0-9].[0-9].[0-9]) .*" "\\1" SQLITE3_VERSION
+  string (REGEX REPLACE "([0-9.]+) .*" "\\1" SQLITE3_VERSION
 	"${MY_TMP}")
   message (STATUS "Found SQLite3 version: ${SQLITE3_VERSION}")
 endif (NOT SQLITE3)
@@ -36,14 +36,9 @@ find_library (SQLITE3_LIBRARY NAMES sqlite3)
 # either be defined or correspond to valid paths. We use the
 # find_package_handle_standard_args() CMake macro to have a standard behaviour.
 include (FindPackageHandleStandardArgs)
-if (${CMAKE_VERSION} VERSION_GREATER 2.8.1)
-  find_package_handle_standard_args (SQLite3
+find_package_handle_standard_args (SQLite3
 	REQUIRED_VARS SQLITE3_LIBRARY SQLITE3_INCLUDE_DIR
 	VERSION_VAR SQLITE3_VERSION)
-else (${CMAKE_VERSION} VERSION_GREATER 2.8.1)
-  find_package_handle_standard_args (SQLite3
-	DEFAULT_MSG SQLITE3_LIBRARY SQLITE3_INCLUDE_DIR)
-endif (${CMAKE_VERSION} VERSION_GREATER 2.8.1)
 
 if (SQLITE3_FOUND)
   set (SQLITE3_LIBRARIES ${SQLITE3_LIBRARY})

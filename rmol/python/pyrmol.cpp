@@ -4,8 +4,9 @@
 #include <fstream>
 #include <sstream>
 #include <string>
-#include <list>
-#include <vector>
+// Boost (Extended STL)
+#include <boost/date_time/gregorian/gregorian.hpp>
+#include <boost/date_time/posix_time/posix_time.hpp>
 // Boost Python
 #include <boost/python.hpp>
 // Boost Accumulators
@@ -13,12 +14,6 @@
 #include <boost/accumulators/statistics.hpp>
 // StdAir
 #include <stdair/stdair_basic_types.hpp>
-#include <stdair/basic/BasConst_General.hpp>
-#include <stdair/basic/ProgressStatusSet.hpp>
-#include <stdair/basic/DemandGenerationMethod.hpp>
-#include <stdair/bom/EventStruct.hpp>
-#include <stdair/bom/BookingRequestStruct.hpp>
-#include <stdair/bom/BomDisplay.hpp>
 #include <stdair/service/Logger.hpp>
 // RMOL
 #include <rmol/RMOL_Service.hpp>
