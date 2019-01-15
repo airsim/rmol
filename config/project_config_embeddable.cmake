@@ -504,7 +504,7 @@ macro (get_python)
 	  set (PY_MINOR_VERSION "${CMAKE_MATCH_2}")
 	  set (PY_PATCH_VERSION "${CMAKE_MATCH_3}")
 	endif (${PYTHONLIBS_VERSION_STRING} MATCHES "([0-9]).([0-9]).([0-9])")
-	
+
 	message (STATUS "Found PythonLibs ${PYTHONLIBS_VERSION} (${PYTHONLIBS_VERSION_STRING} / ${PY_MAJOR_VERSION}.${PY_MINOR_VERSION}.${PY_PATCH_VERSION})")
 
 	# Set the Python installation directory
@@ -585,15 +585,15 @@ endmacro (get_zeromq)
 macro (register_boost_lib _boost_lib_list_name _boost_lib_list)
   # Update the list of library dependencies for the project
   foreach (_lib_cpt ${_boost_lib_list})
-	string (TOUPPER ${_lib_cpt} _lib_cpt_up)
+    string (TOUPPER ${_lib_cpt} _lib_cpt_up)
 
-	if (Boost_${_lib_cpt_up}_LIBRARY)
-	  # Update the list of dependencies for the project
-	  list (APPEND ${_boost_lib_list_name} ${Boost_${_lib_cpt_up}_LIBRARY})
+    if (Boost_${_lib_cpt_up}_LIBRARY)
+      # Update the list of dependencies for the project
+      list (APPEND ${_boost_lib_list_name} ${Boost_${_lib_cpt_up}_LIBRARY})
 
-	  # Update the list of libraries to be displayed
-	  list (APPEND BOOST_REQUIRED_LIBS ${Boost_${_lib_cpt_up}_LIBRARY})
-	endif (Boost_${_lib_cpt_up}_LIBRARY)
+      # Update the list of libraries to be displayed
+      list (APPEND BOOST_REQUIRED_LIBS ${Boost_${_lib_cpt_up}_LIBRARY})
+    endif (Boost_${_lib_cpt_up}_LIBRARY)
   endforeach (_lib_cpt ${_boost_lib_list})
 endmacro (register_boost_lib _boost_lib_list_name _boost_lib_list)
 
@@ -606,18 +606,26 @@ macro (get_boost)
   else (${ARGC} GREATER 0)
     message (STATUS "Requires Boost without specifying any version")
   endif (${ARGC} GREATER 0)
-
+ 
   #
-  # Note: ${Boost_DATE_TIME_LIBRARY} and ${Boost_PROGRAM_OPTIONS_LIBRARY}
-  # are already set by ${SOCIMYSQL_LIBRARIES} and/or ${SOCI_LIBRARIES}.
-  #
-  set (python_component_name "python${PY_MAJOR_VERSION}${PY_MINOR_VERSION}")
+  # Note 1: ${Boost_DATE_TIME_LIBRARY} and ${Boost_PROGRAM_OPTIONS_LIBRARY}
+  #         are already set by ${SOCIMYSQL_LIBRARIES} and/or ${SOCI_LIBRARIES}.
+  # Note 2: Boost libraries are not installed in a consistent way across the
+  #         the different platforms and versions of Boost.
+  #         For a while, the Boost.Python library component was just called
+  #         'python'. It is now suffixed with the version of Python, and
+  #         on some Linux distributions, there is even a '-py' suffix.
+  #         On some platform/Boost version combinations, the Python version
+  #         may be just the major version (2 or 3 as of 2019) or the major
+  #         and minor versions (e.g., 27, 28, 34, 36, 37 as of 2019)
+  set (python_cpt_name1 "python${PY_MAJOR_VERSION}")
+  set (python_cpt_name2 "python${PY_MAJOR_VERSION}${PY_MINOR_VERSION}")
   set (Boost_USE_STATIC_LIBS OFF)
   set (Boost_USE_MULTITHREADED ON)
   set (Boost_USE_STATIC_RUNTIME OFF)
   set (BOOST_REQUIRED_COMPONENTS_FOR_LIB
     date_time random iostreams serialization filesystem system
-	locale ${python_component_name} regex)
+    locale ${python_cpt_name1} ${python_cpt_name2} regex)
   set (BOOST_REQUIRED_COMPONENTS_FOR_BIN program_options)
   set (BOOST_REQUIRED_COMPONENTS_FOR_TST unit_test_framework)
   set (BOOST_REQUIRED_COMPONENTS ${BOOST_REQUIRED_COMPONENTS_FOR_LIB}
@@ -637,23 +645,28 @@ macro (get_boost)
   find_package (BoostWrapper ${_required_version} REQUIRED)
 
   if (Boost_FOUND)
+    # Boost.Python library
+    message (STATUS "  + Boost_PYTHON_LIBRARY: ${Boost_PYTHON_LIBRARY}")
+    message (STATUS "  + Boost_PYTHON3_LIBRARY: ${Boost_PYTHON3_LIBRARY}")
+    message (STATUS "  + Boost_PYTHON37_LIBRARY: ${Boost_PYTHON37_LIBRARY}")
+
     # Update the list of include directories for the project
     include_directories (${Boost_INCLUDE_DIRS})
 
-	# For display purposes
+    # For display purposes
     set (BOOST_REQUIRED_LIBS "")
 
     # Update the list of library dependencies for the project
-	register_boost_lib ("PROJ_DEP_LIBS_FOR_LIB"
-	  "${BOOST_REQUIRED_COMPONENTS_FOR_LIB}")
+    register_boost_lib ("PROJ_DEP_LIBS_FOR_LIB"
+      "${BOOST_REQUIRED_COMPONENTS_FOR_LIB}")
 
     # Update the list of binary dependencies for the project
-	register_boost_lib ("PROJ_DEP_LIBS_FOR_BIN"
-	  "${BOOST_REQUIRED_COMPONENTS_FOR_BIN}")
+    register_boost_lib ("PROJ_DEP_LIBS_FOR_BIN"
+      "${BOOST_REQUIRED_COMPONENTS_FOR_BIN}")
 
     # Update the list of test dependencies for the project
-	register_boost_lib ("PROJ_DEP_LIBS_FOR_TST"
-	  "${BOOST_REQUIRED_COMPONENTS_FOR_TST}")
+    register_boost_lib ("PROJ_DEP_LIBS_FOR_TST"
+      "${BOOST_REQUIRED_COMPONENTS_FOR_TST}")
 
   endif (Boost_FOUND)
 
