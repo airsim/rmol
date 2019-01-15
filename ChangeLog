@@ -1,3 +1,7 @@
+* Tue Jan 15 2019 Denis Arnaud <denis_arnaud at users dot sourceforge dot net> - 1.00.2
+- CMake nows finds out automatically the right Boost.Python library version
+- Python 3.4 is the new minimum required version
+
 * Sun Jun 14 2015 Denis Arnaud <denis_arnaud at users dot sourceforge dot net> 1.00.1
 - The CMake helper files are now aligned with those of StdAir.
 

@@ -62,12 +62,12 @@ Building the library and test binary from the tarball:
 ------------------------------------------------------
 The latest stable source tarball (stdair*.tar.gz or .bz2) can be
 found on GitHub: http://github.com/airsim/rmol/releases, e.g.,
-http://github.com/airsim/stdair/archive/rmol-1.00.1.tar.gz
+http://github.com/airsim/stdair/archive/rmol-1.00.2.tar.gz
 
 To customise the following to your environment, you can alter the path
 to the installation directory:
 export INSTALL_BASEDIR=/home/user/dev/deliveries
-export RMOL_VER=1.00.1
+export RMOL_VER=1.00.2
 if [ -d /usr/lib64 ]; then LIBSUFFIX=64; fi
 export LIBSUFFIX_4_CMAKE="-DLIB_SUFFIX=$LIBSUFFIX"
 
@@ -87,7 +87,7 @@ Then, as usual:
 * To install the library (librmol*.so*) and the binary (rmol),
   make install
   cd ${INSTALL_BASEDIR}
-  rm -f rmol-stable && ln -s rmol-1.00.0 rmol-stable
+  rm -f rmol-stable && ln -s rmol-1.00.2 rmol-stable
   cd -
 * To package the source files, type:
   make dist
