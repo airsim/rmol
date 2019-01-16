@@ -479,48 +479,36 @@ macro (get_python)
   unset (_required_version)
   if (${ARGC} GREATER 0)
     set (_required_version ${ARGV0})
-    message (STATUS "Requires PythonLibs-${_required_version}")
+    message (STATUS "Requires Python with version ${_required_version}; however just Python3 is considered here")
   else (${ARGC} GREATER 0)
-    message (STATUS "Requires PythonLibs without specifying any version")
+    message (STATUS "Requires Python3; any version will do")
   endif (${ARGC} GREATER 0)
 
   # The first check searches for the libraries and include paths.
   # However, on some older versions (e.g., on RedHat/CentOS 5.x),
   # only the static library is searched.
-  find_package (PythonLibs ${_required_version} REQUIRED)
+  find_package (Python3 COMPONENTS Interpreter Development REQUIRED)
 
   # The second check is to get the dynamic library for sure.
-  find_package (PythonLibsWrapper ${_required_version} REQUIRED)
+  #find_package (PythonLibsWrapper ${_required_version} REQUIRED)
 
-  if (PYTHONLIBS_FOUND)
-	# Derive the version of Python (for whatever reason, FindPythonLibs
-	# does not seem to provide that version variable.
-	get_filename_component (PYTHONLIBS_LIB_FILENAME ${PYTHON_LIBRARIES} NAME)
-	string (REGEX REPLACE "^libpython([0-9]+.[0-9]+).*$" "\\1"
-	  PYTHONLIBS_VERSION "${PYTHONLIBS_LIB_FILENAME}")
+  if (Python3_FOUND)
+    message (STATUS "Found Python3 ${Python3_VERSION} (${Python3_VERSION_MAJOR}.${Python3_VERSION_MINOR}.${Python3_VERSION_PATCH})")
 
-	if (${PYTHONLIBS_VERSION_STRING} MATCHES "([0-9]).([0-9]).([0-9])")
-	  set (PY_MAJOR_VERSION "${CMAKE_MATCH_1}")
-	  set (PY_MINOR_VERSION "${CMAKE_MATCH_2}")
-	  set (PY_PATCH_VERSION "${CMAKE_MATCH_3}")
-	endif (${PYTHONLIBS_VERSION_STRING} MATCHES "([0-9]).([0-9]).([0-9])")
+    # Set the Python installation directory
+    set (INSTALL_PY_LIB_DIR
+      ${INSTALL_LIB_DIR}/python${Python3_VERSION_MAJOR}${Python3_VERSION_MINOR}/site-packages/py${PROJECT_NAME}
+      CACHE PATH "Installation directory for Python libraries")
 
-	message (STATUS "Found PythonLibs ${PYTHONLIBS_VERSION} (${PYTHONLIBS_VERSION_STRING} / ${PY_MAJOR_VERSION}.${PY_MINOR_VERSION}.${PY_PATCH_VERSION})")
-
-	# Set the Python installation directory
-	set (INSTALL_PY_LIB_DIR
-	  ${INSTALL_LIB_DIR}/python${PYTHONLIBS_VERSION}/site-packages/py${PROJECT_NAME}
-	  CACHE PATH "Installation directory for Python libraries")
-
-	# Update the list of include directories for the project
-    include_directories (${PYTHON_INCLUDE_DIRS})
+    # Update the list of include directories for the project
+    include_directories (${Python3_INCLUDE_DIRS})
 
     # Update the list of dependencies for the project
-    list (APPEND PROJ_DEP_LIBS_FOR_LIB ${PYTHON_LIBRARIES})
+    list (APPEND PROJ_DEP_LIBS_FOR_LIB ${Python3_LIBRARIES})
 
-  else (PYTHONLIBS_FOUND)
+  else (Python3_FOUND)
 	message (FATAL_ERROR "Python libraries are missing. Please install them (e.g., 'python-devel' for the Fedora/RedHat package)")
-  endif (PYTHONLIBS_FOUND)
+  endif (Python3_FOUND)
 
 endmacro (get_python)
 
@@ -618,8 +606,8 @@ macro (get_boost)
   #         On some platform/Boost version combinations, the Python version
   #         may be just the major version (2 or 3 as of 2019) or the major
   #         and minor versions (e.g., 27, 28, 34, 36, 37 as of 2019)
-  set (python_cpt_name1 "python${PY_MAJOR_VERSION}")
-  set (python_cpt_name2 "python${PY_MAJOR_VERSION}${PY_MINOR_VERSION}")
+  set (python_cpt_name1 "python${Python3_VERSION_MAJOR}")
+  set (python_cpt_name2 "python${Python3_VERSION_MAJOR}${Python3_VERSION_MINOR}")
   set (Boost_USE_STATIC_LIBS OFF)
   set (Boost_USE_MULTITHREADED ON)
   set (Boost_USE_STATIC_RUNTIME OFF)
@@ -1473,7 +1461,7 @@ macro (set_install_directories)
   set (exec_prefix   ${prefix})
   set (bindir        ${exec_prefix}/bin)
   set (libdir        ${exec_prefix}/${LIBDIR})
-  set (pylibdir	     ${libdir}/python${PYTHONLIBS_VERSION}/site-packages/py${PACKAGE})
+  set (pylibdir	     ${libdir}/python${Python3_VERSION_MAJOR}${Python3_VERSION_MINOR}/site-packages/py${PACKAGE})
   set (libexecdir    ${exec_prefix}/libexec)
   set (sbindir       ${exec_prefix}/sbin)
   set (sysconfdir    ${prefix}/etc)
@@ -2555,27 +2543,26 @@ endmacro (display_lcov)
 
 # Python
 macro (display_python)
-  if (PYTHONLIBS_FOUND)
+  if (Python3_FOUND)
     message (STATUS)
-	message (STATUS "* Python:")
-	message (STATUS "  - PYTHONLIBS_VERSION ............ : ${PYTHONLIBS_VERSION}")
-	message (STATUS "  - PY_{MAJOR,MINOR,PATCH}_VERSION  : ${PY_MAJOR_VERSION}.${PY_MINOR_VERSION}.${PY_PATCH_VERSION}")
-	message (STATUS "  - PYTHON_LIBRARIES .............. : ${PYTHON_LIBRARIES}")
-	message (STATUS "  - PYTHON_INCLUDE_PATH ........... : ${PYTHON_INCLUDE_PATH}")
-	message (STATUS "  - PYTHON_INCLUDE_DIRS ........... : ${PYTHON_INCLUDE_DIRS}")
-	message (STATUS "  - PYTHON_DEBUG_LIBRARIES ........ : ${PYTHON_DEBUG_LIBRARIES}")
-	message (STATUS "  - Python_ADDITIONAL_VERSIONS .... : ${Python_ADDITIONAL_VERSIONS}")
-  endif (PYTHONLIBS_FOUND)
+    message (STATUS "* Python:")
+    message (STATUS "  - Python3_VERSION ............... : ${Python3_VERSION}")
+    message (STATUS "  - Python3_VERSION_{MJR,MNR,PTCH}  : ${Python3_VERSION_MAJOR}.${Python3_VERSION_MINOR}.${Python3_VERSION_PATCH}")
+    message (STATUS "  - Python3_INCLUDE_DIRS .......... : ${Python3_INCLUDE_DIRS}")
+    message (STATUS "  - Python3_LIBRARIES ............. : ${Python3_LIBRARIES}")
+    message (STATUS "  - Python3_LIBRARY_DIRS .......... : ${Python3_LIBRARY_DIRS}")
+    message (STATUS "  - Python3_RUNTIME_LIBRARY_DIRS .. : ${Python3_RUNTIME_LIBRARY_DIRS}")
+  endif (Python3_FOUND)
 endmacro (display_python)
 
 # ICU
 macro (display_icu)
   if (ICU_FOUND)
     message (STATUS)
-	message (STATUS "* ICU:")
-	message (STATUS "  - ICU_VERSION ................... : ${ICU_VERSION}")
-	message (STATUS "  - ICU_LIBRARIES ................. : ${ICU_LIBRARIES}")
-	message (STATUS "  - ICU_INCLUDE_DIRS .............. : ${ICU_INCLUDE_DIR}")
+    message (STATUS "* ICU:")
+    message (STATUS "  - ICU_VERSION ................... : ${ICU_VERSION}")
+    message (STATUS "  - ICU_LIBRARIES ................. : ${ICU_LIBRARIES}")
+    message (STATUS "  - ICU_INCLUDE_DIRS .............. : ${ICU_INCLUDE_DIR}")
   endif (ICU_FOUND)
 endmacro (display_icu)
 
