@@ -210,7 +210,7 @@ namespace RMOL {
 }
 
 // /////////////////////////////////////////////////////////////
-BOOST_PYTHON_MODULE(libpyrmol) {
+BOOST_PYTHON_MODULE(pyrmol) {
   boost::python::class_<RMOL::RMOLer> ("RMOLer")
     .def ("rmol", &RMOL::RMOLer::rmol)
     .def ("init", &RMOL::RMOLer::init);

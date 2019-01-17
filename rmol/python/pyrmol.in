@@ -1,0 +1,119 @@
+#!/usr/bin/env python3
+
+import sys, getopt
+#sys.path.append ('@INSTALL_LIB_DIR@')
+#sys.path.append ('@INSTALL_PY_LIB_DIR@')
+
+# Usage
+def usage (script_name):
+	print
+	print ("Cabin capacity is revenue optimized "
+               "according to demand forecasts")
+	print
+	print ("Usage: {} [options]".format (script_name))
+	print
+	print (" Options:")
+	print ("  -h, --help     : Outputs this help and exits")
+	print ("  -b, --builtin  : The sample BOM tree can be either built-in")
+	print ("                   or parsed from an input file. That latter")
+	print ("                   must then be given with the -i/--input option")
+	print ("  -c, --capacity : Cabin capacity (as a number of seats)")
+	print ("  -d, --draws    : Number of draws for the Monte-Carlo method")
+	print ("  -m, --omethod  : Method used to optimize the revenue: 0 for MC ")
+	print ("                   (Monte-Carlo), 1 for DP (Dynamic Programming)")
+	print ("                   or 2 for EMSR")
+	print ("  -i, --input    : (CSV) input file for the forecast")
+	print ("  -l, --log      : Filepath for the logs")
+	print
+
+# Conversion of a string into a boolean
+def str2bool (v):
+	return v.lower() in ("yes", "true", "t", "1")
+
+# Handle the command-line options
+def handle_opt():
+	try:
+		opts, args = getopt.getopt (sys.argv[1:], "hbc:d:m:i:o:l:",
+					    ["help", "builtin", "capacity=",
+					     "draws=", "omethod=",
+					     "input=", "log="])
+	except (getopt.GetoptError, err):
+		# Print help information and exit. It will print something like
+		# "option -a not recognized".
+		print (str (err))
+		usage (sys.argv[0])
+		sys.exit (2)
+
+	# Log file-path
+	logFilename = "pyrmol.log"
+
+	# (CSV) input file specifying the forecasts
+	inputFilename = "@STDAIR_SAMPLE_DIR@/rm04.csv"
+
+	# Whether or not the forecasts are specified internally or by
+	# an input file.
+	isBuiltin = False
+
+	# Cabin capacity (as a number of seats)
+	cabinCapacity = 400
+
+	# Number of draws
+	nbOfDraws = 1000
+
+	# Optimization method
+	optimizationMethod = 0
+
+	# Command-line options
+	for o, a in opts:
+		if o in ("-h", "--help"):
+			usage (sys.argv[0])
+			sys.exit()
+		elif o in ("-b", "--builtin"):
+			isBuiltin = True
+		elif o in ("-c", "--capacity"):
+			cabinCapacity = int(a)
+		elif o in ("-d", "--draws"):
+			nbOfDraws = int(a)
+		elif o in ("-m", "--omethod"):
+			optimizationMethod = int(a)
+		elif o in ("-i", "--input"):
+			inputFilename = a
+		elif o in ("-l", "--log"):
+			logFilename = a
+		else:
+			assert False, "Unhandled option"
+	return (isBuiltin, cabinCapacity, nbOfDraws, optimizationMethod, 
+		inputFilename, logFilename)
+
+
+############################
+# Main
+############################
+if __name__ == '__main__':
+	# Parse the command-line options
+	(isBuiltin, cabinCapacity, nbOfDraws, optimizationMethod, 
+	 inputFilename, logFilename) = handle_opt()
+	#
+	print
+	print ("Built-in: ", isBuiltin)
+	print ("Cabin seat capacity: ", cabinCapacity)
+	print ("Number of runs: ", nbOfDraws)
+	print ("Optimization method: ", optimizationMethod)
+	print ("Input file-path: ", inputFilename)
+	print ("Log file-path: ", logFilename)
+	print
+
+	# Initialise the RMOL C++ library wrapper
+	import pyrmol
+	rmolLibrary = pyrmol.RMOLer()
+	rmolLibrary.init (logFilename, cabinCapacity, isBuiltin, 
+			  inputFilename)
+
+	# Call the RMOL C++ library
+	result = rmolLibrary.rmol (nbOfDraws, optimizationMethod,
+                                   float (cabinCapacity))
+	print
+	print (result)
+	print
+
+

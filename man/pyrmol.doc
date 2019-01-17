@@ -1,0 +1,41 @@
+/*!
+\page pyrmol
+      Python wrapper around the C++ Revenue Management Optimisation Library
+
+\section sec_synopsis SYNOPSIS
+
+<b>pyrmol</b> <tt>[--prefix] [-v|--version] [-h|--help] [-b|--builtin] [-i|--input <path-to-input>] [-l|--log <path-to-output-log-file>]</tt>
+
+\section sec_description DESCRIPTION
+
+\e pyrmol is a small Python wrapper around the RMOL library.
+
+\e pyrmol accepts the following options:
+
+ \b -h, \b --help<br>
+    Produce that message and show usage.
+
+ \b -l, \b --long<br>
+    Produce long formatted output (rather than the shorter one).
+
+See the output of the <tt>`pyrmol --help'</tt> command for default options.
+
+
+\section sec_see_also SEE ALSO
+\b rmol(1), \b rmol-config(1), \b rmol-library(3)
+
+
+\section sec_support SUPPORT
+
+Please report any bugs to http://github.com/airsim/rmol/issues
+
+
+\section sec_copyright COPYRIGHT
+
+Copyright © 2009-2019 Denis Arnaud
+
+See the COPYING file for more information on the (LGPLv2+) license, or
+directly on Internet:<br>
+http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
+
+*/
