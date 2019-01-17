@@ -497,7 +497,7 @@ macro (get_python)
 
     # Set the Python installation directory
     set (INSTALL_PY_LIB_DIR
-      ${INSTALL_LIB_DIR}/python${Python3_VERSION_MAJOR}${Python3_VERSION_MINOR}/site-packages/py${PROJECT_NAME}
+      ${INSTALL_LIB_DIR}/python${Python3_VERSION_MAJOR}.${Python3_VERSION_MINOR}/site-packages/py${PROJECT_NAME}
       CACHE PATH "Installation directory for Python libraries")
 
     # Update the list of include directories for the project
@@ -1461,7 +1461,7 @@ macro (set_install_directories)
   set (exec_prefix   ${prefix})
   set (bindir        ${exec_prefix}/bin)
   set (libdir        ${exec_prefix}/${LIBDIR})
-  set (pylibdir	     ${libdir}/python${Python3_VERSION_MAJOR}${Python3_VERSION_MINOR}/site-packages/py${PACKAGE})
+  set (pylibdir	     ${libdir}/python${Python3_VERSION_MAJOR}.${Python3_VERSION_MINOR}/site-packages/py${PACKAGE})
   set (libexecdir    ${exec_prefix}/libexec)
   set (sbindir       ${exec_prefix}/sbin)
   set (sysconfdir    ${prefix}/etc)
