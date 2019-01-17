@@ -50,9 +50,10 @@ module_binary_add (batches rmol)
 
 ##
 # Installing Python and Shell scripts
-module_script_add (tools/rmol_extractBPC)
-module_script_add (python/rmol_drawBPC)
+module_script_add (python/pyrmol)
 python_module_add (python/__init__.py)
+module_script_add (python/rmol_drawBPC)
+module_script_add (tools/rmol_extractBPC)
 
 ##
 # Install the CMake import helper, so that third party projects can refer to it
