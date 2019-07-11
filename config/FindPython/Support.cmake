@@ -305,9 +305,9 @@ unset (_${_PYTHON_PREFIX}_CACHED_VARS)
 
 # first step, search for the interpreter
 if ("Interpreter" IN_LIST ${_PYTHON_PREFIX}_FIND_COMPONENTS)
+  list (APPEND _${_PYTHON_PREFIX}_CACHED_VARS ${_PYTHON_PREFIX}_EXECUTABLE)
   if (${_PYTHON_PREFIX}_FIND_REQUIRED_Interpreter)
     list (APPEND _${_PYTHON_PREFIX}_REQUIRED_VARS ${_PYTHON_PREFIX}_EXECUTABLE)
-    list (APPEND _${_PYTHON_PREFIX}_CACHED_VARS ${_PYTHON_PREFIX}_EXECUTABLE)
   endif()
 
   set (_${_PYTHON_PREFIX}_HINTS "${${_PYTHON_PREFIX}_ROOT_DIR}" ENV ${_PYTHON_PREFIX}_ROOT_DIR)
@@ -548,9 +548,9 @@ endif()
 
 # second step, search for compiler (IronPython)
 if ("Compiler" IN_LIST ${_PYTHON_PREFIX}_FIND_COMPONENTS)
+  list (APPEND _${_PYTHON_PREFIX}_CACHED_VARS ${_PYTHON_PREFIX}_COMPILER)
   if (${_PYTHON_PREFIX}_FIND_REQUIRED_Compiler)
     list (APPEND _${_PYTHON_PREFIX}_REQUIRED_VARS ${_PYTHON_PREFIX}_COMPILER)
-    list (APPEND _${_PYTHON_PREFIX}_CACHED_VARS ${_PYTHON_PREFIX}_COMPILER)
   endif()
 
   # IronPython specific artifacts
@@ -659,15 +659,15 @@ endif()
 ## Development environment is not compatible with IronPython interpreter
 if ("Development" IN_LIST ${_PYTHON_PREFIX}_FIND_COMPONENTS
     AND NOT ${_PYTHON_PREFIX}_INTERPRETER_ID STREQUAL "IronPython")
+  list (APPEND _${_PYTHON_PREFIX}_CACHED_VARS ${_PYTHON_PREFIX}_LIBRARY
+                                              ${_PYTHON_PREFIX}_LIBRARY_RELEASE
+                                              ${_PYTHON_PREFIX}_RUNTIME_LIBRARY_RELEASE
+                                              ${_PYTHON_PREFIX}_LIBRARY_DEBUG
+                                              ${_PYTHON_PREFIX}_RUNTIME_LIBRARY_DEBUG
+                                              ${_PYTHON_PREFIX}_INCLUDE_DIR)
   if (${_PYTHON_PREFIX}_FIND_REQUIRED_Development)
     list (APPEND _${_PYTHON_PREFIX}_REQUIRED_VARS ${_PYTHON_PREFIX}_LIBRARY
                                                   ${_PYTHON_PREFIX}_INCLUDE_DIR)
-    list (APPEND _${_PYTHON_PREFIX}_CACHED_VARS ${_PYTHON_PREFIX}_LIBRARY
-                                                ${_PYTHON_PREFIX}_LIBRARY_RELEASE
-                                                ${_PYTHON_PREFIX}_RUNTIME_LIBRARY_RELEASE
-                                                ${_PYTHON_PREFIX}_LIBRARY_DEBUG
-                                                ${_PYTHON_PREFIX}_RUNTIME_LIBRARY_DEBUG
-                                                ${_PYTHON_PREFIX}_INCLUDE_DIR)
   endif()
 
   # Support preference of static libs by adjusting CMAKE_FIND_LIBRARY_SUFFIXES
@@ -774,10 +774,11 @@ if ("Development" IN_LIST ${_PYTHON_PREFIX}_FIND_COMPONENTS
       # retrieve runtime library
       if (${_PYTHON_PREFIX}_LIBRARY_RELEASE)
         get_filename_component (_${_PYTHON_PREFIX}_PATH "${${_PYTHON_PREFIX}_LIBRARY_RELEASE}" DIRECTORY)
+        get_filename_component (_${_PYTHON_PREFIX}_PATH2 "${_${_PYTHON_PREFIX}_PATH}" DIRECTORY)
         _python_find_runtime_library (${_PYTHON_PREFIX}_RUNTIME_LIBRARY_RELEASE
                                       NAMES ${_${_PYTHON_PREFIX}_LIB_NAMES}
                                       NAMES_PER_DIR
-                                      HINTS ${_${_PYTHON_PREFIX}_PATH} ${_${_PYTHON_PREFIX}_HINTS}
+                                      HINTS "${_${_PYTHON_PREFIX}_PATH}" "${_${_PYTHON_PREFIX}_PATH2}" ${_${_PYTHON_PREFIX}_HINTS}
                                       PATH_SUFFIXES bin
                                       NO_SYSTEM_ENVIRONMENT_PATH
                                       NO_CMAKE_SYSTEM_PATH)
@@ -917,6 +918,7 @@ if ("Development" IN_LIST ${_PYTHON_PREFIX}_FIND_COMPONENTS
       # retrieve runtime library
       if (${_PYTHON_PREFIX}_LIBRARY_RELEASE)
         get_filename_component (_${_PYTHON_PREFIX}_PATH "${${_PYTHON_PREFIX}_LIBRARY_RELEASE}" DIRECTORY)
+        get_filename_component (_${_PYTHON_PREFIX}_PATH2 "${_${_PYTHON_PREFIX}_PATH}" DIRECTORY)
         _python_find_runtime_library (${_PYTHON_PREFIX}_RUNTIME_LIBRARY_RELEASE
                                       NAMES python${_${_PYTHON_PREFIX}_VERSION_NO_DOTS}
                                             python${_${_PYTHON_PREFIX}_VERSION}mu
@@ -924,7 +926,7 @@ if ("Development" IN_LIST ${_PYTHON_PREFIX}_FIND_COMPONENTS
                                             python${_${_PYTHON_PREFIX}_VERSION}u
                                             python${_${_PYTHON_PREFIX}_VERSION}
                                       NAMES_PER_DIR
-                                      HINTS "${_${_PYTHON_PREFIX}_PATH}" ${_${_PYTHON_PREFIX}_HINTS}
+                                      HINTS "${_${_PYTHON_PREFIX}_PATH}" "${_${_PYTHON_PREFIX}_PATH2}" ${_${_PYTHON_PREFIX}_HINTS}
                                       PATH_SUFFIXES bin)
       endif()
 
@@ -960,10 +962,11 @@ if ("Development" IN_LIST ${_PYTHON_PREFIX}_FIND_COMPONENTS
         endif()
         if (${_PYTHON_PREFIX}_LIBRARY_DEBUG)
           get_filename_component (_${_PYTHON_PREFIX}_PATH "${${_PYTHON_PREFIX}_LIBRARY_DEBUG}" DIRECTORY)
+          get_filename_component (_${_PYTHON_PREFIX}_PATH2 "${_${_PYTHON_PREFIX}_PATH}" DIRECTORY)
           _python_find_runtime_library (${_PYTHON_PREFIX}_RUNTIME_LIBRARY_DEBUG
                                         NAMES python${_${_PYTHON_PREFIX}_VERSION_NO_DOTS}_d
                                         NAMES_PER_DIR
-                                        HINTS "${_${_PYTHON_PREFIX}_PATH}" ${_${_PYTHON_PREFIX}_HINTS}
+                                        HINTS "${_${_PYTHON_PREFIX}_PATH}" "${_${_PYTHON_PREFIX}_PATH2}" ${_${_PYTHON_PREFIX}_HINTS}
                                         PATH_SUFFIXES bin)
         endif()
       endif()
@@ -1127,9 +1130,9 @@ if ("Development" IN_LIST ${_PYTHON_PREFIX}_FIND_COMPONENTS
 endif()
 
 if ("NumPy" IN_LIST ${_PYTHON_PREFIX}_FIND_COMPONENTS AND ${_PYTHON_PREFIX}_Interpreter_FOUND)
+  list (APPEND _${_PYTHON_PREFIX}_CACHED_VARS ${_PYTHON_PREFIX}_NumPy_INCLUDE_DIR)
   if (${_PYTHON_PREFIX}_FIND_REQUIRED_NumPy)
     list (APPEND _${_PYTHON_PREFIX}_REQUIRED_VARS ${_PYTHON_PREFIX}_NumPy_INCLUDE_DIR)
-    list (APPEND _${_PYTHON_PREFIX}_CACHED_VARS ${_PYTHON_PREFIX}_NumPy_INCLUDE_DIR)
   endif()
   execute_process(
       COMMAND "${${_PYTHON_PREFIX}_EXECUTABLE}" -c
@@ -1157,6 +1160,10 @@ if ("NumPy" IN_LIST ${_PYTHON_PREFIX}_FIND_COMPONENTS AND ${_PYTHON_PREFIX}_Inte
     if (NOT _${_PYTHON_PREFIX}_RESULT)
        set(${_PYTHON_PREFIX}_NumPy_VERSION "${_${_PYTHON_PREFIX}_NumPy_VERSION}")
     endif()
+  endif()
+  # final step: set NumPy founded only if Development component is founded as well
+  if (NOT ${_PYTHON_PREFIX}_Development_FOUND)
+    set(${_PYTHON_PREFIX}_NumPy_FOUND FALSE)
   endif()
 endif()
 
