@@ -1,3 +1,6 @@
+* Thu Jul 11 2019 Denis Arnaud <denis_arnaud at users dot sourceforge dot net> - 1.00.3
+- CMake support files updated for Python 3.8
+
 * Tue Jan 15 2019 Denis Arnaud <denis_arnaud at users dot sourceforge dot net> - 1.00.2
 - CMake nows finds out automatically the right Boost.Python library version
 - Python 3.4 is the new minimum required version

@@ -1,3 +1,7 @@
+2019-07-11:
+- Version 1.00.3
+- CMake support files updated for Python 3.8
+
 2019-01-15:
 - Version 1.00.2
 - CMake nows finds out automatically the right Boost.Python library version
