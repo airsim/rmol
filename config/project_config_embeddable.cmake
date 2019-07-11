@@ -605,7 +605,7 @@ macro (get_boost)
   #         on some Linux distributions, there is even a '-py' suffix.
   #         On some platform/Boost version combinations, the Python version
   #         may be just the major version (2 or 3 as of 2019) or the major
-  #         and minor versions (e.g., 27, 28, 34, 36, 37 as of 2019)
+  #         and minor versions (e.g., 27, 28, 34, 36, 37, 38 as of 2019)
   set (python_cpt_name1 "python${Python3_VERSION_MAJOR}")
   set (python_cpt_name2 "python${Python3_VERSION_MAJOR}${Python3_VERSION_MINOR}")
   set (Boost_USE_STATIC_LIBS OFF)
@@ -636,7 +636,7 @@ macro (get_boost)
     # Boost.Python library
     message (STATUS "  + Boost_PYTHON_LIBRARY: ${Boost_PYTHON_LIBRARY}")
     message (STATUS "  + Boost_PYTHON3_LIBRARY: ${Boost_PYTHON3_LIBRARY}")
-    message (STATUS "  + Boost_PYTHON37_LIBRARY: ${Boost_PYTHON37_LIBRARY}")
+    message (STATUS "  + Boost_PYTHON38_LIBRARY: ${Boost_PYTHON38_LIBRARY}")
 
     # Update the list of include directories for the project
     include_directories (${Boost_INCLUDE_DIRS})
