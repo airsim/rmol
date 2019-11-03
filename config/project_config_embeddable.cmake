@@ -26,9 +26,6 @@ macro (set_project_names _project_name_param)
   # Set the uppercase project name
   string (TOUPPER "${_project_name_param}" _package_name_tmp)
   set (PACKAGE_NAME "${_package_name_tmp}" CACHE INTERNAL "Description")
-
-  # Set the project name
-  project (${PACKAGE})
 endmacro (set_project_names)
 
 ##
@@ -64,16 +61,16 @@ endmacro (set_project_versions)
 #  * CMAKE_INSTALL_RPATH_USE_LINK_PATH
 #                         - Whether or not to set the run-path/rpath within
 #                           the (executable and library) binaries
-#  * ENABLE_TEST         - Whether or not to build and check the unit tests
-#  * INSTALL_DOC         - Whether or not to build and install the documentation
-#  * INSTALL_LIB_DIR     - Installation directory for the libraries
-#  * INSTALL_PY_LIB_DIR  - Installation directory for the Python libraries
-#  * INSTALL_BIN_DIR     - Installation directory for the binaries
-#  * INSTALL_LIBEXEC_DIR - Installation directory for the internal executables
-#  * INSTALL_INCLUDE_DIR - Installation directory for the header files
-#  * INSTALL_DATA_DIR    - Installation directory for the data files
-#  * INSTALL_SAMPLE_DIR  - Installation directory for the (CSV) sample files
-#  * RUN_GCOV            - Whether or not to perform code coverage
+#  * ENABLE_TEST          - Whether or not to build and check the unit tests
+#  * INSTALL_DOC          - Whether or not to build and install the documentation
+#  * INSTALL_LIB_DIR      - Installation directory for the libraries
+#  * INSTALL_PY_LIB_DIR   - Installation directory for the Python libraries
+#  * INSTALL_BIN_DIR      - Installation directory for the binaries
+#  * INSTALL_LIBEXEC_DIR  - Installation directory for the internal executables
+#  * INSTALL_INCLUDE_DIR  - Installation directory for the header files
+#  * INSTALL_DATA_DIR     - Installation directory for the data files
+#  * INSTALL_SAMPLE_DIR   - Installation directory for the (CSV) sample files
+#  * RUN_GCOV             - Whether or not to perform code coverage
 #
 macro (set_project_options _build_doc _enable_tests _run_gcov)
   # C++ standard (C++-11)
@@ -155,6 +152,11 @@ macro (set_project_options _build_doc _enable_tests _run_gcov)
   if ("${PROJECT_NAME}" STREQUAL "stdair")
     set (STDAIR_SAMPLE_DIR ${INSTALL_SAMPLE_DIR})
   endif ("${PROJECT_NAME}" STREQUAL "stdair")
+
+  # Define OPENTREP_SAMPLE_DIR if the project is OPENTREP
+  if ("${PROJECT_NAME}" STREQUAL "opentrep")
+    set (OPENTREP_SAMPLE_DIR ${INSTALL_DATA_DIR}/${PACKAGE}/data)
+  endif ("${PROJECT_NAME}" STREQUAL "opentrep")
 
   ##
   # Basic documentation (i.e., AUTHORS, NEWS, README, INSTALL)
@@ -374,6 +376,10 @@ macro (get_external_libs)
     if (${_arg_lower} STREQUAL "soci")
       get_soci (${_arg_version})
     endif (${_arg_lower} STREQUAL "soci")
+
+    if (${_arg_lower} STREQUAL "optd")
+      get_optd (${_arg_version})
+    endif (${_arg_lower} STREQUAL "optd")
 
     if (${_arg_lower} STREQUAL "stdair")
       get_stdair (${_arg_version})
@@ -634,8 +640,10 @@ macro (get_boost)
 
   if (Boost_FOUND)
     # Boost.Python library
+    message (STATUS "  + Boost_PYTHON_VERSION: ${Boost_PYTHON_VERSION}")
     message (STATUS "  + Boost_PYTHON_LIBRARY: ${Boost_PYTHON_LIBRARY}")
     message (STATUS "  + Boost_PYTHON3_LIBRARY: ${Boost_PYTHON3_LIBRARY}")
+    message (STATUS "  + Boost_PYTHON37_LIBRARY: ${Boost_PYTHON37_LIBRARY}")
     message (STATUS "  + Boost_PYTHON38_LIBRARY: ${Boost_PYTHON38_LIBRARY}")
 
     # Update the list of include directories for the project
@@ -912,6 +920,29 @@ macro (get_mysql)
   endif (MYSQL_FOUND)
 
 endmacro (get_mysql)
+
+# ~~~~~~~~~~ OpenTravelData (OPTD) ~~~~~~~~~
+macro (get_optd)
+  set (__optd_por_file optd_por_public_all.csv)
+  
+  find_path (OPTD_POR_DIR
+    NAMES "opentraveldata/share/opentraveldata/data/por/${__optd_por_file}"
+    PATHS "${WITH_OPENTRAVELDATA_PREFIX}"
+    DOC "Full path to the OpenTravelData (OPTD) file")
+  
+  if (OPTD_POR_DIR-NOTFOUND)
+    set (ERROR_MSG "The OPTD POR data dir cannot be found. If OPTD is")
+    set (ERROR_MSG "${ERROR_MSG} in a non standard directory, just invoke")
+    set (ERROR_MSG "${ERROR_MSG} 'cmake' specifying the -DWITH_OPENTRAVELDATA_PREFIX=")
+    set (ERROR_MSG "${ERROR_MSG}<OPTD install path> variable.")
+    message (STATUS "${ERROR_MSG}")
+    #message (FATAL_ERROR "${ERROR_MSG}")
+  else (OPTD_POR_DIR-NOTFOUND)
+    #
+    message (STATUS "Found OPTD POR data dir: ${OPTD_POR_DIR}")
+  endif (OPTD_POR_DIR-NOTFOUND)
+
+endmacro (get_optd)
 
 # ~~~~~~~~~~ SOCI ~~~~~~~~~~
 macro (get_soci)
@@ -1426,6 +1457,9 @@ macro (init_build)
   if (NOT "${CMAKE_CXX_FLAGS}" MATCHES "-DBOOST_VERSION=")
     set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DBOOST_VERSION=${Boost_VERSION}")
   endif (NOT "${CMAKE_CXX_FLAGS}" MATCHES "-DBOOST_VERSION=")
+  if (NOT "${CMAKE_CXX_FLAGS}" MATCHES "-DBOOST_VERSION_MACRO=")
+    set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DBOOST_VERSION_MACRO=${Boost_VERSION_MACRO}")
+  endif (NOT "${CMAKE_CXX_FLAGS}" MATCHES "-DBOOST_VERSION_MACRO=")
 
   #
   include_directories (BEFORE ${CMAKE_SOURCE_DIR} ${CMAKE_BINARY_DIR})
@@ -2472,8 +2506,12 @@ macro (install_dev_helper_files)
   set (${PACKAGE_NAME}_LIB_DIR "${INSTALL_LIB_DIR}")
   set (${PACKAGE_NAME}_LIBEXEC_DIR "${INSTALL_LIBEXEC_DIR}")
   set (${PACKAGE_NAME}_PY_LIB_DIR "${INSTALL_PY_LIB_DIR}")
-  set (${PACKAGE_NAME}_SAMPLE_DIR "${INSTALL_SAMPLE_DIR}")
   set (${PACKAGE_NAME}_CMAKE_DIR "${LIB_DEPENDENCY_EXPORT_PATH}")
+  # When the project is OpenTREP, OPENTREP_SAMPLE_DIR has
+  # already been defined before
+  if (NOT "${PROJECT_NAME}" STREQUAL "opentrep")
+    set (${PACKAGE_NAME}_SAMPLE_DIR "${INSTALL_SAMPLE_DIR}")
+  endif (NOT "${PROJECT_NAME}" STREQUAL "opentrep")
   configure_file (${PROJECT_NAME}-config.cmake.in
 	"${PROJECT_BINARY_DIR}/${PROJECT_NAME}-config.cmake" @ONLY)
   configure_file (${PROJECT_NAME}-config-version.cmake.in
@@ -2583,9 +2621,11 @@ macro (display_boost)
     message (STATUS)
     message (STATUS "* Boost:")
     message (STATUS "  - Boost_VERSION ................. : ${Boost_VERSION}")
+    message (STATUS "  - Boost_VERSION_MACRO ........... : ${Boost_VERSION_MACRO}")
     message (STATUS "  - Boost_LIB_VERSION ............. : ${Boost_LIB_VERSION}")
     message (STATUS "  - Boost_HUMAN_VERSION ........... : ${Boost_HUMAN_VERSION}")
     message (STATUS "  - Boost_INCLUDE_DIRS ............ : ${Boost_INCLUDE_DIRS}")
+    message (STATUS "  - Boost_PYTHON_VERSION .......... : ${Boost_PYTHON_VERSION}")
     message (STATUS "  - Boost required components ..... : ${BOOST_REQUIRED_COMPONENTS}")
     message (STATUS "  - Boost required libraries ...... : ${BOOST_REQUIRED_LIBS}")
     message (STATUS "  - Boost required libs for lib ... : ${PROJ_DEP_LIBS_FOR_LIB}")
@@ -2678,6 +2718,15 @@ macro (display_soci)
     message (STATUS "  - SOCISQLITE_LIBRARIES .......... : ${SOCISQLITE_LIBRARIES}")
   endif (SOCI_FOUND)
 endmacro (display_soci)
+
+# OpenTravelData (OPTD)
+macro (display_optd)
+  if (OPTD_POR_DIR)
+    message (STATUS)
+    message (STATUS "* OPTD:")
+    message (STATUS "    - OPTD_POR_DIR ................ : ${OPTD_POR_DIR}")
+  endif (OPTD_POR_DIR)
+endmacro (display_optd)
 
 # StdAir
 macro (display_stdair)
@@ -2984,6 +3033,7 @@ macro (display_status)
   display_sqlite ()
   display_mysql ()
   display_soci ()
+  display_optd ()
   display_stdair ()
   display_sevmgr ()
   display_trademgen ()

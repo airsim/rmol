@@ -18,19 +18,16 @@
 find_package (SOCI ${_required_version} REQUIRED)
 
 # Check for SOCI SQLite main header.
-set (CHECK_HEADERS soci-sqlite3.h)
-set (CHECK_SUFFIXES "" sqlite3)
+set (CHECK_HEADERS soci/sqlite3/soci-sqlite3.h)
 if (SOCISQLITE_INCLUDE_DIR)
   find_path (SOCISQLITE_INCLUDE_DIR
     NAMES ${CHECK_HEADERS}
     PATHS ${SOCI_SQLITE_INCLUDE_DIR}
-    PATH_SUFFIXES ${CHECK_SUFFIXES}
     NO_DEFAULT_PATH)
 else (SOCISQLITE_INCLUDE_DIR)
   find_path (SOCISQLITE_INCLUDE_DIR
     NAMES ${CHECK_HEADERS}
-    PATHS ${SOCI_INCLUDE_DIR}
-    PATH_SUFFIXES ${CHECK_SUFFIXES})
+    PATHS ${SOCI_INCLUDE_DIR})
 endif (SOCISQLITE_INCLUDE_DIR)
 
 # Check for SOCI SQLite library
@@ -61,3 +58,4 @@ if (SOCISQLITE_FOUND)
 else (SOCISQLITE_FOUND)
   message (FATAL_ERROR "Could not find the SOCI SQLite libraries! Please install the development-libraries and headers (e.g., 'soci-sqlite3-devel' for Fedora/RedHat).")
 endif (SOCISQLITE_FOUND)
+
