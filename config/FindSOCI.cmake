@@ -8,20 +8,10 @@
 #  SOCI_FOUND          - Whether SOCI has been found
 
 # Check for SOCI main header.
-set (CHECK_HEADERS soci.h)
-set (CHECK_SUFFIXES "" soci)
-if (SOCI_INCLUDE_DIR)
-  find_path (SOCI_INCLUDE_DIR
-    NAMES ${CHECK_HEADERS}
-    PATHS ${SOCI_INCLUDE_DIR}
-    PATH_SUFFIXES ${CHECK_SUFFIXES}
-    NO_DEFAULT_PATH)
-else (SOCI_INCLUDE_DIR)
-  find_path (SOCI_INCLUDE_DIR
-    NAMES ${CHECK_HEADERS}
-    PATH_SUFFIXES ${CHECK_SUFFIXES})
-endif (SOCI_INCLUDE_DIR)
-
+find_path (_soci_incdir
+	NAMES soci/soci.h
+)
+set (SOCI_INCLUDE_DIR "${_soci_incdir}")
 
 # Extract version information from version.h
 if (SOCI_INCLUDE_DIR)
@@ -29,10 +19,10 @@ if (SOCI_INCLUDE_DIR)
   # Read the whole file:
   set (SOCI_VERSION 0)
   set (SOCI_LIB_VERSION "")
-  file (READ "${SOCI_INCLUDE_DIR}/version.h" _soci_VERSION_HPP_CONTENTS)
+  file (READ "${SOCI_INCLUDE_DIR}/soci/version.h" _soci_VERSION_HPP_CONTENTS)
   if (SOCI_DEBUG)
     message (STATUS "[ ${CMAKE_CURRENT_LIST_FILE}:${CMAKE_CURRENT_LIST_LINE} ] "
-      "location of version.h: ${SOCI_INCLUDE_DIR}/version.h")
+      "location of soci/version.h: ${SOCI_INCLUDE_DIR}/soci/version.h")
   endif (SOCI_DEBUG)
   
   string (REGEX REPLACE ".*#define SOCI_VERSION ([0-9]+).*" "\\1" SOCI_VERSION
@@ -115,3 +105,4 @@ if (SOCI_FOUND)
 else (SOCI_FOUND)
   message (FATAL_ERROR "Could not find the SOCI libraries! Please install the development-libraries and headers (e.g., 'soci-devel' for Fedora/RedHat).")
 endif (SOCI_FOUND)
+

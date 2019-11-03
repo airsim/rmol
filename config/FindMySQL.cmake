@@ -17,7 +17,8 @@ if (UNIX)
     ${MYSQL_CONFIG_PREFER_PATH}
     /usr/local/mysql/bin/
     /usr/local/bin/
-    /usr/bin/)
+    /usr/bin/
+    /usr/local/opt/mysql-client/bin)
 
   if (MYSQL_CONFIG)
     message (STATUS "Using mysql-config: ${MYSQL_CONFIG}")

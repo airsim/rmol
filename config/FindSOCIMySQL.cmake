@@ -18,19 +18,16 @@
 find_package (SOCI ${_required_version} REQUIRED)
 
 # Check for SOCI MySQL main header.
-set (CHECK_HEADERS soci-mysql.h)
-set (CHECK_SUFFIXES "" mysql)
+set (CHECK_HEADERS soci/mysql/soci-mysql.h)
 if (SOCIMYSQL_INCLUDE_DIR)
   find_path (SOCIMYSQL_INCLUDE_DIR
     NAMES ${CHECK_HEADERS}
     PATHS ${SOCI_MYSQL_INCLUDE_DIR}
-    PATH_SUFFIXES ${CHECK_SUFFIXES}
     NO_DEFAULT_PATH)
 else (SOCIMYSQL_INCLUDE_DIR)
   find_path (SOCIMYSQL_INCLUDE_DIR
     NAMES ${CHECK_HEADERS}
-    PATHS ${SOCI_INCLUDE_DIR}
-    PATH_SUFFIXES ${CHECK_SUFFIXES})
+    PATHS ${SOCI_INCLUDE_DIR})
 endif (SOCIMYSQL_INCLUDE_DIR)
 
 # Check for SOCI MySQL library
@@ -61,3 +58,4 @@ if (SOCIMYSQL_FOUND)
 else (SOCIMYSQL_FOUND)
   message (FATAL_ERROR "Could not find the SOCI MySQL libraries! Please install the development-libraries and headers (e.g., 'soci-mysql-devel' for Fedora/RedHat).")
 endif (SOCIMYSQL_FOUND)
+
