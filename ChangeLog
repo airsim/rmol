@@ -1,3 +1,6 @@
+Tue Nov 04 2019 Denis Arnaud <denis_arnaud at users dot sourceforge dot net> - 1.00.4
+- CMake helper file now differentiates normal and Python libraries
+
 * Thu Jul 11 2019 Denis Arnaud <denis_arnaud at users dot sourceforge dot net> - 1.00.3
 - CMake support files updated for Python 3.8
 
