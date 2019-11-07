@@ -11,7 +11,6 @@
 #include <boost/python.hpp>
 // Boost Accumulators
 #include <boost/accumulators/accumulators.hpp>
-#include <boost/accumulators/statistics.hpp>
 // StdAir
 #include <stdair/stdair_basic_types.hpp>
 #include <stdair/service/Logger.hpp>
