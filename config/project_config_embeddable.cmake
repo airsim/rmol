@@ -1634,6 +1634,7 @@ endmacro (module_set_name)
 macro (add_modules)
   set (_embedded_components ${ARGV})
   set (LIB_DEPENDENCY_EXPORT ${PROJECT_NAME}-library-depends)
+  set (PY_LIB_DEPENDENCY_EXPORT ${PROJECT_NAME}-python-library-depends)
   set (LIB_DEPENDENCY_EXPORT_PATH "${INSTALL_DATA_DIR}/${PROJECT_NAME}/CMake")
   #
   foreach (_embedded_comp ${_embedded_components})
@@ -1941,8 +1942,8 @@ macro (module_library_add_specific
     # If the library is Python, install it into a dedicated directory
     message (STATUS "${_lib_short_name} is assumed to be a Python library")
     install (TARGETS ${_lib_target}
-      EXPORT ${LIB_DEPENDENCY_EXPORT}
-      LIBRARY DESTINATION "${INSTALL_PY_LIB_DIR}" COMPONENT runtime)
+      EXPORT ${PY_LIB_DEPENDENCY_EXPORT}
+      LIBRARY DESTINATION "${INSTALL_PY_LIB_DIR}" COMPONENT python-runtime)
     
   else ("${_lib_prefix}" STREQUAL "py")
     # Install the library in the standard location
@@ -2022,6 +2023,9 @@ macro (module_binary_add _exec_source_dir)
     set (_exec_name ${ARGV1})
   endif (${ARGC} GREATER 1})
 
+  # Extract the prefix to differentiate Python binaries
+  string (SUBSTRING ${_exec_name} 0 2 _bin_prefix)
+  
   # Register the (CMake) target for the executable, and specify the name
   # of that latter
   add_executable (${_exec_name}bin ${_exec_source_dir}/${_exec_name}.cpp)
@@ -2033,9 +2037,18 @@ macro (module_binary_add _exec_source_dir)
     ${${MODULE_NAME}_INTER_TARGETS})
 
   # Binary installation
-  install (TARGETS ${_exec_name}bin
-    EXPORT ${LIB_DEPENDENCY_EXPORT}
-    RUNTIME DESTINATION "${INSTALL_BIN_DIR}" COMPONENT runtime)
+  if ("${_bin_prefix}" STREQUAL "py")
+	# Python binary
+	install (TARGETS ${_exec_name}bin
+      EXPORT ${PY_LIB_DEPENDENCY_EXPORT}
+      RUNTIME DESTINATION "${INSTALL_BIN_DIR}" COMPONENT python-runtime)
+	
+  else ("${_bin_prefix}" STREQUAL "py")
+	# Standard binary
+	install (TARGETS ${_exec_name}bin
+      EXPORT ${LIB_DEPENDENCY_EXPORT}
+      RUNTIME DESTINATION "${INSTALL_BIN_DIR}" COMPONENT runtime)
+  endif ("${_bin_prefix}" STREQUAL "py")
 
   # Register the binary target in the project (for reporting purpose)
   list (APPEND PROJ_ALL_BIN_TARGETS ${_exec_name})
@@ -2153,6 +2166,11 @@ endmacro (module_script_add)
 macro (module_export_install)
   install (EXPORT ${LIB_DEPENDENCY_EXPORT}
     DESTINATION "${INSTALL_DATA_DIR}/${PACKAGE}/CMake" COMPONENT devel)
+
+  if (NEED_PYTHON)
+	install (EXPORT ${PY_LIB_DEPENDENCY_EXPORT}
+      DESTINATION "${INSTALL_DATA_DIR}/${PACKAGE}/CMake" COMPONENT python-devel)
+  endif (NEED_PYTHON)
 endmacro (module_export_install)
 
 
@@ -2622,8 +2640,7 @@ macro (install_dev_helper_files)
   ##
   # Create a ${PROJECT_NAME}-config.cmake file for the use from 
   # the install tree and install it
-  install (EXPORT ${LIB_DEPENDENCY_EXPORT}
-	DESTINATION ${LIB_DEPENDENCY_EXPORT_PATH})
+  module_export_install()
   set (${PACKAGE_NAME}_INCLUDE_DIRS "${INSTALL_INCLUDE_DIR}")
   set (${PACKAGE_NAME}_BIN_DIR "${INSTALL_BIN_DIR}")
   set (${PACKAGE_NAME}_LIB_DIR "${INSTALL_LIB_DIR}")
