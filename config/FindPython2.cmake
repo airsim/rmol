@@ -8,7 +8,7 @@ FindPython2
 Find Python 2 interpreter, compiler and development environment (include
 directories and libraries).
 
-Three components are supported:
+The following components are supported:
 
 * ``Interpreter``: search for Python 2 interpreter
 * ``Compiler``: search for Python 2 compiler. Only offered by IronPython.
@@ -16,7 +16,7 @@ Three components are supported:
   libraries)
 * ``NumPy``: search for NumPy include directories.
 
-If no ``COMPONENTS`` is specified, ``Interpreter`` is assumed.
+If no ``COMPONENTS`` are specified, ``Interpreter`` is assumed.
 
 To ensure consistent versions between components ``Interpreter``, ``Compiler``,
 ``Development`` and ``NumPy``, specify all components at the same time::
@@ -176,12 +176,12 @@ Hints
   variable will be used, if any.
 
 ``Python2_FIND_VIRTUALENV``
-  This variable defines the handling of virtual environments. It is meaningfull
-  only when a virtual environment is active (i.e. the ``activate`` script has
-  been evaluated). In this case, it takes precedence over
-  ``Python2_FIND_REGISTRY`` and ``CMAKE_FIND_FRAMEWORK`` variables.
-  The ``Python2_FIND_VIRTUALENV`` variable can be set to empty or one of the
-  following:
+  This variable defines the handling of virtual environments managed by
+  ``virtualenv`` or ``conda``. It is meaningful only when a virtual environment
+  is active (i.e. the ``activate`` script has been evaluated). In this case, it
+  takes precedence over ``Python2_FIND_REGISTRY`` and ``CMAKE_FIND_FRAMEWORK``
+  variables.  The ``Python2_FIND_VIRTUALENV`` variable can be set to empty or
+  one of the following:
 
   * ``FIRST``: The virtual environment is used before any other standard
     paths to look-up for the interpreter. This is the default.
@@ -193,16 +193,61 @@ Hints
     ``NEVER`` to select preferably the interpreter from the virtual
     environment.
 
+  .. note::
+
+    If the component ``Development`` is requested, it is **strongly**
+    recommended to also include the component ``Interpreter`` to get expected
+    result.
+
+Artifacts Specification
+^^^^^^^^^^^^^^^^^^^^^^^
+
+To solve special cases, it is possible to specify directly the artifacts by
+setting the following variables:
+
+``Python2_EXECUTABLE``
+  The path to the interpreter.
+
+``Python2_COMPILER``
+  The path to the compiler.
+
+``Python2_LIBRARY``
+  The path to the library. It will be used to compute the
+  variables ``Python2_LIBRARIES``, ``Python2_LIBRAY_DIRS`` and
+  ``Python2_RUNTIME_LIBRARY_DIRS``.
+
+``Python2_INCLUDE_DIR``
+  The path to the directory of the ``Python`` headers. It will be used to
+  compute the variable ``Python2_INCLUDE_DIRS``.
+
+``Python2_NumPy_INCLUDE_DIR``
+  The path to the directory of the ``NumPy`` headers. It will be used to
+  compute the variable ``Python2_NumPy_INCLUDE_DIRS``.
+
+.. note::
+
+  All paths must be absolute. Any artifact specified with a relative path
+  will be ignored.
+
+.. note::
+
+  When an artifact is specified, all ``HINTS`` will be ignored and no search
+  will be performed for this artifact.
+
+  If more than one artifact is specified, it is the user's responsability to
+  ensure the consistency of the various artifacts.
+
 Commands
 ^^^^^^^^
 
-This module defines the command ``Python_add_library`` (when
+This module defines the command ``Python2_add_library`` (when
 :prop_gbl:`CMAKE_ROLE` is ``PROJECT``), which has the same semantics as
 :command:`add_library` and adds a dependency to target ``Python2::Python`` or,
 when library type is ``MODULE``, to target ``Python2::Module`` and takes care
 of Python module naming rules::
 
-  Python2_add_library (my_module MODULE src1.cpp)
+  Python2_add_library (<name> [STATIC | SHARED | MODULE]
+                       <source1> [<source2> ...])
 
 If library type is not specified, ``MODULE`` is assumed.
 #]=======================================================================]
