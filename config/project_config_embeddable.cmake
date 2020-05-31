@@ -70,6 +70,8 @@ endmacro (set_project_versions)
 #  * INSTALL_INCLUDE_DIR  - Installation directory for the header files
 #  * INSTALL_DATA_DIR     - Installation directory for the data files
 #  * INSTALL_SAMPLE_DIR   - Installation directory for the (CSV) sample files
+#  * NEED_PYTHON          - Whether Python libraries are needed
+#                           That paremeter is derived from the required libraries
 #  * RUN_GCOV             - Whether or not to perform code coverage
 #
 macro (set_project_options _build_doc _enable_tests _run_gcov)
@@ -106,6 +108,7 @@ macro (set_project_options _build_doc _enable_tests _run_gcov)
   set (CSS_ALL_TARGETS)
   set (IMG_ALL_TARGETS)
   set (MAN_ALL_TARGETS)
+  set (NEED_PYTHON OFF)
 
   # Set the library installation directory (either 32 or 64 bits)
   set (LIBDIR "lib${LIB_SUFFIX}" CACHE PATH
@@ -335,6 +338,7 @@ macro (get_external_libs)
     endif (${_arg_lower} STREQUAL "lcov")
 
     if (${_arg_lower} STREQUAL "python")
+      set (NEED_PYTHON ON)
       get_python (${_arg_version})
     endif (${_arg_lower} STREQUAL "python")
 
@@ -616,19 +620,37 @@ macro (get_boost)
   #         On some platform/Boost version combinations, the Python version
   #         may be just the major version (2 or 3 as of 2020) or the major
   #         and minor versions (e.g., 27, 28, 34, 36, 37, 38, 39 as of 2020)
-  set (python_cpt_name1 "python${Python3_VERSION_MAJOR}")
-  set (python_cpt_name2 "python${Python3_VERSION_MAJOR}${Python3_VERSION_MINOR}")
+  # Note 3: Boot.Python has is reuired only for Python extensions. It should
+  #         not be linked with other regular (non-Python) libraries/binaries,
+  #         as it pulls with it symbols from the Python interpreter, which are
+  #         available only when launched from a Python interpreter.
   set (Boost_USE_STATIC_LIBS OFF)
   set (Boost_USE_MULTITHREADED ON)
   set (Boost_USE_STATIC_RUNTIME OFF)
+  # Boost.Python - Depending on the platforms, the component name
+  # differs. We try all of them, and the find_package() will retrieve
+  # just one
+  if (NEED_PYTHON)
+    set (python_cpt_name0 "python")
+    #
+    if (Python3_VERSION_MAJOR)
+      set (python_cpt_name1 "python${Python3_VERSION_MAJOR}")
+    endif (Python3_VERSION_MAJOR)
+    #
+    if (Python3_VERSION_MINOR)
+      set (python_cpt_name2 "python${Python3_VERSION_MAJOR}${Python3_VERSION_MINOR}")
+    endif (Python3_VERSION_MINOR)
+  endif (NEED_PYTHON)
 
   # Boost components for (non-Python) libraries
   set (BOOST_REQUIRED_COMPONENTS_FOR_LIB
     date_time random iostreams serialization filesystem system locale regex)
 
   # Boost components for Python extensions
-  set (BOOST_REQUIRED_COMPONENTS_FOR_PYEXT
-	${python_cpt_name1} ${python_cpt_name2})
+  if (NEED_PYTHON)
+    set (BOOST_REQUIRED_COMPONENTS_FOR_PYEXT
+      ${python_cpt_name0} ${python_cpt_name1} ${python_cpt_name2})
+  endif (NEED_PYTHON)    
   
   # Boost components for main (non-test) binaries
   set (BOOST_REQUIRED_COMPONENTS_FOR_BIN program_options)
@@ -655,54 +677,61 @@ macro (get_boost)
   find_package (BoostWrapper ${_required_version} REQUIRED)
 
   if (Boost_FOUND)
-    # Boost.Python library
-	if (${Boost_PYTHON3_FOUND})
-      message (STATUS "  + Boost_PYTHON3_FOUND: ${Boost_PYTHON3_FOUND}")
-	endif (${Boost_PYTHON3_FOUND})
-	#
-	if (${Boost_PYTHON38_FOUND})
-      message (STATUS "  + Boost_PYTHON38_FOUND: ${Boost_PYTHON38_FOUND}")
-	endif (${Boost_PYTHON38_FOUND})
-	#
-	if (${Boost_PYTHON_VERSION})
-      message (STATUS "  + Boost_PYTHON_VERSION: ${Boost_PYTHON_VERSION}")
-	endif (${Boost_PYTHON_VERSION})
-	#
-	if (${Boost_PYTHON_LIBRARY})
-      message (STATUS "  + Boost_PYTHON_LIBRARY: ${Boost_PYTHON_LIBRARY}")
-	endif (${Boost_PYTHON_LIBRARY})
-	#
-	if (${Boost_PYTHON3_LIBRARY})
-      message (STATUS "  + Boost_PYTHON3_LIBRARY: ${Boost_PYTHON3_LIBRARY}")
-	endif (${Boost_PYTHON3_LIBRARY})
-	#
-	if (${Boost_PYTHON36_LIBRARY})
-      message (STATUS "  + Boost_PYTHON36_LIBRARY: ${Boost_PYTHON36_LIBRARY}")
-	endif (${Boost_PYTHON36_LIBRARY})
-	#
-	if (${Boost_PYTHON37_LIBRARY})
-      message (STATUS "  + Boost_PYTHON37_LIBRARY: ${Boost_PYTHON37_LIBRARY}")
-	endif (${Boost_PYTHON37_LIBRARY})
-	#
-	if (${Boost_PYTHON38_LIBRARY})
-      message (STATUS "  + Boost_PYTHON38_LIBRARY: ${Boost_PYTHON38_LIBRARY}")
-	endif (${Boost_PYTHON38_LIBRARY})
-	#
-	if (${Boost_PYTHON39_LIBRARY})
-      message (STATUS "  + Boost_PYTHON39_LIBRARY: ${Boost_PYTHON39_LIBRARY}")
-	endif (${Boost_PYTHON39_LIBRARY})
 
-	# Boost has a single Python library, but its name depends on the
-	# distribution, it can be libboost_python3 or libboost_python3x
-	if (${Boost_PYTHON3_FOUND})
-	  set (BOOST_REQUIRED_COMPONENTS_FOR_PYEXT ${python_cpt_name1})
-	  list (REMOVE_ITEM BOOST_REQUIRED_COMPONENTS ${python_cpt_name2})
-	endif (${Boost_PYTHON3_FOUND})
-
-	if (${Boost_PYTHON${Python3_VERSION_MAJOR}${Python3_VERSION_MINOR}_FOUND})
-	  set (BOOST_REQUIRED_COMPONENTS_FOR_PYEXT ${python_cpt_name2})
+    if (NEED_PYTHON)
+      # Boost has a single Python library, but its name depends on the
+      # distribution, it can be libboost_python3 or libboost_python3x
+      if (Boost_PYTHON_LIBRARY)
+	set (BOOST_REQUIRED_COMPONENTS_FOR_PYEXT ${python_cpt_name0})
+	if (Python3_VERSION_MAJOR)
 	  list (REMOVE_ITEM BOOST_REQUIRED_COMPONENTS ${python_cpt_name1})
-	endif (${Boost_PYTHON${Python3_VERSION_MAJOR}${Python3_VERSION_MINOR}_FOUND})
+	endif (Python3_VERSION_MAJOR)
+	if (Python3_VERSION_MINOR)
+	  list (REMOVE_ITEM BOOST_REQUIRED_COMPONENTS ${python_cpt_name2})
+	endif (Python3_VERSION_MINOR)
+      endif (Boost_PYTHON_LIBRARY)
+
+      #
+      if (Boost_PYTHON${Python3_VERSION_MAJOR}_LIBRARY)
+	set (BOOST_REQUIRED_COMPONENTS_FOR_PYEXT ${python_cpt_name1})
+	list (REMOVE_ITEM BOOST_REQUIRED_COMPONENTS ${python_cpt_name0})
+	if (Python3_VERSION_MINOR)
+	  list (REMOVE_ITEM BOOST_REQUIRED_COMPONENTS ${python_cpt_name2})
+	endif (Python3_VERSION_MINOR)
+      endif (Boost_PYTHON${Python3_VERSION_MAJOR}_LIBRARY)
+
+      #
+      if (Boost_PYTHON${Python3_VERSION_MAJOR}${Python3_VERSION_MINOR}_LIBRARY)
+	set (BOOST_REQUIRED_COMPONENTS_FOR_PYEXT ${python_cpt_name2})
+	list (REMOVE_ITEM BOOST_REQUIRED_COMPONENTS ${python_cpt_name0})
+	if (Python3_VERSION_MAJOR)
+	  list (REMOVE_ITEM BOOST_REQUIRED_COMPONENTS ${python_cpt_name1})
+	endif (Python3_VERSION_MAJOR)
+      endif (Boost_PYTHON${Python3_VERSION_MAJOR}${Python3_VERSION_MINOR}_LIBRARY)
+
+      # Reporting
+      message (STATUS "  + Retained Boost Python component: ${BOOST_REQUIRED_COMPONENTS_FOR_PYEXT}")
+      
+      # Derive the Boost.Python component name (amoung Boost_PYTHON,
+      # Boost_PYTHON3, Boost_PYTHON3X)
+      string (TOUPPER ${BOOST_REQUIRED_COMPONENTS_FOR_PYEXT} _python_cpt)
+
+      # Reporting
+      message (STATUS "  + Boost Python component: Boost_${_python_cpt}")
+
+      # Derive the Python version used by Boost.Python
+      if (${Boost_${_python_cpt}_LIBRARY} MATCHES "python([1-9])\\.?([0-9])?")
+	set (Boost_PYTHON_VERSION "${CMAKE_MATCH_1}${CMAKE_MATCH_2}")
+      endif (${Boost_${_python_cpt}_LIBRARY} MATCHES "python([1-9])\\.?([0-9])?")
+
+      # Reporting
+      message (STATUS "  + Boost_PYTHON_VERSION: ${Boost_PYTHON_VERSION}")
+
+      # Boost.Python library
+      if (Boost_${_python_cpt}_LIBRARY)
+	message (STATUS "  + Boost_${_python_cpt}_LIBRARY: ${Boost_${_python_cpt}_LIBRARY}")
+      endif (Boost_${_python_cpt}_LIBRARY)
+    endif (NEED_PYTHON)
 
     # Update the list of include directories for the project
     include_directories (${Boost_INCLUDE_DIRS})
@@ -715,8 +744,10 @@ macro (get_boost)
       "${BOOST_REQUIRED_COMPONENTS_FOR_LIB}")
 
     # Update the list of Python library dependencies for the project
-    register_boost_lib ("PROJ_DEP_LIBS_FOR_PYEXT"
-      "${BOOST_REQUIRED_COMPONENTS_FOR_PYEXT}")
+    if (NEED_PYTHON)
+      register_boost_lib ("PROJ_DEP_LIBS_FOR_PYEXT"
+	"${BOOST_REQUIRED_COMPONENTS_FOR_PYEXT}")
+    endif (NEED_PYTHON)
 
     # Update the list of binary dependencies for the project
     register_boost_lib ("PROJ_DEP_LIBS_FOR_BIN"
@@ -772,22 +803,22 @@ function (PROTOBUF_GENERATE_PYTHON2 _proto_srcs)
 
   set (${_proto_srcs})
   foreach (FIL ${ARGN})
-	# Extract the file-path and the extension of the Protobuf specification file
+    # Extract the file-path and the extension of the Protobuf specification file
     get_filename_component (ABS_FIL ${FIL} ABSOLUTE)
     get_filename_component (FIL_WE ${FIL} NAME_WE)
 
-	# With Python, Protobuf adds "_pb2"
-	set (_proto_gen_src ${FIL_WE}_pb2.py)
+    # With Python, Protobuf adds "_pb2"
+    set (_proto_gen_src ${FIL_WE}_pb2.py)
 
-	message (STATUS
-	  "Adding ${CMAKE_CURRENT_BINARY_DIR}/${_proto_gen_src} to Python sources")
+    message (STATUS
+      "Adding ${CMAKE_CURRENT_BINARY_DIR}/${_proto_gen_src} to Python sources")
 
     list (APPEND ${_proto_srcs} "${CMAKE_CURRENT_BINARY_DIR}/${_proto_gen_src}")
 
-	# Add a specific command for the Protobuf stub/skeleton generation
+    # Add a specific command for the Protobuf stub/skeleton generation
     add_custom_command (OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/${_proto_gen_src}"
       COMMAND  ${PROTOBUF_PROTOC_EXECUTABLE}
-	  --python_out ${CMAKE_CURRENT_BINARY_DIR} ${_protobuf_include_path} ${ABS_FIL}
+      --python_out ${CMAKE_CURRENT_BINARY_DIR} ${_protobuf_include_path} ${ABS_FIL}
       DEPENDS ${ABS_FIL} ${PROTOBUF_PROTOC_EXECUTABLE}
       COMMENT "Running Python protocol buffer compiler on ${FIL}, generating ${CMAKE_CURRENT_BINARY_DIR}/${_proto_gen_src}"
       VERBATIM)
@@ -1852,10 +1883,10 @@ macro (module_library_add_specific
   endif (${_lib_short_name} STREQUAL ${MODULE_NAME})
 
   ##
-  # Python extension libraries hase some peculiarities
+  # Python extension libraries has some peculiarities
   if ("${_lib_prefix}" STREQUAL "py")
-	message (STATUS "${_lib_short_name} is assumed to be a Python library:")
-	message (STATUS "  -> Following libraries will be weakly linked: ${Python3_LIBRARIES} ${PROJ_DEP_LIBS_FOR_PYEXT}")
+    message (STATUS "${_lib_short_name} is assumed to be a Python library:")
+    message (STATUS "  -> Following libraries will be weakly linked: ${Python3_LIBRARIES} ${PROJ_DEP_LIBS_FOR_PYEXT}")
 	
     # no 'lib' prefix
     set_target_properties (${_lib_target} PROPERTIES PREFIX "")
@@ -1863,34 +1894,34 @@ macro (module_library_add_specific
     # The suffix must be .so (even on MacOS, not .dylib)
     set_target_properties (${_lib_target} PROPERTIES SUFFIX ".so")
 
-	# Add the dependencies for Python extensions.
-	#
-	# Python extensions (which are also libraries per se) must not be linked
-	# against libpython3.x.so (which includes the interpreter). On Linux, it is
-	# fine not to link against libpython3.x.so, but on OS X, the compiler
-	# fails, unless the -undefined dynamic_lookup option is passed, which is
-	# what target_link_libraries_with_dynamic_lookup() is doing. That function
-	# is specified in the targetLinkLibrariesWithDynamicLookup.cmake file.
-	#
-	# See also:
-	#  https://blog.tim-smith.us/2015/09/python-extension-modules-os-x/
-	#  https://github.com/scikit-build/scikit-build/blob/master/skbuild/resources/cmake/targetLinkLibrariesWithDynamicLookup.cmake
-	target_link_libraries_with_dynamic_lookup (${_lib_target}
-	  ${Python3_LIBRARIES} ${PROJ_DEP_LIBS_FOR_PYEXT})
-	#python_extension_module (${_lib_target})
+    # Add the dependencies for Python extensions.
+    #
+    # Python extensions (which are also libraries per se) must not be linked
+    # against libpython3.x.so (which includes the interpreter). On Linux, it is
+    # fine not to link against libpython3.x.so, but on OS X, the compiler
+    # fails, unless the -undefined dynamic_lookup option is passed, which is
+    # what target_link_libraries_with_dynamic_lookup() is doing. That function
+    # is specified in the targetLinkLibrariesWithDynamicLookup.cmake file.
+    #
+    # See also:
+    #  https://blog.tim-smith.us/2015/09/python-extension-modules-os-x/
+    #  https://github.com/scikit-build/scikit-build/blob/master/skbuild/resources/cmake/targetLinkLibrariesWithDynamicLookup.cmake
+    target_link_libraries_with_dynamic_lookup (${_lib_target}
+      ${Python3_LIBRARIES} ${PROJ_DEP_LIBS_FOR_PYEXT})
+    #python_extension_module (${_lib_target})
 	
   endif ("${_lib_prefix}" STREQUAL "py")
 
   ##
   # Library name (and soname)
   if (WIN32)
-	# MS Windows
+    # MS Windows
     set_target_properties (${_lib_target} PROPERTIES 
       OUTPUT_NAME ${_lib_short_name} 
       VERSION ${GENERIC_LIB_VERSION})
 
   else (WIN32)
-	# Linux and MacOS
+    # Linux and MacOS
     set_target_properties (${_lib_target} PROPERTIES 
       OUTPUT_NAME ${_lib_short_name}
       VERSION ${GENERIC_LIB_VERSION} SOVERSION ${GENERIC_LIB_SOVERSION})
@@ -1907,15 +1938,15 @@ macro (module_library_add_specific
   ##
   # Installation of the library
   if ("${_lib_prefix}" STREQUAL "py")
-	# If the library is Python, install it into a dedicated directory
-	message (STATUS "${_lib_short_name} is assumed to be a Python library")
-	install (TARGETS ${_lib_target}
+    # If the library is Python, install it into a dedicated directory
+    message (STATUS "${_lib_short_name} is assumed to be a Python library")
+    install (TARGETS ${_lib_target}
       EXPORT ${LIB_DEPENDENCY_EXPORT}
       LIBRARY DESTINATION "${INSTALL_PY_LIB_DIR}" COMPONENT runtime)
-
+    
   else ("${_lib_prefix}" STREQUAL "py")
-	# Install the library in the standard location
-	install (TARGETS ${_lib_target}
+    # Install the library in the standard location
+    install (TARGETS ${_lib_target}
       EXPORT ${LIB_DEPENDENCY_EXPORT}
       LIBRARY DESTINATION "${INSTALL_LIB_DIR}" COMPONENT runtime)
   endif ("${_lib_prefix}" STREQUAL "py")
@@ -2673,7 +2704,7 @@ endmacro (display_lcov)
 
 # Python
 macro (display_python)
-  if (Python3_FOUND)
+  if (NEED_PYTHON)
     message (STATUS)
     message (STATUS "* Python:")
     message (STATUS "  - Python3_VERSION ............... : ${Python3_VERSION}")
@@ -2682,7 +2713,10 @@ macro (display_python)
     message (STATUS "  - Python3_LIBRARIES ............. : ${Python3_LIBRARIES}")
     message (STATUS "  - Python3_LIBRARY_DIRS .......... : ${Python3_LIBRARY_DIRS}")
     message (STATUS "  - Python3_RUNTIME_LIBRARY_DIRS .. : ${Python3_RUNTIME_LIBRARY_DIRS}")
-  endif (Python3_FOUND)
+  else (NEED_PYTHON)
+    message (STATUS)
+    message (STATUS "* Python not required")
+  endif (NEED_PYTHON)
 endmacro (display_python)
 
 # ICU
@@ -2717,7 +2751,9 @@ macro (display_boost)
     message (STATUS "  - Boost_LIB_VERSION ............. : ${Boost_LIB_VERSION}")
     message (STATUS "  - Boost_HUMAN_VERSION ........... : ${Boost_HUMAN_VERSION}")
     message (STATUS "  - Boost_INCLUDE_DIRS ............ : ${Boost_INCLUDE_DIRS}")
-    message (STATUS "  - Boost_PYTHON_VERSION .......... : ${Boost_PYTHON_VERSION}")
+    if (NEED_PYTHON)
+      message (STATUS "  - Boost_PYTHON_VERSION .......... : ${Boost_PYTHON_VERSION}")
+    endif (NEED_PYTHON)     
     message (STATUS "  - Boost required components ..... : ${BOOST_REQUIRED_COMPONENTS}")
     message (STATUS "  - Boost required libraries ...... : ${BOOST_REQUIRED_LIBS}")
     message (STATUS "  - Boost required libs for Py ext. : ${PROJ_DEP_LIBS_FOR_PYEXT}")
