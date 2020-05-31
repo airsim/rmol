@@ -1,17 +1,16 @@
 #
 # Config file for the RMOL Python package. It defines the following variables:
-#  RMOL_VERSION         - version of RMOL
 #  RMOL_PY_LIBRARY_DIRS - Python library directories for RMOL
 #  RMOL_PY_LIBRARIES    - Python libraries to link against
 #  RMOL_PY_EXECUTABLES  - Python binaries/executables
 #
 
 # Tell the user project where to find RMOL Python libraries
-set (RMOL_VERSION "@PACKAGE_VERSION@")
 set (RMOL_PY_LIBRARY_DIRS "@RMOL_PY_LIB_DIR@")
 
 # Library dependencies for RMOL (contains definitions for the RMOL IMPORTED
 # targets)
+include ("@RMOL_CMAKE_DIR@/rmol-library-depends.cmake")
 include ("@RMOL_CMAKE_DIR@/rmol-python-library-depends.cmake")
 
 # These are the RMOL IMPORTED targets, created
