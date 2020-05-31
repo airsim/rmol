@@ -2127,7 +2127,7 @@ macro (module_script_add _script_file)
 
       # Install the Python helpers
       install (PROGRAMS ${${MODULE_LIB_TARGET}_PY_SRCS}
-		DESTINATION "${INSTALL_PY_LIB_DIR}" COMPONENT devel)
+		DESTINATION "${INSTALL_PY_LIB_DIR}" COMPONENT python-devel)
 	endif ("${_script_ext}" STREQUAL "py")
 
 	# Add the 'scripts_${MODULE_NAME}' target, depending on the
@@ -2139,7 +2139,7 @@ macro (module_script_add _script_file)
 	  # The Python scripts have to be installed in the Python
 	  # site-package/library dedicated directory
       install (PROGRAMS ${_full_script_path}
-		DESTINATION "${INSTALL_PY_LIB_DIR}" COMPONENT devel)
+		DESTINATION "${INSTALL_PY_LIB_DIR}" COMPONENT python-devel)
 	else ("${_script_ext}" STREQUAL "py")
       install (PROGRAMS ${_full_script_path} DESTINATION bin COMPONENT devel)
 	endif ("${_script_ext}" STREQUAL "py")
@@ -2654,13 +2654,22 @@ macro (install_dev_helper_files)
   endif (NOT "${PROJECT_NAME}" STREQUAL "opentrep")
   configure_file (${PROJECT_NAME}-config.cmake.in
 	"${PROJECT_BINARY_DIR}/${PROJECT_NAME}-config.cmake" @ONLY)
+  if (NEED_PYTHON)
+	configure_file (${PROJECT_NAME}-config-python.cmake.in
+	  "${PROJECT_BINARY_DIR}/${PROJECT_NAME}-config-python.cmake" @ONLY)
+  endif (NEED_PYTHON)
   configure_file (${PROJECT_NAME}-config-version.cmake.in
 	"${PROJECT_BINARY_DIR}/${PROJECT_NAME}-config-version.cmake" @ONLY)
   install (FILES
 	"${PROJECT_BINARY_DIR}/${PROJECT_NAME}-config.cmake"
 	"${PROJECT_BINARY_DIR}/${PROJECT_NAME}-config-version.cmake"
 	DESTINATION "${${PACKAGE_NAME}_CMAKE_DIR}" COMPONENT devel)
-
+  if (NEED_PYTHON)
+	install (FILES
+	  "${PROJECT_BINARY_DIR}/${PROJECT_NAME}-config-python.cmake"
+	  DESTINATION "${${PACKAGE_NAME}_CMAKE_DIR}" COMPONENT python-devel)
+  endif (NEED_PYTHON)
+  
   ##
   ## Then, build and install development helper files for other build systems
   ##
