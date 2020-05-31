@@ -14,7 +14,8 @@ set (RMOL_PY_LIBRARY_DIRS "@RMOL_PY_LIB_DIR@")
 # targets)
 include ("@RMOL_CMAKE_DIR@/rmol-python-library-depends.cmake")
 
-# These are the RMOL IMPORTED targets, created by rmol-library-depends.cmake
+# These are the RMOL IMPORTED targets, created
+# by rmol-python-library-depends.cmake
 set (RMOL_PY_LIBRARIES pyrmollib)
 set (RMOL_PY_EXECUTABLES pyrmol)
 
