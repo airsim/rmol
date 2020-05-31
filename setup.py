@@ -7,7 +7,7 @@ with open("README.md", "r") as fh:
 
 setup (
     name='rmol',
-    version='0.7.7-1',
+    version='1.0.5-1',
     author='Denis Arnaud',
     author_email='denis.arnaud_pypi@m4x.org',
     description=('''Simple Python wrapper for RMOL'''),
