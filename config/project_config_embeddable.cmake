@@ -696,7 +696,7 @@ macro (get_boost)
 	# distribution, it can be libboost_python3 or libboost_python3x
 	if (${Boost_PYTHON3_FOUND})
 	  set (BOOST_REQUIRED_COMPONENTS_FOR_PYEXT ${python_cpt_name1})
-	  list (BOOST_REQUIRED_COMPONENTS ${python_cpt_name2})
+	  list (REMOVE_ITEM BOOST_REQUIRED_COMPONENTS ${python_cpt_name2})
 	endif (${Boost_PYTHON3_FOUND})
 
 	if (${Boost_PYTHON${Python3_VERSION_MAJOR}${Python3_VERSION_MINOR}_FOUND})

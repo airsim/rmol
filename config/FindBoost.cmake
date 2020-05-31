@@ -248,7 +248,9 @@ include(${CMAKE_CURRENT_LIST_DIR}/FindPackageHandleStandardArgs.cmake)
 # Save project's policies
 cmake_policy(PUSH)
 cmake_policy(SET CMP0057 NEW) # if IN_LIST
-cmake_policy(SET CMP0102 NEW) # if mark_as_advanced(non_cache_var)
+if (POLICY CMP0102)
+  cmake_policy(SET CMP0102 NEW) # if mark_as_advanced(non_cache_var)
+endif (POLICY CMP0102)
 
 function(_boost_get_existing_target component target_var)
   set(names "${component}")
@@ -1644,9 +1646,11 @@ if(Boost_INCLUDE_DIR)
   set(Boost_VERSION_STRING "${Boost_VERSION_MAJOR}.${Boost_VERSION_MINOR}.${Boost_VERSION_PATCH}")
 
   # Define final Boost_VERSION
-  cmake_policy(GET CMP0093 _Boost_CMP0093
-    PARENT_SCOPE # undocumented, do not use outside of CMake
-  )
+  if (POLICY CMP0093)
+    cmake_policy(GET CMP0093 _Boost_CMP0093
+      PARENT_SCOPE # undocumented, do not use outside of CMake
+    )
+  endif (POLICY CMP0093)
   if("x${_Boost_CMP0093}x" STREQUAL "xNEWx")
     set(Boost_VERSION ${Boost_VERSION_STRING})
   else()
