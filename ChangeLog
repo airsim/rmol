@@ -1,3 +1,6 @@
+* Sun May 31 2020 Denis Arnaud <denis.arnaud_fedora at m4x.org> - 1.00.6
+- There is now a CMake Python-related dependency support file
+
 * Sat May 30 2020 Denis Arnaud <denis.arnaud_fedora at m4x.org> - 1.00.5
 - Removed dependency on Python
 
