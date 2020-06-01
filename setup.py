@@ -1,13 +1,26 @@
 
 import os, sys, setuptools
 from skbuild import setup
+from pathlib import Path
 
+# Home directory for RMOL, assumed to be the parent directory
+# of this setup.py file
+rmol_dir = Path(__file__).resolve().parents[1]
+
+# Installation directories of other Travel Market Simulator compoenents
+# are assumed to be ../../install/component, as if installed by
+# MetaSim (https://github.com/airsim/metasim).
+# If that is not the case, adapt the paths to the components
+# in the CMake arguments below
+install_dir = rmol_dir.parent / 'install'
+
+#
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setup (
     name='rmol',
-    version='1.0.5-1',
+    version='1.0.6-1',
     author='Denis Arnaud',
     author_email='denis.arnaud_pypi@m4x.org',
     description=('''Simple Python wrapper for RMOL'''),
@@ -25,7 +38,9 @@ setup (
     cmake_args = [
       '-DINSTALL_DOC:BOOL=OFF',
       '-DRUN_GCOV:BOOL=OFF',
-      '-DLIB_SUFFIX='
+      '-DLIB_SUFFIX=',
+      f'-DWITH_STDAIR_PREFIX={install_dir}/stdair',
+      f'-DWITH_AIRRAC_PREFIX={install_dir}/airrac'
       ] + (
       ['-DREADLINE_ROOT=/usr/local/opt/portable-readline',
        '-DREADLINE_INCLUDE_DIR=/usr/local/opt/portable-readline/include',
