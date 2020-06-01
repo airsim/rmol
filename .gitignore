@@ -1,5 +1,15 @@
 tmp
 /build/
+tmp
+/build/
+/_skbuild/
+/dist/
+/rmol.egg-info/
+/build2/
+/.tox/
+/MANIFEST
+/.python-version
+*.pyc
 Makefile.in
 INSTALL
 aclocal.m4
