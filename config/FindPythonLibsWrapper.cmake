@@ -22,7 +22,7 @@ if ("${PYTHON_LIBRARIES}" MATCHES "libpython[1-9.]*.a")
   # Set up the versions we know about, in the order we will search. Always add
   # the user supplied additional versions to the front.
   set(_Python_VERSIONS ${Python_ADDITIONAL_VERSIONS}
-	3.7 3.6 3.5 3.4 2.8 2.7 2.6 2.5 2.4 2.3 2.2 2.1 2.0 1.6 1.5)
+	3.10 3.9 3.8 3.7 3.6 3.5 3.4 2.8 2.7 2.6 2.5 2.4 2.3 2.2 2.1 2.0 1.6 1.5)
 
   foreach (_CURRENT_VERSION ${_Python_VERSIONS})
 	string (REPLACE "." "" _CURRENT_VERSION_NO_DOTS ${_CURRENT_VERSION})
