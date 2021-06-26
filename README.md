@@ -64,7 +64,7 @@ but names may vary according to distributions):
 ## Building the library and test binary from the tarball
 The latest stable source tarball (`rmol*.tar.gz` or `.bz2`) can be
 found on GitHub: http://github.com/airsim/rmol/releases, _e.g._,
-https://github.com/airsim/rmol/archive/rmol-1.00.6.tar.gz
+https://github.com/airsim/rmol/archive/rmol-1.00.7.tar.gz
 
 As RMOL depends on other
 [Travel Market Simulator (TvlSim/AirSim)](https://github.com/airsim/)
@@ -80,7 +80,7 @@ If MetaSim is not used, in order to customise the following to your
 environment, you can alter the path to the installation directory:
 ```bash
 export INSTALL_BASEDIR="${HOME}/dev/deliveries"
-export RMOL_VER="1.00.6"
+export RMOL_VER="1.00.7"
 if [ -d /usr/lib64 ]; then LIBSUFFIX="64"; fi
 export LIBSUFFIX_4_CMAKE="-DLIB_SUFFIX=$LIBSUFFIX"
 ```
