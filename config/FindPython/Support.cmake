@@ -22,7 +22,7 @@ if (NOT DEFINED _${_PYTHON_PREFIX}_REQUIRED_VERSION_MAJOR)
   message (FATAL_ERROR "FindPython: INTERNAL ERROR")
 endif()
 if (_${_PYTHON_PREFIX}_REQUIRED_VERSION_MAJOR EQUAL "3")
-  set(_${_PYTHON_PREFIX}_VERSIONS 3.10 3.9 3.8 3.7 3.6 3.5 3.4 3.3 3.2 3.1 3.0)
+  set(_${_PYTHON_PREFIX}_VERSIONS 3.11 3.10 3.9 3.8 3.7 3.6 3.5 3.4 3.3 3.2 3.1 3.0)
 elseif (_${_PYTHON_PREFIX}_REQUIRED_VERSION_MAJOR EQUAL "2")
   set(_${_PYTHON_PREFIX}_VERSIONS 2.7 2.6 2.5 2.4 2.3 2.2 2.1 2.0)
 else()
@@ -98,6 +98,7 @@ macro (_PYTHON_FIND_FRAMEWORKS)
                          ${_pff_CMAKE_FRAMEWORK_PATH}
                          ~/Library/Frameworks
                          /usr/local/Frameworks
+                         /opt/homebrew/Frameworks
                          ${CMAKE_SYSTEM_FRAMEWORK_PATH})
     list (REMOVE_DUPLICATES _pff_frameworks)
     foreach (_pff_implementation IN LISTS _${_PYTHON_PREFIX}_FIND_IMPLEMENTATIONS)
