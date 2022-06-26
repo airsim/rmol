@@ -1,3 +1,6 @@
+* Sun Jun 26 2022 Denis Arnaud <denis.arnaud_fedora at m4x.org> - 1.00.8
+- Upgraded CMake support files
+
 * Sat Jun 26 2021 Denis Arnaud <denis.arnaud_fedora at m4x.org> - 1.00.7
 - Added support for Python 3.10
 
