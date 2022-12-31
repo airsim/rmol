@@ -75,8 +75,8 @@ endmacro (set_project_versions)
 #  * RUN_GCOV             - Whether or not to perform code coverage
 #
 macro (set_project_options _build_doc _enable_tests _run_gcov)
-  # C++ standard (C++-11)
-  set(CMAKE_CXX_STANDARD 11)
+  # C++ standard (C++-14)
+  set(CMAKE_CXX_STANDARD 14)
   set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
   # Shared libraries
