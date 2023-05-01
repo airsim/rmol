@@ -1,392 +1,436 @@
-# This module can find the International Components for Unicode (ICU) Library
-#
-# Requirements:
-# - CMake >= 2.8.3 (for new version of find_package_handle_standard_args)
-#
-# The following variables will be defined for your use:
-#   - ICU_FOUND             : were all of your specified components found
-#                             (include dependencies)?
-#   - ICU_INCLUDE_DIRS      : ICU include directory
-#   - ICU_LIBRARIES         : ICU libraries
-#   - ICU_VERSION           : complete version of ICU (x.y.z)
-#   - ICU_MAJOR_VERSION     : major version of ICU
-#   - ICU_MINOR_VERSION     : minor version of ICU
-#   - ICU_PATCH_VERSION     : patch version of ICU
-#   - ICU_<COMPONENT>_FOUND : were <COMPONENT> found? (FALSE for non specified
-#                             component if it is not a dependency)
-#
-# For windows or non standard installation, define ICU_ROOT variable to point
-# to the root installation of ICU. Two ways:
-#   - run cmake with -DICU_ROOT=<PATH>
-#   - define an environment variable with the same name before running cmake
-# With cmake-gui, before pressing "Configure":
-#   1) Press "Add Entry" button
-#   2) Add a new entry defined as:
-#     - Name: ICU_ROOT
-#     - Type: choose PATH in the selection list
-#     - Press "..." button and select the root installation of ICU
-#
-# Example Usage:
-#
-#   1. Copy this file in the root of your project source directory
-#   2. Then, tell CMake to search this non-standard module in your project
-#      directory by adding to your CMakeLists.txt:
-#     set (CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR})
-#   3. Finally call find_package() once, here are some examples to pick from
-#
-#   Require ICU 4.4 or later
-#     set (ICU_REQUIRED_COMPONENTS i18n)
-#     find_package (ICU 4.4 COMPONENTS ${ICU_REQUIRED_COMPONENTS} REQUIRED)
-#
-#   if (ICU_FOUND)
-#      include_directories (${ICU_INCLUDE_DIRS})
-#      add_executable (myapp myapp.c)
-#      target_link_libraries (myapp ${ICU_LIBRARIES})
-#   endif (ICU_FOUND)
+# Distributed under the OSI-approved BSD 3-Clause License.  See accompanying
+# file Copyright.txt or https://cmake.org/licensing for details.
 
-#=============================================================================
-# Copyright (c) 2011-2012, julp
-#
-# Distributed under the OSI-approved BSD License
-#
-# This software is distributed WITHOUT ANY WARRANTY; without even the
-# implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-#=============================================================================
+#[=======================================================================[.rst:
+FindICU
+-------
 
-find_package (PkgConfig QUIET)
+.. versionadded:: 3.7
 
-########## Private ##########
-# Prefix for all ICU relative public variables
-set (ICU_PUBLIC_VAR_NS "ICU")
-# Prefix for all ICU relative internal variables
-set (ICU_PRIVATE_VAR_NS "_${ICU_PUBLIC_VAR_NS}")
-# Prefix for all pkg-config relative internal variables
-set (PC_ICU_PRIVATE_VAR_NS "_PC${ICU_PRIVATE_VAR_NS}")
+Find the International Components for Unicode (ICU) libraries and
+programs.
 
-#
-function (icudebug _VARNAME)
-  if (${ICU_PUBLIC_VAR_NS}_DEBUG)
-    if (DEFINED ${ICU_PUBLIC_VAR_NS}_${_VARNAME})
-      message ("${ICU_PUBLIC_VAR_NS}_${_VARNAME} = ${${ICU_PUBLIC_VAR_NS}_${_VARNAME}}")
-    else (DEFINED ${ICU_PUBLIC_VAR_NS}_${_VARNAME})
-      message ("${ICU_PUBLIC_VAR_NS}_${_VARNAME} = <UNDEFINED>")
-    endif (DEFINED ${ICU_PUBLIC_VAR_NS}_${_VARNAME})
-  endif (${ICU_PUBLIC_VAR_NS}_DEBUG)
-endfunction (icudebug)
+This module supports multiple components.
+Components can include any of: ``data``, ``i18n``, ``io``, ``le``,
+``lx``, ``test``, ``tu`` and ``uc``.
 
-#
-set (${ICU_PRIVATE_VAR_NS}_ROOT "")
-if (DEFINED ENV{ICU_ROOT})
-  set (${ICU_PRIVATE_VAR_NS}_ROOT "$ENV{ICU_ROOT}")
-endif (DEFINED ENV{ICU_ROOT})
-if (DEFINED ICU_ROOT)
-  set (${ICU_PRIVATE_VAR_NS}_ROOT "${ICU_ROOT}")
-endif (DEFINED ICU_ROOT)
+Note that on Windows ``data`` is named ``dt`` and ``i18n`` is named
+``in``; any of the names may be used, and the appropriate
+platform-specific library name will be automatically selected.
 
-set (${ICU_PRIVATE_VAR_NS}_BIN_SUFFIXES)
-set (${ICU_PRIVATE_VAR_NS}_LIB_SUFFIXES)
-if (CMAKE_SIZEOF_VOID_P EQUAL 8)
-  list (APPEND ${ICU_PRIVATE_VAR_NS}_BIN_SUFFIXES "bin64")
-  list (APPEND ${ICU_PRIVATE_VAR_NS}_LIB_SUFFIXES "lib64")
-endif (CMAKE_SIZEOF_VOID_P EQUAL 8)
-list (APPEND ${ICU_PRIVATE_VAR_NS}_BIN_SUFFIXES "bin")
-list (APPEND ${ICU_PRIVATE_VAR_NS}_LIB_SUFFIXES "lib")
+.. versionadded:: 3.11
+  Added support for static libraries on Windows.
 
-set (${ICU_PRIVATE_VAR_NS}_COMPONENTS)
+This module reports information about the ICU installation in
+several variables.  General variables::
 
-# <icu component name> <library name 1> ... <library name N>
-macro (icu_declare_component _NAME)
-  list (APPEND ${ICU_PRIVATE_VAR_NS}_COMPONENTS ${_NAME})
-  set ("${ICU_PRIVATE_VAR_NS}_COMPONENTS_${_NAME}" ${ARGN})
-endmacro (icu_declare_component)
+  ICU_VERSION - ICU release version
+  ICU_FOUND - true if the main programs and libraries were found
+  ICU_LIBRARIES - component libraries to be linked
+  ICU_INCLUDE_DIRS - the directories containing the ICU headers
 
-icu_declare_component (data icudata)
-icu_declare_component (uc   icuuc)         # Common and Data libraries
-icu_declare_component (i18n icui18n icuin) # Internationalization library
-icu_declare_component (io   icuio ustdio)  # Stream and I/O Library
-icu_declare_component (le   icule)         # Layout library
-icu_declare_component (lx   iculx)         # Paragraph Layout library
+Imported targets::
 
-########## Public ##########
-set (${ICU_PUBLIC_VAR_NS}_FOUND TRUE)
-set (${ICU_PUBLIC_VAR_NS}_LIBRARIES )
-set (${ICU_PUBLIC_VAR_NS}_INCLUDE_DIRS )
-set (${ICU_PUBLIC_VAR_NS}_DEFINITIONS )
-foreach (${ICU_PRIVATE_VAR_NS}_COMPONENT ${${ICU_PRIVATE_VAR_NS}_COMPONENTS})
-  string (TOUPPER "${${ICU_PRIVATE_VAR_NS}_COMPONENT}"
-	${ICU_PRIVATE_VAR_NS}_UPPER_COMPONENT)
-  # May be done in the icu_declare_component macro
-  set ("${ICU_PUBLIC_VAR_NS}_${${ICU_PRIVATE_VAR_NS}_UPPER_COMPONENT}_FOUND"
-	FALSE)
-endforeach (${ICU_PRIVATE_VAR_NS}_COMPONENT)
+  ICU::<C>
 
-# Check components
-if (NOT ${ICU_PUBLIC_VAR_NS}_FIND_COMPONENTS) # uc required at least
-  set (${ICU_PUBLIC_VAR_NS}_FIND_COMPONENTS uc)
+Where ``<C>`` is the name of an ICU component, for example
+``ICU::i18n``; ``<C>`` is lower-case.
 
-else (NOT ${ICU_PUBLIC_VAR_NS}_FIND_COMPONENTS)
-  list (APPEND ${ICU_PUBLIC_VAR_NS}_FIND_COMPONENTS uc)
-  list (REMOVE_DUPLICATES ${ICU_PUBLIC_VAR_NS}_FIND_COMPONENTS)
+ICU programs are reported in::
 
-  foreach (${ICU_PRIVATE_VAR_NS}_COMPONENT
-	  ${${ICU_PUBLIC_VAR_NS}_FIND_COMPONENTS})
-    if (NOT DEFINED
-		${ICU_PRIVATE_VAR_NS}_COMPONENTS_${${ICU_PRIVATE_VAR_NS}_COMPONENT})
-      message (FATAL_ERROR
-		"Unknown ICU component: ${${ICU_PRIVATE_VAR_NS}_COMPONENT}")
-    endif (NOT DEFINED
-	  ${ICU_PRIVATE_VAR_NS}_COMPONENTS_${${ICU_PRIVATE_VAR_NS}_COMPONENT})
-  endforeach (${ICU_PRIVATE_VAR_NS}_COMPONENT)
-endif (NOT ${ICU_PUBLIC_VAR_NS}_FIND_COMPONENTS)
+  ICU_GENCNVAL_EXECUTABLE - path to gencnval executable
+  ICU_ICUINFO_EXECUTABLE - path to icuinfo executable
+  ICU_GENBRK_EXECUTABLE - path to genbrk executable
+  ICU_ICU-CONFIG_EXECUTABLE - path to icu-config executable
+  ICU_GENRB_EXECUTABLE - path to genrb executable
+  ICU_GENDICT_EXECUTABLE - path to gendict executable
+  ICU_DERB_EXECUTABLE - path to derb executable
+  ICU_PKGDATA_EXECUTABLE - path to pkgdata executable
+  ICU_UCONV_EXECUTABLE - path to uconv executable
+  ICU_GENCFU_EXECUTABLE - path to gencfu executable
+  ICU_MAKECONV_EXECUTABLE - path to makeconv executable
+  ICU_GENNORM2_EXECUTABLE - path to gennorm2 executable
+  ICU_GENCCODE_EXECUTABLE - path to genccode executable
+  ICU_GENSPREP_EXECUTABLE - path to gensprep executable
+  ICU_ICUPKG_EXECUTABLE - path to icupkg executable
+  ICU_GENCMN_EXECUTABLE - path to gencmn executable
 
-# Includes
-find_path (
-  ${ICU_PUBLIC_VAR_NS}_INCLUDE_DIRS
-  NAMES unicode/utypes.h utypes.h
-  HINTS ${${ICU_PRIVATE_VAR_NS}_ROOT}
-  PATH_SUFFIXES "include"
-  DOC "Include directories for ICU"
-)
+ICU component libraries are reported in::
 
-if (${ICU_PUBLIC_VAR_NS}_INCLUDE_DIRS)
-  ########## <part to keep synced with tests/version/CMakeLists.txt> ##########
-  if (EXISTS "${${ICU_PUBLIC_VAR_NS}_INCLUDE_DIRS}/unicode/uvernum.h")
-	# ICU >= 4
-    file (READ "${${ICU_PUBLIC_VAR_NS}_INCLUDE_DIRS}/unicode/uvernum.h"
-	  ${ICU_PRIVATE_VAR_NS}_VERSION_HEADER_CONTENTS)
-  elseif (EXISTS "${${ICU_PUBLIC_VAR_NS}_INCLUDE_DIRS}/unicode/uversion.h")
-	# ICU [2;4[
-    file (READ "${${ICU_PUBLIC_VAR_NS}_INCLUDE_DIRS}/unicode/uversion.h"
-	  ${ICU_PRIVATE_VAR_NS}_VERSION_HEADER_CONTENTS)
-  elseif (EXISTS "${${ICU_PUBLIC_VAR_NS}_INCLUDE_DIRS}/unicode/utypes.h")
-	# ICU [1.4;2[
-    file (READ "${${ICU_PUBLIC_VAR_NS}_INCLUDE_DIRS}/unicode/utypes.h"
-	  ${ICU_PRIVATE_VAR_NS}_VERSION_HEADER_CONTENTS)
-  elseif (EXISTS "${${ICU_PUBLIC_VAR_NS}_INCLUDE_DIRS}/utypes.h")
-	# ICU 1.3
-    file (READ "${${ICU_PUBLIC_VAR_NS}_INCLUDE_DIRS}/utypes.h"
-	  ${ICU_PRIVATE_VAR_NS}_VERSION_HEADER_CONTENTS)
+  ICU_<C>_FOUND - ON if component was found; ``<C>`` is upper-case.
+  ICU_<C>_LIBRARIES - libraries for component; ``<C>`` is upper-case.
+
+ICU datafiles are reported in::
+
+  ICU_MAKEFILE_INC - Makefile.inc
+  ICU_PKGDATA_INC - pkgdata.inc
+
+This module reads hints about search results from::
+
+  ICU_ROOT - the root of the ICU installation
+
+The environment variable ``ICU_ROOT`` may also be used; the
+ICU_ROOT variable takes precedence.
+
+The following cache variables may also be set::
+
+  ICU_<P>_EXECUTABLE - the path to executable <P>; ``<P>`` is upper-case.
+  ICU_INCLUDE_DIR - the directory containing the ICU headers
+  ICU_<C>_LIBRARY - the library for component <C>; ``<C>`` is upper-case.
+
+.. note::
+
+  In most cases none of the above variables will require setting,
+  unless multiple ICU versions are available and a specific version
+  is required.
+
+Other variables one may set to control this module are::
+
+  ICU_DEBUG - Set to ON to enable debug output from FindICU.
+#]=======================================================================]
+
+# Written by Roger Leigh <rleigh@codelibre.net>
+
+set(icu_programs
+  gencnval
+  icuinfo
+  genbrk
+  icu-config
+  genrb
+  gendict
+  derb
+  pkgdata
+  uconv
+  gencfu
+  makeconv
+  gennorm2
+  genccode
+  gensprep
+  icupkg
+  gencmn)
+
+set(icu_data
+  Makefile.inc
+  pkgdata.inc)
+
+# The ICU checks are contained in a function due to the large number
+# of temporary variables needed.
+function(_ICU_FIND)
+  # Set up search paths, taking compiler into account.  Search ICU_ROOT,
+  # with ICU_ROOT in the environment as a fallback if unset.
+  if(ICU_ROOT)
+    list(APPEND icu_roots "${ICU_ROOT}")
   else()
-    message(FATAL_ERROR "ICU version header not found")
+    if(NOT "$ENV{ICU_ROOT}" STREQUAL "")
+      file(TO_CMAKE_PATH "$ENV{ICU_ROOT}" NATIVE_PATH)
+      list(APPEND icu_roots "${NATIVE_PATH}")
+      set(ICU_ROOT "${NATIVE_PATH}"
+          CACHE PATH "Location of the ICU installation" FORCE)
+    endif()
   endif()
 
-  if (${ICU_PRIVATE_VAR_NS}_VERSION_HEADER_CONTENTS
-	  MATCHES ".*# *define *ICU_VERSION *\"([0-9]+)\".*")
-	# ICU 1.3
-    # [1.3;1.4[ as #define ICU_VERSION "3" (no patch version,
-	# ie all 1.3.X versions will be detected as 1.3.0)
-    set (${ICU_PUBLIC_VAR_NS}_MAJOR_VERSION "1")
-    set (${ICU_PUBLIC_VAR_NS}_MINOR_VERSION "${CMAKE_MATCH_1}")
-    set (${ICU_PUBLIC_VAR_NS}_PATCH_VERSION "0")
+  # Find include directory
+  list(APPEND icu_include_suffixes "include")
+  find_path(ICU_INCLUDE_DIR
+            NAMES "unicode/utypes.h"
+            HINTS ${icu_roots}
+            PATH_SUFFIXES ${icu_include_suffixes}
+            DOC "ICU include directory")
+  set(ICU_INCLUDE_DIR "${ICU_INCLUDE_DIR}" PARENT_SCOPE)
 
-  elseif (${ICU_PRIVATE_VAR_NS}_VERSION_HEADER_CONTENTS
-	  MATCHES ".*# *define *U_ICU_VERSION_MAJOR_NUM *([0-9]+).*")
-    set (${ICU_PUBLIC_VAR_NS}_MAJOR_VERSION "${CMAKE_MATCH_1}")
-    #
-    # Since version 4.9.1, ICU release version numbering was totaly changed, see:
-    # - http://site.icu-project.org/download/49
-    # - http://userguide.icu-project.org/design#TOC-Version-Numbers-in-ICU
-    #
-    if (${ICU_PUBLIC_VAR_NS}_MAJOR_VERSION LESS 49)
-      string (REGEX REPLACE
-		".*# *define *U_ICU_VERSION_MINOR_NUM *([0-9]+).*" "\\1"
-		${ICU_PUBLIC_VAR_NS}_MINOR_VERSION
-		"${${ICU_PRIVATE_VAR_NS}_VERSION_HEADER_CONTENTS}")
+  # Get version
+  if(ICU_INCLUDE_DIR AND EXISTS "${ICU_INCLUDE_DIR}/unicode/uvernum.h")
+    file(STRINGS "${ICU_INCLUDE_DIR}/unicode/uvernum.h" icu_header_str
+      REGEX "^#define[\t ]+U_ICU_VERSION[\t ]+\".*\".*")
 
-      string (REGEX REPLACE
-		".*# *define *U_ICU_VERSION_PATCHLEVEL_NUM *([0-9]+).*" "\\1"
-		${ICU_PUBLIC_VAR_NS}_PATCH_VERSION
-		"${${ICU_PRIVATE_VAR_NS}_VERSION_HEADER_CONTENTS}")
+    string(REGEX REPLACE "^#define[\t ]+U_ICU_VERSION[\t ]+\"([^ \\n]*)\".*"
+      "\\1" icu_version_string "${icu_header_str}")
+    set(ICU_VERSION "${icu_version_string}")
+    set(ICU_VERSION "${icu_version_string}" PARENT_SCOPE)
+    unset(icu_header_str)
+    unset(icu_version_string)
+  endif()
 
-    else (${ICU_PUBLIC_VAR_NS}_MAJOR_VERSION LESS 49)
-      string (REGEX MATCH [0-9]$ ${ICU_PUBLIC_VAR_NS}_MINOR_VERSION
-		"${${ICU_PUBLIC_VAR_NS}_MAJOR_VERSION}")
-      string (REGEX REPLACE [0-9]$ "" ${ICU_PUBLIC_VAR_NS}_MAJOR_VERSION
-		"${${ICU_PUBLIC_VAR_NS}_MAJOR_VERSION}")
-      string (REGEX REPLACE
-		".*# *define *U_ICU_VERSION_MINOR_NUM *([0-9]+).*" "\\1"
-		${ICU_PUBLIC_VAR_NS}_PATCH_VERSION
-		"${${ICU_PRIVATE_VAR_NS}_VERSION_HEADER_CONTENTS}")
-    endif (${ICU_PUBLIC_VAR_NS}_MAJOR_VERSION LESS 49)
+  if(CMAKE_SIZEOF_VOID_P EQUAL 8)
+    # 64-bit binary directory
+    set(_bin64 "bin64")
+    # 64-bit library directory
+    set(_lib64 "lib64")
+  endif()
 
-  elseif (${ICU_PRIVATE_VAR_NS}_VERSION_HEADER_CONTENTS 
-	  MATCHES ".*# *define *U_ICU_VERSION *\"(([0-9]+)(\\.[0-9]+)*)\".*")
-	# ICU [1.4;1.8[
-    # [1.4;1.8[ as #define U_ICU_VERSION "1.4.1.2" but it seems that some
-	# 1.4.1(?:\.\d)? have releasing error and appears as 1.4.0
-    set (${ICU_PRIVATE_VAR_NS}_FULL_VERSION "${CMAKE_MATCH_1}")
 
-	# Copy CMAKE_MATCH_1, no longer valid on the following if
-    if (${ICU_PRIVATE_VAR_NS}_FULL_VERSION MATCHES "^([0-9]+)\\.([0-9]+)$")
-      set (${ICU_PUBLIC_VAR_NS}_MAJOR_VERSION "${CMAKE_MATCH_1}")
-      set (${ICU_PUBLIC_VAR_NS}_MINOR_VERSION "${CMAKE_MATCH_2}")
-      set (${ICU_PUBLIC_VAR_NS}_PATCH_VERSION "0")
+  # Find all ICU programs
+  list(APPEND icu_binary_suffixes "${_bin64}" "bin" "sbin")
+  foreach(program ${icu_programs})
+    string(TOUPPER "${program}" program_upcase)
+    set(cache_var "ICU_${program_upcase}_EXECUTABLE")
+    set(program_var "ICU_${program_upcase}_EXECUTABLE")
+    find_program("${cache_var}"
+      NAMES "${program}"
+      HINTS ${icu_roots}
+      PATH_SUFFIXES ${icu_binary_suffixes}
+      DOC "ICU ${program} executable"
+      NO_PACKAGE_ROOT_PATH
+      )
+    mark_as_advanced("${cache_var}")
+    set("${program_var}" "${${cache_var}}" PARENT_SCOPE)
+  endforeach()
 
-    elseif (${ICU_PRIVATE_VAR_NS}_FULL_VERSION
-		MATCHES "^([0-9]+)\\.([0-9]+)\\.([0-9]+)")
-      set (${ICU_PUBLIC_VAR_NS}_MAJOR_VERSION "${CMAKE_MATCH_1}")
-      set (${ICU_PUBLIC_VAR_NS}_MINOR_VERSION "${CMAKE_MATCH_2}")
-      set (${ICU_PUBLIC_VAR_NS}_PATCH_VERSION "${CMAKE_MATCH_3}")
+  # Find all ICU libraries
+  list(APPEND icu_library_suffixes "${_lib64}" "lib")
+  set(ICU_REQUIRED_LIBS_FOUND ON)
+  set(static_prefix )
+  # static icu libraries compiled with MSVC have the prefix 's'
+  if(MSVC)
+    set(static_prefix "s")
+  endif()
+  foreach(component ${ICU_FIND_COMPONENTS})
+    string(TOUPPER "${component}" component_upcase)
+    set(component_cache "ICU_${component_upcase}_LIBRARY")
+    set(component_cache_release "${component_cache}_RELEASE")
+    set(component_cache_debug "${component_cache}_DEBUG")
+    set(component_found "ICU_${component_upcase}_FOUND")
+    set(component_found_compat "${component_upcase}_FOUND")
+    set(component_libnames "icu${component}")
+    set(component_debug_libnames "icu${component}d")
+
+    # Special case deliberate library naming mismatches between Unix
+    # and Windows builds
+    unset(component_libnames)
+    unset(component_debug_libnames)
+    list(APPEND component_libnames "icu${component}")
+    list(APPEND component_debug_libnames "icu${component}d")
+    if(component STREQUAL "data")
+      list(APPEND component_libnames "icudt")
+      # Note there is no debug variant at present
+      list(APPEND component_debug_libnames "icudtd")
+    endif()
+    if(component STREQUAL "dt")
+      list(APPEND component_libnames "icudata")
+      # Note there is no debug variant at present
+      list(APPEND component_debug_libnames "icudatad")
+    endif()
+    if(component STREQUAL "i18n")
+      list(APPEND component_libnames "icuin")
+      list(APPEND component_debug_libnames "icuind")
+    endif()
+    if(component STREQUAL "in")
+      list(APPEND component_libnames "icui18n")
+      list(APPEND component_debug_libnames "icui18nd")
     endif()
 
-  else()
-    message (FATAL_ERROR "failed to detect ICU version")
+    if(static_prefix)
+      unset(static_component_libnames)
+      unset(static_component_debug_libnames)
+      foreach(component_libname ${component_libnames})
+        list(APPEND static_component_libnames
+          ${static_prefix}${component_libname})
+      endforeach()
+      foreach(component_libname ${component_debug_libnames})
+        list(APPEND static_component_debug_libnames
+          ${static_prefix}${component_libname})
+      endforeach()
+      list(APPEND component_libnames ${static_component_libnames})
+      list(APPEND component_debug_libnames ${static_component_debug_libnames})
+    endif()
+    find_library("${component_cache_release}"
+      NAMES ${component_libnames}
+      HINTS ${icu_roots}
+      PATH_SUFFIXES ${icu_library_suffixes}
+      DOC "ICU ${component} library (release)"
+      NO_PACKAGE_ROOT_PATH
+      )
+    find_library("${component_cache_debug}"
+      NAMES ${component_debug_libnames}
+      HINTS ${icu_roots}
+      PATH_SUFFIXES ${icu_library_suffixes}
+      DOC "ICU ${component} library (debug)"
+      NO_PACKAGE_ROOT_PATH
+      )
+    include(${CMAKE_CURRENT_LIST_DIR}/SelectLibraryConfigurations.cmake)
+    select_library_configurations(ICU_${component_upcase})
+    mark_as_advanced("${component_cache_release}" "${component_cache_debug}")
+    if(${component_cache})
+      set("${component_found}" ON)
+      set("${component_found_compat}" ON)
+      list(APPEND ICU_LIBRARY "${${component_cache}}")
+      if (ICU_FIND_REQUIRED_${component})
+        list(APPEND ICU_LIBS_FOUND "${component} (required): ${${component_cache}}")
+      else()
+        list(APPEND ICU_LIBS_FOUND "${component} (optional): ${${component_cache}}")
+      endif()
+    else()
+      if (ICU_FIND_REQUIRED_${component})
+        set(ICU_REQUIRED_LIBS_FOUND OFF)
+        list(APPEND ICU_LIBS_NOTFOUND "${component} (required)")
+      else()
+        list(APPEND ICU_LIBS_NOTFOUND "${component} (optional)")
+      endif()
+    endif()
+    mark_as_advanced("${component_found}")
+    mark_as_advanced("${component_found_compat}")
+    set("${component_cache}" "${${component_cache}}" PARENT_SCOPE)
+    set("${component_found}" "${${component_found}}" PARENT_SCOPE)
+    set("${component_found_compat}" "${${component_found_compat}}" PARENT_SCOPE)
+  endforeach()
+  set(_ICU_REQUIRED_LIBS_FOUND "${ICU_REQUIRED_LIBS_FOUND}" PARENT_SCOPE)
+  set(ICU_LIBRARY "${ICU_LIBRARY}" PARENT_SCOPE)
+
+  # Find all ICU data files
+  if(CMAKE_LIBRARY_ARCHITECTURE)
+    list(APPEND icu_data_suffixes
+      "${_lib64}/${CMAKE_LIBRARY_ARCHITECTURE}/icu/${ICU_VERSION}"
+      "lib/${CMAKE_LIBRARY_ARCHITECTURE}/icu/${ICU_VERSION}"
+      "${_lib64}/${CMAKE_LIBRARY_ARCHITECTURE}/icu"
+      "lib/${CMAKE_LIBRARY_ARCHITECTURE}/icu")
+  endif()
+  list(APPEND icu_data_suffixes
+    "${_lib64}/icu/${ICU_VERSION}"
+    "lib/icu/${ICU_VERSION}"
+    "${_lib64}/icu"
+    "lib/icu")
+  foreach(data ${icu_data})
+    string(TOUPPER "${data}" data_upcase)
+    string(REPLACE "." "_" data_upcase "${data_upcase}")
+    set(cache_var "ICU_${data_upcase}")
+    set(data_var "ICU_${data_upcase}")
+    find_file("${cache_var}"
+      NAMES "${data}"
+      HINTS ${icu_roots}
+      PATH_SUFFIXES ${icu_data_suffixes}
+      DOC "ICU ${data} data file")
+    mark_as_advanced("${cache_var}")
+    set("${data_var}" "${${cache_var}}" PARENT_SCOPE)
+  endforeach()
+
+  if(NOT ICU_FIND_QUIETLY)
+    if(ICU_LIBS_FOUND)
+      message(STATUS "Found the following ICU libraries:")
+      foreach(found ${ICU_LIBS_FOUND})
+        message(STATUS "  ${found}")
+      endforeach()
+    endif()
+    if(ICU_LIBS_NOTFOUND)
+      message(STATUS "The following ICU libraries were not found:")
+      foreach(notfound ${ICU_LIBS_NOTFOUND})
+        message(STATUS "  ${notfound}")
+      endforeach()
+    endif()
   endif()
 
-  set (${ICU_PUBLIC_VAR_NS}_VERSION
-	"${${ICU_PUBLIC_VAR_NS}_MAJOR_VERSION}.${${ICU_PUBLIC_VAR_NS}_MINOR_VERSION}.${${ICU_PUBLIC_VAR_NS}_PATCH_VERSION}")
-  ########## </part to keep synced with tests/version/CMakeLists.txt> ##########
+  if(ICU_DEBUG)
+    message(STATUS "--------FindICU.cmake search debug--------")
+    message(STATUS "ICU binary path search order: ${icu_roots}")
+    message(STATUS "ICU include path search order: ${icu_roots}")
+    message(STATUS "ICU library path search order: ${icu_roots}")
+    message(STATUS "----------------")
+  endif()
+endfunction()
 
-  # Check dependencies (implies pkg-config)
-  if (PKG_CONFIG_FOUND)
-    set (${ICU_PRIVATE_VAR_NS}_COMPONENTS_DUP
-	  ${${ICU_PUBLIC_VAR_NS}_FIND_COMPONENTS})
-    foreach (${ICU_PRIVATE_VAR_NS}_COMPONENT
-		${${ICU_PRIVATE_VAR_NS}_COMPONENTS_DUP})
-      pkg_check_modules (PC_ICU_PRIVATE_VAR_NS
-		"icu-${${ICU_PRIVATE_VAR_NS}_COMPONENT}" QUIET)
+_ICU_FIND()
 
-      if (${PC_ICU_PRIVATE_VAR_NS}_FOUND)
-        foreach (${PC_ICU_PRIVATE_VAR_NS}_LIBRARY ${PC_ICU_LIBRARIES})
-          string (REGEX REPLACE "^icu" ""
-			${PC_ICU_PRIVATE_VAR_NS}_STRIPPED_LIBRARY
-			${${PC_ICU_PRIVATE_VAR_NS}_LIBRARY})
-          list (APPEND ${ICU_PUBLIC_VAR_NS}_FIND_COMPONENTS
-			${${PC_ICU_PRIVATE_VAR_NS}_STRIPPED_LIBRARY})
-        endforeach (${PC_ICU_PRIVATE_VAR_NS}_LIBRARY)
-      endif (${PC_ICU_PRIVATE_VAR_NS}_FOUND)
-    endforeach (${ICU_PRIVATE_VAR_NS}_COMPONENT)
+include(${CMAKE_CURRENT_LIST_DIR}/FindPackageHandleStandardArgs.cmake)
+FIND_PACKAGE_HANDLE_STANDARD_ARGS(ICU
+                                  FOUND_VAR ICU_FOUND
+                                  REQUIRED_VARS ICU_INCLUDE_DIR
+                                                ICU_LIBRARY
+                                                _ICU_REQUIRED_LIBS_FOUND
+                                  VERSION_VAR ICU_VERSION
+                                  FAIL_MESSAGE "Failed to find all ICU components")
 
-    list (REMOVE_DUPLICATES ${ICU_PUBLIC_VAR_NS}_FIND_COMPONENTS)
-  endif (PKG_CONFIG_FOUND)
+unset(_ICU_REQUIRED_LIBS_FOUND)
 
-  # Check libraries
-  foreach (${ICU_PRIVATE_VAR_NS}_COMPONENT
-	  ${${ICU_PUBLIC_VAR_NS}_FIND_COMPONENTS})
-    set (${ICU_PRIVATE_VAR_NS}_POSSIBLE_RELEASE_NAMES )
-    set (${ICU_PRIVATE_VAR_NS}_POSSIBLE_DEBUG_NAMES )
-
-    foreach (${ICU_PRIVATE_VAR_NS}_BASE_NAME
-		${${ICU_PRIVATE_VAR_NS}_COMPONENTS_${${ICU_PRIVATE_VAR_NS}_COMPONENT}})
-      list (APPEND ${ICU_PRIVATE_VAR_NS}_POSSIBLE_RELEASE_NAMES
-		"${${ICU_PRIVATE_VAR_NS}_BASE_NAME}")
-      list (APPEND ${ICU_PRIVATE_VAR_NS}_POSSIBLE_DEBUG_NAMES
-		"${${ICU_PRIVATE_VAR_NS}_BASE_NAME}d")
-      list (APPEND ${ICU_PRIVATE_VAR_NS}_POSSIBLE_RELEASE_NAMES
-		"${${ICU_PRIVATE_VAR_NS}_BASE_NAME}${ICU_MAJOR_VERSION}${ICU_MINOR_VERSION}")
-      list (APPEND ${ICU_PRIVATE_VAR_NS}_POSSIBLE_DEBUG_NAMES
-		"${${ICU_PRIVATE_VAR_NS}_BASE_NAME}${ICU_MAJOR_VERSION}${ICU_MINOR_VERSION}d")
-    endforeach (${ICU_PRIVATE_VAR_NS}_BASE_NAME)
-
-    find_library (
-      ${ICU_PRIVATE_VAR_NS}_LIB_RELEASE_${${ICU_PRIVATE_VAR_NS}_COMPONENT}
-      NAMES ${${ICU_PRIVATE_VAR_NS}_POSSIBLE_RELEASE_NAMES}
-      HINTS ${${ICU_PRIVATE_VAR_NS}_ROOT}
-      PATH_SUFFIXES ${_ICU_LIB_SUFFIXES}
-      DOC "Release libraries for ICU"
-      )
-    find_library (
-      ${ICU_PRIVATE_VAR_NS}_LIB_DEBUG_${${ICU_PRIVATE_VAR_NS}_COMPONENT}
-      NAMES ${${ICU_PRIVATE_VAR_NS}_POSSIBLE_DEBUG_NAMES}
-      HINTS ${${ICU_PRIVATE_VAR_NS}_ROOT}
-      PATH_SUFFIXES ${_ICU_LIB_SUFFIXES}
-      DOC "Debug libraries for ICU"
-      )
-
-    string (TOUPPER "${${ICU_PRIVATE_VAR_NS}_COMPONENT}"
-	  ${ICU_PRIVATE_VAR_NS}_UPPER_COMPONENT)
-    if (NOT ${ICU_PRIVATE_VAR_NS}_LIB_RELEASE_${${ICU_PRIVATE_VAR_NS}_COMPONENT}
-		AND NOT ${ICU_PRIVATE_VAR_NS}_LIB_DEBUG_${${ICU_PRIVATE_VAR_NS}_COMPONENT})
-	  # Both not found
-      set ("${ICU_PUBLIC_VAR_NS}_${${ICU_PRIVATE_VAR_NS}_UPPER_COMPONENT}_FOUND"
-		FALSE)
-      set ("${ICU_PUBLIC_VAR_NS}_FOUND" FALSE)
-    else (NOT ${ICU_PRIVATE_VAR_NS}_LIB_RELEASE_${${ICU_PRIVATE_VAR_NS}_COMPONENT}
-		AND NOT ${ICU_PRIVATE_VAR_NS}_LIB_DEBUG_${${ICU_PRIVATE_VAR_NS}_COMPONENT})
-	  # One or both found
-      set ("${ICU_PUBLIC_VAR_NS}_${${ICU_PRIVATE_VAR_NS}_UPPER_COMPONENT}_FOUND"
-		TRUE)
-      if (NOT ${ICU_PRIVATE_VAR_NS}_LIB_RELEASE_${${ICU_PRIVATE_VAR_NS}_COMPONENT})
-		# Release not found => we are in debug
-        set (${ICU_PRIVATE_VAR_NS}_LIB_${${ICU_PRIVATE_VAR_NS}_COMPONENT}
-		  "${${ICU_PRIVATE_VAR_NS}_LIB_DEBUG_${${ICU_PRIVATE_VAR_NS}_COMPONENT}}")
-      elseif (NOT ${ICU_PRIVATE_VAR_NS}_LIB_DEBUG_${${ICU_PRIVATE_VAR_NS}_COMPONENT})
-		# Debug not found => we are in release
-        set (${ICU_PRIVATE_VAR_NS}_LIB_${${ICU_PRIVATE_VAR_NS}_COMPONENT}
-		  "${${ICU_PRIVATE_VAR_NS}_LIB_RELEASE_${${ICU_PRIVATE_VAR_NS}_COMPONENT}}")
-      else()
-		# Both found
-        set (${ICU_PRIVATE_VAR_NS}_LIB_${${ICU_PRIVATE_VAR_NS}_COMPONENT}
-          optimized
-		  ${${ICU_PRIVATE_VAR_NS}_LIB_RELEASE_${${ICU_PRIVATE_VAR_NS}_COMPONENT}}
-          debug
-		  ${${ICU_PRIVATE_VAR_NS}_LIB_DEBUG_${${ICU_PRIVATE_VAR_NS}_COMPONENT}}
-          )
+if(ICU_FOUND)
+  set(ICU_INCLUDE_DIRS "${ICU_INCLUDE_DIR}")
+  set(ICU_LIBRARIES "${ICU_LIBRARY}")
+  foreach(_ICU_component ${ICU_FIND_COMPONENTS})
+    string(TOUPPER "${_ICU_component}" _ICU_component_upcase)
+    set(_ICU_component_cache "ICU_${_ICU_component_upcase}_LIBRARY")
+    set(_ICU_component_cache_release "ICU_${_ICU_component_upcase}_LIBRARY_RELEASE")
+    set(_ICU_component_cache_debug "ICU_${_ICU_component_upcase}_LIBRARY_DEBUG")
+    set(_ICU_component_lib "ICU_${_ICU_component_upcase}_LIBRARIES")
+    set(_ICU_component_found "ICU_${_ICU_component_upcase}_FOUND")
+    set(_ICU_imported_target "ICU::${_ICU_component}")
+    if(${_ICU_component_found})
+      set("${_ICU_component_lib}" "${${_ICU_component_cache}}")
+      if(NOT TARGET ${_ICU_imported_target})
+        add_library(${_ICU_imported_target} UNKNOWN IMPORTED)
+        if(ICU_INCLUDE_DIR)
+          set_target_properties(${_ICU_imported_target} PROPERTIES
+            INTERFACE_INCLUDE_DIRECTORIES "${ICU_INCLUDE_DIR}")
+        endif()
+        if(EXISTS "${${_ICU_component_cache}}")
+          set_target_properties(${_ICU_imported_target} PROPERTIES
+            IMPORTED_LINK_INTERFACE_LANGUAGES "CXX"
+            IMPORTED_LOCATION "${${_ICU_component_cache}}")
+        endif()
+        if(EXISTS "${${_ICU_component_cache_release}}")
+          set_property(TARGET ${_ICU_imported_target} APPEND PROPERTY
+            IMPORTED_CONFIGURATIONS RELEASE)
+          set_target_properties(${_ICU_imported_target} PROPERTIES
+            IMPORTED_LINK_INTERFACE_LANGUAGES_RELEASE "CXX"
+            IMPORTED_LOCATION_RELEASE "${${_ICU_component_cache_release}}")
+        endif()
+        if(EXISTS "${${_ICU_component_cache_debug}}")
+          set_property(TARGET ${_ICU_imported_target} APPEND PROPERTY
+            IMPORTED_CONFIGURATIONS DEBUG)
+          set_target_properties(${_ICU_imported_target} PROPERTIES
+            IMPORTED_LINK_INTERFACE_LANGUAGES_DEBUG "CXX"
+            IMPORTED_LOCATION_DEBUG "${${_ICU_component_cache_debug}}")
+        endif()
+        if(CMAKE_DL_LIBS AND _ICU_component STREQUAL "uc")
+          set_target_properties(${_ICU_imported_target} PROPERTIES
+            INTERFACE_LINK_LIBRARIES "${CMAKE_DL_LIBS}")
+        endif()
       endif()
+    endif()
+    unset(_ICU_component_upcase)
+    unset(_ICU_component_cache)
+    unset(_ICU_component_lib)
+    unset(_ICU_component_found)
+    unset(_ICU_imported_target)
+  endforeach()
+endif()
 
-      list (APPEND ${ICU_PUBLIC_VAR_NS}_LIBRARIES
-		${${ICU_PRIVATE_VAR_NS}_LIB_${${ICU_PRIVATE_VAR_NS}_COMPONENT}})
-    endif (NOT ${ICU_PRIVATE_VAR_NS}_LIB_RELEASE_${${ICU_PRIVATE_VAR_NS}_COMPONENT}
-	  AND NOT ${ICU_PRIVATE_VAR_NS}_LIB_DEBUG_${${ICU_PRIVATE_VAR_NS}_COMPONENT})
-  endforeach (${ICU_PRIVATE_VAR_NS}_COMPONENT)
-endif (${ICU_PUBLIC_VAR_NS}_INCLUDE_DIRS)
+if(ICU_DEBUG)
+  message(STATUS "--------FindICU.cmake results debug--------")
+  message(STATUS "ICU found: ${ICU_FOUND}")
+  message(STATUS "ICU_VERSION number: ${ICU_VERSION}")
+  message(STATUS "ICU_ROOT directory: ${ICU_ROOT}")
+  message(STATUS "ICU_INCLUDE_DIR directory: ${ICU_INCLUDE_DIR}")
+  message(STATUS "ICU_LIBRARIES: ${ICU_LIBRARIES}")
 
-if (${ICU_PUBLIC_VAR_NS}_INCLUDE_DIRS)
-  include (FindPackageHandleStandardArgs)
+  foreach(program IN LISTS icu_programs)
+    string(TOUPPER "${program}" program_upcase)
+    set(program_lib "ICU_${program_upcase}_EXECUTABLE")
+    message(STATUS "${program} program: ${program_lib}=${${program_lib}}")
+    unset(program_upcase)
+    unset(program_lib)
+  endforeach()
 
-  if (${ICU_PUBLIC_VAR_NS}_FIND_REQUIRED
-	  AND NOT ${ICU_PUBLIC_VAR_NS}_FIND_QUIETLY)
-    if (${CMAKE_VERSION} VERSION_GREATER 2.8.1)
-       find_package_handle_standard_args (${ICU_PUBLIC_VAR_NS}
-         REQUIRED_VARS ${ICU_PUBLIC_VAR_NS}_LIBRARIES
-	 ${ICU_PUBLIC_VAR_NS}_INCLUDE_DIRS
-	 VERSION_VAR ${ICU_PUBLIC_VAR_NS}_VERSION)
-    else (${CMAKE_VERSION} VERSION_GREATER 2.8.1)
-       find_package_handle_standard_args (${ICU_PUBLIC_VAR_NS}
-         DEFAULT_MSG ${ICU_PUBLIC_VAR_NS}_LIBRARIES
-	 ${ICU_PUBLIC_VAR_NS}_INCLUDE_DIRS)
-    endif (${CMAKE_VERSION} VERSION_GREATER 2.8.1)
+  foreach(data IN LISTS icu_data)
+    string(TOUPPER "${data}" data_upcase)
+    string(REPLACE "." "_" data_upcase "${data_upcase}")
+    set(data_lib "ICU_${data_upcase}")
+    message(STATUS "${data} data: ${data_lib}=${${data_lib}}")
+    unset(data_upcase)
+    unset(data_lib)
+  endforeach()
 
-  else (${ICU_PUBLIC_VAR_NS}_FIND_REQUIRED
-	  AND NOT ${ICU_PUBLIC_VAR_NS}_FIND_QUIETLY)
-    find_package_handle_standard_args (${ICU_PUBLIC_VAR_NS} "ICU not found"
-	  ${ICU_PUBLIC_VAR_NS}_LIBRARIES ${ICU_PUBLIC_VAR_NS}_INCLUDE_DIRS)
-  endif (${ICU_PUBLIC_VAR_NS}_FIND_REQUIRED
-	AND NOT ${ICU_PUBLIC_VAR_NS}_FIND_QUIETLY)
+  foreach(component IN LISTS ICU_FIND_COMPONENTS)
+    string(TOUPPER "${component}" component_upcase)
+    set(component_lib "ICU_${component_upcase}_LIBRARIES")
+    set(component_found "ICU_${component_upcase}_FOUND")
+    set(component_found_compat "${component_upcase}_FOUND")
+    message(STATUS "${component} library found: ${component_found}=${${component_found}}")
+    message(STATUS "${component} library found (compat name): ${component_found_compat}=${${component_found_compat}}")
+    message(STATUS "${component} library: ${component_lib}=${${component_lib}}")
+    unset(component_upcase)
+    unset(component_lib)
+    unset(component_found)
+    unset(component_found_compat)
+  endforeach()
+  message(STATUS "----------------")
+endif()
 
-else (${ICU_PUBLIC_VAR_NS}_INCLUDE_DIRS)
-  if (${ICU_PUBLIC_VAR_NS}_FIND_REQUIRED
-	  AND NOT ${ICU_PUBLIC_VAR_NS}_FIND_QUIETLY)
-    message (FATAL_ERROR "Could not find ICU include directory")
-  endif (${ICU_PUBLIC_VAR_NS}_FIND_REQUIRED
-	AND NOT ${ICU_PUBLIC_VAR_NS}_FIND_QUIETLY)
-endif (${ICU_PUBLIC_VAR_NS}_INCLUDE_DIRS)
-
-#
-mark_as_advanced (
-  ${ICU_PUBLIC_VAR_NS}_INCLUDE_DIRS
-  ${ICU_PUBLIC_VAR_NS}_LIBRARIES
-)
-
-# IN (args)
-icudebug ("FIND_COMPONENTS")
-icudebug ("FIND_REQUIRED")
-icudebug ("FIND_QUIETLY")
-icudebug ("FIND_VERSION")
-# OUT
-# Found
-icudebug ("FOUND")
-icudebug ("UC_FOUND")
-icudebug ("I18N_FOUND")
-icudebug ("IO_FOUND")
-icudebug ("LE_FOUND")
-icudebug ("LX_FOUND")
-icudebug ("DATA_FOUND")
-# Linking
-icudebug ("INCLUDE_DIRS")
-icudebug ("LIBRARIES")
-# Version
-icudebug ("MAJOR_VERSION")
-icudebug ("MINOR_VERSION")
-icudebug ("PATCH_VERSION")
-icudebug ("VERSION")
+unset(icu_programs)

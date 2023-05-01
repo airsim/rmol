@@ -1807,14 +1807,15 @@ namespace RMOL {
                 assert (!lLegCabinList.empty());                
                 // Determine the displacement-adjusted yield.
                 // It is set to 100 (positive small value), if the computed value is negative.                
-                const stdair::Yield_T& lDAYield =
-                  std::max(100., lYieldDemandPair.first - lComplementaryBidPrice);
+                const stdair::Yield_T lDAYield =
+                  std::max(100.,
+			   lYieldDemandPair.first - lComplementaryBidPrice);
                 
                                 
                 stdair::Yield_T lYield = lDAYield;
                 // In order to be protected against important variations of partners' bid price,
-                // the displacement adjusted yield is noy allowed to get out of a certain range.
-                // This range is here chosen to be from 80% to 100% of the (static rule) prorated yield.
+                // the displacement adjusted yield is not allowed to get out of a certain range.
+                // This range is chosen here to be from 80% to 100% of the (static rule) prorated yield.
                 /*
                 const int lNbOfLegs = lLegCabinList.size();
                 const stdair::Yield_T& lStaticProrationYield =

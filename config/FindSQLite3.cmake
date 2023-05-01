@@ -1,50 +1,68 @@
-#
-# Find the SQLite3 client includes and library
-# 
+# Distributed under the OSI-approved BSD 3-Clause License.  See accompanying
+# file Copyright.txt or https://cmake.org/licensing for details.
 
-# This module defines
-# SQLITE3_VERSION     - The SQLite3 version
-# SQLITE3_INCLUDE_DIR - Where to find sqlite3.h
-# SQLITE3_LIBRARIES   - The libraries to link against to connect to SQLite3
-# SQLITE3_LIBRARY     - Where to find the SQLite3 library (not for general use).
-# SQLITE3_FOUND       - If false, SQLite3 cannot be used.
+#[=======================================================================[.rst:
+FindSQLite3
+-----------
 
-# Search for the sqlite3 command-line program
-find_program (SQLITE3 sqlite3)
-if (NOT SQLITE3)
-  message (FATAL_ERROR "Could not find the sqlite3 command-line program! Please install it (e.g., 'sqlite3-devel' for Fedora/RedHat/CentOS).")
-else (NOT SQLITE3)
-  exec_program (sqlite3 ARGS --version OUTPUT_VARIABLE MY_TMP)
-  string (REGEX REPLACE "([0-9.]+) .*" "\\1" SQLITE3_VERSION
-	"${MY_TMP}")
-  message (STATUS "Found SQLite3 version: ${SQLITE3_VERSION}")
-endif (NOT SQLITE3)
+.. versionadded:: 3.14
 
-# Search for the SQLite3 C/C++ header file
-find_path (SQLITE3_INCLUDE_DIR sqlite3.h)
+Find the SQLite libraries, v3
 
-# Search for the SQLite3 library
-find_library (SQLITE3_LIBRARY NAMES sqlite3)
+IMPORTED targets
+^^^^^^^^^^^^^^^^
 
-##
-# Check that the just (above) defined variables are valid paths:
-#  - SQLITE3_LIBRARY
-#  - SQLITE3_INCLUDE_DIR
-# In that case, SQLITE3_FOUND is set to True.
+This module defines the following :prop_tgt:`IMPORTED` target:
 
-# Given the way those variables have been calculated, they should
-# either be defined or correspond to valid paths. We use the
-# find_package_handle_standard_args() CMake macro to have a standard behaviour.
-include (FindPackageHandleStandardArgs)
-find_package_handle_standard_args (SQLite3
-	REQUIRED_VARS SQLITE3_LIBRARY SQLITE3_INCLUDE_DIR
-	VERSION_VAR SQLITE3_VERSION)
+``SQLite::SQLite3``
 
-if (SQLITE3_FOUND)
-  set (SQLITE3_LIBRARIES ${SQLITE3_LIBRARY})
-  mark_as_advanced (SQLITE3_FOUND SQLITE3_LIBRARY SQLITE3_LIBRARIES
-	SQLITE3_EXTRA_LIBRARIES SQLITE3_INCLUDE_DIR)
-  message (STATUS "Found SQLite3 version: ${SQLITE3_VERSION}")
-else (SQLITE3_FOUND)
-  message (FATAL_ERROR "Could not find the SQLite3 libraries! Please install the development-libraries and headers (e.g., 'sqlite3-devel' for Fedora/RedHat/CentOS).")
-endif (SQLITE3_FOUND)
+Result variables
+^^^^^^^^^^^^^^^^
+
+This module will set the following variables if found:
+
+``SQLite3_INCLUDE_DIRS``
+  where to find sqlite3.h, etc.
+``SQLite3_LIBRARIES``
+  the libraries to link against to use SQLite3.
+``SQLite3_VERSION``
+  version of the SQLite3 library found
+``SQLite3_FOUND``
+  TRUE if found
+
+#]=======================================================================]
+
+# Look for the necessary header
+find_path(SQLite3_INCLUDE_DIR NAMES sqlite3.h)
+mark_as_advanced(SQLite3_INCLUDE_DIR)
+
+# Look for the necessary library
+find_library(SQLite3_LIBRARY NAMES sqlite3 sqlite)
+mark_as_advanced(SQLite3_LIBRARY)
+
+# Extract version information from the header file
+if(SQLite3_INCLUDE_DIR)
+    file(STRINGS ${SQLite3_INCLUDE_DIR}/sqlite3.h _ver_line
+         REGEX "^#define SQLITE_VERSION  *\"[0-9]+\\.[0-9]+\\.[0-9]+\""
+         LIMIT_COUNT 1)
+    string(REGEX MATCH "[0-9]+\\.[0-9]+\\.[0-9]+"
+           SQLite3_VERSION "${_ver_line}")
+    unset(_ver_line)
+endif()
+
+include(${CMAKE_CURRENT_LIST_DIR}/FindPackageHandleStandardArgs.cmake)
+find_package_handle_standard_args(SQLite3
+    REQUIRED_VARS SQLite3_INCLUDE_DIR SQLite3_LIBRARY
+    VERSION_VAR SQLite3_VERSION)
+
+# Create the imported target
+if(SQLite3_FOUND)
+    set(SQLite3_INCLUDE_DIRS ${SQLite3_INCLUDE_DIR})
+    set(SQLite3_LIBRARIES ${SQLite3_LIBRARY})
+    if(NOT TARGET SQLite::SQLite3)
+        add_library(SQLite::SQLite3 UNKNOWN IMPORTED)
+        set_target_properties(SQLite::SQLite3 PROPERTIES
+            IMPORTED_LOCATION             "${SQLite3_LIBRARY}"
+            INTERFACE_INCLUDE_DIRECTORIES "${SQLite3_INCLUDE_DIR}")
+    endif()
+endif()
