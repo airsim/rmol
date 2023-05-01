@@ -537,18 +537,13 @@ macro (get_icu)
     message (STATUS "Requires ICU without specifying any version")
   endif (${ARGC} GREATER 0)
 
-  # 
+  #
+  #set (ICU_DEBUG ON) 
   set (ICU_REQUIRED_COMPONENTS i18n uc data)
   find_package (ICU ${_required_version}
 	COMPONENTS ${ICU_REQUIRED_COMPONENTS} REQUIRED)
 
-  icudebug (ICU_I18N_FOUND)
   if (ICU_FOUND)
-	#
-	#if (ICU_I18N_FOUND)
-	#  icudebug (ICU_I18N_FOUND)
-	#endif (ICU_I18N_FOUND)
-
     # Update the list of include directories for the project
     include_directories (${ICU_INCLUDE_DIRS})
 
@@ -981,14 +976,14 @@ macro (get_sqlite)
   endif (${ARGC} GREATER 0)
 
   find_package (SQLite3 ${_required_version} REQUIRED)
-  if (SQLITE3_FOUND)
+  if (SQLite3_FOUND)
 
     # Update the list of include directories for the project
-    include_directories (${SQLITE3_INCLUDE_DIR})
+    include_directories (${SQLite3_INCLUDE_DIR})
 
     # Update the list of dependencies for the project
-    list (APPEND PROJ_DEP_LIBS_FOR_LIB ${SQLITE3_LIBRARIES})
-  endif (SQLITE3_FOUND)
+    list (APPEND PROJ_DEP_LIBS_FOR_LIB ${SQLite3_LIBRARIES})
+  endif (SQLite3_FOUND)
 
 endmacro (get_sqlite)
 
@@ -2836,13 +2831,13 @@ endmacro (display_curses)
 
 # SQLite3
 macro (display_sqlite)
-  if (SQLITE3_FOUND)
+  if (SQLite3_FOUND)
     message (STATUS)
     message (STATUS "* SQLite3:")
-    message (STATUS "  - SQLITE3_VERSION ............... : ${SQLITE3_VERSION}")
-    message (STATUS "  - SQLITE3_INCLUDE_DIR ........... : ${SQLITE3_INCLUDE_DIR}")
-    message (STATUS "  - SQLITE3_LIBRARIES ............. : ${SQLITE3_LIBRARIES}")
-  endif (SQLITE3_FOUND)
+    message (STATUS "  - SQLITE3_VERSION ............... : ${SQLite3_VERSION}")
+    message (STATUS "  - SQLITE3_INCLUDE_DIR ........... : ${SQLite3_INCLUDE_DIR}")
+    message (STATUS "  - SQLITE3_LIBRARIES ............. : ${SQLite3_LIBRARIES}")
+  endif (SQLite3_FOUND)
 endmacro (display_sqlite)
 
 # MySQL
