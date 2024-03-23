@@ -23,17 +23,17 @@ if (UNIX)
   if (MYSQL_CONFIG)
     message (STATUS "Using mysql-config: ${MYSQL_CONFIG}")
     # Set VERSION
-    exec_program (${MYSQL_CONFIG} ARGS --version OUTPUT_VARIABLE MY_TMP)
+    execute_process (COMMAND ${MYSQL_CONFIG} --version OUTPUT_VARIABLE MY_TMP)
 	set (MYSQL_VERSION ${MY_TMP})
 
     # Set INCLUDE_DIR
-    exec_program (${MYSQL_CONFIG} ARGS --include OUTPUT_VARIABLE MY_TMP)
+    execute_process (COMMAND ${MYSQL_CONFIG} --include OUTPUT_VARIABLE MY_TMP)
 
     string (REGEX REPLACE "-I([^ ]*)( .*)?" "\\1" MY_TMP "${MY_TMP}")
     set (MYSQL_ADD_INCLUDE_PATH ${MY_TMP} CACHE FILEPATH INTERNAL)
     #message("[DEBUG] MYSQL ADD_INCLUDE_PATH : ${MYSQL_ADD_INCLUDE_PATH}")
     # set LIBRARY_DIR
-    exec_program (${MYSQL_CONFIG} ARGS --libs_r OUTPUT_VARIABLE MY_TMP)
+    execute_process (COMMAND ${MYSQL_CONFIG} --libs_r OUTPUT_VARIABLE MY_TMP)
 
     set (MYSQL_ADD_LIBRARIES "")
     string (REGEX MATCHALL "-l[^ ]*" MYSQL_LIB_LIST "${MY_TMP}")
@@ -83,11 +83,13 @@ if (UNIX)
 foreach (LIB ${MYSQL_ADD_LIBRARIES})
   find_library (MYSQL_LIBRARY 
     NAMES
-      mysql libmysql ${LIB}
+      mysql libmysql mysqlclient libmysqlclient ${LIB}
     PATHS
       ${MYSQL_ADD_LIBRARIES_PATH}
+      /usr/lib64
       /usr/lib
       /usr/lib/mysql
+      /usr/lib64/mysql
       /usr/local/lib
       /usr/local/lib/mysql
       /usr/local/mysql/lib
@@ -98,7 +100,7 @@ endif (UNIX)
 if (WIN32)
   find_library (MYSQL_LIBRARY 
     NAMES
-      mysql libmysql ${LIB}
+      mysql libmysql mysqlclient libmysqlclient ${LIB}
     PATHS
       ${MYSQL_ADD_LIBRARIES_PATH}
       "C:/Program Files/MySQL/lib"

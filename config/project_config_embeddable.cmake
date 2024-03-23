@@ -920,20 +920,20 @@ macro (get_readline)
     message (STATUS "Requires Readline without specifying any version")
   endif (${ARGC} GREATER 0)
 
-  set (READLINE_FOUND False)
+  set (Readline_FOUND False)
 
   find_package (Readline ${_required_version} REQUIRED)
-  if (READLINE_LIBRARY)
-    set (READLINE_FOUND True)
-  endif (READLINE_LIBRARY)
+  if (Readline_LIBRARY)
+    set (Readline_FOUND True)
+  endif (Readline_LIBRARY)
 
-  if (READLINE_FOUND)
+  if (Readline_FOUND)
     # Update the list of include directories for the project
-    include_directories (${READLINE_INCLUDE_DIR})
+    include_directories (${Readline_INCLUDE_DIR})
 
     # Update the list of dependencies for the project
-    list (APPEND PROJ_DEP_LIBS_FOR_LIB ${READLINE_LIBRARY})
-  endif (READLINE_FOUND)
+    list (APPEND PROJ_DEP_LIBS_FOR_LIB ${Readline_LIBRARY})
+  endif (Readline_FOUND)
 
 endmacro (get_readline)
 
@@ -2809,13 +2809,13 @@ endmacro (display_xapian)
 
 # Readline
 macro (display_readline)
-  if (READLINE_FOUND)
+  if (Readline_FOUND)
     message (STATUS)
     message (STATUS "* Readline:")
-    message (STATUS "  - READLINE_VERSION .............. : ${READLINE_VERSION}")
-    message (STATUS "  - READLINE_INCLUDE_DIR .......... : ${READLINE_INCLUDE_DIR}")
-    message (STATUS "  - READLINE_LIBRARY .............. : ${READLINE_LIBRARY}")
-  endif (READLINE_FOUND)
+    message (STATUS "  - Readline_VERSION .............. : ${Readline_VERSION}")
+    message (STATUS "  - Readline_INCLUDE_DIR .......... : ${Readline_INCLUDE_DIR}")
+    message (STATUS "  - Readline_LIBRARY .............. : ${Readline_LIBRARY}")
+  endif (Readline_FOUND)
 endmacro (display_readline)
 
 # (N)Curses

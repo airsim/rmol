@@ -1,83 +1,52 @@
 #
 # GNU Readline library finder
 #
-if (READLINE_INCLUDE_DIR AND READLINE_LIBRARY AND NCURSES_LIBRARY)
-  set (READLINE_FOUND True)
-else (READLINE_INCLUDE_DIR AND READLINE_LIBRARY AND NCURSES_LIBRARY)
-  find_path (READLINE_ROOT
-	  NAMES include/readline/readline.h)
+# - Try to find readline include dirs and libraries 
+#
+# Usage of this module as follows:
+#
+#     find_package(Readline)
+#
+# Variables used by this module, they can change the default behaviour and need
+# to be set before calling find_package:
+#
+#  Readline_ROOT_DIR         Set this variable to the root installation of
+#                            readline if the module has problems finding the
+#                            proper installation path.
+#
+# Variables defined by this module:
+#
+#  READLINE_FOUND            System has readline, include and lib dirs found
+#  Readline_INCLUDE_DIR      The readline include directories. 
+#  Readline_LIBRARY          The readline library.
+#
 
-  find_path (READLINE_INCLUDE_DIR
-	  NAMES readline/readline.h /usr/include/readline
-	  HINTS ${READLINE_ROOT}/include)
+find_path (Readline_ROOT_DIR
+  NAMES include/readline/readline.h
+)
+
+find_path (Readline_INCLUDE_DIR
+  NAMES readline/readline.h /usr/include/readline
+  HINTS ${Readline_ROOT_DIR}/include
+)
   
-  find_library (READLINE_LIBRARY
-	  NAMES readline
-	  HINTS ${READLINE_ROOT}/lib)
-endif (READLINE_INCLUDE_DIR AND READLINE_LIBRARY AND NCURSES_LIBRARY)
+find_library (Readline_LIBRARY
+  NAMES readline
+  HINTS ${Readline_ROOT_DIR}/lib
+)
 
-#
-set (RL_CFG_FILE ${READLINE_INCLUDE_DIR}/readline/readline.h)
+if(Readline_INCLUDE_DIR AND Readline_LIBRARY AND Ncurses_LIBRARY)
+  set(READLINE_FOUND TRUE)
+else(Readline_INCLUDE_DIR AND Readline_LIBRARY AND Ncurses_LIBRARY)
+  FIND_LIBRARY(Readline_LIBRARY NAMES readline)
+  include(FindPackageHandleStandardArgs)
+  FIND_PACKAGE_HANDLE_STANDARD_ARGS(Readline DEFAULT_MSG Readline_INCLUDE_DIR Readline_LIBRARY )
+  MARK_AS_ADVANCED(Readline_INCLUDE_DIR Readline_LIBRARY)
+endif(Readline_INCLUDE_DIR AND Readline_LIBRARY AND Ncurses_LIBRARY)
 
-# The lines specifying the Readline version are like the following:
-#define RL_READLINE_VERSION [TAB] 0x0601      /* Readline 6.0 */
-#define RL_VERSION_MAJOR [TAB] 6
-#define RL_VERSION_MINOR [TAB] 1
-
-# Extract the version major level
-execute_process (
-  COMMAND grep "#define RL_READLINE_VERSION"
-  COMMAND cut -f2
-  COMMAND cut -dx -f2
-  RESULT_VARIABLE VERSION_MAJOR_RESULT
-  OUTPUT_VARIABLE RL_READLINE_VERSION
-  INPUT_FILE ${RL_CFG_FILE}
-  OUTPUT_STRIP_TRAILING_WHITESPACE)
-
-# Extract the version major level
-execute_process (
-  COMMAND grep "#define RL_VERSION_MAJOR"
-  COMMAND cut -f2
-  RESULT_VARIABLE VERSION_MAJOR_RESULT
-  OUTPUT_VARIABLE RL_VERSION_MAJOR
-  INPUT_FILE ${RL_CFG_FILE}
-  OUTPUT_STRIP_TRAILING_WHITESPACE)
-
-# Extract the version minor level
-execute_process (
-  COMMAND grep "#define RL_VERSION_MINOR"
-  COMMAND cut -f2
-  RESULT_VARIABLE VERSION_MINOR_RESULT
-  OUTPUT_VARIABLE RL_VERSION_MINOR
-  INPUT_FILE ${RL_CFG_FILE}
-  OUTPUT_STRIP_TRAILING_WHITESPACE)
-
-#
-set (READLINE_VERSION "${RL_VERSION_MAJOR}.${RL_VERSION_MINOR}")
-
-##
-# Check that the just (above) defined variables are valid paths:
-#  - READLINE_LIBRARY
-#  - READLINE_INCLUDE_DIR
-# In that case, READLINE_FOUND is set to True.
-
-# Given the way those variables have been calculated, they should
-# either be defined or correspond to valid paths. We use the
-# find_package_handle_standard_args() CMake macro to have a standard 
-# behaviour.
-include (FindPackageHandleStandardArgs)
-if (${CMAKE_VERSION} VERSION_GREATER 2.8.1)
-  find_package_handle_standard_args (Readline 
-	REQUIRED_VARS READLINE_INCLUDE_DIR READLINE_LIBRARY
-	VERSION_VAR READLINE_VERSION)
-else (${CMAKE_VERSION} VERSION_GREATER 2.8.1)
-  find_package_handle_standard_args (Readline 
-	DEFAULT_MSG READLINE_INCLUDE_DIR READLINE_LIBRARY)
-endif (${CMAKE_VERSION} VERSION_GREATER 2.8.1)
-
-if (READLINE_FOUND)
-  mark_as_advanced (READLINE_INCLUDE_DIR READLINE_LIBRARY)
-  message (STATUS "Found Readline version: ${READLINE_VERSION}")
-else (READLINE_FOUND)
-  message (FATAL_ERROR "Could not find the Readline libraries! Please install the development-libraries and headers (e.g., 'readline-devel' for Fedora/RedHat).")
-endif (READLINE_FOUND)
+mark_as_advanced(
+  Readline_ROOT_DIR
+  Readline_INCLUDE_DIR
+  Readline_LIBRARY
+)
+ 
