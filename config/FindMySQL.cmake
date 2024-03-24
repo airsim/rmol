@@ -23,17 +23,29 @@ if (UNIX)
   if (MYSQL_CONFIG)
     message (STATUS "Using mysql-config: ${MYSQL_CONFIG}")
     # Set VERSION
-    execute_process (COMMAND ${MYSQL_CONFIG} --version OUTPUT_VARIABLE MY_TMP)
-	set (MYSQL_VERSION ${MY_TMP})
+    execute_process (
+	COMMAND ${MYSQL_CONFIG} --version
+	OUTPUT_VARIABLE MY_TMP
+	OUTPUT_STRIP_TRAILING_WHITESPACE
+    )
+    set (MYSQL_VERSION ${MY_TMP})
 
     # Set INCLUDE_DIR
-    execute_process (COMMAND ${MYSQL_CONFIG} --include OUTPUT_VARIABLE MY_TMP)
+    execute_process (
+	COMMAND ${MYSQL_CONFIG} --include
+	OUTPUT_VARIABLE MY_TMP
+	OUTPUT_STRIP_TRAILING_WHITESPACE
+    )
 
     string (REGEX REPLACE "-I([^ ]*)( .*)?" "\\1" MY_TMP "${MY_TMP}")
     set (MYSQL_ADD_INCLUDE_PATH ${MY_TMP} CACHE FILEPATH INTERNAL)
     #message("[DEBUG] MYSQL ADD_INCLUDE_PATH : ${MYSQL_ADD_INCLUDE_PATH}")
     # set LIBRARY_DIR
-    execute_process (COMMAND ${MYSQL_CONFIG} --libs_r OUTPUT_VARIABLE MY_TMP)
+    execute_process (
+	COMMAND ${MYSQL_CONFIG} --libs_r
+	OUTPUT_VARIABLE MY_TMP
+	OUTPUT_STRIP_TRAILING_WHITESPACE
+    )
 
     set (MYSQL_ADD_LIBRARIES "")
     string (REGEX MATCHALL "-l[^ ]*" MYSQL_LIB_LIST "${MY_TMP}")
