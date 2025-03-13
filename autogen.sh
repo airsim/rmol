@@ -185,17 +185,10 @@ cat >> configure << _EOF
 done
 
 #
-LIB_OPTION=""
-if [ -d /usr/lib64 ]
-then
-    LIB_OPTION="-DLIB_SUFFIX=64"
-fi
-
-#
 BUILD_OPTION="-DCMAKE_BUILD_TYPE:STRING=Debug"
 
 #
-CMAKE_CMD="cmake \${PREFIX_OPTION} \${STDAIR_OPTION} \${AIRRAC_OPTION} \${LIB_OPTION} \${BUILD_OPTION} \${DOC_OPTION} \${SOURCE_DIR}"
+CMAKE_CMD="cmake \${PREFIX_OPTION} \${STDAIR_OPTION} \${AIRRAC_OPTION} \${BUILD_OPTION} \${DOC_OPTION} \${SOURCE_DIR}"
 
 # Trace on
 set -x

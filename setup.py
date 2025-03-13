@@ -38,7 +38,6 @@ setup (
     cmake_args = [
       '-DINSTALL_DOC:BOOL=OFF',
       '-DRUN_GCOV:BOOL=OFF',
-      '-DLIB_SUFFIX=',
       f'-DWITH_STDAIR_PREFIX={install_dir}/stdair',
       f'-DWITH_AIRRAC_PREFIX={install_dir}/airrac'
       ] + (

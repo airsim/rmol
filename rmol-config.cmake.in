@@ -1,3 +1,5 @@
+@PACKAGE_INIT@
+
 #
 # Config file for the RMOL package. It defines the following variables:
 #  RMOL_VERSION         - version of RMOL
@@ -11,10 +13,10 @@
 
 # Tell the user project where to find RMOL headers and libraries
 set (RMOL_VERSION "@PACKAGE_VERSION@")
-set (RMOL_BINARY_DIRS "@RMOL_BIN_DIR@")
-set (RMOL_INCLUDE_DIRS "@RMOL_INCLUDE_DIRS@")
-set (RMOL_LIBRARY_DIRS "@RMOL_LIB_DIR@")
-set (RMOL_LIBEXEC_DIR "@RMOL_LIBEXEC_DIR@")
+set (RMOL_BINARY_DIRS "@PACKAGE_RMOL_BIN_DIR@")
+set (RMOL_INCLUDE_DIRS "@PACKAGE_RMOL_INCLUDE_DIRS@")
+set (RMOL_LIBRARY_DIRS "@PACKAGE_RMOL_LIB_DIR@")
+set (RMOL_LIBEXEC_DIR "@PACKAGE_RMOL_LIBEXEC_DIR@")
 
 # Library dependencies for RMOL (contains definitions for the RMOL IMPORTED
 # targets)
