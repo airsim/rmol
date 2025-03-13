@@ -1,9 +1,13 @@
 #!/usr/bin/sh
 
+# NOTE: This is not properly constructed to be relocatable
+# e.g. `sysconfdir` does not relocate outside of ${prefix} according to the
+# GNUInstallDirs rules.
+
 prefix=@prefix@
 exec_prefix=${prefix}
 bindir=${exec_prefix}/bin
-libdir=${exec_prefix}/lib@LIB_SUFFIX@
+libdir=${exec_prefix}/@INSTALL_LIB_DIR@
 libexecdir=${exec_prefix}/libexec
 sbindir=${exec_prefix}/sbin
 sysconfdir=${prefix}/etc

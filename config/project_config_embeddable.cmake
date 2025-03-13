@@ -5,7 +5,6 @@
 ## Date: July 2011
 #######################################################################
 
-
 ###################################################################
 ##                     Project Configuration                     ##
 ###################################################################
@@ -93,6 +92,8 @@ macro (set_project_options _build_doc _enable_tests _run_gcov)
     set (CMAKE_INSTALL_PREFIX "/usr")
   endif()
 
+  include(GNUInstallDirs)
+
   # Unit tests (thanks to CMake/CTest)
   option (ENABLE_TEST "Set to OFF to skip build/check unit tests"
 	${_enable_tests})
@@ -110,33 +111,21 @@ macro (set_project_options _build_doc _enable_tests _run_gcov)
   set (MAN_ALL_TARGETS)
   set (NEED_PYTHON OFF)
 
-  # Set the library installation directory (either 32 or 64 bits)
-  set (LIBDIR "lib${LIB_SUFFIX}" CACHE PATH
-    "Library directory name, either lib or lib64")
-
   # Offer the user the choice of overriding the installation directories
-  set (INSTALL_LIB_DIR ${LIBDIR} CACHE PATH
+  set (INSTALL_LIB_DIR ${CMAKE_INSTALL_LIBDIR} CACHE PATH
 	"Installation directory for libraries")
-  set (INSTALL_BIN_DIR bin CACHE PATH "Installation directory for executables")
-  set (INSTALL_LIBEXEC_DIR CACHE PATH
+  set (INSTALL_BIN_DIR ${CMAKE_INSTALL_BINDIR} CACHE PATH "Installation directory for executables")
+  set (INSTALL_LIBEXEC_DIR ${CMAKE_INSTALL_LIBEXECDIR} CACHE PATH
 	"Installation directory for internal executables")
-  set (INSTALL_INCLUDE_DIR include CACHE PATH
+  set (INSTALL_INCLUDE_DIR ${CMAKE_INSTALL_INCLUDEDIR} CACHE PATH
     "Installation directory for header files")
-  set (INSTALL_DATA_DIR share CACHE PATH "Installation directory for data files")
-  set (INSTALL_SAMPLE_DIR share/${PROJECT_NAME}/samples CACHE PATH
+  set (INSTALL_DATA_DIR ${CMAKE_INSTALL_DATADIR} CACHE PATH "Installation directory for data files")
+  set (INSTALL_SAMPLE_DIR ${INSTALL_DATA_DIR}/${PROJECT_NAME}/samples CACHE PATH
     "Installation directory for (CSV) sample files")
-  set (INSTALL_ETC_DIR etc CACHE PATH "Installation directory for Config files")
+  set (INSTALL_ETC_DIR ${CMAKE_INSTALL_SYSCONFDIR} CACHE PATH "Installation directory for Config files")
 
   # GCOV
   option (RUN_GCOV "Set to OFF to skip code coverage" ${_run_gcov})
-
-  # Make relative paths absolute (needed later on)
-  foreach (_path_type LIB PY_LIB BIN LIBEXEC INCLUDE DATA SAMPLE)
-    set (var INSTALL_${_path_type}_DIR)
-    if (NOT IS_ABSOLUTE "${${var}}")
-      set (${var} "${CMAKE_INSTALL_PREFIX}/${${var}}")
-    endif ()
-  endforeach (_path_type)
 
   # When the install directory is not the canonical one (i.e., /usr),
   # the run-path/rpath must be set in all the (executable and library)
@@ -891,7 +880,7 @@ macro (get_xapian)
 
   # The first check is to get Xapian installation details
   if (${CMAKE_VERSION} VERSION_LESS 2.8.0)
-	set (Xapian_DIR /usr/${LIBDIR}/cmake/xapian)
+	set (Xapian_DIR ${CMAKE_INSTALL_LIBDIR}/cmake/xapian)
   endif (${CMAKE_VERSION} VERSION_LESS 2.8.0)
   find_package (Xapian)
 
@@ -1581,18 +1570,40 @@ endmacro (init_build)
 macro (set_install_directories)
   set (prefix        ${CMAKE_INSTALL_PREFIX})
   set (exec_prefix   ${prefix})
-  set (bindir        ${exec_prefix}/bin)
-  set (libdir        ${exec_prefix}/${LIBDIR})
-  set (pylibdir	     ${libdir}/python${Python3_VERSION_MAJOR}.${Python3_VERSION_MINOR}/site-packages/py${PACKAGE})
-  set (libexecdir    ${exec_prefix}/libexec)
-  set (sbindir       ${exec_prefix}/sbin)
-  set (sysconfdir    ${prefix}/etc)
-  set (includedir    ${prefix}/include)
-  set (datarootdir   ${prefix}/share)
-  set (datadir       ${datarootdir})
-  set (pkgdatadir    ${datarootdir}/${PACKAGE})
-  set (sampledir     ${STDAIR_SAMPLE_DIR})
-  set (docdir        ${datarootdir}/doc/${PACKAGE}-${PACKAGE_VERSION})
+  if(CMAKE_VERSION VERSION_LESS 3.20)
+    set(dir BINDIR)
+  endif()
+  GNUInstallDirs_get_absolute_install_dir(bindir INSTALL_BIN_DIR BINDIR)
+  if(CMAKE_VERSION VERSION_LESS 3.20)
+    set(dir LIBDIR)
+  endif()
+  GNUInstallDirs_get_absolute_install_dir(libdir INSTALL_LIB_DIR LIBDIR)
+  set(pylibdir ${INSTALL_LIB_DIR}/python${Python3_VERSION_MAJOR}.${Python3_VERSION_MINOR}/site-packages/py${PACKAGE})
+  GNUInstallDirs_get_absolute_install_dir(pylibdir pylibdir LIBDIR)
+  if(CMAKE_VERSION VERSION_LESS 3.20)
+    set(dir LIBEXECDIR)
+  endif()
+  GNUInstallDirs_get_absolute_install_dir(libexecdir INSTALL_LIBEXEC_DIR LIBEXECDIR)
+  if(CMAKE_VERSION VERSION_LESS 3.20)
+    set(dir SBINDIR)
+  endif()
+  GNUInstallDirs_get_absolute_install_dir(sbindir CMAKE_INSTALL_SBINDIR SBINDIR)
+  if(CMAKE_VERSION VERSION_LESS 3.20)
+    set(dir SYSCONFDIR)
+  endif()
+  GNUInstallDirs_get_absolute_install_dir(sysconfdir INSTALL_ETC_DIR SYSCONFDIR)
+  if(CMAKE_VERSION VERSION_LESS 3.20)
+    set(dir INCLUDEDIR)
+  endif()
+  GNUInstallDirs_get_absolute_install_dir(includedir INSTALL_INCLUDE_DIR INCLUDEDIR)
+  if(CMAKE_VERSION VERSION_LESS 3.20)
+    set(dir DATADIR)
+  endif()
+  GNUInstallDirs_get_absolute_install_dir(datadir INSTALL_DATA_DIR DATADIR)
+  set (datarootdir   ${datadir})
+  set (pkgdatadir    ${datadir}/${PACKAGE})
+  GNUInstallDirs_get_absolute_install_dir(sampledir STDAIR_SAMPLE_DIR DATADIR)
+  set (docdir        ${datadir}/doc/${PACKAGE}-${PACKAGE_VERSION})
   set (htmldir       ${docdir}/html)
   set (pdfdir        ${htmldir})
   set (mandir        ${datarootdir}/man)
@@ -1630,7 +1641,7 @@ macro (add_modules)
   set (_embedded_components ${ARGV})
   set (LIB_DEPENDENCY_EXPORT ${PROJECT_NAME}-library-depends)
   set (PY_LIB_DEPENDENCY_EXPORT ${PROJECT_NAME}-python-library-depends)
-  set (LIB_DEPENDENCY_EXPORT_PATH "${INSTALL_DATA_DIR}/${PROJECT_NAME}/CMake")
+  set (LIB_DEPENDENCY_EXPORT_PATH "${INSTALL_LIB_DIR}/cmake/${PROJECT_NAME}")
   #
   foreach (_embedded_comp ${_embedded_components})
     #
@@ -2160,11 +2171,11 @@ endmacro (module_script_add)
 # can refer to it (for libraries, header files and binaries)
 macro (module_export_install)
   install (EXPORT ${LIB_DEPENDENCY_EXPORT}
-    DESTINATION "${INSTALL_DATA_DIR}/${PACKAGE}/CMake" COMPONENT devel)
+    DESTINATION "${INSTALL_LIB_DIR}/cmake/${PACKAGE}" COMPONENT devel)
 
   if (NEED_PYTHON)
 	install (EXPORT ${PY_LIB_DEPENDENCY_EXPORT}
-      DESTINATION "${INSTALL_DATA_DIR}/${PACKAGE}/CMake" COMPONENT python-devel)
+      DESTINATION "${INSTALL_LIB_DIR}/cmake/${PACKAGE}" COMPONENT python-devel)
   endif (NEED_PYTHON)
 endmacro (module_export_install)
 
@@ -2636,25 +2647,37 @@ macro (install_dev_helper_files)
   # Create a ${PROJECT_NAME}-config.cmake file for the use from 
   # the install tree and install it
   module_export_install()
+  include(CMakePackageConfigHelpers)
   set (${PACKAGE_NAME}_INCLUDE_DIRS "${INSTALL_INCLUDE_DIR}")
   set (${PACKAGE_NAME}_BIN_DIR "${INSTALL_BIN_DIR}")
   set (${PACKAGE_NAME}_LIB_DIR "${INSTALL_LIB_DIR}")
   set (${PACKAGE_NAME}_LIBEXEC_DIR "${INSTALL_LIBEXEC_DIR}")
   set (${PACKAGE_NAME}_PY_LIB_DIR "${INSTALL_PY_LIB_DIR}")
   set (${PACKAGE_NAME}_CMAKE_DIR "${LIB_DEPENDENCY_EXPORT_PATH}")
+  configure_package_config_file(
+      ${PROJECT_NAME}-config.cmake.in
+      ${PROJECT_NAME}-config.cmake
+      INSTALL_DESTINATION ${${PACKAGE_NAME}_CMAKE_DIR}
+      PATH_VARS
+        ${PACKAGE_NAME}_INCLUDE_DIRS
+        ${PACKAGE_NAME}_BIN_DIR
+        ${PACKAGE_NAME}_LIB_DIR
+        ${PACKAGE_NAME}_LIBEXEC_DIR
+  )
+  write_basic_package_version_file(
+      ${PROJECT_NAME}-config-version.cmake
+      VERSION ${PACKAGE_VERSION}
+      COMPATIBILITY AnyNewerVersion
+  )
   # When the project is OpenTREP, OPENTREP_SAMPLE_DIR has
   # already been defined before
   if (NOT "${PROJECT_NAME}" STREQUAL "opentrep")
     set (${PACKAGE_NAME}_SAMPLE_DIR "${INSTALL_SAMPLE_DIR}")
   endif (NOT "${PROJECT_NAME}" STREQUAL "opentrep")
-  configure_file (${PROJECT_NAME}-config.cmake.in
-	"${PROJECT_BINARY_DIR}/${PROJECT_NAME}-config.cmake" @ONLY)
   if (NEED_PYTHON)
 	configure_file (${PROJECT_NAME}-config-python.cmake.in
 	  "${PROJECT_BINARY_DIR}/${PROJECT_NAME}-config-python.cmake" @ONLY)
   endif (NEED_PYTHON)
-  configure_file (${PROJECT_NAME}-config-version.cmake.in
-	"${PROJECT_BINARY_DIR}/${PROJECT_NAME}-config-version.cmake" @ONLY)
   install (FILES
 	"${PROJECT_BINARY_DIR}/${PROJECT_NAME}-config.cmake"
 	"${PROJECT_BINARY_DIR}/${PROJECT_NAME}-config-version.cmake"
