@@ -78,7 +78,8 @@ if (SOCI_LIBRARY_DIR)
     NO_DEFAULT_PATH)
 else (SOCI_LIBRARY_DIR)
   find_library (SOCI_LIBRARIES
-    NAMES ${CHECK_LIBRARIES})
+    NAMES ${CHECK_LIBRARIES}
+    PATH_SUFFIXES soci)
 endif (SOCI_LIBRARY_DIR)
 
 ##
@@ -91,14 +92,9 @@ endif (SOCI_LIBRARY_DIR)
 # either be defined or correspond to valid paths. We use the
 # find_package_handle_standard_args() CMake macro to have a standard behaviour.
 include (FindPackageHandleStandardArgs)
-if (${CMAKE_VERSION} VERSION_GREATER 2.8.1)
-  find_package_handle_standard_args (SOCI 
+find_package_handle_standard_args (SOCI 
 	REQUIRED_VARS SOCI_LIBRARIES SOCI_INCLUDE_DIR
 	VERSION_VAR SOCI_HUMAN_VERSION)
-else (${CMAKE_VERSION} VERSION_GREATER 2.8.1)
-  find_package_handle_standard_args (SOCI 
-	DEFAULT_MSG SOCI_LIBRARIES SOCI_INCLUDE_DIR)
-endif (${CMAKE_VERSION} VERSION_GREATER 2.8.1)
 
 if (SOCI_FOUND)
   mark_as_advanced (SOCI_FOUND SOCI_LIBRARIES SOCI_INCLUDE_DIR)

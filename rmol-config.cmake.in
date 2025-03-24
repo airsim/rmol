@@ -13,14 +13,14 @@
 
 # Tell the user project where to find RMOL headers and libraries
 set (RMOL_VERSION "@PACKAGE_VERSION@")
-set (RMOL_BINARY_DIRS "@PACKAGE_RMOL_BIN_DIR@")
-set (RMOL_INCLUDE_DIRS "@PACKAGE_RMOL_INCLUDE_DIRS@")
-set (RMOL_LIBRARY_DIRS "@PACKAGE_RMOL_LIB_DIR@")
-set (RMOL_LIBEXEC_DIR "@PACKAGE_RMOL_LIBEXEC_DIR@")
+set (RMOL_BINARY_DIRS "@CMAKE_INSTALL_PREFIX@/@CMAKE_INSTALL_BINDIR@")
+set (RMOL_INCLUDE_DIRS "@CMAKE_INSTALL_PREFIX@/@CMAKE_INSTALL_INCLUDEDIR@")
+set (RMOL_LIBRARY_DIRS "@CMAKE_INSTALL_PREFIX@/@CMAKE_INSTALL_LIBDIR@")
+set (RMOL_LIBEXEC_DIR "@CMAKE_INSTALL_PREFIX@/@CMAKE_INSTALL_DATADIR@/@PROJECT_NAME@/samples")
 
 # Library dependencies for RMOL (contains definitions for the RMOL IMPORTED
 # targets)
-include ("@RMOL_CMAKE_DIR@/rmol-library-depends.cmake")
+include ("@CMAKE_INSTALL_PREFIX@/@CMAKE_INSTALL_LIBDIR@/cmake/@PROJECT_NAME@/@PROJECT_NAME@-library-depends.cmake")
 
 # These are the RMOL IMPORTED targets, created by rmol-library-depends.cmake
 set (RMOL_LIBRARIES rmollib)

@@ -5,6 +5,11 @@
 FindBoost
 ---------
 
+.. versionchanged:: 3.30
+  This module is available only if policy :policy:`CMP0167` is not set to
+  ``NEW``.  Port projects to upstream Boost's ``BoostConfig.cmake`` package
+  configuration file, for which ``find_package(Boost)`` now searches.
+
 Find Boost include dirs and libraries
 
 Use this module by invoking :command:`find_package` with the form:
@@ -379,6 +384,16 @@ the Boost CMake package configuration for details on what it provides.
 Set ``Boost_NO_BOOST_CMAKE`` to ``ON``, to disable the search for boost-cmake.
 #]=======================================================================]
 
+cmake_policy(GET CMP0167 _FindBoost_CMP0167)
+if(_FindBoost_CMP0167 STREQUAL "NEW")
+  message(FATAL_ERROR "The FindBoost module has been removed by policy CMP0167.")
+endif()
+
+if(_FindBoost_testing)
+  set(_FindBoost_included TRUE)
+  return()
+endif()
+
 # The FPHSA helper provides standard way of reporting final search results to
 # the user including the version and component checks.
 include(${CMAKE_CURRENT_LIST_DIR}/FindPackageHandleStandardArgs.cmake)
@@ -387,6 +402,7 @@ include(${CMAKE_CURRENT_LIST_DIR}/FindPackageHandleStandardArgs.cmake)
 cmake_policy(PUSH)
 cmake_policy(SET CMP0057 NEW) # if IN_LIST
 cmake_policy(SET CMP0102 NEW) # if mark_as_advanced(non_cache_var)
+cmake_policy(SET CMP0159 NEW) # file(STRINGS) with REGEX updates CMAKE_MATCH_<n>
 
 function(_boost_get_existing_target component target_var)
   set(names "${component}")
@@ -1380,7 +1396,7 @@ function(_Boost_COMPONENT_DEPENDENCIES component _ret)
       set(_Boost_TIMER_DEPENDENCIES chrono)
       set(_Boost_WAVE_DEPENDENCIES filesystem serialization thread chrono atomic)
       set(_Boost_WSERIALIZATION_DEPENDENCIES serialization)
-    else()
+    elseif(Boost_VERSION_STRING VERSION_LESS 1.87.0)
       set(_Boost_CONTRACT_DEPENDENCIES thread chrono)
       set(_Boost_COROUTINE_DEPENDENCIES context)
       set(_Boost_FIBER_DEPENDENCIES context)
@@ -1394,7 +1410,21 @@ function(_Boost_COMPONENT_DEPENDENCIES component _ret)
       set(_Boost_THREAD_DEPENDENCIES chrono atomic)
       set(_Boost_WAVE_DEPENDENCIES filesystem serialization thread chrono atomic)
       set(_Boost_WSERIALIZATION_DEPENDENCIES serialization)
-      if(Boost_VERSION_STRING VERSION_GREATER_EQUAL 1.85.0 AND NOT Boost_NO_WARN_NEW_VERSIONS)
+    else()
+      set(_Boost_CONTRACT_DEPENDENCIES thread chrono)
+      set(_Boost_COROUTINE_DEPENDENCIES context)
+      set(_Boost_FIBER_DEPENDENCIES context)
+      set(_Boost_IOSTREAMS_DEPENDENCIES regex)
+      set(_Boost_JSON_DEPENDENCIES container)
+      set(_Boost_LOG_DEPENDENCIES log_setup filesystem thread regex atomic)
+      set(_Boost_MATH_DEPENDENCIES math_c99 math_c99f math_c99l math_tr1 math_tr1f math_tr1l)
+      set(_Boost_MPI_DEPENDENCIES serialization)
+      set(_Boost_MPI_PYTHON_DEPENDENCIES python${component_python_version} mpi serialization)
+      set(_Boost_NUMPY_DEPENDENCIES python${component_python_version})
+      set(_Boost_THREAD_DEPENDENCIES chrono atomic)
+      set(_Boost_WAVE_DEPENDENCIES filesystem serialization thread chrono atomic)
+      set(_Boost_WSERIALIZATION_DEPENDENCIES serialization)
+      if(Boost_VERSION_STRING VERSION_GREATER_EQUAL 1.88.0 AND NOT Boost_NO_WARN_NEW_VERSIONS)
         message(WARNING "New Boost version may have incorrect or missing dependencies and imported targets")
       endif()
     endif()
@@ -1669,7 +1699,7 @@ else()
   # _Boost_COMPONENT_HEADERS.  See the instructions at the top of
   # _Boost_COMPONENT_DEPENDENCIES.
   set(_Boost_KNOWN_VERSIONS ${Boost_ADDITIONAL_VERSIONS}
-    "1.84.0" "1.84"
+    "1.87.0" "1.87" "1.86.0" "1.86" "1.85.0" "1.85" "1.84.0" "1.84"
     "1.83.0" "1.83" "1.82.0" "1.82" "1.81.0" "1.81" "1.80.0" "1.80" "1.79.0" "1.79"
     "1.78.0" "1.78" "1.77.0" "1.77" "1.76.0" "1.76" "1.75.0" "1.75" "1.74.0" "1.74"
     "1.73.0" "1.73" "1.72.0" "1.72" "1.71.0" "1.71" "1.70.0" "1.70" "1.69.0" "1.69"

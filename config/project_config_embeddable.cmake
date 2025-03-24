@@ -74,8 +74,8 @@ endmacro (set_project_versions)
 #  * RUN_GCOV             - Whether or not to perform code coverage
 #
 macro (set_project_options _build_doc _enable_tests _run_gcov)
-  # C++ standard (C++-14)
-  set(CMAKE_CXX_STANDARD 14)
+  # C++ standard (C++-17)
+  set(CMAKE_CXX_STANDARD 17)
   set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
   # Shared libraries
@@ -2006,8 +2006,10 @@ macro (module_header_install_everything_else)
   # It remains to install the header files for all the other layers
   foreach (_layer ${_all_layers})
     # Install header files
+    # See also https://github.com/jrouwe/JoltPhysics/pull/1309
+    cmake_path(SET DST_FILE NORMALIZE "${INSTALL_INCLUDE_DIR}/${MODULE_NAME}/${_layer}")
     install (FILES ${${MODULE_LIB_TARGET}_${_layer}_HEADERS}
-      DESTINATION "${INSTALL_INCLUDE_DIR}/${MODULE_NAME}/${_layer}"
+      DESTINATION ${DST_FILE}
       COMPONENT devel)
   endforeach (_layer ${${MODULE_NAME}_ALL_LAYERS})
 
@@ -3145,6 +3147,7 @@ macro (display_status)
   message (STATUS "-------------------------------------")
   message (STATUS "---       Build Configuration     ---")
   message (STATUS "-------------------------------------")
+  message (STATUS "C++ standard ...................... : C++-${CMAKE_CXX_STANDARD}")
   message (STATUS "Modules to build .................. : ${PROJ_ALL_MOD_FOR_BLD}")
   message (STATUS "Libraries to build/install ........ : ${PROJ_ALL_LIB_TARGETS}")
   message (STATUS "Binaries to build/install ......... : ${PROJ_ALL_BIN_TARGETS}")
