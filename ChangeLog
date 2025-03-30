@@ -1,5 +1,8 @@
+* Mon Mar 31 2025 Denis Arnaud <denis.arnaud_fedora at m4x.org> - 1.00.14
+- Upgraded CMake support files
+
 * Tue Mar 25 2025 Denis Arnaud <denis.arnaud_fedora at m4x.org> - 1.00.13
-  - Upgraded CMake support files
+- Upgraded CMake support files
 
 * Mon Jan 27 2025 Denis Arnaud <denis.arnaud_fedora at m4x.org> - 1.00.12
 - Upgraded CMake support files

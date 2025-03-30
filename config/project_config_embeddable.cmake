@@ -1039,6 +1039,9 @@ macro (get_soci)
 
     # Update the list of include directories for the project
     include_directories (${SOCI_INCLUDE_DIR})
+
+    # Update the list of dependencies for the project
+    list (APPEND PROJ_DEP_LIBS_FOR_LIB ${SOCI_LIBRARIES})
   endif (SOCI_FOUND)
 
   # SOCI MySQL
@@ -1052,7 +1055,7 @@ macro (get_soci)
     include_directories (${SOCIMYSQL_INCLUDE_DIR})
 
     # Update the list of dependencies for the project
-    list (APPEND PROJ_DEP_LIBS_FOR_LIB ${SOCI_LIBRARIES} ${SOCIMYSQL_LIBRARIES})
+    list (APPEND PROJ_DEP_LIBS_FOR_LIB ${SOCIMYSQL_LIBRARIES})
   endif (SOCIMYSQL_FOUND)
 
   # SOCI SQLite
@@ -1066,7 +1069,7 @@ macro (get_soci)
     include_directories (${SOCISQLITE_INCLUDE_DIR})
 
     # Update the list of dependencies for the project
-    list (APPEND PROJ_DEP_LIBS_FOR_LIB ${SOCI_LIBRARIES} ${SOCISQLITE_LIBRARIES})
+    list (APPEND PROJ_DEP_LIBS_FOR_LIB ${SOCISQLITE_LIBRARIES})
   endif (SOCISQLITE_FOUND)
 
 endmacro (get_soci)
