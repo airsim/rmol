@@ -18,7 +18,7 @@
  \b -l, \b --long<br>
     Produce long formatted output (rather than the shorter one).
 
-See the output of the <tt>`pyrmol --help'</tt> command for default options.
+See the output of the <tt>pyrmol --help</tt> command for default options.
 
 
 \section sec_see_also SEE ALSO

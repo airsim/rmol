@@ -45,7 +45,7 @@
  \b -l, \b --log <path-to-output-log-file><br>
     Path (absolute or relative) of the output log file.
 
-See the output of the <tt>`rmol --help'</tt> command for default options.
+See the output of the <tt>rmol --help</tt> command for default options.
 
 
 \section sec_see_also SEE ALSO
