@@ -79,7 +79,7 @@ If MetaSim is not used, in order to customise the following to your
 environment, you can alter the path to the installation directory:
 ```bash
 export INSTALL_BASEDIR="${HOME}/dev/deliveries"
-export RMOL_VER="1.00.15"
+export RMOL_VER="1.00.16"
 ```
 
 Then, as usual:
