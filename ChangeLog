@@ -1,3 +1,6 @@
+* Sun Jan 18 2026 Denis Arnaud <denis.arnaud_fedora at m4x.org> - 1.00.17
+- Synchronized the CMake conf files with StdAir
+
 * Wed Dec 24 2025 Denis Arnaud <denis.arnaud_fedora at m4x.org> - 1.00.16
 - Upgraded CMake conf for Python
 

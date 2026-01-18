@@ -297,7 +297,7 @@ endmacro (packaging_set_other_options)
 ###################################################################
 # ~~~~~~~~ Wrapper ~~~~~~~~
 macro (get_external_libs)
-  # CMake scripts, to find some dependencies (e.g., Boost, MySQL, SOCI)
+  # CMake scripts, to find some dependencies (e.g., Boost, PostgreSQL, MySQL, SOCI)
   set (CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/config/)
 
   #
@@ -362,6 +362,10 @@ macro (get_external_libs)
     if (${_arg_lower} STREQUAL "sqlite")
       get_sqlite (${_arg_version})
     endif (${_arg_lower} STREQUAL "sqlite")
+
+    if (${_arg_lower} STREQUAL "postgres")
+      get_postgres (${_arg_version})
+    endif (${_arg_lower} STREQUAL "postgres")
 
     if (${_arg_lower} STREQUAL "mysql")
       get_mysql (${_arg_version})
@@ -493,9 +497,6 @@ macro (get_python)
   #find_package (PythonExtensions REQUIRED)
   include(targetLinkLibrariesWithDynamicLookup)
 
-  # The second check is to get the dynamic library for sure.
-  #find_package (PythonLibsWrapper ${_required_version} REQUIRED)
-
   if (Python3_FOUND)
     message (STATUS "Found Python3 ${Python3_VERSION} (${Python3_VERSION_MAJOR}.${Python3_VERSION_MINOR}.${Python3_VERSION_PATCH})")
 
@@ -604,16 +605,15 @@ macro (get_boost)
   #         On some platform/Boost version combinations, the Python version
   #         may be just the major version (2 or 3 as of 2020) or the major
   #         and minor versions (e.g., 27, 28, 34, 36, 37, 38, 39 as of 2020)
-  # Note 3: Boot.Python has is reuired only for Python extensions. It should
+  # Note 3: Boot.Python is required only for Python extensions. It should
   #         not be linked with other regular (non-Python) libraries/binaries,
   #         as it pulls with it symbols from the Python interpreter, which are
   #         available only when launched from a Python interpreter.
   set (Boost_USE_STATIC_LIBS OFF)
   set (Boost_USE_MULTITHREADED ON)
   set (Boost_USE_STATIC_RUNTIME OFF)
-  # Boost.Python - Depending on the platforms, the component name
-  # differs. We try all of them, and the find_package() will retrieve
-  # just one
+  # Boost.Python - Depending on the platforms, the component name differs.
+  # We try all of them, and the find_package() will retrieve just one
   if (NEED_PYTHON)
     set (python_cpt_name0 "python")
     #
@@ -628,7 +628,7 @@ macro (get_boost)
 
   # Boost components for (non-Python) libraries
   set (BOOST_REQUIRED_COMPONENTS_FOR_LIB
-    date_time random iostreams serialization filesystem system locale regex)
+    date_time random iostreams serialization filesystem locale regex)
 
   # Boost components for Python extensions
   if (NEED_PYTHON)
@@ -787,9 +787,6 @@ macro (get_xapian)
   endif (${ARGC} GREATER 0)
 
   # The first check is to get Xapian installation details
-  if (${CMAKE_VERSION} VERSION_LESS 2.8.0)
-	set (Xapian_DIR ${CMAKE_INSTALL_LIBDIR}/cmake/xapian)
-  endif (${CMAKE_VERSION} VERSION_LESS 2.8.0)
   find_package (Xapian)
 
   # The second check is for the required version (FindXapianWrapper.cmake is
@@ -883,6 +880,28 @@ macro (get_sqlite)
   endif (SQLite3_FOUND)
 
 endmacro (get_sqlite)
+
+# ~~~~~~~~~~ PostgreSQL ~~~~~~~~~
+macro (get_postgres)
+  unset (_required_version)
+  if (${ARGC} GREATER 0)
+    set (_required_version ${ARGV0})
+    message (STATUS "Requires PostgreSQL-${_required_version}")
+  else (${ARGC} GREATER 0)
+    message (STATUS "Requires PostgreSQL without specifying any version")
+  endif (${ARGC} GREATER 0)
+
+  find_package (PostgreSQL ${_required_version} REQUIRED)
+  if (PostgreSQL_FOUND)
+
+    # Update the list of include directories for the project
+    include_directories (${PostgreSQL_INCLUDE_DIRS})
+
+    # Update the list of dependencies for the project
+    list (APPEND PROJ_DEP_LIBS_FOR_LIB ${PostgreSQL_LIBRARIES})
+  endif (PostgreSQL_FOUND)
+
+endmacro (get_postgres)
 
 # ~~~~~~~~~~ MySQL ~~~~~~~~~
 macro (get_mysql)
@@ -1555,7 +1574,7 @@ endmacro (module_set_name)
 #  * The corresponding targets (libraries and binaries) are exported within
 #    a CMake import helper file, namely '${PROJECT_NAME}-library-depends.cmake'.
 #    That CMake import helper file is installed in the installation directory,
-#    within the <install_dir>/share/${PROJECT_NAME}/CMake sub-directory.
+#    within the <install_lib_dir>/cmake/${PROJECT_NAME} sub-directory.
 #    That CMake import helper file is used by the ${PROJECT_NAME}-config.cmake
 #    file, to be installed in the same sub-directory. The
 #    ${PROJECT_NAME}-config.cmake file is specified a little bit below.
@@ -1781,8 +1800,8 @@ macro (module_library_add_specific
   endif (NOT "${_lib_short_name}" STREQUAL "${MODULE_NAME}")
 
   # Add the dependencies:
-  #  * on external libraries (Boost, MySQL, SOCI, StdAir), as calculated by 
-  #    the get_external_libs() macro above;
+  #  * on external libraries (Boost, PostgreSQL, MySQL, SOCI, StdAir), as calculated
+  #    by the get_external_libs() macro above;
   #  * on the other module libraries, as provided as paramaters to this macro
   #  * on the main/standard library of the module (when, of course, the
   #    current library is not the main/standard library).
@@ -2563,7 +2582,10 @@ endmacro (gcov_task)
 ###################################################################
 # For other projects to use this component (let us name it myproj),
 # install a few helpers for standard build/packaging systems: CMake,
-# GNU Autotools (M4), pkgconfig/pc, myproj-config
+# GNU Autotools (M4), pkgconfig/pc, myproj-config.
+# Docs:
+# https://cmake.org/cmake/help/latest/module/CMakePackageConfigHelpers.html
+# https://stackoverflow.com/a/75846400/798053
 macro (install_dev_helper_files)
   ##
   ## First, build and install CMake development helper files
@@ -2577,6 +2599,7 @@ macro (install_dev_helper_files)
   set (${PACKAGE_NAME}_LIB_DIR "${INSTALL_LIB_DIR}")
   set (${PACKAGE_NAME}_LIBEXEC_DIR "${INSTALL_LIBEXEC_DIR}")
   set (${PACKAGE_NAME}_PY_LIB_DIR "${INSTALL_PY_LIB_DIR}")
+  set (${PACKAGE_NAME}_SAMPLE_DIR "${INSTALL_SAMPLE_DIR}")
   set (${PACKAGE_NAME}_CMAKE_DIR "${LIB_DEPENDENCY_EXPORT_PATH}")
   configure_package_config_file(
       ${PROJECT_NAME}-config.cmake.in
@@ -2587,6 +2610,7 @@ macro (install_dev_helper_files)
         ${PACKAGE_NAME}_BIN_DIR
         ${PACKAGE_NAME}_LIB_DIR
         ${PACKAGE_NAME}_LIBEXEC_DIR
+        ${PACKAGE_NAME}_SAMPLE_DIR
   )
   write_basic_package_version_file(
       ${PROJECT_NAME}-config-version.cmake
@@ -2595,9 +2619,9 @@ macro (install_dev_helper_files)
   )
   # When the project is OpenTREP, OPENTREP_SAMPLE_DIR has
   # already been defined before
-  if (NOT "${PROJECT_NAME}" STREQUAL "opentrep")
+  if (NOT "${PROJECT_NAME}" STREQUAL "opentrep" AND NOT "${PROJECT_NAME}" STREQUAL "stdair")
     set (${PACKAGE_NAME}_SAMPLE_DIR "${INSTALL_SAMPLE_DIR}")
-  endif (NOT "${PROJECT_NAME}" STREQUAL "opentrep")
+  endif (NOT "${PROJECT_NAME}" STREQUAL "opentrep" AND NOT "${PROJECT_NAME}" STREQUAL "stdair")
   if (NEED_PYTHON)
 	configure_file (${PROJECT_NAME}-config-python.cmake.in
 	  "${PROJECT_BINARY_DIR}/${PROJECT_NAME}-config-python.cmake" @ONLY)
@@ -2791,6 +2815,17 @@ macro (display_sqlite)
     message (STATUS "  - SQLITE3_LIBRARIES ............. : ${SQLite3_LIBRARIES}")
   endif (SQLite3_FOUND)
 endmacro (display_sqlite)
+
+# PostgreSQL
+macro (display_postgres)
+  if (PostgreSQL_FOUND)
+    message (STATUS)
+    message (STATUS "* PostgreSQL:")
+    message (STATUS "  - PostgreSQL_VERSION ............ : ${PostgreSQL_VERSION}")
+    message (STATUS "  - PostgreSQL_INCLUDE_DIRS ....... : ${PostgreSQL_INCLUDE_DIRS}")
+    message (STATUS "  - PostgreSQL_LIBRARIES .......... : ${PostgreSQL_LIBRARIES}")
+  endif (PostgreSQL_FOUND)
+endmacro (display_postgres)
 
 # MySQL
 macro (display_mysql)
@@ -3142,6 +3177,7 @@ macro (display_status)
   display_readline ()
   display_curses ()
   display_sqlite ()
+  display_postgres ()
   display_mysql ()
   display_soci ()
   display_optd ()

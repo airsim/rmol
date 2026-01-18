@@ -40,14 +40,9 @@ if (XAPIAN_FOUND)
 
   # Check the version requirement only
   include (FindPackageHandleStandardArgs)
-  if (${CMAKE_VERSION} VERSION_GREATER 2.8.1)
-	find_package_handle_standard_args (XapianWrapper
-	  REQUIRED_VARS XAPIAN_INCLUDE_DIR XAPIAN_LIBRARIES
-	  VERSION_VAR XAPIAN_VERSION)
-  else (${CMAKE_VERSION} VERSION_GREATER 2.8.1)
-	find_package_handle_standard_args (XapianWrapper
-	  DEFAULT_MSG XAPIAN_INCLUDE_DIR XAPIAN_LIBRARIES)
-  endif (${CMAKE_VERSION} VERSION_GREATER 2.8.1)
+  find_package_handle_standard_args (XapianWrapper
+	REQUIRED_VARS XAPIAN_INCLUDE_DIR XAPIAN_LIBRARIES
+	VERSION_VAR XAPIAN_VERSION)
 
 endif (XAPIAN_FOUND)
 
